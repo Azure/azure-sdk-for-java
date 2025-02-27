@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.v2.data.appconfiguration.implementation;
 
-
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;

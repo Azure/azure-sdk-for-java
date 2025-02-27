@@ -252,7 +252,7 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
      * 
      * @return an instance of AzureAppConfigurationClientImpl.
      */
-//    @Metadata(generated = true)
+    //    @Metadata(generated = true)
     private AzureAppConfigurationClientImpl buildInnerClient() {
         // Manual changes start
         if (connectionString.isEmpty()) {
@@ -278,7 +278,7 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-//    @Metadata(generated = true)
+    //    @Metadata(generated = true)
     private HttpPipeline createHttpPipeline(ConfigurationClientCredentials credentials) {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;

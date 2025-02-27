@@ -25,7 +25,6 @@ import java.util.Locale;
 import static com.azure.v2.core.utils.CoreUtils.isNullOrEmpty;
 import static com.azure.v2.data.appconfiguration.implementation.FakeCredentialConstants.SECRET_PLACEHOLDER;
 
-
 /**
  * Credentials that authorizes requests to Azure App Configuration. It uses content within the HTTP request to generate
  */
@@ -164,10 +163,7 @@ public class ConfigurationClientCredentials {
             this.id = id;
             this.secret = secret;
 
-            if (this.baseUri == null
-                || isNullOrEmpty(this.id)
-                || this.secret == null
-                || this.secret.length == 0) {
+            if (this.baseUri == null || isNullOrEmpty(this.id) || this.secret == null || this.secret.length == 0) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."
                     + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
             }

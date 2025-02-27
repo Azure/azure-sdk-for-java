@@ -10,8 +10,14 @@ import com.azure.v2.data.appconfiguration.implementation.models.SnapshotListResu
 import com.azure.v2.data.appconfiguration.models.Error;
 import com.azure.v2.data.appconfiguration.models.Key;
 import com.azure.v2.data.appconfiguration.models.KeyValue;
+import com.azure.v2.data.appconfiguration.models.KeyValueFields;
 import com.azure.v2.data.appconfiguration.models.Label;
+import com.azure.v2.data.appconfiguration.models.LabelFields;
 import com.azure.v2.data.appconfiguration.models.Snapshot;
+import com.azure.v2.data.appconfiguration.models.SnapshotFields;
+import com.azure.v2.data.appconfiguration.models.SnapshotStatus;
+import com.azure.v2.data.appconfiguration.models.SnapshotUpdateParameters;
+import com.azure.v2.data.appconfiguration.models.UpdateSnapshotRequestContentType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
@@ -28,10 +34,13 @@ import io.clientcore.core.http.models.PagedResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.utils.Context;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the AzureAppConfigurationClient type.
@@ -48,7 +57,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -62,7 +71,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AzureAppConfigurationServiceVersion getServiceVersion() {
@@ -76,7 +85,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -85,7 +94,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Initializes an instance of AzureAppConfigurationClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint
      * @param serviceVersion Service version.
@@ -112,7 +121,7 @@ public final class AzureAppConfigurationClientImpl {
                     .getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class)
                     .invoke(null, pipeline, serializer);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
-                     | InvocationTargetException e) {
+                | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
 
@@ -121,1509 +130,1920 @@ public final class AzureAppConfigurationClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/keys", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyListResult> getKeys(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @QueryParam("name") String name,
+            @QueryParam("After") String after, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/keys", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Void> checkKeys(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @QueryParam("name") String name, @QueryParam("After") String after,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/kv", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyValueListResult> getKeyValues(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            @QueryParam("api-version") String apiVersion, @QueryParam("key") String key,
+            @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select, @QueryParam("snapshot") String snapshot,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Void> checkKeyValues(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            @QueryParam("api-version") String apiVersion, @QueryParam("key") String key,
+            @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select, @QueryParam("snapshot") String snapshot,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyValue> getKeyValue(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
+            @QueryParam("label") String label, @QueryParam("$Select") String select,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyValue> putKeyValue(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyValue entity, RequestOptions requestOptions);
+            @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyValue entity,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.DELETE, path = "/kv/{key}", expectedStatusCodes = { 200, 204 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyValue> deleteKeyValue(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Void> checkKeyValue(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
+            @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("$Select") String select,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/snapshots", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<SnapshotListResult> getSnapshots(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            @QueryParam("api-version") String apiVersion, @QueryParam("name") String name,
+            @QueryParam("After") String after, @QueryParam("$Select") String select,
+            @QueryParam("status") String status, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/snapshots", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Void> checkSnapshots(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("After") String after, @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Snapshot> getSnapshot(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @QueryParam("$Select") String select, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.PATCH, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Snapshot> updateSnapshot(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @PathParam("name") String name, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData entity, RequestOptions requestOptions);
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") UpdateSnapshotRequestContentType contentType, @PathParam("name") String name,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SnapshotUpdateParameters entity, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Void> checkSnapshot(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/labels", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<LabelListResult> getLabels(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            @QueryParam("api-version") String apiVersion, @QueryParam("name") String name,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("After") String after,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @QueryParam("$Select") String select,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/labels", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Void> checkLabels(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select, @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/locks/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyValue> putLock(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("key") String key, @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.DELETE, path = "/locks/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyValue> deleteLock(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
+            @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/revisions", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyValueListResult> getRevisions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            @QueryParam("api-version") String apiVersion, @QueryParam("key") String key,
+            @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/revisions", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Void> checkRevisions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            @QueryParam("api-version") String apiVersion, @QueryParam("key") String key,
+            @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyListResult> getKeysNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyValueListResult> getKeyValuesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<SnapshotListResult> getSnapshotsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<LabelListResult> getLabelsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyValueListResult> getRevisionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions);
     }
 
     /**
      * Gets a list of keys.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>name</td><td>String</td><td>No</td><td>A filter for the name of the returned keys.</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param name A filter for the name of the returned keys.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
-    private PagedResponse<Key> getKeysSinglePage(String accept, RequestOptions requestOptions) {
-        Response<KeyListResult> res
-            = service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
+    public PagedResponse<Key> getKeysSinglePage(String accept, String name, String after, String syncToken,
+        String acceptDatetime) {
+        Response<KeyListResult> res = service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            after, syncToken, acceptDatetime, accept, RequestOptions.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
 
     /**
      * Gets a list of keys.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>name</td><td>String</td><td>No</td><td>A filter for the name of the returned keys.</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
+     * 
      * @param accept The accept parameter.
+     * @param name A filter for the name of the returned keys.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
-    public PagedIterable<Key> getKeys(String accept, RequestOptions requestOptions) {
+    public PagedResponse<Key> getKeysSinglePage(String accept, String name, String after, String syncToken,
+        String acceptDatetime, RequestOptions requestOptions) {
+        Response<KeyListResult> res = service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            after, syncToken, acceptDatetime, accept, requestOptions);
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+    }
+
+    /**
+     * Gets a list of keys.
+     *
+     * @param accept The accept parameter.
+     * @param name A filter for the name of the returned keys.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of keys.
+     */
+    public PagedIterable<Key> getKeys(String accept, String name, String after, String syncToken,
+        String acceptDatetime) {
+        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(accept, name, after, syncToken, acceptDatetime),
+            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, accept, syncToken, acceptDatetime));
+    }
+
+    /**
+     * Gets a list of keys.
+     * 
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of keys.
+     */
+    public PagedIterable<Key> getKeys(String accept) {
+        final String name = null;
+        final String after = null;
+        final String syncToken = null;
+        final String acceptDatetime = null;
+        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(accept, name, after, syncToken, acceptDatetime),
+            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, accept, syncToken, acceptDatetime));
+    }
+
+    /**
+     * Gets a list of keys.
+     *
+     * @param accept The accept parameter.
+     * @param name A filter for the name of the returned keys.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of keys.
+     */
+    public PagedIterable<Key> getKeys(String accept, String name, String after, String syncToken, String acceptDatetime,
+        RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
             ? requestOptions.getContext()
             : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(accept, requestOptions),
-            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, accept, requestOptionsForNextPage));
+        return new PagedIterable<>(
+            (pagingOptions) -> getKeysSinglePage(accept, name, after, syncToken, acceptDatetime, requestOptions),
+            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, accept, syncToken, acceptDatetime,
+                requestOptionsForNextPage));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>name</td><td>String</td><td>No</td><td>A filter for the name of the returned keys.</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * @param name A filter for the name of the returned keys.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    public Response<Void> checkKeysWithResponse(RequestOptions requestOptions) {
+    public Response<Void> checkKeysWithResponse(String name, String after, String syncToken, String acceptDatetime,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.checkKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
+        return service.checkKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), name, after, syncToken,
+            acceptDatetime, accept, requestOptions);
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @param name A filter for the name of the returned keys.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkKeys(String name, String after, String syncToken, String acceptDatetime) {
+        checkKeysWithResponse(name, after, syncToken, acceptDatetime, RequestOptions.none());
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkKeys() {
+        final String name = null;
+        final String after = null;
+        final String syncToken = null;
+        final String acceptDatetime = null;
+        checkKeysWithResponse(name, after, syncToken, acceptDatetime, RequestOptions.none());
     }
 
     /**
      * Gets a list of key-values.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>key</td><td>String</td><td>No</td><td>A filter used to match keys. Syntax reference:
-     * https://aka.ms/azconfig/docs/keyvaluefiltering</td></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>A filter used to match labels. Syntax reference:
-     * https://aka.ms/azconfig/docs/keyvaluefiltering</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * <tr><td>snapshot</td><td>String</td><td>No</td><td>A filter used get key-values for a snapshot. The value should
-     * be the name of
-     * the snapshot. Not valid when used with 'key' and 'label' filters.</td></tr>
-     * <tr><td>tags</td><td>List&lt;String&gt;</td><td>No</td><td>A filter used to query by tags. Syntax reference:
-     * https://aka.ms/azconfig/docs/keyvaluefiltering. Call {@link RequestOptions#addQueryParam} to add string to
-     * array.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             key: String (Required)
-     *             label: String (Optional)
-     *             content_type: String (Optional)
-     *             value: String (Optional)
-     *             last_modified: OffsetDateTime (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             locked: Boolean (Optional)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     etag: String (Optional)
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of
+     * the snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
-    private PagedResponse<KeyValue> getKeyValuesSinglePage(String accept, RequestOptions requestOptions) {
-        Response<KeyValueListResult> res
-            = service.getKeyValues(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
+    public PagedResponse<KeyValue> getKeyValuesSinglePage(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch,
+        String ifNoneMatch, List<String> tags) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        Response<KeyValueListResult> res = service.getKeyValues(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), key, label, syncToken, after, acceptDatetime, selectConverted,
+            snapshot, ifMatch, ifNoneMatch, tagsConverted, accept, RequestOptions.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
 
     /**
      * Gets a list of key-values.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>key</td><td>String</td><td>No</td><td>A filter used to match keys. Syntax reference:
-     * https://aka.ms/azconfig/docs/keyvaluefiltering</td></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>A filter used to match labels. Syntax reference:
-     * https://aka.ms/azconfig/docs/keyvaluefiltering</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * <tr><td>snapshot</td><td>String</td><td>No</td><td>A filter used get key-values for a snapshot. The value should
-     * be the name of
-     * the snapshot. Not valid when used with 'key' and 'label' filters.</td></tr>
-     * <tr><td>tags</td><td>List&lt;String&gt;</td><td>No</td><td>A filter used to query by tags. Syntax reference:
-     * https://aka.ms/azconfig/docs/keyvaluefiltering. Call {@link RequestOptions#addQueryParam} to add string to
-     * array.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             key: String (Required)
-     *             label: String (Optional)
-     *             content_type: String (Optional)
-     *             value: String (Optional)
-     *             last_modified: OffsetDateTime (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             locked: Boolean (Optional)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     etag: String (Optional)
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param accept The accept parameter.
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of
+     * the snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
-    public PagedIterable<KeyValue> getKeyValues(String accept, RequestOptions requestOptions) {
+    public PagedResponse<KeyValue> getKeyValuesSinglePage(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch,
+        String ifNoneMatch, List<String> tags, RequestOptions requestOptions) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        Response<KeyValueListResult> res = service.getKeyValues(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), key, label, syncToken, after, acceptDatetime, selectConverted,
+            snapshot, ifMatch, ifNoneMatch, tagsConverted, accept, requestOptions);
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+    }
+
+    /**
+     * Gets a list of key-values.
+     *
+     * @param accept The accept parameter.
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of
+     * the snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of key-values.
+     */
+    public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
+        String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
+        List<String> tags) {
+        return new PagedIterable<>(
+            (pagingOptions) -> getKeyValuesSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
+                snapshot, ifMatch, ifNoneMatch, tags),
+            (pagingOptions, nextLink) -> getKeyValuesNextSinglePage(nextLink, accept, syncToken, acceptDatetime,
+                ifMatch, ifNoneMatch));
+    }
+
+    /**
+     * Gets a list of key-values.
+     *
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of key-values.
+     */
+    public PagedIterable<KeyValue> getKeyValues(String accept) {
+        final String key = null;
+        final String label = null;
+        final String syncToken = null;
+        final String after = null;
+        final String acceptDatetime = null;
+        final List<KeyValueFields> select = null;
+        final String snapshot = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        final List<String> tags = null;
+        return new PagedIterable<>(
+            (pagingOptions) -> getKeyValuesSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
+                snapshot, ifMatch, ifNoneMatch, tags),
+            (pagingOptions, nextLink) -> getKeyValuesNextSinglePage(nextLink, accept, syncToken, acceptDatetime,
+                ifMatch, ifNoneMatch));
+    }
+
+    /**
+     * Gets a list of key-values.
+     * 
+     * @param accept The accept parameter.
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of
+     * the snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of key-values.
+     */
+    public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
+        String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
+        List<String> tags, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
             ? requestOptions.getContext()
             : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getKeyValuesSinglePage(accept, requestOptions),
-            (pagingOptions, nextLink) -> getKeyValuesNextSinglePage(nextLink, accept, requestOptionsForNextPage));
+        return new PagedIterable<>(
+            (pagingOptions) -> getKeyValuesSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
+                snapshot, ifMatch, ifNoneMatch, tags, requestOptions),
+            (pagingOptions, nextLink) -> getKeyValuesNextSinglePage(nextLink, accept, syncToken, acceptDatetime,
+                ifMatch, ifNoneMatch, requestOptionsForNextPage));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>key</td><td>String</td><td>No</td><td>A filter used to match keys. Syntax reference:
-     * https://aka.ms/azconfig/docs/keyvaluefiltering</td></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>A filter used to match labels. Syntax reference:
-     * https://aka.ms/azconfig/docs/keyvaluefiltering</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * <tr><td>snapshot</td><td>String</td><td>No</td><td>A filter used get key-values for a snapshot. The value should
-     * be the name of
-     * the snapshot. Not valid when used with 'key' and 'label' filters.</td></tr>
-     * <tr><td>tags</td><td>List&lt;String&gt;</td><td>No</td><td>A filter used to query by tags. Syntax reference:
-     * https://aka.ms/azconfig/docs/keyvaluefiltering. Call {@link RequestOptions#addQueryParam} to add string to
-     * array.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of
+     * the snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    public Response<Void> checkKeyValuesWithResponse(RequestOptions requestOptions) {
+    public Response<Void> checkKeyValuesWithResponse(String key, String label, String syncToken, String after,
+        String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
+        List<String> tags, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.checkKeyValues(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.checkKeyValues(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
+            after, acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, accept,
             requestOptions);
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of
+     * the snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkKeyValues(String key, String label, String syncToken, String after, String acceptDatetime,
+        List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
+        checkKeyValuesWithResponse(key, label, syncToken, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch,
+            tags, RequestOptions.none());
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkKeyValues() {
+        final String key = null;
+        final String label = null;
+        final String syncToken = null;
+        final String after = null;
+        final String acceptDatetime = null;
+        final List<KeyValueFields> select = null;
+        final String snapshot = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        final List<String> tags = null;
+        checkKeyValuesWithResponse(key, label, syncToken, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch,
+            tags, RequestOptions.none());
     }
 
     /**
      * Gets a single key-value.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>The label of the key-value to retrieve.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     key: String (Required)
-     *     label: String (Optional)
-     *     content_type: String (Optional)
-     *     value: String (Optional)
-     *     last_modified: OffsetDateTime (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     locked: Boolean (Optional)
-     *     etag: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param key The key of the key-value.
      * @param accept The accept parameter.
+     * @param label The label of the key-value to retrieve.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
-    public Response<KeyValue> getKeyValueWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.getKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept,
-            requestOptions);
+    public Response<KeyValue> getKeyValueWithResponse(String key, String accept, String label,
+        List<KeyValueFields> select, String syncToken, String acceptDatetime, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.getKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label,
+            selectConverted, syncToken, acceptDatetime, ifMatch, ifNoneMatch, accept, requestOptions);
+    }
+
+    /**
+     * Gets a single key-value.
+     *
+     * @param key The key of the key-value.
+     * @param accept The accept parameter.
+     * @param label The label of the key-value to retrieve.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single key-value.
+     */
+    public KeyValue getKeyValue(String key, String accept, String label, List<KeyValueFields> select, String syncToken,
+        String acceptDatetime, String ifMatch, String ifNoneMatch) {
+        return getKeyValueWithResponse(key, accept, label, select, syncToken, acceptDatetime, ifMatch, ifNoneMatch,
+            RequestOptions.none()).getValue();
+    }
+
+    /**
+     * Gets a single key-value.
+     *
+     * @param key The key of the key-value.
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single key-value.
+     */
+    public KeyValue getKeyValue(String key, String accept) {
+        final String label = null;
+        final List<KeyValueFields> select = null;
+        final String syncToken = null;
+        final String acceptDatetime = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return getKeyValueWithResponse(key, accept, label, select, syncToken, acceptDatetime, ifMatch, ifNoneMatch,
+            RequestOptions.none()).getValue();
     }
 
     /**
      * Creates a key-value.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>The label of the key-value to create.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     key: String (Required)
-     *     label: String (Optional)
-     *     content_type: String (Optional)
-     *     value: String (Optional)
-     *     last_modified: OffsetDateTime (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     locked: Boolean (Optional)
-     *     etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     key: String (Required)
-     *     label: String (Optional)
-     *     content_type: String (Optional)
-     *     value: String (Optional)
-     *     last_modified: OffsetDateTime (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     locked: Boolean (Optional)
-     *     etag: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
+     * @param label The label of the key-value to create.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param entity The key-value to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
-    public Response<KeyValue> putKeyValueWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.putKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept, new KeyValue().setValue("shawn"),
-            requestOptions);
+    public Response<KeyValue> putKeyValueWithResponse(String key, String accept, String label, String syncToken,
+        String ifMatch, String ifNoneMatch, KeyValue entity, RequestOptions requestOptions) {
+        accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
+
+        return service.putKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
+            ifMatch, ifNoneMatch, accept, entity, requestOptions);
+    }
+
+    /**
+     * Creates a key-value.
+     *
+     * @param key The key of the key-value to create.
+     * @param accept The accept parameter.
+     * @param label The label of the key-value to create.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param entity The key-value to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a key-value pair representing application settings.
+     */
+    public KeyValue putKeyValue(String key, String accept, String label, String syncToken, String ifMatch,
+        String ifNoneMatch, KeyValue entity) {
+
+        return putKeyValueWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, entity,
+            RequestOptions.none()).getValue();
+    }
+
+    /**
+     * Creates a key-value.
+     *
+     * @param key The key of the key-value to create.
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a key-value pair representing application settings.
+     */
+    public KeyValue putKeyValue(String key, String accept) {
+        final String label = null;
+        final String syncToken = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        final KeyValue entity = null;
+        return putKeyValueWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, entity,
+            RequestOptions.none()).getValue();
     }
 
     /**
      * Deletes a key-value.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>The label of the key-value to delete.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     key: String (Required)
-     *     label: String (Optional)
-     *     content_type: String (Optional)
-     *     value: String (Optional)
-     *     last_modified: OffsetDateTime (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     locked: Boolean (Optional)
-     *     etag: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
+     * @param label The label of the key-value to delete.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
-    public Response<KeyValue> deleteKeyValueWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.deleteKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept,
-            requestOptions);
+    public Response<KeyValue> deleteKeyValueWithResponse(String key, String accept, String label, String syncToken,
+        String ifMatch, RequestOptions requestOptions) {
+        return service.deleteKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
+            ifMatch, accept, requestOptions);
+    }
+
+    /**
+     * Deletes a key-value.
+     *
+     * @param key The key of the key-value to delete.
+     * @param accept The accept parameter.
+     * @param label The label of the key-value to delete.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a key-value pair representing application settings.
+     */
+    public KeyValue deleteKeyValue(String key, String accept, String label, String syncToken, String ifMatch) {
+        return deleteKeyValueWithResponse(key, accept, label, syncToken, ifMatch, RequestOptions.none()).getValue();
+    }
+
+    /**
+     * Deletes a key-value.
+     *
+     * @param key The key of the key-value to delete.
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a key-value pair representing application settings.
+     */
+    public KeyValue deleteKeyValue(String key, String accept) {
+        final String label = null;
+        final String syncToken = null;
+        final String ifMatch = null;
+        return deleteKeyValueWithResponse(key, accept, label, syncToken, ifMatch, RequestOptions.none()).getValue();
     }
 
     /**
      * Requests the headers and status of the given resource.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>The label of the key-value to retrieve.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param key The key of the key-value to retrieve.
+     * @param label The label of the key-value to retrieve.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param select Used to select what fields are present in the returned resource(s).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    public Response<Void> checkKeyValueWithResponse(String key, RequestOptions requestOptions) {
+    public Response<Void> checkKeyValueWithResponse(String key, String label, String syncToken, String acceptDatetime,
+        String ifMatch, String ifNoneMatch, List<KeyValueFields> select, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.checkKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept,
-            requestOptions);
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.checkKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
+            acceptDatetime, ifMatch, ifNoneMatch, selectConverted, accept, requestOptions);
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @param key The key of the key-value to retrieve.
+     * @param label The label of the key-value to retrieve.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkKeyValue(String key, String label, String syncToken, String acceptDatetime, String ifMatch,
+        String ifNoneMatch, List<KeyValueFields> select) {
+        checkKeyValueWithResponse(key, label, syncToken, acceptDatetime, ifMatch, ifNoneMatch, select,
+            RequestOptions.none());
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @param key The key of the key-value to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkKeyValue(String key) {
+        final String label = null;
+        final String syncToken = null;
+        final String acceptDatetime = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        final List<KeyValueFields> select = null;
+        checkKeyValueWithResponse(key, label, syncToken, acceptDatetime, ifMatch, ifNoneMatch, select,
+            RequestOptions.none());
     }
 
     /**
      * Gets a list of key-value snapshots.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>name</td><td>String</td><td>No</td><td>A filter for the name of the returned snapshots.</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * <tr><td>status</td><td>List&lt;String&gt;</td><td>No</td><td>Used to filter returned snapshots by their status
-     * property. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             status: String(provisioning/ready/archived/failed) (Optional)
-     *             filters (Required): [
-     *                  (Required){
-     *                     key: String (Required)
-     *                     label: String (Optional)
-     *                     tags (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                 }
-     *             ]
-     *             composition_type: String(key/key_label) (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             expires: OffsetDateTime (Optional)
-     *             retention_period: Long (Optional)
-     *             size: Long (Optional)
-     *             items_count: Long (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param name A filter for the name of the returned snapshots.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param status Used to filter returned snapshots by their status property.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
-    private PagedResponse<Snapshot> getSnapshotsSinglePage(String accept, RequestOptions requestOptions) {
+    public PagedResponse<Snapshot> getSnapshotsSinglePage(String accept, String name, String after,
+        List<SnapshotFields> select, List<SnapshotStatus> status, String syncToken) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String statusConverted = (status == null)
+            ? null
+            : status.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         Response<SnapshotListResult> res
-            = service.getSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
+            = service.getSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), name, after,
+                selectConverted, statusConverted, syncToken, accept, RequestOptions.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
 
     /**
      * Gets a list of key-value snapshots.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>name</td><td>String</td><td>No</td><td>A filter for the name of the returned snapshots.</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * <tr><td>status</td><td>List&lt;String&gt;</td><td>No</td><td>Used to filter returned snapshots by their status
-     * property. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             status: String(provisioning/ready/archived/failed) (Optional)
-     *             filters (Required): [
-     *                  (Required){
-     *                     key: String (Required)
-     *                     label: String (Optional)
-     *                     tags (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                 }
-     *             ]
-     *             composition_type: String(key/key_label) (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             expires: OffsetDateTime (Optional)
-     *             retention_period: Long (Optional)
-     *             size: Long (Optional)
-     *             items_count: Long (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param accept The accept parameter.
+     * @param name A filter for the name of the returned snapshots.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param status Used to filter returned snapshots by their status property.
+     * @param syncToken Used to guarantee real-time consistency between requests.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
-    public PagedIterable<Snapshot> getSnapshots(String accept, RequestOptions requestOptions) {
+    public PagedResponse<Snapshot> getSnapshotsSinglePage(String accept, String name, String after,
+        List<SnapshotFields> select, List<SnapshotStatus> status, String syncToken, RequestOptions requestOptions) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String statusConverted = (status == null)
+            ? null
+            : status.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        Response<SnapshotListResult> res
+            = service.getSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), name, after,
+                selectConverted, statusConverted, syncToken, accept, requestOptions);
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+    }
+
+    /**
+     * Gets a list of key-value snapshots.
+     *
+     * @param accept The accept parameter.
+     * @param name A filter for the name of the returned snapshots.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param status Used to filter returned snapshots by their status property.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of key-value snapshots.
+     */
+    public PagedIterable<Snapshot> getSnapshots(String accept, String name, String after, List<SnapshotFields> select,
+        List<SnapshotStatus> status, String syncToken) {
+        return new PagedIterable<>(
+            (pagingOptions) -> getSnapshotsSinglePage(accept, name, after, select, status, syncToken),
+            (pagingOptions, nextLink) -> getSnapshotsNextSinglePage(nextLink, accept, syncToken));
+    }
+
+    /**
+     * Gets a list of key-value snapshots.
+     * 
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of key-value snapshots.
+     */
+    public PagedIterable<Snapshot> getSnapshots(String accept) {
+        final String name = null;
+        final String after = null;
+        final List<SnapshotFields> select = null;
+        final List<SnapshotStatus> status = null;
+        final String syncToken = null;
+        return new PagedIterable<>(
+            (pagingOptions) -> getSnapshotsSinglePage(accept, name, after, select, status, syncToken),
+            (pagingOptions, nextLink) -> getSnapshotsNextSinglePage(nextLink, accept, syncToken));
+    }
+
+    /**
+     * Gets a list of key-value snapshots.
+     *
+     * @param accept The accept parameter.
+     * @param name A filter for the name of the returned snapshots.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param status Used to filter returned snapshots by their status property.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of key-value snapshots.
+     */
+    public PagedIterable<Snapshot> getSnapshots(String accept, String name, String after, List<SnapshotFields> select,
+        List<SnapshotStatus> status, String syncToken, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
             ? requestOptions.getContext()
             : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getSnapshotsSinglePage(accept, requestOptions),
-            (pagingOptions, nextLink) -> getSnapshotsNextSinglePage(nextLink, accept, requestOptionsForNextPage));
+        return new PagedIterable<>(
+            (pagingOptions) -> getSnapshotsSinglePage(accept, name, after, select, status, syncToken, requestOptions),
+            (pagingOptions, nextLink) -> getSnapshotsNextSinglePage(nextLink, accept, syncToken,
+                requestOptionsForNextPage));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    public Response<Void> checkSnapshotsWithResponse(RequestOptions requestOptions) {
+    public Response<Void> checkSnapshotsWithResponse(String syncToken, String after, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.checkSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            requestOptions);
+        return service.checkSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), syncToken, after,
+            accept, requestOptions);
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkSnapshots(String syncToken, String after) {
+        checkSnapshotsWithResponse(syncToken, after, RequestOptions.none());
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkSnapshots() {
+        final String syncToken = null;
+        final String after = null;
+        checkSnapshotsWithResponse(syncToken, after, RequestOptions.none());
     }
 
     /**
      * Gets a single key-value snapshot.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     status: String(provisioning/ready/archived/failed) (Optional)
-     *     filters (Required): [
-     *          (Required){
-     *             key: String (Required)
-     *             label: String (Optional)
-     *             tags (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     ]
-     *     composition_type: String(key/key_label) (Optional)
-     *     created: OffsetDateTime (Optional)
-     *     expires: OffsetDateTime (Optional)
-     *     retention_period: Long (Optional)
-     *     size: Long (Optional)
-     *     items_count: Long (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     etag: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
-    public Response<Snapshot> getSnapshotWithResponse(String name, String accept, RequestOptions requestOptions) {
-        return service.getSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
-            requestOptions);
+    public Response<Snapshot> getSnapshotWithResponse(String name, String accept, List<SnapshotFields> select,
+        String syncToken, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.getSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), name, selectConverted,
+            syncToken, ifMatch, ifNoneMatch, accept, requestOptions);
+    }
+
+    /**
+     * Gets a single key-value snapshot.
+     *
+     * @param name The name of the snapshot.
+     * @param accept The accept parameter.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single key-value snapshot.
+     */
+    public Snapshot getSnapshot(String name, String accept, List<SnapshotFields> select, String syncToken,
+        String ifMatch, String ifNoneMatch) {
+        return getSnapshotWithResponse(name, accept, select, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+            .getValue();
+    }
+
+    /**
+     * Gets a single key-value snapshot.
+     *
+     * @param name The name of the snapshot.
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single key-value snapshot.
+     */
+    public Snapshot getSnapshot(String name, String accept) {
+        final List<SnapshotFields> select = null;
+        final String syncToken = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return getSnapshotWithResponse(name, accept, select, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+            .getValue();
     }
 
     /**
      * Updates the state of a key-value snapshot.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
      *
-     * <pre>
-     * {@code
-     * {
-     *     status: String(provisioning/ready/archived/failed) (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     status: String(provisioning/ready/archived/failed) (Optional)
-     *     filters (Required): [
-     *          (Required){
-     *             key: String (Required)
-     *             label: String (Optional)
-     *             tags (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     ]
-     *     composition_type: String(key/key_label) (Optional)
-     *     created: OffsetDateTime (Optional)
-     *     expires: OffsetDateTime (Optional)
-     *     retention_period: Long (Optional)
-     *     size: Long (Optional)
-     *     items_count: Long (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param contentType Content-Type header. Allowed values: "application/merge-patch+json", "application/json".
+     * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
      * @param entity The parameters used to update the snapshot.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
-    public Response<Snapshot> updateSnapshotWithResponse(String contentType, String name, String accept,
-        BinaryData entity, RequestOptions requestOptions) {
+    public Response<Snapshot> updateSnapshotWithResponse(UpdateSnapshotRequestContentType contentType, String name,
+        String accept, SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions) {
         return service.updateSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, name,
-            accept, entity, requestOptions);
+            syncToken, ifMatch, ifNoneMatch, accept, entity, requestOptions);
+    }
+
+    /**
+     * Updates the state of a key-value snapshot.
+     *
+     * @param contentType Content-Type header.
+     * @param name The name of the key-value snapshot to update.
+     * @param accept The accept parameter.
+     * @param entity The parameters used to update the snapshot.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
+     */
+    public Snapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name, String accept,
+        SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch) {
+        return updateSnapshotWithResponse(contentType, name, accept, entity, syncToken, ifMatch, ifNoneMatch,
+            RequestOptions.none()).getValue();
+    }
+
+    /**
+     * Updates the state of a key-value snapshot.
+     *
+     * @param contentType Content-Type header.
+     * @param name The name of the key-value snapshot to update.
+     * @param accept The accept parameter.
+     * @param entity The parameters used to update the snapshot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
+     */
+    public Snapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name, String accept,
+        SnapshotUpdateParameters entity) {
+        final String syncToken = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return updateSnapshotWithResponse(contentType, name, accept, entity, syncToken, ifMatch, ifNoneMatch,
+            RequestOptions.none()).getValue();
     }
 
     /**
      * Requests the headers and status of the given resource.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param name The name of the key-value snapshot to check.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    public Response<Void> checkSnapshotWithResponse(String name, RequestOptions requestOptions) {
+    public Response<Void> checkSnapshotWithResponse(String name, String syncToken, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.checkSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
-            requestOptions);
+        return service.checkSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), name, syncToken,
+            ifMatch, ifNoneMatch, accept, requestOptions);
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @param name The name of the key-value snapshot to check.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkSnapshot(String name, String syncToken, String ifMatch, String ifNoneMatch) {
+        checkSnapshotWithResponse(name, syncToken, ifMatch, ifNoneMatch, RequestOptions.none());
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @param name The name of the key-value snapshot to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkSnapshot(String name) {
+        final String syncToken = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        checkSnapshotWithResponse(name, syncToken, ifMatch, ifNoneMatch, RequestOptions.none());
     }
 
     /**
      * Gets a list of labels.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>name</td><td>String</td><td>No</td><td>A filter for the name of the returned labels.</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *         }
-     *     ]
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param name A filter for the name of the returned labels.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
-    private PagedResponse<Label> getLabelsSinglePage(String accept, RequestOptions requestOptions) {
-        Response<LabelListResult> res
-            = service.getLabels(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
+    public PagedResponse<Label> getLabelsSinglePage(String accept, String name, String syncToken, String after,
+        String acceptDatetime, List<LabelFields> select) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        Response<LabelListResult> res = service.getLabels(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            name, syncToken, after, acceptDatetime, selectConverted, accept, RequestOptions.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
 
     /**
      * Gets a list of labels.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>name</td><td>String</td><td>No</td><td>A filter for the name of the returned labels.</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *         }
-     *     ]
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param accept The accept parameter.
+     * @param name A filter for the name of the returned labels.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
-    public PagedIterable<Label> getLabels(String accept, RequestOptions requestOptions) {
+    public PagedResponse<Label> getLabelsSinglePage(String accept, String name, String syncToken, String after,
+        String acceptDatetime, List<LabelFields> select, RequestOptions requestOptions) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        Response<LabelListResult> res = service.getLabels(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            name, syncToken, after, acceptDatetime, selectConverted, accept, requestOptions);
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+    }
+
+    /**
+     * Gets a list of labels.
+     *
+     * @param accept The accept parameter.
+     * @param name A filter for the name of the returned labels.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels.
+     */
+    public PagedIterable<Label> getLabels(String accept, String name, String syncToken, String after,
+        String acceptDatetime, List<LabelFields> select) {
+        return new PagedIterable<>(
+            (pagingOptions) -> getLabelsSinglePage(accept, name, syncToken, after, acceptDatetime, select),
+            (pagingOptions, nextLink) -> getLabelsNextSinglePage(nextLink, accept, syncToken, acceptDatetime));
+    }
+
+    /**
+     * Gets a list of labels.
+     * 
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels.
+     */
+    public PagedIterable<Label> getLabels(String accept) {
+        final String name = null;
+        final String syncToken = null;
+        final String after = null;
+        final String acceptDatetime = null;
+        final List<LabelFields> select = null;
+        return new PagedIterable<>(
+            (pagingOptions) -> getLabelsSinglePage(accept, name, syncToken, after, acceptDatetime, select),
+            (pagingOptions, nextLink) -> getLabelsNextSinglePage(nextLink, accept, syncToken, acceptDatetime));
+    }
+
+    /**
+     * Gets a list of labels.
+     *
+     * @param accept The accept parameter.
+     * @param name A filter for the name of the returned labels.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels.
+     */
+    public PagedIterable<Label> getLabels(String accept, String name, String syncToken, String after,
+        String acceptDatetime, List<LabelFields> select, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
             ? requestOptions.getContext()
             : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getLabelsSinglePage(accept, requestOptions),
-            (pagingOptions, nextLink) -> getLabelsNextSinglePage(nextLink, accept, requestOptionsForNextPage));
+        return new PagedIterable<>(
+            (pagingOptions) -> getLabelsSinglePage(accept, name, syncToken, after, acceptDatetime, select,
+                requestOptions),
+            (pagingOptions, nextLink) -> getLabelsNextSinglePage(nextLink, accept, syncToken, acceptDatetime,
+                requestOptionsForNextPage));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>name</td><td>String</td><td>No</td><td>A filter for the name of the returned labels.</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * @param name A filter for the name of the returned labels.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    public Response<Void> checkLabelsWithResponse(RequestOptions requestOptions) {
+    public Response<Void> checkLabelsWithResponse(String name, String syncToken, String after, String acceptDatetime,
+        List<LabelFields> select, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.checkLabels(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.checkLabels(this.getEndpoint(), this.getServiceVersion().getVersion(), name, syncToken, after,
+            acceptDatetime, selectConverted, accept, requestOptions);
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @param name A filter for the name of the returned labels.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkLabels(String name, String syncToken, String after, String acceptDatetime,
+        List<LabelFields> select) {
+        checkLabelsWithResponse(name, syncToken, after, acceptDatetime, select, RequestOptions.none());
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkLabels() {
+        final String name = null;
+        final String syncToken = null;
+        final String after = null;
+        final String acceptDatetime = null;
+        final List<LabelFields> select = null;
+        checkLabelsWithResponse(name, syncToken, after, acceptDatetime, select, RequestOptions.none());
     }
 
     /**
      * Locks a key-value.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>The label, if any, of the key-value to lock.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     key: String (Required)
-     *     label: String (Optional)
-     *     content_type: String (Optional)
-     *     value: String (Optional)
-     *     last_modified: OffsetDateTime (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     locked: Boolean (Optional)
-     *     etag: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
+     * @param label The label, if any, of the key-value to lock.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
-    public Response<KeyValue> putLockWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.putLock(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept, requestOptions);
+    public Response<KeyValue> putLockWithResponse(String key, String accept, String label, String syncToken,
+        String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        return service.putLock(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
+            ifMatch, ifNoneMatch, accept, requestOptions);
+    }
+
+    /**
+     * Locks a key-value.
+     *
+     * @param key The key of the key-value to lock.
+     * @param accept The accept parameter.
+     * @param label The label, if any, of the key-value to lock.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a key-value pair representing application settings.
+     */
+    public KeyValue putLock(String key, String accept, String label, String syncToken, String ifMatch,
+        String ifNoneMatch) {
+        return putLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+            .getValue();
+    }
+
+    /**
+     * Locks a key-value.
+     *
+     * @param key The key of the key-value to lock.
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a key-value pair representing application settings.
+     */
+    public KeyValue putLock(String key, String accept) {
+        final String label = null;
+        final String syncToken = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return putLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+            .getValue();
     }
 
     /**
      * Unlocks a key-value.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>The label, if any, of the key-value to unlock.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     key: String (Required)
-     *     label: String (Optional)
-     *     content_type: String (Optional)
-     *     value: String (Optional)
-     *     last_modified: OffsetDateTime (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     locked: Boolean (Optional)
-     *     etag: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
+     * @param label The label, if any, of the key-value to unlock.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
-    public Response<KeyValue> deleteLockWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.deleteLock(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept,
-            requestOptions);
+    public Response<KeyValue> deleteLockWithResponse(String key, String accept, String label, String syncToken,
+        String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        return service.deleteLock(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
+            ifMatch, ifNoneMatch, accept, requestOptions);
+    }
+
+    /**
+     * Unlocks a key-value.
+     *
+     * @param key The key of the key-value to unlock.
+     * @param accept The accept parameter.
+     * @param label The label, if any, of the key-value to unlock.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a key-value pair representing application settings.
+     */
+    public KeyValue deleteLock(String key, String accept, String label, String syncToken, String ifMatch,
+        String ifNoneMatch) {
+        return deleteLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+            .getValue();
+    }
+
+    /**
+     * Unlocks a key-value.
+     *
+     * @param key The key of the key-value to unlock.
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a key-value pair representing application settings.
+     */
+    public KeyValue deleteLock(String key, String accept) {
+        final String label = null;
+        final String syncToken = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return deleteLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+            .getValue();
     }
 
     /**
      * Gets a list of key-value revisions.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>key</td><td>String</td><td>No</td><td>A filter used to match keys. Syntax reference:
-     * https://aka.ms/azconfig/docs/restapirevisions</td></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>A filter used to match labels. Syntax reference:
-     * https://aka.ms/azconfig/docs/restapirevisions</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * <tr><td>tags</td><td>List&lt;String&gt;</td><td>No</td><td>A filter used to query by tags. Syntax reference:
-     * https://aka.ms/azconfig/docs/restapirevisions. Call {@link RequestOptions#addQueryParam} to add string to
-     * array.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             key: String (Required)
-     *             label: String (Optional)
-     *             content_type: String (Optional)
-     *             value: String (Optional)
-     *             last_modified: OffsetDateTime (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             locked: Boolean (Optional)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     etag: String (Optional)
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
-    private PagedResponse<KeyValue> getRevisionsSinglePage(String accept, RequestOptions requestOptions) {
+    public PagedResponse<KeyValue> getRevisionsSinglePage(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<KeyValueFields> select, List<String> tags) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         Response<KeyValueListResult> res
-            = service.getRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
+            = service.getRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
+                after, acceptDatetime, selectConverted, tagsConverted, accept, RequestOptions.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
 
     /**
      * Gets a list of key-value revisions.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>key</td><td>String</td><td>No</td><td>A filter used to match keys. Syntax reference:
-     * https://aka.ms/azconfig/docs/restapirevisions</td></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>A filter used to match labels. Syntax reference:
-     * https://aka.ms/azconfig/docs/restapirevisions</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * <tr><td>tags</td><td>List&lt;String&gt;</td><td>No</td><td>A filter used to query by tags. Syntax reference:
-     * https://aka.ms/azconfig/docs/restapirevisions. Call {@link RequestOptions#addQueryParam} to add string to
-     * array.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             key: String (Required)
-     *             label: String (Optional)
-     *             content_type: String (Optional)
-     *             value: String (Optional)
-     *             last_modified: OffsetDateTime (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             locked: Boolean (Optional)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     etag: String (Optional)
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param accept The accept parameter.
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
-    public PagedIterable<KeyValue> getRevisions(String accept, RequestOptions requestOptions) {
+    public PagedResponse<KeyValue> getRevisionsSinglePage(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<KeyValueFields> select, List<String> tags,
+        RequestOptions requestOptions) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        Response<KeyValueListResult> res
+            = service.getRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
+                after, acceptDatetime, selectConverted, tagsConverted, accept, requestOptions);
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+    }
+
+    /**
+     * Gets a list of key-value revisions.
+     *
+     * @param accept The accept parameter.
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of key-value revisions.
+     */
+    public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
+        String acceptDatetime, List<KeyValueFields> select, List<String> tags) {
+        return new PagedIterable<>(
+            (pagingOptions) -> getRevisionsSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
+                tags),
+            (pagingOptions, nextLink) -> getRevisionsNextSinglePage(nextLink, accept, syncToken, acceptDatetime));
+    }
+
+    /**
+     * Gets a list of key-value revisions.
+     *
+     * @param accept The accept parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of key-value revisions.
+     */
+    public PagedIterable<KeyValue> getRevisions(String accept) {
+        final String key = null;
+        final String label = null;
+        final String syncToken = null;
+        final String after = null;
+        final String acceptDatetime = null;
+        final List<KeyValueFields> select = null;
+        final List<String> tags = null;
+        return new PagedIterable<>(
+            (pagingOptions) -> getRevisionsSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
+                tags),
+            (pagingOptions, nextLink) -> getRevisionsNextSinglePage(nextLink, accept, syncToken, acceptDatetime));
+    }
+
+    /**
+     * Gets a list of key-value revisions.
+     *
+     * @param accept The accept parameter.
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of key-value revisions.
+     */
+    public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
+        String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
             ? requestOptions.getContext()
             : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getRevisionsSinglePage(accept, requestOptions),
-            (pagingOptions, nextLink) -> getRevisionsNextSinglePage(nextLink, accept, requestOptionsForNextPage));
+        return new PagedIterable<>(
+            (pagingOptions) -> getRevisionsSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
+                tags, requestOptions),
+            (pagingOptions, nextLink) -> getRevisionsNextSinglePage(nextLink, accept, syncToken, acceptDatetime,
+                requestOptionsForNextPage));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>key</td><td>String</td><td>No</td><td>A filter used to match keys. Syntax reference:
-     * https://aka.ms/azconfig/docs/restapirevisions</td></tr>
-     * <tr><td>label</td><td>String</td><td>No</td><td>A filter used to match labels. Syntax reference:
-     * https://aka.ms/azconfig/docs/restapirevisions</td></tr>
-     * <tr><td>After</td><td>String</td><td>No</td><td>Instructs the server to return elements that appear after the
-     * element referred
-     * to by the specified token.</td></tr>
-     * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
-     * returned resource(s). In the form of "," separated string.</td></tr>
-     * <tr><td>tags</td><td>List&lt;String&gt;</td><td>No</td><td>A filter used to query by tags. Syntax reference:
-     * https://aka.ms/azconfig/docs/restapirevisions. Call {@link RequestOptions#addQueryParam} to add string to
-     * array.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    public Response<Void> checkRevisionsWithResponse(RequestOptions requestOptions) {
+    public Response<Void> checkRevisionsWithResponse(String key, String label, String syncToken, String after,
+        String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.checkRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            requestOptions);
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.checkRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
+            after, acceptDatetime, selectConverted, tagsConverted, accept, requestOptions);
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @param key A filter used to match keys. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param after Instructs the server to return elements that appear after the element referred
+     * to by the specified token.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference:
+     * https://aka.ms/azconfig/docs/restapirevisions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkRevisions(String key, String label, String syncToken, String after, String acceptDatetime,
+        List<KeyValueFields> select, List<String> tags) {
+        checkRevisionsWithResponse(key, label, syncToken, after, acceptDatetime, select, tags, RequestOptions.none());
+    }
+
+    /**
+     * Requests the headers and status of the given resource.
+     *
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void checkRevisions() {
+        final String key = null;
+        final String label = null;
+        final String syncToken = null;
+        final String after = null;
+        final String acceptDatetime = null;
+        final List<KeyValueFields> select = null;
+        final List<String> tags = null;
+        checkRevisionsWithResponse(key, label, syncToken, after, acceptDatetime, select, tags, RequestOptions.none());
     }
 
     /**
      * Gets a list of keys.
      *
      * Get the next page of items.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
-    private PagedResponse<Key> getKeysNextSinglePage(String nextLink, String accept, RequestOptions requestOptions) {
-        Response<KeyListResult> res = service.getKeysNext(nextLink, this.getEndpoint(), accept, requestOptions);
+    public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String accept, String syncToken,
+        String acceptDatetime) {
+        Response<KeyListResult> res = service.getKeysNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime,
+            accept, RequestOptions.none());
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+    }
+
+    /**
+     * Gets a list of keys.
+     * 
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param accept The accept parameter.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a list request.
+     */
+    public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String accept, String syncToken,
+        String acceptDatetime, RequestOptions requestOptions) {
+        Response<KeyListResult> res
+            = service.getKeysNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1632,58 +2052,53 @@ public final class AzureAppConfigurationClientImpl {
      * Gets a list of key-values.
      *
      * Get the next page of items.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
-     * etag matches the
-     * value provided.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted
-     * resource's etag does not
-     * match the value provided.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             key: String (Required)
-     *             label: String (Optional)
-     *             content_type: String (Optional)
-     *             value: String (Optional)
-     *             last_modified: OffsetDateTime (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             locked: Boolean (Optional)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     etag: String (Optional)
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
-    private PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String accept,
-        RequestOptions requestOptions) {
-        Response<KeyValueListResult> res
-            = service.getKeyValuesNext(nextLink, this.getEndpoint(), accept, requestOptions);
+    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String accept, String syncToken,
+        String acceptDatetime, String ifMatch, String ifNoneMatch) {
+        Response<KeyValueListResult> res = service.getKeyValuesNext(nextLink, this.getEndpoint(), syncToken,
+            acceptDatetime, ifMatch, ifNoneMatch, accept, RequestOptions.none());
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+    }
+
+    /**
+     * Gets a list of key-values.
+     * 
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param accept The accept parameter.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
+     * value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a list request.
+     */
+    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String accept, String syncToken,
+        String acceptDatetime, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        Response<KeyValueListResult> res = service.getKeyValuesNext(nextLink, this.getEndpoint(), syncToken,
+            acceptDatetime, ifMatch, ifNoneMatch, accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1692,59 +2107,63 @@ public final class AzureAppConfigurationClientImpl {
      * Gets a list of key-value snapshots.
      *
      * Get the next page of items.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             status: String(provisioning/ready/archived/failed) (Optional)
-     *             filters (Required): [
-     *                  (Required){
-     *                     key: String (Required)
-     *                     label: String (Optional)
-     *                     tags (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                 }
-     *             ]
-     *             composition_type: String(key/key_label) (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             expires: OffsetDateTime (Optional)
-     *             retention_period: Long (Optional)
-     *             size: Long (Optional)
-     *             items_count: Long (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a snapshot list request.
      */
-    private PagedResponse<Snapshot> getSnapshotsNextSinglePage(String nextLink, String accept,
+    public PagedResponse<Snapshot> getSnapshotsNextSinglePage(String nextLink, String accept, String syncToken) {
+        Response<SnapshotListResult> res
+            = service.getSnapshotsNext(nextLink, this.getEndpoint(), syncToken, accept, RequestOptions.none());
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+    }
+
+    /**
+     * Gets a list of key-value snapshots.
+     * 
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param accept The accept parameter.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a snapshot list request.
+     */
+    public PagedResponse<Snapshot> getSnapshotsNextSinglePage(String nextLink, String accept, String syncToken,
         RequestOptions requestOptions) {
         Response<SnapshotListResult> res
-            = service.getSnapshotsNext(nextLink, this.getEndpoint(), accept, requestOptions);
+            = service.getSnapshotsNext(nextLink, this.getEndpoint(), syncToken, accept, requestOptions);
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+    }
+
+    /**
+     * Gets a list of labels.
+     * 
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param accept The accept parameter.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a list request.
+     */
+    public PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String accept, String syncToken,
+        String acceptDatetime) {
+        Response<LabelListResult> res = service.getLabelsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime,
+            accept, RequestOptions.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1753,41 +2172,22 @@ public final class AzureAppConfigurationClientImpl {
      * Gets a list of labels.
      *
      * Get the next page of items.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *         }
-     *     ]
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
-    private PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String accept,
-        RequestOptions requestOptions) {
-        Response<LabelListResult> res = service.getLabelsNext(nextLink, this.getEndpoint(), accept, requestOptions);
+    public PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String accept, String syncToken,
+        String acceptDatetime, RequestOptions requestOptions) {
+        Response<LabelListResult> res
+            = service.getLabelsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1796,52 +2196,45 @@ public final class AzureAppConfigurationClientImpl {
      * Gets a list of key-value revisions.
      *
      * Get the next page of items.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
-     * requests.</td></tr>
-     * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
-     * resource at the specified
-     * time.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     items (Optional): [
-     *          (Optional){
-     *             key: String (Required)
-     *             label: String (Optional)
-     *             content_type: String (Optional)
-     *             value: String (Optional)
-     *             last_modified: OffsetDateTime (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             locked: Boolean (Optional)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     etag: String (Optional)
-     *     &#64;nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
-    private PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String accept,
-        RequestOptions requestOptions) {
+    public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String accept, String syncToken,
+        String acceptDatetime) {
+        Response<KeyValueListResult> res = service.getRevisionsNext(nextLink, this.getEndpoint(), syncToken,
+            acceptDatetime, accept, RequestOptions.none());
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+    }
+
+    /**
+     * Gets a list of key-value revisions.
+     * 
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param accept The accept parameter.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
+     * time.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a list request.
+     */
+    public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String accept, String syncToken,
+        String acceptDatetime, RequestOptions requestOptions) {
         Response<KeyValueListResult> res
-            = service.getRevisionsNext(nextLink, this.getEndpoint(), accept, requestOptions);
+            = service.getRevisionsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }

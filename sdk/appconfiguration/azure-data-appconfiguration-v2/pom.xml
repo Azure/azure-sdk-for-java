@@ -31,101 +31,105 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
 
-        <executions>
-          <execution>
-            <id>run-annotation-processing</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
+                <executions>
+                    <execution>
+                        <id>run-annotation-processing</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
 
-            <configuration>
-              <source>11</source>
-              <target>11</target>
-              <release>11</release>
-              <proc>only</proc>
-              <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
-              <annotationProcessorPaths>
-                <annotationProcessorPath>
-                  <groupId>io.clientcore</groupId>
-                  <artifactId>annotation-processor</artifactId>
-                  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
-                </annotationProcessorPath>
-              </annotationProcessorPaths>
-              <annotationProcessors>
-                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
-              </annotationProcessors>
+                        <configuration>
+                            <source>21</source>
+                            <target>21</target>
+                            <release>21</release>
+                            <proc>only</proc>
+                            <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
+                            <annotationProcessorPaths>
+                                <annotationProcessorPath>
+                                    <groupId>io.clientcore</groupId>
+                                    <artifactId>annotation-processor</artifactId>
+                                    <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+                                </annotationProcessorPath>
+                            </annotationProcessorPaths>
+                            <annotationProcessors>
+                                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
+                            </annotationProcessors>
 
-              <compilerArgs>
-                <arg>-Xlint:-options</arg>
-              </compilerArgs>
-            </configuration>
-          </execution>
-        </executions>
+                            <compilerArgs>
+                                <arg>-Xlint:-options</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </execution>
+                </executions>
 
-        <dependencies>
-          <dependency>
-            <groupId>io.clientcore</groupId>
-            <artifactId>annotation-processor</artifactId>
-            <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
-          </dependency>
-        </dependencies>
-      </plugin>
+                <dependencies>
+                    <dependency>
+                        <groupId>io.clientcore</groupId>
+                        <artifactId>annotation-processor</artifactId>
+                        <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+                    </dependency>
+                </dependencies>
+            </plugin>
 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>add-generated-sources</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>${basedir}/target/generated-sources</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>add-generated-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${basedir}/target/generated-sources</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
   <dependencies>
     <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;io.clientcore:core;external_dependency} -->
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-v2</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-v2;dependency} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-v2;external_dependency} -->
     </dependency>
 
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
+<!--      <dependency>-->
+<!--          <groupId>org.junit.jupiter</groupId>-->
+<!--          <artifactId>junit-jupiter-api</artifactId>-->
+<!--          <version>5.9.3</version> &lt;!&ndash; {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} &ndash;&gt;-->
+<!--          <scope>test</scope>-->
+<!--      </dependency>-->
+<!--      <dependency>-->
+<!--          <groupId>org.junit.jupiter</groupId>-->
+<!--          <artifactId>junit-jupiter-engine</artifactId>-->
+<!--          <version>5.9.3</version> &lt;!&ndash; {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} &ndash;&gt;-->
+<!--          <scope>test</scope>-->
+<!--      </dependency>-->
+<!--      <dependency>-->
+<!--          <groupId>org.junit.jupiter</groupId>-->
+<!--          <artifactId>junit-jupiter-params</artifactId>-->
+<!--          <version>5.9.3</version> &lt;!&ndash; {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} &ndash;&gt;-->
+<!--          <scope>test</scope>-->
+<!--      </dependency>-->
   </dependencies>
-
 </project>

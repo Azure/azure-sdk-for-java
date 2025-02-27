@@ -7,6 +7,9 @@ package com.azure.data.appconfiguration;
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClient;
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClientBuilder;
 import com.azure.v2.data.appconfiguration.models.KeyValue;
+import io.clientcore.core.http.models.HttpHeader;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.utils.configuration.Configuration;
 
 /**
@@ -34,7 +37,7 @@ public class HelloWorld {
 
         System.out.println("Beginning of synchronous sample...");
 
-        KeyValue setting = client.putKeyValue(key, null);
+        KeyValue setting = client.putKeyValueWithResponse(key, null, null, null, null, null, new KeyValue().setValue("anything"), new RequestOptions().addHeader(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json"))).getValue();
         System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
         setting = client.getKeyValue(key, null);
