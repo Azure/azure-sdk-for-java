@@ -33,20 +33,31 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    @BeforeClass(groups = {  "emulator" }, timeOut = SETUP_TIMEOUT)
+    public void before_CosmosContainerTestEmulator() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = {"emulator-vnext"}, timeOut = SETUP_TIMEOUT)
+    public void before_CosmosContainerTestVNext() {
+        assertThat(this.client).isNull();
+        client = getClientBuilder()
+            .gatewayMode()
+            .contentResponseOnWriteEnabled(true)
+            .buildClient();
+        createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
+        //       createEncryptionKey();
+    }
+
+    @AfterClass(groups = { "emulator", "emulator-vnext"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteSyncDatabase(createdDatabase);
         safeCloseSyncClient(client);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = {  "emulator", "emulator-vnext" }, timeOut = TIMEOUT)
     public void createContainer_withContentResponseOnWriteDisabled() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -56,7 +67,7 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, containerResponse);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = {  "emulator", "emulator-vnext" }, timeOut = TIMEOUT)
     public void readContainer_withContentResponseOnWriteDisabled() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -73,7 +84,7 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, read1);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = {  "emulator", "emulator-vnext" }, timeOut = TIMEOUT)
     public void replaceContainer_withContentResponseOnWriteDisabled() throws Exception {
 
         String collectionName = UUID.randomUUID().toString();
