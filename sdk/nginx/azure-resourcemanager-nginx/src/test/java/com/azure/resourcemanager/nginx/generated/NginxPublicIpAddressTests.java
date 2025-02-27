@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class NginxPublicIpAddressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NginxPublicIpAddress model
-            = BinaryData.fromString("{\"id\":\"hmenevfyexfwhybc\"}").toObject(NginxPublicIpAddress.class);
-        Assertions.assertEquals("hmenevfyexfwhybc", model.id());
+        NginxPublicIpAddress model = BinaryData.fromString("{\"id\":\"clfp\"}").toObject(NginxPublicIpAddress.class);
+        Assertions.assertEquals("clfp", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NginxPublicIpAddress model = new NginxPublicIpAddress().withId("hmenevfyexfwhybc");
+        NginxPublicIpAddress model = new NginxPublicIpAddress().withId("clfp");
         model = BinaryData.fromObject(model).toObject(NginxPublicIpAddress.class);
-        Assertions.assertEquals("hmenevfyexfwhybc", model.id());
+        Assertions.assertEquals("clfp", model.id());
     }
 }
