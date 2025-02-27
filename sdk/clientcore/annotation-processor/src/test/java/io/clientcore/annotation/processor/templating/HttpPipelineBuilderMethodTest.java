@@ -6,7 +6,6 @@ package io.clientcore.annotation.processor.templating;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.stmt.BlockStmt;
 import io.clientcore.annotation.processor.mocks.MockFiler;
 import io.clientcore.annotation.processor.mocks.MockJavaFileObject;
 import io.clientcore.annotation.processor.mocks.MockProcessingEnvironment;
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class HttpPipelineBuilderMethodTest {
 
-    private static final String PACKAGE_NAME = "com.example";
+    private static final String PACKAGE_NAME = "com.example.ExampleClientImpl";
     private static final String SERVICE_INTERFACE_SHORT_NAME = getExampleClientServiceImpl();
     private final JavaParserTemplateProcessor processor = new JavaParserTemplateProcessor();
     private TemplateInput templateInput;
@@ -38,6 +37,7 @@ public class HttpPipelineBuilderMethodTest {
         templateInput = new TemplateInput();
         templateInput.setPackageName(PACKAGE_NAME);
         templateInput.setServiceInterfaceImplShortName(SERVICE_INTERFACE_SHORT_NAME);
+        templateInput.setServiceInterfaceFQN("com.example.ExampleClientService");
         templateInput.setServiceInterfaceShortName("ExampleClientService");
         templateInput.setHttpRequestContexts(Collections.emptyList());
     }
@@ -60,37 +60,12 @@ public class HttpPipelineBuilderMethodTest {
     }
 
     @Test
-    public void testGetEndpointMethod() {
-        MethodDeclaration method = new MethodDeclaration();
-        processor.configureEndpointMethod(method);
-        assertEquals("getEndpoint", method.getNameAsString());
-        assertEquals(Modifier.publicModifier(), method.getModifiers().iterator().next());
-        assertEquals("String", method.getTypeAsString());
-    }
-
-    @Test
     public void testGetPipelineMethod() {
         MethodDeclaration method = new MethodDeclaration();
         processor.configurePipelineMethod(method);
         assertEquals("getPipeline", method.getNameAsString());
-        assertEquals(Modifier.publicModifier(), method.getModifiers().iterator().next());
+        assertEquals(Modifier.privateModifier(), method.getModifiers().iterator().next());
         assertEquals("HttpPipeline", method.getTypeAsString());
-    }
-
-    @Test
-    public void testGetServiceVersionMethod() {
-        MethodDeclaration method = new MethodDeclaration();
-        processor.configureServiceVersionMethod(method, "ExampleClientService");
-        assertEquals("getServiceVersion", method.getNameAsString());
-        assertEquals(Modifier.publicModifier(), method.getModifiers().iterator().next());
-        templateInput.setServiceInterfaceShortName("ExampleClientService");
-        assertTrue(method.getBody().map(BlockStmt::toString).get().contains("return serviceVersion"));
-    }
-
-    @Test
-    public void testGetServiceVersionType() {
-        assertEquals("com.example.ExampleServiceVersion",
-            JavaParserTemplateProcessor.getServiceVersionType(PACKAGE_NAME, SERVICE_INTERFACE_SHORT_NAME));
     }
 
     @Test
