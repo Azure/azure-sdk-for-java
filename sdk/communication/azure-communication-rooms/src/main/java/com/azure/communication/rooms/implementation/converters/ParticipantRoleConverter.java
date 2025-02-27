@@ -34,6 +34,10 @@ public final class ParticipantRoleConverter {
                 role = ParticipantRole.PRESENTER;
                 break;
 
+            case "Collaborator":
+                role = ParticipantRole.COLLABORATOR;
+                break;
+
             default:
                 role = ParticipantRole.ATTENDEE;
                 break;
@@ -64,6 +68,10 @@ public final class ParticipantRoleConverter {
 
             case "Presenter":
                 role = com.azure.communication.rooms.implementation.models.ParticipantRole.PRESENTER;
+                break;
+
+            case "Collaborator":
+                role = com.azure.communication.rooms.implementation.models.ParticipantRole.COLLABORATOR;
                 break;
 
             default:
