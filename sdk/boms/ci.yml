@@ -8,7 +8,7 @@ parameters:
   - name: release_azuresdkbom
     displayName: 'azure-sdk-bom'
     type: boolean
-    default: true
+    default: false
   - name: release_springcloudazuredependencies
     displayName: 'spring-cloud-azure-dependencies'
     type: boolean
