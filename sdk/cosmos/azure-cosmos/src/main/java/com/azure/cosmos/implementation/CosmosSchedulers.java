@@ -56,7 +56,8 @@ public class CosmosSchedulers {
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
         CLIENT_TELEMETRY_BOUNDED_ELASTIC_THREAD_NAME,
-        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS
+        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
+        true
     );
 
     // Custom bounded elastic scheduler for open connections
