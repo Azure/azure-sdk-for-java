@@ -1122,7 +1122,7 @@ public abstract class ParserBase extends ParserMinimalBase {
     @SuppressWarnings("deprecation")
     protected String _validJsonValueList() {
         if (isEnabled(Feature.ALLOW_NON_NUMERIC_NUMBERS)) {
-            return "(JSON String, Number (or 'NaN'/'INF'/'+INF'), Array, Object or token 'null', 'true' or 'false')";
+            return "(JSON String, Number (or 'NaN'/'Infinity'/'+Infinity'/'-Infinity'), Array, Object or token 'null', 'true' or 'false')";
         }
         return "(JSON String, Number, Array, Object or token 'null', 'true' or 'false')";
     }

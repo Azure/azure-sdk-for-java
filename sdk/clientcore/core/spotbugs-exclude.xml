@@ -13,6 +13,7 @@
   <Match>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
     <Or>
+      <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
       <Class name="io.clientcore.core.http.models.HttpRange" />
       <Class name="io.clientcore.core.http.models.HttpRequest" />
       <Class name="io.clientcore.core.http.models.RequestOptions" />
@@ -47,7 +48,6 @@
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
       <Class name="io.clientcore.core.utils.Union" />
       <Class name="io.clientcore.core.utils.configuration.Configuration" />
-      <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
     </Or>
   </Match>
   <Match>
@@ -88,8 +88,8 @@
   <Match>
     <Bug pattern="DM_CONVERT_CASE" />
     <Or>
-      <Class name="io.clientcore.core.http.models.HttpHeaderName" />
       <Class name="io.clientcore.core.credentials.oauth.AccessTokenType" />
+      <Class name="io.clientcore.core.http.models.HttpHeaderName" />
       <Class name="io.clientcore.core.utils.AuthUtils" />
       <Class name="io.clientcore.core.utils.ServerSentEventUtils" />
     </Or>
@@ -279,11 +279,10 @@
   </Match>
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
-    <Class name="io.clientcore.core.serialization.xml.XmlReaderCodesnippetsTests" />
-  </Match>
-  <Match>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
-    <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
+    <Or>
+      <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
+      <Class name="io.clientcore.core.serialization.xml.XmlReaderCodesnippetsTests" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="SERVLET_QUERY_STRING" />
