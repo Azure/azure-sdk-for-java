@@ -68,7 +68,7 @@ stages:
               ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}'
               ArtifactName: '${{parameters.ArtifactName}}-signed'
 
-          # JRS - Downloading the ESRP signed artifacts
+          # Downloading the ESRP signed artifacts
           - download: current
             displayName: 'Download Signed Artifacts'
             artifact: ${{parameters.ArtifactName}}-signed
@@ -94,11 +94,11 @@ stages:
               ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened'
               ArtifactName: '${{parameters.ArtifactName}}-esrp-flattened'
 
-  # # We generate two interdependent stages for each artifact listed in the ci.yml file, creates the release
-  # # in GitHub. The Release stage publishes to Maven Central. Both stages require approval since they
-  # # effectively burn the version number. For testing of packages prior to burning the version number -
-  # # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
-  # # pipeline completes.
+  # We generate two interdependent stages for each artifact listed in the ci.yml file, creates the release
+  # in GitHub. The Release stage publishes to Maven Central. Both stages require approval since they
+  # effectively burn the version number. For testing of packages prior to burning the version number -
+  # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
+  # pipeline completes.
   - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
     - stage:
       displayName: 'Releasing: ${{ length(parameters.Artifacts) }} libraries'
@@ -267,10 +267,7 @@ stages:
               displayName: 'Download Artifacts'
               artifact: ${{parameters.ArtifactName}}-signed
             - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-            # Publish to the azure-sdk-for-java feed. The reason for this is that the  azure-sdk-for-java
-            # feed will have the package available immediately whereas Maven can take several hours for
-            # the package to become available. Also, the dev feed is checked for packages prior to Maven
-            # to help with rate limiting
+            # Publish to the azure-sdk-for-java feed.
             - template: /eng/pipelines/templates/steps/java-publishing.yml
               parameters:
                 ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
