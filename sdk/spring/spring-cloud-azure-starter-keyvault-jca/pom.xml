@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>spring-cloud-azure-starter-keyvault</artifactId>
-  <version>5.21.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault;current} -->
+  <artifactId>spring-cloud-azure-starter-keyvault-jca</artifactId>
+  <version>5.21.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-jca;current} -->
 
-  <name>Spring Cloud Azure Starter Key Vault</name>
-  <description>Spring Cloud Azure Starter Key Vault</description>
-  <url>https://microsoft.github.io/spring-cloud-azure</url>
+  <name>Spring Cloud Azure Starter Key Vault JCA</name>
+  <description>Spring Cloud Azure Starter Key Vault Java Crypto Architecture (JCA) Provider</description>
+  <url>https://learn.microsoft.com/azure/developer/java/spring-framework</url>
   <developers>
     <developer>
       <name>Spring Cloud Azure</name>
@@ -88,18 +88,13 @@
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-keyvault-secrets</artifactId>
-      <version>5.21.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;current} -->
+      <artifactId>spring-cloud-azure-starter</artifactId>
+      <version>5.21.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
     </dependency>
     <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-keyvault-certificates</artifactId>
-      <version>5.21.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-keyvault-jca</artifactId>
-      <version>5.21.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-jca;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-jca</artifactId>
+      <version>2.10.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;dependency} -->
     </dependency>
   </dependencies>
 
@@ -144,7 +139,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>com.azure.spring.cloud.starter.keyvault</Automatic-Module-Name>
+              <Automatic-Module-Name>com.azure.spring.cloud.starter.keyvault.certificates</Automatic-Module-Name>
             </manifestEntries>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
@@ -196,8 +191,7 @@
             <configuration>
               <target>
                 <echo>Deleting existing ${project.basedir}/javadocTemp and
-                  ${project.basedir}/sourceTemp
-                </echo>
+                  ${project.basedir}/sourceTemp</echo>
                 <delete includeEmptyDirs="true" quiet="true">
                   <fileset dir="${project.basedir}/javadocTemp"/>
                   <fileset dir="${project.basedir}/sourceTemp"/>
@@ -217,7 +211,7 @@
             </goals>
           </execution>
         </executions>
-        <!-- END: Empty Java Doc & Sources -->
+      <!-- END: Empty Java Doc & Sources -->
       </plugin>
     </plugins>
   </build>

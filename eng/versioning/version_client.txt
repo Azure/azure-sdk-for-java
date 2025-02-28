@@ -243,6 +243,7 @@ com.azure.spring:spring-cloud-azure-starter-jdbc-mysql;5.20.0;5.21.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-jdbc-postgresql;5.20.0;5.21.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault;5.20.0;5.21.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;5.20.0;5.21.0-beta.1
+com.azure.spring:spring-cloud-azure-starter-keyvault-jca;5.21.0-beta.1;5.21.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;5.20.0;5.21.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-monitor;1.0.0-beta.6;1.0.0-beta.7
 com.azure.spring:spring-cloud-azure-starter-servicebus-jms;5.20.0;5.21.0-beta.1
