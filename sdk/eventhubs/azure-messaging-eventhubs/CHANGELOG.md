@@ -8,13 +8,23 @@
 
 ### Bugs Fixed
 
+- Fixes issue where `EventHubBufferedProducerClient` and `EventHubBufferedProducerAsyncClient` are unable to enqueue events when `SendOptions.getPartitionId()` is set. ([#44392](https://github.com/Azure/azure-sdk-for-java/pull/44392))
+- Fixes issue where `EventHubBufferedProducerClient` and `EventHubBufferedProducerAsyncClient` returns 0 after enqueueing events or calling `getBufferedEventCount()`. ([#44392](https://github.com/Azure/azure-sdk-for-java/pull/44392))
+
+## 5.20.1 (2025-02-25)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.9.12` to version `2.9.15`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
 
 ## 5.21.0-beta.1 (2025-02-21)
 
 ### Features Added
 
-- Added support for geo-replication capability. ([44272](https://github.com/Azure/azure-sdk-for-java/pull/44272))
+- Added support for geo-replication capability. ([#44272](https://github.com/Azure/azure-sdk-for-java/pull/44272))
 
 ### Other Changes
 
