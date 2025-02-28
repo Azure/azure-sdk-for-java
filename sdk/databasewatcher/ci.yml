@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/databasewatcher/ci.yml
+      - sdk/databasewatcher/azure-resourcemanager-databasewatcher/
+    exclude:
+      - sdk/databasewatcher/pom.xml
+      - sdk/databasewatcher/azure-resourcemanager-databasewatcher/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/databasewatcher/ci.yml
+      - sdk/databasewatcher/azure-resourcemanager-databasewatcher/
+    exclude:
+      - sdk/databasewatcher/pom.xml
+      - sdk/databasewatcher/azure-resourcemanager-databasewatcher/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerdatabasewatcher
+    displayName: azure-resourcemanager-databasewatcher
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: databasewatcher
+    Artifacts:
+      - name: azure-resourcemanager-databasewatcher
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdatabasewatcher
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerdatabasewatcher }}
