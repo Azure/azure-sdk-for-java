@@ -4,7 +4,7 @@
 package io.clientcore.core.util.union.codesnippets;
 
 import io.clientcore.core.implementation.GenericParameterizedType;
-import io.clientcore.core.util.Union;
+import io.clientcore.core.utils.Union;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

@@ -24,11 +24,11 @@ class SampleClient {
         this.endpoint = endpoint;
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
 
-        // BEGIN: io.clientcore.core.telemetry.instrumentation.create
+        // BEGIN: io.clientcore.core.instrumentation.create
         InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails("downloadContent",
             SAMPLE_CLIENT_DURATION_METRIC).endpoint(endpoint);
         this.downloadContentInstrumentation = instrumentation.createOperationInstrumentation(downloadDetails);
-        // END: io.clientcore.core.telemetry.instrumentation.create
+        // END: io.clientcore.core.instrumentation.create
 
         this.createInstrumentation = instrumentation.createOperationInstrumentation(
             new InstrumentedOperationDetails("create", SAMPLE_CLIENT_DURATION_METRIC)
@@ -40,51 +40,21 @@ class SampleClient {
     }
 
     public Response<?> downloadContent(RequestOptions options) {
-        // BEGIN: io.clientcore.core.telemetry.instrumentation.shouldinstrument
-        if (!downloadContentInstrumentation.shouldInstrument(options)) {
-            return downloadImpl(options);
-        }
-        // END: io.clientcore.core.telemetry.instrumentation.shouldinstrument
-
-        if (options == null || options == RequestOptions.none()) {
-            options = new RequestOptions();
-        }
-
-        // BEGIN: io.clientcore.core.telemetry.instrumentation.startscope
-        OperationInstrumentation.Scope scope = downloadContentInstrumentation.startScope(options);
-        try {
-            return downloadImpl(options);
-        } catch (RuntimeException t) {
-            scope.setError(t);
-            throw t;
-        } finally {
-            scope.close();
-        }
-
-        // END: io.clientcore.core.telemetry.instrumentation.startscope
+        // BEGIN: io.clientcore.core.instrumentation.instrument
+        return downloadContentInstrumentation.instrument((updatedOptions, instrumentationContext) ->
+            downloadImpl(updatedOptions), options);
+        // END: io.clientcore.core.instrumentation.instrument
     }
 
     public Response<?> create(RequestOptions options) {
-        if (!createInstrumentation.shouldInstrument(options)) {
-            return httpPipeline.send(new HttpRequest(HttpMethod.POST, endpoint));
-        }
-
-        if (options == null || options == RequestOptions.none()) {
-            options = new RequestOptions();
-        }
-
-        OperationInstrumentation.Scope scope = createInstrumentation.startScope(options);
-        try {
-            return httpPipeline.send(new HttpRequest(HttpMethod.POST, endpoint));
-        } catch (RuntimeException t) {
-            scope.setError(t);
-            throw t;
-        } finally {
-            scope.close();
-        }
+        return createInstrumentation.instrument((updatedOptions, instrumentationContext) -> createImpl(updatedOptions), options);
     }
 
     private Response<?> downloadImpl(RequestOptions options) {
-        return httpPipeline.send(new HttpRequest(HttpMethod.GET, endpoint));
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestOptions(options));
+    }
+
+    private Response<?> createImpl(RequestOptions options) {
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestOptions(options));
     }
 }

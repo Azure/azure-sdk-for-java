@@ -63,7 +63,7 @@ public class JdkHttpClientBuilder {
      *
      * <!-- src_embed io.clientcore.core.http.client.DefaultHttpClientBuilder.connectionTimeout#Duration -->
      * <pre>
-     * HttpClient client = new DefaultHttpClientBuilder&#40;&#41;
+     * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
      *         .connectionTimeout&#40;Duration.ofSeconds&#40;250&#41;&#41; &#47;&#47; connection timeout of 250 seconds
      *         .build&#40;&#41;;
      * </pre>
@@ -146,7 +146,7 @@ public class JdkHttpClientBuilder {
      * final int proxyPort = 9999; &#47;&#47; Proxy port
      * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
      *     new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
-     * HttpClient client = new DefaultHttpClientBuilder&#40;&#41;
+     * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
      *     .proxy&#40;proxyOptions&#41;
      *     .build&#40;&#41;;
      * </pre>

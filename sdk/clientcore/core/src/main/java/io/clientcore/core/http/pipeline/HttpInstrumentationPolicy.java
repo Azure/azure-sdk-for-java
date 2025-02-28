@@ -86,9 +86,8 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * <pre>
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;
- *         new HttpRetryPolicy&#40;&#41;,
- *         new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
+ *     .addPolicy&#40;new HttpRetryPolicy&#40;&#41;&#41;
+ *     .addPolicy&#40;new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
  * </pre>
@@ -104,9 +103,8 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * instrumentationOptions.addAllowedQueryParamName&#40;&quot;documentId&quot;&#41;;
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;
- *         new HttpRetryPolicy&#40;&#41;,
- *         new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
+ *     .addPolicy&#40;new HttpRetryPolicy&#40;&#41;&#41;
+ *     .addPolicy&#40;new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
  * </pre>
@@ -128,12 +126,10 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * &#125;;
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;
- *         new HttpRetryPolicy&#40;&#41;,
- *         new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;,
- *         enrichingPolicy&#41;
+ *     .addPolicy&#40;new HttpRetryPolicy&#40;&#41;&#41;
+ *     .addPolicy&#40;new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
+ *     .addPolicy&#40;enrichingPolicy&#41;
  *     .build&#40;&#41;;
- *
  *
  * </pre>
  * <!-- end io.clientcore.core.instrumentation.enrichhttpspans -->
