@@ -263,7 +263,6 @@ stages:
           steps:
             - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
               parameters:
-                SkipCheckoutNone: true
                 Paths:
                   - sdk
                   - common/perf-test-core
