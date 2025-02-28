@@ -18,6 +18,8 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Wrapper over java.time.OffsetDateTime used for specifying RFC1123 format during serialization and deserialization.
+ * <p>
+ * This only supports the format {@code EEE, dd MMM yyyy HH:mm:ss GMT}.
  */
 public final class DateTimeRfc1123 {
     private static final ClientLogger LOGGER = new ClientLogger(DateTimeRfc1123.class);
@@ -79,6 +81,10 @@ public final class DateTimeRfc1123 {
      *   {@code date}.
      */
     private static OffsetDateTime parse(final String date) {
+        if (date.length() != 29 || !date.endsWith("GMT")) {
+            throw LOGGER.logThrowableAsError(new DateTimeException("Invalid date time: " + date));
+        }
+
         try {
             return OffsetDateTime.of(LocalDateTime.of(parseInt(date, 12, 16),  // year
                 parseMonth(date),        // month
@@ -130,69 +136,47 @@ public final class DateTimeRfc1123 {
      * {@code date}.
      */
     private static Month parseMonth(final CharSequence date) {
-        switch (date.charAt(8)) {
-            case 'J':
-                // Jan, Jun, Jul
-                switch (date.charAt(9)) {
-                    case 'a':
-                        return Month.JANUARY;
-
-                    case 'u':
-                        switch (date.charAt(10)) {
-                            case 'n':
-                                return Month.JUNE;
-
-                            case 'l':
-                                return Month.JULY;
-
-                            default:
-                                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
-                        }
-                    default:
-                        throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
+        char charAt8 = date.charAt(8);
+        if (charAt8 == 'J') {
+            // Jan, Jun, Jul
+            char charAt9 = date.charAt(9);
+            if (charAt9 == 'a' && date.charAt(10) == 'n') {
+                return Month.JANUARY;
+            } else if (charAt9 == 'u') {
+                char charAt10 = date.charAt(10);
+                if (charAt10 == 'n') {
+                    return Month.JUNE;
+                } else if (charAt10 == 'l') {
+                    return Month.JULY;
                 }
-            case 'F':
-                return Month.FEBRUARY;
-
-            case 'M':
-                // Mar, May
-                switch (date.charAt(10)) {
-                    case 'r':
-                        return Month.MARCH;
-
-                    case 'y':
-                        return Month.MAY;
-
-                    default:
-                        throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
-                }
-            case 'A':
-                // Apr, Aug
-                switch (date.charAt(10)) {
-                    case 'r':
-                        return Month.APRIL;
-
-                    case 'g':
-                        return Month.AUGUST;
-
-                    default:
-                        throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
-                }
-            case 'S':
-                return Month.SEPTEMBER;
-
-            case 'O':
-                return Month.OCTOBER;
-
-            case 'N':
-                return Month.NOVEMBER;
-
-            case 'D':
-                return Month.DECEMBER;
-
-            default:
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
+            }
+        } else if (charAt8 == 'F' && date.charAt(9) == 'e' && date.charAt(10) == 'b') {
+            return Month.FEBRUARY;
+        } else if (charAt8 == 'M' && date.charAt(9) == 'a') {
+            char charAt10 = date.charAt(10);
+            if (charAt10 == 'r') {
+                return Month.MARCH;
+            } else if (charAt10 == 'y') {
+                return Month.MAY;
+            }
+        } else if (charAt8 == 'A') {
+            char charAt9 = date.charAt(9);
+            if (charAt9 == 'p' && date.charAt(10) == 'r') {
+                return Month.APRIL;
+            } else if (charAt9 == 'u' && date.charAt(10) == 'g') {
+                return Month.AUGUST;
+            }
+        } else if (charAt8 == 'S' && date.charAt(9) == 'e' && date.charAt(10) == 'p') {
+            return Month.SEPTEMBER;
+        } else if (charAt8 == 'O' && date.charAt(9) == 'c' && date.charAt(10) == 't') {
+            return Month.OCTOBER;
+        } else if (charAt8 == 'N' && date.charAt(9) == 'o' && date.charAt(10) == 'v') {
+            return Month.NOVEMBER;
+        } else if (charAt8 == 'D' && date.charAt(9) == 'e' && date.charAt(10) == 'c') {
+            return Month.DECEMBER;
         }
+
+        throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
     }
 
     /**

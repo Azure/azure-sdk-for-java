@@ -25,6 +25,8 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +36,9 @@ public final class CoreUtils {
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
 
     private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
+
+    // Used to check if the ISO8601 date time doesn't have a colon in the offset.
+    private static final Pattern ISO8601_COLONLESS_OFFSET = Pattern.compile("([+-][0-9]{2})([0-9]{2})(?=\\[|$)");
 
     /**
      * Checks if the array is null or empty.
@@ -259,6 +264,12 @@ public final class CoreUtils {
     public static OffsetDateTime parseBestOffsetDateTime(String dateString) {
         if (dateString == null) {
             return null;
+        }
+
+        Matcher matcher = ISO8601_COLONLESS_OFFSET.matcher(dateString);
+        if (matcher.find()) {
+            dateString = dateString.substring(0, matcher.start()) + matcher.group(1) + ":" + matcher.group(2)
+                + dateString.substring(matcher.start() + 5);
         }
 
         TemporalAccessor temporal

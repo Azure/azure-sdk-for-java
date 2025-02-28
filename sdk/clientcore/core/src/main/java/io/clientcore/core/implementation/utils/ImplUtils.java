@@ -226,16 +226,23 @@ public final class ImplUtils {
         private final String queryParameters;
         private final int queryParametersLength;
 
-        private boolean done = false;
+        private boolean done;
         private int position;
 
         public QueryParameterIterator(String queryParameters) {
             this.queryParameters = queryParameters;
-            this.queryParametersLength = queryParameters.length();
+            this.done = CoreUtils.isNullOrEmpty(queryParameters);
 
-            // If the URI query begins with '?' the first possible start of a query parameter key is the
-            // second character in the query.
-            position = (queryParameters.startsWith("?")) ? 1 : 0;
+            if (done) {
+                this.position = 0;
+                this.queryParametersLength = 0;
+            } else {
+                this.queryParametersLength = queryParameters.length();
+
+                // If the URI query begins with '?' the first possible start of a query parameter key is the
+                // second character in the query.
+                position = (queryParameters.startsWith("?")) ? 1 : 0;
+            }
         }
 
         @Override
