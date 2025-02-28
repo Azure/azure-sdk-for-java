@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionS
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.handler.ssl.SslContext;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -34,6 +35,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,7 +88,7 @@ public class ConnectionStateListenerTest {
         boolean isTcpConnectionEndpointRediscoveryEnabled,
         RequestResponseType responseType,
         boolean markUnhealthy,
-        boolean markUnhealthyWhenServerShutdown) throws ExecutionException, InterruptedException {
+        boolean markUnhealthyWhenServerShutdown) throws ExecutionException, InterruptedException, URISyntaxException {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setTcpConnectionEndpointRediscoveryEnabled(isTcpConnectionEndpointRediscoveryEnabled);
@@ -124,6 +127,8 @@ public class ConnectionStateListenerTest {
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
                 "dbs/fakedb/colls/fakeColls",
                 getDocumentDefinition(), new HashMap<>());
+        req.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost:8080"));
+
         req.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("fakeCollectionId","fakePartitionKeyRangeId"));
 
         // Validate connectionStateListener will always track the latest Uri
