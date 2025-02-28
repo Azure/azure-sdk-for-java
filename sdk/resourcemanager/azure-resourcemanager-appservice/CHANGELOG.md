@@ -1,6 +1,6 @@
 # Release History
 
-## 2.48.0-beta.1 (Unreleased)
+## 2.48.0 (2025-02-28)
 
 ### Features Added
 
@@ -9,12 +9,6 @@
 - Supported .Net 6, 8, 9 in `RuntimeStack` for `WebApp`.
 - Supported PHP 8.2, 8.3 in `RuntimeStack` for `WebApp`.
 - Supported Python 3.9, 3.10, 3.11, 3.12 in `RuntimeStack` for `WebApp`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 2.47.0 (2025-01-24)
 
