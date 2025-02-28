@@ -28,6 +28,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("deprecation")
 abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
     P extends ServiceBusClientCommonTestProperties,
     F extends AbstractServiceBusSubClientBuilderFactory<B, ?>> extends AzureGenericServiceClientBuilderFactoryBaseTests<P, F> {
