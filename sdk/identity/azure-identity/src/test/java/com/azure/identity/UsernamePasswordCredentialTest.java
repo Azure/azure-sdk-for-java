@@ -29,6 +29,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("deprecation")
 public class UsernamePasswordCredentialTest {
 
     private final String clientId = UUID.randomUUID().toString();
