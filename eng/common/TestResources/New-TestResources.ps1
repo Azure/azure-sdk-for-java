@@ -528,7 +528,9 @@ try {
         $templateParameters.Add('azsdkPipelineSubnetList', @($env:PoolSubnet))
     }
     # Some arm/bicep templates may want to change deployment settings (e.g. local auth) in sandboxed TME tenants
-    $templateParameters.Add('supportsSafeSecretStandard', ($context.Tenant.Name -notlike '*TME*'))
+    # The pipeline account context does not have the .Tenant.Name property, so check against subscription via
+    # naming convention instead.
+    $templateParameters.Add('supportsSafeSecretStandard', ($context.Subscription.Name -notlike '*TME*'))
 
     $defaultCloudParameters = LoadCloudConfig $Environment
     MergeHashes $defaultCloudParameters $(Get-Variable templateParameters)
