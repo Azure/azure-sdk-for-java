@@ -21,14 +21,8 @@ import com.azure.xml.implementation.aalto.in.CharSourceBootstrapper;
 import com.azure.xml.implementation.aalto.in.ReaderConfig;
 import com.azure.xml.implementation.stax2.XMLInputFactory2;
 
-import javax.xml.stream.EventFilter;
-import javax.xml.stream.StreamFilter;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLReporter;
-import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.util.XMLEventAllocator;
 import java.io.InputStream;
 import java.io.Reader;
 
@@ -45,10 +39,6 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
      */
     final ReaderConfig _config;
 
-    // // // StAX - mandated objects:
-
-    private XMLEventAllocator _allocator = null;
-
     /*
     /**********************************************************************
     /* Life-cycle:
@@ -61,97 +51,16 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
 
     /*
     /**********************************************************************
-    /* Stax, XMLInputFactory: filtered reader factory methods
-    /**********************************************************************
-     */
-
-    // // // Filtered reader factory methods
-
-    @Override
-    public XMLEventReader createFilteredReader(XMLEventReader reader, EventFilter filter) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public XMLStreamReader createFilteredReader(XMLStreamReader reader, StreamFilter filter) {
-        throw new UnsupportedOperationException();
-    }
-
-    /*
-    /**********************************************************************
-    /* Stax, XMLInputFactory: XMLEventReader factory methods
-    /**********************************************************************
-     */
-
-    @Override
-    public XMLEventReader createXMLEventReader(InputStream in) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public XMLEventReader createXMLEventReader(InputStream in, String enc) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public XMLEventReader createXMLEventReader(Reader r) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public XMLEventReader createXMLEventReader(javax.xml.transform.Source source) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public XMLEventReader createXMLEventReader(String systemId, InputStream in) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public XMLEventReader createXMLEventReader(String systemId, Reader r) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public XMLEventReader createXMLEventReader(XMLStreamReader sr) {
-        throw new UnsupportedOperationException();
-    }
-
-    /*
-    /**********************************************************************
     /* Stax, XMLInputFactory: XMLStreamReader factory methods
     /**********************************************************************
      */
 
-    @Override
     public XMLStreamReader createXMLStreamReader(InputStream in) throws XMLStreamException {
-        return constructSR(in, null);
+        return constructSR(in);
     }
 
-    @Override
-    public XMLStreamReader createXMLStreamReader(InputStream in, String enc) throws XMLStreamException {
-        return constructSR(in, enc);
-    }
-
-    @Override
     public XMLStreamReader createXMLStreamReader(Reader r) throws XMLStreamException {
         return constructSR(r);
-    }
-
-    @Override
-    public XMLStreamReader createXMLStreamReader(String systemId, Reader r) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public XMLStreamReader createXMLStreamReader(javax.xml.transform.Source src) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public XMLStreamReader createXMLStreamReader(String systemId, InputStream in) {
-        throw new UnsupportedOperationException();
     }
 
     /*
@@ -160,50 +69,13 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
     /**********************************************************************
      */
 
-    @Override
     public Object getProperty(String name) {
         // false -> is mandatory, unrecognized will throw IllegalArgumentException
         return _config.getProperty(name, true);
     }
 
-    @Override
     public void setProperty(String propName, Object value) {
         _config.setProperty(propName, value);
-    }
-
-    @Override
-    public XMLEventAllocator getEventAllocator() {
-        return _allocator;
-    }
-
-    @Override
-    public XMLReporter getXMLReporter() {
-        return _config.getXMLReporter();
-    }
-
-    @Override
-    public XMLResolver getXMLResolver() {
-        return _config.getXMLResolver();
-    }
-
-    @Override
-    public boolean isPropertySupported(String name) {
-        return _config.isPropertySupported(name);
-    }
-
-    @Override
-    public void setEventAllocator(XMLEventAllocator allocator) {
-        _allocator = allocator;
-    }
-
-    @Override
-    public void setXMLReporter(XMLReporter r) {
-        _config.setXMLReporter(r);
-    }
-
-    @Override
-    public void setXMLResolver(XMLResolver r) {
-        _config.setXMLResolver(r);
     }
 
     /*
@@ -220,8 +92,8 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
         return _config.createNonShared(extEncoding);
     }
 
-    private XMLStreamReader constructSR(InputStream in, String enc) throws XMLStreamException {
-        ReaderConfig cfg = getNonSharedConfig(enc);
+    private XMLStreamReader constructSR(InputStream in) throws XMLStreamException {
+        ReaderConfig cfg = getNonSharedConfig(null);
         return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
     }
 
