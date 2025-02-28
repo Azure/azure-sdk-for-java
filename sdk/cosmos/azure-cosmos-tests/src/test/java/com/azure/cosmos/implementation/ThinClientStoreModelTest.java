@@ -1,23 +1,14 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
-import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.http.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpClientConfig;
-import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.ReactorNettyClient;
 import io.netty.channel.ConnectTimeoutException;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 
-import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 
 public class ThinClientStoreModelTest {

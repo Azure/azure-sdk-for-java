@@ -4,9 +4,8 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
@@ -103,5 +102,5 @@ public interface IDocumentQueryClient {
 
     GlobalEndpointManager getGlobalEndpointManager();
 
-    GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
+    GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
 }

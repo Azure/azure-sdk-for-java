@@ -29,8 +29,6 @@ import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchReques
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
-import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -48,6 +46,8 @@ import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.patch.PatchUtil;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
@@ -239,7 +239,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      */
     private final QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
     private final GlobalEndpointManager globalEndpointManager;
-    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
+    private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+    private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
     private final RetryPolicy retryPolicy;
     private HttpClient reactorHttpClient;
     private Function<HttpClient, HttpClient> httpClientInterceptor;
@@ -280,7 +281,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 SessionRetryOptions sessionRetryOptions,
                                 CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                                 CosmosItemSerializer defaultCustomSerializer,
-                                boolean isRegionScopedSessionCapturingEnabled) {
+                                boolean isRegionScopedSessionCapturingEnabled,
+                                boolean isPerPartitionAutomaticFailoverEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -301,7 +303,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 sessionRetryOptions,
                 containerProactiveInitConfig,
                 defaultCustomSerializer,
-                isRegionScopedSessionCapturingEnabled);
+                isRegionScopedSessionCapturingEnabled,
+                isPerPartitionAutomaticFailoverEnabled);
+
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -326,7 +330,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                                 CosmosItemSerializer defaultCustomSerializer,
                                 boolean isRegionScopedSessionCapturingEnabled,
-                                List<CosmosOperationPolicy> operationPolicies) {
+                                List<CosmosOperationPolicy> operationPolicies,
+                                boolean isPerPartitionAutomaticFailoverEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -347,7 +352,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 sessionRetryOptions,
                 containerProactiveInitConfig,
                 defaultCustomSerializer,
-                isRegionScopedSessionCapturingEnabled);
+                isRegionScopedSessionCapturingEnabled,
+                isPerPartitionAutomaticFailoverEnabled);
+
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         this.operationPolicies = operationPolicies;
     }
@@ -371,7 +378,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 SessionRetryOptions sessionRetryOptions,
                                 CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                                 CosmosItemSerializer defaultCustomSerializer,
-                                boolean isRegionScopedSessionCapturingEnabled) {
+                                boolean isRegionScopedSessionCapturingEnabled,
+                                boolean isPerPartitionAutomaticFailoverEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -391,7 +399,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 sessionRetryOptions,
                 containerProactiveInitConfig,
                 defaultCustomSerializer,
-                isRegionScopedSessionCapturingEnabled);
+                isRegionScopedSessionCapturingEnabled,
+                isPerPartitionAutomaticFailoverEnabled);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -453,7 +462,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          SessionRetryOptions sessionRetryOptions,
                          CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                          CosmosItemSerializer defaultCustomSerializer,
-                         boolean isRegionScopedSessionCapturingEnabled) {
+                         boolean isRegionScopedSessionCapturingEnabled,
+                         boolean isPerPartitionAutomaticFailoverEnabled) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -557,18 +567,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
 
-            this.globalPartitionEndpointManagerForCircuitBreaker = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManager);
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+                = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManager);
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.globalEndpointManager, isPerPartitionAutomaticFailoverEnabled);
 
-            this.globalPartitionEndpointManagerForCircuitBreaker.init();
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
             this.cachedCosmosAsyncClientSnapshot = new AtomicReference<>();
 
-            this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForCircuitBreaker.getCircuitBreakerConfig());
+            this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig());
 
             this.retryPolicy = new RetryPolicy(
                 this,
                 this.globalEndpointManager,
                 this.connectionPolicy,
-                this.globalPartitionEndpointManagerForCircuitBreaker);
+                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
             this.queryPlanCache = new ConcurrentHashMap<>();
@@ -783,7 +797,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.clientTelemetry,
             this.globalEndpointManager);
 
-        this.globalPartitionEndpointManagerForCircuitBreaker.setGlobalAddressResolver(this.addressResolver);
+        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.setGlobalAddressResolver(this.addressResolver);
         this.createStoreModel(true);
     }
 
@@ -1980,10 +1994,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         addBatchHeaders(request, serverBatchRequest, documentCollectionValueHolder.v);
 
-                        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request) && options != null) {
-                            options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
-                        }
+                        checkNotNull(options, "Argument 'options' cannot be null!");
+
+                        options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+
+                        PartitionKeyRange preResolvePartitionKeyRangeIfAny
+                            = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                            request,
+                            options,
+                            collectionRoutingMapValueHolder.v,
+                            requestRetryPolicy,
+                            true,
+                            null);
+
+                        addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
+                            request,
+                            options,
+                            collectionRoutingMapValueHolder.v,
+                            requestRetryPolicy,
+                            preResolvePartitionKeyRangeIfAny);
 
                         return Mono.just(request);
                     });
@@ -2363,7 +2392,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             }
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
+
+                            PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                request,
+                                options,
+                                collectionRoutingMapValueHolder.v,
+                                requestRetryPolicy,
+                                true,
+                                null);
+
+                            addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
+                                request,
+                                options,
+                                collectionRoutingMapValueHolder.v,
+                                requestRetryPolicy,
+                                preResolvedPartitionKeyRangeIfAny);
+
                             documentServiceRequestReference.set(request);
                             request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
 
@@ -2418,7 +2462,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return response
             .doOnSuccess(ignore -> {
 
-                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
+                if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
                     RxDocumentServiceRequest succeededRequest = requestReference.get();
                     checkNotNull(succeededRequest.requestContext, "Argument 'succeededRequest.requestContext' must not be null!");
 
@@ -2426,12 +2470,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     checkNotNull(pointOperationContextForCircuitBreaker, "Argument 'pointOperationContextForCircuitBreaker' must not be null!");
                     pointOperationContextForCircuitBreaker.setHasOperationSeenSuccess();
 
-                    this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(succeededRequest);
+                    this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationSuccessForPartitionKeyRange(succeededRequest);
                 }
             })
             .doOnError(throwable -> {
                 if (throwable instanceof OperationCancelledException) {
-                    if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
+                    if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
                         RxDocumentServiceRequest failedRequest = requestReference.get();
                         checkNotNull(failedRequest.requestContext, "Argument 'failedRequest.requestContext' must not be null!");
 
@@ -2454,7 +2498,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return;
                 }
 
-                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
+                if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
                     RxDocumentServiceRequest failedRequest = requestReference.get();
                     checkNotNull(failedRequest.requestContext, "Argument 'failedRequest.requestContext' must not be null!");
 
@@ -2478,7 +2522,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return response
             .doOnSuccess(nonTransientFeedOperationResult -> {
 
-                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+                if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
                     if (!nonTransientFeedOperationResult.isError()) {
                         checkNotNull(request, "Argument 'request' cannot be null!");
                         checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
@@ -2489,7 +2533,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' cannot be null!");
 
                         feedOperationContextForCircuitBreaker.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, request.getResourceId());
-                        this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
+                        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
                     }
                 }
             })
@@ -2498,7 +2542,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return;
                 }
 
-                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+                if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
                     checkNotNull(request, "Argument 'request' cannot be null!");
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
@@ -2656,7 +2700,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             }
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                            PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                request,
+                                options,
+                                collectionRoutingMapValueHolder.v,
+                                retryPolicyInstance,
+                                true,
+                                null);
+
+                            addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
+                                request,
+                                options,
+                                collectionRoutingMapValueHolder.v,
+                                retryPolicyInstance,
+                                preResolvedPartitionKeyRangeIfAny);
 
                             request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
                             requestReference.set(request);
@@ -2939,7 +2997,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return requestObs.flatMap(req -> {
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                    req,
+                                    options,
+                                    collectionRoutingMapValueHolder.v,
+                                    retryPolicyInstance,
+                                    true,
+                                    null);
+
+                                addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
+                                    req,
+                                    options,
+                                    collectionRoutingMapValueHolder.v,
+                                    retryPolicyInstance,
+                                    preResolvedPartitionKeyRangeIfAny);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
                                 requestReference.set(req);
@@ -3130,8 +3202,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return requestObs
                             .flatMap(req -> {
 
+                                checkNotNull(options, "Argument 'options' cannot be null!");
+
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                    req,
+                                    options,
+                                    collectionRoutingMapValueHolder.v,
+                                    retryPolicyInstance,
+                                    true,
+                                    null);
+
+                                addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
+                                    req,
+                                    options,
+                                    collectionRoutingMapValueHolder.v,
+                                    retryPolicyInstance,
+                                    preResolvedPartitionKeyRangeIfAny);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
                                 requestReference.set(req);
@@ -3273,15 +3361,31 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return requestObs
                             .flatMap(req -> {
 
+                                checkNotNull(options, "Argument 'options' cannot be null!");
+
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                                addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                    req,
+                                    options,
+                                    collectionRoutingMapValueHolder.v,
+                                    retryPolicyInstance,
+                                    true,
+                                    null);
+
+                                addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
+                                    req,
+                                    options,
+                                    collectionRoutingMapValueHolder.v,
+                                    retryPolicyInstance,
+                                    preResolvedPartitionKeyRangeIfAny);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
                                 requestReference.set(req);
 
                                 // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
                                 // to the RxDocumentServiceRequest instance
-                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+                                mergeContextInformationIntoDiagnosticsForPointRequest(req, pointOperationContextForCircuitBreaker);
 
                                 return this.delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
                             })
@@ -3435,14 +3539,28 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             return requestObs.flatMap(req -> {
 
                                 options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
-                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                PartitionKeyRange preResolvedPartionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                    req,
+                                    options,
+                                    collectionRoutingMapValueHolder.v,
+                                    retryPolicyInstance,
+                                    false,
+                                    null);
+
+                                addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
+                                    req,
+                                    options,
+                                    collectionRoutingMapValueHolder.v,
+                                    retryPolicyInstance,
+                                    preResolvedPartionKeyRangeIfAny);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
                                 requestReference.set(req);
 
                                 // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
                                 // to the RxDocumentServiceRequest instance
-                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+                                mergeContextInformationIntoDiagnosticsForPointRequest(req, pointOperationContextForCircuitBreaker);
 
                                 return this.read(req, retryPolicyInstance)
                                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -4047,7 +4165,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             @Override
             public Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions, DocumentClientRetryPolicy documentClientRetryPolicy) {
 
-                if (RxDocumentClientImpl.this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+                if (RxDocumentClientImpl.this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request) || RxDocumentClientImpl.this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
 
                     String collectionRid = RxDocumentClientImpl.qryOptAccessor.getCollectionRid(queryRequestOptions);
 
@@ -4060,7 +4178,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 return Mono.error(new CollectionRoutingMapNotFoundException("Argument 'collectionRoutingMapValueHolder.v' cannot be null!"));
                             }
 
-                            RxDocumentClientImpl.this.addPartitionLevelUnavailableRegionsForFeedRequest(request, queryRequestOptions, collectionRoutingMapValueHolder.v);
+                            PartitionKeyRange preResolvedPartitionKeyRangeIfAny
+                                = RxDocumentClientImpl.this.setPartitionKeyRangeForFeedRequestForPerPartitionAutomaticFailover(
+                                request,
+                                queryRequestOptions,
+                                collectionRoutingMapValueHolder.v,
+                                null);
+
+                            RxDocumentClientImpl.this.addPartitionLevelUnavailableRegionsForFeedRequestForPerPartitionCircuitBreaker(
+                                request,
+                                queryRequestOptions,
+                                collectionRoutingMapValueHolder.v,
+                                preResolvedPartitionKeyRangeIfAny);
 
                             // onBeforeSendRequest uses excluded regions to know the next location endpoint
                             // to route the request to unavailable regions are effectively excluded regions for this request
@@ -4081,8 +4210,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
-                return RxDocumentClientImpl.this.globalPartitionEndpointManagerForCircuitBreaker;
+            public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
+                return RxDocumentClientImpl.this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
             }
         };
     }
@@ -5618,7 +5747,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 executeFunc,
                 maxPageSize,
                 this.globalEndpointManager,
-                this.globalPartitionEndpointManagerForCircuitBreaker);
+                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
     }
 
     @Override
@@ -5682,8 +5811,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
-        return this.globalPartitionEndpointManagerForCircuitBreaker;
+    public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
+        return this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+    }
+
+    @Override
+    public GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover getGlobalPartitionEndpointManagerForPerPartitionAutomaticFailover() {
+        return this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
     }
 
     @Override
@@ -5790,9 +5924,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
 
-            if (this.globalPartitionEndpointManagerForCircuitBreaker != null) {
-                logger.info("Closing globalPartitionEndpointManagerForCircuitBreaker...");
-                LifeCycleUtils.closeQuietly(this.globalPartitionEndpointManagerForCircuitBreaker);
+            if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker != null) {
+                logger.info("Closing globalPartitionEndpointManagerForPerPartitionCircuitBreaker...");
+                LifeCycleUtils.closeQuietly(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
             }
 
             logger.info("Closing Global Endpoint Manager ...");
@@ -6001,67 +6135,201 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new UUID(msb, lsb);
     }
 
-    public void addPartitionLevelUnavailableRegionsForRequest(
+    public PartitionKeyRange addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
         RxDocumentServiceRequest request,
         RequestOptions options,
         CollectionRoutingMap collectionRoutingMap,
-        DocumentClientRetryPolicy documentClientRetryPolicy) {
+        DocumentClientRetryPolicy documentClientRetryPolicy,
+        PartitionKeyRange preResolvedPartitionKeyRangeIfAny) {
+
+        checkNotNull(request, "Argument 'request' cannot be null!");
+        checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
+
+            if (preResolvedPartitionKeyRangeIfAny != null) {
+
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
+
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and circuit breaking in general
+                request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = preResolvedPartitionKeyRangeIfAny;
+
+                List<String> unavailableRegionsForPartition
+                    = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request.getResourceId(),
+                    preResolvedPartitionKeyRangeIfAny,
+                    request.getOperationType());
+
+                request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
+
+                // onBeforeSendRequest uses excluded regions to know the next location endpoint
+                // to route the request to unavailable regions are effectively excluded regions for this request
+                if (documentClientRetryPolicy != null) {
+                    documentClientRetryPolicy.onBeforeSendRequest(request);
+                }
+
+                return preResolvedPartitionKeyRangeIfAny;
+            }
+            else {
+                checkNotNull(options, "Argument 'options' cannot be null!");
+                checkNotNull(options.getPartitionKeyDefinition(), "Argument 'partitionKeyDefinition' within options cannot be null!");
+                checkNotNull(collectionRoutingMap, "Argument 'collectionRoutingMap' cannot be null!");
+
+                PartitionKeyRange resolvedPartitionKeyRange = null;
+
+                PartitionKeyDefinition partitionKeyDefinition = options.getPartitionKeyDefinition();
+                PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+
+                if (partitionKeyInternal != null) {
+                    String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+
+                    // cache the effective partition key if possible - can be a bottleneck,
+                    // since it is also recomputed in AddressResolver
+                    request.setEffectivePartitionKey(effectivePartitionKeyString);
+                } else if (request.getPartitionKeyRangeIdentity() != null) {
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+                }
+
+                checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+                checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and circuit breaking in general
+                request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
+
+                List<String> unavailableRegionsForPartition
+                    = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request.getResourceId(),
+                    resolvedPartitionKeyRange,
+                    request.getOperationType());
+
+                request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
+
+                // onBeforeSendRequest uses excluded regions to know the next location endpoint
+                // to route the request to unavailable regions are effectively excluded regions for this request
+                if (documentClientRetryPolicy != null) {
+                    documentClientRetryPolicy.onBeforeSendRequest(request);
+                }
+
+                return resolvedPartitionKeyRange;
+            }
+        }
+
+        return null;
+    }
+
+    public PartitionKeyRange setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+        RxDocumentServiceRequest request,
+        RequestOptions options,
+        CollectionRoutingMap collectionRoutingMap,
+        DocumentClientRetryPolicy documentClientRetryPolicy,
+        boolean isWriteRequest,
+        PartitionKeyRange preResolvedPartitionKeyRangeIfAny) {
 
         checkNotNull(request, "Argument 'request' cannot be null!");
 
-        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
 
-            checkNotNull(options, "Argument 'options' cannot be null!");
-            checkNotNull(options.getPartitionKeyDefinition(), "Argument 'partitionKeyDefinition' within options cannot be null!");
-            checkNotNull(collectionRoutingMap, "Argument 'collectionRoutingMap' cannot be null!");
+            if (preResolvedPartitionKeyRangeIfAny != null) {
 
-            PartitionKeyRange resolvedPartitionKeyRange = null;
+                checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
 
-            PartitionKeyDefinition partitionKeyDefinition = options.getPartitionKeyDefinition();
-            PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
 
-            if (partitionKeyInternal != null) {
-                String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
-                resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and PPAF in general
+                request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = preResolvedPartitionKeyRangeIfAny;
 
-                // cache the effective partition key if possible - can be a bottleneck,
-                // since it is also recomputed in AddressResolver
-                request.setEffectivePartitionKey(effectivePartitionKeyString);
-            } else if (request.getPartitionKeyRangeIdentity() != null) {
-                resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
-            }
+                request.isPerPartitionAutomaticFailoverEnabledAndWriteRequest
+                    = isWriteRequest && this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled();
 
-            checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
-            checkNotNull(this.globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+                // onBeforeSendRequest uses excluded regions to know the next location endpoint
+                // to route the request to unavailable regions are effectively excluded regions for this request
+                if (documentClientRetryPolicy != null) {
+                    documentClientRetryPolicy.onBeforeSendRequest(request);
+                }
 
-            // setting it here in case request.requestContext.resolvedPartitionKeyRange
-            // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
-            // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
-            // help failover as well)
-            // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
-            // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-            request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+                return preResolvedPartitionKeyRangeIfAny;
+            } else {
+                checkNotNull(options, "Argument 'options' cannot be null!");
+                checkNotNull(options.getPartitionKeyDefinition(), "Argument 'partitionKeyDefinition' within options cannot be null!");
+                checkNotNull(collectionRoutingMap, "Argument 'collectionRoutingMap' cannot be null!");
 
-            // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
-            // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
-            // in partition split / merge and invalid partition scenarios - the separate copy will help identify
-            // such scenarios and circuit breaking in general
-            request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
+                PartitionKeyRange resolvedPartitionKeyRange = null;
 
-            List<String> unavailableRegionsForPartition
-                = this.globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
-                request.getResourceId(),
-                resolvedPartitionKeyRange,
-                request.getOperationType());
+                PartitionKeyDefinition partitionKeyDefinition = options.getPartitionKeyDefinition();
+                PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
 
-            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+                if (partitionKeyInternal != null) {
+                    String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
 
-            // onBeforeSendRequest uses excluded regions to know the next location endpoint
-            // to route the request to unavailable regions are effectively excluded regions for this request
-            if (documentClientRetryPolicy != null) {
-                documentClientRetryPolicy.onBeforeSendRequest(request);
+                    // cache the effective partition key if possible - can be a bottleneck,
+                    // since it is also recomputed in AddressResolver
+                    request.setEffectivePartitionKey(effectivePartitionKeyString);
+                } else if (request.getPartitionKeyRangeIdentity() != null) {
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+                }
+
+                checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+                checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and PPAF in general
+                request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = resolvedPartitionKeyRange;
+
+                request.isPerPartitionAutomaticFailoverEnabledAndWriteRequest
+                    = isWriteRequest && this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled();
+
+                // onBeforeSendRequest uses excluded regions to know the next location endpoint
+                // to route the request to unavailable regions are effectively excluded regions for this request
+                if (documentClientRetryPolicy != null) {
+                    documentClientRetryPolicy.onBeforeSendRequest(request);
+                }
+
+                return resolvedPartitionKeyRange;
             }
         }
+
+        return null;
     }
 
     public void mergeContextInformationIntoDiagnosticsForPointRequest(
@@ -6076,93 +6344,263 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public void addPartitionLevelUnavailableRegionsForFeedRequest(
+    public PartitionKeyRange addPartitionLevelUnavailableRegionsForFeedRequestForPerPartitionCircuitBreaker(
         RxDocumentServiceRequest request,
         CosmosQueryRequestOptions options,
-        CollectionRoutingMap collectionRoutingMap) {
+        CollectionRoutingMap collectionRoutingMap,
+        PartitionKeyRange preResolvedPartitionKeyRangeIfAny) {
 
-        checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
 
-        PartitionKeyRange resolvedPartitionKeyRange = null;
+            checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
 
-        if (request.getPartitionKeyRangeIdentity() != null) {
-            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
-        } else if (request.getPartitionKeyInternal() != null) {
-            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getPartitionKeyDefinition(options));
-            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+            if (preResolvedPartitionKeyRangeIfAny != null) {
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
+
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and circuit breaking in general
+                request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = preResolvedPartitionKeyRangeIfAny;
+
+                checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+                List<String> unavailableRegionsForPartition
+                    = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request.getResourceId(),
+                    preResolvedPartitionKeyRangeIfAny,
+                    request.getOperationType());
+
+                request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
+
+                return preResolvedPartitionKeyRangeIfAny;
+
+            } else {
+
+                PartitionKeyRange resolvedPartitionKeyRange = null;
+
+                if (request.getPartitionKeyRangeIdentity() != null) {
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+                } else if (request.getPartitionKeyInternal() != null) {
+                    String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getPartitionKeyDefinition(options));
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                }
+
+                checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and circuit breaking in general
+                request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
+
+                checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+                List<String> unavailableRegionsForPartition
+                    = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request.getResourceId(),
+                    resolvedPartitionKeyRange,
+                    request.getOperationType());
+
+                request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
+
+                return resolvedPartitionKeyRange;
+            }
         }
 
-        checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+        return null;
+    }
 
-        // setting it here in case request.requestContext.resolvedPartitionKeyRange
-        // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
-        // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
-        // help failover as well)
-        // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
-        // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-        request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+    public PartitionKeyRange setPartitionKeyRangeForFeedRequestForPerPartitionAutomaticFailover(
+        RxDocumentServiceRequest request,
+        CosmosQueryRequestOptions options,
+        CollectionRoutingMap collectionRoutingMap,
+        PartitionKeyRange preResolvedPartitionKeyRangeIfAny) {
 
-        // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
-        // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
-        // in partition split / merge and invalid partition scenarios - the separate copy will help identify
-        // such scenarios and circuit breaking in general
-        request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
+            checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
 
-        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
-            checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+            if (preResolvedPartitionKeyRangeIfAny != null) {
 
-            List<String> unavailableRegionsForPartition
-                = this.globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
-                request.getResourceId(),
-                resolvedPartitionKeyRange,
-                request.getOperationType());
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
+                request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = preResolvedPartitionKeyRangeIfAny;
 
-            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+                return preResolvedPartitionKeyRangeIfAny;
+            } else {
+                PartitionKeyRange resolvedPartitionKeyRange = null;
+
+                if (request.getPartitionKeyRangeIdentity() != null) {
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+                } else if (request.getPartitionKeyInternal() != null) {
+                    String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getPartitionKeyDefinition(options));
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                }
+
+                checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and circuit breaking in general
+                request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = resolvedPartitionKeyRange;
+
+                return resolvedPartitionKeyRange;
+            }
+        }
+
+        return null;
+    }
+
+    public void addPartitionLevelUnavailableRegionsForChangeFeedOperationRequestForPerPartitionCircuitBreaker(
+        RxDocumentServiceRequest request,
+        CosmosChangeFeedRequestOptions options,
+        CollectionRoutingMap collectionRoutingMap,
+        PartitionKeyRange preResolvedPartitionKeyRangeIfAny) {
+
+        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
+
+            if (preResolvedPartitionKeyRangeIfAny != null) {
+
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
+
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and circuit breaking in general
+                request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = preResolvedPartitionKeyRangeIfAny;
+
+                List<String> unavailableRegionsForPartition
+                    = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request.getResourceId(),
+                    preResolvedPartitionKeyRangeIfAny,
+                    request.getOperationType());
+
+                request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
+            } else {
+                checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+
+                PartitionKeyRange resolvedPartitionKeyRange = null;
+
+                if (request.getPartitionKeyRangeIdentity() != null) {
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+                } else if (request.getPartitionKeyInternal() != null) {
+                    String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor().getPartitionKeyDefinition(options));
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                }
+
+                checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and circuit breaking in general
+                request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
+
+                List<String> unavailableRegionsForPartition
+                    = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request.getResourceId(),
+                    resolvedPartitionKeyRange,
+                    request.getOperationType());
+
+                request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
+            }
         }
     }
 
-    public void addPartitionLevelUnavailableRegionsForChangeFeedRequest(
+    public PartitionKeyRange setPartitionKeyRangeForChangeFeedOperationRequestForPerPartitionAutomaticFailover(
         RxDocumentServiceRequest request,
         CosmosChangeFeedRequestOptions options,
-        CollectionRoutingMap collectionRoutingMap) {
-        checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+        CollectionRoutingMap collectionRoutingMap,
+        PartitionKeyRange preResolvedPartitionKeyRangeIfAny) {
 
-        PartitionKeyRange resolvedPartitionKeyRange = null;
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
 
-        if (request.getPartitionKeyRangeIdentity() != null) {
-            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
-        } else if (request.getPartitionKeyInternal() != null) {
-            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor().getPartitionKeyDefinition(options));
-            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+            if (preResolvedPartitionKeyRangeIfAny != null) {
+
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
+
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and PPAF in general
+                request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = preResolvedPartitionKeyRangeIfAny;
+
+                return preResolvedPartitionKeyRangeIfAny;
+            } else {
+                checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+
+                PartitionKeyRange resolvedPartitionKeyRange = null;
+
+                if (request.getPartitionKeyRangeIdentity() != null) {
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+                } else if (request.getPartitionKeyInternal() != null) {
+                    String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor().getPartitionKeyDefinition(options));
+                    resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                }
+
+                checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+                // setting it here in case request.requestContext.resolvedPartitionKeyRange
+                // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+                // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+                // help failover as well)
+                // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+                // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+                // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+                // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+                // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+                // such scenarios and PPAF in general
+                request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = resolvedPartitionKeyRange;
+
+                return resolvedPartitionKeyRange;
+            }
         }
 
-        checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
-
-        // setting it here in case request.requestContext.resolvedPartitionKeyRange
-        // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
-        // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
-        // help failover as well)
-        // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
-        // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-        request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
-
-        // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
-        // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
-        // in partition split / merge and invalid partition scenarios - the separate copy will help identify
-        // such scenarios and circuit breaking in general
-        request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
-
-        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
-            checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
-
-            List<String> unavailableRegionsForPartition
-                = this.globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
-                request.getResourceId(),
-                resolvedPartitionKeyRange,
-                request.getOperationType());
-
-            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
-        }
+        return null;
     }
 
     private Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
@@ -6746,7 +7184,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {
-            this.globalPartitionEndpointManagerForCircuitBreaker
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
         }
     }
