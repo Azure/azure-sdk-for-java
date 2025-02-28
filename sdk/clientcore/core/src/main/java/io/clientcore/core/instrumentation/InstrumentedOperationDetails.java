@@ -39,8 +39,8 @@ public class InstrumentedOperationDetails {
      * @param endpoint the service endpoint URI. The host and port are used as values for the {@code server.address} and {@code server.port} attributes.
      * @return The updated {@link InstrumentedOperationDetails} object.
      */
-    public InstrumentedOperationDetails endpoint(URI endpoint) {
-        this.endpoint = endpoint;
+    public InstrumentedOperationDetails endpoint(String endpoint) {
+        this.endpoint = endpoint == null ? null : URI.create(endpoint);
         return this;
     }
 
@@ -50,7 +50,7 @@ public class InstrumentedOperationDetails {
      * @param spanKind the span kind for the operation.
      * @return The updated {@link InstrumentedOperationDetails} object.
      */
-    public InstrumentedOperationDetails spanKind(SpanKind spanKind) {
+    InstrumentedOperationDetails spanKind(SpanKind spanKind) {
         this.spanKind = spanKind;
         return this;
     }

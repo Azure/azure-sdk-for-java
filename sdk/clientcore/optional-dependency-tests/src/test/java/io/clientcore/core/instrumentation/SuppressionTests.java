@@ -412,7 +412,7 @@ public class SuppressionTests {
         SampleClientCallInstrumentation(HttpPipeline pipeline, InstrumentationOptions options,
             LibraryInstrumentationOptions libOptions) {
             this.pipeline = pipeline;
-            URI serviceEndpoint = URI.create("https://localhost");
+            String serviceEndpoint = "https://localhost";
             Instrumentation instrumentation = Instrumentation.create(options, libOptions);
 
             protocolInstrumentation = instrumentation.createOperationInstrumentation(
@@ -424,8 +424,7 @@ public class SuppressionTests {
 
         @SuppressWarnings("try")
         public Response<?> protocolMethod(RequestOptions options) {
-            return protocolInstrumentation.instrument((updatedOptions,
-                __) -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+            return protocolInstrumentation.instrument((updatedOptions) -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
                     .setRequestOptions(updatedOptions)),
                 options);
@@ -433,7 +432,7 @@ public class SuppressionTests {
 
         @SuppressWarnings("try")
         public Response<?> convenienceMethod(RequestOptions options) throws IOException {
-            return convenienceInstrumentation.instrument((updatedOptions, __) -> protocolMethod(updatedOptions),
+            return convenienceInstrumentation.instrument(this::protocolMethod,
                 options);
         }
     }

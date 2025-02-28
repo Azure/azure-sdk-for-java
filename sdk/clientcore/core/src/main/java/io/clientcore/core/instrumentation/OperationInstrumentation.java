@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.OPERATION_NAME_KEY;
@@ -86,12 +87,12 @@ public final class OperationInstrumentation {
      * @return the response.
      * @throws RuntimeException if the call throws a runtime exception.
      */
-    public <TResponse> TResponse instrument(BiFunction<RequestOptions, InstrumentationContext, TResponse> operation,
-        RequestOptions requestOptions) {
+    public <TResponse> TResponse instrument(Function<RequestOptions, TResponse> operation,
+                                            RequestOptions requestOptions) {
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
         if (!shouldInstrument(requestOptions)) {
-            return operation.apply(requestOptions, NoopInstrumentationContext.INSTANCE);
+            return operation.apply(requestOptions);
         }
 
         if (requestOptions == null || requestOptions == RequestOptions.none()) {
@@ -100,7 +101,7 @@ public final class OperationInstrumentation {
 
         OperationInstrumentation.Scope scope = startScope(requestOptions);
         try {
-            return operation.apply(requestOptions, scope.getInstrumentationContext());
+            return operation.apply(requestOptions);
         } catch (RuntimeException t) {
             scope.setError(t);
             throw t;

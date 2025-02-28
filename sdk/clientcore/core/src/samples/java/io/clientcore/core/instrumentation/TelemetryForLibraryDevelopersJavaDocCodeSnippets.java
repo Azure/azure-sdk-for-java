@@ -229,7 +229,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      */
     public void instrumentCallWithMetricsAndTraces() {
         Instrumentation instrumentation = Instrumentation.create(null, LIBRARY_OPTIONS);
-        URI serviceEndpoint = URI.create("https://example.com");
+        String serviceEndpoint = "https://example.com";
         final String durationMetricName = "sample.client.operation.duration";
         InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails("downloadContent", durationMetricName)
             .endpoint(serviceEndpoint);
@@ -240,7 +240,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         final OperationInstrumentation operationInstrumentation = instrumentation.createOperationInstrumentation(downloadDetails);
 
-        operationInstrumentation.instrument((updatedOptions, __) -> clientCall(updatedOptions), requestOptions);
+        operationInstrumentation.instrument(this::clientCall, requestOptions);
 
         // END: io.clientcore.core.instrumentation.operation
     }
@@ -251,7 +251,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      */
     public void enrichOperationInstrumentation() {
         Instrumentation instrumentation = Instrumentation.create(null, LIBRARY_OPTIONS);
-        URI serviceEndpoint = URI.create("https://example.com");
+        String serviceEndpoint = "https://example.com";
         final String durationMetricName = "sample.client.operation.duration";
         InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails("downloadContent", durationMetricName)
             .endpoint(serviceEndpoint);
@@ -259,8 +259,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         final OperationInstrumentation operationInstrumentation = instrumentation.createOperationInstrumentation(downloadDetails);
 
         // BEGIN: io.clientcore.core.instrumentation.enrich
-        operationInstrumentation.instrument((updatedOptions, instrumentationContext) -> {
-            Span span = instrumentationContext.getSpan();
+        operationInstrumentation.instrument(updatedOptions -> {
+            Span span = updatedOptions.getInstrumentationContext().getSpan();
             if (span.isRecording()) {
                 span.setAttribute("sample.content.id", "{content-id}");
             }

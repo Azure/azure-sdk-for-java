@@ -37,6 +37,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,7 +47,7 @@ public class OperationInstrumentationTests {
     private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
         = new LibraryInstrumentationOptions("test-lib").setLibraryVersion("1.0.0")
             .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
-    private static final URI DEFAULT_ENDPOINT = URI.create("https://localhost");
+    private static final String DEFAULT_ENDPOINT = "https://localhost";
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
@@ -97,7 +98,7 @@ public class OperationInstrumentationTests {
             new InstrumentedOperationDetails("call", "test").spanKind(kind).endpoint(DEFAULT_ENDPOINT));
 
         AtomicReference<Span> current = new AtomicReference<>();
-        call.instrument((options, __) -> {
+        call.instrument(options -> {
             current.set(Span.current());
             assertTrue(current.get().getSpanContext().isValid());
             assertEquals(current.get().getSpanContext().getTraceId(), options.getInstrumentationContext().getTraceId());
@@ -120,7 +121,7 @@ public class OperationInstrumentationTests {
             new InstrumentedOperationDetails("call", "test").endpoint(DEFAULT_ENDPOINT));
 
         RuntimeException error = new RuntimeException("Test error");
-        assertThrows(RuntimeException.class, () -> call.instrument((o, __) -> {
+        assertThrows(RuntimeException.class, () -> call.instrument(o -> {
             throw error;
         }, new RequestOptions()));
 
@@ -138,7 +139,7 @@ public class OperationInstrumentationTests {
         OperationInstrumentation call
             = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("call", "test"));
 
-        call.instrument((o, c) -> "done", RequestOptions.none());
+        call.instrument(__ -> "done", RequestOptions.none());
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -149,21 +150,21 @@ public class OperationInstrumentationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "http://example.com", "https://example.com:8080", "http://example.com:9090" })
-    public void testEndpoints(String uri) {
+    public void testEndpoints(String endpoint) {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        URI endpoint = URI.create(uri);
         OperationInstrumentation call = instrumentation
             .createOperationInstrumentation(new InstrumentedOperationDetails("Call", "test").endpoint(endpoint));
 
-        call.instrument((o, c) -> "done", new RequestOptions());
+        call.instrument(__ -> "done", new RequestOptions());
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
 
-        Long expectedPort = endpoint.getPort() == -1 ? 80 : (long) endpoint.getPort();
-        assertCallSpan(spanData, "Call", SpanKind.CLIENT, endpoint.getHost(), expectedPort, null);
+        URI uri = URI.create(endpoint);
+        Long expectedPort = uri.getPort() == -1 ? 80 : (long) uri.getPort();
+        assertCallSpan(spanData, "Call", SpanKind.CLIENT, uri.getHost(), expectedPort, null);
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
-        assertDurationMetric(metrics, "test", "Call", endpoint.getHost(), expectedPort, null,
+        assertDurationMetric(metrics, "test", "Call", uri.getHost(), expectedPort, null,
             spanData.getSpanContext());
     }
 
@@ -174,7 +175,7 @@ public class OperationInstrumentationTests {
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
             new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
 
-        call.instrument((o, c) -> {
+        call.instrument(__ -> {
             assertFalse(Span.current().getSpanContext().isValid());
             return "done";
         }, new RequestOptions());
@@ -192,7 +193,7 @@ public class OperationInstrumentationTests {
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
             new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
 
-        call.instrument((o, c) -> "done", new RequestOptions());
+        call.instrument(__ -> "done", new RequestOptions());
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", SpanKind.CLIENT, "localhost", 443L, null);
@@ -207,7 +208,7 @@ public class OperationInstrumentationTests {
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
             new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
 
-        call.instrument((o, c) -> "done", new RequestOptions());
+        call.instrument(__ -> "done", new RequestOptions());
         assertEquals(0, exporter.getFinishedSpanItems().size());
         assertEquals(0, meterReader.collectAllMetrics().size());
     }
@@ -232,16 +233,17 @@ public class OperationInstrumentationTests {
 
         RequestOptions options = new RequestOptions();
 
-        call1.instrument((o1, ctx1) -> {
-            assertTrue(ctx1.isValid());
-            assertSame(ctx1, options.getInstrumentationContext());
-            return call2.instrument((o2, ctx2) -> {
-                assertTrue(ctx2.isValid());
+        call1.instrument(o1 -> {
+            assertTrue(o1.getInstrumentationContext().isValid());
+            assertSame(o1.getInstrumentationContext(), options.getInstrumentationContext());
+            return call2.instrument(o2 -> {
+                assertTrue(o2.getInstrumentationContext().isValid());
                 assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
-                return call3.instrument((o3, ctx3) -> {
-                    assertFalse(ctx3.isValid());
+                assertNotSame(o2.getInstrumentationContext(), o1.getInstrumentationContext());
+                return call3.instrument(o3 -> {
+                    // this call is suppressed
                     assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
-
+                    assertNotSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
                     return "done";
                 }, o2);
             }, o1);
@@ -274,23 +276,24 @@ public class OperationInstrumentationTests {
         RequestOptions options = new RequestOptions();
 
         AtomicReference<InstrumentationContext> parent = new AtomicReference<>();
-        call1.instrument((o, parentCtx) -> {
-            parent.set(parentCtx);
-            assertSame(parentCtx, options.getInstrumentationContext());
+        call1.instrument(o -> {
+            parent.set(o.getInstrumentationContext());
 
-            String r1 = call2.instrument((o2, ctx2) -> {
-                assertTrue(ctx2.isValid());
-                assertSame(ctx2, options.getInstrumentationContext());
+            String r1 = call2.instrument(o2 -> {
+                assertTrue(o2.getInstrumentationContext().isValid());
+                assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
+                assertNotSame(o2.getInstrumentationContext(), parent.get());
                 return "done1";
             }, o);
 
             // reset context to parent - it's modified by call2
             // it's not perfect, but also not a big problem since we rarely have nested sibling sub-operations sharing
             // the same request options instance
-            options.setInstrumentationContext(parentCtx);
-            String r2 = call3.instrument((o3, ctx3) -> {
-                assertTrue(ctx3.isValid());
-                assertSame(ctx3, options.getInstrumentationContext());
+            options.setInstrumentationContext(parent.get());
+            String r2 = call3.instrument(o3 -> {
+                assertTrue(o3.getInstrumentationContext().isValid());
+                assertSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
+                assertNotSame(o3.getInstrumentationContext(), parent.get());
                 return "done2";
             }, o);
 

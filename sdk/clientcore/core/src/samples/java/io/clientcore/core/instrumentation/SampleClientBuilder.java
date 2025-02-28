@@ -8,8 +8,6 @@ import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 
-import java.net.URI;
-
 class SampleClientBuilder {
     private HttpInstrumentationOptions instrumentationOptions;
 
@@ -22,6 +20,6 @@ class SampleClientBuilder {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
             .build();
-        return new SampleClient(instrumentationOptions, pipeline, URI.create("https://example.com"));
+        return new SampleClient(instrumentationOptions, pipeline, "https://example.com");
     }
 }

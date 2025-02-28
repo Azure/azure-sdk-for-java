@@ -17,9 +17,9 @@ class SampleClient {
     private final HttpPipeline httpPipeline;
     private final OperationInstrumentation downloadContentInstrumentation;
     private final OperationInstrumentation createInstrumentation;
-    private final URI endpoint;
+    private final String endpoint;
 
-    SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline, URI endpoint) {
+    SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
@@ -41,13 +41,12 @@ class SampleClient {
 
     public Response<?> downloadContent(RequestOptions options) {
         // BEGIN: io.clientcore.core.instrumentation.instrument
-        return downloadContentInstrumentation.instrument((updatedOptions, instrumentationContext) ->
-            downloadImpl(updatedOptions), options);
+        return downloadContentInstrumentation.instrument(this::downloadImpl, options);
         // END: io.clientcore.core.instrumentation.instrument
     }
 
     public Response<?> create(RequestOptions options) {
-        return createInstrumentation.instrument((updatedOptions, instrumentationContext) -> createImpl(updatedOptions), options);
+        return createInstrumentation.instrument(this::createImpl, options);
     }
 
     private Response<?> downloadImpl(RequestOptions options) {

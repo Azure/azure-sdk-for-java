@@ -184,12 +184,12 @@ public class TelemetryJavaDocCodeSnippets {
         private static final LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("contoso.sample");
         private static final String SAMPLE_OPERATION_DURATION_METRIC_NAME = "contoso.sample.client.operation.duration";
         private final HttpPipeline httpPipeline;
-        private final URI serviceEndpoint;
+        private final String serviceEndpoint;
         private final OperationInstrumentation clientCallInstrumentation;
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
             this.httpPipeline = httpPipeline;
-            this.serviceEndpoint = URI.create("https://example.com");
+            this.serviceEndpoint = "https://example.com";
             Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
             clientCallInstrumentation = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("clientCall", SAMPLE_OPERATION_DURATION_METRIC_NAME)
                 .endpoint(this.serviceEndpoint));
@@ -201,7 +201,7 @@ public class TelemetryJavaDocCodeSnippets {
 
         @SuppressWarnings("try")
         public Response<?> clientCall(RequestOptions options) {
-            return clientCallInstrumentation.instrument((updatedOptions, instrumentationContext) -> httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint)), options);
+            return clientCallInstrumentation.instrument(updatedOptions -> httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint)), options);
         }
     }
 }
