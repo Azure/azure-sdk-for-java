@@ -8,10 +8,10 @@ import com.azure.v2.core.test.models.TestProxyRequestMatcher;
 import com.azure.v2.core.test.models.TestProxySanitizer;
 import com.azure.v2.core.test.policy.TestProxyRecordPolicy;
 import com.azure.v2.core.test.utils.TestUtils;
-import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.CoreUtils;
 
 import java.io.File;
 import java.io.IOException;

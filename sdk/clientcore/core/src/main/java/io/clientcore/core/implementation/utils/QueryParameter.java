@@ -3,14 +3,15 @@
 
 package io.clientcore.core.implementation.utils;
 
+import io.clientcore.core.utils.CoreUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
-import static io.clientcore.core.implementation.utils.ImplUtils.stringJoin;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Represents a single parameter to be added to a query string.
@@ -164,6 +165,6 @@ public final class QueryParameter {
     }
 
     private void checkCachedStringValue() {
-        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, stringJoin(",", values));
+        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
     }
 }

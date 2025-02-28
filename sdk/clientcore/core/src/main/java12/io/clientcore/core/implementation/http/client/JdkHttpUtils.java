@@ -72,49 +72,6 @@ public final class JdkHttpUtils {
         return SharedExecutorService.getInstance().schedule(task, timeoutMillis, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * Attempts to load an environment configured default timeout.
-     * <p>
-     * If the environment default timeout isn't configured, {@code defaultTimeout} will be returned. If the environment
-     * default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code defaultTimeout} will
-     * be returned. If the environment default timeout is less than 0, {@link Duration#ZERO} will be returned indicated
-     * that there is no timeout period.
-     *
-     * @param configuration The environment configurations.
-     * @param timeoutPropertyName The default timeout property name.
-     * @param defaultTimeout The fallback timeout to be used.
-     * @param logger A {@link ClientLogger} to log exceptions.
-     * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
-     */
-    public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
-        Duration defaultTimeout, ClientLogger logger) {
-        String environmentTimeout = configuration.get(timeoutPropertyName);
-
-        // Environment wasn't configured with the timeout property.
-        if (environmentTimeout == null || environmentTimeout.isEmpty()) {
-            return defaultTimeout;
-        }
-
-        try {
-            long timeoutMillis = Long.parseLong(environmentTimeout);
-            if (timeoutMillis < 0) {
-                logger.atVerbose()
-                    .addKeyValue(timeoutPropertyName, timeoutMillis)
-                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout.");
-                return Duration.ZERO;
-            }
-
-            return Duration.ofMillis(timeoutMillis);
-        } catch (NumberFormatException ex) {
-            logger.atInfo()
-                .addKeyValue(timeoutPropertyName, environmentTimeout)
-                .addKeyValue("defaultTimeout", defaultTimeout)
-                .log("Timeout is not valid number. Using default value.", ex);
-
-            return defaultTimeout;
-        }
-    }
-
     private JdkHttpUtils() {
     }
 }

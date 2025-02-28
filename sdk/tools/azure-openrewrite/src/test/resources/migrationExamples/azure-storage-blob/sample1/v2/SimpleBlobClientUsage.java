@@ -13,7 +13,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

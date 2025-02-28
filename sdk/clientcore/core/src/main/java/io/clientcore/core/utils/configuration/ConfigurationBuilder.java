@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static io.clientcore.core.annotations.TypeConditions.FLUENT;
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Builds {@link Configuration} with external source.

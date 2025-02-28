@@ -5,6 +5,7 @@ package io.clientcore.core.http.client;
 
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.implementation.http.client.JdkHttpClientProxySelector;
+import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -26,12 +27,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import static io.clientcore.core.implementation.http.client.JdkHttpUtils.getDefaultTimeoutFromEnvironment;
-import static io.clientcore.core.utils.configuration.Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS;
-import static io.clientcore.core.utils.configuration.Configuration.REQUEST_READ_TIMEOUT_IN_MS;
-import static io.clientcore.core.utils.configuration.Configuration.REQUEST_RESPONSE_TIMEOUT_IN_MS;
-import static io.clientcore.core.utils.configuration.Configuration.REQUEST_WRITE_TIMEOUT_IN_MS;
-
 /**
  * Builder to configure and build an instance of the JDK {@code HttpClient} introduced in Java 11.
  * <p>
@@ -47,10 +42,10 @@ public class JdkHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
 
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final Duration DEFAULT_CONNECTION_TIMEOUT;
-    private static final Duration DEFAULT_WRITE_TIMEOUT;
-    private static final Duration DEFAULT_RESPONSE_TIMEOUT;
-    private static final Duration DEFAULT_READ_TIMEOUT;
+    private static final Duration DEFAULT_CONNECTION_TIMEOUT = ImplUtils.getDefaultHttpConnectTimeout();
+    private static final Duration DEFAULT_WRITE_TIMEOUT = ImplUtils.getDefaultHttpWriteTimeout();
+    private static final Duration DEFAULT_RESPONSE_TIMEOUT = ImplUtils.getDefaultHttpResponseTimeout();
+    private static final Duration DEFAULT_READ_TIMEOUT = ImplUtils.getDefaultHttpReadTimeout();
 
     private static final String JAVA_HOME = System.getProperty("java.home");
     private static final String JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS = "jdk.httpclient.allowRestrictedHeaders";
@@ -62,22 +57,8 @@ public class JdkHttpClientBuilder {
     //
     // jdk.httpclient.allowRestrictedHeaders=host
     // Also see - https://bugs.openjdk.java.net/browse/JDK-8213189
-    static final Set<String> DEFAULT_RESTRICTED_HEADERS;
-
-    static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-
-        DEFAULT_CONNECTION_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, REQUEST_CONNECT_TIMEOUT_IN_MS,
-            Duration.ofSeconds(10), LOGGER);
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, REQUEST_WRITE_TIMEOUT_IN_MS,
-            Duration.ofSeconds(60), LOGGER);
-        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, REQUEST_RESPONSE_TIMEOUT_IN_MS,
-            Duration.ofSeconds(60), LOGGER);
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, REQUEST_READ_TIMEOUT_IN_MS,
-            Duration.ofSeconds(60), LOGGER);
-
-        DEFAULT_RESTRICTED_HEADERS = Set.of("connection", "content-length", "expect", "host", "upgrade");
-    }
+    static final Set<String> DEFAULT_RESTRICTED_HEADERS
+        = Set.of("connection", "content-length", "expect", "host", "upgrade");
 
     private ProxyOptions proxyOptions;
     private Configuration configuration;

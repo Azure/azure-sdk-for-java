@@ -5,7 +5,7 @@ package io.clientcore.core.http.models;
 
 import io.clientcore.core.serialization.json.models.JsonArray;
 import io.clientcore.core.serialization.json.models.JsonObject;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 /**
  * JavaDoc code snippets for {@link RequestOptions}.

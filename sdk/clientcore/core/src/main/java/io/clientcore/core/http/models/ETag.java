@@ -14,14 +14,14 @@ import java.util.Objects;
 public final class ETag {
     private static final ClientLogger LOGGER = new ClientLogger(ETag.class);
 
-    private static final String QUOTE_STRING = "\"";
-    private static final String WEAK_ETAG_PREFIX_QUOTE = "W/\"";
-    private static final String ASTERISK = "*";
+    static final String WEAK_ETAG_PREFIX_QUOTE = "W/\"";
+    static final String ASTERISK = "*";
 
     /**
-     * The asterisk is a special value representing any resource.
+     * An ETag with value {@code *}, which represents any resource.
      */
     public static final ETag ALL = new ETag(ASTERISK);
+    private static final ETag NULL = new ETag(null);
 
     private final String eTag;
 
@@ -30,9 +30,46 @@ public final class ETag {
      *
      * @param eTag The HTTP entity tag string value.
      */
-    public ETag(String eTag) {
-        checkValidETag(eTag);
+    private ETag(String eTag) {
         this.eTag = eTag;
+    }
+
+    /**
+     * Creates a new instance of {@link ETag}.
+     * <p>
+     * This method will validate that the {@code eTag} is a valid ETag value. Valid ETag values are as follows:
+     * <ul>
+     *     <li>{@code *}, representing the special value {@link #ALL}</li>
+     *     <li>String value beginning and ending with {@code "}, representing a normal ETag</li>
+     *     <li>String value beginning with {@code W/"} and ending with {@code "}, representing a weak ETag</li>
+     * </ul>
+     *
+     * If {@code eTag} is null a special null valued ETag will be returned. If the {@code eTag} doesn't meet any of the
+     * valid ETag values an {@link IllegalArgumentException} will be thrown.
+     *
+     * @param eTag The HTTP entity tag string value.
+     * @return A new instance of {@link ETag}.
+     * @throws IllegalArgumentException If the {@code eTag} is not a valid ETag value.
+     */
+    public static ETag fromString(String eTag) {
+        // If the value is null or "*", create the ETag.
+        if (eTag == null) {
+            return NULL;
+        } else if (ASTERISK.equals(eTag)) {
+            return ALL;
+        }
+
+        boolean endsWithQuote = eTag.charAt(eTag.length() - 1) == '"';
+        boolean startsWithQuote = eTag.charAt(0) == '"';
+        boolean startsWithWeakETagPrefix = eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE);
+        if (!endsWithQuote || (!startsWithQuote && !startsWithWeakETagPrefix)) {
+            throw LOGGER.atError()
+                .addKeyValue("ETag", eTag)
+                .log(new IllegalArgumentException(
+                    "The ETag should be null, '*', be wrapped in quotes, or be wrapped " + "in quotes prefixed by W/"));
+        }
+
+        return new ETag(eTag);
     }
 
     @Override
@@ -67,15 +104,6 @@ public final class ETag {
      * @param eTag ETag string value.
      */
     private void checkValidETag(String eTag) {
-        if (eTag == null || ASTERISK.equals(eTag)) {
-            return;
-        }
 
-        if (!((eTag.startsWith(QUOTE_STRING) || eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE))
-            && eTag.endsWith(QUOTE_STRING))) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(String.format(
-                "The value=%s should be equal to * , be wrapped in quotes, or be wrapped in quotes prefixed by W/",
-                eTag)));
-        }
     }
 }

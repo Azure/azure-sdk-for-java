@@ -7,7 +7,6 @@ import com.azure.v2.core.test.models.CustomMatcher;
 import com.azure.v2.core.test.models.TestProxyRequestMatcher;
 import com.azure.v2.core.test.models.TestProxySanitizer;
 import com.azure.v2.core.test.models.TestProxySanitizerType;
-import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -15,8 +14,9 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.core.models.binarydata.StringBinaryData;
+import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.UriBuilder;
 
 import java.io.File;
 import java.io.IOException;

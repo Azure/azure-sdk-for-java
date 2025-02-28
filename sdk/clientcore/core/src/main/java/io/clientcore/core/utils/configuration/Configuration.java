@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Contains configuration information that is used during construction of client libraries.

@@ -6,7 +6,7 @@ package io.clientcore.core.utils;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Encodes and decodes using Base64 URI encoding.

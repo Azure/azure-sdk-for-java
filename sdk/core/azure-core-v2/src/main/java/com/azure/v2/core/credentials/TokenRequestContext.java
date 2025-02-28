@@ -3,8 +3,8 @@
 
 package com.azure.v2.core.credentials;
 
-import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.CoreUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

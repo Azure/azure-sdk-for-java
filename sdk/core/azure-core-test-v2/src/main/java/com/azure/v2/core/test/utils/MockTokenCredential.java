@@ -3,9 +3,9 @@
 
 package com.azure.v2.core.test.utils;
 
-import com.azure.v2.core.credentials.TokenCredential;
-import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.credentials.oauth.AccessToken;
+import io.clientcore.core.credentials.oauth.OAuthTokenCredential;
+import io.clientcore.core.credentials.oauth.OAuthTokenRequestContext;
 
 import java.time.OffsetDateTime;
 
@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  * This class mocks the behavior of {@code TokenCredential} without making a network call
  * with dummy credentials.
  */
-public class MockTokenCredential implements TokenCredential {
+public class MockTokenCredential implements OAuthTokenCredential {
 
     /**
      * Creates an instance of {@link MockTokenCredential}.
@@ -22,7 +22,7 @@ public class MockTokenCredential implements TokenCredential {
     }
 
     @Override
-    public AccessToken getToken(TokenRequestContext request) {
+    public AccessToken getToken(OAuthTokenRequestContext request) {
         return new AccessToken("mockToken", OffsetDateTime.now().plusHours(2));
     }
 }

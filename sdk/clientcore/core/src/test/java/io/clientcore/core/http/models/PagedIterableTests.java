@@ -3,6 +3,9 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.http.paging.PagedIterable;
+import io.clientcore.core.http.paging.PagedResponse;
+import io.clientcore.core.http.paging.PagingOptions;
 import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Assertions;
