@@ -18,13 +18,13 @@ refer to the [test proxy migration guide][test-proxy-migration-guide].
 
 To use this package, add the following to your _pom.xml_.
 
-[//]: # ({x-version-update-start;com.azure:azure-core-test-v2;current})
+[//]: # ({x-version-update-start;com.azure.v2:azure-core-test;current})
 
 ```xml
 
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-test-v2</artifactId>
+  <groupId>com.azure.v2</groupId>
+  <artifactId>azure-core-test</artifactId>
   <version>2.0.0-beta.1</version>
 </dependency>
 ```
