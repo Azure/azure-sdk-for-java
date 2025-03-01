@@ -62,7 +62,7 @@ public class PagingOperationTests {
         // Retrieve initial response
         Response<List<Foo>> initialResponse = testInterface.listFoo(uri, RequestOptions.none());
 
-        List<Foo>   fooFirstPageResponse = initialResponse.getValue();
+        List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
         assertNotNull(fooFirstPageResponse.get(0).bar());
 

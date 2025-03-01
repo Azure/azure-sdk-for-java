@@ -198,13 +198,17 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         deserializeHelperMethod
             .setJavadocComment("Decodes the body of an {@link Response} into the type returned by the called API.\n"
                 + "@param bytes The bytes to decode.\n" + "@param serializer The serializer to use.\n"
-                + "@param returnType The type of the return value.\n" + "@return The decoded value.\n"
+                + "@param returnType The type of the ParameterizedType return value.\n" + "@return The decoded value.\n"
                 + "@throws IOException If the deserialization fails.");
-        deserializeHelperMethod.setBody(new BlockStmt().addStatement(StaticJavaParser.parseStatement("try {"
-            + " Type token = returnType.getRawType();" + " if (Response.class.isAssignableFrom((Class<?>) token)) {"
-            + "     token = returnType.getActualTypeArguments()[0];" + " }"
-            + " return serializer.deserializeFromBytes(bytes, token);" + " } catch (IOException e) {"
-            + " throw LOGGER.logThrowableAsError(new UncheckedIOException(e));" + " }")));
+
+        deserializeHelperMethod.setBody(new BlockStmt().addStatement(StaticJavaParser
+            .parseStatement("try { " + "if (List.class.isAssignableFrom(TypeUtil.getRawClass(returnType))) { "
+                + "    return serializer.deserializeFromBytes(bytes, returnType); " + "} "
+                + "Type token = returnType.getRawType(); " + "if (Response.class.isAssignableFrom((Class<?>) token)) { "
+                + "    token = returnType.getActualTypeArguments()[0]; " + "} "
+                + "return serializer.deserializeFromBytes(bytes, token); " + "} catch (IOException e) { "
+                + "    throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); " + "}")));
+
     }
 
     // Pattern for all field and method creation is to mutate the passed declaration.
