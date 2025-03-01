@@ -3,9 +3,9 @@
 
 package com.azure.v2.core.test.utils;
 
-import com.azure.v2.core.credentials.AccessToken;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
+import io.clientcore.core.credentials.oauth.AccessToken;
 
 import java.time.OffsetDateTime;
 

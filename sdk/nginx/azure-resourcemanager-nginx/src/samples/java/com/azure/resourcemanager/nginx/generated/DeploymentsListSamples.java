@@ -10,7 +10,7 @@ package com.azure.resourcemanager.nginx.generated;
 public final class DeploymentsListSamples {
     /*
      * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_List.json
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_List.json
      */
     /**
      * Sample code: Deployments_List.

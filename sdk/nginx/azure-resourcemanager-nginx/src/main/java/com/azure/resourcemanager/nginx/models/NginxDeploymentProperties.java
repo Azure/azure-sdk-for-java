@@ -27,11 +27,6 @@ public final class NginxDeploymentProperties implements JsonSerializable<NginxDe
     private String nginxVersion;
 
     /*
-     * The managed resource group to deploy VNet injection related network resources.
-     */
-    private String managedResourceGroup;
-
-    /*
      * The networkProfile property.
      */
     private NginxNetworkProfile networkProfile;
@@ -66,6 +61,16 @@ public final class NginxDeploymentProperties implements JsonSerializable<NginxDe
      */
     private NginxDeploymentUserProfile userProfile;
 
+    /*
+     * Settings for NGINX App Protect (NAP)
+     */
+    private NginxDeploymentPropertiesNginxAppProtect nginxAppProtect;
+
+    /*
+     * Dataplane API endpoint for the caller to update the NGINX state of the deployment.
+     */
+    private String dataplaneApiEndpoint;
+
     /**
      * Creates an instance of NginxDeploymentProperties class.
      */
@@ -88,28 +93,6 @@ public final class NginxDeploymentProperties implements JsonSerializable<NginxDe
      */
     public String nginxVersion() {
         return this.nginxVersion;
-    }
-
-    /**
-     * Get the managedResourceGroup property: The managed resource group to deploy VNet injection related network
-     * resources.
-     * 
-     * @return the managedResourceGroup value.
-     */
-    public String managedResourceGroup() {
-        return this.managedResourceGroup;
-    }
-
-    /**
-     * Set the managedResourceGroup property: The managed resource group to deploy VNet injection related network
-     * resources.
-     * 
-     * @param managedResourceGroup the managedResourceGroup value to set.
-     * @return the NginxDeploymentProperties object itself.
-     */
-    public NginxDeploymentProperties withManagedResourceGroup(String managedResourceGroup) {
-        this.managedResourceGroup = managedResourceGroup;
-        return this;
     }
 
     /**
@@ -242,6 +225,36 @@ public final class NginxDeploymentProperties implements JsonSerializable<NginxDe
     }
 
     /**
+     * Get the nginxAppProtect property: Settings for NGINX App Protect (NAP).
+     * 
+     * @return the nginxAppProtect value.
+     */
+    public NginxDeploymentPropertiesNginxAppProtect nginxAppProtect() {
+        return this.nginxAppProtect;
+    }
+
+    /**
+     * Set the nginxAppProtect property: Settings for NGINX App Protect (NAP).
+     * 
+     * @param nginxAppProtect the nginxAppProtect value to set.
+     * @return the NginxDeploymentProperties object itself.
+     */
+    public NginxDeploymentProperties withNginxAppProtect(NginxDeploymentPropertiesNginxAppProtect nginxAppProtect) {
+        this.nginxAppProtect = nginxAppProtect;
+        return this;
+    }
+
+    /**
+     * Get the dataplaneApiEndpoint property: Dataplane API endpoint for the caller to update the NGINX state of the
+     * deployment.
+     * 
+     * @return the dataplaneApiEndpoint value.
+     */
+    public String dataplaneApiEndpoint() {
+        return this.dataplaneApiEndpoint;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -262,6 +275,9 @@ public final class NginxDeploymentProperties implements JsonSerializable<NginxDe
         if (userProfile() != null) {
             userProfile().validate();
         }
+        if (nginxAppProtect() != null) {
+            nginxAppProtect().validate();
+        }
     }
 
     /**
@@ -270,13 +286,13 @@ public final class NginxDeploymentProperties implements JsonSerializable<NginxDe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("managedResourceGroup", this.managedResourceGroup);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeBooleanField("enableDiagnosticsSupport", this.enableDiagnosticsSupport);
         jsonWriter.writeJsonField("logging", this.logging);
         jsonWriter.writeJsonField("scalingProperties", this.scalingProperties);
         jsonWriter.writeJsonField("autoUpgradeProfile", this.autoUpgradeProfile);
         jsonWriter.writeJsonField("userProfile", this.userProfile);
+        jsonWriter.writeJsonField("nginxAppProtect", this.nginxAppProtect);
         return jsonWriter.writeEndObject();
     }
 
@@ -300,8 +316,6 @@ public final class NginxDeploymentProperties implements JsonSerializable<NginxDe
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("nginxVersion".equals(fieldName)) {
                     deserializedNginxDeploymentProperties.nginxVersion = reader.getString();
-                } else if ("managedResourceGroup".equals(fieldName)) {
-                    deserializedNginxDeploymentProperties.managedResourceGroup = reader.getString();
                 } else if ("networkProfile".equals(fieldName)) {
                     deserializedNginxDeploymentProperties.networkProfile = NginxNetworkProfile.fromJson(reader);
                 } else if ("ipAddress".equals(fieldName)) {
@@ -318,6 +332,11 @@ public final class NginxDeploymentProperties implements JsonSerializable<NginxDe
                     deserializedNginxDeploymentProperties.autoUpgradeProfile = AutoUpgradeProfile.fromJson(reader);
                 } else if ("userProfile".equals(fieldName)) {
                     deserializedNginxDeploymentProperties.userProfile = NginxDeploymentUserProfile.fromJson(reader);
+                } else if ("nginxAppProtect".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.nginxAppProtect
+                        = NginxDeploymentPropertiesNginxAppProtect.fromJson(reader);
+                } else if ("dataplaneApiEndpoint".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.dataplaneApiEndpoint = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

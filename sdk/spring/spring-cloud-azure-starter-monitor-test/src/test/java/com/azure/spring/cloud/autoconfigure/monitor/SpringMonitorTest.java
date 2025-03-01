@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
@@ -99,6 +100,7 @@ class SpringMonitorTest {
         // Log telemetry
         assertThat(logs.size()).isGreaterThan(0);
         TelemetryItem firstLogTelemetry = logs.get(0);
+        assertThat(sdkVersion(firstLogTelemetry)).contains("java").contains(":otel").contains(":dss");
         MonitorDomain logBaseData = firstLogTelemetry.getData().getBaseData();
         MessageData logData = toMessageData(logBaseData);
         assertThat(logData.getMessage()).startsWith("Starting SpringMonitorTest using");
@@ -122,6 +124,11 @@ class SpringMonitorTest {
         assertThat(requestData.isSuccess()).isTrue();
         assertThat(requestData.getResponseCode()).isEqualTo("200");
         assertThat(requestData.getName()).isEqualTo("GET /controller-url");
+    }
+
+    private static String sdkVersion(TelemetryItem telemetryItem) {
+        Map<String, String> tags = telemetryItem.getTags();
+        return tags.get("ai.internal.sdkVersion");
     }
 
     // Copied from com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.java

@@ -22,13 +22,16 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.nginx.fluent.NginxManagementClient;
+import com.azure.resourcemanager.nginx.implementation.ApiKeysImpl;
 import com.azure.resourcemanager.nginx.implementation.CertificatesImpl;
 import com.azure.resourcemanager.nginx.implementation.ConfigurationsImpl;
 import com.azure.resourcemanager.nginx.implementation.DeploymentsImpl;
 import com.azure.resourcemanager.nginx.implementation.NginxManagementClientBuilder;
 import com.azure.resourcemanager.nginx.implementation.OperationsImpl;
+import com.azure.resourcemanager.nginx.models.ApiKeys;
 import com.azure.resourcemanager.nginx.models.Certificates;
 import com.azure.resourcemanager.nginx.models.Configurations;
 import com.azure.resourcemanager.nginx.models.Deployments;
@@ -37,6 +40,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -44,6 +48,8 @@ import java.util.stream.Collectors;
  * Entry point to NginxManager.
  */
 public final class NginxManager {
+    private ApiKeys apiKeys;
+
     private Certificates certificates;
 
     private Configurations configurations;
@@ -104,6 +110,9 @@ public final class NginxManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-nginx.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -211,12 +220,14 @@ public final class NginxManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.nginx")
                 .append("/")
-                .append("1.1.0-beta.2");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -263,6 +274,18 @@ public final class NginxManager {
     }
 
     /**
+     * Gets the resource collection API of ApiKeys. It manages NginxDeploymentApiKeyResponse.
+     * 
+     * @return Resource collection API of ApiKeys.
+     */
+    public ApiKeys apiKeys() {
+        if (this.apiKeys == null) {
+            this.apiKeys = new ApiKeysImpl(clientObject.getApiKeys(), this);
+        }
+        return apiKeys;
+    }
+
+    /**
      * Gets the resource collection API of Certificates. It manages NginxCertificate.
      * 
      * @return Resource collection API of Certificates.
@@ -275,7 +298,7 @@ public final class NginxManager {
     }
 
     /**
-     * Gets the resource collection API of Configurations. It manages NginxConfiguration.
+     * Gets the resource collection API of Configurations. It manages NginxConfigurationResponse.
      * 
      * @return Resource collection API of Configurations.
      */

@@ -45,7 +45,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Bean post-processor that registers methods annotated with {@link T}
- * to be invoked by a Azure message listener container created under the cover
+ * to be invoked by an Azure message listener container created under the cover
  * by a {@link MessageListenerContainerFactory}
  * according to the attributes of the annotation.
  *

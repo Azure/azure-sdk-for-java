@@ -19,6 +19,7 @@
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineNextPolicy" />
       <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
+      <Class name="io.clientcore.core.http.pipeline.OAuthBearerTokenAuthenticationPolicy" />
       <Class name="io.clientcore.core.implementation.GenericParameterizedType" />
       <Class name="io.clientcore.core.implementation.ReflectionUtilsMethodHandle" />
       <Class name="io.clientcore.core.implementation.http.HttpPipelineCallState" />
@@ -46,6 +47,7 @@
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
       <Class name="io.clientcore.core.utils.Union" />
       <Class name="io.clientcore.core.utils.configuration.Configuration" />
+      <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
     </Or>
   </Match>
   <Match>
@@ -87,6 +89,7 @@
     <Bug pattern="DM_CONVERT_CASE" />
     <Or>
       <Class name="io.clientcore.core.http.models.HttpHeaderName" />
+      <Class name="io.clientcore.core.credentials.oauth.AccessTokenType" />
       <Class name="io.clientcore.core.utils.AuthUtils" />
       <Class name="io.clientcore.core.utils.ServerSentEventUtils" />
     </Or>
@@ -277,6 +280,10 @@
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
     <Class name="io.clientcore.core.serialization.xml.XmlReaderCodesnippetsTests" />
+  </Match>
+  <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
+    <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
   </Match>
   <Match>
     <Bug pattern="SERVLET_QUERY_STRING" />

@@ -15,40 +15,46 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"hl\",\"display\":{\"provider\":\"bh\",\"resource\":\"frlh\",\"operation\":\"sbkyvpycanuzbp\",\"description\":\"afkuwb\"},\"isDataAction\":false},{\"name\":\"bmehh\",\"display\":{\"provider\":\"v\",\"resource\":\"srtslhspkdeem\",\"operation\":\"fm\",\"description\":\"gkvtmelmqkrhah\"},\"isDataAction\":true}],\"nextLink\":\"ahaquh\"}")
+            "{\"value\":[{\"name\":\"kkfoqr\",\"display\":{\"provider\":\"kzikfjawneaivxwc\",\"resource\":\"lpcirelsf\",\"operation\":\"enwabfatk\",\"description\":\"dxbjhwuaanozj\"},\"isDataAction\":false},{\"name\":\"youlp\",\"display\":{\"provider\":\"xagl\",\"resource\":\"imjwosyt\",\"operation\":\"tcs\",\"description\":\"cktqumiekkezzi\"},\"isDataAction\":false},{\"name\":\"fjhdg\",\"display\":{\"provider\":\"ebdunyg\",\"resource\":\"qidbqfatpxllrxcy\",\"operation\":\"oadsuvar\",\"description\":\"wdmjsjqbjhhyx\"},\"isDataAction\":true}],\"nextLink\":\"yc\"}")
             .toObject(OperationListResult.class);
-        Assertions.assertEquals("hl", model.value().get(0).name());
-        Assertions.assertEquals("bh", model.value().get(0).display().provider());
-        Assertions.assertEquals("frlh", model.value().get(0).display().resource());
-        Assertions.assertEquals("sbkyvpycanuzbp", model.value().get(0).display().operation());
-        Assertions.assertEquals("afkuwb", model.value().get(0).display().description());
+        Assertions.assertEquals("kkfoqr", model.value().get(0).name());
+        Assertions.assertEquals("kzikfjawneaivxwc", model.value().get(0).display().provider());
+        Assertions.assertEquals("lpcirelsf", model.value().get(0).display().resource());
+        Assertions.assertEquals("enwabfatk", model.value().get(0).display().operation());
+        Assertions.assertEquals("dxbjhwuaanozj", model.value().get(0).display().description());
         Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals("ahaquh", model.nextLink());
+        Assertions.assertEquals("yc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationListResult model = new OperationListResult().withValue(Arrays.asList(
-            new OperationResultInner().withName("hl")
-                .withDisplay(new OperationDisplay().withProvider("bh")
-                    .withResource("frlh")
-                    .withOperation("sbkyvpycanuzbp")
-                    .withDescription("afkuwb"))
+            new OperationResultInner().withName("kkfoqr")
+                .withDisplay(new OperationDisplay().withProvider("kzikfjawneaivxwc")
+                    .withResource("lpcirelsf")
+                    .withOperation("enwabfatk")
+                    .withDescription("dxbjhwuaanozj"))
                 .withIsDataAction(false),
-            new OperationResultInner().withName("bmehh")
-                .withDisplay(new OperationDisplay().withProvider("v")
-                    .withResource("srtslhspkdeem")
-                    .withOperation("fm")
-                    .withDescription("gkvtmelmqkrhah"))
+            new OperationResultInner().withName("youlp")
+                .withDisplay(new OperationDisplay().withProvider("xagl")
+                    .withResource("imjwosyt")
+                    .withOperation("tcs")
+                    .withDescription("cktqumiekkezzi"))
+                .withIsDataAction(false),
+            new OperationResultInner().withName("fjhdg")
+                .withDisplay(new OperationDisplay().withProvider("ebdunyg")
+                    .withResource("qidbqfatpxllrxcy")
+                    .withOperation("oadsuvar")
+                    .withDescription("wdmjsjqbjhhyx"))
                 .withIsDataAction(true)))
-            .withNextLink("ahaquh");
+            .withNextLink("yc");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals("hl", model.value().get(0).name());
-        Assertions.assertEquals("bh", model.value().get(0).display().provider());
-        Assertions.assertEquals("frlh", model.value().get(0).display().resource());
-        Assertions.assertEquals("sbkyvpycanuzbp", model.value().get(0).display().operation());
-        Assertions.assertEquals("afkuwb", model.value().get(0).display().description());
+        Assertions.assertEquals("kkfoqr", model.value().get(0).name());
+        Assertions.assertEquals("kzikfjawneaivxwc", model.value().get(0).display().provider());
+        Assertions.assertEquals("lpcirelsf", model.value().get(0).display().resource());
+        Assertions.assertEquals("enwabfatk", model.value().get(0).display().operation());
+        Assertions.assertEquals("dxbjhwuaanozj", model.value().get(0).display().description());
         Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals("ahaquh", model.nextLink());
+        Assertions.assertEquals("yc", model.nextLink());
     }
 }

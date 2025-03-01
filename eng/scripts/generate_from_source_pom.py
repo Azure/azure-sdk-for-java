@@ -26,6 +26,7 @@
 import argparse
 from datetime import timedelta
 import os
+import glob
 import time
 import json
 from typing import Dict, Iterable, Set
@@ -51,6 +52,15 @@ client_versions_path = os.path.normpath(root_path + '/eng/versioning/version_cli
 client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 
 sdk_string = "/sdk/"
+
+# Normally, this wouldn't be necessary but because sdk/core/ci.v2.yml exists it's necessary
+def proj_path_has_yml(proj_path):
+  file_pattern = "ci*.yml"
+  matching_paths = glob.glob(file_pattern, root_dir=proj_path)
+  if matching_paths:
+    return True
+  else:
+    return False
 
 # Function that creates the aggregate POM.
 def create_from_source_pom(artifacts_list: str, additional_modules_list: str, set_skip_linting_projects: str, match_any_version: bool):
@@ -113,14 +123,18 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
         # the directory path needs to be added to the sparse checkout, otherwise it's one
         # directory up.
         proj_path = os.path.normpath(root_path + p.directory_path )
-#         proj_path_with_yml = os.path.normpath(proj_path + "/ci.yml")
-#         if os.path.exists(proj_path_with_yml):
-#             sparse_checkout_directory = p.directory_path
-#         else:
-        # Temporarily commenting out if / else above to resolve sparse checkout issue when running Communication
-        # library From Source live tests (plus possibly more). Will be reverted once all library checkouts are resolved.
-        sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
+        if proj_path_has_yml(proj_path):
+            yml_directory = p.directory_path
+        else:
+            yml_directory = '/'.join(p.directory_path.split('/')[0:-1])
 
+        # This is temporary, the sparse checkout directories should be the same directory where the yml
+        # file lives but needs to be the sdk/<serviceDirectory>. The reason being that there are directories
+        # whose ci.yml is in the library directory but there are dependencies on other directories in the
+        # service directory, outside of their library directory. ex. several communication libraries
+        # use sdk/communication/test-resources or sdk/clientcore/annotation-processor's ci.yml file
+        # needs sdk/clientcore/annotation-processor-test
+        sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
         sparse_checkout_directories.add(sparse_checkout_directory)
 
         # The ServiceDirectories list should only ever contain the list of service
@@ -129,8 +143,8 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
             # Sparse checkout directories can contain directories that aren't service directories.
             # (aka. /common). Any service directory will start with "/sdk/", everything else is
             # would be attributed to supporting libraries (ex. perf-test-core).
-            if sdk_string in sparse_checkout_directory:
-                service_directory = sparse_checkout_directory.replace(sdk_string, "")
+            if sdk_string in yml_directory:
+                service_directory = yml_directory.replace(sdk_string, "")
                 service_directories.add(service_directory)
 
     # output the SparseCheckoutDirectories environment variable

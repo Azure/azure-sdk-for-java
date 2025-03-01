@@ -16,7 +16,7 @@ public final class IdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IdentityProperties model = BinaryData.fromString(
-            "{\"principalId\":\"k\",\"tenantId\":\"xo\",\"type\":\"None\",\"userAssignedIdentities\":{\"whijcoejctbza\":{\"principalId\":\"pimexgstxgcpodg\",\"clientId\":\"ajrmvdjwzrlovmc\"},\"xaxcfjpgddtocjjx\":{\"principalId\":\"qsycbkbfkgu\",\"clientId\":\"kexxppof\"},\"jnxqbzvddntwn\":{\"principalId\":\"pmouexhdz\",\"clientId\":\"bqe\"}}}")
+            "{\"principalId\":\"cxgod\",\"tenantId\":\"fqkkr\",\"type\":\"None\",\"userAssignedIdentities\":{\"cispnqzahmgkbr\":{\"principalId\":\"riwflzlfb\",\"clientId\":\"puz\"},\"drgvtqagn\":{\"principalId\":\"y\",\"clientId\":\"ibnuqqkpik\"},\"zzmhjrunmpxttd\":{\"principalId\":\"ynhijggme\",\"clientId\":\"siarbutrcvpn\"}}}")
             .toObject(IdentityProperties.class);
         Assertions.assertEquals(IdentityType.NONE, model.type());
     }
@@ -24,8 +24,8 @@ public final class IdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IdentityProperties model = new IdentityProperties().withType(IdentityType.NONE)
-            .withUserAssignedIdentities(mapOf("whijcoejctbza", new UserIdentityProperties(), "xaxcfjpgddtocjjx",
-                new UserIdentityProperties(), "jnxqbzvddntwn", new UserIdentityProperties()));
+            .withUserAssignedIdentities(mapOf("cispnqzahmgkbr", new UserIdentityProperties(), "drgvtqagn",
+                new UserIdentityProperties(), "zzmhjrunmpxttd", new UserIdentityProperties()));
         model = BinaryData.fromObject(model).toObject(IdentityProperties.class);
         Assertions.assertEquals(IdentityType.NONE, model.type());
     }
