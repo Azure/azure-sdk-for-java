@@ -59,6 +59,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SE
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_PORT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.USER_AGENT_ORIGINAL_KEY;
+import static io.clientcore.core.implementation.instrumentation.InstrumentationUtils.getServerPort;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_REQUEST_EVENT_NAME;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RESPONSE_EVENT_NAME;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
@@ -204,7 +205,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @param instrumentationOptions Application telemetry options.
      */
     public HttpInstrumentationPolicy(HttpInstrumentationOptions instrumentationOptions) {
-        this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
+        this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS, null);
         this.tracer = instrumentation.createTracer();
         this.meter = instrumentation.createMeter();
         this.httpRequestDuration = meter.createDoubleHistogram(REQUEST_DURATION_METRIC_NAME,
@@ -324,30 +325,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 metricAttributes.put(SERVER_PORT_KEY, port);
             }
         }
-    }
-
-    /**
-     * Does the best effort to capture the server port with minimum perf overhead.
-     * If port is not set, we check scheme for "http" and "https" (case-sensitive).
-     * If scheme is not one of those, returns -1.
-     *
-     * @param uri request URI
-     */
-    private static int getServerPort(URI uri) {
-        int port = uri.getPort();
-        if (port == -1) {
-            switch (uri.getScheme()) {
-                case "http":
-                    return 80;
-
-                case "https":
-                    return 443;
-
-                default:
-                    break;
-            }
-        }
-        return port;
     }
 
     private void addDetails(HttpRequest request, int statusCode, int tryCount, Span span,

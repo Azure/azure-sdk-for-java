@@ -75,7 +75,7 @@ public class SuppressionTests {
         OpenTelemetry openTelemetry
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).setMeterProvider(meterProvider).build();
         otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
-        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).createTracer();
+        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null).createTracer();
     }
 
     @AfterEach
@@ -125,7 +125,7 @@ public class SuppressionTests {
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(metric -> OpenTelemetryAssertions.assertThat(metric)
-                .hasName("sample.client.operation.duration")
+                .hasName("test.library.client.operation.duration")
                 .hasHistogramSatisfying(h -> h.isCumulative().hasPointsSatisfying(point -> point.hasCount(1))));
     }
 
@@ -145,7 +145,7 @@ public class SuppressionTests {
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(metric -> OpenTelemetryAssertions.assertThat(metric)
-                .hasName("sample.client.operation.duration")
+                .hasName("test.library.client.operation.duration")
                 .hasHistogramSatisfying(
                     h -> h.isCumulative().hasPointsSatisfying(point -> point.hasCount(1), point -> point.hasCount(1))));
     }
@@ -154,7 +154,7 @@ public class SuppressionTests {
     public void testDisabledSuppression() {
         Tracer outerTracer = tracer;
         Tracer innerTracer = Instrumentation
-            .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true))
+            .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true), null)
             .createTracer();
 
         RequestOptions options = new RequestOptions();
@@ -178,7 +178,7 @@ public class SuppressionTests {
     @Test
     public void disabledSuppressionDoesNotAffectChildren() {
         Tracer outerTracer = Instrumentation
-            .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true))
+            .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true), null)
             .createTracer();
         Tracer innerTracer = tracer;
 
@@ -212,7 +212,7 @@ public class SuppressionTests {
 
     @Test
     public void multipleLayers() {
-        Tracer tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).createTracer();
+        Tracer tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null).createTracer();
 
         RequestOptions options = new RequestOptions();
 
@@ -366,7 +366,8 @@ public class SuppressionTests {
 
         SampleClientTracing(HttpPipeline pipeline, InstrumentationOptions options) {
             this.pipeline = pipeline;
-            this.tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer();
+            String serviceEndpoint = "https://localhost";
+            this.tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, serviceEndpoint).createTracer();
         }
 
         @SuppressWarnings("try")
@@ -405,35 +406,26 @@ public class SuppressionTests {
 
     static class SampleClientCallInstrumentation {
         private final HttpPipeline pipeline;
-        private final OperationInstrumentation protocolInstrumentation;
-        private final OperationInstrumentation convenienceInstrumentation;
-        private static final String SAMPLE_CLIENT_DURATION_METRIC = "sample.client.operation.duration";
+        private final Instrumentation instrumentation;
 
         SampleClientCallInstrumentation(HttpPipeline pipeline, InstrumentationOptions options,
             LibraryInstrumentationOptions libOptions) {
             this.pipeline = pipeline;
             String serviceEndpoint = "https://localhost";
-            Instrumentation instrumentation = Instrumentation.create(options, libOptions);
-
-            protocolInstrumentation = instrumentation.createOperationInstrumentation(
-                new InstrumentedOperationDetails("protocol", SAMPLE_CLIENT_DURATION_METRIC).endpoint(serviceEndpoint));
-            convenienceInstrumentation = instrumentation.createOperationInstrumentation(
-                new InstrumentedOperationDetails("convenience", SAMPLE_CLIENT_DURATION_METRIC)
-                    .endpoint(serviceEndpoint));
+            this.instrumentation = Instrumentation.create(options, libOptions, serviceEndpoint);
         }
 
         @SuppressWarnings("try")
         public Response<?> protocolMethod(RequestOptions options) {
-            return protocolInstrumentation.instrument((updatedOptions) -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+            return instrumentation.instrument("protocol", options, (updatedOptions) -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
-                    .setRequestOptions(updatedOptions)),
-                options);
+                    .setRequestOptions(updatedOptions))
+                );
         }
 
         @SuppressWarnings("try")
         public Response<?> convenienceMethod(RequestOptions options) throws IOException {
-            return convenienceInstrumentation.instrument(this::protocolMethod,
-                options);
+            return instrumentation.instrument("convenience", options, this::protocolMethod);
         }
     }
 }

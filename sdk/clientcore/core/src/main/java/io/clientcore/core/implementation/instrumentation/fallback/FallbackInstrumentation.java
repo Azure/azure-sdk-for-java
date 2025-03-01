@@ -3,6 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.instrumentation.Instrumentation;
@@ -12,23 +13,33 @@ import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
 
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_ADDRESS_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_PORT_KEY;
 
 /**
  * Fallback implementation of {@link Instrumentation} which implements basic correlation and context propagation
  * and, when enabled, records traces as logs.
  */
 public class FallbackInstrumentation implements Instrumentation {
-    public static final FallbackInstrumentation DEFAULT_INSTANCE = new FallbackInstrumentation(null, null);
+    private static final LibraryInstrumentationOptions DEFAULT_LIBRARY_OPTIONS
+        = new LibraryInstrumentationOptions("unknown");
+    public static final FallbackInstrumentation DEFAULT_INSTANCE = new FallbackInstrumentation(null, DEFAULT_LIBRARY_OPTIONS, null, -1);
 
-    private final InstrumentationOptions instrumentationOptions;
-    private final LibraryInstrumentationOptions libraryOptions;
     private final boolean allowNestedSpans;
     private final boolean isTracingEnabled;
+    private final FallbackTracer tracer;
+    private final String serviceHost;
+    private final int servicePort;
 
     /**
      * Creates a new instance of {@link FallbackInstrumentation}.
@@ -36,12 +47,13 @@ public class FallbackInstrumentation implements Instrumentation {
      * @param libraryOptions the library instrumentation options
      */
     public FallbackInstrumentation(InstrumentationOptions instrumentationOptions,
-        LibraryInstrumentationOptions libraryOptions) {
-        this.instrumentationOptions = instrumentationOptions;
-        this.libraryOptions = libraryOptions;
+        LibraryInstrumentationOptions libraryOptions, String host, int port) {
         this.allowNestedSpans = libraryOptions != null
             && LibraryInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
         this.isTracingEnabled = instrumentationOptions == null || instrumentationOptions.isTracingEnabled();
+        this.tracer = new FallbackTracer(instrumentationOptions, libraryOptions);
+        this.serviceHost = host;
+        this.servicePort = port;
     }
 
     /**
@@ -49,7 +61,7 @@ public class FallbackInstrumentation implements Instrumentation {
      */
     @Override
     public Tracer createTracer() {
-        return new FallbackTracer(instrumentationOptions, libraryOptions);
+        return tracer;
     }
 
     /**
@@ -80,6 +92,44 @@ public class FallbackInstrumentation implements Instrumentation {
         return FallbackContextPropagator.W3C_TRACE_CONTEXT_PROPAGATOR;
     }
 
+    @Override
+    public <TResponse> TResponse instrument(String operationName, RequestOptions requestOptions, Function<RequestOptions, TResponse> operation) {
+        Objects.requireNonNull(operationName, "'operationName' cannot be null");
+        Objects.requireNonNull(operation, "'operation' cannot be null");
+
+        if (!shouldInstrument(SpanKind.CLIENT, requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
+            return operation.apply(requestOptions);
+        }
+
+        if (requestOptions == null || requestOptions == RequestOptions.none()) {
+            requestOptions = new RequestOptions();
+        }
+
+        SpanBuilder builder = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestOptions.getInstrumentationContext())
+            .setAttribute(SERVER_ADDRESS_KEY, serviceHost);
+
+        if (servicePort > 0) {
+            builder.setAttribute(SERVER_PORT_KEY, servicePort);
+        }
+
+        Span span = builder.startSpan();
+        if (span.getInstrumentationContext().isValid()) {
+            requestOptions.setInstrumentationContext(span.getInstrumentationContext());
+        }
+
+        TracingScope scope = span.makeCurrent();
+        try {
+            TResponse response = operation.apply(requestOptions);
+            span.end();
+            return response;
+        } catch (RuntimeException t) {
+            span.end(t);
+            throw t;
+        } finally {
+            scope.close();
+        }
+    }
+
     /**
      * Creates a new instance of {@link InstrumentationContext} from the given object.
      * It recognizes {@link FallbackSpanContext}, {@link FallbackSpan}, and generic {@link InstrumentationContext}
@@ -98,11 +148,7 @@ public class FallbackInstrumentation implements Instrumentation {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean shouldInstrument(SpanKind spanKind, InstrumentationContext context) {
+    private boolean shouldInstrument(SpanKind spanKind, InstrumentationContext context) {
         if (!isTracingEnabled) {
             return false;
         }

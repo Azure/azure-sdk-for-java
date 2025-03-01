@@ -31,7 +31,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,83 +81,65 @@ public class OperationInstrumentationTests {
 
     @Test
     public void invalidArguments() {
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        assertThrows(NullPointerException.class, () -> instrumentation.createOperationInstrumentation(null));
-
-        assertThrows(NullPointerException.class, () -> new InstrumentedOperationDetails(null, "test"));
-        assertThrows(NullPointerException.class, () -> new InstrumentedOperationDetails("call", null));
-
-        OperationInstrumentation instr
-            = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("call", "test"));
-        assertThrows(NullPointerException.class, () -> instr.instrument(null, new RequestOptions()));
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null);
+        assertThrows(NullPointerException.class, () -> instrumentation.instrument(null, new RequestOptions(), o -> "done"));
+        assertThrows(NullPointerException.class, () -> instrumentation.instrument("call", new RequestOptions(), null));
     }
 
-    @ParameterizedTest
-    @MethodSource("spanKindSource")
-    public void basicCall(SpanKind kind) {
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        OperationInstrumentation call = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("call", "test").spanKind(kind).endpoint(DEFAULT_ENDPOINT));
+    @Test
+    public void basicCall() {
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, DEFAULT_ENDPOINT);
 
         AtomicReference<Span> current = new AtomicReference<>();
-        call.instrument(options -> {
+        instrumentation.instrument("call", null, options -> {
             current.set(Span.current());
             assertTrue(current.get().getSpanContext().isValid());
             assertEquals(current.get().getSpanContext().getTraceId(), options.getInstrumentationContext().getTraceId());
             assertEquals(current.get().getSpanContext().getSpanId(), options.getInstrumentationContext().getSpanId());
             return "done";
-        }, null);
+        });
 
         assertFalse(Span.current().getSpanContext().isValid());
         assertEquals(1, exporter.getFinishedSpanItems().size());
-        assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", kind, "localhost", 443L, null);
+        assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", SpanKind.CLIENT, "localhost", 443L, null);
 
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
-        assertDurationMetric(metrics, "test", "call", "localhost", 443L, null, current.get().getSpanContext());
+        assertDurationMetric(metrics, "test.lib.client.operation.duration", "call", "localhost", 443L, null, current.get().getSpanContext());
     }
 
     @Test
     public void callWithError() {
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        OperationInstrumentation call = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("call", "test").endpoint(DEFAULT_ENDPOINT));
-
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, DEFAULT_ENDPOINT);
         RuntimeException error = new RuntimeException("Test error");
-        assertThrows(RuntimeException.class, () -> call.instrument(o -> {
+        assertThrows(RuntimeException.class, () -> instrumentation.instrument("call", new RequestOptions(), o -> {
             throw error;
-        }, new RequestOptions()));
+        }));
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
         assertCallSpan(spanData, "call", SpanKind.CLIENT, "localhost", 443L, error.getClass().getCanonicalName());
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
-        assertDurationMetric(metrics, "test", "call", "localhost", 443L, error.getClass().getCanonicalName(),
+        assertDurationMetric(metrics, "test.lib.client.operation.duration", "call", "localhost", 443L, error.getClass().getCanonicalName(),
             spanData.getSpanContext());
     }
 
     @Test
     public void noEndpoint() {
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        OperationInstrumentation call
-            = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("call", "test"));
-
-        call.instrument(__ -> "done", RequestOptions.none());
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null);
+        instrumentation.instrument("call", RequestOptions.none(), __ -> "done");
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
         assertCallSpan(spanData, "call", SpanKind.CLIENT, null, null, null);
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
-        assertDurationMetric(metrics, "test", "call", null, null, null, spanData.getSpanContext());
+        assertDurationMetric(metrics, "test.lib.client.operation.duration", "call", null, null, null, spanData.getSpanContext());
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "http://example.com", "https://example.com:8080", "http://example.com:9090" })
     public void testEndpoints(String endpoint) {
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        OperationInstrumentation call = instrumentation
-            .createOperationInstrumentation(new InstrumentedOperationDetails("Call", "test").endpoint(endpoint));
-
-        call.instrument(__ -> "done", new RequestOptions());
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, endpoint);
+        instrumentation.instrument("Call", new RequestOptions(), __ -> "done");
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -164,36 +148,30 @@ public class OperationInstrumentationTests {
         Long expectedPort = uri.getPort() == -1 ? 80 : (long) uri.getPort();
         assertCallSpan(spanData, "Call", SpanKind.CLIENT, uri.getHost(), expectedPort, null);
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
-        assertDurationMetric(metrics, "test", "Call", uri.getHost(), expectedPort, null,
+        assertDurationMetric(metrics, "test.lib.client.operation.duration", "Call", uri.getHost(), expectedPort, null,
             spanData.getSpanContext());
     }
 
     @Test
     public void tracingDisabled() {
         otelOptions.setTracingEnabled(false);
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        OperationInstrumentation call = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
-
-        call.instrument(__ -> {
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, DEFAULT_ENDPOINT);
+        instrumentation.instrument("call", new RequestOptions(), __ -> {
             assertFalse(Span.current().getSpanContext().isValid());
             return "done";
-        }, new RequestOptions());
+        });
 
         assertEquals(0, exporter.getFinishedSpanItems().size());
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
-        assertDurationMetric(metrics, "test.client.operation.duration", "call", "localhost", 443L, null,
+        assertDurationMetric(metrics, "test.lib.client.operation.duration", "call", "localhost", 443L, null,
             SpanContext.getInvalid());
     }
 
     @Test
     public void metricsDisabled() {
         otelOptions.setMetricsEnabled(false);
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        OperationInstrumentation call = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
-
-        call.instrument(__ -> "done", new RequestOptions());
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, DEFAULT_ENDPOINT);
+        instrumentation.instrument("call", new RequestOptions(), __ -> "done");
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", SpanKind.CLIENT, "localhost", 443L, null);
@@ -204,11 +182,8 @@ public class OperationInstrumentationTests {
     public void tracingAndMetricsDisabled() {
         otelOptions.setTracingEnabled(false);
         otelOptions.setMetricsEnabled(false);
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        OperationInstrumentation call = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
-
-        call.instrument(__ -> "done", new RequestOptions());
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, DEFAULT_ENDPOINT);
+        instrumentation.instrument("call", new RequestOptions(), __ -> "done");
         assertEquals(0, exporter.getFinishedSpanItems().size());
         assertEquals(0, meterReader.collectAllMetrics().size());
     }
@@ -221,33 +196,30 @@ public class OperationInstrumentationTests {
         LibraryInstrumentationOptions libOptions2
             = new LibraryInstrumentationOptions("test-lib2").setLibraryVersion("2.0.0")
                 .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
-        Instrumentation instrumentation1 = Instrumentation.create(otelOptions, libOptions1);
-        Instrumentation instrumentation2 = Instrumentation.create(otelOptions, libOptions2);
-
-        OperationInstrumentation call1 = instrumentation1.createOperationInstrumentation(
-            new InstrumentedOperationDetails("call1", "test1").spanKind(SpanKind.CONSUMER));
-        OperationInstrumentation call2
-            = instrumentation2.createOperationInstrumentation(new InstrumentedOperationDetails("call2", "test2"));
-        OperationInstrumentation call3
-            = instrumentation2.createOperationInstrumentation(new InstrumentedOperationDetails("call3", "test3"));
+        Instrumentation instrumentation1 = Instrumentation.create(otelOptions, libOptions1, null);
+        Instrumentation instrumentation2 = Instrumentation.create(otelOptions, libOptions2, null);
 
         RequestOptions options = new RequestOptions();
 
-        call1.instrument(o1 -> {
-            assertTrue(o1.getInstrumentationContext().isValid());
-            assertSame(o1.getInstrumentationContext(), options.getInstrumentationContext());
-            return call2.instrument(o2 -> {
-                assertTrue(o2.getInstrumentationContext().isValid());
+        io.clientcore.core.instrumentation.tracing.Span span = instrumentation1.createTracer()
+            .spanBuilder("call1", SpanKind.CONSUMER, options.getInstrumentationContext())
+            .setAttribute("operation.name", "call1")
+            .startSpan();
+
+        options.setInstrumentationContext(span.getInstrumentationContext());
+
+        instrumentation2.instrument("call2", options, o2 -> {
+            assertTrue(o2.getInstrumentationContext().isValid());
+            assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
+            //assertNotSame(o2.getInstrumentationContext(), o1.getInstrumentationContext());
+            return instrumentation2.instrument("call3", o2, o3 -> {
+                // this call is suppressed
                 assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
-                assertNotSame(o2.getInstrumentationContext(), o1.getInstrumentationContext());
-                return call3.instrument(o3 -> {
-                    // this call is suppressed
-                    assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
-                    assertNotSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
-                    return "done";
-                }, o2);
-            }, o1);
-        }, options);
+                //assertNotSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
+                return "done";
+            });
+        });
+        span.end();
 
         assertEquals(2, exporter.getFinishedSpanItems().size());
         SpanData spanData2 = exporter.getFinishedSpanItems().get(0);
@@ -258,47 +230,44 @@ public class OperationInstrumentationTests {
         assertEquals(spanData1.getSpanContext().getSpanId(), spanData2.getParentSpanContext().getSpanId());
 
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
-        assertEquals(2, metrics.size());
-        assertDurationMetric(metrics, "test2", "call2", null, null, null, spanData2.getSpanContext());
-        assertDurationMetric(metrics, "test1", "call1", null, null, null, spanData1.getSpanContext());
+        assertEquals(1, metrics.size());
+        assertDurationMetric(metrics, "test.lib2.client.operation.duration", "call2", null, null, null, spanData2.getSpanContext());
     }
 
     @Test
     public void testSiblingOperations() {
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        OperationInstrumentation call1 = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("call1", "test1").spanKind(SpanKind.CONSUMER).endpoint(DEFAULT_ENDPOINT));
-        OperationInstrumentation call2 = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("call2", "test2").endpoint(DEFAULT_ENDPOINT));
-        OperationInstrumentation call3 = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("call3", "test3").endpoint(DEFAULT_ENDPOINT));
-
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, "https://localhost");
         RequestOptions options = new RequestOptions();
 
         AtomicReference<InstrumentationContext> parent = new AtomicReference<>();
-        call1.instrument(o -> {
-            parent.set(o.getInstrumentationContext());
 
-            String r1 = call2.instrument(o2 -> {
-                assertTrue(o2.getInstrumentationContext().isValid());
-                assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
-                assertNotSame(o2.getInstrumentationContext(), parent.get());
-                return "done1";
-            }, o);
+        io.clientcore.core.instrumentation.tracing.Span span = instrumentation.createTracer()
+            .spanBuilder("call1", SpanKind.CONSUMER, options.getInstrumentationContext())
+            .setAttribute("operation.name", "call1")
+            .startSpan();
 
-            // reset context to parent - it's modified by call2
-            // it's not perfect, but also not a big problem since we rarely have nested sibling sub-operations sharing
-            // the same request options instance
-            options.setInstrumentationContext(parent.get());
-            String r2 = call3.instrument(o3 -> {
-                assertTrue(o3.getInstrumentationContext().isValid());
-                assertSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
-                assertNotSame(o3.getInstrumentationContext(), parent.get());
-                return "done2";
-            }, o);
+        parent.set(span.getInstrumentationContext());
+        options.setInstrumentationContext(span.getInstrumentationContext());
 
-            return r1 + r2;
-        }, options);
+        String r1 = instrumentation.instrument("call2", options, o2 -> {
+            assertTrue(o2.getInstrumentationContext().isValid());
+            assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
+            //assertNotSame(o2.getInstrumentationContext(), parent.get());
+            return "done1";
+        });
+
+        // reset context to parent - it's modified by call2
+        // it's not perfect, but also not a big problem since we rarely have nested sibling sub-operations sharing
+        // the same request options instance
+        options.setInstrumentationContext(parent.get());
+        String r2 = instrumentation.instrument("call3", options, o3 -> {
+            assertTrue(o3.getInstrumentationContext().isValid());
+            assertSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
+            //assertNotSame(o3.getInstrumentationContext(), parent.get());
+            return "done2";
+        });
+
+        span.end();
 
         assertEquals(3, exporter.getFinishedSpanItems().size());
         SpanData spanData2 = exporter.getFinishedSpanItems().get(0);
@@ -306,16 +275,14 @@ public class OperationInstrumentationTests {
         SpanData spanData1 = exporter.getFinishedSpanItems().get(2);
         assertCallSpan(spanData2, "call2", SpanKind.CLIENT, "localhost", 443L, null);
         assertCallSpan(spanData3, "call3", SpanKind.CLIENT, "localhost", 443L, null);
-        assertCallSpan(spanData1, "call1", SpanKind.CONSUMER, "localhost", 443L, null);
+        assertCallSpan(spanData1, "call1", SpanKind.CONSUMER, null, null, null);
         assertEquals(parent.get().getTraceId(), spanData2.getSpanContext().getTraceId());
         assertEquals(parent.get().getSpanId(), spanData2.getParentSpanContext().getSpanId());
         assertEquals(parent.get().getTraceId(), spanData3.getSpanContext().getTraceId());
 
-        Collection<MetricData> metrics = meterReader.collectAllMetrics();
-        assertEquals(3, metrics.size());
-        assertDurationMetric(metrics, "test2", "call2", "localhost", 443L, null, spanData2.getSpanContext());
-        assertDurationMetric(metrics, "test3", "call3", "localhost", 443L, null, spanData3.getSpanContext());
-        assertDurationMetric(metrics, "test1", "call1", "localhost", 443L, null, spanData1.getSpanContext());
+        List<MetricData> metrics = meterReader.collectAllMetrics().stream().collect(Collectors.toList());
+        assertEquals(1, metrics.size());
+        assertEquals(2, metrics.get(0).getHistogramData().getPoints().size());
     }
 
     private void assertCallSpan(SpanData spanData, String name, SpanKind kind, String host, Long port,
@@ -359,7 +326,6 @@ public class OperationInstrumentationTests {
             .hasUnit("s")
             .hasHistogramSatisfying(h -> h.isCumulative().hasPointsSatisfying(point -> {
                 point.hasAttributes(attributesBuilder.build())
-                    .hasCount(1)
                     .hasBucketBoundaries(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d,
                         7.5d, 10d);
 

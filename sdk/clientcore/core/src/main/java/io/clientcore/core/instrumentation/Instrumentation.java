@@ -3,16 +3,20 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation;
 import io.clientcore.core.instrumentation.metrics.Meter;
-import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+
+import static io.clientcore.core.implementation.instrumentation.InstrumentationUtils.getServerPort;
 
 /**
  * A container that can resolve observability provider and its components. Only OpenTelemetry is supported.
@@ -107,18 +111,9 @@ public interface Instrumentation {
      */
     TraceContextPropagator getW3CTraceContextPropagator();
 
-    /**
-     * Determines whether the client call should be instrumented.
-     *
-     * <p><strong>This method is intended to be used by client libraries. Application developers
-     * should use OpenTelemetry API directly</strong></p>
-     *
-     * @param spanKind the kind of the span to be created.
-     * @param context the instrumentation context call happens in.
-     * @return {@code true} if the client call should be instrumented, otherwise {@code false}.
-     */
-    boolean shouldInstrument(SpanKind spanKind, InstrumentationContext context);
-
+    <TResponse> TResponse instrument(String operationName,
+                                            RequestOptions requestOptions,
+                                            Function<RequestOptions, TResponse> operation);
     /**
      * Gets the singleton instance of the resolved telemetry provider.
      *
@@ -130,12 +125,22 @@ public interface Instrumentation {
      * @return The instance of telemetry provider implementation.
      */
     static Instrumentation create(InstrumentationOptions applicationOptions,
-        LibraryInstrumentationOptions libraryOptions) {
+        LibraryInstrumentationOptions libraryOptions,
+        String endpoint) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
+
+        String host = null;
+        int port = -1;
+        if (endpoint != null) {
+            URI uri = URI.create(endpoint);
+            host = uri.getHost();
+            port = getServerPort(uri);
+        }
+
         if (OTelInitializer.isInitialized()) {
-            return new OTelInstrumentation(applicationOptions, libraryOptions);
+            return new OTelInstrumentation(applicationOptions, libraryOptions, host, port);
         } else {
-            return new FallbackInstrumentation(applicationOptions, libraryOptions);
+            return new FallbackInstrumentation(applicationOptions, libraryOptions, host, port);
         }
     }
 
@@ -190,22 +195,5 @@ public interface Instrumentation {
         } else {
             return FallbackInstrumentation.DEFAULT_INSTANCE.createInstrumentationContext(context);
         }
-    }
-
-    /**
-     * Creates the operation instrumentation.
-     * <!-- src_embed io.clientcore.core.instrumentation.create -->
-     * <pre>
-     * InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails&#40;&quot;downloadContent&quot;,
-     *     SAMPLE_CLIENT_DURATION_METRIC&#41;.endpoint&#40;endpoint&#41;;
-     * this.downloadContentInstrumentation = instrumentation.createOperationInstrumentation&#40;downloadDetails&#41;;
-     * </pre>
-     * <!-- end io.clientcore.core.instrumentation.create -->
-     *
-     * @param operationDetails The details of the operation to be instrumented.
-     * @return The operation instrumentation.
-     */
-    default OperationInstrumentation createOperationInstrumentation(InstrumentedOperationDetails operationDetails) {
-        return new OperationInstrumentation(operationDetails, this);
     }
 }
