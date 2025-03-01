@@ -417,7 +417,7 @@ public class SuppressionTests {
 
         @SuppressWarnings("try")
         public Response<?> protocolMethod(RequestOptions options) {
-            return instrumentation.instrument("protocol", options, (updatedOptions) -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+            return instrumentation.instrument("protocol", options, updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
                     .setRequestOptions(updatedOptions))
                 );

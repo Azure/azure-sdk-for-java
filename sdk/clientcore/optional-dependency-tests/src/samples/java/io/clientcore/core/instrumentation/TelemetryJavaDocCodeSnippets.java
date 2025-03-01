@@ -193,12 +193,17 @@ public class TelemetryJavaDocCodeSnippets {
         }
 
         public Response<?> clientCall() {
-            return this.clientCall(null);
+            return this.clientCallWithResponse(null);
         }
 
         @SuppressWarnings("try")
-        public Response<?> clientCall(RequestOptions options) {
-            return instrumentation.instrument("call", options, updatedOptions -> httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint)));
+        public Response<?> clientCallWithResponse(RequestOptions options) {
+            return instrumentation.instrument("Sample.call", options, updatedOptions -> httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint)));
+        }
+
+        @SuppressWarnings("try")
+        public void clientCall(RequestOptions options) {
+            instrumentation.instrument("Sample.call", options, updatedOptions -> httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint)));
         }
     }
 }

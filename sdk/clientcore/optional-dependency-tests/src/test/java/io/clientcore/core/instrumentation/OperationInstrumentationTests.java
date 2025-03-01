@@ -33,6 +33,7 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,7 +84,7 @@ public class OperationInstrumentationTests {
     public void invalidArguments() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null);
         assertThrows(NullPointerException.class, () -> instrumentation.instrument(null, new RequestOptions(), o -> "done"));
-        assertThrows(NullPointerException.class, () -> instrumentation.instrument("call", new RequestOptions(), null));
+        assertThrows(NullPointerException.class, () -> instrumentation.instrument("call", new RequestOptions(), (Consumer<RequestOptions>)null));
     }
 
     @Test
@@ -111,7 +112,7 @@ public class OperationInstrumentationTests {
     public void callWithError() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, DEFAULT_ENDPOINT);
         RuntimeException error = new RuntimeException("Test error");
-        assertThrows(RuntimeException.class, () -> instrumentation.instrument("call", new RequestOptions(), o -> {
+        assertThrows(RuntimeException.class, () -> instrumentation.instrument("call", new RequestOptions(), (Consumer<RequestOptions>) o -> {
             throw error;
         }));
 

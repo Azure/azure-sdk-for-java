@@ -14,6 +14,7 @@ import io.clientcore.core.instrumentation.tracing.Tracer;
 import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static io.clientcore.core.implementation.instrumentation.InstrumentationUtils.getServerPort;
@@ -114,6 +115,7 @@ public interface Instrumentation {
     <TResponse> TResponse instrument(String operationName,
                                             RequestOptions requestOptions,
                                             Function<RequestOptions, TResponse> operation);
+
     /**
      * Gets the singleton instance of the resolved telemetry provider.
      *
