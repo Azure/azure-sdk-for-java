@@ -726,7 +726,34 @@ private static void displaySexMismatches(RadiologyInsightsInferenceResult radiol
 Display information about the guidance
 
 ```java com.azure.health.insights.radiologyinsights.displayresults.guidance
+private static void displayGuidanceInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
+    List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
+    for (RadiologyInsightsPatientResult patientResult : patientResults) {
+        List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+        for (RadiologyInsightsInference inference : inferences) {
+            if (inference instanceof GuidanceInference) {
+	
+            	 GuidanceInference guidanceInference = (GuidanceInference) inference;
+	 System.out.println("Guidance Inference found");
+	 // Extract identifier
+	 FhirR4CodeableConcept identifier =  guidanceInference.getIdentifier();
+	 System.out.println("Identifier: ");
+	 displayCodes(identifier, 1);
+	 GuidanceRankingType guidanceRanking = guidanceInference.getRanking();
+	 // Extract ranking
+	 // Extract kind
+	 // Extract presentGuidanceInformation
+	 // Extract missingGuidanceInformation
+	 // Extract recommendationProposal
+	 // Extract finding
+	 List<FhirR4Extension> extensions = guidanceInference.getExtension();
+	 System.out.println("   Evidence: " + extractEvidence(extensions));
 
+
+            }
+        }
+    }
+}
 ```
 
 ## Troubleshooting

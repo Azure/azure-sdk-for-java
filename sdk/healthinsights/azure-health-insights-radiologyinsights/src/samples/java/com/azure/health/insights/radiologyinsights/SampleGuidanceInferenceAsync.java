@@ -20,6 +20,7 @@ import com.azure.health.insights.radiologyinsights.models.FhirR4Extension;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
 import com.azure.health.insights.radiologyinsights.models.GuidanceInference;
+import com.azure.health.insights.radiologyinsights.models.GuidanceRankingType;
 import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
@@ -132,7 +133,7 @@ public class SampleGuidanceInferenceAsync {
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
      */
-    // BEGIN: com.azure.health.insights.radiologyinsights.displayresults.agemismatch
+    // BEGIN: com.azure.health.insights.radiologyinsights.displayresults.guidance
     private static void displayGuidanceInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
@@ -146,7 +147,7 @@ public class SampleGuidanceInferenceAsync {
 					 FhirR4CodeableConcept identifier =  guidanceInference.getIdentifier();
 					 System.out.println("Identifier: ");
 					 displayCodes(identifier, 1);
-					
+					 GuidanceRankingType guidanceRanking = guidanceInference.getRanking();
 					 // Extract ranking
 					 // Extract kind
 					 // Extract presentGuidanceInformation
@@ -161,6 +162,7 @@ public class SampleGuidanceInferenceAsync {
             }
         }
     }
+    // END: com.azure.health.insights.radiologyinsights.displayresults.guidance
 
     private static void displayCodes(FhirR4CodeableConcept codeableConcept, int indentation) {
         String initialBlank = "";
@@ -205,7 +207,6 @@ public class SampleGuidanceInferenceAsync {
         }
         return evidence;
     }
-    // END: com.azure.health.insights.radiologyinsights.displayresults.agemismatch
 
     /**
      * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
