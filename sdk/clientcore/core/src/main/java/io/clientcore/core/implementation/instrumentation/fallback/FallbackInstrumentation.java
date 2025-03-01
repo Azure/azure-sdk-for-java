@@ -93,7 +93,7 @@ public class FallbackInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrument(String operationName, RequestOptions requestOptions, Function<RequestOptions, TResponse> operation) {
+    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions, Function<RequestOptions, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 

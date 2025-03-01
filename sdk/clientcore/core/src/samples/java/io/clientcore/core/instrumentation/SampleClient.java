@@ -28,12 +28,12 @@ class SampleClient {
 
     public Response<?> downloadContent(RequestOptions options) {
         // BEGIN: io.clientcore.core.instrumentation.instrument
-        return instrumentation.instrument("download", options, this::downloadImpl);
+        return instrumentation.instrumentWithResponse("download", options, this::downloadImpl);
         // END: io.clientcore.core.instrumentation.instrument
     }
 
     public Response<?> create(RequestOptions options) {
-        return instrumentation.instrument("create", options, this::createImpl);
+        return instrumentation.instrumentWithResponse("create", options, this::createImpl);
     }
 
     private Response<?> downloadImpl(RequestOptions options) {

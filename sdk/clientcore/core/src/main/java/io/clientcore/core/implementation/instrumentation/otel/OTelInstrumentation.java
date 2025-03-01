@@ -233,7 +233,7 @@ public class OTelInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrument(String operationName,
+    public <TResponse> TResponse instrumentWithResponse(String operationName,
                                              RequestOptions requestOptions,
                                              Function<RequestOptions, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");

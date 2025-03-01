@@ -417,7 +417,7 @@ public class SuppressionTests {
 
         @SuppressWarnings("try")
         public Response<?> protocolMethod(RequestOptions options) {
-            return instrumentation.instrument("protocol", options, updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+            return instrumentation.instrumentWithResponse("protocol", options, updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
                     .setRequestOptions(updatedOptions))
                 );
@@ -425,7 +425,7 @@ public class SuppressionTests {
 
         @SuppressWarnings("try")
         public Response<?> convenienceMethod(RequestOptions options) throws IOException {
-            return instrumentation.instrument("convenience", options, this::protocolMethod);
+            return instrumentation.instrumentWithResponse("convenience", options, this::protocolMethod);
         }
     }
 }

@@ -251,7 +251,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.instrumentation.enrich
-        instrumentation.instrument("downloadContent", requestOptions, updatedOptions -> {
+        instrumentation.instrumentWithResponse("downloadContent", requestOptions, updatedOptions -> {
             Span span = updatedOptions.getInstrumentationContext().getSpan();
             if (span.isRecording()) {
                 span.setAttribute("sample.content.id", "{content-id}");

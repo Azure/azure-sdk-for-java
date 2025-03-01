@@ -26,7 +26,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.net.URI;
@@ -40,7 +39,6 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -83,8 +81,8 @@ public class OperationInstrumentationTests {
     @Test
     public void invalidArguments() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null);
-        assertThrows(NullPointerException.class, () -> instrumentation.instrument(null, new RequestOptions(), o -> "done"));
-        assertThrows(NullPointerException.class, () -> instrumentation.instrument("call", new RequestOptions(), (Consumer<RequestOptions>)null));
+        assertThrows(NullPointerException.class, () -> instrumentation.instrumentWithResponse(null, new RequestOptions(), o -> "done"));
+        assertThrows(NullPointerException.class, () -> instrumentation.instrument("call", new RequestOptions(), null));
     }
 
     @Test
@@ -97,7 +95,6 @@ public class OperationInstrumentationTests {
             assertTrue(current.get().getSpanContext().isValid());
             assertEquals(current.get().getSpanContext().getTraceId(), options.getInstrumentationContext().getTraceId());
             assertEquals(current.get().getSpanContext().getSpanId(), options.getInstrumentationContext().getSpanId());
-            return "done";
         });
 
         assertFalse(Span.current().getSpanContext().isValid());
@@ -127,7 +124,7 @@ public class OperationInstrumentationTests {
     @Test
     public void noEndpoint() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null);
-        instrumentation.instrument("call", RequestOptions.none(), __ -> "done");
+        instrumentation.instrument("call", RequestOptions.none(), __ -> {});
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -140,7 +137,7 @@ public class OperationInstrumentationTests {
     @ValueSource(strings = { "http://example.com", "https://example.com:8080", "http://example.com:9090" })
     public void testEndpoints(String endpoint) {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, endpoint);
-        instrumentation.instrument("Call", new RequestOptions(), __ -> "done");
+        instrumentation.instrument("Call", new RequestOptions(), __ -> {});
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -159,7 +156,6 @@ public class OperationInstrumentationTests {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, DEFAULT_ENDPOINT);
         instrumentation.instrument("call", new RequestOptions(), __ -> {
             assertFalse(Span.current().getSpanContext().isValid());
-            return "done";
         });
 
         assertEquals(0, exporter.getFinishedSpanItems().size());
@@ -172,7 +168,7 @@ public class OperationInstrumentationTests {
     public void metricsDisabled() {
         otelOptions.setMetricsEnabled(false);
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, DEFAULT_ENDPOINT);
-        instrumentation.instrument("call", new RequestOptions(), __ -> "done");
+        instrumentation.instrument("call", new RequestOptions(), __ -> {});
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", SpanKind.CLIENT, "localhost", 443L, null);
@@ -184,7 +180,7 @@ public class OperationInstrumentationTests {
         otelOptions.setTracingEnabled(false);
         otelOptions.setMetricsEnabled(false);
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, DEFAULT_ENDPOINT);
-        instrumentation.instrument("call", new RequestOptions(), __ -> "done");
+        instrumentation.instrument("call", new RequestOptions(), __ -> {});
         assertEquals(0, exporter.getFinishedSpanItems().size());
         assertEquals(0, meterReader.collectAllMetrics().size());
     }
@@ -213,11 +209,10 @@ public class OperationInstrumentationTests {
             assertTrue(o2.getInstrumentationContext().isValid());
             assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
             //assertNotSame(o2.getInstrumentationContext(), o1.getInstrumentationContext());
-            return instrumentation2.instrument("call3", o2, o3 -> {
+            instrumentation2.instrument("call3", o2, o3 -> {
                 // this call is suppressed
                 assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
                 //assertNotSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
-                return "done";
             });
         });
         span.end();
@@ -250,22 +245,20 @@ public class OperationInstrumentationTests {
         parent.set(span.getInstrumentationContext());
         options.setInstrumentationContext(span.getInstrumentationContext());
 
-        String r1 = instrumentation.instrument("call2", options, o2 -> {
+        instrumentation.instrument("call2", options, o2 -> {
             assertTrue(o2.getInstrumentationContext().isValid());
             assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
             //assertNotSame(o2.getInstrumentationContext(), parent.get());
-            return "done1";
         });
 
         // reset context to parent - it's modified by call2
         // it's not perfect, but also not a big problem since we rarely have nested sibling sub-operations sharing
         // the same request options instance
         options.setInstrumentationContext(parent.get());
-        String r2 = instrumentation.instrument("call3", options, o3 -> {
+        instrumentation.instrument("call3", options, o3 -> {
             assertTrue(o3.getInstrumentationContext().isValid());
             assertSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
             //assertNotSame(o3.getInstrumentationContext(), parent.get());
-            return "done2";
         });
 
         span.end();

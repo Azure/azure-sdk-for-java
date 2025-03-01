@@ -112,9 +112,18 @@ public interface Instrumentation {
      */
     TraceContextPropagator getW3CTraceContextPropagator();
 
-    <TResponse> TResponse instrument(String operationName,
+    <TResponse> TResponse instrumentWithResponse(String operationName,
                                             RequestOptions requestOptions,
                                             Function<RequestOptions, TResponse> operation);
+
+    default void instrument(String operationName,
+                            RequestOptions requestOptions,
+                            Consumer<RequestOptions> operation) {
+        instrumentWithResponse(operationName, requestOptions, options -> {
+            operation.accept(options);
+            return null;
+        });
+    }
 
     /**
      * Gets the singleton instance of the resolved telemetry provider.
