@@ -5,214 +5,77 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
+import com.azure.security.keyvault.keys.implementation.KeyAttestationHelper;
 
 /**
  * The key attestation information.
  */
 @Fluent
-public final class KeyAttestation implements JsonSerializable<KeyAttestation> {
-    /*
-     * A base64url-encoded string containing certificates in PEM format, used for attestation validation.
-     */
-    @Generated
-    private Base64Url certificatePemFile;
+public final class KeyAttestation {
+    static {
+        KeyAttestationHelper.setAccessor(new KeyAttestationHelper.KeyAttestationAccessor() {
+            @Override
+            public KeyAttestation
+            createKeyAttestation(com.azure.security.keyvault.keys.implementation.models.KeyAttestation impl) {
+                return new KeyAttestation(impl);
+            }
+        });
+    }
 
-    /*
-     * The attestation blob bytes encoded as base64url string corresponding to a private key.
-     */
-    @Generated
-    private Base64Url privateKeyAttestation;
-
-    /*
-     * The attestation blob bytes encoded as base64url string corresponding to a public key in case of asymmetric key.
-     */
-    @Generated
-    private Base64Url publicKeyAttestation;
-
-    /*
-     * The version of the attestation.
-     */
-    @Generated
-    private String version;
+    private final byte[] certificatePemFile;
+    private final byte[] privateKeyAttestation;
+    private final byte[] publicKeyAttestation;
+    private final String version;
 
     /**
-     * Creates an instance of KeyAttestation class.
+     * Creates an instance of {@link KeyAttestation}.
      */
-    @Generated
     public KeyAttestation() {
+        this(new com.azure.security.keyvault.keys.implementation.models.KeyAttestation());
+    }
+
+    KeyAttestation(com.azure.security.keyvault.keys.implementation.models.KeyAttestation impl) {
+        this.certificatePemFile = impl.getCertificatePemFile();
+        this.privateKeyAttestation = impl.getPrivateKeyAttestation();
+        this.publicKeyAttestation = impl.getPublicKeyAttestation();
+        this.version = impl.getVersion();
     }
 
     /**
-     * Get the certificatePemFile property: A base64url-encoded string containing certificates in PEM format, used for
-     * attestation validation.
-     * 
-     * @return the certificatePemFile value.
+     * Get a base64url-encoded string containing certificates in PEM format, used for attestation validation.
+     *
+     * @return The certificates in PEM format.
      */
-    @Generated
     public byte[] getCertificatePemFile() {
-        if (this.certificatePemFile == null) {
-            return null;
-        }
-        return this.certificatePemFile.decodedBytes();
+        return CoreUtils.clone(this.certificatePemFile);
     }
 
     /**
-     * Set the certificatePemFile property: A base64url-encoded string containing certificates in PEM format, used for
-     * attestation validation.
-     * 
-     * @param certificatePemFile the certificatePemFile value to set.
-     * @return the KeyAttestation object itself.
+     * Get the attestation blob bytes encoded as base64url string corresponding to a private key.
+     *
+     * @return The attestation blob bytes for the private portion of the key.
      */
-    @Generated
-    public KeyAttestation setCertificatePemFile(byte[] certificatePemFile) {
-        if (certificatePemFile == null) {
-            this.certificatePemFile = null;
-        } else {
-            this.certificatePemFile = Base64Url.encode(CoreUtils.clone(certificatePemFile));
-        }
-        return this;
-    }
-
-    /**
-     * Get the privateKeyAttestation property: The attestation blob bytes encoded as base64url string corresponding to a
-     * private key.
-     * 
-     * @return the privateKeyAttestation value.
-     */
-    @Generated
     public byte[] getPrivateKeyAttestation() {
-        if (this.privateKeyAttestation == null) {
-            return null;
-        }
-        return this.privateKeyAttestation.decodedBytes();
+        return CoreUtils.clone(this.privateKeyAttestation);
     }
 
     /**
-     * Set the privateKeyAttestation property: The attestation blob bytes encoded as base64url string corresponding to a
-     * private key.
-     * 
-     * @param privateKeyAttestation the privateKeyAttestation value to set.
-     * @return the KeyAttestation object itself.
+     * Get the attestation blob bytes encoded as base64url string corresponding to a public key in case of asymmetric
+     * key.
+     *
+     * @return The attestation blob bytes for the public portion of the key.
      */
-    @Generated
-    public KeyAttestation setPrivateKeyAttestation(byte[] privateKeyAttestation) {
-        if (privateKeyAttestation == null) {
-            this.privateKeyAttestation = null;
-        } else {
-            this.privateKeyAttestation = Base64Url.encode(CoreUtils.clone(privateKeyAttestation));
-        }
-        return this;
-    }
-
-    /**
-     * Get the publicKeyAttestation property: The attestation blob bytes encoded as base64url string corresponding to a
-     * public key in case of asymmetric key.
-     * 
-     * @return the publicKeyAttestation value.
-     */
-    @Generated
     public byte[] getPublicKeyAttestation() {
-        if (this.publicKeyAttestation == null) {
-            return null;
-        }
-        return this.publicKeyAttestation.decodedBytes();
+        return CoreUtils.clone(this.publicKeyAttestation);
     }
 
     /**
-     * Set the publicKeyAttestation property: The attestation blob bytes encoded as base64url string corresponding to a
-     * public key in case of asymmetric key.
-     * 
-     * @param publicKeyAttestation the publicKeyAttestation value to set.
-     * @return the KeyAttestation object itself.
+     * Get the version of the attestation.
+     *
+     * @return The version of the attestation.
      */
-    @Generated
-    public KeyAttestation setPublicKeyAttestation(byte[] publicKeyAttestation) {
-        if (publicKeyAttestation == null) {
-            this.publicKeyAttestation = null;
-        } else {
-            this.publicKeyAttestation = Base64Url.encode(CoreUtils.clone(publicKeyAttestation));
-        }
-        return this;
-    }
-
-    /**
-     * Get the version property: The version of the attestation.
-     * 
-     * @return the version value.
-     */
-    @Generated
     public String getVersion() {
         return this.version;
-    }
-
-    /**
-     * Set the version property: The version of the attestation.
-     * 
-     * @param version the version value to set.
-     * @return the KeyAttestation object itself.
-     */
-    @Generated
-    public KeyAttestation setVersion(String version) {
-        this.version = version;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("certificatePemFile", Objects.toString(this.certificatePemFile, null));
-        jsonWriter.writeStringField("privateKeyAttestation", Objects.toString(this.privateKeyAttestation, null));
-        jsonWriter.writeStringField("publicKeyAttestation", Objects.toString(this.publicKeyAttestation, null));
-        jsonWriter.writeStringField("version", this.version);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of KeyAttestation from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of KeyAttestation if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the KeyAttestation.
-     */
-    @Generated
-    public static KeyAttestation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            KeyAttestation deserializedKeyAttestation = new KeyAttestation();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("certificatePemFile".equals(fieldName)) {
-                    deserializedKeyAttestation.certificatePemFile
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                } else if ("privateKeyAttestation".equals(fieldName)) {
-                    deserializedKeyAttestation.privateKeyAttestation
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                } else if ("publicKeyAttestation".equals(fieldName)) {
-                    deserializedKeyAttestation.publicKeyAttestation
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                } else if ("version".equals(fieldName)) {
-                    deserializedKeyAttestation.version = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedKeyAttestation;
-        });
     }
 }
