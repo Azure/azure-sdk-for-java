@@ -462,7 +462,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         getCertificateOperationRunner((certificateName) -> {
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
                 = setPlaybackSyncPollerPollInterval(
-                    certificateClient.beginCreateCertificate(certificateName, setupPolicy()));
+                certificateClient.beginCreateCertificate(certificateName, setupPolicy()));
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> retrievePoller
                 = setPlaybackSyncPollerPollInterval(certificateClient.getCertificateOperation(certificateName));
 
