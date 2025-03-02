@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.implementation.util;
 
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -11,11 +12,17 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.DataLakeStorageExceptionInternal;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesHeaders;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.models.LeaseDurationType;
+import com.azure.storage.file.datalake.models.LeaseStateType;
+import com.azure.storage.file.datalake.models.LeaseStatusType;
+import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
@@ -209,4 +216,45 @@ public class ModelHelper {
     public static DataLakeStorageException mapToDataLakeStorageException(DataLakeStorageExceptionInternal internal) {
         return new DataLakeStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
+
+    public static PathProperties
+        getSystemPropertiesResponse(final ResponseBase<PathsGetPropertiesHeaders, Void> response) {
+        PathsGetPropertiesHeaders headers = response.getDeserializedHeaders();
+
+        OffsetDateTime creationTime = headers.getXMsCreationTime();
+        OffsetDateTime lastModified = headers.getLastModified();
+        String eTag = headers.getETag();
+        Long fileSize = headers.getContentLength();
+        String contentType = headers.getContentType();
+        byte[] contentMD5;
+        try {
+            contentMD5 = headers.getContentMD5().getBytes();
+        } catch (NullPointerException e) {
+            contentMD5 = null;
+        }
+        String contentEncoding = headers.getContentEncoding();
+        String contentDisposition = headers.getContentDisposition();
+        String contentLanguage = headers.getContentLanguage();
+        String cacheControl = headers.getCacheControl();
+        LeaseStatusType leaseStatus = LeaseStatusType.fromString(headers.getXMsLeaseStatus());
+        LeaseStateType leaseState = LeaseStateType.fromString(headers.getXMsLeaseState());
+        LeaseDurationType leaseDuration = LeaseDurationType.fromString(headers.getXMsLeaseDuration());
+        Boolean isServerEncrypted = headers.isServerEncrypted();
+        String encryptionKeySha256 = headers.getXMsEncryptionKeySha256();
+        OffsetDateTime expiresOn = headers.getXMsExpiryTime();
+        String encryptionScope = headers.getXMsEncryptionScope();
+        String encryptionContext = headers.getXMsEncryptionContext();
+        String owner = headers.getXMsOwner();
+        String group = headers.getXMsGroup();
+        String permissions = headers.getXMsPermissions();
+        String acl = headers.getXMsAcl();
+
+        PathProperties pathProperties = new PathProperties(creationTime, lastModified, eTag, fileSize, contentType,
+            contentMD5, contentEncoding, contentDisposition, contentLanguage, cacheControl, leaseStatus, leaseState,
+            leaseDuration, null, null, null, null, null, null, isServerEncrypted, null, null, null, encryptionKeySha256,
+            null, null, expiresOn);
+        return AccessorUtility.getPathPropertiesAccessor()
+            .setPathProperties(pathProperties, encryptionScope, encryptionContext, owner, group, permissions, acl);
+    }
+
 }

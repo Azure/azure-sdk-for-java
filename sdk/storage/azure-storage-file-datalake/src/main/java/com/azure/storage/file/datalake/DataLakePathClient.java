@@ -58,6 +58,7 @@ import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
+import com.azure.storage.file.datalake.options.PathGetSystemPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -1547,6 +1548,29 @@ public class DataLakePathClient {
                 Transforms.toBlobRequestConditions(finalOptions.getRequestConditions()), timeout, finalContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PathProperties> getSystemPropertiesWithResponse(PathGetSystemPropertiesOptions options,
+        Duration timeout, Context context) {
+        options = options == null ? new PathGetSystemPropertiesOptions() : options;
+        Context finalContext = context == null ? Context.NONE : context;
+        DataLakeRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new DataLakeRequestConditions() : options.getRequestConditions();
+
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
+
+        Callable<ResponseBase<PathsGetPropertiesHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
+            .getPropertiesWithResponse(null, null, PathGetPropertiesAction.GET_STATUS, false, lac, mac, finalContext);
+
+        ResponseBase<PathsGetPropertiesHeaders, Void> response
+            = sendRequest(operation, timeout, DataLakeStorageException.class);
+
+        return new SimpleResponse<>(response, ModelHelper.getSystemPropertiesResponse(response));
     }
 
     /**

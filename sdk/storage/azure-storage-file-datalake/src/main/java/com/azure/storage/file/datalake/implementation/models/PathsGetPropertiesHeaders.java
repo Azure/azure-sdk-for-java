@@ -130,6 +130,36 @@ public final class PathsGetPropertiesHeaders {
      */
     private String contentType;
 
+    /*
+     * The x-ms-server-encrypted property.
+     */
+    private Boolean xMsServerEncrypted;
+
+    /*
+     * The x-ms-encryption-key-sha256 property.
+     */
+    private String xMsEncryptionKeySha256;
+
+    /*
+     * The x-ms-encryption-scope property.
+     */
+    private String xMsEncryptionScope;
+
+    /*
+     * The x-ms-encryption-key-sha256 property.
+     */
+    private String xMsEncryptionContext;
+
+    /*
+     * The x-ms-creation-time property.
+     */
+    private DateTimeRfc1123 xMsCreationTime;
+
+    /*
+     * The x-ms-expiry-time property.
+     */
+    private DateTimeRfc1123 xMsExpiryTime;
+
     private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -150,10 +180,23 @@ public final class PathsGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
 
+    private static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
+        = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_CONTEXT = HttpHeaderName.fromString("x-ms-encryption-context");
+
+    private static final HttpHeaderName X_MS_CREATION_TIME = HttpHeaderName.fromString("x-ms-creation-time");
+
+    private static final HttpHeaderName X_MS_EXPIRY_TIME = HttpHeaderName.fromString("x-ms-expiry-time");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsGetPropertiesHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsGetPropertiesHeaders(HttpHeaders rawHeaders) {
@@ -189,11 +232,26 @@ public final class PathsGetPropertiesHeaders {
         this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
         this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+        String xMsServerEncrypted = rawHeaders.getValue(X_MS_SERVER_ENCRYPTED);
+        if (xMsServerEncrypted != null) {
+            this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
+        }
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
+        this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
+        this.xMsEncryptionContext = rawHeaders.getValue(X_MS_ENCRYPTION_CONTEXT);
+        String xMsCreationTime = rawHeaders.getValue(X_MS_CREATION_TIME);
+        if (xMsCreationTime != null) {
+            this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
+        }
+        String xMsExpiryTime = rawHeaders.getValue(X_MS_EXPIRY_TIME);
+        if (xMsExpiryTime != null) {
+            this.xMsExpiryTime = new DateTimeRfc1123(xMsExpiryTime);
+        }
     }
 
     /**
      * Get the xMsGroup property: The x-ms-group property.
-     * 
+     *
      * @return the xMsGroup value.
      */
     public String getXMsGroup() {
@@ -202,7 +260,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsGroup property: The x-ms-group property.
-     * 
+     *
      * @param xMsGroup the xMsGroup value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -213,7 +271,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -222,7 +280,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -233,7 +291,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the xMsLeaseStatus property: The x-ms-lease-status property.
-     * 
+     *
      * @return the xMsLeaseStatus value.
      */
     public String getXMsLeaseStatus() {
@@ -242,7 +300,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsLeaseStatus property: The x-ms-lease-status property.
-     * 
+     *
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -253,7 +311,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the contentRange property: The Content-Range property.
-     * 
+     *
      * @return the contentRange value.
      */
     public String getContentRange() {
@@ -262,7 +320,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the contentRange property: The Content-Range property.
-     * 
+     *
      * @param contentRange the contentRange value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -273,7 +331,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the xMsLeaseState property: The x-ms-lease-state property.
-     * 
+     *
      * @return the xMsLeaseState value.
      */
     public String getXMsLeaseState() {
@@ -282,7 +340,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsLeaseState property: The x-ms-lease-state property.
-     * 
+     *
      * @param xMsLeaseState the xMsLeaseState value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -293,7 +351,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the xMsAcl property: The x-ms-acl property.
-     * 
+     *
      * @return the xMsAcl value.
      */
     public String getXMsAcl() {
@@ -302,7 +360,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsAcl property: The x-ms-acl property.
-     * 
+     *
      * @param xMsAcl the xMsAcl value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -313,7 +371,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     * 
+     *
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -325,7 +383,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     * 
+     *
      * @param lastModified the lastModified value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -340,7 +398,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the xMsProperties property: The x-ms-properties property.
-     * 
+     *
      * @return the xMsProperties value.
      */
     public String getXMsProperties() {
@@ -349,7 +407,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsProperties property: The x-ms-properties property.
-     * 
+     *
      * @param xMsProperties the xMsProperties value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -360,7 +418,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the date property: The Date property.
-     * 
+     *
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -372,7 +430,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the date property: The Date property.
-     * 
+     *
      * @param date the date value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -387,7 +445,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the xMsResourceType property: The x-ms-resource-type property.
-     * 
+     *
      * @return the xMsResourceType value.
      */
     public String getXMsResourceType() {
@@ -396,7 +454,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsResourceType property: The x-ms-resource-type property.
-     * 
+     *
      * @param xMsResourceType the xMsResourceType value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -407,7 +465,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the contentMD5 property: The Content-MD5 property.
-     * 
+     *
      * @return the contentMD5 value.
      */
     public String getContentMD5() {
@@ -416,7 +474,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the contentMD5 property: The Content-MD5 property.
-     * 
+     *
      * @param contentMD5 the contentMD5 value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -427,7 +485,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the acceptRanges property: The Accept-Ranges property.
-     * 
+     *
      * @return the acceptRanges value.
      */
     public String getAcceptRanges() {
@@ -436,7 +494,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the acceptRanges property: The Accept-Ranges property.
-     * 
+     *
      * @param acceptRanges the acceptRanges value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -447,7 +505,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the cacheControl property: The Cache-Control property.
-     * 
+     *
      * @return the cacheControl value.
      */
     public String getCacheControl() {
@@ -456,7 +514,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the cacheControl property: The Cache-Control property.
-     * 
+     *
      * @param cacheControl the cacheControl value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -467,7 +525,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     * 
+     *
      * @return the eTag value.
      */
     public String getETag() {
@@ -476,7 +534,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     * 
+     *
      * @param eTag the eTag value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -487,7 +545,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the contentDisposition property: The Content-Disposition property.
-     * 
+     *
      * @return the contentDisposition value.
      */
     public String getContentDisposition() {
@@ -496,7 +554,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the contentDisposition property: The Content-Disposition property.
-     * 
+     *
      * @param contentDisposition the contentDisposition value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -507,7 +565,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the contentEncoding property: The Content-Encoding property.
-     * 
+     *
      * @return the contentEncoding value.
      */
     public String getContentEncoding() {
@@ -516,7 +574,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the contentEncoding property: The Content-Encoding property.
-     * 
+     *
      * @param contentEncoding the contentEncoding value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -527,7 +585,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the xMsPermissions property: The x-ms-permissions property.
-     * 
+     *
      * @return the xMsPermissions value.
      */
     public String getXMsPermissions() {
@@ -536,7 +594,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsPermissions property: The x-ms-permissions property.
-     * 
+     *
      * @param xMsPermissions the xMsPermissions value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -547,7 +605,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the xMsLeaseDuration property: The x-ms-lease-duration property.
-     * 
+     *
      * @return the xMsLeaseDuration value.
      */
     public String getXMsLeaseDuration() {
@@ -556,7 +614,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsLeaseDuration property: The x-ms-lease-duration property.
-     * 
+     *
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -567,7 +625,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the contentLength property: The Content-Length property.
-     * 
+     *
      * @return the contentLength value.
      */
     public Long getContentLength() {
@@ -576,7 +634,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the contentLength property: The Content-Length property.
-     * 
+     *
      * @param contentLength the contentLength value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -587,7 +645,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -596,7 +654,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -607,7 +665,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the contentLanguage property: The Content-Language property.
-     * 
+     *
      * @return the contentLanguage value.
      */
     public String getContentLanguage() {
@@ -616,7 +674,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the contentLanguage property: The Content-Language property.
-     * 
+     *
      * @param contentLanguage the contentLanguage value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -627,7 +685,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the xMsOwner property: The x-ms-owner property.
-     * 
+     *
      * @return the xMsOwner value.
      */
     public String getXMsOwner() {
@@ -636,7 +694,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the xMsOwner property: The x-ms-owner property.
-     * 
+     *
      * @param xMsOwner the xMsOwner value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -647,7 +705,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Get the contentType property: The Content-Type property.
-     * 
+     *
      * @return the contentType value.
      */
     public String getContentType() {
@@ -656,7 +714,7 @@ public final class PathsGetPropertiesHeaders {
 
     /**
      * Set the contentType property: The Content-Type property.
-     * 
+     *
      * @param contentType the contentType value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
@@ -664,4 +722,139 @@ public final class PathsGetPropertiesHeaders {
         this.contentType = contentType;
         return this;
     }
+
+    /**
+     * Get the xMsServerEncrypted property: The x-ms-server-encrypted property.
+     *
+     * @return the xMsServerEncrypted value.
+     */
+    public Boolean isServerEncrypted() {
+        return this.xMsServerEncrypted;
+    }
+
+    /**
+     * Set the xMsServerEncrypted property: The x-ms-server-encrypted property.
+     *
+     * @param xMsServerEncrypted the xMsServerEncrypted value to set.
+     * @return the PathsGetPropertiesHeaders object itself.
+     */
+    public PathsGetPropertiesHeaders setServerEncrypted(Boolean xMsServerEncrypted) {
+        this.xMsServerEncrypted = xMsServerEncrypted;
+        return this;
+    }
+
+    /**
+     * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha-256 property.
+     *
+     * @return the xMsEncryptionKeySha256 value.
+     */
+    public String getXMsEncryptionKeySha256() {
+        return this.xMsEncryptionKeySha256;
+    }
+
+    /**
+     * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha-256 property.
+     *
+     * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set
+     * @return the PathsGetPropertiesHeaders object itself.
+     */
+    public PathsGetPropertiesHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
+        this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the xMsEncryptionScope property: The x-ms-encryption-scope property.
+     *
+     * @return the xMsEncryptionScope value.
+     */
+    public String getXMsEncryptionScope() {
+        return this.xMsEncryptionScope;
+    }
+
+    /**
+     * Set the xMsEncryptionScope property: The x-ms-encryption-scope property.
+     *
+     * @param xMsEncryptionScope the xMsEncryptionScope value to set
+     * @return the PathsGetPropertiesHeaders object itself.
+     */
+    public PathsGetPropertiesHeaders setXMsEncryptionScope(String xMsEncryptionScope) {
+        this.xMsEncryptionScope = xMsEncryptionScope;
+        return this;
+    }
+
+    /**
+     * Get the xMsEncryptionContext property: The x-ms-encryption-context property.
+     *
+     * @return the xMsEncryptionContext value.
+     */
+    public String getXMsEncryptionContext() {
+        return this.xMsEncryptionContext;
+    }
+
+    /**
+     * Set the xMsEncryptionContext property: The x-ms-encryption-context property.
+     *
+     * @param xMsEncryptionContext the xMsEncryptionContext value to set.
+     * @return the PathsGetPropertiesHeaders object itself.
+     */
+    public PathsGetPropertiesHeaders setXMsEncryptionContext(String xMsEncryptionContext) {
+        this.xMsEncryptionContext = xMsEncryptionContext;
+        return this;
+    }
+
+    /**
+     * Get the xMsCreationTime property: The x-ms-creation-time property.
+     *
+     * @return the xMsCreationTime value.
+     */
+    public OffsetDateTime getXMsCreationTime() {
+        if (this.xMsCreationTime == null) {
+            return null;
+        }
+        return this.xMsCreationTime.getDateTime();
+    }
+
+    /**
+     * Set the xMsCreationTime property: The x-ms-creation-time property.
+     *
+     * @param xMsCreationTime the xMsCreationTime value to set.
+     * @return the PathsGetPropertiesHeaders object itself.
+     */
+    public PathsGetPropertiesHeaders setXMsCreationTime(OffsetDateTime xMsCreationTime) {
+        if (xMsCreationTime == null) {
+            this.xMsCreationTime = null;
+        } else {
+            this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsExpiryTime property: The x-ms-expiry-time property.
+     *
+     * @return the xMsExpiryTime value.
+     */
+    public OffsetDateTime getXMsExpiryTime() {
+        if (this.xMsExpiryTime == null) {
+            return null;
+        }
+        return this.xMsExpiryTime.getDateTime();
+    }
+
+    /**
+     * Set the xMsExpiryTime property: The x-ms-expiry-time property.
+     *
+     * @param xMsExpiryTime the xMsExpiryTime value to set.
+     * @return the PathsGetPropertiesHeaders object itself.
+     */
+    public PathsGetPropertiesHeaders setXMsExpiryTime(OffsetDateTime xMsExpiryTime) {
+        if (xMsExpiryTime == null) {
+            this.xMsExpiryTime = null;
+        } else {
+            this.xMsExpiryTime = new DateTimeRfc1123(xMsExpiryTime);
+        }
+        return this;
+    }
+
 }
