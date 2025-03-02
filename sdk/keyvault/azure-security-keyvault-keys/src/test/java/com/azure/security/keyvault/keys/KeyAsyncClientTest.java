@@ -20,6 +20,7 @@ import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -718,6 +719,35 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 assertEquals(createdKey.getProperties().getTags(), rotatedKey.getProperties().getTags());
             })
             .verifyComplete();
+    }
+
+    /**
+     * Tests that a key's attestation material can be retrieved.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeyAttestation(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        //Assumptions.assumeTrue(isHsmEnabled);
+
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        getKeyAttestationRunner((keyToCreate) -> {
+            StepVerifier.create(keyAsyncClient.createKey(keyToCreate))
+                .assertNext(createdKey -> assertKeyEquals(keyToCreate, createdKey)).verifyComplete();
+
+            StepVerifier.create(keyAsyncClient.getKeyAttestation(keyToCreate.getName())).assertNext(retrievedKey -> {
+                assertNotNull(retrievedKey);
+
+                KeyAttestation keyAttestation = retrievedKey.getProperties().getKeyAttestation();
+
+                assertNotNull(keyAttestation);
+                assertNotNull(keyAttestation.getCertificatePemFile());
+                assertTrue(keyAttestation.getCertificatePemFile().length > 0);
+                assertNotNull(keyAttestation.getPrivateKeyAttestation());
+                assertTrue(keyAttestation.getPrivateKeyAttestation().length > 0);
+                assertNotNull(keyAttestation.getVersion());
+            }).verifyComplete();
+        });
     }
 
     /**

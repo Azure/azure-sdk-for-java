@@ -16,6 +16,7 @@ import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
@@ -659,6 +660,34 @@ public class KeyClientTest extends KeyClientTestBase {
 
         assertEquals(createdKey.getName(), rotatedKey.getName());
         assertEquals(createdKey.getProperties().getTags(), rotatedKey.getProperties().getTags());
+    }
+
+    /**
+     * Tests that a key's attestation material can be retrieved.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeyAttestation(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        //Assumptions.assumeTrue(isHsmEnabled);
+
+        createKeyClient(httpClient, serviceVersion);
+
+        getKeyAttestationRunner((keyToCreate) -> {
+            assertKeyEquals(keyToCreate, keyClient.createKey(keyToCreate));
+
+            KeyVaultKey keyWithAttestation = keyClient.getKeyAttestation(keyToCreate.getName());
+
+            assertNotNull(keyWithAttestation);
+
+            KeyAttestation keyAttestation = keyWithAttestation.getProperties().getKeyAttestation();
+
+            assertNotNull(keyAttestation);
+            assertNotNull(keyAttestation.getCertificatePemFile());
+            assertTrue(keyAttestation.getCertificatePemFile().length > 0);
+            assertNotNull(keyAttestation.getPrivateKeyAttestation());
+            assertTrue(keyAttestation.getPrivateKeyAttestation().length > 0);
+            assertNotNull(keyAttestation.getVersion());
+        });
     }
 
     /**
