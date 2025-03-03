@@ -1,13 +1,21 @@
 # Release History
 
-## 5.20.0 (2025-02-12)
-- This release is compatible with Spring Boot 3.4.2-3.4.0, 3.3.0-3.3.6, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>0), 3.3.y (y>6) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)
+## 5.20.1 (2025-03-03)
+- This release is compatible with Spring Boot 3.4.0-3.4.2, 3.3.0-3.3.6, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>2), 3.3.y (y>6) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2024.0.0, 2023.0.0-2023.0.4, 2022.0.0-2022.0.5. (Note: 2024.0.x(x>0) and 2023.0.y (y>4) should be supported, but they aren't tested with this release.)
 
 ### Spring Cloud Azure Dependencies (BOM)
 
 #### Dependency Updates
 - Upgrade `azure-sdk-bom` to 1.2.31.
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5201-2025-03-03) for more details.
+
+## 5.20.0 (2025-02-12)
+- This release is compatible with Spring Boot 3.4.0-3.4.2, 3.3.0-3.3.6, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>2), 3.3.y (y>6) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2024.0.0, 2023.0.0-2023.0.4, 2022.0.0-2022.0.5. (Note: 2024.0.x(x>0) and 2023.0.y (y>4) should be supported, but they aren't tested with this release.)
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
