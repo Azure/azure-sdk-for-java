@@ -17,16 +17,25 @@ import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Extension;
+import com.azure.health.insights.radiologyinsights.models.FhirR4Observation;
+import com.azure.health.insights.radiologyinsights.models.FhirR4ObservationComponent;
+import com.azure.health.insights.radiologyinsights.models.FindingInference;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
+import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationInference;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
+import com.azure.health.insights.radiologyinsights.models.GenericProcedureRecommendation;
 import com.azure.health.insights.radiologyinsights.models.GuidanceInference;
 import com.azure.health.insights.radiologyinsights.models.GuidanceRankingType;
+import com.azure.health.insights.radiologyinsights.models.ImagingProcedure;
+import com.azure.health.insights.radiologyinsights.models.ImagingProcedureRecommendation;
 import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
 import com.azure.health.insights.radiologyinsights.models.PatientEncounter;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
+import com.azure.health.insights.radiologyinsights.models.PresentGuidanceInformation;
+import com.azure.health.insights.radiologyinsights.models.ProcedureRecommendation;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
@@ -128,7 +137,7 @@ public class SampleGuidanceInferenceAsync {
     private static Mono<RadiologyInsightsInferenceResult> mono = null;
 
     /**
-     * Display the critical results of the Radiology Insights request.
+     * Display the guidance of the Radiology Insights request.
      *
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
@@ -139,8 +148,7 @@ public class SampleGuidanceInferenceAsync {
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
             List<RadiologyInsightsInference> inferences = patientResult.getInferences();
             for (RadiologyInsightsInference inference : inferences) {
-                if (inference instanceof GuidanceInference) {
-					
+                if (inference instanceof GuidanceInference) {				
                 	 GuidanceInference guidanceInference = (GuidanceInference) inference;
 					 System.out.println("Guidance Inference found");
 					 // Extract identifier
@@ -148,22 +156,98 @@ public class SampleGuidanceInferenceAsync {
 					 System.out.println("Identifier: ");
 					 displayCodes(identifier, 1);
 					 GuidanceRankingType guidanceRanking = guidanceInference.getRanking();
-					 // Extract ranking
-					 // Extract kind
+					 System.out.println("Ranking: "+ guidanceRanking.toString());
 					 // Extract presentGuidanceInformation
+					 List<PresentGuidanceInformation> presentGuidanceInformation = guidanceInference.getPresentGuidanceInformation();
+					 for (PresentGuidanceInformation presentGuidance : presentGuidanceInformation) {
+                         System.out.println("Present Guidance Information: " + presentGuidance.getPresentGuidanceItem());
 					 // Extract missingGuidanceInformation
+					 List<String> missingGuidanceInformation = guidanceInference.getMissingGuidanceInformation();
+						for (String missingGuidance : missingGuidanceInformation) {
+							System.out.println("Missing Guidance Information: " + missingGuidance);
+						}
 					 // Extract recommendationProposal
+					 List<FollowupRecommendationInference> recommendationProposals = guidanceInference.getRecommendationProposals();
+					 displayFollowUpRecommendations(recommendationProposals);
 					 // Extract finding
+					 FindingInference finding = guidanceInference.getFinding();
+					 displayFinding(finding);
 					 List<FhirR4Extension> extensions = guidanceInference.getExtension();
 					 System.out.println("   Evidence: " + extractEvidence(extensions));
-
-
                 }
             }
         }
     }
-    // END: com.azure.health.insights.radiologyinsights.displayresults.guidance
 
+    private static void displayFollowUpRecommendations(List<FollowupRecommendationInference> recommendationProposals) {
+		for (FollowupRecommendationInference followupRecommendationInference : recommendationProposals) {
+	        List<FhirR4Extension> extensions = followupRecommendationInference.getExtension();
+	        System.out.println("   Evidence: " + extractEvidence(extensions));
+	        System.out.println("   Is conditional: " + followupRecommendationInference.isConditional());
+	        System.out.println("   Is guideline: " + followupRecommendationInference.isGuideline());
+	        System.out.println("   Is hedging: " + followupRecommendationInference.isHedging());
+	        System.out.println("   Is option: " + followupRecommendationInference.isOption());
+	
+	        ProcedureRecommendation recommendedProcedure = followupRecommendationInference.getRecommendedProcedure();
+	        if (recommendedProcedure instanceof GenericProcedureRecommendation) {
+	            System.out.println("   Generic procedure recommendation:");
+	            GenericProcedureRecommendation genericProcedureRecommendation = (GenericProcedureRecommendation) recommendedProcedure;
+	            System.out.println("      Procedure codes: ");
+	            FhirR4CodeableConcept code = genericProcedureRecommendation.getCode();
+	            displayCodes(code, 3);
+	        }
+	        if (recommendedProcedure instanceof ImagingProcedureRecommendation) {
+	            System.out.println("   Imaging procedure recommendation: ");
+	            ImagingProcedureRecommendation imagingProcedureRecommendation = (ImagingProcedureRecommendation) recommendedProcedure;
+	            System.out.println("      Procedure codes: ");
+	            List<FhirR4CodeableConcept> procedureCodes = imagingProcedureRecommendation.getProcedureCodes();
+	            if (procedureCodes != null) {
+	                for (FhirR4CodeableConcept codeableConcept : procedureCodes) {
+	                    displayCodes(codeableConcept, 3);
+	                }
+	            }
+	
+	            System.out.println("      Imaging procedure: ");
+	            List<ImagingProcedure> imagingProcedures = imagingProcedureRecommendation.getImagingProcedures();
+	            for (ImagingProcedure imagingProcedure : imagingProcedures) {
+	                System.out.println("         Modality");
+	                FhirR4CodeableConcept modality = imagingProcedure.getModality();
+	                displayCodes(modality, 4);
+	                System.out.println("            Evidence: " + extractEvidence(modality.getExtension()));
+	
+	                System.out.println("         Anatomy");
+	                FhirR4CodeableConcept anatomy = imagingProcedure.getAnatomy();
+	                displayCodes(anatomy, 4);
+	                System.out.println("            Evidence: " + extractEvidence(anatomy.getExtension()));
+	            }
+	        }
+		}
+    }
+
+    private static void displayFinding(FindingInference findingInference) {       
+        FhirR4Observation finding = findingInference.getFinding();
+        System.out.println("   Code: ");
+        FhirR4CodeableConcept code = finding.getCode();
+        displayCodes(code, 2);
+        System.out.println("   Interpretation: ");
+        List<FhirR4CodeableConcept> interpretationList = finding.getInterpretation();
+        if (interpretationList != null) {
+            for (FhirR4CodeableConcept interpretation : interpretationList) {
+                displayCodes(interpretation, 2);
+            }
+        }
+        System.out.println("   Component: ");
+        List<FhirR4ObservationComponent> componentList = finding.getComponent();
+        for (FhirR4ObservationComponent component : componentList) {
+            FhirR4CodeableConcept componentCode = component.getCode();
+            displayCodes(componentCode, 2);
+            System.out.println("      Value codeable concept: ");
+            FhirR4CodeableConcept valueCodeableConcept = component.getValueCodeableConcept();
+            displayCodes(valueCodeableConcept, 4);
+        }
+    }
+    // END: com.azure.health.insights.radiologyinsights.displayresults.guidance
+    
     private static void displayCodes(FhirR4CodeableConcept codeableConcept, int indentation) {
         String initialBlank = "";
         for (int i = 0; i < indentation; i++) {
