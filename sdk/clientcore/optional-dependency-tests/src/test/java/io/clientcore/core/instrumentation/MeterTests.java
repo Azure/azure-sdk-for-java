@@ -63,7 +63,7 @@ public class MeterTests {
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build();
         InstrumentationOptions otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
-        instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null);
+        instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         emptyAttributes = instrumentation.createAttributes(null);
         meter = instrumentation.getMeter();
     }

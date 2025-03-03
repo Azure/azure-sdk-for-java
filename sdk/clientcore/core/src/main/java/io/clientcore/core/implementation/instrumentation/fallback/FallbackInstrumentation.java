@@ -25,16 +25,15 @@ import java.util.function.Function;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_ADDRESS_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_PORT_KEY;
+import static io.clientcore.core.implementation.instrumentation.InstrumentationUtils.UNKNOWN_LIBRARY_OPTIONS;
 
 /**
  * Fallback implementation of {@link Instrumentation} which implements basic correlation and context propagation
  * and, when enabled, records traces as logs.
  */
 public class FallbackInstrumentation implements Instrumentation {
-    private static final LibraryInstrumentationOptions DEFAULT_LIBRARY_OPTIONS
-        = new LibraryInstrumentationOptions("unknown");
     public static final FallbackInstrumentation DEFAULT_INSTANCE
-        = new FallbackInstrumentation(null, DEFAULT_LIBRARY_OPTIONS, null, -1);
+        = new FallbackInstrumentation(null, UNKNOWN_LIBRARY_OPTIONS, null, -1);
 
     private final boolean allowNestedSpans;
     private final boolean isTracingEnabled;

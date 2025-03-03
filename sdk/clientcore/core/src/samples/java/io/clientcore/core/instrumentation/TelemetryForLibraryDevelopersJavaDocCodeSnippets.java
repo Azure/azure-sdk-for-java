@@ -36,9 +36,6 @@ import java.util.List;
  * Check out {@code TelemetryJavaDocCodeSnippets} for application-level samples.
  */
 public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
-    private static final LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample")
-        .setLibraryVersion("1.0.0")
-        .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
     private static final HttpHeaderName CUSTOM_REQUEST_ID = HttpHeaderName.fromString("custom-request-id");
 
     public void getTracer() {
@@ -50,7 +47,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
-        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, null);
+        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
 
         Tracer tracer = instrumentation.getTracer();
 
@@ -65,7 +62,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
-        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, null);
+        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
         instrumentation.getMeter();
 
         // END: io.clientcore.core.instrumentation.createmeter
@@ -77,7 +74,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
-        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, null);
+        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
         Meter meter = instrumentation.getMeter();
 
         // BEGIN: io.clientcore.core.instrumentation.histogram
@@ -116,7 +113,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
-        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, null);
+        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
         Meter meter = instrumentation.getMeter();
 
         List<Object> batch = new ArrayList<>();
@@ -148,11 +145,11 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     public void upDownCounter() {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
+            .setEndpoint("https://example.com")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
-        String serviceEndpoint = "https://example.com";
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
-        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, serviceEndpoint);
+        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
         Meter meter = instrumentation.getMeter();
 
         // BEGIN: io.clientcore.core.instrumentation.updowncounter
@@ -173,14 +170,13 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
     public void createAttributes() {
         // BEGIN: io.clientcore.core.instrumentation.createattributes
-
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
 
-        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, null);
+        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
         InstrumentationAttributes attributes = instrumentation
             .createAttributes(Collections.singletonMap("key1", "value1"));
 
@@ -192,8 +188,12 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      */
     @SuppressWarnings("try")
     public void traceCall() {
-        String serviceEndpoint = "https://example.com";
-        Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS, serviceEndpoint).getTracer();
+        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
+            .setLibraryVersion("1.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
+            .setEndpoint("https://example.com");
+
+        Tracer tracer = Instrumentation.create(null, libraryOptions).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.instrumentation.tracecall
@@ -229,8 +229,11 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      * This example shows how to use generic operation instrumentation to trace call and record duration metric
      */
     public void instrumentCallWithMetricsAndTraces() {
-        String serviceEndpoint = "https://example.com";
-        Instrumentation instrumentation = Instrumentation.create(null, LIBRARY_OPTIONS, serviceEndpoint);
+        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
+            .setLibraryVersion("1.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
+            .setEndpoint("https://example.com");
+        Instrumentation instrumentation = Instrumentation.create(null, libraryOptions);
 
         RequestOptions requestOptions = null;
 
@@ -246,8 +249,11 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      * Note: metrics enrichment is not supported yet.
      */
     public void enrichOperationInstrumentation() {
-        String serviceEndpoint = "https://example.com";
-        Instrumentation instrumentation = Instrumentation.create(null, LIBRARY_OPTIONS, serviceEndpoint);
+        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
+            .setLibraryVersion("1.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
+            .setEndpoint("https://example.com");
+        Instrumentation instrumentation = Instrumentation.create(null, libraryOptions);
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.instrumentation.enrich
@@ -275,8 +281,12 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      */
     @SuppressWarnings("try")
     public void traceWithAttributes() {
-        String serviceEndpoint = "https://example.com";
-        Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS, serviceEndpoint).getTracer();
+        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
+            .setLibraryVersion("1.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
+            .setEndpoint("https://example.com");
+
+        Tracer tracer = Instrumentation.create(null, libraryOptions).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.instrumentation.tracewithattributes

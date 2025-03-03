@@ -69,8 +69,6 @@
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
     <checkstyle.excludes>**/generated/**/*.java,**/aalto/**/*.java,**/jackson/core/**/*.java</checkstyle.excludes>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
     <spotbugs.excludes>**/aalto/**/*.java,**/jackson/core/**/*.java</spotbugs.excludes>
 
     <!-- Enables fail on deprecated API usage. -->

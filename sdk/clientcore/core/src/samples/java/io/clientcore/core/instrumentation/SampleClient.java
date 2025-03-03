@@ -10,8 +10,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 
 class SampleClient {
-
-    private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("contoso-sample");
     private final HttpPipeline httpPipeline;
     private final String endpoint;
     private final Instrumentation instrumentation;
@@ -19,7 +17,8 @@ class SampleClient {
     SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS, endpoint);
+        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("contoso-sample").setEndpoint(endpoint);
+        this.instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
     }
 
     public Response<?> downloadContent() {

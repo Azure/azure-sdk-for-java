@@ -181,15 +181,16 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClient {
-        private static final LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("contoso.sample");
+        private final static String LIBRARY_NAME = "contoso.sample";
         private final Instrumentation instrumentation;
         private final HttpPipeline httpPipeline;
-        private final String serviceEndpoint;
+        private final String serviceEndpoint = "https://example.com";
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
+            LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions(LIBRARY_NAME)
+                .setEndpoint(serviceEndpoint);
             this.httpPipeline = httpPipeline;
-            this.serviceEndpoint = "https://example.com";
-            this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS, serviceEndpoint);
+            this.instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
         }
 
         public Response<?> clientCall() {

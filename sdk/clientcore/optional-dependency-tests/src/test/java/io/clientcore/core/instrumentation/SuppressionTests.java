@@ -33,7 +33,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
-import java.net.URI;
 import java.time.Duration;
 import java.util.stream.Stream;
 
@@ -50,8 +49,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class SuppressionTests {
-    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
-        = new LibraryInstrumentationOptions("test-library");
     private static final long SECOND_NANOS = 1_000_000_000;
 
     private InMemorySpanExporter exporter;
@@ -62,6 +59,8 @@ public class SuppressionTests {
 
     private InstrumentationOptions otelOptions;
     private Tracer tracer;
+    private final LibraryInstrumentationOptions libOptions
+        = new LibraryInstrumentationOptions("test-library");
 
     @BeforeEach
     public void setUp() {
@@ -75,7 +74,7 @@ public class SuppressionTests {
         OpenTelemetry openTelemetry
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).setMeterProvider(meterProvider).build();
         otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
-        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null).getTracer();
+        tracer = Instrumentation.create(otelOptions, libOptions).getTracer();
     }
 
     @AfterEach
@@ -114,8 +113,13 @@ public class SuppressionTests {
     public void testNestedInternalScopeSuppression() throws IOException {
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(request -> new MockHttpResponse(request, 200)).build();
+
+        LibraryInstrumentationOptions libraryInstrumentationOptions
+            = new LibraryInstrumentationOptions("test-library")
+            .setEndpoint("https://localhost");
+
         SampleClientCallInstrumentation client
-            = new SampleClientCallInstrumentation(pipeline, otelOptions, DEFAULT_LIB_OPTIONS);
+            = new SampleClientCallInstrumentation(pipeline, otelOptions, libraryInstrumentationOptions);
 
         client.convenienceMethod(new RequestOptions());
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -154,7 +158,7 @@ public class SuppressionTests {
     public void testDisabledSuppression() {
         Tracer outerTracer = tracer;
         Tracer innerTracer = Instrumentation
-            .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true), null)
+            .create(otelOptions, libOptions.disableSpanSuppression(true))
             .getTracer();
 
         RequestOptions options = new RequestOptions();
@@ -178,7 +182,7 @@ public class SuppressionTests {
     @Test
     public void disabledSuppressionDoesNotAffectChildren() {
         Tracer outerTracer = Instrumentation
-            .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true), null)
+            .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true))
             .getTracer();
         Tracer innerTracer = tracer;
 
@@ -212,7 +216,7 @@ public class SuppressionTests {
 
     @Test
     public void multipleLayers() {
-        Tracer tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null).getTracer();
+        Tracer tracer = Instrumentation.create(otelOptions, libOptions).getTracer();
 
         RequestOptions options = new RequestOptions();
 
@@ -361,13 +365,16 @@ public class SuppressionTests {
     }
 
     static class SampleClientTracing {
+        private final static String LIBRARY_NAME = "test-library";
         private final HttpPipeline pipeline;
         private final Tracer tracer;
 
         SampleClientTracing(HttpPipeline pipeline, InstrumentationOptions options) {
             this.pipeline = pipeline;
-            String serviceEndpoint = "https://localhost";
-            this.tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, serviceEndpoint).getTracer();
+
+            LibraryInstrumentationOptions libraryInstrumentationOptions
+                = new LibraryInstrumentationOptions(LIBRARY_NAME).setEndpoint("https://localhost");
+            this.tracer = Instrumentation.create(options, libraryInstrumentationOptions).getTracer();
         }
 
         @SuppressWarnings("try")
@@ -408,11 +415,9 @@ public class SuppressionTests {
         private final HttpPipeline pipeline;
         private final Instrumentation instrumentation;
 
-        SampleClientCallInstrumentation(HttpPipeline pipeline, InstrumentationOptions options,
-            LibraryInstrumentationOptions libOptions) {
+        SampleClientCallInstrumentation(HttpPipeline pipeline, InstrumentationOptions options, LibraryInstrumentationOptions libraryInstrumentationOptions) {
             this.pipeline = pipeline;
-            String serviceEndpoint = "https://localhost";
-            this.instrumentation = Instrumentation.create(options, libOptions, serviceEndpoint);
+            this.instrumentation = Instrumentation.create(options, libraryInstrumentationOptions);
         }
 
         @SuppressWarnings("try")

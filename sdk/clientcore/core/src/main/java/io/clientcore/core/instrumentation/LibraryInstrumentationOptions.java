@@ -28,6 +28,7 @@ public final class LibraryInstrumentationOptions {
     private String libraryVersion;
     private String schemaUrl;
     private boolean disableSpanSuppression;
+    private String serviceEndpoint;
 
     static {
         LibraryInstrumentationOptionsAccessHelper
@@ -77,6 +78,17 @@ public final class LibraryInstrumentationOptions {
     }
 
     /**
+     * Sets the service endpoint.
+     *
+     * @param endpoint The service endpoint.
+     * @return The updated {@link LibraryInstrumentationOptions} object.
+     */
+    public LibraryInstrumentationOptions setEndpoint(String endpoint) {
+        this.serviceEndpoint = endpoint;
+        return this;
+    }
+
+    /**
      * Gets the client library name.
      *
      * @return The client library name.
@@ -102,6 +114,15 @@ public final class LibraryInstrumentationOptions {
      */
     public String getSchemaUrl() {
         return schemaUrl;
+    }
+
+    /**
+     * Gets the service endpoint.
+     *
+     * @return The service endpoint.
+     */
+    public String getEndpoint() {
+        return serviceEndpoint;
     }
 
     LibraryInstrumentationOptions disableSpanSuppression(boolean disableSpanSuppression) {

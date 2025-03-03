@@ -27,10 +27,7 @@ import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,6 +38,8 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ER
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.OPERATION_NAME_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_ADDRESS_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_PORT_KEY;
+import static io.clientcore.core.implementation.instrumentation.InstrumentationUtils.UNKNOWN_LIBRARY_OPTIONS;
+import static io.clientcore.core.implementation.instrumentation.InstrumentationUtils.createOperationDurationHistogram;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.GLOBAL_OTEL_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.OTEL_CLASS;
@@ -60,12 +59,6 @@ public class OTelInstrumentation implements Instrumentation {
     private static final Object NOOP_PROVIDER;
     private static final OTelTraceContextPropagator W3C_PROPAGATOR_INSTANCE;
     private static final ClientLogger LOGGER = new ClientLogger(OTelInstrumentation.class);
-    // Histogram boundaries are optimized for common latency ranges (in seconds). They are
-    // provided as advice at metric creation time and could be overriden by the user application via
-    // OTel configuration.
-    // TODO (limolkova): document client core metric conventions along with logical operation histogram boundaries.
-    private static final List<Double> DURATION_BOUNDARIES_ADVICE = Collections.unmodifiableList(
-        Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d));
 
     static {
         ReflectiveInvoker getTracerProviderInvoker = null;
@@ -102,10 +95,8 @@ public class OTelInstrumentation implements Instrumentation {
         W3C_PROPAGATOR_INSTANCE = new OTelTraceContextPropagator(w3cPropagatorInstance);
     }
 
-    private static final LibraryInstrumentationOptions DEFAULT_LIBRARY_OPTIONS
-        = new LibraryInstrumentationOptions("unknown");
     public static final OTelInstrumentation DEFAULT_INSTANCE
-        = new OTelInstrumentation(null, DEFAULT_LIBRARY_OPTIONS, null, -1);
+        = new OTelInstrumentation(null, UNKNOWN_LIBRARY_OPTIONS, null, -1);
 
     private final boolean isTracingEnabled;
     private final boolean isMetricsEnabled;
@@ -145,22 +136,9 @@ public class OTelInstrumentation implements Instrumentation {
         this.tracer = createTracer(isTracingEnabled, libraryOptions, otelInstance);
         this.meter = createMeter(isMetricsEnabled, libraryOptions, otelInstance);
         this.callDurationMetric
-            = createCallDurationMetric(libraryOptions == null ? null : libraryOptions.getLibraryName(), meter);
+            = createOperationDurationHistogram(libraryOptions == null ? null : libraryOptions.getLibraryName(), meter);
         this.host = host;
         this.port = port;
-    }
-
-    private static DoubleHistogram createCallDurationMetric(String libraryName, Meter meter) {
-        if (meter.isEnabled() && libraryName != null) {
-            // TODO (lmolkova): it'd be great to get typespec namespace (e.g. Azure.Batch)
-            // Metric name should be fully qualified, e.g. `azure.batch` or `azure.storage.blob` - if we
-            // had it from typespec, we could auto-generate metric name and description.
-            String metricDescription = "Duration of client operation";
-            String metricName = libraryName.replace("-", ".") + ".client.operation.duration";
-            return meter.createDoubleHistogram(metricName, metricDescription, "s", DURATION_BOUNDARIES_ADVICE);
-        }
-
-        return NoopMeter.NOOP_LONG_HISTOGRAM;
     }
 
     /**

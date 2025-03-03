@@ -39,7 +39,7 @@ public interface Instrumentation {
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions, null&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
      *
      * Tracer tracer = instrumentation.getTracer&#40;&#41;;
      *
@@ -66,7 +66,7 @@ public interface Instrumentation {
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions, null&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
      * instrumentation.getMeter&#40;&#41;;
      *
      * </pre>
@@ -84,14 +84,13 @@ public interface Instrumentation {
      * should use OpenTelemetry API directly</strong></p>
      * <!-- src_embed io.clientcore.core.instrumentation.createattributes -->
      * <pre>
-     *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
      *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      *
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions, null&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
      * InstrumentationAttributes attributes = instrumentation
      *     .createAttributes&#40;Collections.singletonMap&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
@@ -167,17 +166,16 @@ public interface Instrumentation {
      *
      * @param applicationOptions Telemetry collection options provided by the application.
      * @param libraryOptions Library-specific telemetry collection options.
-     * @param serviceEndpoint The service endpoint.
      * @return The instance of telemetry provider implementation.
      */
     static Instrumentation create(InstrumentationOptions applicationOptions,
-        LibraryInstrumentationOptions libraryOptions, String serviceEndpoint) {
+        LibraryInstrumentationOptions libraryOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
 
         String host = null;
         int port = -1;
-        if (serviceEndpoint != null) {
-            URI uri = URI.create(serviceEndpoint);
+        if (libraryOptions.getEndpoint() != null) {
+            URI uri = URI.create(libraryOptions.getEndpoint());
             host = uri.getHost();
             port = getServerPort(uri);
         }

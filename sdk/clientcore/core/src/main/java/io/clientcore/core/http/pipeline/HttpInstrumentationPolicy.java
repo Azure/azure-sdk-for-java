@@ -204,7 +204,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @param instrumentationOptions Application telemetry options.
      */
     public HttpInstrumentationPolicy(HttpInstrumentationOptions instrumentationOptions) {
-        this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS, null);
+        this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
         this.tracer = instrumentation.getTracer();
         this.meter = instrumentation.getMeter();
         this.httpRequestDuration = meter.createDoubleHistogram(REQUEST_DURATION_METRIC_NAME,

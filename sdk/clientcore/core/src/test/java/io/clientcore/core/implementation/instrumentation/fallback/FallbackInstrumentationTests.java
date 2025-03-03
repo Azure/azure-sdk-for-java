@@ -59,8 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FallbackInstrumentationTests {
     private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
         = new LibraryInstrumentationOptions("test-library");
-    private static final Instrumentation DEFAULT_INSTRUMENTATION
-        = Instrumentation.create(null, DEFAULT_LIB_OPTIONS, null);
+    private static final Instrumentation DEFAULT_INSTRUMENTATION = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
     private final AccessibleByteArrayOutputStream logCaptureStream;
 
     private static final TraceContextGetter<Map<String, String>> GETTER
@@ -333,7 +332,7 @@ public class FallbackInstrumentationTests {
     @SuppressWarnings("try")
     public void basicTracingDisabledTests() {
         InstrumentationOptions options = new InstrumentationOptions().setTracingEnabled(false);
-        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null);
+        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
 
         Tracer tracer = instrumentation.getTracer();
         assertFalse(tracer.isEnabled());
@@ -364,14 +363,14 @@ public class FallbackInstrumentationTests {
         // should not throw
         InstrumentationOptions options
             = new InstrumentationOptions().setTelemetryProvider("this is not a valid provider");
-        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null).getTracer();
+        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = instrumentation.getTracer();
         assertTrue(tracer.isEnabled());
     }
 
     @Test
     public void createInstrumentationBadOptions() {
-        assertThrows(NullPointerException.class,
-            () -> Instrumentation.create(new InstrumentationOptions(), null, "https://example.com"));
+        assertThrows(NullPointerException.class, () -> Instrumentation.create(new InstrumentationOptions(), null));
     }
 
     @ParameterizedTest
@@ -379,7 +378,7 @@ public class FallbackInstrumentationTests {
     public void basicTracingLogsLevel(LogLevel logLevel, boolean expectLogs) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
-        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null);
+        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
         Tracer tracer = instrumentation.getTracer();
 
         Span span = tracer.spanBuilder("test-span", INTERNAL, null).startSpan();
@@ -406,7 +405,7 @@ public class FallbackInstrumentationTests {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         InstrumentationAttributes startAttributes = DEFAULT_INSTRUMENTATION.createAttributes(start);
-        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null);
+        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
         Tracer tracer = instrumentation.getTracer();
 
         Span span = tracer.spanBuilder("test-span", INTERNAL, null).setAllAttributes(startAttributes).startSpan();
@@ -434,7 +433,7 @@ public class FallbackInstrumentationTests {
     public void basicTracingLogsEnabled() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
-        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null);
+        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
         Tracer tracer = instrumentation.getTracer();
 
         long startTime = System.nanoTime();
@@ -462,7 +461,7 @@ public class FallbackInstrumentationTests {
     public void tracingWithAttributesLogsEnabled() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
-        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null).getTracer();
+        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
 
         Span span = tracer.spanBuilder("test-span", PRODUCER, null)
             .setAttribute("builder-string-key", "builder-value")
@@ -500,7 +499,7 @@ public class FallbackInstrumentationTests {
     public void tracingWithExceptionLogsEnabled() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
-        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null).getTracer();
+        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
 
         Span span = tracer.spanBuilder("test-span", SERVER, null).startSpan();
 
@@ -518,7 +517,7 @@ public class FallbackInstrumentationTests {
     public void tracingLogsEnabledParent() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
-        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null).getTracer();
+        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
 
         Span parent = tracer.spanBuilder("parent", CONSUMER, null).startSpan();
         Span child = tracer.spanBuilder("child", CLIENT, parent.getInstrumentationContext()).startSpan();
@@ -637,7 +636,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void testCreateAttributes() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS, null);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
         InstrumentationAttributes attributes = instrumentation.createAttributes(Collections.emptyMap());
         assertInstanceOf(FallbackAttributes.class, attributes);
 
@@ -649,7 +648,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void testAttributes() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS, null);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
         Map<String, Object> start = new HashMap<>();
         start.put("string", "value");
         start.put("int", 42);
@@ -694,7 +693,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void testDuplicates() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS, null);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
         Map<String, Object> start = new HashMap<>();
         start.put("string", "value1");
         start.put("string", "value2");
