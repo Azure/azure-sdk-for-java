@@ -2063,7 +2063,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
@@ -2085,7 +2087,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2107,7 +2111,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
@@ -2123,7 +2129,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2140,7 +2148,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
@@ -2161,7 +2171,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2182,7 +2194,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
@@ -2198,7 +2212,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2215,7 +2231,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
@@ -2237,7 +2255,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2259,7 +2279,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
@@ -2275,7 +2297,9 @@ public final class ChatThreadsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
