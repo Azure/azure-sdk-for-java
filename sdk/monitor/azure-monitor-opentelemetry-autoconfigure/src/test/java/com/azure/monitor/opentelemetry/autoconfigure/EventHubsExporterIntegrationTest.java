@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -43,6 +44,8 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
     private static final String STORAGE_CONNECTION_STRING = System.getenv("STORAGE_CONNECTION_STRING");
     private static final String CONTAINER_NAME = System.getenv("STORAGE_CONTAINER_NAME");
 
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubsExporterIntegrationTest.class);
+
     private TokenCredential credential;
 
     @Override
@@ -67,13 +70,13 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
                     if (remoteDependencyName.contains(spanName)) {
                         exporterCountDown.countDown();
                         System.out.println("Count down " + spanName);
+                        LOGGER.info("Count down " + spanName);
                     } else if (remoteDependencyName.contains("EventHubs.send")) {
                         exporterCountDown.countDown();
-                        System.out.println("Count down " + "EventHubs.send");
+                        LOGGER.info("Count down " + "EventHubs.send");
                     } else {
-                        System.out.println("remoteDependencyName = " + remoteDependencyName);
+                        LOGGER.info("remoteDependencyName = " + remoteDependencyName);
                     }
-
                 }
             });
             return next.process();
