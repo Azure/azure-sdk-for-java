@@ -703,9 +703,13 @@ public class LocationCache {
 
                         parsedLocations.add(gatewayDbAccountLocation.getName());
                     } catch (Exception e) {
-                        logger.warn("GetAvailableEndpointsByLocation() - skipping add for location = [{}] as its location name is either empty or endpoint is malformed [{}]",
+
+                        String region = "GetAvailableEndpointsByLocation() - skipping add for location = [{}] as its location name is either empty or endpoint is malformed [{}]";
+
+                        logger.warn("Skipping add for location = [{}] and endpoint = [{}] due to exception [{}]",
                             gatewayDbAccountLocation.getName(),
-                            gatewayDbAccountLocation.getEndpoint());
+                            gatewayDbAccountLocation.getEndpoint(),
+                            e.getMessage());
                     }
                 }
             }

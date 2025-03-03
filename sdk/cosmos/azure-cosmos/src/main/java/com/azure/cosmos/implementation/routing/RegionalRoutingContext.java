@@ -12,9 +12,11 @@ public class RegionalRoutingContext {
     // Please reevaluate overridden equals() implementation
     // when adding additional properties to this class
     private final URI gatewayRegionalEndpoint;
+    private final String gatewayRegionalEndpointAsString;
 
     public RegionalRoutingContext(URI gatewayRegionalEndpoint) {
         this.gatewayRegionalEndpoint = gatewayRegionalEndpoint;
+        this.gatewayRegionalEndpointAsString = gatewayRegionalEndpoint.toString();
     }
 
     public URI getGatewayRegionalEndpoint() {
@@ -31,6 +33,6 @@ public class RegionalRoutingContext {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.gatewayRegionalEndpoint);
+        return Objects.hash(this.gatewayRegionalEndpointAsString);
     }
 }
