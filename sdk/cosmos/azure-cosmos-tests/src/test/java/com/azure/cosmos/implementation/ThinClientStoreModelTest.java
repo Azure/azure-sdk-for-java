@@ -2,6 +2,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.channel.ConnectTimeoutException;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;

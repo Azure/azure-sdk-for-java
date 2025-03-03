@@ -6,11 +6,15 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static com.azure.cosmos.implementation.ClientRetryPolicyTest.validateSuccess;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -55,7 +59,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
     }
 
     @Test(groups = "unit", timeOut = TIMEOUT)
-    public void shouldRetryWithNotFoundStatusCode() {
+    public void shouldRetryWithNotFoundStatusCode() throws URISyntaxException {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
@@ -63,6 +67,13 @@ public class RenameCollectionAwareClientRetryPolicyTest {
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(eq(null), eq(false));
+
+        URI locationEndToRoute = new URI("https://location1.documents.com");
+        RegionalRoutingContext consolidatedLocationEndpointToRoute = new RegionalRoutingContext(locationEndToRoute);
+
+        Mockito.when(endpointManager.resolveServiceEndpoint(Mockito.any())).thenReturn(consolidatedLocationEndpointToRoute);
+
+        IRetryPolicyFactory retryPolicyFactory = new RetryPolicy(mockDiagnosticsClientContext(), endpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManager);
         IRetryPolicyFactory retryPolicyFactory = new RetryPolicy(mockDiagnosticsClientContext(), endpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManagerForPerPartitionCircuitBreaker, globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
         RxClientCollectionCache rxClientCollectionCache = Mockito.mock(RxClientCollectionCache.class);
 
@@ -86,7 +97,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
     }
 
     @Test(groups = "unit", timeOut = TIMEOUT)
-    public void shouldRetryWithNotFoundStatusCodeAndReadSessionNotAvailableSubStatusCode() {
+    public void shouldRetryWithNotFoundStatusCodeAndReadSessionNotAvailableSubStatusCode() throws URISyntaxException {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
@@ -94,6 +105,13 @@ public class RenameCollectionAwareClientRetryPolicyTest {
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(eq(null), eq(false));
+
+        URI locationEndToRoute = new URI("https://location1.documents.com");
+        RegionalRoutingContext consolidatedLocationEndpointToRoute = new RegionalRoutingContext(locationEndToRoute);
+
+        Mockito.when(endpointManager.resolveServiceEndpoint(Mockito.any())).thenReturn(consolidatedLocationEndpointToRoute);
+
+        IRetryPolicyFactory retryPolicyFactory = new RetryPolicy(mockDiagnosticsClientContext(), endpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManager);
         IRetryPolicyFactory retryPolicyFactory = new RetryPolicy(mockDiagnosticsClientContext(), endpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManagerForPerPartitionCircuitBreaker, globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
         RxClientCollectionCache rxClientCollectionCache = Mockito.mock(RxClientCollectionCache.class);
 
@@ -128,14 +146,19 @@ public class RenameCollectionAwareClientRetryPolicyTest {
      * No retry on bad request exception
      */
     @Test(groups = "unit", timeOut = TIMEOUT)
-    public void shouldRetryWithGenericException() {
+    public void shouldRetryWithGenericException() throws URISyntaxException {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
+        URI locationEndToRoute = new URI("https://location1.documents.com");
+        RegionalRoutingContext consolidatedLocationEndpointToRoute = new RegionalRoutingContext(locationEndToRoute);
+
+        Mockito.when(endpointManager.resolveServiceEndpoint(Mockito.any())).thenReturn(consolidatedLocationEndpointToRoute);
+
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(eq(null), eq(false));
-        IRetryPolicyFactory retryPolicyFactory = new RetryPolicy(mockDiagnosticsClientContext(), endpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManagerForPerPartitionCircuitBreaker, globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+        IRetryPolicyFactory retryPolicyFactory = new RetryPolicy(mockDiagnosticsClientContext(), endpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManager);
         RxClientCollectionCache rxClientCollectionCache = Mockito.mock(RxClientCollectionCache.class);
 
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
