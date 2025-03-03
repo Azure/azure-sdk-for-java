@@ -6,7 +6,6 @@ parameters:
   ArtifactID:
   GPGExecutablePath: $(Pipeline.Workspace)/azure-sdk-build-tools/tools/gpg/bin/gpg.exe
   JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-  StageOnly: false
   ShouldPublish: true
 
 steps:

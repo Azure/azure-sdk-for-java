@@ -61,12 +61,6 @@ stages:
               OutputDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-gpg-signed
               FlattenedESRPDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened
 
-          # Publish the packages-esrp-gpg-signed, which is the intermediate directory
-          # prior to flattening
-          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-            parameters:
-              ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-gpg-signed'
-              ArtifactName: '${{parameters.ArtifactName}}-esrp-gpg-signed'
           # The packages-esrp-flattened will be used for the ESRP publish
           - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
             parameters:
@@ -160,7 +154,7 @@ stages:
               - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
               - template: tools/gpg/gpg.yml@azure-sdk-build-tools
               # Publish to the azure-sdk-for-java feed.
-              - template: /eng/pipelines/templates/steps/java-publishing.yml
+              - template: /eng/pipelines/templates/steps/java-dev-feed-publishing.yml
                 parameters:
                   ArtifactID: ${{artifact.name}}
                   GroupID: ${{artifact.groupId}}
