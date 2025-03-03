@@ -27,20 +27,30 @@ class SampleClient {
     }
 
     public Response<?> downloadContent(RequestOptions options) {
+        // BEGIN: io.clientcore.core.instrumentation.instrumentwithresponse
+        return instrumentation.instrumentWithResponse("Sample.download", options, this::downloadImpl);
+        // END: io.clientcore.core.instrumentation.instrumentwithresponse
+    }
+
+    public void create(RequestOptions options) {
         // BEGIN: io.clientcore.core.instrumentation.instrument
-        return instrumentation.instrumentWithResponse("download", options, this::downloadImpl);
+        instrumentation.instrument("Sample.create", options, this::createImpl);
         // END: io.clientcore.core.instrumentation.instrument
     }
 
-    public Response<?> create(RequestOptions options) {
-        return instrumentation.instrumentWithResponse("create", options, this::createImpl);
+    public Response<?> createWithResponse(RequestOptions options) {
+        return instrumentation.instrumentWithResponse("create", options, this::createWithResponseImpl);
     }
 
     private Response<?> downloadImpl(RequestOptions options) {
         return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestOptions(options));
     }
 
-    private Response<?> createImpl(RequestOptions options) {
+    private Response<?> createWithResponseImpl(RequestOptions options) {
         return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestOptions(options));
+    }
+
+    private void createImpl(RequestOptions options) {
+        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestOptions(options));
     }
 }

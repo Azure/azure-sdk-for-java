@@ -8,7 +8,7 @@ import java.net.URI;
 /**
  * Utility class for instrumentation.
  */
-public class InstrumentationUtils {
+public final class InstrumentationUtils {
 
     /**
      * Does the best effort to capture the server port with minimum perf overhead.
@@ -16,6 +16,7 @@ public class InstrumentationUtils {
      * If scheme is not one of those, returns -1.
      *
      * @param uri request URI
+     * @return server port
      */
     public static int getServerPort(URI uri) {
         int port = uri.getPort();

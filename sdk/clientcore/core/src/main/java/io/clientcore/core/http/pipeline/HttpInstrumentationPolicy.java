@@ -30,7 +30,6 @@ import io.clientcore.core.utils.CoreUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -159,7 +158,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         LIBRARY_VERSION = properties.getOrDefault("version", "unknown");
         LibraryInstrumentationOptions libOptions
             = new LibraryInstrumentationOptions(LIBRARY_NAME).setLibraryVersion(LIBRARY_VERSION)
-                .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         // HTTP tracing is special - we suppress nested public API spans, but
         // preserve nested HTTP ones.
@@ -206,8 +205,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      */
     public HttpInstrumentationPolicy(HttpInstrumentationOptions instrumentationOptions) {
         this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS, null);
-        this.tracer = instrumentation.createTracer();
-        this.meter = instrumentation.createMeter();
+        this.tracer = instrumentation.getTracer();
+        this.meter = instrumentation.getMeter();
         this.httpRequestDuration = meter.createDoubleHistogram(REQUEST_DURATION_METRIC_NAME,
             REQUEST_DURATION_METRIC_DESCRIPTION, REQUEST_DURATION_METRIC_UNIT, REQUEST_DURATION_BOUNDARIES_ADVICE);
         this.traceContextPropagator = instrumentation.getW3CTraceContextPropagator();

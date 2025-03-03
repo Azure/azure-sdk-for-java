@@ -46,19 +46,19 @@ public class FallbackTracingBenchmarks {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("test");
         fallbackTracerDisabled
             = Instrumentation.create(new InstrumentationOptions().setTracingEnabled(false), libraryOptions, null)
-                .createTracer();
+                .getTracer();
 
         ClientLogger loggerDisabled
             = InstrumentationTestUtils.setupLogLevelAndGetLogger(LogLevel.WARNING, new NoopStream());
-        fallbackTracerEnabledNoLogs
-            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(loggerDisabled), libraryOptions, null)
-                .createTracer();
+        fallbackTracerEnabledNoLogs = Instrumentation
+            .create(new InstrumentationOptions().setTelemetryProvider(loggerDisabled), libraryOptions, null)
+            .getTracer();
 
         ClientLogger loggerEnabled
             = InstrumentationTestUtils.setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, new NoopStream());
-        fallbackTracerEnabledWithLogs
-            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(loggerEnabled), libraryOptions, null)
-                .createTracer();
+        fallbackTracerEnabledWithLogs = Instrumentation
+            .create(new InstrumentationOptions().setTelemetryProvider(loggerEnabled), libraryOptions, null)
+            .getTracer();
     }
 
     @Benchmark

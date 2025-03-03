@@ -38,35 +38,35 @@ import java.util.List;
 public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     private static final LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample")
         .setLibraryVersion("1.0.0")
-        .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+        .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
     private static final HttpHeaderName CUSTOM_REQUEST_ID = HttpHeaderName.fromString("custom-request-id");
 
-    public void createTracer() {
+    public void getTracer() {
 
         // BEGIN: io.clientcore.core.instrumentation.createtracer
 
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, null);
 
-        Tracer tracer = instrumentation.createTracer();
+        Tracer tracer = instrumentation.getTracer();
 
         // END: io.clientcore.core.instrumentation.createtracer
     }
 
-    public void createMeter() {
+    public void getMeter() {
         // BEGIN: io.clientcore.core.instrumentation.createmeter
 
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, null);
-        instrumentation.createMeter();
+        instrumentation.getMeter();
 
         // END: io.clientcore.core.instrumentation.createmeter
     }
@@ -74,11 +74,11 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     public void histogram() {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, null);
-        Meter meter = instrumentation.createMeter();
+        Meter meter = instrumentation.getMeter();
 
         // BEGIN: io.clientcore.core.instrumentation.histogram
 
@@ -113,11 +113,11 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     public void counter() {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, null);
-        Meter meter = instrumentation.createMeter();
+        Meter meter = instrumentation.getMeter();
 
         List<Object> batch = new ArrayList<>();
 
@@ -148,12 +148,12 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     public void upDownCounter() {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
         String serviceEndpoint = "https://example.com";
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions, serviceEndpoint);
-        Meter meter = instrumentation.createMeter();
+        Meter meter = instrumentation.getMeter();
 
         // BEGIN: io.clientcore.core.instrumentation.updowncounter
         LongCounter upDownCounter = meter.createLongUpDownCounter("sample.client.operation.active",
@@ -176,7 +176,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
 
@@ -193,7 +193,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     @SuppressWarnings("try")
     public void traceCall() {
         String serviceEndpoint = "https://example.com";
-        Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS, serviceEndpoint).createTracer();
+        Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS, serviceEndpoint).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.instrumentation.tracecall
@@ -276,7 +276,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     @SuppressWarnings("try")
     public void traceWithAttributes() {
         String serviceEndpoint = "https://example.com";
-        Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS, serviceEndpoint).createTracer();
+        Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS, serviceEndpoint).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.instrumentation.tracewithattributes

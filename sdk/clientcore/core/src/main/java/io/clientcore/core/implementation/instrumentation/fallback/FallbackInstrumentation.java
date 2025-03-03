@@ -33,7 +33,8 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SE
 public class FallbackInstrumentation implements Instrumentation {
     private static final LibraryInstrumentationOptions DEFAULT_LIBRARY_OPTIONS
         = new LibraryInstrumentationOptions("unknown");
-    public static final FallbackInstrumentation DEFAULT_INSTANCE = new FallbackInstrumentation(null, DEFAULT_LIBRARY_OPTIONS, null, -1);
+    public static final FallbackInstrumentation DEFAULT_INSTANCE
+        = new FallbackInstrumentation(null, DEFAULT_LIBRARY_OPTIONS, null, -1);
 
     private final boolean allowNestedSpans;
     private final boolean isTracingEnabled;
@@ -45,6 +46,8 @@ public class FallbackInstrumentation implements Instrumentation {
      * Creates a new instance of {@link FallbackInstrumentation}.
      * @param instrumentationOptions the application instrumentation options
      * @param libraryOptions the library instrumentation options
+     * @param host the service host
+     * @param port the service port
      */
     public FallbackInstrumentation(InstrumentationOptions instrumentationOptions,
         LibraryInstrumentationOptions libraryOptions, String host, int port) {
@@ -60,7 +63,7 @@ public class FallbackInstrumentation implements Instrumentation {
      * {@inheritDoc}
      */
     @Override
-    public Tracer createTracer() {
+    public Tracer getTracer() {
         return tracer;
     }
 
@@ -68,7 +71,7 @@ public class FallbackInstrumentation implements Instrumentation {
      * {@inheritDoc}
      */
     @Override
-    public Meter createMeter() {
+    public Meter getMeter() {
         // We don't provide fallback metrics support. This might change in the future.
         // Some challenges:
         // - metric aggregation is complicated
@@ -93,11 +96,13 @@ public class FallbackInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions, Function<RequestOptions, TResponse> operation) {
+    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
+        Function<RequestOptions, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
-        if (!shouldInstrument(SpanKind.CLIENT, requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
+        if (!shouldInstrument(SpanKind.CLIENT,
+            requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
             return operation.apply(requestOptions);
         }
 
@@ -105,8 +110,9 @@ public class FallbackInstrumentation implements Instrumentation {
             requestOptions = new RequestOptions();
         }
 
-        SpanBuilder builder = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestOptions.getInstrumentationContext())
-            .setAttribute(SERVER_ADDRESS_KEY, serviceHost);
+        SpanBuilder builder
+            = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestOptions.getInstrumentationContext())
+                .setAttribute(SERVER_ADDRESS_KEY, serviceHost);
 
         if (servicePort > 0) {
             builder.setAttribute(SERVER_PORT_KEY, servicePort);

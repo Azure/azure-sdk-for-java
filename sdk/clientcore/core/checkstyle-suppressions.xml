@@ -31,5 +31,6 @@
   <suppress files="io.clientcore.core.serialization.json.JsonWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.implementation.StringBuilderWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.models.JsonNumber.java" checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" />
-  <suppress files="io.clientcore.core.instrumentation.OperationInstrumentation.java" checks="ThrowFromClientLogger" />
+  <suppress files="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

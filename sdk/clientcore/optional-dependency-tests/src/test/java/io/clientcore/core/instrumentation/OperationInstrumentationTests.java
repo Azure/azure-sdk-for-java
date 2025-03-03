@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OperationInstrumentationTests {
     private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
         = new LibraryInstrumentationOptions("test-lib").setLibraryVersion("1.0.0")
-            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
     private static final String DEFAULT_ENDPOINT = "https://localhost";
 
     private InMemorySpanExporter exporter;
@@ -189,16 +189,16 @@ public class OperationInstrumentationTests {
     public void testNestedOperations() {
         LibraryInstrumentationOptions libOptions1
             = new LibraryInstrumentationOptions("test-lib1").setLibraryVersion("1.0.0")
-                .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
         LibraryInstrumentationOptions libOptions2
             = new LibraryInstrumentationOptions("test-lib2").setLibraryVersion("2.0.0")
-                .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
         Instrumentation instrumentation1 = Instrumentation.create(otelOptions, libOptions1, null);
         Instrumentation instrumentation2 = Instrumentation.create(otelOptions, libOptions2, null);
 
         RequestOptions options = new RequestOptions();
 
-        io.clientcore.core.instrumentation.tracing.Span span = instrumentation1.createTracer()
+        io.clientcore.core.instrumentation.tracing.Span span = instrumentation1.getTracer()
             .spanBuilder("call1", SpanKind.CONSUMER, options.getInstrumentationContext())
             .setAttribute("operation.name", "call1")
             .startSpan();
@@ -237,7 +237,7 @@ public class OperationInstrumentationTests {
 
         AtomicReference<InstrumentationContext> parent = new AtomicReference<>();
 
-        io.clientcore.core.instrumentation.tracing.Span span = instrumentation.createTracer()
+        io.clientcore.core.instrumentation.tracing.Span span = instrumentation.getTracer()
             .spanBuilder("call1", SpanKind.CONSUMER, options.getInstrumentationContext())
             .setAttribute("operation.name", "call1")
             .startSpan();

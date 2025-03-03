@@ -24,7 +24,7 @@ import static io.clientcore.core.implementation.instrumentation.InstrumentationU
  */
 public interface Instrumentation {
     /**
-     * Creates the tracer.
+     * Gets or creates the tracer associated with this instrumentation instance.
      * <p>
      * Tracer lifetime should usually match the client lifetime. Avoid creating new tracers for each request.
      *
@@ -36,22 +36,22 @@ public interface Instrumentation {
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
      *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
-     *     .setSchemaUri&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
+     *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions, null&#41;;
      *
-     * Tracer tracer = instrumentation.createTracer&#40;&#41;;
+     * Tracer tracer = instrumentation.getTracer&#40;&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.createtracer -->
      *
      * @return The tracer.
      */
-    Tracer createTracer();
+    Tracer getTracer();
 
     /**
-     * Creates the meter.
+     * Gets or creates the meter associated with this instrumentation instance.
      * <p>
      * Meter lifetime should usually match the client lifetime. Avoid creating new meters for each request.
      *
@@ -63,18 +63,18 @@ public interface Instrumentation {
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
      *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
-     *     .setSchemaUri&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
+     *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
-     * instrumentation.createMeter&#40;&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions, null&#41;;
+     * instrumentation.getMeter&#40;&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.createmeter -->
      *
      * @return The meter.
      */
-    Meter createMeter();
+    Meter getMeter();
 
     /**
      * Converts the given attributes into the implementation-specific attributes.
@@ -87,10 +87,11 @@ public interface Instrumentation {
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
      *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
-     *     .setSchemaUri&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
+     *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
+     *
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions, null&#41;;
      * InstrumentationAttributes attributes = instrumentation
      *     .createAttributes&#40;Collections.singletonMap&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
@@ -112,13 +113,46 @@ public interface Instrumentation {
      */
     TraceContextPropagator getW3CTraceContextPropagator();
 
-    <TResponse> TResponse instrumentWithResponse(String operationName,
-                                            RequestOptions requestOptions,
-                                            Function<RequestOptions, TResponse> operation);
+    /**
+     * Instruments a client call which includes distributed tracing and duration metric.
+     * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
+     * <p>
+     * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
+     * <!-- src_embed io.clientcore.core.instrumentation.instrumentwithresponse -->
+     * <pre>
+     * return instrumentation.instrumentWithResponse&#40;&quot;Sample.download&quot;, options, this::downloadImpl&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.instrumentwithresponse -->
+     *
+     * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
+     *                      or OpenAPI operationId.
+     * @param requestOptions the initial request options.
+     * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
+     * @param <TResponse> the type of the response.
+     * @return the response.
+     * @throws RuntimeException if the call throws a runtime exception.
+     */
+    <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
+        Function<RequestOptions, TResponse> operation);
 
-    default void instrument(String operationName,
-                            RequestOptions requestOptions,
-                            Consumer<RequestOptions> operation) {
+    /**
+     * Instruments a client call which includes distributed tracing and duration metric.
+     * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
+     * <p>
+     * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
+     * <!-- src_embed io.clientcore.core.instrumentation.instrument -->
+     * <pre>
+     * instrumentation.instrument&#40;&quot;Sample.create&quot;, options, this::createImpl&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.instrument -->
+     *
+     * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
+     *                      or OpenAPI operationId.
+     * @param requestOptions the initial request options.
+     * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
+     * @throws RuntimeException if the call throws a runtime exception.
+     */
+    default void instrument(String operationName, RequestOptions requestOptions, Consumer<RequestOptions> operation) {
         instrumentWithResponse(operationName, requestOptions, options -> {
             operation.accept(options);
             return null;
@@ -133,17 +167,17 @@ public interface Instrumentation {
      *
      * @param applicationOptions Telemetry collection options provided by the application.
      * @param libraryOptions Library-specific telemetry collection options.
+     * @param serviceEndpoint The service endpoint.
      * @return The instance of telemetry provider implementation.
      */
     static Instrumentation create(InstrumentationOptions applicationOptions,
-        LibraryInstrumentationOptions libraryOptions,
-        String endpoint) {
+        LibraryInstrumentationOptions libraryOptions, String serviceEndpoint) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
 
         String host = null;
         int port = -1;
-        if (endpoint != null) {
-            URI uri = URI.create(endpoint);
+        if (serviceEndpoint != null) {
+            URI uri = URI.create(serviceEndpoint);
             host = uri.getHost();
             port = getServerPort(uri);
         }

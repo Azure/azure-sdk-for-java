@@ -75,7 +75,7 @@ public class SuppressionTests {
         OpenTelemetry openTelemetry
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).setMeterProvider(meterProvider).build();
         otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
-        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null).createTracer();
+        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null).getTracer();
     }
 
     @AfterEach
@@ -155,7 +155,7 @@ public class SuppressionTests {
         Tracer outerTracer = tracer;
         Tracer innerTracer = Instrumentation
             .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true), null)
-            .createTracer();
+            .getTracer();
 
         RequestOptions options = new RequestOptions();
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
@@ -179,7 +179,7 @@ public class SuppressionTests {
     public void disabledSuppressionDoesNotAffectChildren() {
         Tracer outerTracer = Instrumentation
             .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true), null)
-            .createTracer();
+            .getTracer();
         Tracer innerTracer = tracer;
 
         RequestOptions options = new RequestOptions();
@@ -212,7 +212,7 @@ public class SuppressionTests {
 
     @Test
     public void multipleLayers() {
-        Tracer tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null).createTracer();
+        Tracer tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS, null).getTracer();
 
         RequestOptions options = new RequestOptions();
 
@@ -367,7 +367,7 @@ public class SuppressionTests {
         SampleClientTracing(HttpPipeline pipeline, InstrumentationOptions options) {
             this.pipeline = pipeline;
             String serviceEndpoint = "https://localhost";
-            this.tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, serviceEndpoint).createTracer();
+            this.tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, serviceEndpoint).getTracer();
         }
 
         @SuppressWarnings("try")

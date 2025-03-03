@@ -67,7 +67,6 @@ public class OTelInstrumentation implements Instrumentation {
     private static final List<Double> DURATION_BOUNDARIES_ADVICE = Collections.unmodifiableList(
         Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d));
 
-
     static {
         ReflectiveInvoker getTracerProviderInvoker = null;
         ReflectiveInvoker getMeterProviderInvoker = null;
@@ -105,10 +104,9 @@ public class OTelInstrumentation implements Instrumentation {
 
     private static final LibraryInstrumentationOptions DEFAULT_LIBRARY_OPTIONS
         = new LibraryInstrumentationOptions("unknown");
-    public static final OTelInstrumentation DEFAULT_INSTANCE = new OTelInstrumentation(null, DEFAULT_LIBRARY_OPTIONS, null, -1);
+    public static final OTelInstrumentation DEFAULT_INSTANCE
+        = new OTelInstrumentation(null, DEFAULT_LIBRARY_OPTIONS, null, -1);
 
-    private final Object otelInstance;
-    private final LibraryInstrumentationOptions libraryOptions;
     private final boolean isTracingEnabled;
     private final boolean isMetricsEnabled;
     private final boolean allowNestedSpans;
@@ -124,10 +122,11 @@ public class OTelInstrumentation implements Instrumentation {
      *
      * @param applicationOptions the application options
      * @param libraryOptions the library options
+     * @param host the service host
+     * @param port the service port
      */
-    public OTelInstrumentation(InstrumentationOptions applicationOptions,
-        LibraryInstrumentationOptions libraryOptions,
-                               String host, int port) {
+    public OTelInstrumentation(InstrumentationOptions applicationOptions, LibraryInstrumentationOptions libraryOptions,
+        String host, int port) {
         Object explicitOTel = applicationOptions == null ? null : applicationOptions.getTelemetryProvider();
         if (explicitOTel != null && !OTEL_CLASS.isInstance(explicitOTel)) {
             throw LOGGER.atError()
@@ -137,16 +136,16 @@ public class OTelInstrumentation implements Instrumentation {
                     new IllegalArgumentException("Telemetry provider is not an instance of " + OTEL_CLASS.getName()));
         }
 
-        this.otelInstance = explicitOTel;
-        this.libraryOptions = libraryOptions;
+        Object otelInstance = explicitOTel != null ? explicitOTel : GET_GLOBAL_OTEL_INVOKER.invoke();
         this.isTracingEnabled = applicationOptions == null || applicationOptions.isTracingEnabled();
         this.isMetricsEnabled = applicationOptions == null || applicationOptions.isMetricsEnabled();
         this.allowNestedSpans = libraryOptions != null
             && LibraryInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
 
-        this.tracer = createTracer();
-        this.meter = createMeter();
-        this.callDurationMetric = createCallDurationMetric(libraryOptions == null ? null : libraryOptions.getLibraryName(), meter);
+        this.tracer = createTracer(isTracingEnabled, libraryOptions, otelInstance);
+        this.meter = createMeter(isMetricsEnabled, libraryOptions, otelInstance);
+        this.callDurationMetric
+            = createCallDurationMetric(libraryOptions == null ? null : libraryOptions.getLibraryName(), meter);
         this.host = host;
         this.port = port;
     }
@@ -158,8 +157,7 @@ public class OTelInstrumentation implements Instrumentation {
             // had it from typespec, we could auto-generate metric name and description.
             String metricDescription = "Duration of client operation";
             String metricName = libraryName.replace("-", ".") + ".client.operation.duration";
-            return meter.createDoubleHistogram(metricName, metricDescription, "s",
-                DURATION_BOUNDARIES_ADVICE);
+            return meter.createDoubleHistogram(metricName, metricDescription, "s", DURATION_BOUNDARIES_ADVICE);
         }
 
         return NoopMeter.NOOP_LONG_HISTOGRAM;
@@ -169,9 +167,19 @@ public class OTelInstrumentation implements Instrumentation {
      * {@inheritDoc}
      */
     @Override
-    public Tracer createTracer() {
+    public Tracer getTracer() {
+        return tracer;
+    }
+
+    @Override
+    public Meter getMeter() {
+        return meter;
+    }
+
+    private static Tracer createTracer(boolean isTracingEnabled, LibraryInstrumentationOptions libraryOptions,
+        Object otelInstance) {
         if (isTracingEnabled && OTelInitializer.isInitialized()) {
-            Object otelTracerProvider = GET_TRACER_PROVIDER_INVOKER.invoke(getOtelInstance());
+            Object otelTracerProvider = GET_TRACER_PROVIDER_INVOKER.invoke(otelInstance);
 
             if (otelTracerProvider != null && otelTracerProvider != NOOP_PROVIDER) {
                 return new OTelTracer(otelTracerProvider, libraryOptions);
@@ -181,10 +189,10 @@ public class OTelInstrumentation implements Instrumentation {
         return OTelTracer.NOOP;
     }
 
-    @Override
-    public Meter createMeter() {
+    private static Meter createMeter(boolean isMetricsEnabled, LibraryInstrumentationOptions libraryOptions,
+        Object otelInstance) {
         if (isMetricsEnabled && OTelInitializer.isInitialized()) {
-            Object otelMeterProvider = GET_METER_PROVIDER_INVOKER.invoke(getOtelInstance());
+            Object otelMeterProvider = GET_METER_PROVIDER_INVOKER.invoke(otelInstance);
 
             if (otelMeterProvider != null && otelMeterProvider != NOOP_PROVIDER) {
                 return new OTelMeter(otelMeterProvider, libraryOptions);
@@ -233,14 +241,13 @@ public class OTelInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrumentWithResponse(String operationName,
-                                             RequestOptions requestOptions,
-                                             Function<RequestOptions, TResponse> operation) {
+    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
+        Function<RequestOptions, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
-
-        if (!shouldInstrument(SpanKind.CLIENT, requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
+        if (!shouldInstrument(SpanKind.CLIENT,
+            requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
             return operation.apply(requestOptions);
         }
 
@@ -269,7 +276,8 @@ public class OTelInstrumentation implements Instrumentation {
                 InstrumentationAttributes attributes = error == null
                     ? commonAttributes
                     : commonAttributes.put(ERROR_TYPE_KEY, error.getClass().getCanonicalName());
-                callDurationMetric.record((System.nanoTime() - startTimeNs) / 1e9, attributes, requestOptions.getInstrumentationContext());
+                callDurationMetric.record((System.nanoTime() - startTimeNs) / 1e9, attributes,
+                    requestOptions.getInstrumentationContext());
             }
             span.end(error);
             scope.close();
@@ -301,11 +309,6 @@ public class OTelInstrumentation implements Instrumentation {
         }
 
         return spanKind != tryGetSpanKind(context);
-    }
-
-    private Object getOtelInstance() {
-        // not caching global to prevent caching instance that was not setup yet at the start time.
-        return otelInstance != null ? otelInstance : GET_GLOBAL_OTEL_INVOKER.invoke();
     }
 
     /**
