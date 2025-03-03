@@ -98,6 +98,7 @@ extends:
           displayName: "Publish to Maven Central via ESRP"
           condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
           timeoutInMinutes: 60
+          environment: maven
           dependsOn: Signing
 
           templateContext:
