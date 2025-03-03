@@ -6,7 +6,6 @@ package com.azure.storage.file.share.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.models.FilePermissionFormat;
-import com.azure.storage.file.share.models.FilePosixProperties;
 
 import java.util.Map;
 
@@ -19,7 +18,6 @@ public class ShareDirectoryCreateOptions {
     private String filePermission;
     private FilePermissionFormat filePermissionFormat;
     private Map<String, String> metadata;
-    private FilePosixProperties posixProperties;
 
     /**
      * Creates a new instance of {@link ShareDirectoryCreateOptions}.
@@ -109,28 +107,6 @@ public class ShareDirectoryCreateOptions {
      */
     public ShareDirectoryCreateOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
         this.filePermissionFormat = filePermissionFormat;
-        return this;
-    }
-
-    /**
-     *  Optional properties to set on NFS directories.
-     *  Note that this property is only applicable to directories created in NFS shares.
-     *
-     * @return {@link FilePosixProperties}
-     */
-    public FilePosixProperties getPosixProperties() {
-        return posixProperties;
-    }
-
-    /**
-     *  Optional properties to set on NFS directories.
-     *  Note that this property is only applicable to directories created in NFS shares.
-     *
-     * @param posixProperties {@link FilePosixProperties}
-     * @return The updated options.
-     */
-    public ShareDirectoryCreateOptions setPosixProperties(FilePosixProperties posixProperties) {
-        this.posixProperties = posixProperties;
         return this;
     }
 }

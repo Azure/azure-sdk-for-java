@@ -9,18 +9,11 @@ import java.time.OffsetDateTime;
  * Optional parameters for setting the immutability policy of a blob, blob snapshot or blob version.
  */
 public final class BlobImmutabilityPolicy {
+
     private OffsetDateTime expiryTime;
     private BlobImmutabilityPolicyMode policyMode;
 
     /**
-     * Creates an instance of {@link BlobImmutabilityPolicy}.
-     */
-    public BlobImmutabilityPolicy() {
-    }
-
-    /**
-     * Gets the time when the immutability policy expires.
-     *
      * @return The time when the immutability policy expires.
      */
     public OffsetDateTime getExpiryTime() {
@@ -28,8 +21,6 @@ public final class BlobImmutabilityPolicy {
     }
 
     /**
-     * Sets the time when the immutability policy expires.
-     *
      * @param expiryTime The time when the immutability policy expires.
      * @return The updated BlobImmutabilityPolicy
      */
@@ -39,8 +30,6 @@ public final class BlobImmutabilityPolicy {
     }
 
     /**
-     * Gets the immutability policy mode.
-     *
      * @return The immutability policy mode.
      */
     public BlobImmutabilityPolicyMode getPolicyMode() {
@@ -48,8 +37,6 @@ public final class BlobImmutabilityPolicy {
     }
 
     /**
-     * Sets the immutability policy mode.
-     *
      * @param policyMode The immutability policy mode.
      * @return The updated BlobImmutabilityPolicy
      */

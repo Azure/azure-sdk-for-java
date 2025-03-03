@@ -145,7 +145,7 @@ public class FileSasTests extends FileShareTestBase {
         String data = "test";
         primaryShareClient.create();
         primaryFileClient.create(Constants.KB);
-        primaryFileClient.uploadRange(FileShareTestHelper.getInputStream(data.getBytes()), data.length());
+        primaryFileClient.uploadRange(FileShareTestHelper.getInputStream(data.getBytes()), (long) data.length());
 
         ShareFileSasPermission permissions = new ShareFileSasPermission().setReadPermission(true)
             .setWritePermission(true)

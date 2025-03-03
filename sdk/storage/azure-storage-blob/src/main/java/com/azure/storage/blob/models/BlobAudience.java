@@ -57,8 +57,6 @@ public class BlobAudience extends ExpandableStringEnum<BlobAudience> {
     }
 
     /**
-     * Get the known BlobAudience values.
-     *
      * @return known BlobAudience values.
      */
     public static Collection<BlobAudience> values() {
