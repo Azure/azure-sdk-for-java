@@ -16,7 +16,7 @@ steps:
         SignCertName: azure-sdk-esrp-release-certificate
         Intent: 'PackageDistribution'
         ContentType: 'Maven'
-        FolderLocation: ${{ parameters.OutputDirectory }}
+        FolderLocation: ${{ parameters.FlattenedDirectory }}
         Owners: ${{ coalesce(variables['Build.RequestedForEmail'], 'azuresdk@microsoft.com') }}
         Approvers: ${{ coalesce(variables['Build.RequestedForEmail'], 'azuresdk@microsoft.com') }}
         ServiceEndpointUrl: 'https://api.esrp.microsoft.com'
