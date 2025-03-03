@@ -85,13 +85,13 @@ extends:
             parameters:
               ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
               OutputDirectory: $(Pipeline.Workspace)/packages--esrp-gpg-signed
-              FlattenedESRPDirectory: $(Pipeline.Workspace)/packages--esrp-flattened
+              FlattenedESRPDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
 
           # The packages-esrp-flattened will be used for the ESRP publish
           - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
             parameters:
-              ArtifactPath: '$(Pipeline.Workspace)/packages--esrp-flattened'
-              ArtifactName: 'packages--esrp-flattened'
+              ArtifactPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
+              ArtifactName: 'packages-esrp-flattened'
 
 
         - deployment: PublishESRPPackage
@@ -106,8 +106,8 @@ extends:
             isProduction: true
             inputs:
             - input: pipelineArtifact
-              artifactName: 'packages--esrp-flattened'
-              targetPath: '$(Pipeline.Workspace)/packages--esrp-flattened'
+              artifactName: 'packages-esrp-flattened'
+              targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
 
           pool:
             name: azsdk-pool-mms-win-2022-general
@@ -119,4 +119,5 @@ extends:
                 steps:
                   - template: /eng/pipelines/templates/steps/java-esrp-publishing.yml
                     parameters:
-                      FlattenedDirectory: $(Pipeline.Workspace)/packages--esrp-flattened
+                      FlattenedDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
+                      ShouldPublish: ${{ parameters.ShouldPublish }}
