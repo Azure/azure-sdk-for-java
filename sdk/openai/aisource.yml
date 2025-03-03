@@ -12,6 +12,13 @@ extends:
           echo "JavaTestVersion (before): $JavaTestVersion"
           export JavaTestVersion=1.8 
           echo "JavaTestVersion (after): $JavaTestVersion"
+          
+          echo "maven -version"  
+          mvn -version
+          
+          echo "JAVA_HOME: $JAVA_HOME"
+          echo "PATH: $PATH"
+
         displayName: "Override JavaTestVersion to 1.8"
     Artifacts:
       - name: azure-ai-openai
