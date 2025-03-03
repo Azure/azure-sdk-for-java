@@ -68,6 +68,7 @@ private[spark] object CosmosConfigNames {
   val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
+  val ReadResponseContinuationTokenLimitInKb = "spark.cosmos.read.responseContinuationTokenLimitInKb"
   val ReadPrefetchBufferSize = "spark.cosmos.read.prefetchBufferSize"
   val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
   val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
@@ -174,6 +175,7 @@ private[spark] object CosmosConfigNames {
     ReadForceEventualConsistency,
     ReadSchemaConversionMode,
     ReadMaxItemCount,
+    ReadResponseContinuationTokenLimitInKb,
     ReadPrefetchBufferSize,
     ReadInferSchemaSamplingSize,
     ReadInferSchemaEnabled,
@@ -915,7 +917,8 @@ private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     customQuery: Option[CosmosParameterizedQuery],
                                     throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
                                     runtimeFilteringEnabled: Boolean,
-                                    readManyFilteringConfig: CosmosReadManyFilteringConfig)
+                                    readManyFilteringConfig: CosmosReadManyFilteringConfig,
+                                    responseContinuationTokenLimitInKb: Option[Int] = None)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -962,6 +965,13 @@ private object CosmosReadConfig {
     parseFromStringFunction = queryText => queryText.toInt,
     helpMessage = "The maximum number of documents returned in a single request. The default is 1000.")
 
+  private val ResponseContinuationTokenLimitInKb = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadResponseContinuationTokenLimitInKb,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = queryText => Math.max(1, queryText.toInt),
+    helpMessage = "The maximum continuation token size allowed in kilo-bytes. It has to be at least 1 KB.")
+
   private val PrefetchBufferSize = CosmosConfigEntry[Int](
     key = CosmosConfigNames.ReadPrefetchBufferSize,
     mandatory = false,
@@ -1000,6 +1010,7 @@ private object CosmosReadConfig {
     val customQuery = CosmosConfigEntry.parse(cfg, CustomQuery)
     val maxItemCount = CosmosConfigEntry.parse(cfg, MaxItemCount)
     val prefetchBufferSize = CosmosConfigEntry.parse(cfg, PrefetchBufferSize)
+    val responseContinuationTokenLimitInKb = CosmosConfigEntry.parse(cfg, ResponseContinuationTokenLimitInKb)
     val maxIntegratedCacheStalenessInMilliseconds = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStalenessInMilliseconds)
     val dedicatedGatewayRequestOptions = {
       val result = new DedicatedGatewayRequestOptions
@@ -1034,7 +1045,8 @@ private object CosmosReadConfig {
       customQuery,
       throughputControlConfigOpt,
       runtimeFilteringEnabled.get,
-      readManyFilteringConfig)
+      readManyFilteringConfig,
+      responseContinuationTokenLimitInKb)
   }
 }
 
