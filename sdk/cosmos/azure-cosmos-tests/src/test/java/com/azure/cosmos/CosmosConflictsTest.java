@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosConflictsTest extends TestSuiteBase {
-    private static final int CONFLICT_TIMEOUT = 120000;
+    private static final int CONFLICT_TIMEOUT  = 120000;
     private static Logger logger = LoggerFactory.getLogger(CosmosConflictsTest.class);
     private static final String SKIP_SINGLE_REGION_MM_ACCOUNT = "Multi master account doesn't have multiple write " +
         "regions to test this";
