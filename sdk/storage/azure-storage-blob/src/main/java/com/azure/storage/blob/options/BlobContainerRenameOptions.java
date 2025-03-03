@@ -13,14 +13,12 @@ import java.util.Objects;
  */
 @Fluent
 class BlobContainerRenameOptions {
+
     private final String destinationContainerName;
     private BlobRequestConditions requestConditions;
 
     /**
-     * Creates a new instance of {@link BlobContainerRenameOptions}.
-     *
      * @param destinationContainerName The new name of the container.
-     * @throws NullPointerException If {@code destinationContainerName} is null.
      */
     BlobContainerRenameOptions(String destinationContainerName) {
         Objects.requireNonNull(destinationContainerName);
@@ -28,8 +26,6 @@ class BlobContainerRenameOptions {
     }
 
     /**
-     * Gets the new name of the container.
-     *
      * @return The new name of the container.
      */
     public String getDestinationContainerName() {
@@ -37,8 +33,6 @@ class BlobContainerRenameOptions {
     }
 
     /**
-     * Gets the {@link BlobRequestConditions}.
-     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -46,8 +40,6 @@ class BlobContainerRenameOptions {
     }
 
     /**
-     * Sets the {@link BlobRequestConditions}.
-     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      * @throws UnsupportedOperationException if a condition other than lease id is set.

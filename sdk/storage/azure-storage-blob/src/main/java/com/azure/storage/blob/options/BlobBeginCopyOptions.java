@@ -32,10 +32,7 @@ public class BlobBeginCopyOptions {
     private Boolean legalHold;
 
     /**
-     * Creates a new instance of {@link BlobBeginCopyOptions}.
-     *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @throws NullPointerException If {@code sourceUrl} is null.
      */
     public BlobBeginCopyOptions(String sourceUrl) {
         StorageImplUtils.assertNotNull("sourceUrl", sourceUrl);
@@ -43,8 +40,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets the source URL.
-     *
      * @return The source URL.
      */
     public String getSourceUrl() {
@@ -52,8 +47,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets the metadata to associate with the destination blob.
-     *
      * @return The metadata to associate with the destination blob.
      */
     public Map<String, String> getMetadata() {
@@ -61,8 +54,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Sets the metadata to associate with the destination blob.
-     *
      * @param metadata The metadata to associate with the destination blob.
      * @return The updated options
      */
@@ -72,8 +63,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets the tags to associate with the blob.
-     *
      * @return The tags to associate with the blob.
      */
     public Map<String, String> getTags() {
@@ -81,8 +70,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Sets the tags to associate with the blob.
-     *
      * @param tags The tags to associate with the blob.
      * @return The updated options.
      */
@@ -92,8 +79,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets the {@link AccessTier} for the destination blob.
-     *
      * @return {@link AccessTier} for the destination blob.
      */
     public AccessTier getTier() {
@@ -101,8 +86,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Sets the {@link AccessTier} for the destination blob.
-     *
      * @param tier {@link AccessTier} for the destination blob.
      * @return The updated options.
      */
@@ -112,8 +95,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets the {@link RehydratePriority} for rehydrating the blob.
-     *
      * @return {@link RehydratePriority} for rehydrating the blob.
      */
     public RehydratePriority getRehydratePriority() {
@@ -121,8 +102,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Sets the {@link RehydratePriority} for rehydrating the blob.
-     *
      * @param rehydratePriority {@link RehydratePriority} for rehydrating the blob.
      * @return The updated options.
      */
@@ -132,8 +111,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets the {@link BlobBeginCopySourceRequestConditions} for the source.
-     *
      * @return {@link BlobBeginCopySourceRequestConditions} for the source.
      */
     public BlobBeginCopySourceRequestConditions getSourceRequestConditions() {
@@ -141,8 +118,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Sets the {@link BlobBeginCopySourceRequestConditions} for the source.
-     *
      * @param sourceRequestConditions {@link BlobBeginCopySourceRequestConditions} for the source.
      * @return The updated options.
      */
@@ -153,8 +128,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets the {@link BlobRequestConditions} for the destination.
-     *
      * @return {@link BlobRequestConditions} for the destination.
      */
     public BlobRequestConditions getDestinationRequestConditions() {
@@ -162,8 +135,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Sets the {@link BlobRequestConditions} for the destination.
-     *
      * @param destinationRequestConditions {@link BlobRequestConditions} for the destination
      * @return The updated options.
      */
@@ -173,8 +144,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets the duration between each poll for the copy status.
-     *
      * @return Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
      */
@@ -183,8 +152,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Sets the duration between each poll for the copy status.
-     *
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
      * @return The updated options.
@@ -195,22 +162,17 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets whether the destination blob should be sealed (marked as read only).
-     * <p>
-     * Only applicable for Append Blobs.
-     *
-     * @return Whether the destination blob should be sealed (marked as read only).
+     *  Only applicable for Append Blobs.
+     * @return Whether or not the destination blob should be sealed (marked as read only).
      */
     public Boolean isSealDestination() {
         return sealDestination;
     }
 
     /**
-     * Sets whether the destination blob should be sealed (marked as read only).
-     * <p>
      * Only applicable for Append Blobs.
      *
-     * @param sealDestination Whether the destination blob should be sealed (marked as read only).
+     * @param sealDestination Whether or not the destination blob should be sealed (marked as read only).
      * @return The updated options.
      */
     public BlobBeginCopyOptions setSealDestination(Boolean sealDestination) {
@@ -219,8 +181,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets the {@link BlobImmutabilityPolicy} for the destination blob.
-     *
      * @return {@link BlobImmutabilityPolicy}
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
@@ -228,11 +188,8 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Sets the {@link BlobImmutabilityPolicy} for the destination blob.
-     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
-     *
      * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
      * @return The updated options.
      */
@@ -242,8 +199,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Gets if a legal hold should be placed on the blob.
-     *
      * @return If a legal hold should be placed on the blob.
      */
     public Boolean isLegalHold() {
@@ -251,8 +206,6 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * Sets if a legal hold should be placed on the blob.
-     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
      * @param legalHold Indicates if a legal hold should be placed on the blob.
