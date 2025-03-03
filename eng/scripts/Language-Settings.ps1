@@ -462,8 +462,8 @@ function Get-java-GithubIoDocIndex()
   # Fetch out all package metadata from csv file.
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   # Leave the track 2 packages if multiple packages fetched out.
-  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' }
-  $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
+  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' -or $_.GroupId -eq 'com.azure.v2' }
+  $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and $_.GroupId -ne 'com.azure.v2' -and !$clientPackages.Package.Contains($_.Package) }
   $uniquePackages = $clientPackages + $nonClientPackages
   # Get the artifacts name from blob storage
   $artifacts =  Get-BlobStorage-Artifacts `

@@ -4,10 +4,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-client-sdk-parent-v2</artifactId>
+  <groupId>com.azure.v2</groupId>
+  <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent-v2;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-client-sdk-parent;current} -->
 
   <name>Microsoft Azure SDK for Java V2 - Client Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java V2</description>
@@ -610,9 +610,7 @@
                 <exclude>*:*:*:*:provided</exclude>
               </excludes>
               <includes combine.children="append">
-                <include>com.azure:*</include>
-                <include>com.azure.resourcemanager:*</include>
-                <include>com.azure.spring:*</include>
+                <include>com.azure.v2:*</include>
                 <include>io.clientcore:*</include>
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->

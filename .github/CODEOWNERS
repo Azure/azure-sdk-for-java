@@ -6,7 +6,9 @@
 ################
 # As of 1/30/2023 these paths have no owners:
 
-# /.devcontainer/
+# /.devcontainer/com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.1
+                 com.azure.v2:azure-core;2.0.0-beta.1;2.0.0-beta.1
+                 com.azure.v2:azure-core-test;2.0.0-beta.1;2.0.0-beta.1
 # /doc/
 # /samples/
 
@@ -35,6 +37,12 @@
 /sdk/core/                                           @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
 
 # ServiceLabel: %Azure.Core
+# AzureSdkOwners:                                    @alzimmermsft
+
+# PRLabel: %Azure.CoreV2
+/sdk/corev2/                                         @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
+
+# ServiceLabel: %Azure.CoreV2
 # AzureSdkOwners:                                    @alzimmermsft
 
 # PRLabel: %Azure.Core.AMQP
