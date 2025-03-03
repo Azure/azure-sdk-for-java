@@ -109,8 +109,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the metadata associated with the container.
-     *
      * @return the metadata associated with the container
      */
     public Map<String, String> getMetadata() {
@@ -118,8 +116,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the eTag of the container.
-     *
      * @return the eTag of the container
      */
     public String getETag() {
@@ -127,8 +123,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the time the container was last modified.
-     *
      * @return the time the container was last modified
      */
     public OffsetDateTime getLastModified() {
@@ -136,8 +130,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the type of lease on the container.
-     *
      * @return the type of lease on the container
      */
     public LeaseDurationType getLeaseDuration() {
@@ -145,8 +137,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the lease state of the container.
-     *
      * @return the lease state of the container
      */
     public LeaseStateType getLeaseState() {
@@ -154,8 +144,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the lease status of the container.
-     *
      * @return the lease status of the container
      */
     public LeaseStatusType getLeaseStatus() {
@@ -163,8 +151,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the access type for the container.
-     *
      * @return the access type for the container
      */
     public PublicAccessType getBlobPublicAccess() {
@@ -172,8 +158,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the immutability status for the container.
-     *
      * @return the immutability status for the container
      */
     public boolean hasImmutabilityPolicy() {
@@ -181,8 +165,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the legal hold status for the container.
-     *
      * @return the legal hold status for the container
      */
     public boolean hasLegalHold() {
@@ -190,8 +172,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the container's default encryption scope.
-     *
      * @return the container's default encryption scope
      */
     public String getDefaultEncryptionScope() {
@@ -199,8 +179,6 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets the container's deny encryption scope override property.
-     *
      * @return the container's deny encryption scope override property.
      */
     public Boolean isEncryptionScopeOverridePrevented() {
@@ -208,9 +186,7 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * Gets whether immutable storage with versioning is enabled on this container.
-     *
-     * @return Whether immutable storage with versioning is enabled on this container.
+     * @return Whether or not immutable storage with versioning is enabled on this container.
      */
     public Boolean isImmutableStorageWithVersioningEnabled() {
         return isImmutableStorageWithVersioningEnabled;

@@ -52,12 +52,6 @@ public final class ShareItem implements XmlSerializable<ShareItem> {
     private Map<String, String> metadata;
 
     /**
-     * Creates an instance of ShareItem.
-     */
-    public ShareItem() {
-    }
-
-    /**
      * Get the name property: The name property.
      *
      * @return the name value.

@@ -18,7 +18,7 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import java.time.OffsetDateTime;
 import java.util.Base64;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -478,8 +478,8 @@ public final class BlobsGetPropertiesHeaders {
             this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
         }
         this.xMsArchiveStatus = rawHeaders.getValue(X_MS_ARCHIVE_STATUS);
-        Map<String, String> xMsOrHeaderCollection = new LinkedHashMap<>();
-        Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
+        Map<String, String> xMsOrHeaderCollection = new HashMap<>();
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
             String headerName = header.getName();

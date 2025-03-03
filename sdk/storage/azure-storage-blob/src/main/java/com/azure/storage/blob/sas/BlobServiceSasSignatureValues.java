@@ -8,10 +8,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
@@ -65,27 +65,43 @@ public final class BlobServiceSasSignatureValues {
             .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2019_12_12.getVersion());
 
     private SasProtocol protocol;
+
     private OffsetDateTime startTime;
+
     private OffsetDateTime expiryTime;
+
     private String permissions;
+
     private SasIpRange sasIpRange;
+
     private String containerName;
+
     private String blobName;
+
     private String resource;
+
     private String snapshotId;
+
     private String identifier;
+
     private String cacheControl;
+
     private String contentDisposition;
+
     private String contentEncoding;
+
     private String contentLanguage;
+
     private String contentType;
+
     private String preauthorizedAgentObjectId; /* saoid */
+
     private String correlationId;
+
     private String encryptionScope;
 
     /**
      * Creates an object with empty values for all fields.
-     *
      * @deprecated Please use {@link #BlobServiceSasSignatureValues(String)},
      * {@link #BlobServiceSasSignatureValues(OffsetDateTime, BlobSasPermission)}, or
      * {@link #BlobServiceSasSignatureValues(OffsetDateTime, BlobContainerSasPermission)}
@@ -135,7 +151,7 @@ public final class BlobServiceSasSignatureValues {
      * Creates an object with the specified values.
      *
      * @param version The version of the service this SAS will target. If not specified, it will default to the version
-     * targeted by the library.
+     *    targeted by the library.
      * @param sasProtocol The {@link SasProtocol} which determines the protocols allowed by the SAS.
      * @param startTime When the SAS will take effect.
      * @param expiryTime The time after which the SAS will no longer work.
@@ -170,9 +186,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the version of the service this SAS will target. If not specified, it will default to the version targeted
-     * by the library.
-     *
      * @return the version of the service this SAS will target. If not specified, it will default to the version
      * targeted by the library.
      */
@@ -196,8 +209,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the {@link SasProtocol} which determines the protocols allowed by the SAS.
-     *
      * @return the {@link SasProtocol} which determines the protocols allowed by the SAS.
      */
     public SasProtocol getProtocol() {
@@ -216,8 +227,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets when the SAS will take effect.
-     *
      * @return when the SAS will take effect.
      */
     public OffsetDateTime getStartTime() {
@@ -236,8 +245,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the time after which the SAS will no longer work.
-     *
      * @return the time after which the SAS will no longer work.
      */
     public OffsetDateTime getExpiryTime() {
@@ -256,9 +263,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the permissions string allowed by the SAS. Please refer to either {@link BlobContainerSasPermission} or
-     * {@link BlobSasPermission} depending on the resource being accessed for help determining the permissions allowed.
-     *
      * @return the permissions string allowed by the SAS. Please refer to either {@link BlobContainerSasPermission} or
      * {@link BlobSasPermission} depending on the resource being accessed for help determining the permissions allowed.
      */
@@ -293,8 +297,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
-     *
      * @return the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      */
     public SasIpRange getSasIpRange() {
@@ -304,9 +306,9 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      * @param sasIpRange Allowed IP range to set
      * @return the updated BlobServiceSASSignatureValues object
-     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      */
     public BlobServiceSasSignatureValues setSasIpRange(SasIpRange sasIpRange) {
         this.sasIpRange = sasIpRange;
@@ -367,8 +369,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the specific snapshot the SAS user may access.
-     *
      * @return the specific snapshot the SAS user may access.
      * @deprecated Snapshot id is now auto-populated by the SAS generation methods provided on the desired (snapshot)
      * blob client.
@@ -399,10 +399,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the name of the access policy on the container this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     * for more information.
-     *
      * @return the name of the access policy on the container this SAS references if any. Please see
      * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
@@ -425,8 +421,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the encryption scope to use for the SAS.
-     *
      * @return the cache-control header for the SAS.
      */
     public String getCacheControl() {
@@ -445,8 +439,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the content-disposition header for the SAS.
-     *
      * @return the content-disposition header for the SAS.
      */
     public String getContentDisposition() {
@@ -465,8 +457,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the content-encoding header for the SAS.
-     *
      * @return the content-encoding header for the SAS.
      */
     public String getContentEncoding() {
@@ -485,8 +475,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the content-language header for the SAS.
-     *
      * @return the content-language header for the SAS.
      */
     public String getContentLanguage() {
@@ -505,8 +493,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the content-type header for the SAS.
-     *
      * @return the content-type header for the SAS.
      */
     public String getContentType() {
@@ -525,9 +511,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform the
-     * action granted by the SAS token.
-     *
      * @return The AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform
      * the action granted by the SAS token. The service will validate the SAS token and ensure that the owner of the
      * user delegation key has the required permissions before granting access but no additional permission check for
@@ -553,8 +536,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the encryption scope to use for the SAS.
-     *
      * @return the correlation id value for the SAS.
      */
     public String getCorrelationId() {
@@ -654,7 +635,7 @@ public final class BlobServiceSasSignatureValues {
      * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
      * @throws NullPointerException if {@code delegationKey} or {@code account} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas">
-     * Create a user delegation SAS</a>
+     *     Create a user delegation SAS</a>
      * @deprecated Please use the generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey) method on
      * the desired container/blob client after initializing {@link BlobServiceSasSignatureValues}.
      */
@@ -679,14 +660,14 @@ public final class BlobServiceSasSignatureValues {
 
     /**
      * Ensures that the builder's properties are in a consistent state.
-     * <p>
+    
      * 1. If there is no version, use latest.
      * 2. Resource name is chosen by:
-     * a. If "BlobName" is _not_ set, it is a container resource.
-     * b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
-     * c. Otherwise, it is a blob resource.
+     *    a. If "BlobName" is _not_ set, it is a container resource.
+     *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
+     *    c. Otherwise, it is a blob resource.
      * 3. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
-     * <p>
+     *
      * Taken from:
      * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
      * https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs

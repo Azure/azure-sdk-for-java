@@ -12,12 +12,6 @@ public class AccessControlChangeFailure {
     private String errorMessage;
 
     /**
-     * Creates a new instance of {@link AccessControlChangeFailure}.
-     */
-    public AccessControlChangeFailure() {
-    }
-
-    /**
      * Returns the name of an entry.
      *
      * @return The name of an entry.

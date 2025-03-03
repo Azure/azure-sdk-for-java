@@ -15,15 +15,6 @@ public final class RecordingChannel extends ExpandableStringEnum<RecordingChanne
     public static final RecordingChannel UNMIXED = fromString("unmixed");
 
     /**
-     * Creates an instance of {@link RecordingChannel} with no string value.
-     *
-     * @deprecated Please use {@link #fromString(String)} to create an instance of RecordingChannel.
-     */
-    @Deprecated
-    public RecordingChannel() {
-    }
-
-    /**
      * Creates or finds a RecordingChannel from its string representation.
      *
      * @param name a name to look for.
@@ -33,10 +24,7 @@ public final class RecordingChannel extends ExpandableStringEnum<RecordingChanne
         return fromString(name, RecordingChannel.class);
     }
 
-    /**
-     * Get the collection of RecordingChannel values.
-     * @return known RecordingChannel values.
-     */
+    /** @return known RecordingChannel values. */
     public static Collection<RecordingChannel> values() {
         return values(RecordingChannel.class);
     }

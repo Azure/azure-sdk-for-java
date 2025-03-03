@@ -166,7 +166,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> upsertJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -178,7 +178,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> upsertJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -190,7 +190,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -200,7 +200,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/routing/jobs/{jobId}")
         @ExpectedResponses({ 204 })
@@ -210,7 +210,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/routing/jobs/{jobId}")
         @ExpectedResponses({ 204 })
@@ -220,7 +220,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}:reclassify")
         @ExpectedResponses({ 200 })
@@ -230,7 +230,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> reclassifyJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}:reclassify")
         @ExpectedResponses({ 200 })
@@ -240,7 +240,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> reclassifyJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}:cancel")
         @ExpectedResponses({ 200 })
@@ -250,7 +250,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}:cancel")
         @ExpectedResponses({ 200 })
@@ -260,7 +260,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:complete")
         @ExpectedResponses({ 200 })
@@ -270,7 +270,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> completeJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:complete")
@@ -281,7 +281,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> completeJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:close")
@@ -292,7 +292,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> closeJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:close")
@@ -303,7 +303,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> closeJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/jobs")
@@ -313,7 +313,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobs(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/jobs")
@@ -323,7 +323,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/jobs/{jobId}/position")
@@ -334,7 +334,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getQueuePosition(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/jobs/{jobId}/position")
         @ExpectedResponses({ 200 })
@@ -344,7 +344,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getQueuePositionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:unassign")
         @ExpectedResponses({ 200 })
@@ -354,7 +354,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> unassignJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:unassign")
@@ -365,7 +365,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> unassignJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/routing/workers/{workerId}/offers/{offerId}:accept")
@@ -376,7 +376,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> acceptJobOffer(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @PathParam("offerId") String offerId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/routing/workers/{workerId}/offers/{offerId}:accept")
@@ -387,7 +387,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> acceptJobOfferSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @PathParam("offerId") String offerId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/routing/workers/{workerId}/offers/{offerId}:decline")
@@ -398,7 +398,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> declineJobOffer(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @PathParam("offerId") String offerId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/routing/workers/{workerId}/offers/{offerId}:decline")
@@ -409,7 +409,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> declineJobOfferSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @PathParam("offerId") String offerId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/routing/queues/{queueId}/statistics")
@@ -420,7 +420,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getQueueStatistics(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/queues/{queueId}/statistics")
         @ExpectedResponses({ 200 })
@@ -430,7 +430,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getQueueStatisticsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/routing/workers/{workerId}")
         @ExpectedResponses({ 200, 201 })
@@ -440,7 +440,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> upsertWorker(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -452,7 +452,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> upsertWorkerSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -464,7 +464,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getWorker(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/workers/{workerId}")
         @ExpectedResponses({ 200 })
@@ -474,7 +474,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getWorkerSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/routing/workers/{workerId}")
         @ExpectedResponses({ 204 })
@@ -484,7 +484,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteWorker(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/routing/workers/{workerId}")
         @ExpectedResponses({ 204 })
@@ -494,7 +494,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteWorkerSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/workers")
         @ExpectedResponses({ 200 })
@@ -503,7 +503,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listWorkers(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/workers")
@@ -513,7 +513,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listWorkersSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -523,7 +523,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -533,7 +533,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -543,7 +543,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listWorkersNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -553,26 +553,41 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listWorkersNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
     }
 
     /**
      * Creates or updates a router job.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -586,8 +601,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -615,22 +630,19 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -644,8 +656,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -673,17 +685,15 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param resource The resource instance.
@@ -705,20 +715,35 @@ public final class JobRouterClientImpl {
 
     /**
      * Creates or updates a router job.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -732,8 +757,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -761,22 +786,19 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -790,8 +812,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -819,17 +841,15 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param resource The resource instance.
@@ -851,10 +871,10 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves an existing job by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -868,8 +888,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -897,17 +917,15 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -926,10 +944,10 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves an existing job by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -943,8 +961,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -972,17 +990,15 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1037,31 +1053,20 @@ public final class JobRouterClientImpl {
 
     /**
      * Reclassify a job.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1087,31 +1092,20 @@ public final class JobRouterClientImpl {
 
     /**
      * Reclassify a job.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1136,33 +1130,22 @@ public final class JobRouterClientImpl {
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     note: String (Optional)
      *     dispositionCode: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1188,33 +1171,22 @@ public final class JobRouterClientImpl {
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     note: String (Optional)
      *     dispositionCode: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1239,32 +1211,21 @@ public final class JobRouterClientImpl {
 
     /**
      * Completes an assigned job.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     note: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -1292,32 +1253,21 @@ public final class JobRouterClientImpl {
 
     /**
      * Completes an assigned job.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     note: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -1344,34 +1294,23 @@ public final class JobRouterClientImpl {
 
     /**
      * Closes a completed job.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     dispositionCode: String (Optional)
      *     closeAt: OffsetDateTime (Optional)
      *     note: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -1398,34 +1337,23 @@ public final class JobRouterClientImpl {
 
     /**
      * Closes a completed job.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     dispositionCode: String (Optional)
      *     closeAt: OffsetDateTime (Optional)
      *     note: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -1451,28 +1379,68 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>If specified, filter jobs by status. Allowed values: "all",
-     * "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed",
-     * "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
-     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
-     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
-     * <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by
-     * classificationPolicy.</td></tr>
-     * <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
-     * before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
-     * <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
-     * at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
+     * <tr>
+     * <td>status</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned",
+     * "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled",
+     * "scheduleFailed", "waitingForActivation", "active".</td>
+     * </tr>
+     * <tr>
+     * <td>queueId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by queue.</td>
+     * </tr>
+     * <tr>
+     * <td>channelId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by channel.</td>
+     * </tr>
+     * <tr>
+     * <td>classificationPolicyId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by classificationPolicy.</td>
+     * </tr>
+     * <tr>
+     * <td>scheduledBefore</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf,
+     * scheduledBefore].</td>
+     * </tr>
+     * <tr>
+     * <td>scheduledAfter</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1486,8 +1454,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1515,17 +1483,15 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1547,28 +1513,68 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>If specified, filter jobs by status. Allowed values: "all",
-     * "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed",
-     * "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
-     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
-     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
-     * <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by
-     * classificationPolicy.</td></tr>
-     * <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
-     * before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
-     * <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
-     * at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
+     * <tr>
+     * <td>status</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned",
+     * "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled",
+     * "scheduleFailed", "waitingForActivation", "active".</td>
+     * </tr>
+     * <tr>
+     * <td>queueId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by queue.</td>
+     * </tr>
+     * <tr>
+     * <td>channelId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by channel.</td>
+     * </tr>
+     * <tr>
+     * <td>classificationPolicyId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by classificationPolicy.</td>
+     * </tr>
+     * <tr>
+     * <td>scheduledBefore</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf,
+     * scheduledBefore].</td>
+     * </tr>
+     * <tr>
+     * <td>scheduledAfter</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1582,8 +1588,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1611,17 +1617,15 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1661,28 +1665,68 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>If specified, filter jobs by status. Allowed values: "all",
-     * "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed",
-     * "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
-     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
-     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
-     * <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by
-     * classificationPolicy.</td></tr>
-     * <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
-     * before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
-     * <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
-     * at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
+     * <tr>
+     * <td>status</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned",
+     * "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled",
+     * "scheduleFailed", "waitingForActivation", "active".</td>
+     * </tr>
+     * <tr>
+     * <td>queueId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by queue.</td>
+     * </tr>
+     * <tr>
+     * <td>channelId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by channel.</td>
+     * </tr>
+     * <tr>
+     * <td>classificationPolicyId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by classificationPolicy.</td>
+     * </tr>
+     * <tr>
+     * <td>scheduledBefore</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf,
+     * scheduledBefore].</td>
+     * </tr>
+     * <tr>
+     * <td>scheduledAfter</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1696,8 +1740,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1725,17 +1769,15 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1755,28 +1797,68 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>If specified, filter jobs by status. Allowed values: "all",
-     * "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed",
-     * "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
-     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
-     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
-     * <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by
-     * classificationPolicy.</td></tr>
-     * <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
-     * before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
-     * <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
-     * at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
+     * <tr>
+     * <td>status</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned",
+     * "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled",
+     * "scheduleFailed", "waitingForActivation", "active".</td>
+     * </tr>
+     * <tr>
+     * <td>queueId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by queue.</td>
+     * </tr>
+     * <tr>
+     * <td>channelId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by channel.</td>
+     * </tr>
+     * <tr>
+     * <td>classificationPolicyId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by classificationPolicy.</td>
+     * </tr>
+     * <tr>
+     * <td>scheduledBefore</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf,
+     * scheduledBefore].</td>
+     * </tr>
+     * <tr>
+     * <td>scheduledAfter</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1790,8 +1872,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1819,17 +1901,15 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1869,10 +1949,10 @@ public final class JobRouterClientImpl {
 
     /**
      * Gets a job's position details.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     jobId: String (Required)
      *     position: int (Required)
@@ -1880,8 +1960,7 @@ public final class JobRouterClientImpl {
      *     queueLength: int (Required)
      *     estimatedWaitTimeMinutes: double (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1900,10 +1979,10 @@ public final class JobRouterClientImpl {
 
     /**
      * Gets a job's position details.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     jobId: String (Required)
      *     position: int (Required)
@@ -1911,8 +1990,7 @@ public final class JobRouterClientImpl {
      *     queueLength: int (Required)
      *     estimatedWaitTimeMinutes: double (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1931,34 +2009,23 @@ public final class JobRouterClientImpl {
 
     /**
      * Unassign a job.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     jobId: String (Required)
      *     unassignmentCount: int (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -1986,34 +2053,23 @@ public final class JobRouterClientImpl {
 
     /**
      * Unassign a job.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     jobId: String (Required)
      *     unassignmentCount: int (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -2040,17 +2096,16 @@ public final class JobRouterClientImpl {
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     assignmentId: String (Required)
      *     jobId: String (Required)
      *     workerId: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
@@ -2072,17 +2127,16 @@ public final class JobRouterClientImpl {
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     assignmentId: String (Required)
      *     jobId: String (Required)
      *     workerId: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
@@ -2104,32 +2158,21 @@ public final class JobRouterClientImpl {
 
     /**
      * Declines an offer to work on a job.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     retryOfferAt: OffsetDateTime (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
@@ -2157,32 +2200,21 @@ public final class JobRouterClientImpl {
 
     /**
      * Declines an offer to work on a job.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     retryOfferAt: OffsetDateTime (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
@@ -2209,10 +2241,10 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves a queue's statistics.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     queueId: String (Required)
      *     length: int (Required)
@@ -2221,8 +2253,7 @@ public final class JobRouterClientImpl {
      *     }
      *     longestJobWaitTimeMinutes: Double (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param queueId Id of the queue to retrieve statistics.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2242,10 +2273,10 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves a queue's statistics.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     queueId: String (Required)
      *     length: int (Required)
@@ -2254,8 +2285,7 @@ public final class JobRouterClientImpl {
      *     }
      *     longestJobWaitTimeMinutes: Double (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param queueId Id of the queue to retrieve statistics.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2274,20 +2304,35 @@ public final class JobRouterClientImpl {
 
     /**
      * Creates or updates a worker.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2304,8 +2349,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2328,15 +2373,12 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2353,8 +2395,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2377,10 +2419,8 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param workerId Id of a worker.
      * @param resource The resource instance.
@@ -2402,20 +2442,35 @@ public final class JobRouterClientImpl {
 
     /**
      * Creates or updates a worker.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2432,8 +2487,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2456,15 +2511,12 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2481,8 +2533,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2505,10 +2557,8 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param workerId Id of a worker.
      * @param resource The resource instance.
@@ -2530,10 +2580,10 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves an existing worker by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2550,8 +2600,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2574,10 +2624,8 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param workerId Id of a worker.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2596,10 +2644,10 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves an existing worker by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2616,8 +2664,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2640,10 +2688,8 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param workerId Id of a worker.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2698,26 +2744,55 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves existing workers.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
-     * <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values:
-     * "active", "draining", "inactive", "all".</td></tr>
-     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration
-     * with this channel.</td></tr>
-     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this
-     * queue.</td></tr>
-     * <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for
-     * the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will
-     * return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
+     * <tr>
+     * <td>state</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td>
+     * </tr>
+     * <tr>
+     * <td>channelId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers who have a channel configuration with this channel.</td>
+     * </tr>
+     * <tr>
+     * <td>queueId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers who are assigned to this queue.</td>
+     * </tr>
+     * <tr>
+     * <td>hasCapacity</td>
+     * <td>Boolean</td>
+     * <td>No</td>
+     * <td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any
+     * channel if `channelId` not specified. If set to false, then will return all workers including workers without any
+     * capacity for jobs. Defaults to false.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2734,8 +2809,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2758,10 +2833,8 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2783,26 +2856,55 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves existing workers.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
-     * <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values:
-     * "active", "draining", "inactive", "all".</td></tr>
-     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration
-     * with this channel.</td></tr>
-     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this
-     * queue.</td></tr>
-     * <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for
-     * the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will
-     * return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
+     * <tr>
+     * <td>state</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td>
+     * </tr>
+     * <tr>
+     * <td>channelId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers who have a channel configuration with this channel.</td>
+     * </tr>
+     * <tr>
+     * <td>queueId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers who are assigned to this queue.</td>
+     * </tr>
+     * <tr>
+     * <td>hasCapacity</td>
+     * <td>Boolean</td>
+     * <td>No</td>
+     * <td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any
+     * channel if `channelId` not specified. If set to false, then will return all workers including workers without any
+     * capacity for jobs. Defaults to false.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2819,8 +2921,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2843,10 +2945,8 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2886,26 +2986,55 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves existing workers.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
-     * <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values:
-     * "active", "draining", "inactive", "all".</td></tr>
-     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration
-     * with this channel.</td></tr>
-     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this
-     * queue.</td></tr>
-     * <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for
-     * the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will
-     * return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
+     * <tr>
+     * <td>state</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td>
+     * </tr>
+     * <tr>
+     * <td>channelId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers who have a channel configuration with this channel.</td>
+     * </tr>
+     * <tr>
+     * <td>queueId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers who are assigned to this queue.</td>
+     * </tr>
+     * <tr>
+     * <td>hasCapacity</td>
+     * <td>Boolean</td>
+     * <td>No</td>
+     * <td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any
+     * channel if `channelId` not specified. If set to false, then will return all workers including workers without any
+     * capacity for jobs. Defaults to false.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2922,8 +3051,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2946,10 +3075,8 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2969,26 +3096,55 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves existing workers.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
-     * <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values:
-     * "active", "draining", "inactive", "all".</td></tr>
-     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration
-     * with this channel.</td></tr>
-     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this
-     * queue.</td></tr>
-     * <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for
-     * the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will
-     * return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
+     * <tr>
+     * <td>state</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td>
+     * </tr>
+     * <tr>
+     * <td>channelId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers who have a channel configuration with this channel.</td>
+     * </tr>
+     * <tr>
+     * <td>queueId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers who are assigned to this queue.</td>
+     * </tr>
+     * <tr>
+     * <td>hasCapacity</td>
+     * <td>Boolean</td>
+     * <td>No</td>
+     * <td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any
+     * channel if `channelId` not specified. If set to false, then will return all workers including workers without any
+     * capacity for jobs. Defaults to false.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -3005,8 +3161,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -3029,10 +3185,8 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3074,10 +3228,10 @@ public final class JobRouterClientImpl {
      * Retrieves list of jobs based on filter parameters.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -3091,8 +3245,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -3120,19 +3274,19 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3155,10 +3309,10 @@ public final class JobRouterClientImpl {
      * Retrieves list of jobs based on filter parameters.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -3172,8 +3326,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Optional, Required on create)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -3201,19 +3355,19 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Optional, Required on create)
+     *             message: String (Required)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3234,10 +3388,10 @@ public final class JobRouterClientImpl {
      * Retrieves existing workers.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -3254,8 +3408,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -3278,12 +3432,12 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3307,10 +3461,10 @@ public final class JobRouterClientImpl {
      * Retrieves existing workers.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -3327,8 +3481,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Optional, Required on create)
-     *             capacityCostPerJob: int (Optional, Required on create)
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -3351,12 +3505,12 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
