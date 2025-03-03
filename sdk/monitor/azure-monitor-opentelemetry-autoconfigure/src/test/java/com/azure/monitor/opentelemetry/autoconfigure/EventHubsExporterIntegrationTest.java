@@ -8,9 +8,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
 import com.azure.messaging.eventhubs.*;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -28,9 +25,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -62,17 +57,17 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             Mono<byte[]> asyncBytes = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
                 .map(LocalStorageTelemetryPipelineListener::ungzip);
             asyncBytes.subscribe(value -> {
-                List<TelemetryItem> telemetryItems = deserialize(value);
+                List<TelemetryItem> telemetryItems = TestUtils.deserialize(value);
                 for (TelemetryItem telemetryItem : telemetryItems) {
                     MonitorDomain monitorDomain = telemetryItem.getData().getBaseData();
-                    RemoteDependencyData remoteDependencyData = toRemoteDependencyData(monitorDomain);
+                    RemoteDependencyData remoteDependencyData = TestUtils.toRemoteDependencyData(monitorDomain);
                     String remoteDependencyName = remoteDependencyData.getName();
                     if (remoteDependencyName.contains(spanName)) {
                         exporterCountDown.countDown();
                         LOGGER.info("Count down " + spanName);
                     } else if (remoteDependencyName.contains("EventHubs.send")) {
                         exporterCountDown.countDown();
-                        LOGGER.info("Count down " + "EventHubs.send");
+                        LOGGER.info("Count down EventHubs.send");
                     } else {
                         LOGGER.info("remoteDependencyName = " + remoteDependencyName);
                     }
@@ -97,34 +92,6 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             scope.close();
         }
         assertTrue(exporterCountDown.await(60, TimeUnit.SECONDS));
-    }
-
-    // Copied from com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.java
-    // deserialize multiple TelemetryItem raw bytes with newline delimiters to a list of TelemetryItems
-    private static List<TelemetryItem> deserialize(byte[] rawBytes) {
-        try (JsonReader jsonReader = JsonProviders.createReader(rawBytes)) {
-            JsonToken token = jsonReader.currentToken();
-            if (token == null) {
-                jsonReader.nextToken();
-            }
-            List<TelemetryItem> result = new ArrayList<>();
-            do {
-                result.add(TelemetryItem.fromJson(jsonReader));
-            } while (jsonReader.nextToken() == JsonToken.START_OBJECT);
-            return result;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    // Copied from com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.java
-    // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to RemoteDependencyData
-    private static RemoteDependencyData toRemoteDependencyData(MonitorDomain baseData) {
-        try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
-            return RemoteDependencyData.fromJson(jsonReader);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Disabled("Processor integration tests require separate consumer group to not have partition contention in CI - https://github.com/Azure/azure-sdk-for-java/issues/23567")
