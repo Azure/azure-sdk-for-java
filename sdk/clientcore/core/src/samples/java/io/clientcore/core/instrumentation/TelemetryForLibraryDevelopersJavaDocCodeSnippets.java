@@ -4,12 +4,16 @@
 package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
+import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.LongCounter;
@@ -35,7 +39,7 @@ import java.util.List;
 public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     private static final LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample")
         .setLibraryVersion("1.0.0")
-        .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+        .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
     private static final HttpHeaderName CUSTOM_REQUEST_ID = HttpHeaderName.fromString("custom-request-id");
 
     public void createTracer() {
@@ -44,7 +48,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
@@ -59,7 +63,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
@@ -71,7 +75,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     public void histogram() {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
@@ -110,7 +114,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     public void counter() {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
@@ -145,7 +149,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     public void upDownCounter() {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
@@ -172,7 +176,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
-            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
@@ -352,9 +356,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.instrumentation.instrumentationpolicy
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(
-                new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions))
+            .addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
             .build();
 
         // END:  io.clientcore.core.instrumentation.instrumentationpolicy
@@ -369,9 +372,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         instrumentationOptions.addAllowedQueryParamName("documentId");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(
-                new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions))
+            .addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
             .build();
 
         // END:  io.clientcore.core.instrumentation.customizeinstrumentationpolicy
@@ -382,22 +384,29 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.instrumentation.enrichhttpspans
 
-        HttpPipelinePolicy enrichingPolicy = (request, next) -> {
-            Span span = request.getRequestOptions() == null
-                ? Span.noop()
-                : request.getRequestOptions().getInstrumentationContext().getSpan();
-            if (span.isRecording()) {
-                span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
+        HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy() {
+            @Override
+            public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
+                Span span = request.getRequestOptions() == null
+                    ? Span.noop()
+                    : request.getRequestOptions().getInstrumentationContext().getSpan();
+                if (span.isRecording()) {
+                    span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
+                }
+
+                return next.process();
             }
 
-            return next.process();
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.AFTER_INSTRUMENTATION;
+            }
         };
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(
-                new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions),
-                enrichingPolicy)
+            .addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
+            .addPolicy(enrichingPolicy)
             .build();
 
 

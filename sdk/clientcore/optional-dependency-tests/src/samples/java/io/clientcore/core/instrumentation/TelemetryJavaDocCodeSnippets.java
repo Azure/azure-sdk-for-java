@@ -3,11 +3,11 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
@@ -175,14 +175,14 @@ public class TelemetryJavaDocCodeSnippets {
 
         public SampleClient build() {
             return new SampleClient(instrumentationOptions, new HttpPipelineBuilder()
-                .policies(new HttpInstrumentationPolicy(instrumentationOptions))
+                .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
                 .build());
         }
     }
 
     static class SampleClient {
-        private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("contoso.sample");
-        private final static String SAMPLE_OPERATION_DURATION_METRIC_NAME = "contoso.sample.client.operation.duration";
+        private static final LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("contoso.sample");
+        private static final String SAMPLE_OPERATION_DURATION_METRIC_NAME = "contoso.sample.client.operation.duration";
         private final HttpPipeline httpPipeline;
         private final URI serviceEndpoint;
         private final OperationInstrumentation clientCallInstrumentation;
@@ -202,7 +202,7 @@ public class TelemetryJavaDocCodeSnippets {
         @SuppressWarnings("try")
         public Response<?> clientCall(RequestOptions options) {
             if (!clientCallInstrumentation.shouldInstrument(options)) {
-                return httpPipeline.send(new HttpRequest(HttpMethod.GET, serviceEndpoint));
+                return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint));
             }
 
             if (options == null || options == RequestOptions.none()) {
@@ -211,7 +211,7 @@ public class TelemetryJavaDocCodeSnippets {
 
             OperationInstrumentation.Scope scope = clientCallInstrumentation.startScope(options);
             try {
-                return httpPipeline.send(new HttpRequest(HttpMethod.GET, serviceEndpoint));
+                return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint));
             } catch (Throwable t) {
                 scope.setError(t);
                 throw t;

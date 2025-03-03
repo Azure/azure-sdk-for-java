@@ -3,9 +3,9 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.models.JsonArray;
 import io.clientcore.core.serialization.json.models.JsonObject;
-import io.clientcore.core.utils.binarydata.BinaryData;
 
 /**
  * JavaDoc code snippets for {@link RequestOptions}.
@@ -59,7 +59,7 @@ public class RequestOptionsJavaDocCodeSnippets {
             .addRequestCallback(request -> request
                 // may already be set if request is created from a client
                 .setUri("https://petstore.example.com/pet")
-                .setHttpMethod(HttpMethod.POST)
+                .setMethod(HttpMethod.POST)
                 .setBody(requestBodyData)
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
         // END: io.clientcore.core.http.rest.requestoptions.postrequest

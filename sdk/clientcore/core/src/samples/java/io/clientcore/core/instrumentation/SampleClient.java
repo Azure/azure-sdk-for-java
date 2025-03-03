@@ -12,8 +12,8 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import java.net.URI;
 
 class SampleClient {
-    private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("contoso-sample");
-    private final static String SAMPLE_CLIENT_DURATION_METRIC = "contoso.sample.client.operation.duration";
+    private static final LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("contoso-sample");
+    private static final String SAMPLE_CLIENT_DURATION_METRIC = "contoso.sample.client.operation.duration";
     private final HttpPipeline httpPipeline;
     private final OperationInstrumentation downloadContentInstrumentation;
     private final OperationInstrumentation createInstrumentation;
@@ -66,7 +66,7 @@ class SampleClient {
 
     public Response<?> create(RequestOptions options) {
         if (!createInstrumentation.shouldInstrument(options)) {
-            return httpPipeline.send(new HttpRequest(HttpMethod.POST, endpoint));
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint));
         }
 
         if (options == null || options == RequestOptions.none()) {
@@ -75,7 +75,7 @@ class SampleClient {
 
         OperationInstrumentation.Scope scope = createInstrumentation.startScope(options);
         try {
-            return httpPipeline.send(new HttpRequest(HttpMethod.POST, endpoint));
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint));
         } catch (RuntimeException t) {
             scope.setError(t);
             throw t;
@@ -85,6 +85,6 @@ class SampleClient {
     }
 
     private Response<?> downloadImpl(RequestOptions options) {
-        return httpPipeline.send(new HttpRequest(HttpMethod.GET, endpoint));
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint));
     }
 }
