@@ -18,7 +18,7 @@ Various documentation is available to help you get started
 - [Apache Maven](https://maven.apache.org/download.cgi).
 - You must have an [Azure subscription][azure_sub] to use this package.
 - An existing Communication Services resource. If you need to create the resource, you can use the [Azure Portal][azure_portal], the [Azure PowerShell][azure_powershell], or the [Azure CLI][azure_cli].
-- See [how to register whatsapp business account & create a channel][register_whatsapp_business_account] for registering whatsapp channel to your Communication Services resource.
+- See [how to register whatsapp business account and create a channel][register_whatsapp_business_account] for registering whatsapp channel to your Communication Services resource.
 
 ### Adding the package to your product
 
