@@ -40,6 +40,3 @@ extends:
       - TestFromSource=^$|false
       - AZURE_TEST_HTTP_CLIENTS=netty
       - pool=^(?!.*(win)).*
-    MatrixReplace:
-      - AZURE_TEST.*=.*/ # A replacement pattern for any string that matches AZURE_TEST.*=.*/.
-      - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.8$2 # It matches JavaTestVersion values that start with 1. followed by two digits and replaces them with 1.8.

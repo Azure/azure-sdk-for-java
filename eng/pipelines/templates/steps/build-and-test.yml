@@ -136,7 +136,7 @@ steps:
         options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
-        jdkVersionOption: $(JavaTestVersion)
+        jdkVersionOption: '8'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
         goals: ${{ parameters.TestGoals }}
