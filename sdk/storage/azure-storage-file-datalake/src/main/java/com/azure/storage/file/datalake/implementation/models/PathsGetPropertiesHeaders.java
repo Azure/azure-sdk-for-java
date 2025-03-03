@@ -130,36 +130,6 @@ public final class PathsGetPropertiesHeaders {
      */
     private String contentType;
 
-    /*
-     * The x-ms-server-encrypted property.
-     */
-    private Boolean xMsServerEncrypted;
-
-    /*
-     * The x-ms-encryption-key-sha256 property.
-     */
-    private String xMsEncryptionKeySha256;
-
-    /*
-     * The x-ms-encryption-scope property.
-     */
-    private String xMsEncryptionScope;
-
-    /*
-     * The x-ms-encryption-key-sha256 property.
-     */
-    private String xMsEncryptionContext;
-
-    /*
-     * The x-ms-creation-time property.
-     */
-    private DateTimeRfc1123 xMsCreationTime;
-
-    /*
-     * The x-ms-expiry-time property.
-     */
-    private DateTimeRfc1123 xMsExpiryTime;
-
     private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -179,19 +149,6 @@ public final class PathsGetPropertiesHeaders {
     private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
 
     private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
-
-    private static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
-
-    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
-        = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
-
-    private static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
-
-    private static final HttpHeaderName X_MS_ENCRYPTION_CONTEXT = HttpHeaderName.fromString("x-ms-encryption-context");
-
-    private static final HttpHeaderName X_MS_CREATION_TIME = HttpHeaderName.fromString("x-ms-creation-time");
-
-    private static final HttpHeaderName X_MS_EXPIRY_TIME = HttpHeaderName.fromString("x-ms-expiry-time");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -232,21 +189,6 @@ public final class PathsGetPropertiesHeaders {
         this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
         this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
-        String xMsServerEncrypted = rawHeaders.getValue(X_MS_SERVER_ENCRYPTED);
-        if (xMsServerEncrypted != null) {
-            this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
-        }
-        this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
-        this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
-        this.xMsEncryptionContext = rawHeaders.getValue(X_MS_ENCRYPTION_CONTEXT);
-        String xMsCreationTime = rawHeaders.getValue(X_MS_CREATION_TIME);
-        if (xMsCreationTime != null) {
-            this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
-        }
-        String xMsExpiryTime = rawHeaders.getValue(X_MS_EXPIRY_TIME);
-        if (xMsExpiryTime != null) {
-            this.xMsExpiryTime = new DateTimeRfc1123(xMsExpiryTime);
-        }
     }
 
     /**
@@ -722,139 +664,4 @@ public final class PathsGetPropertiesHeaders {
         this.contentType = contentType;
         return this;
     }
-
-    /**
-     * Get the xMsServerEncrypted property: The x-ms-server-encrypted property.
-     *
-     * @return the xMsServerEncrypted value.
-     */
-    public Boolean isServerEncrypted() {
-        return this.xMsServerEncrypted;
-    }
-
-    /**
-     * Set the xMsServerEncrypted property: The x-ms-server-encrypted property.
-     *
-     * @param xMsServerEncrypted the xMsServerEncrypted value to set.
-     * @return the PathsGetPropertiesHeaders object itself.
-     */
-    public PathsGetPropertiesHeaders setServerEncrypted(Boolean xMsServerEncrypted) {
-        this.xMsServerEncrypted = xMsServerEncrypted;
-        return this;
-    }
-
-    /**
-     * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha-256 property.
-     *
-     * @return the xMsEncryptionKeySha256 value.
-     */
-    public String getXMsEncryptionKeySha256() {
-        return this.xMsEncryptionKeySha256;
-    }
-
-    /**
-     * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha-256 property.
-     *
-     * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set
-     * @return the PathsGetPropertiesHeaders object itself.
-     */
-    public PathsGetPropertiesHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
-        this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
-        return this;
-    }
-
-    /**
-     * Get the xMsEncryptionScope property: The x-ms-encryption-scope property.
-     *
-     * @return the xMsEncryptionScope value.
-     */
-    public String getXMsEncryptionScope() {
-        return this.xMsEncryptionScope;
-    }
-
-    /**
-     * Set the xMsEncryptionScope property: The x-ms-encryption-scope property.
-     *
-     * @param xMsEncryptionScope the xMsEncryptionScope value to set
-     * @return the PathsGetPropertiesHeaders object itself.
-     */
-    public PathsGetPropertiesHeaders setXMsEncryptionScope(String xMsEncryptionScope) {
-        this.xMsEncryptionScope = xMsEncryptionScope;
-        return this;
-    }
-
-    /**
-     * Get the xMsEncryptionContext property: The x-ms-encryption-context property.
-     *
-     * @return the xMsEncryptionContext value.
-     */
-    public String getXMsEncryptionContext() {
-        return this.xMsEncryptionContext;
-    }
-
-    /**
-     * Set the xMsEncryptionContext property: The x-ms-encryption-context property.
-     *
-     * @param xMsEncryptionContext the xMsEncryptionContext value to set.
-     * @return the PathsGetPropertiesHeaders object itself.
-     */
-    public PathsGetPropertiesHeaders setXMsEncryptionContext(String xMsEncryptionContext) {
-        this.xMsEncryptionContext = xMsEncryptionContext;
-        return this;
-    }
-
-    /**
-     * Get the xMsCreationTime property: The x-ms-creation-time property.
-     *
-     * @return the xMsCreationTime value.
-     */
-    public OffsetDateTime getXMsCreationTime() {
-        if (this.xMsCreationTime == null) {
-            return null;
-        }
-        return this.xMsCreationTime.getDateTime();
-    }
-
-    /**
-     * Set the xMsCreationTime property: The x-ms-creation-time property.
-     *
-     * @param xMsCreationTime the xMsCreationTime value to set.
-     * @return the PathsGetPropertiesHeaders object itself.
-     */
-    public PathsGetPropertiesHeaders setXMsCreationTime(OffsetDateTime xMsCreationTime) {
-        if (xMsCreationTime == null) {
-            this.xMsCreationTime = null;
-        } else {
-            this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
-        }
-        return this;
-    }
-
-    /**
-     * Get the xMsExpiryTime property: The x-ms-expiry-time property.
-     *
-     * @return the xMsExpiryTime value.
-     */
-    public OffsetDateTime getXMsExpiryTime() {
-        if (this.xMsExpiryTime == null) {
-            return null;
-        }
-        return this.xMsExpiryTime.getDateTime();
-    }
-
-    /**
-     * Set the xMsExpiryTime property: The x-ms-expiry-time property.
-     *
-     * @param xMsExpiryTime the xMsExpiryTime value to set.
-     * @return the PathsGetPropertiesHeaders object itself.
-     */
-    public PathsGetPropertiesHeaders setXMsExpiryTime(OffsetDateTime xMsExpiryTime) {
-        if (xMsExpiryTime == null) {
-            this.xMsExpiryTime = null;
-        } else {
-            this.xMsExpiryTime = new DateTimeRfc1123(xMsExpiryTime);
-        }
-        return this;
-    }
-
 }
