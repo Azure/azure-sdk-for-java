@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fix audio data serialization
+
 ### Other Changes
 
 ## 1.4.0-beta.1 (2024-11-22)
