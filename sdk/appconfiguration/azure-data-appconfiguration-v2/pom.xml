@@ -3,7 +3,6 @@
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent-v2</artifactId>
@@ -13,11 +12,12 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration-v2</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:azure-data-appconfiguration-v2;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:azure-v2-data-appconfiguration;current} -->
   <packaging>jar</packaging>
 
-  <name>SDK for AzureAppConfiguration V2</name>
-  <description>This package contains AzureAppConfiguration V2 client library.</description>
+  <name>SDK for AzureAppConfiguration</name>
+  <description>This package contains AzureAppConfiguration client library.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
     <license>
@@ -29,8 +29,20 @@
 
   <scm>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
-
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft</name>
+    </developer>
+  </developers>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <spotless.skip>false</spotless.skip>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>io.clientcore</groupId>
@@ -40,8 +52,51 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-v2</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-v2;external_dependency} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-v2;dependency} -->
     </dependency>
   </dependencies>
-
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <executions>
+          <execution>
+            <id>run-annotation-processing</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+              <release>8</release>
+              <proc>only</proc>
+              <annotationProcessorPaths>
+                <annotationProcessorPath>
+                  <groupId>io.clientcore</groupId>
+                  <artifactId>annotation-processor</artifactId>
+                  <version>1.0.0-beta.1</version>
+                </annotationProcessorPath>
+              </annotationProcessorPaths>
+              <annotationProcessors>
+                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
+              </annotationProcessors>
+              <compilerArgs>
+                <arg>-Xlint:-options</arg>
+              </compilerArgs>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>io.clientcore</groupId>
+            <artifactId>annotation-processor</artifactId>
+            <version>1.0.0-beta.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
 </project>

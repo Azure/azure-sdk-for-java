@@ -19,7 +19,6 @@ import com.azure.v2.data.appconfiguration.models.SnapshotStatus;
 import com.azure.v2.data.appconfiguration.models.SnapshotUpdateParameters;
 import com.azure.v2.data.appconfiguration.models.UpdateSnapshotRequestContentType;
 import io.clientcore.core.annotations.ServiceInterface;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -104,7 +103,8 @@ public final class AzureAppConfigurationClientImpl {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(AzureAppConfigurationClientService.class, this.httpPipeline);
+        this.service = com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientServiceImpl
+            .getNewInstance(this.httpPipeline, null);
     }
 
     /**
