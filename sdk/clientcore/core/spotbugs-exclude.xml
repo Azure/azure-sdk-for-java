@@ -13,9 +13,10 @@
   <Match>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
     <Or>
+      <Class name="io.clientcore.core.credentials.NamedKeyCredential" />
+      <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
       <Class name="io.clientcore.core.http.models.HttpRange" />
       <Class name="io.clientcore.core.http.models.HttpRequest" />
-      <Class name="io.clientcore.core.http.models.RequestOptions" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineNextPolicy" />
       <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
@@ -40,6 +41,10 @@
       <Class name="io.clientcore.core.models.binarydata.FileBinaryData" />
       <Class name="io.clientcore.core.models.binarydata.InputStreamBinaryData" />
       <Class name="io.clientcore.core.models.binarydata.ListByteBufferBinaryData" />
+      <Class name="io.clientcore.core.models.geo.GeoArray" />
+      <Class name="io.clientcore.core.models.geo.GeoBoundingBox" />
+      <Class name="io.clientcore.core.models.geo.GeoLinearRing" />
+      <Class name="io.clientcore.core.models.geo.GeoPosition" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.utils.AuthenticateChallenge" />
@@ -47,7 +52,6 @@
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
       <Class name="io.clientcore.core.utils.Union" />
       <Class name="io.clientcore.core.utils.configuration.Configuration" />
-      <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
     </Or>
   </Match>
   <Match>
@@ -63,6 +67,7 @@
       <Class name="io.clientcore.core.credentials.KeyCredential" />
       <Class name="io.clientcore.core.http.client.JdkHttpClientBuilder" />
       <Class name="io.clientcore.core.http.pipeline.KeyCredentialPolicy" />
+      <Class name="io.clientcore.core.http.pipeline.SetUserAgentPolicy" />
       <Class name="io.clientcore.core.implementation.http.rest.SwaggerMethodParser" />
       <Class name="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation" />
       <Class name="io.clientcore.core.instrumentation.logging.ClientLogger" />
@@ -88,8 +93,8 @@
   <Match>
     <Bug pattern="DM_CONVERT_CASE" />
     <Or>
-      <Class name="io.clientcore.core.http.models.HttpHeaderName" />
       <Class name="io.clientcore.core.credentials.oauth.AccessTokenType" />
+      <Class name="io.clientcore.core.http.models.HttpHeaderName" />
       <Class name="io.clientcore.core.utils.AuthUtils" />
       <Class name="io.clientcore.core.utils.ServerSentEventUtils" />
     </Or>
@@ -190,6 +195,10 @@
     <Class name="io.clientcore.core.serialization.xml.implementation.aalto.util.XmlCharTypes" />
   </Match>
   <Match>
+    <Bug pattern="MS_MUTABLE_COLLECTION_PKGPROTECT" />
+    <Class name="io.clientcore.core.models.geo.GeoTestHelpers" />
+  </Match>
+  <Match>
     <Bug pattern="MS_PKGPROTECT" />
     <Or>
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.json.ReaderBasedJsonParser" />
@@ -209,6 +218,7 @@
     <Or>
       <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataTest" />
+      <Class name="io.clientcore.core.utils.CoreUtils" />
     </Or>
   </Match>
   <Match>
@@ -223,6 +233,7 @@
     <Or>
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
       <Class name="io.clientcore.core.serialization.json.JsonWriterTests" />
+      <Class name="io.clientcore.core.serialization.json.models.JsonPatchDocumentTests" />
     </Or>
   </Match>
   <Match>
@@ -231,7 +242,16 @@
       <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStreamTests" />
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataTest" />
+      <Class name="io.clientcore.core.models.geo.GeoCollectionTests" />
+      <Class name="io.clientcore.core.models.geo.GeoLineStringCollectionTests" />
+      <Class name="io.clientcore.core.models.geo.GeoLineStringTests" />
+      <Class name="io.clientcore.core.models.geo.GeoPointCollectionTests" />
+      <Class name="io.clientcore.core.models.geo.GeoPointTests" />
+      <Class name="io.clientcore.core.models.geo.GeoPolygonCollectionTests" />
+      <Class name="io.clientcore.core.models.geo.GeoPolygonTests" />
       <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
+      <Class name="io.clientcore.core.serialization.json.models.JsonPatchDocument" />
+      <Class name="io.clientcore.core.utils.IterableStreamTests" />
     </Or>
   </Match>
   <Match>
@@ -252,6 +272,7 @@
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.RandomIdUtils" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
+      <Class name="io.clientcore.core.utils.CoreUtils" />
     </Or>
   </Match>
   <Match>
@@ -261,13 +282,16 @@
       <Class name="io.clientcore.core.implementation.utils.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.json.JsonReader" />
       <Class name="io.clientcore.core.utils.Base64Uri" />
-      <Class name="io.clientcore.core.utils.TestUtils" />
+      <Class name="io.clientcore.core.utils.CoreUtils" />
       <Class name="io.clientcore.core.utils.serializers.MockSerializer" />
     </Or>
   </Match>
   <Match>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" />
-    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
+    <Or>
+      <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
+      <Class name="io.clientcore.core.utils.CoreUtils" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="RR_NOT_CHECKED" />
@@ -280,10 +304,6 @@
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
     <Class name="io.clientcore.core.serialization.xml.XmlReaderCodesnippetsTests" />
-  </Match>
-  <Match>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
-    <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
   </Match>
   <Match>
     <Bug pattern="SERVLET_QUERY_STRING" />
@@ -346,6 +366,10 @@
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderScanner" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.out.CharXmlWriter" />
     </Or>
+  </Match>
+  <Match>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD" />
+    <Class name="io.clientcore.core.http.models.ETag" />
   </Match>
   <Match>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />

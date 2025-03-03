@@ -4,12 +4,10 @@
 package io.clientcore.core.implementation.http.rest;
 
 import io.clientcore.core.http.exceptions.HttpResponseException;
-import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
@@ -17,18 +15,20 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.ReflectionSerializable;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.implementation.http.ContentType;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
-import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.Base64Uri;
-import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.utils.Base64Uri;
+import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.UriBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -527,7 +527,7 @@ public class RestProxyImpl {
         }
 
         String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
-        if (ImplUtils.isNullOrEmpty(contentType)) {
+        if (CoreUtils.isNullOrEmpty(contentType)) {
             // When in doubt, JSON!
             return SerializationFormat.JSON;
         }

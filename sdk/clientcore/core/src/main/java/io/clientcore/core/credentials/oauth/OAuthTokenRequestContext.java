@@ -3,11 +3,11 @@
 
 package io.clientcore.core.credentials.oauth;
 
-import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.CoreUtils;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -53,8 +53,8 @@ public class OAuthTokenRequestContext {
      * @return the scopes required for the token
      */
     public List<String> getScopes() {
-        if (ImplUtils.isNullOrEmpty(scopes)) {
-            Collections.emptyList();
+        if (CoreUtils.isNullOrEmpty(scopes)) {
+            return Collections.emptyList();
         }
         return scopes;
     }
@@ -86,7 +86,7 @@ public class OAuthTokenRequestContext {
         }
 
         for (String scope : scopes) {
-            if (ImplUtils.isNullOrEmpty(scope)) {
+            if (CoreUtils.isNullOrEmpty(scope)) {
                 throw LOGGER
                     .logThrowableAsError(new IllegalArgumentException("Scopes cannot contain null or empty values."));
             }
@@ -104,8 +104,8 @@ public class OAuthTokenRequestContext {
      * @return the parameters required for the token
      */
     public Map<String, Object> getParams() {
-        if (ImplUtils.isNullOrEmpty(params)) {
-            Collections.emptyMap();
+        if (CoreUtils.isNullOrEmpty(params)) {
+            return Collections.emptyMap();
         }
         return this.params;
     }
@@ -132,11 +132,11 @@ public class OAuthTokenRequestContext {
      * @throws IllegalArgumentException if key and/or value parameters are null.
      */
     public OAuthTokenRequestContext setParam(String key, String value) {
-        if (ImplUtils.isNullOrEmpty(key)) {
+        if (CoreUtils.isNullOrEmpty(key)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("Parameter 'key' cannot be null or empty"));
         }
 
-        if (ImplUtils.isNullOrEmpty(value)) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("Parameter 'value' cannot be null or empty"));
         }
 
