@@ -126,6 +126,21 @@ steps:
 
   - ${{ else }}:
     - pwsh: |
+        
+        java -version
+        echo "JavaTestVersion (before): $JavaTestVersion"
+        export JavaTestVersion=1.8 
+        echo "JavaTestVersion (after): $JavaTestVersion"
+      
+        echo "maven -version"  
+        mvn -version
+      
+        echo "JAVA_HOME: $JAVA_HOME"
+        echo "PATH: $PATH"
+        export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
+        echo "JAVA_HOME (after): $JAVA_HOME"
+        
+        
         $javaTestVersion = "$(JavaTestVersion)"
         $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_8_X64")
         Write-Host "Setting PowerShellJavaHome to '$javaHomeValue'"
