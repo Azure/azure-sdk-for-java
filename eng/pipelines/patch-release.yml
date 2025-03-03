@@ -4,16 +4,44 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-communication-identity
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azurecommunicationidentity
+      ServiceDirectory: communication/azure-communication-identity
+    - name: azure-communication-callautomation
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azurecommunicationcallautomation
+      ServiceDirectory: communication/azure-communication-callautomation
+    - name: azure-communication-rooms
       groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azurecommunicationrooms
+      ServiceDirectory: communication/azure-communication-rooms
+    - name: azure-communication-chat
+      groupId: com.azure
+      safeName: azurecommunicationchatclient
+      ServiceDirectory: communication/azure-communication-chat
+    - name: azure-communication-email
+      groupId: com.azure
+      safeName: azurecommunicationemail
+      ServiceDirectory: communication/azure-communication-email
+    - name: azure-communication-jobrouter
+      groupId: com.azure
+      safeName: azurecommunicationjobrouterclient
+      ServiceDirectory: communication/azure-communication-jobrouter
+    - name: azure-communication-common
+      groupId: com.azure
+      safeName: azurecommunicationcommon
+      ServiceDirectory: communication/azure-communication-common
+    - name: azure-communication-phonenumbers
+      groupId: com.azure
+      safeName: azurecommunicationphonenumbers
+      ServiceDirectory: communication/azure-communication-phonenumbers
+    - name: azure-communication-messages
+      groupId: com.azure
+      safeName: azurecommunicationmessages
+      ServiceDirectory: communication/azure-communication-messages
+    - name: azure-communication-sms
+      groupId: com.azure
+      safeName: azurecommunicationsms
+      ServiceDirectory: communication/azure-communication-sms
 
