@@ -120,9 +120,9 @@ public class RestProxyTests {
             .build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
-
+    
         streamResponse.close();
-
+    
         // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/
@@ -258,12 +258,18 @@ public class RestProxyTests {
             String requestUri = request.getUri().toString();
             request.setRequestOptions(requestOptions);
             if (firstPageUri.equals(requestUri)) {
-                return createMockResponse(request, 200, BinaryData.fromString(
-                    "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}"),
+                return createMockResponse(request, 200,
+                    BinaryData.fromString(
+                        "{\"items\":[{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a"
+                            + ".b\":\"c.d\","
+                            + "\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}], \"nextLink\":\""
+                            + nextLinkUri + "\"}"),
                     nextLinkUri);
             } else if (nextLinkUri.equals(requestUri)) {
-                return createMockResponse(request, 200, BinaryData.fromString(
-                    "{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}"),
+                return createMockResponse(request, 200,
+                    BinaryData.fromString(
+                        "{\"items\":[{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a"
+                            + ".b\":\"c.d\",\"properties.bar\":\"barbar\"}}]"),
                     null);
             }
             return new MockHttpResponse(request, 404);

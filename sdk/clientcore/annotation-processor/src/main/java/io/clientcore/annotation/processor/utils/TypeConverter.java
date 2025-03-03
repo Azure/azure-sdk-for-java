@@ -128,4 +128,8 @@ public final class TypeConverter {
                 "Unknown class: " + className + ". Ensure it's fully qualified or in common packages.", e);
         }
     }
+
+    // Private constructor
+    private TypeConverter() {
+    }
 }
