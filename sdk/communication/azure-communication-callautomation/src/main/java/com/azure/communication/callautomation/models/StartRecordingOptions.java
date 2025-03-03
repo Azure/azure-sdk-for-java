@@ -3,10 +3,11 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.util.List;
-
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * The options for creating a call.
@@ -17,8 +18,6 @@ public final class StartRecordingOptions {
      * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
     private final CallLocator callLocator;
-
-    private final String callConnectionId;
 
     private String recordingStateCallbackUrl;
 
@@ -42,18 +41,8 @@ public final class StartRecordingOptions {
      * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
     public StartRecordingOptions(CallLocator callLocator) {
+        Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
         this.callLocator = callLocator;
-        this.callConnectionId = null;
-    }
-
-    /**
-    * Constructor
-    *
-    * @param callConnectionId the ID of the call connection.
-    */
-    public StartRecordingOptions(String callConnectionId) {
-        this.callConnectionId = callConnectionId;
-        this.callLocator = null;
     }
 
     /**
@@ -63,15 +52,6 @@ public final class StartRecordingOptions {
      */
     public CallLocator getCallLocator() {
         return this.callLocator;
-    }
-
-    /**
-    * Get callConnectionId for the call
-    *
-    * @return callConnectionId for the call
-    */
-    public String getCallConnectionId() {
-        return callConnectionId;
     }
 
     /**
