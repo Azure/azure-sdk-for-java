@@ -3,20 +3,20 @@ pr: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
-    # JRS - This will be removed as it is only used for testing. When set, it'll
-    # set the template pipeline test versions.
-    TestPipeline: true
     artifacts:
     - name: azure-sdk-template
       groupId: com.azure
       safeName: azuresdktemplate
+      skipPublishDocMs: true
       ServiceDirectory: template
     - name: azure-sdk-template-two
       groupId: com.azure
       safeName: azuresdktemplatetwo
+      skipPublishDocMs: true
       ServiceDirectory: template
     - name: azure-sdk-template-three
       groupId: com.azure
       safeName: azuresdktemplatethree
+      skipPublishDocMs: true
       ServiceDirectory: template
 
