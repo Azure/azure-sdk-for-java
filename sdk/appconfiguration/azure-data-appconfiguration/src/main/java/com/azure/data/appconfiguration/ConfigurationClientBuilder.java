@@ -43,6 +43,7 @@ import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
+import com.azure.data.appconfiguration.models.ConfigurationAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -143,6 +144,9 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     private RetryOptions retryOptions;
     private Configuration configuration;
     private ConfigurationServiceVersion version;
+
+    // Default to Azure Public Cloud
+    private ConfigurationAudience audience;
 
     /**
      * Constructs a new builder used to configure and build {@link ConfigurationClient ConfigurationClients} and
@@ -537,4 +541,36 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         this.version = version;
         return this;
     }
+
+    /**
+     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft EntraId. The audience is not
+     * considered when using a shared key.
+     *
+     * @param audience {@link ConfigurationAudience} of the service to be used when making requests.
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder audience(ConfigurationAudience audience) {
+        this.audience = audience;
+        return this;
+    }
+
+    private static final String AZ_CONFIG_US_GOV_HOST_NAME = "azconfig.azure.us";
+    private static final String AZ_CONFIG_CHINA_HOST_NAME = "azconfig.azure.cn";
+    private static final String APP_CONFIG_US_GOV_HOST_NAME = "appconfig.azure.us";
+    private static final String APP_CONFIG_CHINA_HOST_NAME = "appconfig.azure.cn";
+
+
+    public String getDefaultScope(String endpoint) {
+        if (audience == null || audience.toString().isEmpty()) {
+            if (endpoint.endsWith(AZ_CONFIG_US_GOV_HOST_NAME) || endpoint.endsWith(APP_CONFIG_US_GOV_HOST_NAME)) {
+                return ConfigurationAudience.AzureGovernment + "/.default";
+            } else if (endpoint.endsWith(AZ_CONFIG_CHINA_HOST_NAME) || endpoint.endsWith(APP_CONFIG_CHINA_HOST_NAME)) {
+                return ConfigurationAudience.AzureChina + "/.default";
+            } else {
+                return ConfigurationAudience.AzurePublicCloud + "/.default";
+            }
+        }
+        return audience + "/.default";
+    }
+
 }
