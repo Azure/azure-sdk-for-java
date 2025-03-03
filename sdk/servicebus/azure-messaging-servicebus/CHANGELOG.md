@@ -10,7 +10,17 @@
 
 * Fixed issue where OffsetDateTimeDescribedType would be translated to user's system time instead of UTC. ([42995](https://github.com/Azure/azure-sdk-for-java/pull/42995))
 
+## 7.17.9 (2025-02-25)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-core-amqp` from `2.9.12` to version `2.9.15`.
+- Upgraded `azure-xml` from `1.1.0` to version `1.2.0`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+
 
 ## 7.17.8 (2025-01-09)
 

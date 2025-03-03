@@ -19,8 +19,7 @@ import java.lang.reflect.Proxy;
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
  * <p>
- * RestProxy can create proxy implementations for interfaces with methods that return deserialized Java objects as well
- * as asynchronous Single objects that resolve to a deserialized Java object.
+ * RestProxy can create proxy implementations for interfaces with methods that return deserialized Java objects.
  */
 public final class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;
