@@ -3,6 +3,7 @@
 
 package com.azure.json.contract;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -32,6 +33,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -44,16 +46,24 @@ import static org.junit.jupiter.api.Assertions.fail;
  * written to be considered an acceptable implementation.
  * <p>
  * Each test will only create a single instance of {@link JsonReader} to simplify the usage of
- * {@link #getJsonReader(String)}.
+ * {@link #getJsonReader(String, JsonOptions)}.
  */
 public abstract class JsonReaderContractTests {
+    private static final String JSON_WITH_COMMENTS = "{// single line comment\n\"single-line\":\"comment\","
+        + "\n/*\nmulti-line comment\n*/\n\"multi-line\":\"comment\"}";
+
+    private JsonReader getJsonReader(String json) throws IOException {
+        return getJsonReader(json, new JsonOptions());
+    }
+
     /**
      * Creates an instance of {@link JsonReader} that will be used by a test.
      *
      * @param json The JSON to be read.
+     * @param options The {@link JsonOptions} to be used.
      * @return The {@link JsonReader} that a test will use.
      */
-    protected abstract JsonReader getJsonReader(String json) throws IOException;
+    protected abstract JsonReader getJsonReader(String json, JsonOptions options) throws IOException;
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
@@ -761,6 +771,26 @@ public abstract class JsonReaderContractTests {
 
             Arguments.of("Infinity", Double.POSITIVE_INFINITY), Arguments.of("+Infinity", Double.POSITIVE_INFINITY),
             Arguments.of("-Infinity", Double.NEGATIVE_INFINITY), Arguments.of("NaN", Double.NaN));
+    }
+
+    @Test
+    public void readJsonc() throws IOException {
+        try (JsonReader jsonReader = getJsonReader(JSON_WITH_COMMENTS, new JsonOptions().setJsoncSupported(true))) {
+            jsonReader.nextToken();
+            String outputJson = jsonReader.readChildren();
+            assertNotNull(outputJson);
+        }
+    }
+
+    @Test
+    public void readJsoncFails() {
+        assertThrows(IOException.class, () -> {
+            try (JsonReader jsonReader = getJsonReader(JSON_WITH_COMMENTS)) {
+                jsonReader.nextToken();
+                String outputJson = jsonReader.readChildren();
+                assertNotNull(outputJson);
+            }
+        });
     }
 
     private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken)

@@ -8,7 +8,6 @@ import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.google.gson.TypeAdapter;
-import com.google.gson.stream.MalformedJsonException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -54,7 +53,7 @@ public final class GsonJsonReader extends JsonReader {
 
     @SuppressWarnings("deprecation")
     private static com.google.gson.stream.JsonReader createGsonReader(Reader reader, JsonOptions options) {
-        com.google.gson.stream.JsonReader gsonReader = new com.google.gson.stream.JsonReader(reader);
+        com.google.gson.stream.JsonReader gsonReader = new CustomGsonReader(reader, options);
         gsonReader.setLenient(options == null || options.isNonNumericNumbersSupported() || options.isJsoncSupported());
 
         return gsonReader;
@@ -153,55 +152,6 @@ public final class GsonJsonReader extends JsonReader {
         consumed = false;
         value = null;
         return currentToken;
-    }
-
-    // Utility method that helps determine whether a special numeric is read in a generic way.
-    // The GSON JsonReader will interpret 'Infinity' and 'NaN' as an unquoted string value when lenient parsing is
-    // enabled. If 'readUntyped()' is called this will result in the wrong return value if
-    // JsonOptions.isNonNumericNumbersSupported() is true as it will see the JsonToken as a String and not a Number.
-    // To fix this, check if lenient parsing is enabled and if it is disable lenient parsing and attempt to peek. If
-    // this fails with a parsing issue about an unquoted string and that String value is one of 'Infinity', '+Infinity',
-    // '-Infinity', or 'NaN' then the value is a special numeric and should be returned as a Number.
-    @SuppressWarnings("deprecation")
-    private JsonToken tryPeek() throws IOException {
-        boolean isLenient = reader.isLenient();
-        if (!isLenient) {
-            // Lenient parsing isn't enabled, just peek.
-            return mapToken(reader.peek());
-        }
-
-        // Lenient parsing is enabled, disable it and attempt to peek.
-        reader.setLenient(false);
-        JsonToken token;
-        try {
-            // If peeking succeeds we know we didn't see a special case.
-            token = mapToken(reader.peek());
-        } catch (MalformedJsonException ignored) {
-            // If peeking fails, re-enable lenient parsing and check if the exception is due to an unquoted string.
-            reader.setLenient(true);
-            token = mapToken(reader.peek());
-            if (token == JsonToken.STRING) {
-                // If the token type is String, check if the temp is a special numeric.
-                String temp = reader.nextString();
-                consumed = true;
-
-                if ("Infinity".equals(temp) || "+Infinity".equals(temp)) {
-                    token = JsonToken.NUMBER;
-                    value = Double.POSITIVE_INFINITY;
-                } else if ("-Infinity".equals(temp)) {
-                    token = JsonToken.NUMBER;
-                    value = Double.NEGATIVE_INFINITY;
-                } else if ("NaN".equals(temp)) {
-                    token = JsonToken.NUMBER;
-                    value = Double.NaN;
-                } else {
-                    // The temp isn't a special numeric, return it as a String.
-                    value = temp;
-                }
-            }
-        }
-
-        return token;
     }
 
     @Override
