@@ -36,12 +36,6 @@ public abstract class CommunicationIdentifier {
     private String rawId;
 
     /**
-     * Creates a new instance of {@link CommunicationIdentifier}.
-     */
-    public CommunicationIdentifier() {
-    }
-
-    /**
      * When storing rawIds, use this function to restore the identifier that was encoded in the rawId.
      *
      * @param rawId raw id.
