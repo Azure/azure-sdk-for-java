@@ -17,19 +17,14 @@ public final class DataLakeRetentionPolicy {
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than
-     * this value will be deleted
+     * Indicates the number of days that metrics or logging or soft-deleted
+     * data should be retained. All data older than this value will be deleted
      */
     private Integer days;
 
     /**
-     * Creates a new instance of {@link DataLakeRetentionPolicy}.
-     */
-    public DataLakeRetentionPolicy() {
-    }
-
-    /**
-     * Get the enabled property: Indicates whether a retention policy is enabled for the storage service.
+     * Get the enabled property: Indicates whether a retention policy is
+     * enabled for the storage service.
      *
      * @return the enabled value.
      */
@@ -38,7 +33,8 @@ public final class DataLakeRetentionPolicy {
     }
 
     /**
-     * Set the enabled property: Indicates whether a retention policy is enabled for the storage service.
+     * Set the enabled property: Indicates whether a retention policy is
+     * enabled for the storage service.
      *
      * @param enabled the enabled value to set.
      * @return the DataLakeRetentionPolicy object itself.
@@ -49,8 +45,9 @@ public final class DataLakeRetentionPolicy {
     }
 
     /**
-     * Get the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
-     * retained. All data older than this value will be deleted.
+     * Get the days property: Indicates the number of days that metrics or
+     * logging or soft-deleted data should be retained. All data older than
+     * this value will be deleted.
      *
      * @return the days value.
      */
@@ -59,8 +56,9 @@ public final class DataLakeRetentionPolicy {
     }
 
     /**
-     * Set the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
-     * retained. All data older than this value will be deleted.
+     * Set the days property: Indicates the number of days that metrics or
+     * logging or soft-deleted data should be retained. All data older than
+     * this value will be deleted.
      *
      * @param days the days value to set.
      * @return the DataLakeRetentionPolicy object itself.
