@@ -4,15 +4,24 @@
 package io.clientcore.core.utils;
 
 import io.clientcore.core.implementation.GenericParameterizedType;
+import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonWriter;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -115,8 +124,9 @@ public class UnionTests {
         assertFalse(union.tryConsume(value -> fail("Should not consume Float"), Float.class));
     }
 
-    // Autoboxing tests
 
+
+    // Autoboxing tests
     @Test
     void createUnionWithMultipleTypesAutoboxing() {
         Union union = Union.ofTypes(String.class, int.class, double.class);
@@ -148,7 +158,6 @@ public class UnionTests {
         assertEquals(double.class, union.getCurrentType());
         assertEquals(DOUBLE_VALUE, union.getValue(double.class));
     }
-
     @Test
     void setValueWithInvalidTypeAutoboxing() {
         Union union = Union.ofTypes(String.class, int.class, double.class);
@@ -183,8 +192,9 @@ public class UnionTests {
         assertFalse(union.tryConsume(value -> fail("Should not consume Float"), Float.class));
     }
 
-    // Array types tests
 
+
+    // Array types tests
     @Test
     void createUnionWithArrayTypes() {
         Union union = Union.ofTypes(String[].class, int[].class, float[].class);
@@ -208,7 +218,6 @@ public class UnionTests {
         assertEquals(float[].class, union.getCurrentType());
         assertArrayEquals(FLOAT_ARRAY_VALUE, union.getValue(float[].class));
     }
-
     @Test
     void setValueWithInvalidArrayType() {
         Union union = Union.ofTypes(String[].class, int[].class, float[].class);
@@ -240,8 +249,9 @@ public class UnionTests {
         assertFalse(union.tryConsume(value -> fail("Should not consume Long"), long[].class));
     }
 
-    // Parameterized types tests
 
+
+    // Parameterized types tests
     @Test
     void createUnionWithParameterizedTypes() {
         Union union = Union.ofTypes(LIST_OF_STRING_TYPE, LIST_OF_INTEGER_TYPE, LIST_OF_DOUBLE_TYPE);
@@ -265,7 +275,6 @@ public class UnionTests {
         assertEquals(LIST_OF_DOUBLE_TYPE, union.getCurrentType());
         assertEquals(LIST_OF_DOUBLE_VALUE, union.getValue(LIST_OF_DOUBLE_TYPE));
     }
-
     @Test
     void setValueWithInvalidParameterizedType() {
         Union union = Union.ofTypes(LIST_OF_STRING_TYPE, LIST_OF_INTEGER_TYPE, LIST_OF_DOUBLE_TYPE);
@@ -302,13 +311,14 @@ public class UnionTests {
         assertFalse(union.tryConsume(value -> fail("Should not consume Set<String>"), SET_OF_STRING_TYPE));
     }
 
+
     // Additional tests
+
     @Test
     void createUnionWithNullTypes() {
         assertThrows(IllegalArgumentException.class, () -> Union.ofTypes((Type) null));
         assertThrows(IllegalArgumentException.class, () -> Union.ofTypes(String.class, null, int.class));
     }
-
     @Test
     void setAndGetValueWithNull() {
         Union union = Union.ofTypes(String.class, Integer.class, Double.class);
@@ -324,7 +334,6 @@ public class UnionTests {
         assertEquals(LIST_OF_STRING_TYPE, union.getCurrentType());
         assertEquals(emptyList, union.getValue(LIST_OF_STRING_TYPE));
     }
-
     @Test
     void setValueWithMixedTypeCollection() {
         Union union = Union.ofTypes(LIST_OF_STRING_TYPE);
@@ -432,5 +441,116 @@ public class UnionTests {
         assertNotNull(unionValue);
         assertEquals(nestedUnion, unionValue);
         assertEquals(STRING_VALUE, unionValue.getValue());
+    }
+
+
+    @MethodSource("getDeserializationTestData")
+    @ParameterizedTest
+    void primitiveDeserializationTest(String inputJson) throws Exception {
+        JsonReader jsonReader = JsonReader.fromString(inputJson);
+        Union union = Union.fromJson(jsonReader, int.class, boolean.class, String.class, double.class, float.class, long.class,
+            TypeUtil.createParameterizedType(List.class, String.class), TypeUtil.createParameterizedType(List.class, Boolean.class),
+            TypeUtil.createParameterizedType(List.class, Integer.class), TypeUtil.createParameterizedType(List.class, Long.class),
+            TypeUtil.createParameterizedType(List.class, Float.class), TypeUtil.createParameterizedType(List.class, Double.class),
+            TypeUtil.createParameterizedType(List.class, TypeUtil.createParameterizedType(List.class, Integer.class)));
+        System.out.println("Input: " + inputJson + "; output: " + (union.getValue() == null ? "null" : union.getValue().toString()));
+    }
+
+
+    @MethodSource("getModelDeserializationTestData")
+    @ParameterizedTest
+    void modelDeserializationTest(String inputJson) throws Exception {
+        JsonReader jsonReader = JsonReader.fromString(inputJson);
+        FooModel fooModel = FooModel.fromJson(jsonReader);
+        System.out.println("Input: " + inputJson + "; output: " + fooModel.getName() + " " + fooModel.getBarOrBaz().getValue());
+    }
+
+
+    @MethodSource("getModelSerializationTestData")
+    @ParameterizedTest
+    void modelSerializationTest(FooModel model) throws Exception {
+        ByteArrayOutputStream byteArraOS = new ByteArrayOutputStream();
+        JsonWriter jsonWriter = JsonWriter.toStream(byteArraOS);
+        JsonWriter updatedJsonWriter = model.toJson(jsonWriter);
+        updatedJsonWriter.close();
+        String json = byteArraOS.toString();
+        System.out.println("Json output: " + json);
+    }
+
+    public static Stream<Arguments> getModelSerializationTestData() {
+        Union bar = Union.ofTypes(BarModel.class, BazModel.class).setValue(new BarModel().setBarId("barId").setBarName("barName"));
+        Union baz = Union.ofTypes(BarModel.class, BazModel.class).setValue(new BazModel().setBazId("bazId").setBazName("bazName"));
+//        Union fizz = Union.ofTypes(BarModel.class, BazModel.class).setValue(new FizzModel().setFizzId("fizzId").setFizzName("fizzName"));
+
+        Union str = Union.ofTypes(String.class, Integer.class)
+            .setValue("hello world");
+        Union intValue = Union.ofTypes(String.class, Integer.class)
+            .setValue(42);
+
+        Union intList = Union.ofTypes(TypeUtil.createParameterizedType(List.class, String.class),
+            TypeUtil.createParameterizedType(List.class, Integer.class))
+            .setValue(Arrays.asList(1, 2, 3));
+
+        Union strList = Union.ofTypes(TypeUtil.createParameterizedType(List.class, String.class),
+            TypeUtil.createParameterizedType(List.class, Integer.class))
+            .setValue(Arrays.asList("hello", "world"));
+
+        Union bytes = Union.ofTypes(TypeUtil.createParameterizedType(List.class, String.class, byte[].class),
+            TypeUtil.createParameterizedType(List.class, Integer.class), byte[].class)
+            .setValue("hello".getBytes(StandardCharsets.UTF_8));
+
+        FooModel foo1 = new FooModel()
+            .setName("foo1")
+            .setBarOrBaz(bar)
+            .setStringOrInt(str)
+            .setCollectionTypes(intList);
+
+        FooModel foo2 = new FooModel()
+            .setName("foo2")
+            .setBarOrBaz(baz)
+            .setStringOrInt(intValue)
+            .setCollectionTypes(strList);
+
+        FooModel foo3 = new FooModel()
+            .setName("foo3")
+            .setBarOrBaz(baz)
+            .setStringOrInt(intValue)
+            .setCollectionTypes(bytes);
+
+
+        return Stream.of(
+            Arguments.of(foo1),
+            Arguments.of(foo2),
+            Arguments.of(foo3)
+//            Arguments.of(new FooModel().setName("fooFizz").setBarOrBaz(fizz))
+        );
+    }
+
+    public static Stream<Arguments> getDeserializationTestData() {
+        return Stream.of(
+            Arguments.of("5"),          // Integer
+            Arguments.of("2.0"),       // Double
+            Arguments.of("true"),       // Boolean true
+            Arguments.of("false"),      // Boolean false
+            Arguments.of("\"string\""), // String
+            Arguments.of("null"),       // Null
+            Arguments.of("[]"),         // Empty array
+            Arguments.of("[1, 2, 3]"),  // Array of integers
+            Arguments.of("[1.0, 2.0, 3.0]"), // Array of doubles
+            Arguments.of("[true, false]"), // Array of booleans
+            Arguments.of("[\"string1\", \"string2\"]"), // Array of strings
+            Arguments.of("[[1, 2], [3, 4]]"), // Array of arrays
+            Arguments.of("[[1, 2], [3.0, 4.0]]"), // Array of mixed arrays
+            Arguments.of("[[1, 2], [true, false]]"), // Array of mixed arrays
+            Arguments.of("[[1, 2], [\"string1\", \"string2\"]]"), // Array of mixed arrays
+            Arguments.of("[[1, 2], [null, null]]") // Array of mixed arrays
+        );
+    }
+
+    public static Stream<Arguments> getModelDeserializationTestData() {
+        return Stream.of(
+            Arguments.of("{\"name\": \"fooId1\", \"barOrBaz\": {\"barId\": \"barId\", \"barName\": \"barName\"}}"),
+            Arguments.of("{\"name\": \"fooId2\", \"barOrBaz\": {\"bazId\": \"bazId\", \"bazName\": \"bazName\"}}")
+        );
     }
 }
