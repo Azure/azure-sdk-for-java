@@ -102,6 +102,7 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
         return new ConfigurationClientBuilder().credential(credential)
             .endpoint(Configuration.getGlobalConfiguration().get("MONITOR_RESOURCE_MANAGER_URL"))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .credential(credential)
             .buildClient();
     }
 
