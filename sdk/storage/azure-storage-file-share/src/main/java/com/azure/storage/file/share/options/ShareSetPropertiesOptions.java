@@ -13,6 +13,7 @@ import com.azure.storage.file.share.models.ShareRootSquash;
  */
 @Fluent
 public class ShareSetPropertiesOptions {
+
     private Integer quotaInGb;
     private ShareAccessTier accessTier;
     private ShareRootSquash rootSquash;
@@ -25,14 +26,6 @@ public class ShareSetPropertiesOptions {
     private Long provisionedMaxBandwidthMibps;
 
     /**
-     * Creates a new instance of {@link ShareSetPropertiesOptions}.
-     */
-    public ShareSetPropertiesOptions() {
-    }
-
-    /**
-     * Gets the {@link ShareAccessTier}.
-     *
      * @return {@link ShareAccessTier}
      */
     public ShareAccessTier getAccessTier() {
@@ -40,8 +33,6 @@ public class ShareSetPropertiesOptions {
     }
 
     /**
-     * Sets the {@link ShareAccessTier}.
-     *
      * @param accessTier {@link ShareAccessTier}.
      * @return The updated options.
      */
@@ -51,8 +42,6 @@ public class ShareSetPropertiesOptions {
     }
 
     /**
-     * Gets the size in GB to limit the share's growth.
-     *
      * @return Size in GB to limit the share's growth.
      */
     public Integer getQuotaInGb() {
@@ -60,8 +49,6 @@ public class ShareSetPropertiesOptions {
     }
 
     /**
-     * Sets the size in GB to limit the share's growth.
-     *
      * @param quotaInGb Size in GB to limit the share's growth.
      * @return The updated options.
      */
@@ -71,8 +58,6 @@ public class ShareSetPropertiesOptions {
     }
 
     /**
-     * Gets the root squash to set for the share. Only valid for NFS.
-     *
      * @return The root squash to set for the share. Only valid for NFS.
      */
     public ShareRootSquash getRootSquash() {
@@ -80,8 +65,6 @@ public class ShareSetPropertiesOptions {
     }
 
     /**
-     * Sets the root squash to set for the share. Only valid for NFS.
-     *
      * @param rootSquash The root squash to set for the share. Only valid for NFS.
      * @return The updated options.
      */
@@ -91,8 +74,6 @@ public class ShareSetPropertiesOptions {
     }
 
     /**
-     * Gets the {@link ShareRequestConditions}.
-     *
      * @return {@link ShareRequestConditions}.
      */
     public ShareRequestConditions getRequestConditions() {
@@ -100,8 +81,6 @@ public class ShareSetPropertiesOptions {
     }
 
     /**
-     * Sets the {@link ShareRequestConditions}.
-     *
      * @param requestConditions {@link ShareRequestConditions}.
      * @return The updated options.
      */
@@ -113,8 +92,7 @@ public class ShareSetPropertiesOptions {
     /**
      * Get the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
      * Optional. Supported in version 2023-08-03 and above. Only applicable for premium file storage accounts.
-     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS
-     * is enabled.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
      * If not specified, the default is true.
      *
      * @return the enableSnapshotVirtualDirectoryAccess value.
@@ -126,8 +104,7 @@ public class ShareSetPropertiesOptions {
     /**
      * Set the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
      * Optional. Supported in version 2023-08-03 and above. Only applicable for premium file storage accounts.
-     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS
-     * is enabled.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
      * If not specified, the default is true.
      *
      * @param snapshotVirtualDirectoryAccessEnabled the enableSnapshotVirtualDirectoryAccess value to set.

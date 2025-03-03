@@ -34,7 +34,6 @@ public final class ShareFileRenameOptions {
      * Creates a {@code ShareFileRenameOptions} object.
      *
      * @param destinationPath Relative path from the share to rename the file to.
-     * @throws NullPointerException If {@code destinationPath} is null.
      */
     public ShareFileRenameOptions(String destinationPath) {
         StorageImplUtils.assertNotNull("destinationPath", destinationPath);
@@ -42,8 +41,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Gets the path to which the file should be renamed.
-     *
      * @return The path to which the file should be renamed.
      */
     public String getDestinationPath() {
@@ -51,9 +48,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Gets a boolean value which, if the destination file already exists, determines whether this request will
-     * overwrite the file or not.
-     *
      * @return A boolean value which, if the destination file already exists, determines whether this
      * request will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file.
      * If not provided or if false and the destination file does exist, the request will not overwrite the destination
@@ -64,9 +58,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Sets a boolean value which, if the destination file already exists, determines whether this request will
-     * overwrite the file or not.
-     *
      * @param replaceIfExists A boolean value which, if the destination file already exists, determines whether this
      * request will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file.
      * If not provided or if false and the destination file does exist, the request will not overwrite the destination
@@ -79,9 +70,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Gets a boolean value that specifies whether the ReadOnly attribute on a preexisting destination file should be
-     * respected.
-     *
      * @return A boolean value that specifies whether the ReadOnly attribute on a preexisting destination file should be
      * respected. If true, the rename will succeed, otherwise, a previous file at the destination with the ReadOnly
      * attribute set will cause the rename to fail.
@@ -91,9 +79,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Sets a boolean value that specifies whether the ReadOnly attribute on a preexisting destination file should be
-     * respected.
-     *
      * @param ignoreReadOnly A boolean value that specifies whether the ReadOnly attribute on a preexisting destination
      * file should be respected. If true, the rename will succeed, otherwise, a previous file at the destination with
      * the ReadOnly attribute set will cause the rename to fail.
@@ -105,8 +90,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Gets the source request conditions. This parameter is only applicable if the source is a file.
-     *
      * @return Source request conditions. This parameter is only applicable if the source is a file.
      */
     public ShareRequestConditions getSourceRequestConditions() {
@@ -114,8 +97,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Sets the source request conditions. This parameter is only applicable if the source is a file.
-     *
      * @param sourceRequestConditions Source request conditions. This parameter is only applicable if the source is a
      * file.
      * @return The updated options.
@@ -126,8 +107,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Gets the destination request conditions.
-     *
      * @return The destination request conditions.
      */
     public ShareRequestConditions getDestinationRequestConditions() {
@@ -135,8 +114,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Sets the destination request conditions.
-     *
      * @param destinationRequestConditions The destination request conditions.
      * @return The updated options.
      */
@@ -146,9 +123,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Gets the optional file permission to set on the destination file or directory. The value in SmbProperties will be
-     * ignored.
-     *
      * @return Optional file permission to set on the destination file or directory. The value in SmbProperties will be
      * ignored.
      */
@@ -157,9 +131,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Sets the optional file permission to set on the destination file or directory. The value in SmbProperties will be
-     * ignored.
-     *
      * @param filePermission Optional file permission to set on the destination file or directory. The value in
      * SmbProperties will be ignored.
      * @return The updated options.
@@ -170,8 +141,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Gets the optional SMB properties to set on the destination file or directory.
-     *
      * @return Optional SMB properties to set on the destination file or directory. The only properties that are
      * considered are file attributes, file creation time, file last write time, and file permission key. The rest are
      * ignored.
@@ -181,8 +150,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Sets the optional SMB properties to set on the destination file or directory.
-     *
      * @param smbProperties Optional SMB properties to set on the destination file or directory. The only properties
      * that are  considered are file attributes, file creation time, file last write time, and file permission key. The
      * rest are ignored.
@@ -194,8 +161,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Gets the metadata to associate with the renamed file.
-     *
      * @return The metadata to associate with the renamed file.
      */
     public Map<String, String> getMetadata() {
@@ -203,8 +168,6 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Sets the metadata to associate with the renamed file.
-     *
      * @param metadata The metadata to associate with the renamed file.
      * @return The updated options.
      */

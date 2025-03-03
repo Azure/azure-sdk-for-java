@@ -14,7 +14,7 @@ import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import java.time.OffsetDateTime;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -328,7 +328,7 @@ public final class SharesGetPropertiesHeaders {
         if (xMsShareProvisionedEgressMbps != null) {
             this.xMsShareProvisionedEgressMbps = Integer.parseInt(xMsShareProvisionedEgressMbps);
         }
-        Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
             String headerName = header.getName();

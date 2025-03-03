@@ -16,14 +16,6 @@ public final class ShareListFilesAndDirectoriesOptions {
     private Boolean includeExtendedInfo;
 
     /**
-     * Creates a new instance of {@link ShareListFilesAndDirectoriesOptions}.
-     */
-    public ShareListFilesAndDirectoriesOptions() {
-    }
-
-    /**
-     * Gets the prefix for a listing operation.
-     *
      * @return prefix for this listing operation.
      */
     public String getPrefix() {
@@ -42,8 +34,6 @@ public final class ShareListFilesAndDirectoriesOptions {
     }
 
     /**
-     * Gets the max results per page for a listing operation.
-     *
      * @return max results per page for this listing operation.
      */
     public Integer getMaxResultsPerPage() {
@@ -64,7 +54,7 @@ public final class ShareListFilesAndDirectoriesOptions {
     /**
      * Note that setting timestamps, etag, attributes, or permission key will also set this option as true. Attempting
      * to set it back to false while any of these options are true will be unsuccessful.
-     * <p>
+     *
      * Including extended info in a listing operation can result in a more expensive operation, but will present
      * more accurate information on the listing item.
      *
@@ -77,9 +67,9 @@ public final class ShareListFilesAndDirectoriesOptions {
     /**
      * Note that setting timestamps, etag, attributes, or permission key will also set this option as true. Attempting
      * to set it back to false will be unsuccessful.
-     * <p>
+     *
      * Sets the prefix for a listing operation.
-     * <p>
+     *
      * Including extended info in a listing operation can result in a more expensive operation, but will present
      * more accurate information on the listing item.
      *
@@ -93,8 +83,6 @@ public final class ShareListFilesAndDirectoriesOptions {
     }
 
     /**
-     * Gets whether to include timestamps on a listing operation.
-     *
      * @return whether to include timestamps on this listing operation.
      */
     public boolean includeTimestamps() {
@@ -102,8 +90,6 @@ public final class ShareListFilesAndDirectoriesOptions {
     }
 
     /**
-     * Sets whether to include timestamps on a listing operation.
-     *
      * @param includeTimestamps whether to include timestamps on this listing operation.
      * @return updated options
      */
@@ -113,8 +99,6 @@ public final class ShareListFilesAndDirectoriesOptions {
     }
 
     /**
-     * Gets whether to include the etag on a listing operation.
-     *
      * @return whether to include the etag on this listing operation.
      */
     public boolean includeETag() {
@@ -122,8 +106,6 @@ public final class ShareListFilesAndDirectoriesOptions {
     }
 
     /**
-     * Sets whether to include the etag on a listing operation.
-     *
      * @param includeETag whether to include the etag on this listing operation.
      * @return updated options
      */
@@ -133,8 +115,6 @@ public final class ShareListFilesAndDirectoriesOptions {
     }
 
     /**
-     * Gets whether to include file attributes on a listing operation.
-     *
      * @return whether to include file attributes on this listing operation.
      */
     public boolean includeAttributes() {
@@ -142,8 +122,6 @@ public final class ShareListFilesAndDirectoriesOptions {
     }
 
     /**
-     * Sets whether to include file attributes on a listing operation.
-     *
      * @param includeAttributes whether to include file attributes on this listing operation.
      * @return updated options
      */
@@ -153,8 +131,6 @@ public final class ShareListFilesAndDirectoriesOptions {
     }
 
     /**
-     * Gets whether to include the permission key on a listing operation.
-     *
      * @return whether to include the permission key on this listing operation.
      */
     public boolean includePermissionKey() {
@@ -162,8 +138,6 @@ public final class ShareListFilesAndDirectoriesOptions {
     }
 
     /**
-     * Sets whether to include the permission key on a listing operation.
-     *
      * @param includePermissionKey whether to include the permission key on this listing operation.
      * @return updated options
      */
