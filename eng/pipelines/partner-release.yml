@@ -98,7 +98,7 @@ extends:
           displayName: "Publish to Maven Central via ESRP"
           condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
           timeoutInMinutes: 60
-          environment: none # this is specific
+          environment: none # this is satisfy the 1ES requirement for pipelines that shouldn't need the approval step
           dependsOn: Signing
 
           templateContext:
