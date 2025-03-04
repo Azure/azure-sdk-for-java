@@ -17,6 +17,9 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -131,6 +134,53 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
                 .expectNext(true)  // Expect 'true' instead of failing
                 .verifyComplete();
         }
+    }
+
+    @Test
+    public void testExtractTenantIdFromUri() {
+        StorageBearerTokenChallengeAuthorizationPolicy policy
+            = new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "https://storage.azure.com/.default");
+
+        String uri = "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/authorize";
+        String expectedTenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47";
+
+        String actualTenantId = policy.extractTenantIdFromUri(uri);
+
+        assertEquals(expectedTenantId, actualTenantId);
+    }
+
+    @Test
+    public void testExtractTenantIdFromUriInvalidUri() {
+        StorageBearerTokenChallengeAuthorizationPolicy policy
+            = new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "https://storage.azure.com/.default");
+
+        String invalidUri = "https://login.microsoftonline.com/";
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            policy.extractTenantIdFromUri(invalidUri);
+        });
+
+        String expectedMessage = "Invalid authorization URI: tenantId not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testExtractTenantIdFromUriMalformedUri() {
+        StorageBearerTokenChallengeAuthorizationPolicy policy
+            = new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "https://storage.azure.com/.default");
+
+        String malformedUri = "ht!tp://invalid-uri";
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            policy.extractTenantIdFromUri(malformedUri);
+        });
+
+        String expectedMessage = "Invalid authorization URI";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 }

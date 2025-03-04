@@ -92,7 +92,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         return Mono.just(false);
     }
 
-    private String extractTenantIdFromUri(String uri) {
+    String extractTenantIdFromUri(String uri) {
         try {
             String[] segments = new URI(uri).getPath().split("/");
             if (segments.length > 1) {
