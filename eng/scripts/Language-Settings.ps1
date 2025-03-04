@@ -14,14 +14,7 @@ $PackageRepositoryUri = "https://repo1.maven.org/maven2"
 # then it's called instead of Get-PkgPropsForEntireService.
 function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
 
-  $SdkTypeCaps = $Env:SDKTYPE
-  if ($SdkTypeCaps) {
-    Write-Host "SDKTYPE env var was set to '$SdkTypeCaps'"
-  } else {
-    Write-Host "SDKTYPE env var was not set"
-  }
-
-  $SdkType = $Env:SdkType
+  $SdkType = $Env:SDKTYPE
   if ($SdkType) {
     Write-Host "SdkType env var was set to '$SdkType'"
   } else {
