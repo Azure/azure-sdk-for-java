@@ -31,7 +31,7 @@ public interface Instrumentation {
      * <p><strong>This method is intended to be used by client libraries. Application developers
      * should use OpenTelemetry API directly</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.instrumentation.createtracer -->
+     * <!-- src_embed io.clientcore.core.instrumentation.gettracer -->
      * <pre>
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
@@ -44,7 +44,7 @@ public interface Instrumentation {
      * Tracer tracer = instrumentation.getTracer&#40;&#41;;
      *
      * </pre>
-     * <!-- end io.clientcore.core.instrumentation.createtracer -->
+     * <!-- end io.clientcore.core.instrumentation.gettracer -->
      *
      * @return The tracer.
      */
@@ -58,7 +58,7 @@ public interface Instrumentation {
      * <p><strong>This method is intended to be used by client libraries. Application developers
      * should use OpenTelemetry API directly</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.instrumentation.createmeter -->
+     * <!-- src_embed io.clientcore.core.instrumentation.getmeter -->
      * <pre>
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
@@ -67,10 +67,10 @@ public interface Instrumentation {
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
-     * instrumentation.getMeter&#40;&#41;;
+     * Meter meter = instrumentation.getMeter&#40;&#41;;
      *
      * </pre>
-     * <!-- end io.clientcore.core.instrumentation.createmeter -->
+     * <!-- end io.clientcore.core.instrumentation.getmeter -->
      *
      * @return The meter.
      */

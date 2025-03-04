@@ -18,8 +18,6 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 
-import java.net.URI;
-
 /**
  * Application developers are expected to configure OpenTelemetry
  * to leverage instrumentation code in client libraries.
@@ -181,12 +179,13 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClient {
-        private final static String LIBRARY_NAME = "contoso.sample";
+        private static final String LIBRARY_NAME = "contoso.sample";
         private final Instrumentation instrumentation;
         private final HttpPipeline httpPipeline;
-        private final String serviceEndpoint = "https://example.com";
+        private final String serviceEndpoint;
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
+            serviceEndpoint = "https://contoso.com";
             LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions(LIBRARY_NAME)
                 .setEndpoint(serviceEndpoint);
             this.httpPipeline = httpPipeline;

@@ -406,24 +406,24 @@ public class InstrumentationTests {
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(otel);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null);
         assertTrue(instrumentation.shouldInstrument(CLIENT, null));
-
+    
         Tracer tracer = instrumentation.getTracer();
         Span span = tracer.spanBuilder("test", CLIENT, null).startSpan();
-
+    
         assertFalse(instrumentation.shouldInstrument(CLIENT, span.getInstrumentationContext()));
         assertTrue(instrumentation.shouldInstrument(INTERNAL, span.getInstrumentationContext()));
         assertTrue(instrumentation.shouldInstrument(CONSUMER, span.getInstrumentationContext()));
         assertTrue(instrumentation.shouldInstrument(PRODUCER, span.getInstrumentationContext()));
         assertTrue(instrumentation.shouldInstrument(SERVER, span.getInstrumentationContext()));
     }
-
+    
     @Test
     public void testSuppressionTracingAndMetricsDisabled() {
         OpenTelemetry otel = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
-
+    
         InstrumentationOptions options
             = new InstrumentationOptions().setTracingEnabled(false).setMetricsEnabled(false).setTelemetryProvider(otel);
-
+    
         assertFalse(Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null).shouldInstrument(CLIENT, null));
     }*/
 }

@@ -59,8 +59,7 @@ public class SuppressionTests {
 
     private InstrumentationOptions otelOptions;
     private Tracer tracer;
-    private final LibraryInstrumentationOptions libOptions
-        = new LibraryInstrumentationOptions("test-library");
+    private final LibraryInstrumentationOptions libOptions = new LibraryInstrumentationOptions("test-library");
 
     @BeforeEach
     public void setUp() {
@@ -115,8 +114,7 @@ public class SuppressionTests {
             = new HttpPipelineBuilder().httpClient(request -> new MockHttpResponse(request, 200)).build();
 
         LibraryInstrumentationOptions libraryInstrumentationOptions
-            = new LibraryInstrumentationOptions("test-library")
-            .setEndpoint("https://localhost");
+            = new LibraryInstrumentationOptions("test-library").setEndpoint("https://localhost");
 
         SampleClientCallInstrumentation client
             = new SampleClientCallInstrumentation(pipeline, otelOptions, libraryInstrumentationOptions);
@@ -157,9 +155,7 @@ public class SuppressionTests {
     @Test
     public void testDisabledSuppression() {
         Tracer outerTracer = tracer;
-        Tracer innerTracer = Instrumentation
-            .create(otelOptions, libOptions.disableSpanSuppression(true))
-            .getTracer();
+        Tracer innerTracer = Instrumentation.create(otelOptions, libOptions.disableSpanSuppression(true)).getTracer();
 
         RequestOptions options = new RequestOptions();
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
@@ -365,7 +361,7 @@ public class SuppressionTests {
     }
 
     static class SampleClientTracing {
-        private final static String LIBRARY_NAME = "test-library";
+        private static final String LIBRARY_NAME = "test-library";
         private final HttpPipeline pipeline;
         private final Tracer tracer;
 
@@ -415,17 +411,18 @@ public class SuppressionTests {
         private final HttpPipeline pipeline;
         private final Instrumentation instrumentation;
 
-        SampleClientCallInstrumentation(HttpPipeline pipeline, InstrumentationOptions options, LibraryInstrumentationOptions libraryInstrumentationOptions) {
+        SampleClientCallInstrumentation(HttpPipeline pipeline, InstrumentationOptions options,
+            LibraryInstrumentationOptions libraryInstrumentationOptions) {
             this.pipeline = pipeline;
             this.instrumentation = Instrumentation.create(options, libraryInstrumentationOptions);
         }
 
         @SuppressWarnings("try")
         public Response<?> protocolMethod(RequestOptions options) {
-            return instrumentation.instrumentWithResponse("protocol", options, updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+            return instrumentation.instrumentWithResponse("protocol", options,
+                updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
-                    .setRequestOptions(updatedOptions))
-                );
+                    .setRequestOptions(updatedOptions)));
         }
 
         @SuppressWarnings("try")

@@ -23,6 +23,7 @@ import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,7 +41,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
     public void getTracer() {
 
-        // BEGIN: io.clientcore.core.instrumentation.createtracer
+        // BEGIN: io.clientcore.core.instrumentation.gettracer
 
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
@@ -51,11 +52,11 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         Tracer tracer = instrumentation.getTracer();
 
-        // END: io.clientcore.core.instrumentation.createtracer
+        // END: io.clientcore.core.instrumentation.gettracer
     }
 
     public void getMeter() {
-        // BEGIN: io.clientcore.core.instrumentation.createmeter
+        // BEGIN: io.clientcore.core.instrumentation.getmeter
 
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
@@ -63,9 +64,9 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
-        instrumentation.getMeter();
+        Meter meter = instrumentation.getMeter();
 
-        // END: io.clientcore.core.instrumentation.createmeter
+        // END: io.clientcore.core.instrumentation.getmeter
     }
 
     public void histogram() {
@@ -187,7 +188,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      * This example shows minimal distributed tracing instrumentation.
      */
     @SuppressWarnings("try")
-    public void traceCall() {
+    public void traceCall() throws IOException {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
@@ -212,7 +213,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         }
 
         try (TracingScope scope = span.makeCurrent()) {
-            clientCall(requestOptions);
+            Response<?> response = clientCall(requestOptions);
+            response.close();
         } catch (Throwable t) {
             // make sure to report any exceptions including unchecked ones.
             span.end(getCause(t));
@@ -280,7 +282,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      * This example shows full distributed tracing instrumentation that adds attributes.
      */
     @SuppressWarnings("try")
-    public void traceWithAttributes() {
+    public void traceWithAttributes() throws IOException {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
@@ -304,7 +306,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
                 sendSpan.setAttribute("messaging.message.id", "{message-id}");
             }
 
-            clientCall(requestOptions);
+            Response<?> response = clientCall(requestOptions);
+            response.close();
         } catch (Throwable t) {
             sendSpan.end(t);
             throw t;

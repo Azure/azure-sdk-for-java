@@ -59,19 +59,19 @@ public class TracingShimBenchmarks {
             .setTracerProvider(SdkTracerProvider.builder().addSpanProcessor(new NoopProcessor()).build())
             .build();
 
-        libraryInstrumentationOptions =  new LibraryInstrumentationOptions("test")
-            .setLibraryVersion("https://localhost:8080");
+        libraryInstrumentationOptions
+            = new LibraryInstrumentationOptions("test").setLibraryVersion("https://localhost:8080");
 
         otelTracer = openTelemetry.getTracer("test");
         otelTracerDisabled = TracerProvider.noop().get("test");
 
-        shimTracer
-            = Instrumentation
-                .create(new InstrumentationOptions().setTelemetryProvider(openTelemetry), libraryInstrumentationOptions)
-                .getTracer();
+        shimTracer = Instrumentation
+            .create(new InstrumentationOptions().setTelemetryProvider(openTelemetry), libraryInstrumentationOptions)
+            .getTracer();
         shimTracerDisabled
             = Instrumentation
-                .create(new InstrumentationOptions().setTelemetryProvider(OpenTelemetry.noop()), libraryInstrumentationOptions)
+                .create(new InstrumentationOptions().setTelemetryProvider(OpenTelemetry.noop()),
+                    libraryInstrumentationOptions)
                 .getTracer();
     }
 
