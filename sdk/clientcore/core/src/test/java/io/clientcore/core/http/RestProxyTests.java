@@ -34,7 +34,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
@@ -101,7 +100,7 @@ public class RestProxyTests {
     }
 
     @Test
-    public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() throws IOException {
+    public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
@@ -222,7 +221,7 @@ public class RestProxyTests {
 
             return new MockHttpResponse(request, success ? 200 : 400) {
                 @Override
-                public void close() throws IOException {
+                public void close() {
                     closeCalledOnResponse = true;
 
                     super.close();
@@ -236,7 +235,7 @@ public class RestProxyTests {
     }
 
     @Test
-    public void doesNotChangeEncodedPath() throws IOException {
+    public void doesNotChangeEncodedPath() {
         String nextLinkUri
             = "https://management.somecloud.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient((request) -> {

@@ -8,7 +8,6 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.io.IOException;
 import java.util.function.Function;
 
 /**
@@ -165,7 +164,7 @@ public class HttpResponse<T> implements Response<T> {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         BinaryData body = getBody();
         if (body != null) {
             body.close();

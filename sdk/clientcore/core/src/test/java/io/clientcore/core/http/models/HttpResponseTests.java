@@ -42,7 +42,7 @@ public class HttpResponseTests {
     }
 
     @Test
-    public void constructorWithNullValue() throws IOException {
+    public void constructorWithNullValue() {
         try (HttpResponse<?> response = new HttpResponse<>(HTTP_REQUEST, STATUS_CODE, HEADERS, null)) {
             assertEquals(HTTP_REQUEST, response.getRequest());
             assertEquals(STATUS_CODE, response.getStatusCode());
@@ -54,7 +54,7 @@ public class HttpResponseTests {
     }
 
     @Test
-    public void constructorWithNullValueAndBodySet() throws IOException {
+    public void constructorWithNullValueAndBodySet() {
         try (HttpResponse<?> response = new HttpResponse<>(HTTP_REQUEST, STATUS_CODE, HEADERS, null)) {
             assertEquals(HTTP_REQUEST, response.getRequest());
             assertEquals(STATUS_CODE, response.getStatusCode());
@@ -69,7 +69,7 @@ public class HttpResponseTests {
     }
 
     @Test
-    public void constructorWithNullValueBodySetAndBodyDeserializer() throws IOException {
+    public void constructorWithNullValueBodySetAndBodyDeserializer() {
         try (HttpResponse<?> response = new HttpResponse<>(HTTP_REQUEST, STATUS_CODE, HEADERS, null)) {
             assertEquals(HTTP_REQUEST, response.getRequest());
             assertEquals(STATUS_CODE, response.getStatusCode());
@@ -92,7 +92,7 @@ public class HttpResponseTests {
     }
 
     @Test
-    public void constructorWithValueDoesNotDeserializeBody() throws IOException {
+    public void constructorWithValueDoesNotDeserializeBody() {
         try (HttpResponse<?> response = new HttpResponse<>(HTTP_REQUEST, STATUS_CODE, HEADERS, VALUE)) {
             assertEquals(HTTP_REQUEST, response.getRequest());
             assertEquals(STATUS_CODE, response.getStatusCode());

@@ -350,11 +350,7 @@ public class RestProxyImpl {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-                }
+                response.close();
 
                 return createResponseIfNecessary(response, entityType, null);
             } else {
@@ -461,11 +457,7 @@ public class RestProxyImpl {
         final Object result;
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
-            try {
-                expectedResponse.close();
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
+            expectedResponse.close();
 
             result = null;
         } else {

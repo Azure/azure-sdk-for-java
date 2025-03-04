@@ -8,7 +8,6 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,8 +48,6 @@ public class PagedResponseTests {
                 Assertions.assertEquals(firstLink, pagedResponse.getFirstLink());
                 Assertions.assertEquals(lastLink, pagedResponse.getLastLink());
             }
-        } catch (IOException e) {
-            Assertions.fail();
         }
     }
 }

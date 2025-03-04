@@ -103,7 +103,7 @@ public final class SerializableBinaryData extends BinaryData {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         // no-op
     }
 }

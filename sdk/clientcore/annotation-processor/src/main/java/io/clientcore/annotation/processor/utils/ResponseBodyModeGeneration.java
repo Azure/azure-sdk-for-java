@@ -15,8 +15,6 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.models.binarydata.BinaryData;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 
 import static io.clientcore.annotation.processor.templating.JavaParserTemplateProcessor.isPrimitiveOrWrapper;
 
@@ -121,11 +119,7 @@ public final class ResponseBodyModeGeneration {
     }
 
     private static void closeResponse(BlockStmt body) {
-        body.tryAddImportToParentCompilationUnit(IOException.class);
-        body.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
-
-        body.addStatement(StaticJavaParser.parseStatement("try { response.close(); }"
-            + "catch (IOException e) { throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }"));
+        body.addStatement(StaticJavaParser.parseStatement("response.close();"));
     }
 
     /**
