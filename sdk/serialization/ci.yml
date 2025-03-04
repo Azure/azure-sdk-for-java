@@ -60,6 +60,7 @@ extends:
       - Name: version_overrides_tests
         Path: sdk/serialization/version-overrides-matrix.json
         Selection: all
+        PRBatching: false
         GenerateVMJobs: true
 
     LiveTestStages:
