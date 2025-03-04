@@ -73,6 +73,8 @@ public final class EventHubsTracer {
     }
 
     public Context startSpan(OperationName operationName, StartSpanOptions startOptions, Context context) {
+        System.out.println("EventHubsTracer.startSpan");
+        System.out.println("operationName = " + operationName + ", startOptions = " + startOptions + ", context = " + context);
         return isEnabled() ? tracer.start(getSpanName(operationName), startOptions, context) : context;
     }
 

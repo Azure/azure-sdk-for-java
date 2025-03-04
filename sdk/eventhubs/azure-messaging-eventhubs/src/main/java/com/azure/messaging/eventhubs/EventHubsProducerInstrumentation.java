@@ -60,7 +60,9 @@ class EventHubsProducerInstrumentation {
     }
 
     private Context startPublishSpanWithLinks(EventDataBatch batch) {
+        System.out.println("EventHubsProducerInstrumentation.startPublishSpanWithLinks");
         if (!tracer.isEnabled()) {
+            System.out.println("!tracer.isEnabled()");
             return Context.NONE;
         }
 

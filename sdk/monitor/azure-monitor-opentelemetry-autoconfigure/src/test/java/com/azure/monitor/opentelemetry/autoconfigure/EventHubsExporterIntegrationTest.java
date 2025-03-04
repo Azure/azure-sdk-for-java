@@ -65,11 +65,14 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
                     if (remoteDependencyName.contains(spanName)) {
                         exporterCountDown.countDown();
                         LOGGER.info("Count down " + spanName);
+                        System.out.println("Count down " + spanName);
                     } else if (remoteDependencyName.contains("EventHubs.send")) {
                         exporterCountDown.countDown();
                         LOGGER.info("Count down EventHubs.send");
+                        System.out.println("Count down EventHubs.send");
                     } else {
                         LOGGER.info("remoteDependencyName = " + remoteDependencyName);
+                        System.out.println("remoteDependencyName = " + remoteDependencyName);
                     }
                 }
             });
