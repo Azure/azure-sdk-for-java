@@ -243,7 +243,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             if (this.canUseMultipleWriteLocations) {
                 UnmodifiableList<RegionalRoutingContext> endpoints =
                     this.isReadRequest ?
-                        this.globalEndpointManager.getApplicableReadEndpoints(request) : this.globalEndpointManager.getApplicableWriteEndpoints(request);
+                        this.globalEndpointManager.getApplicableReadRegionalRoutingContexts(request) : this.globalEndpointManager.getApplicableWriteRegionalRoutingContexts(request);
 
                 if (this.sessionTokenRetryCount >= endpoints.size()) {
                     // When use multiple write locations is true and the request has been tried

@@ -165,7 +165,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        if (this.globalEndpointManager.getApplicableReadEndpoints(Collections.emptyList()).size() <= 1) {
+        if (this.globalEndpointManager.getApplicableReadRegionalRoutingContexts(Collections.emptyList()).size() <= 1) {
             return false;
         }
 

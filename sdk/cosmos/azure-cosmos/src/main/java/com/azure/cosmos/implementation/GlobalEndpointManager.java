@@ -98,24 +98,24 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getWriteEndpoints();
     }
 
-    public UnmodifiableList<RegionalRoutingContext> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableReadRegionalRoutingContexts(RxDocumentServiceRequest request) {
         // readonly
-        return this.locationCache.getApplicableReadEndpoints(request);
+        return this.locationCache.getApplicableReadRegionRoutingContexts(request);
     }
 
-    public UnmodifiableList<RegionalRoutingContext> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableWriteRegionalRoutingContexts(RxDocumentServiceRequest request) {
         //readonly
-        return this.locationCache.getApplicableWriteEndpoints(request);
+        return this.locationCache.getApplicableWriteRegionRoutingContexts(request);
     }
 
-    public UnmodifiableList<RegionalRoutingContext> getApplicableReadEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableReadRegionalRoutingContexts(List<String> excludedRegions) {
         // readonly
-        return this.locationCache.getApplicableReadEndpoints(excludedRegions, Collections.emptyList());
+        return this.locationCache.getApplicableReadRegionRoutingContexts(excludedRegions, Collections.emptyList());
     }
 
-    public UnmodifiableList<RegionalRoutingContext> getApplicableWriteEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableWriteRegionalRoutingContexts(List<String> excludedRegions) {
         //readonly
-        return this.locationCache.getApplicableWriteEndpoints(excludedRegions, Collections.emptyList());
+        return this.locationCache.getApplicableWriteRegionRoutingContexts(excludedRegions, Collections.emptyList());
     }
 
     public List<URI> getAvailableReadEndpoints() {

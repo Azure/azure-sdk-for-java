@@ -121,12 +121,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         assertThat(ctx.getContactedRegionNames()).contains(this.secondPreferredRegion.toLowerCase(Locale.ROOT));
     };
 
-    Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAnyTwoPreferredRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
-    };
-
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAtMostTwoPreferredRegions = (ctx) -> {
         assertThat(ctx).isNotNull();
         assertThat(ctx.getContactedRegionNames()).isNotNull();
@@ -186,11 +180,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
     Consumer<ResponseWrapper<?>> validateResponseHasInternalServerError = (responseWrapper) -> {
         assertThat(responseWrapper.cosmosException).isNotNull();
         assertThat(responseWrapper.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
-    };
-
-    Consumer<ResponseWrapper<?>> validateResponseHasServiceUnavailableError = (responseWrapper) -> {
-        assertThat(responseWrapper.cosmosException).isNotNull();
-        assertThat(responseWrapper.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
     };
 
     Consumer<ResponseWrapper<?>> validateResponseHasRequestTimeoutException = (responseWrapper) -> {
@@ -5210,8 +5199,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         return new AccountLevelLocationContext(
             serviceOrderedReadableRegions,
-            serviceOrderedWriteableRegions,
-            regionMap);
+            serviceOrderedWriteableRegions
+        );
     }
 
 
@@ -5658,16 +5647,13 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
     private static class AccountLevelLocationContext {
         private final List<String> serviceOrderedReadableRegions;
         private final List<String> serviceOrderedWriteableRegions;
-        private final Map<String, String> regionNameToEndpoint;
 
         public AccountLevelLocationContext(
             List<String> serviceOrderedReadableRegions,
-            List<String> serviceOrderedWriteableRegions,
-            Map<String, String> regionNameToEndpoint) {
+            List<String> serviceOrderedWriteableRegions) {
 
             this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
             this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
-            this.regionNameToEndpoint = regionNameToEndpoint;
         }
     }
 }

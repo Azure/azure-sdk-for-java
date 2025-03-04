@@ -1688,7 +1688,7 @@ public class RegionScopedSessionContainerTest {
                 .thenReturn(readEndpointsInUnmodifiableList);
 
             Mockito
-                .when(globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList()))
+                .when(globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList()))
                 .thenReturn(new UnmodifiableList<>(consolidatedWriteRegionalEndpointRoutingContexts));
 
             Mockito

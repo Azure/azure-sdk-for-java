@@ -6973,9 +6973,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      */
     private List<RegionalRoutingContext> getApplicableEndPoints(OperationType operationType, List<String> excludedRegions) {
         if (operationType.isReadOnlyOperation()) {
-            return withoutNulls(this.globalEndpointManager.getApplicableReadEndpoints(excludedRegions));
+            return withoutNulls(this.globalEndpointManager.getApplicableReadRegionalRoutingContexts(excludedRegions));
         } else if (operationType.isWriteOperation()) {
-            return withoutNulls(this.globalEndpointManager.getApplicableWriteEndpoints(excludedRegions));
+            return withoutNulls(this.globalEndpointManager.getApplicableWriteRegionalRoutingContexts(excludedRegions));
         }
 
         return EMPTY_ENDPOINT_LIST;

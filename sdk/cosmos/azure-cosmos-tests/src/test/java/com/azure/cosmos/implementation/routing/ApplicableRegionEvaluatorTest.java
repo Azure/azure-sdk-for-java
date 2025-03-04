@@ -65,18 +65,7 @@ public class ApplicableRegionEvaluatorTest {
     @DataProvider(name = "highAvailabilityConfigs")
     public Object[][] highAvailabilityConfigs() {
 
-        List<List<Object>> testScenarioMatrix = new ArrayList<>();
-         testScenarioMatrix = generateTestScenarioMatrix();
-
-//        List<Object> faultyScenario = Arrays.asList(
-//            DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_THREE_REGIONS_CLIENT_WITH_NO_PREFERRED_REGION,
-//            AvailabilityStrategyScenarios.WITH_AVAILABILITY_STRATEGY,
-//            OpTypeScenarios.IS_WRITE,
-//            UserEnforcedExcludeRegionScenarios.USER_ENFORCED_EXCLUDE_FIRST_TWO_PREFERRED_REGIONS,
-//            PerPartitionCircuitBreakerScenarios.PER_PARTITION_CIRCUIT_BREAKER_LAST_REGION_UNAVAILABLE,
-//            PerPartitionAutomaticFailoverScenarios.PER_PARTITION_AUTOMATIC_FAILOVER_DISABLED);
-//
-//        testScenarioMatrix.add(faultyScenario);
+        List<List<Object>> testScenarioMatrix = generateTestScenarioMatrix();
         List<List<Object>> testArgsMatrix = new ArrayList<>();
 
         for (List<Object> row : testScenarioMatrix) {
@@ -202,14 +191,16 @@ public class ApplicableRegionEvaluatorTest {
             GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
 
-            List<URI> actualApplicableEndpoints = request.isReadOnly() ?
-                globalEndpointManager.getApplicableReadEndpoints(request) :
-                globalEndpointManager.getApplicableWriteEndpoints(request);
+            List<RegionalRoutingContext> actualApplicableRegionalRoutingContexts = request.isReadOnly() ?
+                globalEndpointManager.getApplicableReadRegionalRoutingContexts(request) :
+                globalEndpointManager.getApplicableWriteRegionalRoutingContexts(request);
 
-            List<URI> expectedApplicableEndpoints = expectedResolvedEndpointsContext.applicableEndpoints;
-            URI expectedLocationEndpointToRoute = expectedResolvedEndpointsContext.locationEndpointToRoute;
+            List<RegionalRoutingContext> expectedApplicableRegionalRoutingContexts
+                = expectedResolvedEndpointsContext.applicableRegionalRoutingContexts;
+            RegionalRoutingContext expectedRegionalRoutingContextToRoute
+                = expectedResolvedEndpointsContext.regionalRoutingContextToRoute;
 
-            Assertions.assertThat(actualApplicableEndpoints).hasSize(expectedApplicableEndpoints.size());
+            Assertions.assertThat(actualApplicableRegionalRoutingContexts).hasSize(expectedApplicableRegionalRoutingContexts.size());
 
             ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
                 mockDiagnosticsClientContext(),
@@ -220,13 +211,13 @@ public class ApplicableRegionEvaluatorTest {
                 globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
-            for (int i = 0; i < expectedApplicableEndpoints.size(); i++) {
-                Assertions.assertThat(actualApplicableEndpoints.get(i)).isEqualTo(expectedApplicableEndpoints.get(i));
+            for (int i = 0; i < expectedApplicableRegionalRoutingContexts.size(); i++) {
+                Assertions.assertThat(actualApplicableRegionalRoutingContexts.get(i)).isEqualTo(expectedApplicableRegionalRoutingContexts.get(i));
             }
 
             clientRetryPolicy.onBeforeSendRequest(request);
 
-            Assertions.assertThat(request.requestContext.locationEndpointToRoute).isEqualTo(expectedLocationEndpointToRoute);
+            Assertions.assertThat(request.requestContext.regionalRoutingContextToRoute).isEqualTo(expectedRegionalRoutingContextToRoute);
 
             // if PPAF has applied override and applicable-region set size > 1, start with
             CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
@@ -244,17 +235,17 @@ public class ApplicableRegionEvaluatorTest {
                 // re-evaluate applicable endpoints / regions and location endpoint to route
                 clientRetryPolicy.onBeforeSendRequest(request);
 
-                actualApplicableEndpoints = globalEndpointManager.getApplicableReadEndpoints(request);
+                actualApplicableRegionalRoutingContexts = globalEndpointManager.getApplicableReadRegionalRoutingContexts(request);
 
-                if (actualApplicableEndpoints.size() > 1) {
-                    Assertions.assertThat(actualApplicableEndpoints.size()).isEqualTo(expectedApplicableEndpoints.size() + 1);
-                    Assertions.assertThat(actualApplicableEndpoints.get(0)).isEqualTo(actualApplicableEndpoints.get(1));
+                if (actualApplicableRegionalRoutingContexts.size() > 1) {
+                    Assertions.assertThat(actualApplicableRegionalRoutingContexts.size()).isEqualTo(expectedApplicableRegionalRoutingContexts.size() + 1);
+                    Assertions.assertThat(actualApplicableRegionalRoutingContexts.get(0)).isEqualTo(actualApplicableRegionalRoutingContexts.get(1));
 
-                    for (int i = 1; i < actualApplicableEndpoints.size(); i++) {
-                        Assertions.assertThat(actualApplicableEndpoints.get(i)).isEqualTo(expectedApplicableEndpoints.get(i - 1));
+                    for (int i = 1; i < actualApplicableRegionalRoutingContexts.size(); i++) {
+                        Assertions.assertThat(actualApplicableRegionalRoutingContexts.get(i)).isEqualTo(expectedApplicableRegionalRoutingContexts.get(i - 1));
                     }
 
-                    Assertions.assertThat(request.requestContext.locationEndpointToRoute).isEqualTo(actualApplicableEndpoints.get(0));
+                    Assertions.assertThat(request.requestContext.regionalRoutingContextToRoute).isEqualTo(actualApplicableRegionalRoutingContexts.get(0));
                 }
             }
 
@@ -798,9 +789,9 @@ public class ApplicableRegionEvaluatorTest {
                 }
 
                 writeOpRequest = createRequest(OperationType.Create, false);
-                writeOpRequest.requestContext.routeToLocation(TestAccountEastUsEndpoint);
+                writeOpRequest.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountEastUsEndpoint));
 
-                request.requestContext.routeToLocation(TestAccountEastUsEndpoint);
+                request.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountEastUsEndpoint));
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request.isReadOnlyRequest() ? writeOpRequest : request);
                 return true;
             case PER_PARTITION_AUTOMATIC_FAILOVER_BOTH_PRIMARY_AND_SECONDARY_REGION_UNAVAILABLE:
@@ -817,13 +808,13 @@ public class ApplicableRegionEvaluatorTest {
 
                 writeOpRequest = createRequest(OperationType.Create, false);
 
-                writeOpRequest.requestContext.routeToLocation(TestAccountEastUsEndpoint);
-                request.requestContext.routeToLocation(TestAccountEastUsEndpoint);
+                writeOpRequest.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountEastUsEndpoint));
+                request.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountEastUsEndpoint));
 
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request.isReadOnly() ? writeOpRequest : request);
 
-                request.requestContext.routeToLocation(TestAccountWestUsEndpoint);
-                writeOpRequest.requestContext.routeToLocation(TestAccountWestUsEndpoint);
+                request.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountWestUsEndpoint));
+                writeOpRequest.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountWestUsEndpoint));
 
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request.isReadOnly() ? writeOpRequest : request);
 
@@ -1556,8 +1547,7 @@ public class ApplicableRegionEvaluatorTest {
                         return new ResolvedEndpointsContext(TestAccountEastUsEndpoint, Arrays.asList(TestAccountEndpoint));
                     }
                 }
-            }
-            else if (perPartitionCircuitBreakerScenario == PerPartitionCircuitBreakerScenarios.PER_PARTITION_CIRCUIT_BREAKER_ONE_REGION_UNAVAILABLE) {
+            } else if (perPartitionCircuitBreakerScenario == PerPartitionCircuitBreakerScenarios.PER_PARTITION_CIRCUIT_BREAKER_ONE_REGION_UNAVAILABLE) {
 
                 if (databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION ||
                     databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION_CLIENT_WITH_NO_PREFERRED_REGION) {
@@ -2369,11 +2359,19 @@ public class ApplicableRegionEvaluatorTest {
     static class ResolvedEndpointsContext {
 
         private final URI locationEndpointToRoute;
+        private final RegionalRoutingContext regionalRoutingContextToRoute;
         private final List<URI> applicableEndpoints;
+        private final List<RegionalRoutingContext> applicableRegionalRoutingContexts;
 
-        public ResolvedEndpointsContext(URI locationEndpointToRoute, List<URI> applicableEndpoints) {
+        public ResolvedEndpointsContext(URI locationEndpointToRoute, List<URI> applicableGatewayRegionalEndpoint) {
             this.locationEndpointToRoute = locationEndpointToRoute;
-            this.applicableEndpoints = applicableEndpoints;
+            this.regionalRoutingContextToRoute = new RegionalRoutingContext(this.locationEndpointToRoute);
+            this.applicableEndpoints = applicableGatewayRegionalEndpoint;
+            this.applicableRegionalRoutingContexts = new ArrayList<>();
+
+            for (URI applicableEndpoint : applicableGatewayRegionalEndpoint) {
+                applicableRegionalRoutingContexts.add(new RegionalRoutingContext(applicableEndpoint));
+            }
         }
     }
 }
