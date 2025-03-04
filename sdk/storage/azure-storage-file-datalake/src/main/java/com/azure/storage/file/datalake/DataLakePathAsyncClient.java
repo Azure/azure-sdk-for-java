@@ -954,7 +954,7 @@ public class DataLakePathAsyncClient {
     Mono<Response<PathSystemProperties>> getSystemPropertiesWithResponse(PathGetSystemPropertiesOptions options,
         Context context) {
         options = options == null ? new PathGetSystemPropertiesOptions() : options;
-        context = context == null ? Context.NONE : context;
+        context = BuilderHelper.skipResponseValidationForEncryptionKey(context);
         DataLakeRequestConditions requestConditions
             = options.getRequestConditions() == null ? new DataLakeRequestConditions() : options.getRequestConditions();
 

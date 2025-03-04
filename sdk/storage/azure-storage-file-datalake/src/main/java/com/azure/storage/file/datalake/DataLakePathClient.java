@@ -1603,7 +1603,7 @@ public class DataLakePathClient {
     public Response<PathSystemProperties> getSystemPropertiesWithResponse(PathGetSystemPropertiesOptions options,
         Duration timeout, Context context) {
         options = options == null ? new PathGetSystemPropertiesOptions() : options;
-        Context finalContext = context == null ? Context.NONE : context;
+        Context finalContext = BuilderHelper.skipResponseValidationForEncryptionKey(context);
         DataLakeRequestConditions requestConditions
             = options.getRequestConditions() == null ? new DataLakeRequestConditions() : options.getRequestConditions();
 
