@@ -109,7 +109,9 @@ public final class KeyVaultKeysModelsUtils {
 
         return new JsonWebKey().setId(impl.getKid())
             .setKeyType(impl.getKty())
-            .setKeyOps(impl.getKeyOps().stream().map(KeyOperation::fromString).collect(Collectors.toList()))
+            .setKeyOps(impl.getKeyOps() == null
+                ? null
+                : impl.getKeyOps().stream().map(KeyOperation::fromString).collect(Collectors.toList()))
             .setN(impl.getN())
             .setE(impl.getE())
             .setD(impl.getD())
@@ -132,7 +134,9 @@ public final class KeyVaultKeysModelsUtils {
 
         return new com.azure.security.keyvault.keys.implementation.models.JsonWebKey().setKid(key.getId())
             .setKty(key.getKeyType())
-            .setKeyOps(key.getKeyOps().stream().map(KeyOperation::toString).collect(Collectors.toList()))
+            .setKeyOps(key.getKeyOps() == null
+                ? null
+                : key.getKeyOps().stream().map(KeyOperation::toString).collect(Collectors.toList()))
             .setN(key.getN())
             .setE(key.getE())
             .setD(key.getD())
