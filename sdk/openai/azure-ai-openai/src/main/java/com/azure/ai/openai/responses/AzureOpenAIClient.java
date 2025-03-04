@@ -383,8 +383,51 @@ public final class AzureOpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponsesResponse createResponse(CreateResponsesRequest requestBody) {
+        requestBody.setStream(false);
+        RequestOptions requestOptions = new RequestOptions();
+        return createResponseWithResponse(CreateResponseRequestAccept.APPLICATION_JSON.toString(),
+                BinaryData.fromObject(requestBody), requestOptions).getValue().toObject(ResponsesResponse.class);
+    }
+
+    /**
+     * Creates a model response.
+     *
+     * @param requestBody The requestBody parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<ResponsesResponseStreamEvent> createResponseStreaming(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
+        requestBody.setStream(true);
+        Flux<ByteBuffer> events = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
+                BinaryData.fromObject(requestBody), requestOptions).getValue().toFluxByteBuffer();
+
+        OpenAIServerSentEvents eventsProcessor = new OpenAIServerSentEvents(events);
+        return new IterableStream<>(eventsProcessor.getEvents());
+    }
+
+    /**
+     * Creates a model response.
+     *
+     * @param requestBody The requestBody parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<ResponsesResponseStreamEvent> createResponseStreaming(CreateResponsesRequest requestBody) {
+        RequestOptions requestOptions = new RequestOptions();
         requestBody.setStream(true);
         Flux<ByteBuffer> events = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
                 BinaryData.fromObject(requestBody), requestOptions).getValue().toFluxByteBuffer();

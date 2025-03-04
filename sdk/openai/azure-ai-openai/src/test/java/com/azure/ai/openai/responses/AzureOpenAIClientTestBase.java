@@ -19,6 +19,7 @@ public class AzureOpenAIClientTestBase extends TestProxyTestBase {
 
     AzureOpenAIClient getResponseClient(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         AzureOpenAIClientBuilder builder = new AzureOpenAIClientBuilder()
+                .serviceVersion(serviceVersion)
                 .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
                 .credential(new AzureKeyCredential(
                         Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY"))
