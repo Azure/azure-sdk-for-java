@@ -16,7 +16,7 @@ class ConnectionStringBuilder {
 
     // visible for testing
     static final int CONNECTION_STRING_MAX_LENGTH = 4096;
-    static final String DEFAULT_AAD_AUDIENCE= "monitor.azure.com";
+    static final String DEFAULT_AAD_AUDIENCE = "monitor.azure.com";
 
     private String originalString;
 
