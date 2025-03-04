@@ -227,7 +227,7 @@ public class HttpResponseBodyDecoderTests {
     }
 
     @Test
-    public void malformedBodyReturnsError() throws IOException {
+    public void malformedBodyReturnsError() {
         try (Response<?> response = new MockHttpResponse(GET_REQUEST, 200, (Object) null)) {
             HttpResponseDecodeData decodeData = new MockHttpResponseDecodeData(200, String.class, String.class, true);
 

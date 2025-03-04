@@ -8,7 +8,6 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -162,7 +161,7 @@ public final class PagedResponse<T> implements Response<List<T>> {
      * {@inheritDoc}
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (body != null) {
             body.close();
         }

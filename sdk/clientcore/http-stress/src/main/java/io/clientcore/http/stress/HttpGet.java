@@ -19,8 +19,6 @@ import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -68,8 +66,6 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         HttpRequest request = createRequest();
         try (Response<?> response = pipeline.send(request)) {
             response.getBody().toBytes();
-        } catch (IOException e) {
-            LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -97,13 +93,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())), response -> {
             response.getBody().toBytes();
             return Mono.empty();
-        }, response -> Mono.fromRunnable(() -> {
-            try {
-                response.close();
-            } catch (IOException e) {
-                LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
-        }));
+        }, response -> Mono.fromRunnable(response::close));
     }
 
     // Method to run using CompletableFuture

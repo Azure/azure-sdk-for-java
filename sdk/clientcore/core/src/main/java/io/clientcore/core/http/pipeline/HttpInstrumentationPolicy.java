@@ -645,7 +645,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public void close() throws IOException {
+        public void close() {
             if (bufferedBody == null) {
                 getBody();
             }

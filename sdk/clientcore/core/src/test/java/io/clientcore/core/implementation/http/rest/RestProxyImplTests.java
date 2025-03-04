@@ -97,7 +97,7 @@ public class RestProxyImplTests {
 
             return new MockHttpResponse(request, success ? 200 : 400) {
                 @Override
-                public void close() throws IOException {
+                public void close() {
                     lastResponseClosed = true;
 
                     super.close();

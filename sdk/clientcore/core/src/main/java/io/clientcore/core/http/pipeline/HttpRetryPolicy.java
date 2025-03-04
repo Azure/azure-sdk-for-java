@@ -16,7 +16,6 @@ import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.time.DateTimeException;
 import java.time.Duration;
@@ -210,12 +209,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
             final Duration delayDuration = determineDelayDuration(response, tryCount, delayFromHeaders);
 
             logRetry(logger.atVerbose(), tryCount, delayDuration, null, false, instrumentationContext);
-
-            try {
-                response.close();
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
+            response.close();
 
             long millis = delayDuration.toMillis();
             if (millis > 0) {

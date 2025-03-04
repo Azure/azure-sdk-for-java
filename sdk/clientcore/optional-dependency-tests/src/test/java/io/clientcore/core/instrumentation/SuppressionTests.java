@@ -47,7 +47,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class SuppressionTests {
     private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
@@ -378,11 +377,7 @@ public class SuppressionTests {
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response
                     = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"));
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    fail(e);
-                }
+                response.close();
             } finally {
                 span.end();
             }
@@ -423,7 +418,7 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void protocolMethod(RequestOptions options) throws IOException {
+        public void protocolMethod(RequestOptions options) {
             if (!protocolInstrumentation.shouldInstrument(options)) {
                 Response<?> response
                     = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"));
@@ -436,7 +431,7 @@ public class SuppressionTests {
                 Response<?> response
                     = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"));
                 response.close();
-            } catch (IOException e) {
+            } catch (RuntimeException e) {
                 scope.setError(e);
                 throw e;
             } finally {
@@ -445,7 +440,7 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void convenienceMethod(RequestOptions options) throws IOException {
+        public void convenienceMethod(RequestOptions options) {
             if (!convenienceInstrumentation.shouldInstrument(options)) {
                 protocolMethod(options);
             }
@@ -453,7 +448,7 @@ public class SuppressionTests {
             OperationInstrumentation.Scope scope = convenienceInstrumentation.startScope(options);
             try {
                 protocolMethod(options);
-            } catch (IOException e) {
+            } catch (RuntimeException e) {
                 scope.setError(e);
                 throw e;
             } finally {

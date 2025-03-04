@@ -12,14 +12,13 @@ import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpPipelinePolicyTests {
     @Test
-    public void verifySend() throws IOException {
+    public void verifySend() {
         SyncPolicy policy1 = new SyncPolicy();
         SyncPolicy policy2 = new SyncPolicy();
 
@@ -33,7 +32,7 @@ public class HttpPipelinePolicyTests {
     }
 
     @Test
-    public void defaultImplementationShouldCallRightStack() throws IOException {
+    public void defaultImplementationShouldCallRightStack() {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
@@ -50,7 +49,7 @@ public class HttpPipelinePolicyTests {
      * This is to cover case when reactor could complain about blocking on non-blocking thread.
      */
     @Test
-    public void doesNotThrowThatThreadIsNonBlocking() throws IOException {
+    public void doesNotThrowThatThreadIsNonBlocking() {
         SyncPolicy policy1 = new SyncPolicy();
         HttpPipelinePolicy badPolicy1 = (ignored, next) -> {
             try {

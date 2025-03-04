@@ -101,7 +101,7 @@ final class ByteBufferBinaryData extends BinaryData {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         // no-op
     }
 }

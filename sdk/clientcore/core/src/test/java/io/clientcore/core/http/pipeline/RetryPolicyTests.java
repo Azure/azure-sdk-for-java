@@ -221,11 +221,11 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void retryConsumesBody() throws IOException {
+    public void retryConsumesBody() {
         AtomicInteger closeCalls = new AtomicInteger();
         Response<?> closeTrackingHttpResponse = new MockHttpResponse(null, 503, new HttpHeaders()) {
             @Override
-            public void close() throws IOException {
+            public void close() {
                 closeCalls.incrementAndGet();
                 super.close();
             }
@@ -278,7 +278,7 @@ public class RetryPolicyTests {
 
     @ParameterizedTest
     @MethodSource("getWellKnownRetryDelaySupplier")
-    public void retryWellKnownRetryHeaders(HttpHeaders responseHeaders) throws IOException {
+    public void retryWellKnownRetryHeaders(HttpHeaders responseHeaders) {
         HttpRetryOptions retryOptions = new HttpRetryOptions(1, Duration.ofMillis(1));
 
         AtomicInteger attemptCount = new AtomicInteger();

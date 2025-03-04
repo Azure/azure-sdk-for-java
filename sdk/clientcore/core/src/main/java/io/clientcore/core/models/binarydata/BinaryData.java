@@ -808,4 +808,9 @@ public abstract class BinaryData implements Closeable {
     public static BinaryData empty() {
         return BinaryData.EMPTY;
     }
+
+    /**
+     * Closes the underlying resource of this {@link BinaryData} if it is closeable.
+     */
+    public abstract void close();
 }

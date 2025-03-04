@@ -241,7 +241,7 @@ public class FileBinaryData extends BinaryData {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         // Since this uses a Path, there is nothing to close, therefore no-op.
     }
 }

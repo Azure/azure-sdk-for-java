@@ -63,4 +63,9 @@ public interface Response<T> extends Closeable {
     static <T> Response<T> create(HttpRequest request, int statusCode, HttpHeaders headers, T value) {
         return new HttpResponse<>(request, statusCode, headers, value);
     }
+
+    /**
+     * Closes the response and releases any resources associated with it.
+     */
+    void close();
 }
