@@ -47,7 +47,7 @@ public class BazModel implements JsonSerializable<BazModel> {
             boolean isEmpty = true;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
-                if("bazId".equals(fieldName)) {
+                if ("bazId".equals(fieldName)) {
                     isEmpty = false;
                     bazModel.setBazId(reader.getString());
                 } else if ("bazName".equals(fieldName)) {

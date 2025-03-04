@@ -26,7 +26,6 @@ import java.util.function.Consumer;
  * This class is used to represent a union of types in a type-safe manner.
  *
  * <p><strong>Create an instance</strong></p>
- * <p>
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsBasic -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
@@ -34,7 +33,6 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsBasic -->
  *
  * <p><strong>Create an instance from primitives</strong></p>
- * <p>
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsPrimitiveType -->
  * <pre>
  * Union unionPrimitives = Union.ofTypes&#40;int.class, double.class&#41;;
@@ -42,7 +40,6 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsPrimitiveType -->
  *
  * <p><strong>Create an instance from collections</strong></p>
- * <p>
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsCollectionType -->
  * <pre>
  * &#47;&#47; GenericParameterizedType is a non-public helper class that allows us to specify a generic type with
@@ -54,7 +51,6 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsCollectionType -->
  *
  * <p><strong>Consume the value of the Union if it is of the expected type</strong></p>
- * <p>
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
@@ -72,9 +68,7 @@ import java.util.function.Consumer;
  * &#125;
  * </pre>
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement -->
- * <p>
  * or
- * <p>
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsLambda -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
@@ -314,7 +308,7 @@ public final class Union implements JsonSerializable<Union> {
         return value == null
             ? "Union{types=" + types + ", value=null" + "}"
             : "Union{types=" + types + ", type=" + (currentType == null ? null : currentType.getTypeName()) + ", value="
-            + value + "}";
+                + value + "}";
     }
 
     private boolean isInstanceOfType(Object value, Type type) {
@@ -394,36 +388,44 @@ public final class Union implements JsonSerializable<Union> {
             }
             jsonWriter.writeEndArray();
         } else {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Invalid type: " + value.getClass().getName()));
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("Invalid type: " + value.getClass().getName()));
         }
     }
 
-    public static Union fromJson(JsonReader originalReader, Type... types) throws IOException {
-        if (originalReader.currentToken() == null || originalReader.currentToken() == JsonToken.FIELD_NAME) {
-            originalReader.nextToken();
+    /**
+     * Reads the value of the union from the provided {@link JsonReader}.
+     *
+     * @param reader The reader to read the union value from.
+     * @param types The supported union types for the provided JsonReader.
+     * @return The union value read from the reader.
+     * @throws IOException If an error occurs while reading the value.
+     */
+    public static Union fromJson(JsonReader reader, Type... types) throws IOException {
+        if (reader.currentToken() == null || reader.currentToken() == JsonToken.FIELD_NAME) {
+            reader.nextToken();
         }
 
-        JsonReader reader = originalReader;
+        JsonReader unionReader = reader;
         String jsonChildren = null;
-        if (originalReader.currentToken() == JsonToken.START_ARRAY || originalReader.currentToken() == JsonToken.START_OBJECT) {
-            jsonChildren = originalReader.readChildren();
+        if (reader.currentToken() == JsonToken.START_ARRAY || reader.currentToken() == JsonToken.START_OBJECT) {
+            jsonChildren = reader.readChildren();
         }
 
         Union retVal = Union.ofTypes(types);
         Object value = null;
         for (Type type : types) {
             try {
-                if(jsonChildren != null) {
-                    reader = JsonReader.fromString(jsonChildren);
-                    reader.nextToken();
+                if (jsonChildren != null) {
+                    unionReader = JsonReader.fromString(jsonChildren);
+                    unionReader.nextToken();
                 }
-                value = readValue(reader, type);
+                value = readValue(unionReader, type);
                 if (value != null) {
                     break;
                 }
             } catch (IOException e) {
                 // ignore exception and try next type
-//                System.out.println("Failed to read value of type " + type.getTypeName() + ": " + e.getMessage());
             }
         }
         return retVal.setValue(value);
@@ -441,7 +443,8 @@ public final class Union implements JsonSerializable<Union> {
             }
         } else if (type instanceof Class<?>) {
             Class<?> clazz = (Class<?>) type;
-            if (reader.currentToken() == JsonToken.START_OBJECT && JsonSerializable.class.isAssignableFrom(((Class<?>) type))) {
+            if (reader.currentToken() == JsonToken.START_OBJECT
+                && JsonSerializable.class.isAssignableFrom(((Class<?>) type))) {
                 // for Union types, only JsonSerializable objects are supported and they are expected to have
                 // a static fromJson method that takes a JsonReader and returns an instance of the class
                 try {
@@ -453,13 +456,17 @@ public final class Union implements JsonSerializable<Union> {
             } else {
                 if (clazz == String.class && reader.currentToken() == JsonToken.STRING) {
                     return reader.getString();
-                } else if ((clazz == Float.class || clazz == float.class) && reader.currentToken() == JsonToken.NUMBER) {
+                } else if ((clazz == Float.class || clazz == float.class)
+                    && reader.currentToken() == JsonToken.NUMBER) {
                     return reader.getFloat();
-                } else if ((clazz == Double.class || clazz == double.class) && reader.currentToken() == JsonToken.NUMBER) {
+                } else if ((clazz == Double.class || clazz == double.class)
+                    && reader.currentToken() == JsonToken.NUMBER) {
                     return reader.getDouble();
-                } else if ((clazz == Boolean.class || clazz == boolean.class) && reader.currentToken() == JsonToken.BOOLEAN) {
+                } else if ((clazz == Boolean.class || clazz == boolean.class)
+                    && reader.currentToken() == JsonToken.BOOLEAN) {
                     return reader.getBoolean();
-                } else if ((clazz == Integer.class || clazz == int.class) && reader.currentToken() == JsonToken.NUMBER) {
+                } else if ((clazz == Integer.class || clazz == int.class)
+                    && reader.currentToken() == JsonToken.NUMBER) {
                     return reader.getInt();
                 } else if ((clazz == Long.class || clazz == long.class) && reader.currentToken() == JsonToken.NUMBER) {
                     return reader.getLong();
@@ -469,6 +476,5 @@ public final class Union implements JsonSerializable<Union> {
             }
         }
         throw new IOException("Failed to read value of type " + type.getTypeName());
-//        return null;
     }
 }

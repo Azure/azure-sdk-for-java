@@ -78,9 +78,9 @@ public class FooModel implements JsonSerializable<FooModel> {
                 } else if ("stringOrInt".equals(fieldName)) {
                     fooModel.setStringOrInt(Union.fromJson(reader, Integer.class, String.class));
                 } else if ("collectionTypes".equals(fieldName)) {
-                    fooModel.setCollectionTypes(Union.fromJson(reader, TypeUtil.createParameterizedType(List.class, String.class),
-                        TypeUtil.createParameterizedType(List.class, Integer.class),
-                        byte[].class));
+                    fooModel.setCollectionTypes(
+                        Union.fromJson(reader, TypeUtil.createParameterizedType(List.class, String.class),
+                            TypeUtil.createParameterizedType(List.class, Integer.class), byte[].class));
                 } else {
                     reader.skipChildren();
                 }
@@ -89,4 +89,3 @@ public class FooModel implements JsonSerializable<FooModel> {
         });
     }
 }
-
