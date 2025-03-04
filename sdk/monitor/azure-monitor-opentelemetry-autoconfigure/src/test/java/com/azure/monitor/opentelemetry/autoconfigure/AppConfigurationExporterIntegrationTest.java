@@ -100,7 +100,7 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
 
     private ConfigurationClient getConfigurationClient() {
         return new ConfigurationClientBuilder().credential(credential)
-            .endpoint(Configuration.getGlobalConfiguration().get("MONITOR_RESOURCE_MANAGER_URL"))
+            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2"))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
     }
