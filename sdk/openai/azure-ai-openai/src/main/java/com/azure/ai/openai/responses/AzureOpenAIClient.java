@@ -4,6 +4,7 @@
 package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.implementation.AzureResponsesImpl;
+import com.azure.ai.openai.responses.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.responses.models.CreateResponseRequestAccept;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
@@ -342,9 +343,8 @@ public final class AzureOpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponsesResponse createResponse(CreateResponseRequestAccept accept, CreateResponsesRequest requestBody) {
+    private ResponsesResponse createResponse(CreateResponseRequestAccept accept, CreateResponsesRequest requestBody) {
         // Generated convenience method for createResponseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createResponseWithResponse(accept.toString(), BinaryData.fromObject(requestBody), requestOptions)
@@ -352,6 +352,18 @@ public final class AzureOpenAIClient {
             .toObject(ResponsesResponse.class);
     }
 
+    /**
+     * Creates a model response.
+     *
+     * @param requestBody The requestBody parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponsesResponse createResponse(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
         requestBody.setStream(false);
@@ -359,29 +371,25 @@ public final class AzureOpenAIClient {
                 BinaryData.fromObject(requestBody), requestOptions).getValue().toObject(ResponsesResponse.class);
     }
 
+    /**
+     * Creates a model response.
+     *
+     * @param requestBody The requestBody parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<ResponsesResponseStreamEvent> createResponseStreaming(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
         requestBody.setStream(true);
         Flux<ByteBuffer> events = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
                 BinaryData.fromObject(requestBody), requestOptions).getValue().toFluxByteBuffer();
 
-        Flux<ResponsesResponseStreamEvent> responsesEvents = events
-            .map(it -> new String(it.array()).split("data:")[1].trim())
-            .map(jsonString -> {
-                // we get incomplete JSON strings. Need to implement a helper to account for that.
-//                System.out.println("LOG:" + jsonString);
-                return BinaryData.fromString(jsonString).toObject(ResponsesResponseStreamEvent.class);
-            });
-        return new IterableStream<>(responsesEvents);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<String> createResponseStreamingAsString(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
-        requestBody.setStream(true);
-        Flux<ByteBuffer> events = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
-                BinaryData.fromObject(requestBody), requestOptions).getValue().toFluxByteBuffer();
-
-        Flux<String> responsesEvents = events.map(ByteBuffer::array).map(String::new);
-        return new IterableStream<>(responsesEvents);
+        OpenAIServerSentEvents eventsProcessor = new OpenAIServerSentEvents(events);
+        return new IterableStream<>(eventsProcessor.getEvents());
     }
 }

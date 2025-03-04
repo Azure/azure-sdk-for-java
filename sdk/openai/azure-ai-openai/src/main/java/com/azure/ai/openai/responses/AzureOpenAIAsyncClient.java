@@ -4,12 +4,14 @@
 package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.implementation.AzureResponsesImpl;
+import com.azure.ai.openai.responses.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.responses.models.CreateResponseRequestAccept;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
+import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -22,9 +24,13 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -343,14 +349,59 @@ public final class AzureOpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponsesResponse> createResponse(CreateResponseRequestAccept accept,
+    private Mono<ResponsesResponse> createResponse(CreateResponseRequestAccept accept,
         CreateResponsesRequest requestBody) {
         // Generated convenience method for createResponseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createResponseWithResponse(accept.toString(), BinaryData.fromObject(requestBody), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ResponsesResponse.class));
+    }
+
+    /**
+     * Creates a model response.
+     *
+     * @param requestBody The requestBody parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponsesResponse> createResponse(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
+        requestBody.setStream(false);
+        return createResponseWithResponse(CreateResponseRequestAccept.APPLICATION_JSON.toString(),
+                BinaryData.fromObject(requestBody),
+                requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ResponsesResponse.class));
+    }
+
+    /**
+     * Creates a model response.
+     *
+     * @param requestBody The requestBody parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ResponsesResponseStreamEvent> createResponseStream(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
+        requestBody.setStream(true);
+        Flux<ByteBuffer> response = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
+                BinaryData.fromObject(requestBody),
+                requestOptions).flatMapMany(it -> it.getValue().toFluxByteBuffer());
+
+        return new OpenAIServerSentEvents(response).getEvents();
     }
 }
