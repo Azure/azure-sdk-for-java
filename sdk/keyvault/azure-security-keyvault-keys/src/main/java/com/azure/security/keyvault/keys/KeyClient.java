@@ -2187,7 +2187,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey getKeyAttestation(String name) {
-        return getKeyWithResponse(name, "", Context.NONE).getValue();
+        return getKeyAttestationWithResponse(name, "", Context.NONE).getValue();
     }
 
     /**
