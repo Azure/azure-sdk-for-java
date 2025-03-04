@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
@@ -30,26 +29,22 @@ import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
-import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -73,7 +68,6 @@ import reactor.core.publisher.Mono;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -788,7 +782,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
                 String regionWithIssues = preferredRegions.get(0);
-                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues));
+                RegionalRoutingContext regionalRoutingContextWithIssues = new RegionalRoutingContext(new URI(readableRegionNameToEndpoint.get(regionWithIssues)));
 
                 ReflectionUtils.setTransportClient(storeReader, transportClientMock);
                 ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
@@ -802,7 +796,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 setupTransportClientToThrowCosmosException(
                     transportClientMock,
                     partitionKeyRangeWithIssues,
-                    locationEndpointWithIssues,
+                    regionalRoutingContextWithIssues,
                     cosmosException);
 
                 TestItem testItem = TestItem.createNewItem();
@@ -907,7 +901,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
     private void setupTransportClientToThrowCosmosException(
         TransportClient transportClientMock,
         PartitionKeyRange partitionKeyRange,
-        URI locationEndpointToRoute,
+        RegionalRoutingContext regionalRoutingContextToRoute,
         CosmosException cosmosException) {
 
         Mockito.when(
@@ -917,7 +911,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                         argument.requestContext.resolvedPartitionKeyRange
                             .getId()
                             .equals(partitionKeyRange.getId()) &&
-                            argument.requestContext.locationEndpointToRoute.equals(locationEndpointToRoute))))
+                            argument.requestContext.regionalRoutingContextToRoute.equals(regionalRoutingContextToRoute))))
             .thenReturn(Mono.error(cosmosException));
     }
 
@@ -1399,44 +1393,9 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         public TestItem createdTestItem;
         public CosmosItemRequestOptions itemRequestOptions;
         public CosmosQueryRequestOptions queryRequestOptions;
-        public CosmosReadManyRequestOptions readManyRequestOptions;
         public CosmosItemRequestOptions patchItemRequestOptions;
         public FeedRange feedRangeToDrainForChangeFeed;
         public FeedRange feedRangeForQuery;
-    }
-
-    static class TransportClientMock extends TransportClient {
-
-        @Override
-        protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
-            return null;
-        }
-
-        @Override
-        public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
-        }
-
-        @Override
-        protected GlobalEndpointManager getGlobalEndpointManager() {
-            return null;
-        }
-
-        @Override
-        public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
-            return null;
-        }
-
-        @Override
-        public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
-        }
-
-        @Override
-        public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
-        }
-
-        @Override
-        public void close() throws Exception {
-        }
     }
 
     private static class ExpectedResponseCharacteristics {

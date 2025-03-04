@@ -37,9 +37,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
@@ -243,7 +240,7 @@ public class ClientSideRequestStatistics {
             if (regionalRoutingContext != null) {
 
                 URI locationEndpoint = regionalRoutingContext.getGatewayRegionalEndpoint();
-                String regionName = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType(), rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
+                String regionName = globalEndpointManager.getRegionName(locationEndpoint, rxDocumentServiceRequest.getOperationType(), rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
 
                 this.regionsContacted.add(regionName);
                 this.locationEndpointsContacted.add(locationEndpoint);
@@ -701,8 +698,11 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private Set<String> sessionTokenEvaluationResults;
 
-        @JsonSerialize
-        private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
+        @JsonSerialize(using = PerPartitionCircuitBreakerInfoHolder.PerPartitionCircuitBreakerInfoHolderSerializer.class)
+        private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
+
+        @JsonSerialize(using = PerPartitionFailoverInfoHolder.PerPartitionFailoverInfoHolderSerializer.class)
+        private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
         public String getExcludedRegions() {
             return this.excludedRegions;
@@ -740,8 +740,12 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
-        public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
-            return locationToLocationSpecificHealthContext;
+        public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
+            return perPartitionCircuitBreakerInfoHolder;
+        }
+
+        public PerPartitionFailoverInfoHolder getPerPartitionFailoverInfoHolder() {
+            return perPartitionFailoverInfoHolder;
         }
 
         @JsonIgnore
@@ -906,7 +910,8 @@ public class ClientSideRequestStatistics {
         private String faultInjectionRuleId;
         private List<String> faultInjectionEvaluationResults;
         private Set<String> sessionTokenEvaluationResults;
-        private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
+        private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
+        private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
         public String getSessionToken() {
             return sessionToken;
@@ -964,8 +969,12 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
-        public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
-            return locationToLocationSpecificHealthContext;
+        public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
+            return perPartitionCircuitBreakerInfoHolder;
+        }
+
+        public PerPartitionFailoverInfoHolder getPerPartitionFailoverInfoHolder() {
+            return perPartitionFailoverInfoHolder;
         }
 
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
@@ -1001,7 +1010,9 @@ public class ClientSideRequestStatistics {
                 }
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
-                this.writeNonNullObjectField(jsonGenerator, "locationToLocationSpecificHealthContext", gatewayStatistics.getLocationToLocationSpecificHealthContext());
+                this.writeNonNullObjectField(jsonGenerator, "perPartitionCircuitBreakerCtx", gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder());
+                this.writeNonNullObjectField(jsonGenerator, "perPartitionAutomaticFailoverCtx", gatewayStatistics.getPerPartitionFailoverInfoHolder());
+
                 jsonGenerator.writeEndObject();
             }
 

@@ -362,7 +362,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 return false;
             }
 
-            UnmodifiableList<URI> applicableReadEndpoints = globalEndpointManager.getApplicableReadEndpoints(Collections.emptyList());
+            UnmodifiableList<RegionalRoutingContext> applicableReadEndpoints = globalEndpointManager.getApplicableReadEndpoints(Collections.emptyList());
 
             return applicableReadEndpoints != null && applicableReadEndpoints.size() > 1;
         }

@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelFailoverInfo;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.Assertions;
@@ -74,14 +75,20 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.getConnectionPolicy()).thenReturn(connectionPolicy);
 
         List<URI> availableReadEndpoints = Arrays.asList(EAST_US_URI_CNST, EAST_US_2_URI_CNST, CENTRAL_US_URI_CNST);
+        List<RegionalRoutingContext> availableReadRegionalRoutingContexts = availableReadEndpoints
+            .stream()
+            .map(RegionalRoutingContext::new)
+            .collect(Collectors.toList());
 
         Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getAvailableReadEndpoints()).thenReturn(availableReadEndpoints);
-        Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn(new UnmodifiableList<>(availableReadEndpoints));
+        Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getAvailableReadRoutingContexts()).thenReturn(availableReadRegionalRoutingContexts);
+        Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn(new UnmodifiableList<>(availableReadRegionalRoutingContexts));
         Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.canUseMultipleWriteLocations()).thenReturn(false);
         Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.canUseMultipleWriteLocations(Mockito.any())).thenReturn(false);
 
         Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.getAvailableReadEndpoints()).thenReturn(availableReadEndpoints);
-        Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn(new UnmodifiableList<>(availableReadEndpoints));
+        Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.getAvailableReadRoutingContexts()).thenReturn(availableReadRegionalRoutingContexts);
+        Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn(new UnmodifiableList<>(availableReadRegionalRoutingContexts));
         Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.canUseMultipleWriteLocations()).thenReturn(true);
         Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.canUseMultipleWriteLocations(Mockito.any())).thenReturn(true);
     }
@@ -123,7 +130,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
     @Test(groups = {"unit"}, dataProvider = "tryMarkEndpointAsUnavailableForPartitionKeyRangeTestArgs", timeOut = TIMEOUT)
     public void tryMarkEndpointAsUnavailableForPartitionKeyRange(
         OperationType operationType,
-        URI regionEndpointWithFailure,
+        URI regionalEndpointWithFailure,
         URI regionEndpointToUsePostFailover,
         GlobalEndpointManager globalEndpointManager,
         boolean expectedCanOpOrchestrateFailover) throws NoSuchFieldException, IllegalAccessException {
@@ -139,16 +146,16 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             String maxExclusive = "BB";
             String collectionResourceId = "dbs/db1/colls/coll1";
 
-            Field failedLocationsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedLocations");
+            Field failedRegionalRoutingContextsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
 
-            assertThat(failedLocationsField).isNotNull();
+            assertThat(failedRegionalRoutingContextsField).isNotNull();
 
-            Field currentField = PartitionLevelFailoverInfo.class.getDeclaredField("current");
+            Field currentRegionalContextField = PartitionLevelFailoverInfo.class.getDeclaredField("current");
 
-            assertThat(currentField).isNotNull();
+            assertThat(currentRegionalContextField).isNotNull();
 
-            failedLocationsField.setAccessible(true);
-            currentField.setAccessible(true);
+            failedRegionalRoutingContextsField.setAccessible(true);
+            currentRegionalContextField.setAccessible(true);
 
             Field partitionKeyRangeToLocationField
                 = GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class.getDeclaredField("partitionKeyRangeToLocation");
@@ -166,7 +173,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 collectionResourceId,
                 minInclusive,
                 maxExclusive,
-                regionEndpointWithFailure);
+                regionalEndpointWithFailure);
 
             boolean canOpOrchestrateFailover
                 = globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request);
@@ -177,10 +184,15 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 = partitionKeyRangeToLocation.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
             if (canOpOrchestrateFailover) {
-                Set<URI> failedLocations = (Set<URI>) failedLocationsField.get(partitionLevelFailoverInfo);
-                assertThat(failedLocations.contains(regionEndpointWithFailure)).isTrue();
-                URI current = (URI) currentField.get(partitionLevelFailoverInfo);
-                assertThat(current).isEqualTo(regionEndpointToUsePostFailover);
+                Set<RegionalRoutingContext> failedRegionalRoutingContexts = (Set<RegionalRoutingContext>) failedRegionalRoutingContextsField.get(partitionLevelFailoverInfo);
+
+                RegionalRoutingContext regionalRoutingContextWithFailure = new RegionalRoutingContext(regionalEndpointWithFailure);
+
+                assertThat(failedRegionalRoutingContexts.contains(regionalRoutingContextWithFailure)).isTrue();
+                RegionalRoutingContext current = (RegionalRoutingContext) currentRegionalContextField.get(partitionLevelFailoverInfo);
+
+                RegionalRoutingContext regionalRoutingContextToUsePostFailover = new RegionalRoutingContext(regionEndpointToUsePostFailover);
+                assertThat(current).isEqualTo(regionalRoutingContextToUsePostFailover);
             }
 
         } finally {
@@ -351,7 +363,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         logger.warn("Handling exception for {}", locationWithFailure.getPath());
         globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request);
 
-        Field failedLocationsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedLocations");
+        Field failedLocationsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
 
         assertThat(failedLocationsField).isNotNull();
 
@@ -373,10 +385,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         Object partitionLevelFailoverInfo = partitionKeyRangeToLocation.get(new PartitionKeyRangeWrapper(partitionKeyRange, collectionResourceId));
 
         if (partitionLevelFailoverInfo != null) {
-            Set<URI> failedLocations = (Set<URI>) failedLocationsField.get(partitionLevelFailoverInfo);
+            Set<RegionalRoutingContext> failedRegionalRoutingContexts = (Set<RegionalRoutingContext>) failedLocationsField.get(partitionLevelFailoverInfo);
 
             logger.info("Assert that all regions are not Unavailable!");
-            Assertions.assertThat(failedLocations.size()).isLessThan(applicableReadWriteLocations.size());
+            Assertions.assertThat(failedRegionalRoutingContexts.size()).isLessThan(applicableReadWriteLocations.size());
         }
     }
 
@@ -399,7 +411,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
 
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(partitionKeyRangeId, minInclusive, maxExclusive);
         request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = request.requestContext.resolvedPartitionKeyRange;
-        request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
+        request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointToRoute);
         request.requestContext.resolvedCollectionRid = collectionResourceId;
         request.requestContext.setExcludeRegions(Collections.emptyList());
         request.requestContext.setPointOperationContext(
