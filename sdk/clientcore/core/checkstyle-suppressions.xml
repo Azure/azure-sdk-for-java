@@ -25,6 +25,8 @@
   <suppress files="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.MethodHandleReflectiveInvoker.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.http.rest.LengthValidatingInputStream.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.instrumentation.logging.LoggingEvent.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.JsonReader.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.JsonWriteContext.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
