@@ -223,7 +223,6 @@
               <suppressionsLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
               <headerLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
               <propertyExpansion>samedir=</propertyExpansion>
-              <encoding>UTF-8</encoding>
               <consoleOutput>true</consoleOutput>
               <includeTestSourceDirectory>true</includeTestSourceDirectory>
               <linkXRef>true</linkXRef>

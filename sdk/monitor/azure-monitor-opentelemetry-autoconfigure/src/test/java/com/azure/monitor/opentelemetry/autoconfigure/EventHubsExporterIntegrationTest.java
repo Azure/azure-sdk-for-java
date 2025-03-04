@@ -7,14 +7,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.FluxUtil;
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import com.azure.messaging.eventhubs.LoadBalancingStrategy;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.*;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.LocalStorageTelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +38,8 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
     private static final String CONNECTION_STRING = System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING");
     private static final String STORAGE_CONNECTION_STRING = System.getenv("STORAGE_CONNECTION_STRING");
     private static final String CONTAINER_NAME = System.getenv("STORAGE_CONTAINER_NAME");
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubsExporterIntegrationTest.class);
 
     private TokenCredential credential;
 
@@ -51,14 +54,23 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
         CountDownLatch exporterCountDown = new CountDownLatch(2);
         String spanName = "event-hubs-producer-testing";
         HttpPipelinePolicy validationPolicy = (context, next) -> {
-            Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
-                .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
-            asyncString.subscribe(value -> {
-                if (value.contains(spanName)) {
-                    exporterCountDown.countDown();
-                }
-                if (value.contains("EventHubs.send")) {
-                    exporterCountDown.countDown();
+            Mono<byte[]> asyncBytes = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+                .map(LocalStorageTelemetryPipelineListener::ungzip);
+            asyncBytes.subscribe(value -> {
+                List<TelemetryItem> telemetryItems = TestUtils.deserialize(value);
+                for (TelemetryItem telemetryItem : telemetryItems) {
+                    MonitorDomain monitorDomain = telemetryItem.getData().getBaseData();
+                    RemoteDependencyData remoteDependencyData = TestUtils.toRemoteDependencyData(monitorDomain);
+                    String remoteDependencyName = remoteDependencyData.getName();
+                    if (remoteDependencyName.contains(spanName)) {
+                        exporterCountDown.countDown();
+                        LOGGER.info("Count down " + spanName);
+                    } else if (remoteDependencyName.contains("EventHubs.send")) {
+                        exporterCountDown.countDown();
+                        LOGGER.info("Count down EventHubs.send");
+                    } else {
+                        LOGGER.info("remoteDependencyName = " + remoteDependencyName);
+                    }
                 }
             });
             return next.process();
