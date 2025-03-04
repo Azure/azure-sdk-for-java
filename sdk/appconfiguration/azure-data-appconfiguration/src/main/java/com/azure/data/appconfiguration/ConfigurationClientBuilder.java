@@ -274,7 +274,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
 
         if (tokenCredential != null) {
             // User token based policy
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, getDefaultScope(endpoint)));
         } else if (credentials != null) {
             // Use credentialS based policy
             policies.add(new ConfigurationCredentialsPolicy(credentials));
@@ -560,7 +560,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     private static final String APP_CONFIG_CHINA_HOST_NAME = "appconfig.azure.cn";
 
 
-    public String getDefaultScope(String endpoint) {
+    private String getDefaultScope(String endpoint) {
         if (audience == null || audience.toString().isEmpty()) {
             if (endpoint.endsWith(AZ_CONFIG_US_GOV_HOST_NAME) || endpoint.endsWith(APP_CONFIG_US_GOV_HOST_NAME)) {
                 return ConfigurationAudience.AzureGovernment + "/.default";

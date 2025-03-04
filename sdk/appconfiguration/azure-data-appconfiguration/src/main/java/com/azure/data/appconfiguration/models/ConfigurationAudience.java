@@ -7,6 +7,9 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
+/**
+ * Configuration Audience is used to specify the target audience for the Azure App Configuration service.
+ */
 public final class ConfigurationAudience extends ExpandableStringEnum<ConfigurationAudience> {
     public static final ConfigurationAudience AzureChina = fromString("https://appconfig.azure.cn");
     public static final ConfigurationAudience AzureGovernment = fromString("https://appconfig.azure.us");
