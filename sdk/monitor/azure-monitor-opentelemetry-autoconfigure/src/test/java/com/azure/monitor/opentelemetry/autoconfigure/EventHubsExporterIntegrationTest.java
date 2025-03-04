@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.*;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -79,9 +80,11 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             return next.process();
         };
         Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
+        String ehNamespace = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME");
+        String ehName = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_EVENT_HUB_NAME");
         EventHubProducerClient producer = new EventHubClientBuilder().credential(credential)
-            .fullyQualifiedNamespace("namespace")
-            .eventHubName("event-hub")
+            .fullyQualifiedNamespace(ehNamespace)
+            .eventHubName(ehName)
             .buildProducerClient();
 
         Span span = tracer.spanBuilder(spanName).startSpan();
