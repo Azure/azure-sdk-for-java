@@ -16,12 +16,12 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
 
   $SdkType = $Env:SDKTYPE
   if ($SdkType) {
-    Write-Host "SdkType env var was set to '$SdkType'"
+    Write-Verbose "SdkType env var was set to '$SdkType'"
   } else {
     $SdkType = "client"
-    Write-Host "SdkType env var was not set, default to 'client'"
+    Write-Verbose "SdkType env var was not set, default to 'client'"
   }
-  Write-Host "Processing SdkType=$SdkType"
+  Write-Verbose "Processing SdkType=$SdkType"
 
   $allPackageProps = @()
   $sdkRoot = Join-Path $RepoRoot "sdk"
