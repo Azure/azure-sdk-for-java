@@ -8,6 +8,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
@@ -119,6 +121,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         CertificateClientBuilder builder = new CertificateClientBuilder().vaultUrl(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .httpClient(httpClient);
 
         if (!interceptorManager.isLiveMode()) {
@@ -456,7 +459,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     public abstract void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion)
         throws IOException;
 
-    void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) throws IOException {
+    void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) {
         byte[] certificateContent = FAKE_PEM_CERTIFICATE.getBytes();
 
         String certificateName = testResourceNamer.randomName("importCertPem", 25);
