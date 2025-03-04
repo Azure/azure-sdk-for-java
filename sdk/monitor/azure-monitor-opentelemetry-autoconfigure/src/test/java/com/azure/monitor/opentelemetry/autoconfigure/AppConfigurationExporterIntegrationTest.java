@@ -102,9 +102,11 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
     }
 
     private ConfigurationClient getConfigurationClient() {
+        String endPoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2", FAKE_RESOURCE_ID);
+        System.out.println("endPoint = " + endPoint);
         return new ConfigurationClientBuilder().credential(credential)
             .endpoint(
-                Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2", FAKE_RESOURCE_ID))
+                endPoint)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
     }
