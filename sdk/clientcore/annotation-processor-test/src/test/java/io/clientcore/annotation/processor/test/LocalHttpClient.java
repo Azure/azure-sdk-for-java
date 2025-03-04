@@ -32,7 +32,7 @@ public final class LocalHttpClient implements HttpClient {
 
         return new MockHttpResponse(request, success ? 200 : 400) {
             @Override
-            public void close() throws IOException {
+            public void close() {
                 closeCalledOnResponse = true;
 
                 super.close();
