@@ -33,7 +33,7 @@ public class JdkHttpClientBuilder {
         + "include a dependency on io.clientcore:http-okhttp3.";
 
     /**
-     * Creates DefaultHttpClientBuilder.
+     * Creates JdkHttpClientBuilder.
      */
     public JdkHttpClientBuilder() {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
@@ -61,13 +61,13 @@ public class JdkHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.http.client.DefaultHttpClientBuilder.connectionTimeout#Duration -->
+     * <!-- src_embed io.clientcore.core.http.client.JdkHttpClientBuilder.connectionTimeout#Duration -->
      * <pre>
-     * HttpClient client = new DefaultHttpClientBuilder&#40;&#41;
+     * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
      *         .connectionTimeout&#40;Duration.ofSeconds&#40;250&#41;&#41; &#47;&#47; connection timeout of 250 seconds
      *         .build&#40;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.http.client.DefaultHttpClientBuilder.connectionTimeout#Duration -->
+     * <!-- end io.clientcore.core.http.client.JdkHttpClientBuilder.connectionTimeout#Duration -->
      *
      * The default connection timeout is 10 seconds.
      *
@@ -140,17 +140,17 @@ public class JdkHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.http.client.DefaultHttpClientBuilder.proxy#ProxyOptions -->
+     * <!-- src_embed io.clientcore.core.http.client.JdkHttpClientBuilder.proxy#ProxyOptions -->
      * <pre>
      * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
      * final int proxyPort = 9999; &#47;&#47; Proxy port
      * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
      *     new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
-     * HttpClient client = new DefaultHttpClientBuilder&#40;&#41;
+     * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
      *     .proxy&#40;proxyOptions&#41;
      *     .build&#40;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.http.client.DefaultHttpClientBuilder.proxy#ProxyOptions -->
+     * <!-- end io.clientcore.core.http.client.JdkHttpClientBuilder.proxy#ProxyOptions -->
      *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated {@link JdkHttpClientBuilder} object

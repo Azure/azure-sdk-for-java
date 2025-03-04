@@ -3,6 +3,7 @@
 ### 4.38.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added config option `spark.cosmos.read.responseContinuationTokenLimitInKb` to reduce query continuation token size. - See [PR 44480](https://github.com/Azure/azure-sdk-for-java/pull/44480)
 
 #### Breaking Changes
 

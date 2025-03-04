@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.models;
+package io.clientcore.core.models.binarydata;
 
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.implementation.util.JsonSerializer;
-import io.clientcore.core.utils.serializer.ObjectSerializer;
+import io.clientcore.core.models.Person;
+import io.clientcore.core.serialization.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

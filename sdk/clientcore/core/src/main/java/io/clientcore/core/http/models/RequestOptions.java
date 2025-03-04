@@ -104,7 +104,7 @@ import java.util.function.Consumer;
  *     .addRequestCallback&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
- *         .setHttpMethod&#40;HttpMethod.POST&#41;
+ *         .setMethod&#40;HttpMethod.POST&#41;
  *         .setBody&#40;requestBodyData&#41;
  *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
  * </pre>

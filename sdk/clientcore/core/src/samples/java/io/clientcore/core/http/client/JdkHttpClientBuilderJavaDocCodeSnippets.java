@@ -9,35 +9,35 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 
 /**
- * Code snippets for {@link DefaultHttpClientBuilder}
+ * Code snippets for {@link JdkHttpClientBuilder}
  */
 @SuppressWarnings("unused")
-public class DefaultHttpClientBuilderJavaDocCodeSnippets {
+public class JdkHttpClientBuilderJavaDocCodeSnippets {
     /**
      * Code snippet for simple http client instantiation.
      */
     public void simpleInstantiation() {
         // BEGIN: io.clientcore.core.http.client.instantiation-simple
-        HttpClient client = new DefaultHttpClientBuilder()
+        HttpClient client = new JdkHttpClientBuilder()
             .build();
         // END: io.clientcore.core.http.client.instantiation-simple
     }
 
     public void proxySample() {
-        // BEGIN: io.clientcore.core.http.client.DefaultHttpClientBuilder.proxy#ProxyOptions
+        // BEGIN: io.clientcore.core.http.client.JdkHttpClientBuilder.proxy#ProxyOptions
         final String proxyHost = "<proxy-host>"; // e.g. localhost
         final int proxyPort = 9999; // Proxy port
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
             new InetSocketAddress(proxyHost, proxyPort));
-        HttpClient client = new DefaultHttpClientBuilder()
+        HttpClient client = new JdkHttpClientBuilder()
             .proxy(proxyOptions)
             .build();
-        // END: io.clientcore.core.http.client.DefaultHttpClientBuilder.proxy#ProxyOptions
+        // END: io.clientcore.core.http.client.JdkHttpClientBuilder.proxy#ProxyOptions
     }
 
     public void proxyBasicAuthenticationSample() {
 
-        // BEGIN: io.clientcore.core.http.client.DefaultHttpClientBuilder#setProxyAuthenticator
+        // BEGIN: io.clientcore.core.http.client.JdkHttpClientBuilder#setProxyAuthenticator
         final String proxyHost = "<proxy-host>"; // e.g. localhost
         final int proxyPort = 9999; // Proxy port
         final String proxyUser = "<proxy-user>";
@@ -46,20 +46,20 @@ public class DefaultHttpClientBuilderJavaDocCodeSnippets {
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
                 new InetSocketAddress(proxyHost, proxyPort));
         proxyOptions = proxyOptions.setCredentials(proxyUser, proxyPassword);
-        HttpClient client = new DefaultHttpClientBuilder()
+        HttpClient client = new JdkHttpClientBuilder()
                 .proxy(proxyOptions)
                 .build();
-        // END: io.clientcore.core.http.client.DefaultHttpClientBuilder#setProxyAuthenticator
+        // END: io.clientcore.core.http.client.JdkHttpClientBuilder#setProxyAuthenticator
 
     }
 
     public void connectionTimeoutSample() {
 
-        // BEGIN: io.clientcore.core.http.client.DefaultHttpClientBuilder.connectionTimeout#Duration
-        HttpClient client = new DefaultHttpClientBuilder()
+        // BEGIN: io.clientcore.core.http.client.JdkHttpClientBuilder.connectionTimeout#Duration
+        HttpClient client = new JdkHttpClientBuilder()
                 .connectionTimeout(Duration.ofSeconds(250)) // connection timeout of 250 seconds
                 .build();
-        // END: io.clientcore.core.http.client.DefaultHttpClientBuilder.connectionTimeout#Duration
+        // END: io.clientcore.core.http.client.JdkHttpClientBuilder.connectionTimeout#Duration
 
     }
 }

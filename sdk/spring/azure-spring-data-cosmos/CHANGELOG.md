@@ -11,6 +11,11 @@
 
 #### Other Changes
 
+### 5.20.1 (2025-03-03)
+
+#### Other Changes
+* Upgrade `azure-sdk-bom` to 1.2.31.
+
 ### 5.20.0 (2025-02-12)
 
 #### Features Added
