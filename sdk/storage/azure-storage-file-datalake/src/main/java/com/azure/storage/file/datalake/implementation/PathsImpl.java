@@ -260,6 +260,8 @@ public final class PathsImpl {
             @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -286,6 +288,8 @@ public final class PathsImpl {
             @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -312,6 +316,8 @@ public final class PathsImpl {
             @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -338,6 +344,8 @@ public final class PathsImpl {
             @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -364,6 +372,8 @@ public final class PathsImpl {
             @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -390,6 +400,8 @@ public final class PathsImpl {
             @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -855,8 +867,10 @@ public final class PathsImpl {
             @HeaderParam("x-ms-encryption-key") String encryptionKey,
             @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
-            @QueryParam("flush") Boolean flush, @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("flush") Boolean flush, @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
@@ -874,8 +888,10 @@ public final class PathsImpl {
             @HeaderParam("x-ms-encryption-key") String encryptionKey,
             @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
-            @QueryParam("flush") Boolean flush, @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("flush") Boolean flush, @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
@@ -893,8 +909,10 @@ public final class PathsImpl {
             @HeaderParam("x-ms-encryption-key") String encryptionKey,
             @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
-            @QueryParam("flush") Boolean flush, @BodyParam("application/octet-stream") BinaryData body,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("flush") Boolean flush, @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
@@ -912,8 +930,10 @@ public final class PathsImpl {
             @HeaderParam("x-ms-encryption-key") String encryptionKey,
             @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
-            @QueryParam("flush") Boolean flush, @BodyParam("application/octet-stream") BinaryData body,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("flush") Boolean flush, @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
@@ -931,8 +951,10 @@ public final class PathsImpl {
             @HeaderParam("x-ms-encryption-key") String encryptionKey,
             @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
-            @QueryParam("flush") Boolean flush, @BodyParam("application/octet-stream") BinaryData body,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("flush") Boolean flush, @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
@@ -950,8 +972,10 @@ public final class PathsImpl {
             @HeaderParam("x-ms-encryption-key") String encryptionKey,
             @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
-            @QueryParam("flush") Boolean flush, @BodyParam("application/octet-stream") BinaryData body,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("flush") Boolean flush, @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
@@ -2229,6 +2253,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -2242,12 +2270,14 @@ public final class PathsImpl {
         PathUpdateAction action, PathSetAccessControlRecursiveMode mode, Flux<ByteBuffer> body, String requestId,
         Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag, Long position,
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
-        String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        String permissions, String acl, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
         return FluxUtil
             .withContext(context -> updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords,
                 continuation, forceFlag, position, retainUncommittedData, close, contentLength, properties, owner,
-                group, permissions, acl, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context))
+                group, permissions, acl, structuredBodyType, structuredContentLength, pathHttpHeaders,
+                leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -2321,6 +2351,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -2335,7 +2369,8 @@ public final class PathsImpl {
         PathUpdateAction action, PathSetAccessControlRecursiveMode mode, Flux<ByteBuffer> body, String requestId,
         Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag, Long position,
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
-        String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        String permissions, String acl, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String accept = "application/json";
         byte[] contentMd5Internal = null;
@@ -2403,7 +2438,8 @@ public final class PathsImpl {
                 this.client.getVersion(), action, maxRecords, continuation, mode, forceFlag, position,
                 retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl, contentType,
                 contentDisposition, contentEncoding, contentLanguage, properties, owner, group, permissions, acl,
-                ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept, context)
+                ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, structuredBodyType,
+                structuredContentLength, body, accept, context)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -2477,6 +2513,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -2490,11 +2530,12 @@ public final class PathsImpl {
         PathSetAccessControlRecursiveMode mode, Flux<ByteBuffer> body, String requestId, Integer timeout,
         Integer maxRecords, String continuation, Boolean forceFlag, Long position, Boolean retainUncommittedData,
         Boolean close, Long contentLength, String properties, String owner, String group, String permissions,
-        String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
-        ModifiedAccessConditions modifiedAccessConditions) {
+        String acl, String structuredBodyType, Long structuredContentLength, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
-            pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions)
+            structuredBodyType, structuredContentLength, pathHttpHeaders, leaseAccessConditions,
+            modifiedAccessConditions)
                 .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2569,6 +2610,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -2583,11 +2628,13 @@ public final class PathsImpl {
         PathSetAccessControlRecursiveMode mode, Flux<ByteBuffer> body, String requestId, Integer timeout,
         Integer maxRecords, String continuation, Boolean forceFlag, Long position, Boolean retainUncommittedData,
         Boolean close, Long contentLength, String properties, String owner, String group, String permissions,
-        String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
-        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        String acl, String structuredBodyType, Long structuredContentLength, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
+        Context context) {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
-            pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context)
+            structuredBodyType, structuredContentLength, pathHttpHeaders, leaseAccessConditions,
+            modifiedAccessConditions, context)
                 .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2662,6 +2709,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -2675,13 +2726,14 @@ public final class PathsImpl {
         PathUpdateAction action, PathSetAccessControlRecursiveMode mode, Flux<ByteBuffer> body, String requestId,
         Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag, Long position,
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
-        String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        String permissions, String acl, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
         return FluxUtil
-            .withContext(
-                context -> updateNoCustomHeadersWithResponseAsync(action, mode, body, requestId, timeout, maxRecords,
-                    continuation, forceFlag, position, retainUncommittedData, close, contentLength, properties, owner,
-                    group, permissions, acl, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context))
+            .withContext(context -> updateNoCustomHeadersWithResponseAsync(action, mode, body, requestId, timeout,
+                maxRecords, continuation, forceFlag, position, retainUncommittedData, close, contentLength, properties,
+                owner, group, permissions, acl, structuredBodyType, structuredContentLength, pathHttpHeaders,
+                leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -2755,6 +2807,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -2769,7 +2825,8 @@ public final class PathsImpl {
         PathUpdateAction action, PathSetAccessControlRecursiveMode mode, Flux<ByteBuffer> body, String requestId,
         Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag, Long position,
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
-        String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        String permissions, String acl, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String accept = "application/json";
         byte[] contentMd5Internal = null;
@@ -2837,7 +2894,8 @@ public final class PathsImpl {
                 timeout, this.client.getVersion(), action, maxRecords, continuation, mode, forceFlag, position,
                 retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl, contentType,
                 contentDisposition, contentEncoding, contentLanguage, properties, owner, group, permissions, acl,
-                ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept, context)
+                ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, structuredBodyType,
+                structuredContentLength, body, accept, context)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -2911,6 +2969,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -2924,12 +2986,14 @@ public final class PathsImpl {
         PathUpdateAction action, PathSetAccessControlRecursiveMode mode, BinaryData body, String requestId,
         Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag, Long position,
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
-        String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        String permissions, String acl, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
         return FluxUtil
             .withContext(context -> updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords,
                 continuation, forceFlag, position, retainUncommittedData, close, contentLength, properties, owner,
-                group, permissions, acl, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context))
+                group, permissions, acl, structuredBodyType, structuredContentLength, pathHttpHeaders,
+                leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -3003,6 +3067,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -3017,7 +3085,8 @@ public final class PathsImpl {
         PathUpdateAction action, PathSetAccessControlRecursiveMode mode, BinaryData body, String requestId,
         Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag, Long position,
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
-        String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        String permissions, String acl, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String accept = "application/json";
         byte[] contentMd5Internal = null;
@@ -3085,7 +3154,8 @@ public final class PathsImpl {
                 this.client.getVersion(), action, maxRecords, continuation, mode, forceFlag, position,
                 retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl, contentType,
                 contentDisposition, contentEncoding, contentLanguage, properties, owner, group, permissions, acl,
-                ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept, context)
+                ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, structuredBodyType,
+                structuredContentLength, body, accept, context)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -3159,6 +3229,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -3172,11 +3246,12 @@ public final class PathsImpl {
         PathSetAccessControlRecursiveMode mode, BinaryData body, String requestId, Integer timeout, Integer maxRecords,
         String continuation, Boolean forceFlag, Long position, Boolean retainUncommittedData, Boolean close,
         Long contentLength, String properties, String owner, String group, String permissions, String acl,
-        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
-        ModifiedAccessConditions modifiedAccessConditions) {
+        String structuredBodyType, Long structuredContentLength, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
-            pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions)
+            structuredBodyType, structuredContentLength, pathHttpHeaders, leaseAccessConditions,
+            modifiedAccessConditions)
                 .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -3251,6 +3326,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -3265,11 +3344,13 @@ public final class PathsImpl {
         PathSetAccessControlRecursiveMode mode, BinaryData body, String requestId, Integer timeout, Integer maxRecords,
         String continuation, Boolean forceFlag, Long position, Boolean retainUncommittedData, Boolean close,
         Long contentLength, String properties, String owner, String group, String permissions, String acl,
-        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
-        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        String structuredBodyType, Long structuredContentLength, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
+        Context context) {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
-            pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context)
+            structuredBodyType, structuredContentLength, pathHttpHeaders, leaseAccessConditions,
+            modifiedAccessConditions, context)
                 .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -3344,6 +3425,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -3357,13 +3442,14 @@ public final class PathsImpl {
         PathUpdateAction action, PathSetAccessControlRecursiveMode mode, BinaryData body, String requestId,
         Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag, Long position,
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
-        String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        String permissions, String acl, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
         return FluxUtil
-            .withContext(
-                context -> updateNoCustomHeadersWithResponseAsync(action, mode, body, requestId, timeout, maxRecords,
-                    continuation, forceFlag, position, retainUncommittedData, close, contentLength, properties, owner,
-                    group, permissions, acl, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context))
+            .withContext(context -> updateNoCustomHeadersWithResponseAsync(action, mode, body, requestId, timeout,
+                maxRecords, continuation, forceFlag, position, retainUncommittedData, close, contentLength, properties,
+                owner, group, permissions, acl, structuredBodyType, structuredContentLength, pathHttpHeaders,
+                leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -3437,6 +3523,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -3451,7 +3541,8 @@ public final class PathsImpl {
         PathUpdateAction action, PathSetAccessControlRecursiveMode mode, BinaryData body, String requestId,
         Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag, Long position,
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
-        String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        String permissions, String acl, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String accept = "application/json";
         byte[] contentMd5Internal = null;
@@ -3519,7 +3610,8 @@ public final class PathsImpl {
                 timeout, this.client.getVersion(), action, maxRecords, continuation, mode, forceFlag, position,
                 retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl, contentType,
                 contentDisposition, contentEncoding, contentLanguage, properties, owner, group, permissions, acl,
-                ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept, context)
+                ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, structuredBodyType,
+                structuredContentLength, body, accept, context)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -3593,6 +3685,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -3607,7 +3703,8 @@ public final class PathsImpl {
         PathUpdateAction action, PathSetAccessControlRecursiveMode mode, BinaryData body, String requestId,
         Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag, Long position,
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
-        String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        String permissions, String acl, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         try {
             final String accept = "application/json";
@@ -3675,8 +3772,8 @@ public final class PathsImpl {
                 requestId, timeout, this.client.getVersion(), action, maxRecords, continuation, mode, forceFlag,
                 position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl,
                 contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner, group,
-                permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body,
-                accept, context);
+                permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                structuredBodyType, structuredContentLength, body, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
             throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
@@ -3752,6 +3849,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -3764,12 +3865,14 @@ public final class PathsImpl {
     public SetAccessControlRecursiveResponse update(PathUpdateAction action, PathSetAccessControlRecursiveMode mode,
         BinaryData body, String requestId, Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag,
         Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String properties,
-        String owner, String group, String permissions, String acl, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+        String owner, String group, String permissions, String acl, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions) {
         try {
             return updateWithResponse(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
                 position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
-                pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, Context.NONE).getValue();
+                structuredBodyType, structuredContentLength, pathHttpHeaders, leaseAccessConditions,
+                modifiedAccessConditions, Context.NONE).getValue();
         } catch (DataLakeStorageExceptionInternal internalException) {
             throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
@@ -3845,6 +3948,10 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
      * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
      * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -3859,8 +3966,9 @@ public final class PathsImpl {
         PathSetAccessControlRecursiveMode mode, BinaryData body, String requestId, Integer timeout, Integer maxRecords,
         String continuation, Boolean forceFlag, Long position, Boolean retainUncommittedData, Boolean close,
         Long contentLength, String properties, String owner, String group, String permissions, String acl,
-        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
-        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        String structuredBodyType, Long structuredContentLength, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
+        Context context) {
         try {
             final String accept = "application/json";
             byte[] contentMd5Internal = null;
@@ -3928,7 +4036,7 @@ public final class PathsImpl {
                 mode, forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
                 cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner,
                 group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                body, accept, context);
+                structuredBodyType, structuredContentLength, body, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
             throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
@@ -7604,6 +7712,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -7615,12 +7727,13 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendDataWithResponseAsync(Flux<ByteBuffer> body,
         Long position, Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
-        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
+        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo) {
         return FluxUtil
             .withContext(context -> appendDataWithResponseAsync(body, position, timeout, contentLength,
                 transactionalContentCrc64, leaseAction, leaseDuration, proposedLeaseId, requestId, flush,
-                pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
+                structuredBodyType, structuredContentLength, pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -7651,6 +7764,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -7663,8 +7780,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendDataWithResponseAsync(Flux<ByteBuffer> body,
         Long position, Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
-        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
+        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo, Context context) {
         final String action = "append";
         final String accept = "application/json";
         byte[] transactionalContentHashInternal = null;
@@ -7698,7 +7816,8 @@ public final class PathsImpl {
             .appendData(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), action, position,
                 timeout, contentLength, transactionalContentHashConverted, transactionalContentCrc64Converted, leaseId,
                 leaseAction, leaseDuration, proposedLeaseId, requestId, this.client.getVersion(), encryptionKey,
-                encryptionKeySha256, encryptionAlgorithm, flush, body, accept, context)
+                encryptionKeySha256, encryptionAlgorithm, flush, structuredBodyType, structuredContentLength, body,
+                accept, context)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -7729,6 +7848,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -7740,58 +7863,11 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> appendDataAsync(Flux<ByteBuffer> body, Long position, Integer timeout, Long contentLength,
         byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration, String proposedLeaseId,
-        String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
-        CpkInfo cpkInfo) {
+        String requestId, Boolean flush, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
-            leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
-            cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Append data to the file.
-     *
-     * @param body Initial data.
-     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
-     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
-     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
-     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
-     * position parameter must be specified and equal to the length of the file after all data has been written, and
-     * there must not be a request entity body included with the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
-     * of the request content in bytes for "Append Data".
-     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
-     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
-     * "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
-     * operation &amp; release the lease once operation is done.
-     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
-     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
-     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
-     * string formats.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param flush If file should be flushed after the append.
-     * @param pathHttpHeaders Parameter group.
-     * @param leaseAccessConditions Parameter group.
-     * @param cpkInfo Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> appendDataAsync(Flux<ByteBuffer> body, Long position, Integer timeout, Long contentLength,
-        byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration, String proposedLeaseId,
-        String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
-        CpkInfo cpkInfo, Context context) {
-        return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
-            leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
-            cpkInfo, context)
+            leaseAction, leaseDuration, proposedLeaseId, requestId, flush, structuredBodyType, structuredContentLength,
+            pathHttpHeaders, leaseAccessConditions, cpkInfo)
                 .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -7823,6 +7899,63 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> appendDataAsync(Flux<ByteBuffer> body, Long position, Integer timeout, Long contentLength,
+        byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration, String proposedLeaseId,
+        String requestId, Boolean flush, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo,
+        Context context) {
+        return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
+            leaseAction, leaseDuration, proposedLeaseId, requestId, flush, structuredBodyType, structuredContentLength,
+            pathHttpHeaders, leaseAccessConditions, cpkInfo, context)
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Append data to the file.
+     *
+     * @param body Initial data.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     * "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     * operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -7834,12 +7967,13 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendDataNoCustomHeadersWithResponseAsync(Flux<ByteBuffer> body, Long position,
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
-        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
+        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo) {
         return FluxUtil
             .withContext(context -> appendDataNoCustomHeadersWithResponseAsync(body, position, timeout, contentLength,
                 transactionalContentCrc64, leaseAction, leaseDuration, proposedLeaseId, requestId, flush,
-                pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
+                structuredBodyType, structuredContentLength, pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -7870,6 +8004,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -7882,8 +8020,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendDataNoCustomHeadersWithResponseAsync(Flux<ByteBuffer> body, Long position,
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
-        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
+        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo, Context context) {
         final String action = "append";
         final String accept = "application/json";
         byte[] transactionalContentHashInternal = null;
@@ -7917,7 +8056,8 @@ public final class PathsImpl {
             .appendDataNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), action,
                 position, timeout, contentLength, transactionalContentHashConverted, transactionalContentCrc64Converted,
                 leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId, this.client.getVersion(),
-                encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept, context)
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, structuredBodyType,
+                structuredContentLength, body, accept, context)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -7948,6 +8088,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -7959,12 +8103,13 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendDataWithResponseAsync(BinaryData body, Long position,
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
-        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
+        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo) {
         return FluxUtil
             .withContext(context -> appendDataWithResponseAsync(body, position, timeout, contentLength,
                 transactionalContentCrc64, leaseAction, leaseDuration, proposedLeaseId, requestId, flush,
-                pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
+                structuredBodyType, structuredContentLength, pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -7995,6 +8140,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -8007,8 +8156,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendDataWithResponseAsync(BinaryData body, Long position,
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
-        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
+        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo, Context context) {
         final String action = "append";
         final String accept = "application/json";
         byte[] transactionalContentHashInternal = null;
@@ -8042,7 +8192,8 @@ public final class PathsImpl {
             .appendData(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), action, position,
                 timeout, contentLength, transactionalContentHashConverted, transactionalContentCrc64Converted, leaseId,
                 leaseAction, leaseDuration, proposedLeaseId, requestId, this.client.getVersion(), encryptionKey,
-                encryptionKeySha256, encryptionAlgorithm, flush, body, accept, context)
+                encryptionKeySha256, encryptionAlgorithm, flush, structuredBodyType, structuredContentLength, body,
+                accept, context)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -8073,6 +8224,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -8084,58 +8239,11 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> appendDataAsync(BinaryData body, Long position, Integer timeout, Long contentLength,
         byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration, String proposedLeaseId,
-        String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
-        CpkInfo cpkInfo) {
+        String requestId, Boolean flush, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
-            leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
-            cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Append data to the file.
-     *
-     * @param body Initial data.
-     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
-     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
-     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
-     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
-     * position parameter must be specified and equal to the length of the file after all data has been written, and
-     * there must not be a request entity body included with the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
-     * of the request content in bytes for "Append Data".
-     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
-     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
-     * "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
-     * operation &amp; release the lease once operation is done.
-     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
-     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
-     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
-     * string formats.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param flush If file should be flushed after the append.
-     * @param pathHttpHeaders Parameter group.
-     * @param leaseAccessConditions Parameter group.
-     * @param cpkInfo Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> appendDataAsync(BinaryData body, Long position, Integer timeout, Long contentLength,
-        byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration, String proposedLeaseId,
-        String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
-        CpkInfo cpkInfo, Context context) {
-        return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
-            leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
-            cpkInfo, context)
+            leaseAction, leaseDuration, proposedLeaseId, requestId, flush, structuredBodyType, structuredContentLength,
+            pathHttpHeaders, leaseAccessConditions, cpkInfo)
                 .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -8167,6 +8275,63 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> appendDataAsync(BinaryData body, Long position, Integer timeout, Long contentLength,
+        byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration, String proposedLeaseId,
+        String requestId, Boolean flush, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo,
+        Context context) {
+        return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
+            leaseAction, leaseDuration, proposedLeaseId, requestId, flush, structuredBodyType, structuredContentLength,
+            pathHttpHeaders, leaseAccessConditions, cpkInfo, context)
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Append data to the file.
+     *
+     * @param body Initial data.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     * "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     * operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -8178,12 +8343,13 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendDataNoCustomHeadersWithResponseAsync(BinaryData body, Long position,
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
-        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
+        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo) {
         return FluxUtil
             .withContext(context -> appendDataNoCustomHeadersWithResponseAsync(body, position, timeout, contentLength,
                 transactionalContentCrc64, leaseAction, leaseDuration, proposedLeaseId, requestId, flush,
-                pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
+                structuredBodyType, structuredContentLength, pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -8214,6 +8380,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -8226,8 +8396,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendDataNoCustomHeadersWithResponseAsync(BinaryData body, Long position,
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
-        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
+        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo, Context context) {
         final String action = "append";
         final String accept = "application/json";
         byte[] transactionalContentHashInternal = null;
@@ -8261,7 +8432,8 @@ public final class PathsImpl {
             .appendDataNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), action,
                 position, timeout, contentLength, transactionalContentHashConverted, transactionalContentCrc64Converted,
                 leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId, this.client.getVersion(),
-                encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept, context)
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, structuredBodyType,
+                structuredContentLength, body, accept, context)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -8292,6 +8464,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -8304,8 +8480,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<PathsAppendDataHeaders, Void> appendDataWithResponse(BinaryData body, Long position,
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
-        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
+        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo, Context context) {
         try {
             final String action = "append";
             final String accept = "application/json";
@@ -8339,8 +8516,8 @@ public final class PathsImpl {
             return service.appendDataSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                 action, position, timeout, contentLength, transactionalContentHashConverted,
                 transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
-                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
-                context);
+                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush,
+                structuredBodyType, structuredContentLength, body, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
             throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
@@ -8373,6 +8550,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -8383,11 +8564,11 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void appendData(BinaryData body, Long position, Integer timeout, Long contentLength,
         byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration, String proposedLeaseId,
-        String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
-        CpkInfo cpkInfo) {
+        String requestId, Boolean flush, String structuredBodyType, Long structuredContentLength,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
         appendDataWithResponse(body, position, timeout, contentLength, transactionalContentCrc64, leaseAction,
-            leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions, cpkInfo,
-            Context.NONE);
+            leaseDuration, proposedLeaseId, requestId, flush, structuredBodyType, structuredContentLength,
+            pathHttpHeaders, leaseAccessConditions, cpkInfo, Context.NONE);
     }
 
     /**
@@ -8417,6 +8598,10 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -8429,8 +8614,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> appendDataNoCustomHeadersWithResponse(BinaryData body, Long position, Integer timeout,
         Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration,
-        String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
-        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
+        String proposedLeaseId, String requestId, Boolean flush, String structuredBodyType,
+        Long structuredContentLength, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo, Context context) {
         try {
             final String action = "append";
             final String accept = "application/json";
@@ -8464,8 +8650,8 @@ public final class PathsImpl {
             return service.appendDataNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
                 transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
-                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
-                context);
+                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush,
+                structuredBodyType, structuredContentLength, body, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
             throw ModelHelper.mapToDataLakeStorageException(internalException);
         }

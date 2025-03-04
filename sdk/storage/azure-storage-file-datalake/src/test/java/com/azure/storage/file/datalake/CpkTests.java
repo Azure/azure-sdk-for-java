@@ -8,6 +8,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -152,14 +153,13 @@ public class CpkTests extends DataLakeTestBase {
     }
 
     @Test
-    public void pathSetEncryptionContext() {
+    public void pathGetPropertiesWithoutCorrectCPK() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions();
         options.setEncryptionContext("encryption-context");
         cpkFile.createWithResponse(options, null, null);
 
-        // The getStatus API returns the System defined properties of the Path. The encryption key is not required for
-        // this API.
-        Response<PathProperties> response
+        // The encryption key is not required for this API as the getStatus query parameter is used in the request.
+        Response<PathSystemProperties> response
             = cpkFile.getCustomerProvidedKeyClient(null).getSystemPropertiesWithResponse(null, null, null);
 
         assertEquals(200, response.getStatusCode());

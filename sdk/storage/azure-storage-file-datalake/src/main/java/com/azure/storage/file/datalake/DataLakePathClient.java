@@ -54,6 +54,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
@@ -1550,8 +1551,56 @@ public class DataLakePathClient {
         }, LOGGER);
     }
 
+    /**
+     * Returns the system properties for a resource by using the getStatus query parameter.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.getSystemProperties -->
+     * <pre>
+     * PathSystemProperties response = client.getSystemProperties&#40;&#41;;
+     * System.out.printf&#40;&quot;Is server encrypted: %s&quot;, response.isServerEncrypted&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.getSystemProperties -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/get-properties">Azure Docs</a></p>
+     *
+     * @return The resource system properties.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PathProperties> getSystemPropertiesWithResponse(PathGetSystemPropertiesOptions options,
+    public PathSystemProperties getSystemProperties() {
+        return getSystemPropertiesWithResponse(null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Returns the system properties for a resource by using the getStatus query parameter.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.getSystemPropertiesWithResponse#PathGetSystemPropertiesOptions-Duration-Context -->
+     * <pre>
+     * PathGetSystemPropertiesOptions options = new PathGetSystemPropertiesOptions&#40;&#41;.setRequestConditions&#40;
+     *     new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;;
+     *
+     * Response&lt;PathSystemProperties&gt; response = client.getSystemPropertiesWithResponse&#40;options, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * PathSystemProperties systemProperties = response.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Is server encrypted: %s&quot;, systemProperties.isServerEncrypted&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.getSystemPropertiesWithResponse#PathGetSystemPropertiesOptions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/get-properties">Azure Docs</a></p>
+     *
+     * @param options {@link PathGetSystemPropertiesOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the resource system properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PathSystemProperties> getSystemPropertiesWithResponse(PathGetSystemPropertiesOptions options,
         Duration timeout, Context context) {
         options = options == null ? new PathGetSystemPropertiesOptions() : options;
         Context finalContext = context == null ? Context.NONE : context;
