@@ -35,8 +35,7 @@ public interface AnnotationJavadocCodesnippets {
             + "{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}",
             returnValueWireType = VirtualMachine.class)
         VirtualMachine createOrUpdate(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName,
-                                      @PathParam("subscriptionId") String subscriptionId,
-                                      @BodyParam("application/json") VirtualMachine vm);
+            @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") VirtualMachine vm);
         // END: io.clientcore.core.annotation.http.BodyParam.class1
 
         // BEGIN: io.clientcore.core.annotation.http.BodyParam.class2

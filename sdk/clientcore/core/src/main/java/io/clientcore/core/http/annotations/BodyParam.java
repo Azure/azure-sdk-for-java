@@ -25,8 +25,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     + &quot;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.Compute&#47;virtualMachines&#47;&#123;vmName&#125;&quot;,
  *     returnValueWireType = VirtualMachine.class&#41;
  * VirtualMachine createOrUpdate&#40;&#64;PathParam&#40;&quot;resourceGroupName&quot;&#41; String rgName, &#64;PathParam&#40;&quot;vmName&quot;&#41; String vmName,
- *                               &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId,
- *                               &#64;BodyParam&#40;&quot;application&#47;json&quot;&#41; VirtualMachine vm&#41;;
+ *     &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId, &#64;BodyParam&#40;&quot;application&#47;json&quot;&#41; VirtualMachine vm&#41;;
  * </pre>
  * <!-- end io.clientcore.core.annotation.http.BodyParam.class1 -->
  *
