@@ -35,6 +35,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -44,7 +45,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -710,6 +710,17 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         };
     }
 
+    // testPpafWithWriteFailoverWithEligibleErrorStatusCodes does the following:
+    // for DIRECT connection mode,
+    //  an availability failure (410, 503, 408) or write forbidden failure (403/3) is injected
+    //  for a given partitionKeyRange and region through mocking
+    //  the first operation execution for a given operation type is expected to see failures and then failover (403/3s & 503s are retried and 408s just see the operation fail)
+    //  the second operation execution should see the request go straight away to the failed over region
+    // for GATEWAY connection mode,
+    //  an availability failure (503, 408), write forbidden failure (403/3) and I/O failures are injected
+    //  for a given region through mocking
+    //  the first operation execution for a given operation type is expected to see failures and then failover (403/3s & 503s are retried and 408s just see the operation fail)
+    //  the second operation execution should see the request go straight away to the failed over region
     @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
         String testType,
@@ -771,7 +782,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
                 String regionWithIssues = preferredRegions.get(0);
-                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues));
+                RegionalRoutingContext regionalRoutingContextWithIssues = new RegionalRoutingContext(new URI(readableRegionNameToEndpoint.get(regionWithIssues)));
 
                 ReflectionUtils.setTransportClient(storeReader, transportClientMock);
                 ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
@@ -785,7 +796,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 setupTransportClientToThrowCosmosException(
                     transportClientMock,
                     partitionKeyRangeWithIssues,
-                    locationEndpointWithIssues,
+                    regionalRoutingContextWithIssues,
                     cosmosException);
 
                 TestItem testItem = TestItem.createNewItem();
@@ -890,7 +901,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
     private void setupTransportClientToThrowCosmosException(
         TransportClient transportClientMock,
         PartitionKeyRange partitionKeyRange,
-        URI locationEndpointToRoute,
+        RegionalRoutingContext regionalRoutingContextToRoute,
         CosmosException cosmosException) {
 
         Mockito.when(
@@ -900,7 +911,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                         argument.requestContext.resolvedPartitionKeyRange
                             .getId()
                             .equals(partitionKeyRange.getId()) &&
-                            argument.requestContext.locationEndpointToRoute.equals(locationEndpointToRoute))))
+                            argument.requestContext.regionalRoutingContextToRoute.equals(regionalRoutingContextToRoute))))
             .thenReturn(Mono.error(cosmosException));
     }
 
@@ -1382,7 +1393,6 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         public TestItem createdTestItem;
         public CosmosItemRequestOptions itemRequestOptions;
         public CosmosQueryRequestOptions queryRequestOptions;
-        public CosmosReadManyRequestOptions readManyRequestOptions;
         public CosmosItemRequestOptions patchItemRequestOptions;
         public FeedRange feedRangeToDrainForChangeFeed;
         public FeedRange feedRangeForQuery;

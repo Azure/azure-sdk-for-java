@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -87,32 +88,32 @@ public class GlobalEndpointManager implements AutoCloseable {
         startRefreshLocationTimerAsync(true).block(maxInitializationTime);
     }
 
-    public UnmodifiableList<URI> getReadEndpoints() {
+    public UnmodifiableList<RegionalRoutingContext> getReadEndpoints() {
         // readonly
         return this.locationCache.getReadEndpoints();
     }
 
-    public UnmodifiableList<URI> getWriteEndpoints() {
+    public UnmodifiableList<RegionalRoutingContext> getWriteEndpoints() {
         //readonly
         return this.locationCache.getWriteEndpoints();
     }
 
-    public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
         // readonly
         return this.locationCache.getApplicableReadEndpoints(request);
     }
 
-    public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
         //readonly
         return this.locationCache.getApplicableWriteEndpoints(request);
     }
 
-    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableReadEndpoints(List<String> excludedRegions) {
         // readonly
         return this.locationCache.getApplicableReadEndpoints(excludedRegions, Collections.emptyList());
     }
 
-    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableWriteEndpoints(List<String> excludedRegions) {
         //readonly
         return this.locationCache.getApplicableWriteEndpoints(excludedRegions, Collections.emptyList());
     }
@@ -123,6 +124,14 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public List<URI> getAvailableWriteEndpoints() {
         return this.locationCache.getAvailableWriteEndpoints();
+    }
+
+    public List<RegionalRoutingContext> getAvailableReadRoutingContexts() {
+        return this.locationCache.getAvailableReadRegionalRoutingContexts();
+    }
+
+    public List<RegionalRoutingContext> getAvailableWriteRoutingContexts() {
+        return this.locationCache.getAvailableWriteRegionalRoutingContexts();
     }
 
     public static Mono<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
@@ -145,13 +154,14 @@ public class GlobalEndpointManager implements AutoCloseable {
                 });
     }
 
-    public URI resolveServiceEndpoint(RxDocumentServiceRequest request) {
-        URI serviceEndpoint = this.locationCache.resolveServiceEndpoint(request);
+    public RegionalRoutingContext resolveServiceEndpoint(RxDocumentServiceRequest request) {
+        RegionalRoutingContext serviceEndpoints = this.locationCache.resolveServiceEndpoint(request);
         if (request.faultInjectionRequestContext != null) {
-            request.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoint);
+            // TODO: integrate thin client into fault injection
+            request.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoints.getGatewayRegionalEndpoint());
         }
 
-        return serviceEndpoint;
+        return serviceEndpoints;
     }
 
     public URI resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {

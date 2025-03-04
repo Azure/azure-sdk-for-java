@@ -4,9 +4,9 @@
 package io.clientcore.core.models;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
 import io.clientcore.core.implementation.util.JsonSerializer;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.utils.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

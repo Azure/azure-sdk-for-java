@@ -11,10 +11,10 @@ import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -133,19 +133,19 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resolvedCollectionRid);
-        URI failedLocation = request.requestContext.locationEndpointToRoute;
+        RegionalRoutingContext failedRegionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
 
-        if (failedLocation == null) {
+        if (failedRegionalRoutingContext == null) {
             return false;
         }
 
         PartitionLevelFailoverInfo partitionLevelFailoverInfo
-            = this.partitionKeyRangeToLocation.computeIfAbsent(partitionKeyRangeWrapper, partitionKeyRangeWrapper1 -> new PartitionLevelFailoverInfo(failedLocation, this.globalEndpointManager));
+            = this.partitionKeyRangeToLocation.computeIfAbsent(partitionKeyRangeWrapper, partitionKeyRangeWrapper1 -> new PartitionLevelFailoverInfo(failedRegionalRoutingContext, this.globalEndpointManager));
 
         // Rely on account-level read endpoints for new write region discovery
-        List<URI> accountLevelReadEndpoints = this.globalEndpointManager.getAvailableReadEndpoints();
+        List<RegionalRoutingContext> accountLevelReadRoutingContexts = this.globalEndpointManager.getAvailableReadRoutingContexts();
 
-        if (partitionLevelFailoverInfo.tryMoveToNextLocation(accountLevelReadEndpoints, failedLocation)) {
+        if (partitionLevelFailoverInfo.tryMoveToNextLocation(accountLevelReadRoutingContexts, failedRegionalRoutingContext)) {
 
             request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(partitionLevelFailoverInfo);
             return true;

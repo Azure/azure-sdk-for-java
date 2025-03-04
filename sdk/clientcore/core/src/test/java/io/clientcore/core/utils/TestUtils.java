@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
@@ -95,9 +95,7 @@ public final class TestUtils {
      * Reads an {@link InputStream} to completion returning its contents, using a read buffer.
      *
      * @param stream The stream to read.
-     *
      * @return The byte array representing its contents.
-     *
      * @throws IOException If an error happens during reading.
      */
     public static byte[] readStream(InputStream stream) throws IOException {
@@ -109,9 +107,7 @@ public final class TestUtils {
      *
      * @param stream The stream to read.
      * @param bufferSize The size of the read buffer.
-     *
      * @return The byte array representing its contents.
-     *
      * @throws IOException If an error happens during reading.
      */
     public static byte[] readStream(InputStream stream, int bufferSize) throws IOException {
@@ -130,9 +126,7 @@ public final class TestUtils {
      * Reads an {@link InputStream} to completion returning its contents, reading byte by byte.
      *
      * @param stream The stream to read.
-     *
      * @return The byte array representing its contents.
-     *
      * @throws IOException If an error happens during reading.
      */
     public static byte[] readStreamByteByByte(InputStream stream) throws IOException {
@@ -161,31 +155,11 @@ public final class TestUtils {
     }
 
     /**
-     * Creates a copy of the source byte array.
-     *
-     * @param source Array to make copy of.
-     *
-     * @return A copy of the array, or null if source was null.
-     */
-    public static byte[] cloneByteArray(byte[] source) {
-        if (source == null) {
-            return null;
-        }
-
-        byte[] copy = new byte[source.length];
-
-        System.arraycopy(source, 0, copy, 0, source.length);
-
-        return copy;
-    }
-
-    /**
      * Returns the first instance of the given class from an array of Objects.
      *
      * @param args Array of objects to search through to find the first instance of the given `clazz` type.
      * @param clazz The type trying to be found.
      * @param <T> Generic type
-     *
      * @return The first object of the desired type, otherwise null.
      */
     public static <T> T findFirstOfType(Object[] args, Class<T> clazz) {

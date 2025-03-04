@@ -7,6 +7,8 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility class for code generation.
@@ -14,7 +16,7 @@ import java.lang.reflect.Type;
 public final class CodegenUtil {
 
     /**
-     * Infer the type name from the return type string.
+     * Infers the parameterized type from the return type string.
      *
      * @param returnTypeString The return type string.
      * @return The inferred parameterized type.
@@ -24,33 +26,30 @@ public final class CodegenUtil {
         if (returnTypeString == null || returnTypeString.isEmpty()) {
             return null;
         }
+
+        // Extract raw type (before "<") and type arguments (inside "< >")
         int angleBracketIndex = returnTypeString.indexOf('<');
         if (angleBracketIndex == -1) {
-            return null;
+            return null; // Not a parameterized type
         }
+
         String rawTypeString = returnTypeString.substring(0, angleBracketIndex).trim();
         String typeArgumentsString
-            = returnTypeString.substring(angleBracketIndex + 1, returnTypeString.length() - 1).trim();
+            = returnTypeString.substring(angleBracketIndex + 1, returnTypeString.lastIndexOf('>')).trim();
+
         Class<?> rawType;
         try {
-            rawType = Class.forName(rawTypeString);
+            rawType = Class.forName(rawTypeString); // Load raw type (e.g., java.util.List)
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Raw type class not found: " + rawTypeString, e);
         }
-        String[] typeArgumentNames = typeArgumentsString.split(",");
-        Type[] typeArguments = new Type[typeArgumentNames.length];
-        for (int i = 0; i < typeArgumentNames.length; i++) {
-            try {
-                typeArguments[i] = Class.forName(typeArgumentNames[i].trim());
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return new ParameterizedType() {
 
+        List<Type> typeArguments = parseTypeArguments(typeArgumentsString);
+
+        return new ParameterizedType() {
             @Override
             public Type[] getActualTypeArguments() {
-                return typeArguments;
+                return typeArguments.toArray(new Type[0]);
             }
 
             @Override
@@ -63,6 +62,59 @@ public final class CodegenUtil {
                 return null;
             }
         };
+    }
+
+    /**
+     * Parses the type arguments from a string.
+     */
+    private static List<Type> parseTypeArguments(String typeArgumentsString) {
+        List<Type> typeArguments = new ArrayList<>();
+        List<String> extractedTypeNames = extractTypeNames(typeArgumentsString);
+
+        for (String typeName : extractedTypeNames) {
+            try {
+                // Recursively resolve parameterized types
+                if (typeName.contains("<")) {
+                    typeArguments.add(inferTypeNameFromReturnType(typeName));
+                } else {
+                    typeArguments.add(Class.forName(typeName.trim()));
+                }
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Type argument class not found: " + typeName, e);
+            }
+        }
+
+        return typeArguments;
+    }
+
+    /**
+     * Extracts type names, handling nested generics correctly.
+     */
+    private static List<String> extractTypeNames(String input) {
+        List<String> result = new ArrayList<>();
+        int depth = 0;
+        StringBuilder current = new StringBuilder();
+
+        for (char c : input.toCharArray()) {
+            if (c == '<') {
+                depth++;
+            }
+            if (c == '>') {
+                depth--;
+            }
+
+            if (c == ',' && depth == 0) {
+                result.add(current.toString().trim());
+                current.setLength(0);
+            } else {
+                current.append(c);
+            }
+        }
+        if (current.length() > 0) {
+            result.add(current.toString().trim());
+        }
+
+        return result;
     }
 
     /**

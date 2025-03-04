@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -206,8 +207,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         List<String> unavailableRegions = new ArrayList<>();
 
         if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
-            Map<URI, LocationSpecificHealthContext> locationEndpointToFailureMetricsForPartition =
+            Map<RegionalRoutingContext, LocationSpecificHealthContext> locationEndpointToFailureMetricsForPartition =
                 partitionLevelLocationUnavailabilityInfoSnapshot.locationEndpointToLocationSpecificContextForPartition;
+
+            for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> pair : locationEndpointToFailureMetricsForPartition.entrySet()) {
+                RegionalRoutingContext regionalRoutingContext = pair.getKey();
+
+                URI gatewayLocationEndpoint = regionalRoutingContext.getGatewayRegionalEndpoint();
 
             PriorityQueue<URI> unavailableEndpoints = new PriorityQueue<>((endpoint1, endpoint2) -> {
 
@@ -228,6 +234,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 LocationSpecificHealthContext locationSpecificHealthContext = pair.getValue();
 
                 if (locationSpecificHealthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
+                    unavailableRegions.add(this.globalEndpointManager.getRegionName(gatewayLocationEndpoint, operationType));
                     unavailableEndpoints.add(location);
                 }
             }
@@ -256,11 +263,11 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
                 if (partitionLevelLocationUnavailabilityInfo != null) {
 
-                    List<Pair<PartitionKeyRangeWrapper, Pair<URI, LocationSpecificHealthContext>>> locationToLocationSpecificHealthContextList = new ArrayList<>();
+                    List<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> locationToLocationSpecificHealthContextList = new ArrayList<>();
 
-                    for (Map.Entry<URI, LocationSpecificHealthContext> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
+                    for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
 
-                        URI locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
+                        RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
                         LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
 
                         if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
@@ -287,7 +294,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             .flatMap(locationToLocationSpecificHealthContextPair -> {
 
                 PartitionKeyRangeWrapper partitionKeyRangeWrapper = locationToLocationSpecificHealthContextPair.getLeft();
-                URI locationWithStaleUnavailabilityInfo = locationToLocationSpecificHealthContextPair.getRight().getLeft();
+                RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationSpecificHealthContextPair.getRight().getLeft();
 
                 PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
 
@@ -297,7 +304,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
                     if (globalAddressResolver != null) {
 
-                        GatewayAddressCache gatewayAddressCache = globalAddressResolver.getGatewayAddressCache(locationWithStaleUnavailabilityInfo);
+                        GatewayAddressCache gatewayAddressCache = globalAddressResolver.getGatewayAddressCache(locationWithStaleUnavailabilityInfo.getGatewayRegionalEndpoint());
 
                         if (gatewayAddressCache != null) {
 
@@ -406,12 +413,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 return false;
             }
 
-            UnmodifiableList<URI> applicableReadEndpoints = globalEndpointManager.getApplicableReadEndpoints(Collections.emptyList());
+            UnmodifiableList<RegionalRoutingContext> applicableReadEndpoints = globalEndpointManager.getApplicableReadEndpoints(Collections.emptyList());
 
             return applicableReadEndpoints != null && applicableReadEndpoints.size() > 1;
         }
 
-        UnmodifiableList<URI> applicableWriteEndpoints = globalEndpointManager.getApplicableWriteEndpoints(Collections.emptyList());
+        UnmodifiableList<RegionalRoutingContext> applicableWriteEndpoints = globalEndpointManager.getApplicableWriteEndpoints(Collections.emptyList());
 
         return applicableWriteEndpoints != null && applicableWriteEndpoints.size() > 1;
     }
@@ -428,7 +435,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
     private class PartitionLevelLocationUnavailabilityInfo {
 
-        private final ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition;
+        private final ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition;
         private final ConcurrentHashMap<String, LocationSpecificHealthContext> regionToLocationSpecificHealthContext;
         private final LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
 
@@ -440,7 +447,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
         private boolean handleException(
             PartitionKeyRangeWrapper partitionKeyRangeWrapper,
-            URI locationWithException,
+            RegionalRoutingContext locationWithException,
             boolean isReadOnlyRequest) {
 
             AtomicBoolean isExceptionThresholdBreached = new AtomicBoolean(false);
@@ -474,7 +481,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         locationAsKey,
                         GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
                             .this.globalEndpointManager
-                            .getRegionName(locationAsKey, isReadOnlyRequest ? OperationType.Read : OperationType.Create));
+                            .getRegionName(locationAsKey.getGatewayRegionalEndpoint(), isReadOnlyRequest ? OperationType.Read : OperationType.Create));
                 }
 
                 String region = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.locationToRegion.get(locationAsKey);
@@ -489,8 +496,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
         private void handleSuccess(
             PartitionKeyRangeWrapper partitionKeyRangeWrapper,
-            String collectionLink,
-            URI succeededLocation,
+            RegionalRoutingContext succeededLocation,
             boolean isReadOnlyRequest) {
 
             this.locationEndpointToLocationSpecificContextForPartition.compute(succeededLocation, (locationAsKey, locationSpecificContextAsVal) -> {
@@ -524,7 +530,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         locationAsKey,
                         GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
                             .this.globalEndpointManager
-                            .getRegionName(locationAsKey, isReadOnlyRequest ? OperationType.Read : OperationType.Create));
+                            .getRegionName(locationAsKey.getGatewayRegionalEndpoint(), isReadOnlyRequest ? OperationType.Read : OperationType.Create));
                 }
 
                 String region = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.locationToRegion.get(locationAsKey);
@@ -534,9 +540,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             });
         }
 
-        public boolean areLocationsAvailableForPartitionKeyRange(List<URI> availableLocationsAtAccountLevel) {
+        public boolean areLocationsAvailableForPartitionKeyRange(List<RegionalRoutingContext> availableLocationsAtAccountLevel) {
 
-            for (URI availableLocation : availableLocationsAtAccountLevel) {
+            for (RegionalRoutingContext availableLocation : availableLocationsAtAccountLevel) {
                 if (!this.locationEndpointToLocationSpecificContextForPartition.containsKey(availableLocation)) {
                     return true;
                 } else {
