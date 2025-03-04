@@ -182,19 +182,19 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
             .setExpectedRegionsContactedCount(2);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForRequestTimeout = new ExpectedResponseCharacteristics()
-            .setExpectedMinRetryCount(0)
-            .setShouldFinalResponseHaveSuccess(false)
-            .setExpectedRegionsContactedCount(1);
+            .setExpectedMinRetryCount(1)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout = new ExpectedResponseCharacteristics()
-            .setExpectedMinRetryCount(0)
-            .setShouldFinalResponseHaveSuccess(false)
-            .setExpectedRegionsContactedCount(1);
+            .setExpectedMinRetryCount(1)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable = new ExpectedResponseCharacteristics()
-            .setExpectedMinRetryCount(0)
-            .setShouldFinalResponseHaveSuccess(false)
-            .setExpectedRegionsContactedCount(1);
+            .setExpectedMinRetryCount(1)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover = new ExpectedResponseCharacteristics()
             .setExpectedMinRetryCount(0)

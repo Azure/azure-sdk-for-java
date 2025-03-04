@@ -295,6 +295,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         Mono<Void> refreshLocationCompletable = this.refreshLocation(isReadRequest, forceRefresh, usePreferredLocations);
 
+        // if PPAF is enabled, mark pk-range as unavailable and force a retry
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request)) {
+            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+        }
+
         // Some requests may be in progress when the endpoint manager and client are closed.
         // In that case, the request won't succeed since the http client is closed.
         // Therefore just skip the retry here to avoid the delay because retrying won't go through in the end.
@@ -333,6 +338,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
         }
 
+        // if PPAF is enabled, mark pk-range as unavailable and force a retry
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request)) {
+            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+        }
+
         return Mono.just(ShouldRetryResult.NO_RETRY);
     }
 
@@ -342,6 +352,12 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
         Mono<Void> refreshLocationCompletable = this.refreshLocation(isReadRequest, forceRefresh, usePreferredLocations);
+
+        // if PPAF is enabled, mark pk-range as unavailable and force a retry
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request)) {
+            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+        }
+
         return refreshLocationCompletable.then(Mono.just(ShouldRetryResult.noRetry()));
     }
 
@@ -439,8 +455,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean nonIdempotentWriteRetriesEnabled,
         int subStatusCode) {
 
-        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
-
         if (subStatusCode == HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT) {
             if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {
                 if (!isReadRequest && !nonIdempotentWriteRetriesEnabled) {
@@ -450,6 +464,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                         this.request.requestContext.regionalRoutingContextToRoute);
                 }
             }
+        }
+
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request)) {
+            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
         }
 
         return Mono.just(ShouldRetryResult.NO_RETRY);
