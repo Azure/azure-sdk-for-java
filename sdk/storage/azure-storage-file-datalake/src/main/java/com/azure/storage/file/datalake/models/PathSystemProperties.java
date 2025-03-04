@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.storage.file.datalake.implementation.models.PathResourceType;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -15,7 +13,7 @@ public class PathSystemProperties {
     private final OffsetDateTime lastModified;
     private final String eTag;
     private final Long fileSize;
-    private final PathResourceType resourceType;
+    private final Boolean isDirectory;
     private final Boolean isServerEncrypted;
     private final String encryptionKeySha256;
     private final OffsetDateTime expiresOn;
@@ -31,7 +29,7 @@ public class PathSystemProperties {
      * @param lastModified The last modified time of the path.
      * @param eTag The eTag of the path.
      * @param fileSize Size of the resource.
-     * @param resourceType The resource type of the path.
+     * @param isDirectory A flag indicating if the path is a directory.
      * @param isServerEncrypted A flag indicating if the path's content is encrypted on the server.
      * @param encryptionKeySha256 The SHA256 of the customer provided encryption key used to encrypt the path on the server.
      * @param expiresOn The time when the path is going to expire.
@@ -42,13 +40,13 @@ public class PathSystemProperties {
      * @param permissions The {@link PathPermissions}
      */
     public PathSystemProperties(OffsetDateTime creationTime, OffsetDateTime lastModified, String eTag, Long fileSize,
-        PathResourceType resourceType, Boolean isServerEncrypted, String encryptionKeySha256, OffsetDateTime expiresOn,
+        Boolean isDirectory, Boolean isServerEncrypted, String encryptionKeySha256, OffsetDateTime expiresOn,
         String encryptionScope, String encryptionContext, String owner, String group, PathPermissions permissions) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
         this.fileSize = fileSize;
-        this.resourceType = resourceType;
+        this.isDirectory = isDirectory;
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
         this.expiresOn = expiresOn;
@@ -96,12 +94,12 @@ public class PathSystemProperties {
     }
 
     /**
-     * Gets the resource type of the path.
+     * Gets a flag indicating if the path is a directory.
      *
-     * @return The resource type of the path.
+     * @return A flag indicating if the path is a directory.
      */
-    public PathResourceType getResourceType() {
-        return resourceType;
+    public Boolean getResourceType() {
+        return isDirectory;
     }
 
     /**

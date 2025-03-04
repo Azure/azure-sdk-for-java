@@ -15,11 +15,7 @@ import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesHeaders;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
-import com.azure.storage.file.datalake.models.LeaseDurationType;
-import com.azure.storage.file.datalake.models.LeaseStateType;
-import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.PathPermissions;
-import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 
@@ -227,7 +223,7 @@ public class ModelHelper {
         OffsetDateTime lastModified = headers.getLastModified();
         String eTag = headers.getETag();
         Long fileSize = headers.getContentLength();
-        PathResourceType resourceType = PathResourceType.fromString(headers.getXMsResourceType());
+        Boolean isDirectory = Objects.equals(headers.getXMsResourceType(), "directory");
         Boolean isServerEncrypted = headers.isXMsServerEncrypted();
         String encryptionKeySha256 = headers.getXMsEncryptionKeySha256();
         OffsetDateTime expiresOn = headers.getXMsExpiryTime();
@@ -238,7 +234,7 @@ public class ModelHelper {
         String permissions = headers.getXMsPermissions();
         PathPermissions parsedPermissions = permissions != null ? PathPermissions.parseSymbolic(permissions) : null;
 
-        return new PathSystemProperties(creationTime, lastModified, eTag, fileSize, resourceType, isServerEncrypted,
+        return new PathSystemProperties(creationTime, lastModified, eTag, fileSize, isDirectory, isServerEncrypted,
             encryptionKeySha256, expiresOn, encryptionScope, encryptionContext, owner, group, parsedPermissions);
     }
 
