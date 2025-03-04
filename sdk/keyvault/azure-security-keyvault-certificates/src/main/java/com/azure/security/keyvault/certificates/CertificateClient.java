@@ -11,10 +11,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -23,24 +21,16 @@ import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper;
-import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesHelper;
+import com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper;
+import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
 import com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper;
+import com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper;
 import com.azure.security.keyvault.certificates.implementation.models.BackupCertificateResult;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateCreateParameters;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateImportParameters;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateIssuerSetParameters;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateIssuerUpdateParameters;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateItem;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateMergeParameters;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateOperationUpdateParameter;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateRestoreParameters;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateUpdateParameters;
 import com.azure.security.keyvault.certificates.implementation.models.Contacts;
-import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateBundle;
-import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateItem;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerBundle;
+import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -62,14 +52,14 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.azure.security.keyvault.certificates.CertificateAsyncClient.EMPTY_OPTIONS;
+import static com.azure.security.keyvault.certificates.CertificateAsyncClient.mapCertificateItemPage;
 import static com.azure.security.keyvault.certificates.CertificateAsyncClient.mapContactsToPagedResponse;
+import static com.azure.security.keyvault.certificates.CertificateAsyncClient.mapDeletedCertificateItemPage;
+import static com.azure.security.keyvault.certificates.CertificateAsyncClient.mapIssuersPagedResponse;
 import static com.azure.security.keyvault.certificates.CertificateAsyncClient.processCertificateOperationResponse;
 import static com.azure.security.keyvault.certificates.CertificateAsyncClient.transformCertificateForImport;
-import static com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper.createCertificateIssuer;
 import static com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper.getIssuerBundle;
 import static com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper.createCertificateOperation;
-import static com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper.createCertificatePolicy;
 import static com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper.getImplCertificatePolicy;
 import static com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper.createDeletedCertificate;
 import static com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper.createCertificateWithPolicy;
@@ -249,7 +239,6 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(
         String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-
         if (policy == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
@@ -263,49 +252,32 @@ public final class CertificateClient {
 
     private PollResponse<CertificateOperation> createCertificateActivation(String certificateName,
         CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-
-        CertificateCreateParameters certificateCreateParameters
-            = new CertificateCreateParameters().setCertificatePolicy(getImplCertificatePolicy(policy))
-                .setCertificateAttributes(new CertificateAttributes().setEnabled(isEnabled))
-                .setTags(tags);
+        com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy
+            = getImplCertificatePolicy(policy);
 
         return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
             createCertificateOperation(callWithMappedException(
-                () -> implClient
-                    .createCertificateWithResponse(certificateName, BinaryData.fromObject(certificateCreateParameters),
-                        EMPTY_OPTIONS)
-                    .getValue()
-                    .toObject(
-                        com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class),
+                () -> implClient.createCertificate(vaultUrl, certificateName, implPolicy,
+                    new CertificateAttributes().setEnabled(isEnabled), tags),
                 CertificateAsyncClient::mapCreateCertificateException)));
     }
 
     private PollResponse<CertificateOperation> certificatePollOperation(String certificateName) {
-        return processCertificateOperationResponse(callWithMappedException(
-            () -> implClient.getCertificateOperationWithResponse(certificateName, EMPTY_OPTIONS)
-                .getValue()
-                .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class),
-            CertificateAsyncClient::mapGetCertificateOperationException));
+        return processCertificateOperationResponse(
+            callWithMappedException(() -> implClient.getCertificateOperation(vaultUrl, certificateName),
+                CertificateAsyncClient::mapGetCertificateOperationException));
     }
 
     private CertificateOperation certificateCancellationOperation(String certificateName) {
-        CertificateOperationUpdateParameter certificateOperationUpdateParameter
-            = new CertificateOperationUpdateParameter(true);
-
-        return createCertificateOperation(callWithMappedException(
-            () -> implClient
-                .updateCertificateOperationWithResponse(certificateName,
-                    BinaryData.fromObject(certificateOperationUpdateParameter), EMPTY_OPTIONS)
-                .getValue()
-                .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class),
-            CertificateAsyncClient::mapUpdateCertificateOperationException));
+        return createCertificateOperation(
+            callWithMappedException(() -> implClient.updateCertificateOperation(vaultUrl, certificateName, true),
+                CertificateAsyncClient::mapUpdateCertificateOperationException));
     }
 
     private KeyVaultCertificateWithPolicy fetchCertificateOperation(String certificateName) {
         return createCertificateWithPolicy(
-            callWithMappedException(() -> implClient.getCertificateWithResponse(certificateName, null, EMPTY_OPTIONS)
-                .getValue()
-                .toObject(CertificateBundle.class), CertificateAsyncClient::mapGetCertificateException));
+            callWithMappedException(() -> implClient.getCertificate(vaultUrl, certificateName, null),
+                CertificateAsyncClient::mapGetCertificateException));
     }
 
     /**
@@ -341,7 +313,6 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy>
         beginCreateCertificate(String certificateName, CertificatePolicy policy) {
-
         return beginCreateCertificate(certificateName, policy, true, null);
     }
 
@@ -371,7 +342,6 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy>
         getCertificateOperation(String certificateName) {
-
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
             ignored -> certificatePollOperation(certificateName),
@@ -434,9 +404,8 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String certificateName, Context context) {
         return callWithMappedResponseAndException(
-            () -> implClient.getCertificateWithResponse(certificateName, null,
-                new RequestOptions().setContext(context)),
-            binaryData -> createCertificateWithPolicy(binaryData.toObject(CertificateBundle.class)),
+            () -> implClient.getCertificateWithResponse(vaultUrl, certificateName, null, context),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy,
             CertificateAsyncClient::mapGetCertificateException);
     }
 
@@ -473,9 +442,8 @@ public final class CertificateClient {
     public Response<KeyVaultCertificate> getCertificateVersionWithResponse(String certificateName, String version,
         Context context) {
         return callWithMappedResponseAndException(
-            () -> implClient.getCertificateWithResponse(certificateName, version,
-                new RequestOptions().setContext(context)),
-            binaryData -> createCertificateWithPolicy(binaryData.toObject(CertificateBundle.class)),
+            () -> implClient.getCertificateWithResponse(vaultUrl, certificateName, version, context),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy,
             CertificateAsyncClient::mapGetCertificateException);
     }
 
@@ -576,7 +544,6 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(CertificateProperties properties,
         Context context) {
-
         if (properties == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'properties' cannot be null."));
         }
@@ -585,16 +552,10 @@ public final class CertificateClient {
             .setExpires(properties.getExpiresOn())
             .setNotBefore(properties.getNotBefore());
 
-        CertificateUpdateParameters certificateUpdateParameters
-            = new CertificateUpdateParameters().setCertificateAttributes(certificateAttributes)
-                .setTags(properties.getTags());
+        Response<CertificateBundle> response = implClient.updateCertificateWithResponse(vaultUrl, properties.getName(),
+            properties.getVersion(), null, certificateAttributes, properties.getTags(), context);
 
-        Response<BinaryData> response
-            = implClient.updateCertificateWithResponse(properties.getName(), properties.getVersion(),
-                BinaryData.fromObject(certificateUpdateParameters), new RequestOptions().setContext(context));
-
-        return new SimpleResponse<>(response,
-            createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class)));
+        return new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue()));
     }
 
     /**
@@ -635,10 +596,7 @@ public final class CertificateClient {
     private PollResponse<DeletedCertificate> deleteCertificateActivation(String certificateName) {
         return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
             createDeletedCertificate(
-                callWithMappedException(
-                    () -> implClient.deleteCertificateWithResponse(certificateName, EMPTY_OPTIONS)
-                        .getValue()
-                        .toObject(DeletedCertificateBundle.class),
+                callWithMappedException(() -> implClient.deleteCertificate(vaultUrl, certificateName),
                     CertificateAsyncClient::mapDeleteCertificateException)));
     }
 
@@ -646,11 +604,9 @@ public final class CertificateClient {
         PollingContext<DeletedCertificate> pollingContext) {
         try {
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                createDeletedCertificate(implClient.getDeletedCertificateWithResponse(certificateName, EMPTY_OPTIONS)
-                    .getValue()
-                    .toObject(DeletedCertificateBundle.class)));
-        } catch (HttpResponseException e) {
-            if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                createDeletedCertificate(implClient.getDeletedCertificate(vaultUrl, certificateName)));
+        } catch (KeyVaultErrorException ex) {
+            if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                     pollingContext.getLatestResponse().getValue());
             } else {
@@ -660,7 +616,7 @@ public final class CertificateClient {
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                     pollingContext.getLatestResponse().getValue());
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
             // This means either vault has soft-delete disabled or permission is not granted for the get deleted
             // certificate operation. In both cases deletion operation was successful when activation operation
             // succeeded before reaching here.
@@ -726,11 +682,10 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificate> getDeletedCertificateWithResponse(String certificateName, Context context) {
-        Response<BinaryData> response
-            = implClient.getDeletedCertificateWithResponse(certificateName, new RequestOptions().setContext(context));
-
-        return new SimpleResponse<>(response,
-            createDeletedCertificate(response.getValue().toObject(DeletedCertificateBundle.class)));
+        return callWithMappedResponseAndException(
+            () -> implClient.getDeletedCertificateWithResponse(vaultUrl, certificateName, context),
+            DeletedCertificateHelper::createDeletedCertificate,
+            CertificateAsyncClient::mapGetDeletedCertificateException);
     }
 
     /**
@@ -782,8 +737,9 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, Context context) {
-        return implClient.purgeDeletedCertificateWithResponse(certificateName,
-            new RequestOptions().setContext(context));
+        return callWithMappedResponseAndException(
+            () -> implClient.purgeDeletedCertificateWithResponse(vaultUrl, certificateName, context), t -> t,
+            CertificateAsyncClient::mapPurgeDeletedCertificateException);
     }
 
     /**
@@ -825,20 +781,18 @@ public final class CertificateClient {
 
     private PollResponse<KeyVaultCertificateWithPolicy> recoverDeletedCertificateActivation(String certificateName) {
         return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-            createCertificateWithPolicy(implClient.recoverDeletedCertificateWithResponse(certificateName, EMPTY_OPTIONS)
-                .getValue()
-                .toObject(CertificateBundle.class)));
+            createCertificateWithPolicy(
+                callWithMappedException(() -> implClient.recoverDeletedCertificate(vaultUrl, certificateName),
+                    CertificateAsyncClient::mapRecoverDeletedCertificateException)));
     }
 
     private PollResponse<KeyVaultCertificateWithPolicy> recoverDeletedCertificatePollOperation(String certificateName,
         PollingContext<KeyVaultCertificateWithPolicy> pollingContext) {
         try {
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                createCertificateWithPolicy(implClient.getCertificateWithResponse(certificateName, null, EMPTY_OPTIONS)
-                    .getValue()
-                    .toObject(CertificateBundle.class)));
-        } catch (HttpResponseException e) {
-            if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                createCertificateWithPolicy(implClient.getCertificate(vaultUrl, certificateName, null)));
+        } catch (KeyVaultErrorException ex) {
+            if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                     pollingContext.getLatestResponse().getValue());
             } else {
@@ -848,7 +802,7 @@ public final class CertificateClient {
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                     pollingContext.getLatestResponse().getValue());
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
             // This means permission is not granted for the get deleted key operation.
             // In both cases deletion operation was successful when activation operation succeeded before reaching
             // here.
@@ -907,10 +861,9 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupCertificateWithResponse(String certificateName, Context context) {
-        Response<BinaryData> response
-            = implClient.backupCertificateWithResponse(certificateName, new RequestOptions().setContext(context));
-
-        return new SimpleResponse<>(response, response.getValue().toObject(BackupCertificateResult.class).getValue());
+        return callWithMappedResponseAndException(
+            () -> implClient.backupCertificateWithResponse(vaultUrl, certificateName, context),
+            BackupCertificateResult::getValue, CertificateAsyncClient::mapBackupCertificateException);
     }
 
     /**
@@ -967,13 +920,9 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> restoreCertificateBackupWithResponse(byte[] backup,
         Context context) {
-
-        CertificateRestoreParameters certificateRestoreParameters = new CertificateRestoreParameters(backup);
-
         return callWithMappedResponseAndException(
-            () -> implClient.restoreCertificateWithResponse(BinaryData.fromObject(certificateRestoreParameters),
-                new RequestOptions().setContext(context)),
-            binaryData -> createCertificateWithPolicy(binaryData.toObject(CertificateBundle.class)),
+            () -> implClient.restoreCertificateWithResponse(vaultUrl, backup, context),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy,
             CertificateAsyncClient::mapRestoreCertificateException);
     }
 
@@ -1037,12 +986,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
-        RequestOptions requestOptions = new RequestOptions().setContext(context)
-            .addQueryParam("includePending", String.valueOf(includePending), false);
-
-        return implClient.getCertificates(requestOptions)
-            .mapPage(binaryData -> CertificatePropertiesHelper
-                .createCertificateProperties(binaryData.toObject(CertificateItem.class)));
+        return new PagedIterable<>(
+            maxResults -> mapCertificateItemPage(
+                implClient.getCertificatesSinglePage(vaultUrl, maxResults, includePending, context)),
+            (continuationToken, maxResults) -> mapCertificateItemPage(
+                implClient.getCertificatesNextSinglePage(continuationToken, vaultUrl, context)));
     }
 
     /**
@@ -1095,12 +1043,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificate> listDeletedCertificates(boolean includePending, Context context) {
-        RequestOptions requestOptions = new RequestOptions().setContext(context)
-            .addQueryParam("includePending", String.valueOf(includePending), false);
-
-        return implClient.getDeletedCertificates(requestOptions)
-            .mapPage(binaryData -> DeletedCertificateHelper
-                .createDeletedCertificate(binaryData.toObject(DeletedCertificateItem.class)));
+        return new PagedIterable<>(
+            maxResults -> mapDeletedCertificateItemPage(
+                implClient.getDeletedCertificatesSinglePage(vaultUrl, maxResults, includePending, context)),
+            (continuationToken, maxResults) -> mapDeletedCertificateItemPage(
+                implClient.getDeletedCertificatesNextSinglePage(continuationToken, vaultUrl, context)));
     }
 
     /**
@@ -1174,10 +1121,11 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName,
         Context context) {
-
-        return implClient.getCertificateVersions(certificateName, new RequestOptions().setContext(context))
-            .mapPage(binaryData -> CertificatePropertiesHelper
-                .createCertificateProperties(binaryData.toObject(CertificateItem.class)));
+        return new PagedIterable<>(
+            maxResults -> mapCertificateItemPage(
+                implClient.getCertificateVersionsSinglePage(vaultUrl, certificateName, maxResults, context)),
+            (continuationToken, maxResults) -> mapCertificateItemPage(
+                implClient.getCertificateVersionsNextSinglePage(continuationToken, vaultUrl, context)));
     }
 
     /**
@@ -1224,19 +1172,16 @@ public final class CertificateClient {
      *
      * @param certificateName The name of the certificate whose policy is to be retrieved, cannot be null
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested
-     * {@link CertificatePolicy certificate policy}.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code certificateName} is empty string.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested
+     * {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName, Context context) {
         return callWithMappedResponseAndException(
-            () -> implClient.getCertificatePolicyWithResponse(certificateName,
-                new RequestOptions().setContext(context)),
-            binaryData -> createCertificatePolicy(binaryData
-                .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy.class)),
-            CertificateAsyncClient::mapGetCertificatePolicyException);
+            () -> implClient.getCertificatePolicyWithResponse(vaultUrl, certificateName, context),
+            CertificatePolicyHelper::createCertificatePolicy, CertificateAsyncClient::mapGetCertificatePolicyException);
     }
 
     /**
@@ -1306,19 +1251,15 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName,
         CertificatePolicy policy, Context context) {
-
         if (policy == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
-        CertificateUpdateParameters certificateUpdateParameters
-            = new CertificateUpdateParameters().setCertificatePolicy(getImplCertificatePolicy(policy));
-
-        Response<BinaryData> response = implClient.updateCertificatePolicyWithResponse(certificateName,
-            BinaryData.fromObject(certificateUpdateParameters), new RequestOptions().setContext(context));
-
-        return new SimpleResponse<>(response, createCertificatePolicy(response.getValue()
-            .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy.class)));
+        return callWithMappedResponseAndException(
+            () -> implClient.updateCertificatePolicyWithResponse(vaultUrl, certificateName,
+                getImplCertificatePolicy(policy), context),
+            CertificatePolicyHelper::createCertificatePolicy,
+            CertificateAsyncClient::mapUpdateCertificatePolicyException);
     }
 
     /**
@@ -1392,17 +1333,10 @@ public final class CertificateClient {
         }
 
         IssuerBundle issuerBundle = getIssuerBundle(issuer);
-        CertificateIssuerSetParameters certificateIssuerSetParameters
-            = new CertificateIssuerSetParameters(issuerBundle.getProvider())
-                .setOrganizationDetails(issuerBundle.getOrganizationDetails())
-                .setCredentials(issuerBundle.getCredentials())
-                .setAttributes(issuerBundle.getAttributes());
-
-        Response<BinaryData> response = implClient.setCertificateIssuerWithResponse(issuer.getName(),
-            BinaryData.fromObject(certificateIssuerSetParameters), new RequestOptions().setContext(context));
-
-        return new SimpleResponse<>(response, createCertificateIssuer(response.getValue()
-            .toObject(com.azure.security.keyvault.certificates.implementation.models.IssuerBundle.class)));
+        return callWithMappedResponseAndException(() -> implClient.setCertificateIssuerWithResponse(vaultUrl,
+            issuer.getName(), issuer.getProvider(), issuerBundle.getCredentials(),
+            issuerBundle.getOrganizationDetails(), issuerBundle.getAttributes(), context),
+            CertificateIssuerHelper::createCertificateIssuer, ex -> ex);
     }
 
     /**
@@ -1432,11 +1366,9 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> getIssuerWithResponse(String issuerName, Context context) {
-        Response<BinaryData> response
-            = implClient.getCertificateIssuerWithResponse(issuerName, new RequestOptions().setContext(context));
-
-        return new SimpleResponse<>(response,
-            createCertificateIssuer(response.getValue().toObject(IssuerBundle.class)));
+        return callWithMappedResponseAndException(
+            () -> implClient.getCertificateIssuerWithResponse(vaultUrl, issuerName, context),
+            CertificateIssuerHelper::createCertificateIssuer, ex -> ex);
     }
 
     /**
@@ -1493,11 +1425,10 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> deleteIssuerWithResponse(String issuerName, Context context) {
-        Response<BinaryData> response
-            = implClient.deleteCertificateIssuerWithResponse(issuerName, new RequestOptions().setContext(context));
-
-        return new SimpleResponse<>(response,
-            createCertificateIssuer(response.getValue().toObject(IssuerBundle.class)));
+        return callWithMappedResponseAndException(
+            () -> implClient.deleteCertificateIssuerWithResponse(vaultUrl, issuerName, context),
+            CertificateIssuerHelper::createCertificateIssuer,
+            CertificateAsyncClient::mapDeleteCertificateIssuerException);
     }
 
     /**
@@ -1580,8 +1511,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssuerProperties> listPropertiesOfIssuers(Context context) {
-        return implClient.getCertificateIssuers(new RequestOptions().setContext(context))
-            .mapPage(issuer -> issuer.toObject(IssuerProperties.class));
+        return new PagedIterable<>(
+            maxResults -> mapIssuersPagedResponse(
+                implClient.getCertificateIssuersSinglePage(vaultUrl, maxResults, context)),
+            (continuationToken, maxResults) -> mapIssuersPagedResponse(
+                implClient.getCertificateIssuersNextSinglePage(continuationToken, vaultUrl, context)));
     }
 
     /**
@@ -1651,17 +1585,10 @@ public final class CertificateClient {
         }
 
         IssuerBundle issuerBundle = CertificateIssuerHelper.getIssuerBundle(issuer);
-        CertificateIssuerUpdateParameters certificateIssuerUpdateParameters
-            = new CertificateIssuerUpdateParameters().setProvider(issuerBundle.getProvider())
-                .setAttributes(issuerBundle.getAttributes())
-                .setCredentials(issuerBundle.getCredentials())
-                .setOrganizationDetails(issuerBundle.getOrganizationDetails());
-
-        Response<BinaryData> response = implClient.updateCertificateIssuerWithResponse(issuer.getName(),
-            BinaryData.fromObject(certificateIssuerUpdateParameters), new RequestOptions().setContext(context));
-
-        return new SimpleResponse<>(response,
-            createCertificateIssuer(response.getValue().toObject(IssuerBundle.class)));
+        return callWithMappedResponseAndException(() -> implClient.updateCertificateIssuerWithResponse(vaultUrl,
+            issuer.getName(), issuer.getProvider(), issuerBundle.getCredentials(),
+            issuerBundle.getOrganizationDetails(), issuerBundle.getAttributes(), context),
+            CertificateIssuerHelper::createCertificateIssuer, ex -> ex);
     }
 
     /**
@@ -1723,8 +1650,8 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts, Context context) {
-        return new PagedIterable<>(() -> mapContactsToPagedResponse(implClient.setCertificateContactsWithResponse(
-            BinaryData.fromObject(new Contacts().setContactList(contacts)), new RequestOptions().setContext(context))));
+        return new PagedIterable<>(() -> mapContactsToPagedResponse(
+            implClient.setCertificateContactsWithResponse(vaultUrl, new Contacts().setContactList(contacts), context)));
     }
 
     /**
@@ -1775,8 +1702,8 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> listContacts(Context context) {
-        return new PagedIterable<>(() -> mapContactsToPagedResponse(
-            implClient.getCertificateContactsWithResponse(new RequestOptions().setContext(context))));
+        return new PagedIterable<>(
+            () -> mapContactsToPagedResponse(implClient.getCertificateContactsWithResponse(vaultUrl, context)));
     }
 
     /**
@@ -1827,8 +1754,8 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> deleteContacts(Context context) {
-        return new PagedIterable<>(() -> mapContactsToPagedResponse(
-            implClient.deleteCertificateContactsWithResponse(new RequestOptions().setContext(context))));
+        return new PagedIterable<>(
+            () -> mapContactsToPagedResponse(implClient.deleteCertificateContactsWithResponse(vaultUrl, context)));
     }
 
     /**
@@ -1888,12 +1815,9 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName,
         Context context) {
-
         return callWithMappedResponseAndException(
-            () -> implClient.deleteCertificateOperationWithResponse(certificateName,
-                new RequestOptions().setContext(context)),
-            binaryData -> createCertificateOperation(binaryData
-                .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class)),
+            () -> implClient.deleteCertificateOperationWithResponse(vaultUrl, certificateName, context),
+            CertificateOperationHelper::createCertificateOperation,
             CertificateAsyncClient::mapDeleteCertificateOperationException);
     }
 
@@ -1954,15 +1878,9 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> cancelCertificateOperationWithResponse(String certificateName,
         Context context) {
-
-        CertificateOperationUpdateParameter certificateOperationUpdateParameter
-            = new CertificateOperationUpdateParameter(true);
-
         return callWithMappedResponseAndException(
-            () -> implClient.updateCertificateOperationWithResponse(certificateName,
-                BinaryData.fromObject(certificateOperationUpdateParameter), new RequestOptions().setContext(context)),
-            binaryData -> createCertificateOperation(binaryData
-                .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class)),
+            () -> implClient.updateCertificateOperationWithResponse(vaultUrl, certificateName, true, context),
+            CertificateOperationHelper::createCertificateOperation,
             CertificateAsyncClient::mapUpdateCertificateOperationException);
     }
 
@@ -2025,21 +1943,16 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy>
         mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, Context context) {
-
         if (mergeCertificateOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'mergeCertificateOptions' cannot be null."));
         }
 
-        CertificateMergeParameters certificateMergeParameters
-            = new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
-                .setTags(mergeCertificateOptions.getTags())
-                .setCertificateAttributes(new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()));
-
-        Response<BinaryData> response = implClient.mergeCertificateWithResponse(mergeCertificateOptions.getName(),
-            BinaryData.fromObject(certificateMergeParameters), new RequestOptions().setContext(context));
-
-        return new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue()
-            .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificateBundle.class)));
+        return callWithMappedResponseAndException(
+            () -> implClient.mergeCertificateWithResponse(vaultUrl, mergeCertificateOptions.getName(),
+                mergeCertificateOptions.getX509Certificates(),
+                new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()),
+                mergeCertificateOptions.getTags(), context),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy, ex -> ex);
     }
 
     /**
@@ -2109,39 +2022,29 @@ public final class CertificateClient {
         com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy
             = getImplCertificatePolicy(importCertificateOptions.getPolicy());
 
-        CertificateImportParameters certificateImportParameters
-            = new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
-                .setPassword(importCertificateOptions.getPassword())
-                .setCertificatePolicy(implPolicy)
-                .setTags(importCertificateOptions.getTags())
-                .setCertificateAttributes(new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
-
-        Response<BinaryData> response = implClient.importCertificateWithResponse(importCertificateOptions.getName(),
-            BinaryData.fromObject(certificateImportParameters), new RequestOptions().setContext(context));
-
-        return new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue()
-            .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificateBundle.class)));
+        return callWithMappedResponseAndException(() -> implClient.importCertificateWithResponse(vaultUrl,
+            importCertificateOptions.getName(), transformCertificateForImport(importCertificateOptions),
+            importCertificateOptions.getPassword(), implPolicy, implPolicy == null ? null : implPolicy.getAttributes(),
+            importCertificateOptions.getTags(), context),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy, ex -> ex);
     }
 
     private static <T> T callWithMappedException(Supplier<T> apiCall,
-        Function<HttpResponseException, HttpResponseException> exceptionMapper) {
-
+        Function<KeyVaultErrorException, HttpResponseException> exceptionMapper) {
         try {
             return apiCall.get();
-        } catch (HttpResponseException e) {
-            throw exceptionMapper.apply(e);
+        } catch (KeyVaultErrorException ex) {
+            throw exceptionMapper.apply(ex);
         }
     }
 
     private static <T, R> Response<R> callWithMappedResponseAndException(Supplier<Response<T>> apiCall,
-        Function<T, R> responseValueMapper, Function<HttpResponseException, HttpResponseException> exceptionMapper) {
-
+        Function<T, R> responseValueMapper, Function<KeyVaultErrorException, HttpResponseException> exceptionMapper) {
         try {
-            Response<T> response = apiCall.get();
-
-            return new SimpleResponse<>(response, responseValueMapper.apply(response.getValue()));
-        } catch (HttpResponseException e) {
-            throw exceptionMapper.apply(e);
+            Response<T> responseInn = apiCall.get();
+            return new SimpleResponse<>(responseInn, responseValueMapper.apply(responseInn.getValue()));
+        } catch (KeyVaultErrorException ex) {
+            throw exceptionMapper.apply(ex);
         }
     }
 }
