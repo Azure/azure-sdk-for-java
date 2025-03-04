@@ -19,4 +19,4 @@ To get started with a specific library, see the **README.md** file located in th
 [sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos%2FREADME.png)
+

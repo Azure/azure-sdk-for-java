@@ -4,12 +4,16 @@
 package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.LongCounter;
@@ -19,11 +23,11 @@ import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * THESE CODE SNIPPETS ARE INTENDED FOR CLIENT LIBRARY DEVELOPERS ONLY.
@@ -33,14 +37,11 @@ import java.util.Map;
  * Check out {@code TelemetryJavaDocCodeSnippets} for application-level samples.
  */
 public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
-    private static final LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample")
-        .setLibraryVersion("1.0.0")
-        .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
     private static final HttpHeaderName CUSTOM_REQUEST_ID = HttpHeaderName.fromString("custom-request-id");
 
-    public void createTracer() {
+    public void getTracer() {
 
-        // BEGIN: io.clientcore.core.instrumentation.createtracer
+        // BEGIN: io.clientcore.core.instrumentation.gettracer
 
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
@@ -49,13 +50,13 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
 
-        Tracer tracer = instrumentation.createTracer();
+        Tracer tracer = instrumentation.getTracer();
 
-        // END: io.clientcore.core.instrumentation.createtracer
+        // END: io.clientcore.core.instrumentation.gettracer
     }
 
-    public void createMeter() {
-        // BEGIN: io.clientcore.core.instrumentation.createmeter
+    public void getMeter() {
+        // BEGIN: io.clientcore.core.instrumentation.getmeter
 
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
@@ -63,11 +64,9 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
-        Meter meter = instrumentation.createMeter();
-        // Close the meter when it's no longer needed.
-        meter.close();
+        Meter meter = instrumentation.getMeter();
 
-        // END: io.clientcore.core.instrumentation.createmeter
+        // END: io.clientcore.core.instrumentation.getmeter
     }
 
     public void histogram() {
@@ -77,13 +76,15 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
-        Meter meter = instrumentation.createMeter();
+        Meter meter = instrumentation.getMeter();
 
         // BEGIN: io.clientcore.core.instrumentation.histogram
 
-        DoubleHistogram histogram = meter.createDoubleHistogram("sample.client.operation.duration",
+        List<Double> bucketBoundariesAdvice = Collections.unmodifiableList(Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d,
+            0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d));
+        DoubleHistogram histogram = meter.createDoubleHistogram("contoso.sample.client.operation.duration",
             "s",
-            "Sample client library operation duration");
+            "Contoso sample client operation duration", bucketBoundariesAdvice);
         InstrumentationAttributes successAttributes  = instrumentation.createAttributes(
             Collections.singletonMap("operation.name", "{operationName}"));
 
@@ -105,7 +106,6 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         }
 
         // END: io.clientcore.core.instrumentation.histogram
-        meter.close();
     }
 
     public void counter() {
@@ -115,7 +115,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
-        Meter meter = instrumentation.createMeter();
+        Meter meter = instrumentation.getMeter();
 
         List<Object> batch = new ArrayList<>();
 
@@ -141,17 +141,17 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         }
 
         // END: io.clientcore.core.instrumentation.counter
-        meter.close();
     }
 
     public void upDownCounter() {
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
+            .setEndpoint("https://example.com")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
-        Meter meter = instrumentation.createMeter();
+        Meter meter = instrumentation.getMeter();
 
         // BEGIN: io.clientcore.core.instrumentation.updowncounter
         LongCounter upDownCounter = meter.createLongUpDownCounter("sample.client.operation.active",
@@ -167,17 +167,16 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         }
 
         // END: io.clientcore.core.instrumentation.updowncounter
-        meter.close();
     }
 
     public void createAttributes() {
         // BEGIN: io.clientcore.core.instrumentation.createattributes
-
         LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
+
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
         InstrumentationAttributes attributes = instrumentation
             .createAttributes(Collections.singletonMap("key1", "value1"));
@@ -189,9 +188,13 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      * This example shows minimal distributed tracing instrumentation.
      */
     @SuppressWarnings("try")
-    public void traceCall() {
+    public void traceCall() throws IOException {
+        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
+            .setLibraryVersion("1.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
+            .setEndpoint("https://example.com");
 
-        Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS).createTracer();
+        Tracer tracer = Instrumentation.create(null, libraryOptions).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.instrumentation.tracecall
@@ -210,7 +213,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         }
 
         try (TracingScope scope = span.makeCurrent()) {
-            clientCall(requestOptions);
+            Response<?> response = clientCall(requestOptions);
+            response.close();
         } catch (Throwable t) {
             // make sure to report any exceptions including unchecked ones.
             span.end(getCause(t));
@@ -224,65 +228,47 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     }
 
     /**
-     * This example shows how to use metrics to record call duration.
+     * This example shows how to use generic operation instrumentation to trace call and record duration metric
      */
-    @SuppressWarnings("try")
     public void instrumentCallWithMetricsAndTraces() {
-        Instrumentation instrumentation = Instrumentation.create(null, LIBRARY_OPTIONS);
-        Tracer tracer = instrumentation.createTracer();
-        Meter meter = instrumentation.createMeter();
-        DoubleHistogram callDuration = meter.createDoubleHistogram("sample.client.operation.duration", "s", "Sample client library operation duration");
-
-        Map<String, Object> successMap = new HashMap<>();
-        successMap.put("operation.name", "{operationName}");
-        successMap.put("server.address", "{serverAddress}");
-        successMap.put("server.port", 443);
-
-        InstrumentationAttributes successAttributes = instrumentation.createAttributes(successMap);
+        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
+            .setLibraryVersion("1.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
+            .setEndpoint("https://example.com");
+        Instrumentation instrumentation = Instrumentation.create(null, libraryOptions);
 
         RequestOptions requestOptions = null;
 
-        // BEGIN: io.clientcore.core.instrumentation.measureduration
+        // BEGIN: io.clientcore.core.instrumentation.operation
 
-        InstrumentationContext context = requestOptions == null ? null : requestOptions.getInstrumentationContext();
-        Span span = tracer.spanBuilder("{operationName}", SpanKind.CLIENT, context)
-            .startSpan();
+        instrumentation.instrument("downloadContent", requestOptions, this::clientCall);
 
-        if (tracer.isEnabled()) {
-            if (requestOptions == null) {
-                requestOptions = new RequestOptions();
-            }
-            context = span.getInstrumentationContext();
-            requestOptions.setInstrumentationContext(context);
-        }
+        // END: io.clientcore.core.instrumentation.operation
+    }
 
-        long startTime = System.nanoTime();
-        String errorType = null;
-        try (TracingScope scope = span.makeCurrent()) {
-            clientCall(requestOptions);
-        } catch (Throwable t) {
-            // make sure to report any exceptions including unchecked ones.
-            Throwable cause = getCause(t);
-            errorType = cause.getClass().getCanonicalName();
-            span.end(cause);
-            throw t;
-        } finally {
-            if (callDuration.isEnabled()) {
-                double duration = (System.nanoTime() - startTime) / 1e9;
+    /**
+     * This example shows how to enrich spans create by generic operation instrumentation with additional attributes.
+     * Note: metrics enrichment is not supported yet.
+     */
+    public void enrichOperationInstrumentation() {
+        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
+            .setLibraryVersion("1.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
+            .setEndpoint("https://example.com");
+        Instrumentation instrumentation = Instrumentation.create(null, libraryOptions);
+        RequestOptions requestOptions = null;
 
-                InstrumentationAttributes operationAttributes = successAttributes;
-                if (errorType != null) {
-                    operationAttributes = successAttributes.put("error.type", errorType);
-                }
-
-                callDuration.record(duration, operationAttributes, context);
+        // BEGIN: io.clientcore.core.instrumentation.enrich
+        instrumentation.instrumentWithResponse("downloadContent", requestOptions, updatedOptions -> {
+            Span span = updatedOptions.getInstrumentationContext().getSpan();
+            if (span.isRecording()) {
+                span.setAttribute("sample.content.id", "{content-id}");
             }
 
-            span.end();
-        }
+            return clientCall(updatedOptions);
+        });
 
-        meter.close();
-        // END:  io.clientcore.core.instrumentation.measureduration
+        // END: io.clientcore.core.instrumentation.enrich
     }
 
     private Throwable getCause(Throwable t) {
@@ -296,9 +282,13 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      * This example shows full distributed tracing instrumentation that adds attributes.
      */
     @SuppressWarnings("try")
-    public void traceWithAttributes() {
+    public void traceWithAttributes() throws IOException {
+        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
+            .setLibraryVersion("1.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
+            .setEndpoint("https://example.com");
 
-        Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS).createTracer();
+        Tracer tracer = Instrumentation.create(null, libraryOptions).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.instrumentation.tracewithattributes
@@ -316,7 +306,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
                 sendSpan.setAttribute("messaging.message.id", "{message-id}");
             }
 
-            clientCall(requestOptions);
+            Response<?> response = clientCall(requestOptions);
+            response.close();
         } catch (Throwable t) {
             sendSpan.end(t);
             throw t;
@@ -333,9 +324,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.instrumentation.instrumentationpolicy
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(
-                new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions))
+            .addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
             .build();
 
         // END:  io.clientcore.core.instrumentation.instrumentationpolicy
@@ -350,9 +340,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         instrumentationOptions.addAllowedQueryParamName("documentId");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(
-                new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions))
+            .addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
             .build();
 
         // END:  io.clientcore.core.instrumentation.customizeinstrumentationpolicy
@@ -363,24 +352,30 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.instrumentation.enrichhttpspans
 
-        HttpPipelinePolicy enrichingPolicy = (request, next) -> {
-            Span span = request.getRequestOptions() == null
-                ? Span.noop()
-                : request.getRequestOptions().getInstrumentationContext().getSpan();
-            if (span.isRecording()) {
-                span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
+        HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy() {
+            @Override
+            public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
+                Span span = request.getRequestOptions() == null
+                    ? Span.noop()
+                    : request.getRequestOptions().getInstrumentationContext().getSpan();
+                if (span.isRecording()) {
+                    span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
+                }
+
+                return next.process();
             }
 
-            return next.process();
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.AFTER_INSTRUMENTATION;
+            }
         };
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(
-                new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions),
-                enrichingPolicy)
+            .addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
+            .addPolicy(enrichingPolicy)
             .build();
-
 
         // END:  io.clientcore.core.instrumentation.enrichhttpspans
     }
@@ -389,7 +384,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     private void performOperation() {
     }
 
-    private void clientCall(RequestOptions options) {
+    private Response<?> clientCall(RequestOptions options) {
+        return null;
     }
 
     private void sendBatch(List<?> messages) {

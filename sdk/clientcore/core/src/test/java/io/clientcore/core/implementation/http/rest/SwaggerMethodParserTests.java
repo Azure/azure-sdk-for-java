@@ -3,32 +3,31 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.annotation.ServiceInterface;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.FormParam;
-import io.clientcore.core.http.annotation.HeaderParam;
-import io.clientcore.core.http.annotation.HostParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
-import io.clientcore.core.http.annotation.PathParam;
-import io.clientcore.core.http.annotation.QueryParam;
-import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.exception.HttpExceptionType;
+import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.FormParam;
+import io.clientcore.core.http.annotations.HeaderParam;
+import io.clientcore.core.http.annotations.HostParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.annotations.PathParam;
+import io.clientcore.core.http.annotations.QueryParam;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
-import io.clientcore.core.util.Base64Uri;
-import io.clientcore.core.util.DateTimeRfc1123;
-import io.clientcore.core.util.UriBuilder;
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.models.SimpleClass;
-import io.clientcore.core.util.Context;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.implementation.util.JsonSerializer;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.Base64Uri;
+import io.clientcore.core.utils.Context;
+import io.clientcore.core.utils.DateTimeRfc1123;
+import io.clientcore.core.utils.UriBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -46,12 +45,13 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.http.models.ContentType.APPLICATION_JSON;
-import static io.clientcore.core.http.models.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
+import static io.clientcore.core.implementation.http.ContentType.APPLICATION_JSON;
+import static io.clientcore.core.implementation.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -187,9 +187,9 @@ public class SwaggerMethodParserTests {
         HttpHeaders actual = new HttpHeaders();
         swaggerMethodParser.setHeaders(null, actual, DEFAULT_SERIALIZER);
 
-        for (HttpHeader header : actual) {
+        actual.stream().forEach(header -> {
             assertEquals(expectedHeaders.getValue(header.getName()), header.getValue());
-        }
+        });
     }
 
     private static Stream<Arguments> headersSupplier() throws NoSuchMethodException {
@@ -398,9 +398,9 @@ public class SwaggerMethodParserTests {
         HttpHeaders actual = new HttpHeaders();
         swaggerMethodParser.setHeaders(arguments, actual, DEFAULT_SERIALIZER);
 
-        for (HttpHeader header : actual) {
+        actual.stream().forEach(header -> {
             assertEquals(expectedHeaders.get(header.getName()), header.getValue());
-        }
+        });
     }
 
     private static Stream<Arguments> headerSubstitutionSupplier() throws NoSuchMethodException {
@@ -414,9 +414,9 @@ public class SwaggerMethodParserTests {
         Map<HttpHeaderName, String> expectedSimpleHeadersMap
             = Collections.singletonMap(HttpHeaderName.fromString("x-ms-meta-key"), "value");
 
-        Map<String, String> complexHeaderMap = new HttpHeaders().set(HttpHeaderName.fromString("key1"), (String) null)
-            .set(HttpHeaderName.fromString("key2"), "value2")
-            .toMap();
+        Map<String, String> complexHeaderMap = new LinkedHashMap<>();
+        complexHeaderMap.put("key1", null);
+        complexHeaderMap.put("key2", "value2");
         Map<HttpHeaderName, String> expectedComplexHeaderMap
             = Collections.singletonMap(HttpHeaderName.fromString("x-ms-meta-key2"), "value2");
 
@@ -594,21 +594,22 @@ public class SwaggerMethodParserTests {
         void noUnexpectedStatusCodes();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @UnexpectedResponseExceptionDetail(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = { 400, 404 })
+        @UnexpectedResponseExceptionDetail(statusCode = { 400, 404 }, exceptionBodyClass = String.class)
         void notFoundStatusCode();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @UnexpectedResponseExceptionDetail(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = { 400, 404 })
-        @UnexpectedResponseExceptionDetail(exceptionTypeName = "RESOURCE_MODIFIED")
+        @UnexpectedResponseExceptionDetail(statusCode = { 400, 404 }, exceptionBodyClass = String.class)
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Object.class)
         void customDefault();
     }
 
     @ParameterizedTest
     @MethodSource("unexpectedStatusCodeSupplier")
-    public void unexpectedStatusCode(Method method, int statusCode, HttpExceptionType expectedExceptionType) {
+    public void unexpectedStatusCode(Method method, int statusCode, Class<?> expectedExceptionBodyClass) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        assertEquals(expectedExceptionType, swaggerMethodParser.getUnexpectedException(statusCode).getExceptionType());
+        assertEquals(expectedExceptionBodyClass,
+            swaggerMethodParser.getUnexpectedException(statusCode).getExceptionBodyClass());
     }
 
     private static Stream<Arguments> unexpectedStatusCodeSupplier() throws NoSuchMethodException {
@@ -617,14 +618,12 @@ public class SwaggerMethodParserTests {
         Method notFoundStatusCode = clazz.getDeclaredMethod("notFoundStatusCode");
         Method customDefault = clazz.getDeclaredMethod("customDefault");
 
-        return Stream.of(Arguments.of(noUnexpectedStatusCodes, 500, null),
-            Arguments.of(noUnexpectedStatusCodes, 400, null), Arguments.of(noUnexpectedStatusCodes, 404, null),
-            Arguments.of(notFoundStatusCode, 500, null),
-            Arguments.of(notFoundStatusCode, 400, HttpExceptionType.RESOURCE_NOT_FOUND),
-            Arguments.of(notFoundStatusCode, 404, HttpExceptionType.RESOURCE_NOT_FOUND),
-            Arguments.of(customDefault, 500, HttpExceptionType.RESOURCE_MODIFIED),
-            Arguments.of(customDefault, 400, HttpExceptionType.RESOURCE_NOT_FOUND),
-            Arguments.of(customDefault, 404, HttpExceptionType.RESOURCE_NOT_FOUND));
+        return Stream.of(Arguments.of(noUnexpectedStatusCodes, 500, Object.class),
+            Arguments.of(noUnexpectedStatusCodes, 400, Object.class),
+            Arguments.of(noUnexpectedStatusCodes, 404, Object.class),
+            Arguments.of(notFoundStatusCode, 500, Object.class), Arguments.of(notFoundStatusCode, 400, String.class),
+            Arguments.of(notFoundStatusCode, 404, String.class), Arguments.of(customDefault, 500, Object.class),
+            Arguments.of(customDefault, 400, String.class), Arguments.of(customDefault, 404, String.class));
     }
 
     @ParameterizedTest

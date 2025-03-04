@@ -45,7 +45,7 @@ public final class OutputFileBlobContainerDestination implements JsonSerializabl
     /*
      * A list of name-value pairs for headers to be used in uploading output files. These headers will be specified when
      * uploading files to Azure Storage. Official document on allowed headers when uploading blobs:
-     * https://docs.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
+     * https://learn.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      */
     @Generated
     private List<HttpHeader> uploadHeaders;
@@ -129,7 +129,7 @@ public final class OutputFileBlobContainerDestination implements JsonSerializabl
     /**
      * Get the uploadHeaders property: A list of name-value pairs for headers to be used in uploading output files.
      * These headers will be specified when uploading files to Azure Storage. Official document on allowed headers when
-     * uploading blobs: https://docs.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
+     * uploading blobs: https://learn.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      *
      * @return the uploadHeaders value.
      */
@@ -141,7 +141,7 @@ public final class OutputFileBlobContainerDestination implements JsonSerializabl
     /**
      * Set the uploadHeaders property: A list of name-value pairs for headers to be used in uploading output files.
      * These headers will be specified when uploading files to Azure Storage. Official document on allowed headers when
-     * uploading blobs: https://docs.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
+     * uploading blobs: https://learn.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      *
      * @param uploadHeaders the uploadHeaders value to set.
      * @return the OutputFileBlobContainerDestination object itself.

@@ -19,8 +19,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.PriorityLevel;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
@@ -404,9 +402,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Map<String, String> headers,
                                                   Object options) {
 
+        // only ever used for non Document operations
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
             resource.serializeJsonToByteBuffer(
-                CosmosItemSerializer.DEFAULT_SERIALIZER,
+                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
                 null,
                 resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert)),
             headers,
@@ -587,28 +586,6 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @param resourceType the resource type.
      * @param relativePath the relative URI path.
      * @param headers      the request headers.
-     * @return the created document service request.
-     */
-    public static RxDocumentServiceRequest create(DiagnosticsClientContext clientContext,
-                                                  OperationType operation,
-                                                  Resource resource,
-                                                  ResourceType resourceType,
-                                                  String relativePath,
-                                                  Map<String, String> headers) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
-            CosmosItemSerializer.DEFAULT_SERIALIZER,
-            null,
-            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
-        return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, AuthorizationTokenType.PrimaryMasterKey);
-    }
-
-    /**
-     * Creates a DocumentServiceRequest without body.
-     *
-     * @param operation    the operation type.
-     * @param resourceType the resource type.
-     * @param relativePath the relative URI path.
-     * @param headers      the request headers.
      * @param authorizationTokenType      the request authorizationTokenType.
      * @return the created document service request.
      */
@@ -620,7 +597,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Map<String, String> headers,
                                                   AuthorizationTokenType authorizationTokenType) {
         ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
-            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER, // only used from test code
             null,
             resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
@@ -759,7 +736,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             String resourceFullName,
             ResourceType resourceType) {
         ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
-            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER, // only used from test code
             null,
             resourceType == ResourceType.Document && (operationType == OperationType.Create || operationType == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext,
@@ -1033,38 +1010,6 @@ public class RxDocumentServiceRequest implements Cloneable {
         } else {
             return PathsHelper.validateResourceId(resourceTypeToValidate, this.resourceId);
         }
-    }
-
-    public static RxDocumentServiceRequest createFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
-        RxDocumentServiceRequest modifiedRequest;
-        if (!request.getIsNameBased()) {
-            modifiedRequest = RxDocumentServiceRequest.create(request.clientContext,
-                                                              request.getOperationType(),
-                                                              request.getResourceId(),
-                                                              request.getResourceType(),
-                                                              modifiedResource,
-                                                              request.headers);
-        } else {
-            modifiedRequest = RxDocumentServiceRequest.createFromName(request.clientContext,
-                                                                      request.getOperationType(),
-                                                                      modifiedResource,
-                                                                      request.getResourceAddress(),
-                                                                      request.getResourceType());
-        }
-        return modifiedRequest;
-    }
-
-    public void clearRoutingHints() {
-        this.partitionKeyRangeIdentity = null;
-        this.requestContext.resolvedPartitionKeyRange = null;
-    }
-
-    public synchronized Flux<ByteBuf> getContentAsByteBufFlux() {
-        if (contentAsByteArray == null) {
-            return Flux.empty();
-        }
-
-        return Flux.just(Unpooled.wrappedBuffer(contentAsByteArray));
     }
 
     public synchronized Flux<byte[]> getContentAsByteArrayFlux() {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.1 (2025-02-11)
+
+### Features Added
+- Added Interactive Message.
+- Added Reaction Message.
+- Added Sticker Message.
 
 
 ## 1.1.1 (2024-12-04)
@@ -24,7 +31,7 @@
 ## 1.1.0 (2024-10-23)
 
 ### Features Added
-- Added ImageNotificationContent to send image messgae.
+- Added ImageNotificationContent to send image message.
 - Added DocumentNotificationContent to send document message.
 - Added VideoNotificationContent to send video message.
 - Added AudioNotificationContent to  send audio message.

@@ -125,11 +125,9 @@ public class BodyContentTypeProcessorTest {
     }
 
     private static Stream<Arguments> knownContentTypesProvider() {
-        return Stream.of(Arguments.of("byte[]", "ContentType.APPLICATION_OCTET_STREAM"),
-            Arguments.of("String", "ContentType.APPLICATION_OCTET_STREAM"),
-            Arguments.of("BinaryData", "ContentType.APPLICATION_JSON"),
-            Arguments.of("Object", "ContentType.APPLICATION_JSON"),
-            Arguments.of("ByteBuffer", "ContentType.APPLICATION_JSON"));
+        return Stream.of(Arguments.of("byte[]", "\"application/octet-stream\""),
+            Arguments.of("String", "\"application/octet-stream\""), Arguments.of("BinaryData", "\"application/json\""),
+            Arguments.of("Object", "\"application/json\""), Arguments.of("ByteBuffer", "\"application/json\""));
     }
 
     private static Stream<Arguments> knownParameterTypesProvider() {

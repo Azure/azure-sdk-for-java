@@ -5,6 +5,7 @@ package io.clientcore.core.http.client;
 
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.implementation.http.client.DefaultHttpClientProvider;
 
 import java.io.IOException;
 
@@ -13,7 +14,7 @@ import java.io.IOException;
  */
 public interface HttpClient {
     /**
-     * Sends the provided request synchronously with contextual information.
+     * Sends the provided request with contextual information.
      *
      * @param request The HTTP request to send.
      * @return The response.
@@ -33,7 +34,7 @@ public interface HttpClient {
      */
     static HttpClient getNewInstance() {
         return HttpClientProvider.getProviders()
-            .create(HttpClientProvider::getNewInstance, () -> new DefaultHttpClientBuilder().build(), null);
+            .create(HttpClientProvider::getNewInstance, () -> new JdkHttpClientBuilder().build(), null);
     }
 
     /**

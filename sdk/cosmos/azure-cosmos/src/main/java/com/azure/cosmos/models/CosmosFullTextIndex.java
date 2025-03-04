@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.util.Beta;
@@ -39,8 +38,8 @@ public final class CosmosFullTextIndex {
     public CosmosFullTextIndex setPath(String path) {
         this.jsonSerializable.set(
             Constants.Properties.PATH,
-            path,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            path
+        );
         return this;
     }
 

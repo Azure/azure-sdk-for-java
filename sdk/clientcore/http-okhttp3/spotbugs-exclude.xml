@@ -11,7 +11,11 @@
   </Match>
   <Match>
     <Bug pattern="DLS_DEAD_LOCAL_STORE" />
-    <Class name="io.clientcore.http.okhttp3.OkHttpHttpClientBuilderTests" />
+    <Or>
+      <Class name="io.clientcore.http.okhttp3.OkHttpHttpClientBuilderJavaDocCodeSnippets" />
+      <Class name="io.clientcore.http.okhttp3.OkHttpHttpClientBuilderTests" />
+      <Class name="io.clientcore.http.okhttp3.ReadmeSamples" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="NP_NONNULL_RETURN_VIOLATION" />

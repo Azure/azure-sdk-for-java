@@ -13,6 +13,7 @@
     <module>azure-messaging-eventgrid</module>
     <module>azure-messaging-eventgrid-cloudnative-cloudevents</module>
     <module>azure-messaging-eventgrid-namespaces</module>
+    <module>azure-messaging-eventgrid-systemevents</module>
     <module>azure-resourcemanager-eventgrid</module>
   </modules>
 

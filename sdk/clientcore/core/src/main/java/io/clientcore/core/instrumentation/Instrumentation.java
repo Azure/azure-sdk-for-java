@@ -3,6 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation;
@@ -10,22 +11,27 @@ import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+import static io.clientcore.core.implementation.instrumentation.InstrumentationUtils.getServerPort;
 
 /**
  * A container that can resolve observability provider and its components. Only OpenTelemetry is supported.
  */
 public interface Instrumentation {
     /**
-     * Creates the tracer.
+     * Gets or creates the tracer associated with this instrumentation instance.
      * <p>
      * Tracer lifetime should usually match the client lifetime. Avoid creating new tracers for each request.
      *
      * <p><strong>This method is intended to be used by client libraries. Application developers
      * should use OpenTelemetry API directly</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.instrumentation.createtracer -->
+     * <!-- src_embed io.clientcore.core.instrumentation.gettracer -->
      * <pre>
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
@@ -35,24 +41,24 @@ public interface Instrumentation {
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
      *
-     * Tracer tracer = instrumentation.createTracer&#40;&#41;;
+     * Tracer tracer = instrumentation.getTracer&#40;&#41;;
      *
      * </pre>
-     * <!-- end io.clientcore.core.instrumentation.createtracer -->
+     * <!-- end io.clientcore.core.instrumentation.gettracer -->
      *
      * @return The tracer.
      */
-    Tracer createTracer();
+    Tracer getTracer();
 
     /**
-     * Creates the meter.
+     * Gets or creates the meter associated with this instrumentation instance.
      * <p>
      * Meter lifetime should usually match the client lifetime. Avoid creating new meters for each request.
      *
      * <p><strong>This method is intended to be used by client libraries. Application developers
      * should use OpenTelemetry API directly</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.instrumentation.createmeter -->
+     * <!-- src_embed io.clientcore.core.instrumentation.getmeter -->
      * <pre>
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
@@ -61,16 +67,14 @@ public interface Instrumentation {
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
-     * Meter meter = instrumentation.createMeter&#40;&#41;;
-     * &#47;&#47; Close the meter when it's no longer needed.
-     * meter.close&#40;&#41;;
+     * Meter meter = instrumentation.getMeter&#40;&#41;;
      *
      * </pre>
-     * <!-- end io.clientcore.core.instrumentation.createmeter -->
+     * <!-- end io.clientcore.core.instrumentation.getmeter -->
      *
      * @return The meter.
      */
-    Meter createMeter();
+    Meter getMeter();
 
     /**
      * Converts the given attributes into the implementation-specific attributes.
@@ -80,12 +84,12 @@ public interface Instrumentation {
      * should use OpenTelemetry API directly</strong></p>
      * <!-- src_embed io.clientcore.core.instrumentation.createattributes -->
      * <pre>
-     *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
      *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
+     *
      * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
      * InstrumentationAttributes attributes = instrumentation
      *     .createAttributes&#40;Collections.singletonMap&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
@@ -109,6 +113,52 @@ public interface Instrumentation {
     TraceContextPropagator getW3CTraceContextPropagator();
 
     /**
+     * Instruments a client call which includes distributed tracing and duration metric.
+     * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
+     * <p>
+     * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
+     * <!-- src_embed io.clientcore.core.instrumentation.instrumentwithresponse -->
+     * <pre>
+     * return instrumentation.instrumentWithResponse&#40;&quot;Sample.download&quot;, options, this::downloadImpl&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.instrumentwithresponse -->
+     *
+     * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
+     *                      or OpenAPI operationId.
+     * @param requestOptions the initial request options.
+     * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
+     * @param <TResponse> the type of the response.
+     * @return the response.
+     * @throws RuntimeException if the call throws a runtime exception.
+     */
+    <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
+        Function<RequestOptions, TResponse> operation);
+
+    /**
+     * Instruments a client call which includes distributed tracing and duration metric.
+     * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
+     * <p>
+     * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
+     * <!-- src_embed io.clientcore.core.instrumentation.instrument -->
+     * <pre>
+     * instrumentation.instrument&#40;&quot;Sample.create&quot;, options, this::createImpl&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.instrument -->
+     *
+     * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
+     *                      or OpenAPI operationId.
+     * @param requestOptions the initial request options.
+     * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
+     * @throws RuntimeException if the call throws a runtime exception.
+     */
+    default void instrument(String operationName, RequestOptions requestOptions, Consumer<RequestOptions> operation) {
+        instrumentWithResponse(operationName, requestOptions, options -> {
+            operation.accept(options);
+            return null;
+        });
+    }
+
+    /**
      * Gets the singleton instance of the resolved telemetry provider.
      *
      * <p><strong>This method is intended to be used by client libraries. Application developers
@@ -121,10 +171,19 @@ public interface Instrumentation {
     static Instrumentation create(InstrumentationOptions applicationOptions,
         LibraryInstrumentationOptions libraryOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
+
+        String host = null;
+        int port = -1;
+        if (libraryOptions.getEndpoint() != null) {
+            URI uri = URI.create(libraryOptions.getEndpoint());
+            host = uri.getHost();
+            port = getServerPort(uri);
+        }
+
         if (OTelInitializer.isInitialized()) {
-            return new OTelInstrumentation(applicationOptions, libraryOptions);
+            return new OTelInstrumentation(applicationOptions, libraryOptions, host, port);
         } else {
-            return new FallbackInstrumentation(applicationOptions, libraryOptions);
+            return new FallbackInstrumentation(applicationOptions, libraryOptions, host, port);
         }
     }
 
@@ -153,6 +212,7 @@ public interface Instrumentation {
      * Tracer tracer = GlobalOpenTelemetry.getTracer&#40;&quot;sample&quot;&#41;;
      * Span span = tracer.spanBuilder&#40;&quot;my-operation&quot;&#41;
      *     .startSpan&#40;&#41;;
+     *
      * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
      *
      * &#47;&#47; Propagating context implicitly is preferred way in synchronous code.

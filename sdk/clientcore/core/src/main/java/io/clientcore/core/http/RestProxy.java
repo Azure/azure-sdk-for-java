@@ -8,9 +8,9 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.rest.RestProxyImpl;
 import io.clientcore.core.implementation.http.rest.SwaggerInterfaceParser;
 import io.clientcore.core.implementation.http.rest.SwaggerMethodParser;
-import io.clientcore.core.implementation.util.JsonSerializer;
-import io.clientcore.core.util.serializer.ObjectSerializer;
-import io.clientcore.core.implementation.util.XmlSerializer;
+import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.implementation.utils.XmlSerializer;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -19,8 +19,7 @@ import java.lang.reflect.Proxy;
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
  * <p>
- * RestProxy can create proxy implementations for interfaces with methods that return deserialized Java objects as well
- * as asynchronous Single objects that resolve to a deserialized Java object.
+ * RestProxy can create proxy implementations for interfaces with methods that return deserialized Java objects.
  */
 public final class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;

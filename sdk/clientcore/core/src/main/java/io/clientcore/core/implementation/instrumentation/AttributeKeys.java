@@ -149,6 +149,13 @@ public final class AttributeKeys {
     public static final String HTTP_RESPONSE_BODY_CONTENT_KEY = "http.request.body.content";
 
     /**
+     * Key representing operation name. The value should be a string.
+     * When instrumenting client libraries, it should be language-agnostic operation name provided in typespec
+     * or swagger.
+     */
+    public static final String OPERATION_NAME_KEY = "operation.name";
+
+    /**
      * Key representing maximum number of redirects or retries. It's reported when the number of redirects or retries
      * was exhausted.
      */

@@ -21,7 +21,7 @@ process change events that occur in your Blob Storage account at a low cost.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-changefeed</artifactId>
-    <version>12.0.0-beta.27</version>
+    <version>12.0.0-beta.28</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -255,4 +255,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [coc_contact]: mailto:opencode@microsoft.com
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob-changefeed%2FREADME.png)
+
