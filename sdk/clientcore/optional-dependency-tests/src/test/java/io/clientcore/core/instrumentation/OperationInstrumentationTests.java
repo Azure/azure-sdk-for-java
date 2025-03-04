@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -217,16 +218,14 @@ public class OperationInstrumentationTests {
             .setAttribute("operation.name", "call1")
             .startSpan();
 
-        options.setInstrumentationContext(span.getInstrumentationContext());
+        RequestOptions o1 = options.setInstrumentationContext(span.getInstrumentationContext());
 
-        instrumentation2.instrument("call2", options, o2 -> {
+        instrumentation2.instrument("call2", o1, o2 -> {
             assertTrue(o2.getInstrumentationContext().isValid());
-            assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
-            //assertNotSame(o2.getInstrumentationContext(), o1.getInstrumentationContext());
+            assertNotSame(o2.getInstrumentationContext(), o1.getInstrumentationContext());
             instrumentation2.instrument("call3", o2, o3 -> {
                 // this call is suppressed
-                assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
-                //assertNotSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
+                assertSame(o3.getInstrumentationContext(), o2.getInstrumentationContext());
             });
         });
         span.end();
@@ -259,22 +258,20 @@ public class OperationInstrumentationTests {
             .startSpan();
 
         parent.set(span.getInstrumentationContext());
-        options.setInstrumentationContext(span.getInstrumentationContext());
+        RequestOptions o1 = options.setInstrumentationContext(parent.get());
 
-        instrumentation.instrument("call2", options, o2 -> {
+        instrumentation.instrument("call2", o1, o2 -> {
             assertTrue(o2.getInstrumentationContext().isValid());
-            assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
-            //assertNotSame(o2.getInstrumentationContext(), parent.get());
+            assertNotSame(o2.getInstrumentationContext(), parent.get());
         });
 
         // reset context to parent - it's modified by call2
         // it's not perfect, but also not a big problem since we rarely have nested sibling sub-operations sharing
         // the same request options instance
-        options.setInstrumentationContext(parent.get());
-        instrumentation.instrument("call3", options, o3 -> {
+        RequestOptions o2 = options.setInstrumentationContext(parent.get());
+        instrumentation.instrument("call3", o2, o3 -> {
             assertTrue(o3.getInstrumentationContext().isValid());
-            assertSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
-            //assertNotSame(o3.getInstrumentationContext(), parent.get());
+            assertNotSame(o3.getInstrumentationContext(), parent.get());
         });
 
         span.end();
