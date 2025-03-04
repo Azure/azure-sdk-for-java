@@ -183,4 +183,38 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+    @Test
+    public void testMultiTenantAuthentication() {
+        StorageBearerTokenChallengeAuthorizationPolicy realPolicy
+            = new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "https://storage.azure.com/.default");
+
+        // Spy on the real instance to allow stubbing setAuthorizationHeader
+        StorageBearerTokenChallengeAuthorizationPolicy policy = spy(realPolicy);
+
+        String tenantId1 = "tenant1";
+        String tenantId2 = "tenant2";
+
+        HttpPipelineCallContext mockContext = mock(HttpPipelineCallContext.class);
+        HttpResponse mockResponse = mock(HttpResponse.class);
+
+        when(mockResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
+            .thenReturn("Bearer authorization_uri=https://login.microsoftonline.com/" + tenantId1
+                + "/oauth2/authorize resource_id=https://storage.azure.com");
+
+        // Stub the setAuthorizationHeader method so it returns a completed Mono
+        doReturn(Mono.empty()).when(policy).setAuthorizationHeader(any(), any());
+
+        Mono<Boolean> result1 = policy.authorizeRequestOnChallenge(mockContext, mockResponse);
+
+        StepVerifier.create(result1).expectNext(true).verifyComplete();
+
+        when(mockResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
+            .thenReturn("Bearer authorization_uri=https://login.microsoftonline.com/" + tenantId2
+                + "/oauth2/authorize resource_id=https://storage.azure.com");
+
+        Mono<Boolean> result2 = policy.authorizeRequestOnChallenge(mockContext, mockResponse);
+
+        StepVerifier.create(result2).expectNext(true).verifyComplete();
+    }
+
 }
