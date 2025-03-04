@@ -52,7 +52,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
      * SECRET_VALUE.
      */
     @Generated
-    private Map<String, Secret> secrets;
+    private Map<String, TestSecret> secrets;
 
     /*
      * Certificates metadata
@@ -335,7 +335,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
      * @return the secrets value.
      */
     @Generated
-    public Map<String, Secret> getSecrets() {
+    public Map<String, TestSecret> getSecrets() {
         return this.secrets;
     }
 
@@ -350,7 +350,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
      * @return the TestRun object itself.
      */
     @Generated
-    public TestRun setSecrets(Map<String, Secret> secrets) {
+    public TestRun setSecrets(Map<String, TestSecret> secrets) {
         this.secrets = secrets;
         this.updatedProperties.add("secrets");
         return this;
@@ -799,9 +799,9 @@ public final class TestRun implements JsonSerializable<TestRun> {
             } else {
                 jsonWriter.writeMapField("secrets", this.secrets, (writer, element) -> {
                     if (element != null) {
-                        JsonMergePatchHelper.getSecretAccessor().prepareModelForJsonMergePatch(element, true);
+                        JsonMergePatchHelper.getTestSecretAccessor().prepareModelForJsonMergePatch(element, true);
                         writer.writeJson(element);
-                        JsonMergePatchHelper.getSecretAccessor().prepareModelForJsonMergePatch(element, false);
+                        JsonMergePatchHelper.getTestSecretAccessor().prepareModelForJsonMergePatch(element, false);
                     } else {
                         writer.writeNull();
                     }
@@ -900,7 +900,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
                 } else if ("autoStopCriteria".equals(fieldName)) {
                     deserializedTestRun.autoStopCriteria = AutoStopCriteria.fromJson(reader);
                 } else if ("secrets".equals(fieldName)) {
-                    Map<String, Secret> secrets = reader.readMap(reader1 -> Secret.fromJson(reader1));
+                    Map<String, TestSecret> secrets = reader.readMap(reader1 -> TestSecret.fromJson(reader1));
                     deserializedTestRun.secrets = secrets;
                 } else if ("certificate".equals(fieldName)) {
                     deserializedTestRun.certificate = CertificateMetadata.fromJson(reader);

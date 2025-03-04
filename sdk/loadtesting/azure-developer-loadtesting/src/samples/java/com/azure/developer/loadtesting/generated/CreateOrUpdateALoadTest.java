@@ -9,16 +9,16 @@ import com.azure.developer.loadtesting.LoadTestAdministrationClient;
 import com.azure.developer.loadtesting.LoadTestAdministrationClientBuilder;
 import com.azure.developer.loadtesting.models.AutoStopCriteria;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
-import com.azure.developer.loadtesting.models.ManagedIdentityType;
+import com.azure.developer.loadtesting.models.LoadTestingManagedIdentityType;
 import com.azure.developer.loadtesting.models.PFMetrics;
 import com.azure.developer.loadtesting.models.PassFailAction;
 import com.azure.developer.loadtesting.models.PassFailAggregationFunction;
 import com.azure.developer.loadtesting.models.PassFailCriteria;
 import com.azure.developer.loadtesting.models.PassFailMetric;
 import com.azure.developer.loadtesting.models.PassFailServerMetric;
-import com.azure.developer.loadtesting.models.Secret;
 import com.azure.developer.loadtesting.models.SecretType;
 import com.azure.developer.loadtesting.models.Test;
+import com.azure.developer.loadtesting.models.TestSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.Duration;
 import java.util.Arrays;
@@ -56,7 +56,7 @@ public class CreateOrUpdateALoadTest {
                     .setErrorRate(70.0D)
                     .setErrorRateTimeWindow(Duration.parse("60")))
                 .setSecrets(mapOf("secret1",
-                    new Secret().setValue(
+                    new TestSecret().setValue(
                         "https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827")
                         .setType(SecretType.KEY_VAULT_SECRET_URI)))
                 .setEnvironmentVariables(mapOf("envvar1", "sampletext"))
@@ -67,10 +67,10 @@ public class CreateOrUpdateALoadTest {
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/Microsoft.Network/virtualNetworks/samplenetworkresource/subnets/AAAAA0A0A0")
                 .setKeyvaultReferenceIdentityType("fakeTokenPlaceholder")
                 .setKeyvaultReferenceIdentityId("fakeTokenPlaceholder")
-                .setMetricsReferenceIdentityType(ManagedIdentityType.USER_ASSIGNED)
+                .setMetricsReferenceIdentityType(LoadTestingManagedIdentityType.USER_ASSIGNED)
                 .setMetricsReferenceIdentityId(
                     "/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/samplerg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sampleresourcename")
-                .setEngineBuiltInIdentityType(ManagedIdentityType.USER_ASSIGNED)
+                .setEngineBuiltInIdentityType(LoadTestingManagedIdentityType.USER_ASSIGNED)
                 .setEngineBuiltInIdentityIds(Arrays.asList(
                     "/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/samplerg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sampleresourcename")));
         // END:com.azure.developer.loadtesting.generated.createorupdatetest.createorupdatealoadtest

@@ -15,7 +15,6 @@ import com.azure.developer.loadtesting.models.PassFailMetric;
 import com.azure.developer.loadtesting.models.PassFailServerMetric;
 import com.azure.developer.loadtesting.models.RegionalConfiguration;
 import com.azure.developer.loadtesting.models.ResourceMetric;
-import com.azure.developer.loadtesting.models.Secret;
 import com.azure.developer.loadtesting.models.TargetResourceConfigurations;
 import com.azure.developer.loadtesting.models.Test;
 import com.azure.developer.loadtesting.models.TestAppComponents;
@@ -24,6 +23,7 @@ import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.developer.loadtesting.models.TestRun;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
 import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
+import com.azure.developer.loadtesting.models.TestSecret;
 import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
 
 /**
@@ -113,20 +113,20 @@ public class JsonMergePatchHelper {
         return autoStopCriteriaAccessor;
     }
 
-    private static SecretAccessor secretAccessor;
+    private static TestSecretAccessor testSecretAccessor;
 
-    public interface SecretAccessor {
-        Secret prepareModelForJsonMergePatch(Secret secret, boolean jsonMergePatchEnabled);
+    public interface TestSecretAccessor {
+        TestSecret prepareModelForJsonMergePatch(TestSecret testSecret, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(Secret secret);
+        boolean isJsonMergePatch(TestSecret testSecret);
     }
 
-    public static void setSecretAccessor(SecretAccessor accessor) {
-        secretAccessor = accessor;
+    public static void setTestSecretAccessor(TestSecretAccessor accessor) {
+        testSecretAccessor = accessor;
     }
 
-    public static SecretAccessor getSecretAccessor() {
-        return secretAccessor;
+    public static TestSecretAccessor getTestSecretAccessor() {
+        return testSecretAccessor;
     }
 
     private static CertificateMetadataAccessor certificateMetadataAccessor;

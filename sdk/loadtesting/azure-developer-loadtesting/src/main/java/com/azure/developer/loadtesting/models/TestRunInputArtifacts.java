@@ -31,12 +31,6 @@ public final class TestRunInputArtifacts implements JsonSerializable<TestRunInpu
     private TestRunFileInfo testScriptFileInfo;
 
     /*
-     * The user properties file
-     */
-    @Generated
-    private TestRunFileInfo userPropFileInfo;
-
-    /*
      * The zip file for all input artifacts
      */
     @Generated
@@ -82,16 +76,6 @@ public final class TestRunInputArtifacts implements JsonSerializable<TestRunInpu
     }
 
     /**
-     * Get the userPropFileInfo property: The user properties file.
-     *
-     * @return the userPropFileInfo value.
-     */
-    @Generated
-    public TestRunFileInfo getUserPropFileInfo() {
-        return this.userPropFileInfo;
-    }
-
-    /**
      * Get the inputArtifactsZipFileInfo property: The zip file for all input artifacts.
      *
      * @return the inputArtifactsZipFileInfo value.
@@ -130,7 +114,7 @@ public final class TestRunInputArtifacts implements JsonSerializable<TestRunInpu
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("configFileInfo", this.configFileInfo);
         jsonWriter.writeJsonField("testScriptFileInfo", this.testScriptFileInfo);
-        jsonWriter.writeJsonField("userPropFileInfo", this.userPropFileInfo);
+        jsonWriter.writeJsonField("userPropFileInfo", this.userPropertyFileInfo);
         jsonWriter.writeJsonField("inputArtifactsZipFileInfo", this.inputArtifactsZipFileInfo);
         jsonWriter.writeJsonField("urlTestConfigFileInfo", this.urlTestConfigFileInfo);
         return jsonWriter.writeEndObject();
@@ -156,7 +140,7 @@ public final class TestRunInputArtifacts implements JsonSerializable<TestRunInpu
                 } else if ("testScriptFileInfo".equals(fieldName)) {
                     deserializedTestRunInputArtifacts.testScriptFileInfo = TestRunFileInfo.fromJson(reader);
                 } else if ("userPropFileInfo".equals(fieldName)) {
-                    deserializedTestRunInputArtifacts.userPropFileInfo = TestRunFileInfo.fromJson(reader);
+                    deserializedTestRunInputArtifacts.userPropertyFileInfo = TestRunFileInfo.fromJson(reader);
                 } else if ("inputArtifactsZipFileInfo".equals(fieldName)) {
                     deserializedTestRunInputArtifacts.inputArtifactsZipFileInfo = TestRunFileInfo.fromJson(reader);
                 } else if ("urlTestConfigFileInfo".equals(fieldName)) {
@@ -171,5 +155,21 @@ public final class TestRunInputArtifacts implements JsonSerializable<TestRunInpu
             }
             return deserializedTestRunInputArtifacts;
         });
+    }
+
+    /*
+     * The user properties file
+     */
+    @Generated
+    private TestRunFileInfo userPropertyFileInfo;
+
+    /**
+     * Get the userPropertyFileInfo property: The user properties file.
+     *
+     * @return the userPropertyFileInfo value.
+     */
+    @Generated
+    public TestRunFileInfo getUserPropertyFileInfo() {
+        return this.userPropertyFileInfo;
     }
 }

@@ -15,9 +15,9 @@ import com.azure.developer.loadtesting.models.PassFailCriteria;
 import com.azure.developer.loadtesting.models.PassFailMetric;
 import com.azure.developer.loadtesting.models.PassFailServerMetric;
 import com.azure.developer.loadtesting.models.RequestDataLevel;
-import com.azure.developer.loadtesting.models.Secret;
 import com.azure.developer.loadtesting.models.SecretType;
 import com.azure.developer.loadtesting.models.TestRun;
+import com.azure.developer.loadtesting.models.TestSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.Duration;
 import java.util.HashMap;
@@ -51,7 +51,7 @@ public class CreateUpdateAndStartALoadTestRun {
                 .setErrorRate(70.0D)
                 .setErrorRateTimeWindow(Duration.parse("60")))
             .setSecrets(mapOf("secret1",
-                new Secret()
+                new TestSecret()
                     .setValue(
                         "https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827")
                     .setType(SecretType.KEY_VAULT_SECRET_URI)))

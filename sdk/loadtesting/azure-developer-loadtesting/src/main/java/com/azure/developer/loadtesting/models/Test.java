@@ -45,7 +45,7 @@ public final class Test implements JsonSerializable<Test> {
      * SECRET_VALUE.
      */
     @Generated
-    private Map<String, Secret> secrets;
+    private Map<String, TestSecret> secrets;
 
     /*
      * Certificates metadata.
@@ -124,7 +124,7 @@ public final class Test implements JsonSerializable<Test> {
      * Type of the managed identity referencing the metrics.
      */
     @Generated
-    private ManagedIdentityType metricsReferenceIdentityType;
+    private LoadTestingManagedIdentityType metricsReferenceIdentityType;
 
     /*
      * Resource Id of the managed identity referencing the metrics.
@@ -136,7 +136,7 @@ public final class Test implements JsonSerializable<Test> {
      * Type of the managed identity built in load test engines
      */
     @Generated
-    private ManagedIdentityType engineBuiltInIdentityType;
+    private LoadTestingManagedIdentityType engineBuiltInIdentityType;
 
     /*
      * Resource Ids of the managed identity built in to load test engines. Required if engineBuiltInIdentityType is
@@ -264,7 +264,7 @@ public final class Test implements JsonSerializable<Test> {
      * @return the secrets value.
      */
     @Generated
-    public Map<String, Secret> getSecrets() {
+    public Map<String, TestSecret> getSecrets() {
         return this.secrets;
     }
 
@@ -279,7 +279,7 @@ public final class Test implements JsonSerializable<Test> {
      * @return the Test object itself.
      */
     @Generated
-    public Test setSecrets(Map<String, Secret> secrets) {
+    public Test setSecrets(Map<String, TestSecret> secrets) {
         this.secrets = secrets;
         this.updatedProperties.add("secrets");
         return this;
@@ -546,21 +546,8 @@ public final class Test implements JsonSerializable<Test> {
      * @return the metricsReferenceIdentityType value.
      */
     @Generated
-    public ManagedIdentityType getMetricsReferenceIdentityType() {
+    public LoadTestingManagedIdentityType getMetricsReferenceIdentityType() {
         return this.metricsReferenceIdentityType;
-    }
-
-    /**
-     * Set the metricsReferenceIdentityType property: Type of the managed identity referencing the metrics.
-     *
-     * @param metricsReferenceIdentityType the metricsReferenceIdentityType value to set.
-     * @return the Test object itself.
-     */
-    @Generated
-    public Test setMetricsReferenceIdentityType(ManagedIdentityType metricsReferenceIdentityType) {
-        this.metricsReferenceIdentityType = metricsReferenceIdentityType;
-        this.updatedProperties.add("metricsReferenceIdentityType");
-        return this;
     }
 
     /**
@@ -592,21 +579,8 @@ public final class Test implements JsonSerializable<Test> {
      * @return the engineBuiltInIdentityType value.
      */
     @Generated
-    public ManagedIdentityType getEngineBuiltInIdentityType() {
+    public LoadTestingManagedIdentityType getEngineBuiltInIdentityType() {
         return this.engineBuiltInIdentityType;
-    }
-
-    /**
-     * Set the engineBuiltInIdentityType property: Type of the managed identity built in load test engines.
-     *
-     * @param engineBuiltInIdentityType the engineBuiltInIdentityType value to set.
-     * @return the Test object itself.
-     */
-    @Generated
-    public Test setEngineBuiltInIdentityType(ManagedIdentityType engineBuiltInIdentityType) {
-        this.engineBuiltInIdentityType = engineBuiltInIdentityType;
-        this.updatedProperties.add("engineBuiltInIdentityType");
-        return this;
     }
 
     /**
@@ -741,9 +715,9 @@ public final class Test implements JsonSerializable<Test> {
             } else {
                 jsonWriter.writeMapField("secrets", this.secrets, (writer, element) -> {
                     if (element != null) {
-                        JsonMergePatchHelper.getSecretAccessor().prepareModelForJsonMergePatch(element, true);
+                        JsonMergePatchHelper.getTestSecretAccessor().prepareModelForJsonMergePatch(element, true);
                         writer.writeJson(element);
-                        JsonMergePatchHelper.getSecretAccessor().prepareModelForJsonMergePatch(element, false);
+                        JsonMergePatchHelper.getTestSecretAccessor().prepareModelForJsonMergePatch(element, false);
                     } else {
                         writer.writeNull();
                     }
@@ -897,7 +871,7 @@ public final class Test implements JsonSerializable<Test> {
                 } else if ("autoStopCriteria".equals(fieldName)) {
                     deserializedTest.autoStopCriteria = AutoStopCriteria.fromJson(reader);
                 } else if ("secrets".equals(fieldName)) {
-                    Map<String, Secret> secrets = reader.readMap(reader1 -> Secret.fromJson(reader1));
+                    Map<String, TestSecret> secrets = reader.readMap(reader1 -> TestSecret.fromJson(reader1));
                     deserializedTest.secrets = secrets;
                 } else if ("certificate".equals(fieldName)) {
                     deserializedTest.certificate = CertificateMetadata.fromJson(reader);
@@ -925,11 +899,13 @@ public final class Test implements JsonSerializable<Test> {
                 } else if ("keyvaultReferenceIdentityId".equals(fieldName)) {
                     deserializedTest.keyvaultReferenceIdentityId = reader.getString();
                 } else if ("metricsReferenceIdentityType".equals(fieldName)) {
-                    deserializedTest.metricsReferenceIdentityType = ManagedIdentityType.fromString(reader.getString());
+                    deserializedTest.metricsReferenceIdentityType
+                        = LoadTestingManagedIdentityType.fromString(reader.getString());
                 } else if ("metricsReferenceIdentityId".equals(fieldName)) {
                     deserializedTest.metricsReferenceIdentityId = reader.getString();
                 } else if ("engineBuiltInIdentityType".equals(fieldName)) {
-                    deserializedTest.engineBuiltInIdentityType = ManagedIdentityType.fromString(reader.getString());
+                    deserializedTest.engineBuiltInIdentityType
+                        = LoadTestingManagedIdentityType.fromString(reader.getString());
                 } else if ("engineBuiltInIdentityIds".equals(fieldName)) {
                     List<String> engineBuiltInIdentityIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedTest.engineBuiltInIdentityIds = engineBuiltInIdentityIds;
@@ -977,6 +953,32 @@ public final class Test implements JsonSerializable<Test> {
     public Test setPublicIpDisabled(Boolean publicIpDisabled) {
         this.publicIpDisabled = publicIpDisabled;
         this.updatedProperties.add("publicIpDisabled");
+        return this;
+    }
+
+    /**
+     * Set the metricsReferenceIdentityType property: Type of the managed identity referencing the metrics.
+     *
+     * @param metricsReferenceIdentityType the metricsReferenceIdentityType value to set.
+     * @return the Test object itself.
+     */
+    @Generated
+    public Test setMetricsReferenceIdentityType(LoadTestingManagedIdentityType metricsReferenceIdentityType) {
+        this.metricsReferenceIdentityType = metricsReferenceIdentityType;
+        this.updatedProperties.add("metricsReferenceIdentityType");
+        return this;
+    }
+
+    /**
+     * Set the engineBuiltInIdentityType property: Type of the managed identity built in load test engines.
+     *
+     * @param engineBuiltInIdentityType the engineBuiltInIdentityType value to set.
+     * @return the Test object itself.
+     */
+    @Generated
+    public Test setEngineBuiltInIdentityType(LoadTestingManagedIdentityType engineBuiltInIdentityType) {
+        this.engineBuiltInIdentityType = engineBuiltInIdentityType;
+        this.updatedProperties.add("engineBuiltInIdentityType");
         return this;
     }
 }
