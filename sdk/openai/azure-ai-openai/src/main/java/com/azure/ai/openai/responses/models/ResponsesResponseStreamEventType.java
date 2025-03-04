@@ -109,9 +109,9 @@ public enum ResponsesResponseStreamEventType {
     RESPONSE_OUTPUT_ITEM_DONE("response.output_item.done"),
 
     /**
-     * Enum value response.done.
+     * Enum value response.completed.
      */
-    RESPONSE_DONE("response.done");
+    RESPONSE_COMPLETED("response.completed");
 
     /**
      * The actual serialized value for a ResponsesResponseStreamEventType instance.

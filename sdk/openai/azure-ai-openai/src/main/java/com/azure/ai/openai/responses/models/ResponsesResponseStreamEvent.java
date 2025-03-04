@@ -79,8 +79,8 @@ public class ResponsesResponseStreamEvent implements JsonSerializable<ResponsesR
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("response.created".equals(discriminatorValue)) {
                     return ResponsesResponseStreamEventResponseCreated.fromJson(readerToUse.reset());
-                } else if ("response.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseDone.fromJson(readerToUse.reset());
+                } else if ("response.completed".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseCompleted.fromJson(readerToUse.reset());
                 } else if ("response.output_item.added".equals(discriminatorValue)) {
                     return ResponsesResponseStreamEventResponseOutputItemAdded.fromJson(readerToUse.reset());
                 } else if ("response.output_item.done".equals(discriminatorValue)) {

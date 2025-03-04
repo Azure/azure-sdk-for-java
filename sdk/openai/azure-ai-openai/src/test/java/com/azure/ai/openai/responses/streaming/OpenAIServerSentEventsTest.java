@@ -14,10 +14,10 @@ import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventFileSear
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted;
+import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseCompleted;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseContentPartAdded;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseContentPartDone;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseCreated;
-import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseDone;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseFileSearchCallCompleted;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseFunctionCallArgumentsDelta;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseFunctionCallArgumentsDone;
@@ -181,18 +181,18 @@ public class OpenAIServerSentEventsTest {
     }
 
     @Test
-    public void testResponseDoneEvent() {
+    public void testResponseCompleteEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
-                ByteBuffer.wrap("event: response.done\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.done\",\"response\":{\"id\":\"resp_2\",\"object\":\"response\",\"created_at\":1710548045,\"status\":\"completed\",\"model\":\"model-2\",\"previous_response_id\":null,\"output\":[],\"error\":null,\"tools\":[],\"top_p\":1.0,\"temperature\":1.0,\"reasoning_effort\":null,\"usage\":null,\"metadata\":{}}}\n\n".getBytes())
+                ByteBuffer.wrap("event: response.completed\n".getBytes()),
+                ByteBuffer.wrap("data: {\"type\":\"response.completed\",\"response\":{\"id\":\"resp_2\",\"object\":\"response\",\"created_at\":1710548045,\"status\":\"completed\",\"model\":\"model-2\",\"previous_response_id\":null,\"output\":[],\"error\":null,\"tools\":[],\"top_p\":1.0,\"temperature\":1.0,\"reasoning_effort\":null,\"usage\":null,\"metadata\":{}}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
-                .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseDone &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_DONE &&
-                        ((ResponsesResponseStreamEventResponseDone) event).getResponse().getId().equals("resp_2"))
+                .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseCompleted &&
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_COMPLETED &&
+                        ((ResponsesResponseStreamEventResponseCompleted) event).getResponse().getId().equals("resp_2"))
                 .verifyComplete();
     }
 
