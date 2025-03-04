@@ -96,37 +96,52 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     @Override
     public void process(TemplateInput templateInput, ProcessingEnvironment processingEnv) {
         String packageName = templateInput.getPackageName();
-        // remove the last part of the package name
-        packageName = packageName.substring(0, packageName.lastIndexOf('.'));
         String serviceInterfaceImplShortName = templateInput.getServiceInterfaceImplShortName();
         String serviceInterfaceShortName = templateInput.getServiceInterfaceShortName();
 
-        templateInput.getImports().keySet().forEach(compilationUnit::addImport);
+        addImports(templateInput);
+        addOrphanComments();
+        setPackageDeclaration(packageName);
+        createClass(serviceInterfaceImplShortName, serviceInterfaceShortName, templateInput);
 
-        // For multi-line LineComments they need to be added individually as orphan comments.
+        try (Writer fileWriter = processingEnv.getFiler()
+            .createSourceFile(packageName + "." + serviceInterfaceImplShortName)
+            .openWriter()) {
+            fileWriter.write(compilationUnit.toString());
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void addImports(TemplateInput templateInput) {
+        templateInput.getImports().keySet().forEach(compilationUnit::addImport);
+    }
+
+    void addOrphanComments() {
         compilationUnit.addOrphanComment(new LineComment("Copyright (c) Microsoft Corporation. All rights reserved."));
         compilationUnit.addOrphanComment(new LineComment("Licensed under the MIT License."));
+    }
+
+    void setPackageDeclaration(String packageName) {
         compilationUnit.setPackageDeclaration(packageName);
+    }
+
+    void createClass(String serviceInterfaceImplShortName, String serviceInterfaceShortName,
+        TemplateInput templateInput) {
         classBuilder = compilationUnit.addClass(serviceInterfaceImplShortName, Modifier.Keyword.PUBLIC);
 
-        // Import the service interface using the fully qualified name.
         String serviceInterfacePackage = templateInput.getServiceInterfaceFQN()
             .substring(0, templateInput.getServiceInterfaceFQN().lastIndexOf('.'));
-        // add inner class import for ServiceInterface definition
         compilationUnit.addImport(serviceInterfacePackage + "." + serviceInterfaceShortName);
         classBuilder.addImplementedType(serviceInterfaceShortName);
 
-        // Add ClientLogger static instantiation.
         configureLoggerField(classBuilder.addField("ClientLogger", "LOGGER", Modifier.Keyword.PRIVATE,
             Modifier.Keyword.STATIC, Modifier.Keyword.FINAL), serviceInterfaceShortName);
 
-        // Create the defaultPipeline field
         classBuilder.addField(HttpPipeline.class, "defaultPipeline", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
-
-        // Create the serializer field
         classBuilder.addField(ObjectSerializer.class, "serializer", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
 
-        // Create the constructor
         compilationUnit.addImport(JsonSerializer.class);
         classBuilder.addConstructor(Modifier.Keyword.PRIVATE)
             .addParameter(HttpPipeline.class, "defaultPipeline")
@@ -134,7 +149,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .setBody(StaticJavaParser.parseBlock(
                 "{ this.defaultPipeline = defaultPipeline; this.serializer = serializer == null ? new JsonSerializer() : serializer; }"));
 
-        // Add the static getNewInstance method
         classBuilder.addMethod("getNewInstance", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
             .setType(serviceInterfaceShortName)
             .addParameter(HttpPipeline.class, "pipeline")
@@ -149,11 +163,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         configurePipelineMethod(classBuilder.addMethod("getPipeline", Modifier.Keyword.PRIVATE));
 
-        // Generate the methods
         for (HttpRequestContext method : templateInput.getHttpRequestContexts()) {
             if (!method.isConvenience()) {
-                configureInternalMethod(classBuilder.addMethod(method.getMethodName(), Modifier.Keyword.PUBLIC),
-                    method);
+                configureInternalMethod(classBuilder.addMethod(method.getMethodName(), Modifier.Keyword.PUBLIC), method);
             }
         }
 
@@ -161,15 +173,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             classBuilder.addMethod("decodeByteArray", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC));
         addDefaultResponseHandlingMethod(
             classBuilder.addMethod("getOrDefaultResponseBodyMode", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC));
+    }
 
-        try (Writer fileWriter = processingEnv.getFiler()
-            .createSourceFile(packageName + "." + serviceInterfaceImplShortName)
-            .openWriter()) {
-            fileWriter.write(compilationUnit.toString());
-            fileWriter.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    /**
+     * Get the compilation unit
+     * @return the compilation unit
+     */
+    CompilationUnit getCompilationUnit() {
+        return this.compilationUnit;
     }
 
     private void addDefaultResponseHandlingMethod(MethodDeclaration defaultResponseHandlingMethod) {

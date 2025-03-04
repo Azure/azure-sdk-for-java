@@ -27,7 +27,6 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -47,7 +46,6 @@ import java.util.stream.Collectors;
  * Annotation processor that generates client code based on annotated interfaces.
  */
 @SupportedAnnotationTypes("io.clientcore.core.annotations.*")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AnnotationProcessor extends AbstractProcessor {
 
     /**
@@ -58,13 +56,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
-        // Reflective fallback if SourceVersion.RELEASE_8 isn't available at compile time
-        try {
-            return SourceVersion.valueOf("RELEASE_8");
-        } catch (IllegalArgumentException e) {
-            // Fallback to the latest supported version
-            return SourceVersion.latest();
-        }
+        return SourceVersion.latest();
     }
 
     @Override

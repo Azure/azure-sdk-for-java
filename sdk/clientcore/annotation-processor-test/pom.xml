@@ -6,10 +6,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>io.clientcore</groupId>
-    <artifactId>clientcore-parent</artifactId>
-    <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
-    <relativePath>../../parents/clientcore-parent</relativePath>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent-v2</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent-v2;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent-v2</relativePath>
   </parent>
 
   <groupId>io.clientcore</groupId>
@@ -57,6 +57,11 @@
       <artifactId>core</artifactId>
       <version>1.0.0-beta.6</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>http-okhttp3</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-okhttp3;dependency} -->
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
@@ -64,12 +69,6 @@
       <artifactId>core</artifactId>
       <version>1.0.0-beta.6</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
       <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.clientcore</groupId>
-      <artifactId>http-okhttp3</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-okhttp3;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -105,6 +104,11 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>${project.build.directory}/generated-sources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -119,9 +123,8 @@
             </goals>
 
             <configuration>
-              <source>1.8</source>
-              <target>1.8</target>
-              <release>8</release>
+              <useIncrementalCompilation>false</useIncrementalCompilation>
+              <release>11</release>
               <proc>only</proc>
               <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
               <annotationProcessorPaths>
