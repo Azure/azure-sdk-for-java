@@ -17,15 +17,26 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AzureOpenAIClientTestBase extends TestProxyTestBase {
 
-    AzureOpenAIClient getResponseClient(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
+    AzureOpenAIClient getAzureResponseClient(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         AzureOpenAIClientBuilder builder = new AzureOpenAIClientBuilder()
                 .serviceVersion(serviceVersion)
                 .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
                 .credential(new AzureKeyCredential(
                         Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY"))
-                ).serviceVersion(serviceVersion)
+                )
                 .addPolicy(new AddHeadersPolicy(new HttpHeaders()
                         .add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")))
+                .httpClient(httpClient)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        return builder.buildClient();
+    }
+
+    AzureOpenAIClient getResponseClient(HttpClient httpClient) {
+        AzureOpenAIClientBuilder builder = new AzureOpenAIClientBuilder()
+                .credential(new AzureKeyCredential(
+                        Configuration.getGlobalConfiguration().get("OPENAI_KEY"))
+                )
                 .httpClient(httpClient)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 

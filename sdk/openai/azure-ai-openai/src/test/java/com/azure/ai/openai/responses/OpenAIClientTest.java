@@ -19,12 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
+public class OpenAIClientTest extends AzureOpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void createResponseBlocking(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
-        AzureOpenAIClient client = getAzureResponseClient(httpClient, AzureOpenAIServiceVersion.V2024_12_01_PREVIEW);
+        AzureOpenAIClient client = getResponseClient(httpClient);
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
                 new ResponsesUserMessage(Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
@@ -51,7 +51,7 @@ public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void createResponseStreaming(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
-        AzureOpenAIClient client = getAzureResponseClient(httpClient, AzureOpenAIServiceVersion.V2024_12_01_PREVIEW);
+        AzureOpenAIClient client = getResponseClient(httpClient);
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
                 new ResponsesUserMessage(Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
