@@ -209,7 +209,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             if (requestOptions == null) {
                 requestOptions = new RequestOptions();
             }
-            requestOptions.setInstrumentationContext(span.getInstrumentationContext());
+            requestOptions = requestOptions.setInstrumentationContext(span.getInstrumentationContext());
         }
 
         try (TracingScope scope = span.makeCurrent()) {
@@ -266,7 +266,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             }
 
             return clientCall(updatedOptions);
-        });
+        }).close();
 
         // END: io.clientcore.core.instrumentation.enrich
     }

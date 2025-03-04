@@ -244,11 +244,14 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         final long requestContentLength = getContentLength(logger, request.getBody(), request.getHeaders(), true);
 
         Map<String, Object> metricAttributes = isMetricsEnabled ? new HashMap<>(8) : null;
-        if (request.getRequestOptions() == null || request.getRequestOptions() == RequestOptions.none()) {
-            request.setRequestOptions(new RequestOptions());
+
+        RequestOptions requestOptions = request.getRequestOptions();
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+            request.setRequestOptions(requestOptions);
         }
 
-        InstrumentationContext parentContext = request.getRequestOptions().getInstrumentationContext();
+        InstrumentationContext parentContext = requestOptions.getInstrumentationContext();
 
         SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, parentContext);
         setStartAttributes(request, redactedUrl, spanBuilder, metricAttributes);
@@ -258,7 +261,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parentContext;
 
         if (context != null && context.isValid()) {
-            request.getRequestOptions().setInstrumentationContext(context);
+            request.setRequestOptions(requestOptions.setInstrumentationContext(context));
             // even if tracing is disabled, we could have a valid context to propagate
             // if it was provided by the application explicitly.
             traceContextPropagator.inject(context, request.getHeaders(), SETTER);
