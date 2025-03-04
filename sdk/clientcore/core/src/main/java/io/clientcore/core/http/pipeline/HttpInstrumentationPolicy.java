@@ -30,7 +30,6 @@ import io.clientcore.core.utils.CoreUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,6 +58,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SE
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_PORT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.USER_AGENT_ORIGINAL_KEY;
+import static io.clientcore.core.implementation.instrumentation.InstrumentationUtils.getServerPort;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_REQUEST_EVENT_NAME;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RESPONSE_EVENT_NAME;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
@@ -139,7 +139,6 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  *     .addPolicy&#40;enrichingPolicy&#41;
  *     .build&#40;&#41;;
  *
- *
  * </pre>
  * <!-- end io.clientcore.core.instrumentation.enrichhttpspans -->
  *
@@ -159,7 +158,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         LIBRARY_VERSION = properties.getOrDefault("version", "unknown");
         LibraryInstrumentationOptions libOptions
             = new LibraryInstrumentationOptions(LIBRARY_NAME).setLibraryVersion(LIBRARY_VERSION)
-                .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
+                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         // HTTP tracing is special - we suppress nested public API spans, but
         // preserve nested HTTP ones.
@@ -206,8 +205,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      */
     public HttpInstrumentationPolicy(HttpInstrumentationOptions instrumentationOptions) {
         this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
-        this.tracer = instrumentation.createTracer();
-        this.meter = instrumentation.createMeter();
+        this.tracer = instrumentation.getTracer();
+        this.meter = instrumentation.getMeter();
         this.httpRequestDuration = meter.createDoubleHistogram(REQUEST_DURATION_METRIC_NAME,
             REQUEST_DURATION_METRIC_DESCRIPTION, REQUEST_DURATION_METRIC_UNIT, REQUEST_DURATION_BOUNDARIES_ADVICE);
         this.traceContextPropagator = instrumentation.getW3CTraceContextPropagator();
@@ -325,30 +324,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 metricAttributes.put(SERVER_PORT_KEY, port);
             }
         }
-    }
-
-    /**
-     * Does the best effort to capture the server port with minimum perf overhead.
-     * If port is not set, we check scheme for "http" and "https" (case-sensitive).
-     * If scheme is not one of those, returns -1.
-     *
-     * @param uri request URI
-     */
-    private static int getServerPort(URI uri) {
-        int port = uri.getPort();
-        if (port == -1) {
-            switch (uri.getScheme()) {
-                case "http":
-                    return 80;
-
-                case "https":
-                    return 443;
-
-                default:
-                    break;
-            }
-        }
-        return port;
     }
 
     private void addDetails(HttpRequest request, int statusCode, int tryCount, Span span,
