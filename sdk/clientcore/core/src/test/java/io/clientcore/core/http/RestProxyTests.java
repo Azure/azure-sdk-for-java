@@ -18,7 +18,6 @@ import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.ContentType;
@@ -256,7 +255,7 @@ public class RestProxyTests {
         String uri = "https://somecloud.com";
         String firstPageUri = uri + "/foos";
         String nextLinkUri = uri + "/foos?page=2";
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+        RequestOptions requestOptions = RequestOptions.deserializeResponse();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             String requestUri = request.getUri().toString();
             request.setRequestOptions(requestOptions);
@@ -307,7 +306,7 @@ public class RestProxyTests {
         String uri = "https://somecloud.com";
         String firstPageUri = uri + "/foos";
         String nextLinkUri = uri + "/foos?page=2";
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+        RequestOptions requestOptions = RequestOptions.deserializeResponse();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             String requestUri = request.getUri().toString();
             request.setRequestOptions(requestOptions);

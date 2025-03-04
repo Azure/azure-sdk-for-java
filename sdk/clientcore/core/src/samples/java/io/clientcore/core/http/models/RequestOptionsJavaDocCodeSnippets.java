@@ -18,9 +18,10 @@ public class RequestOptionsJavaDocCodeSnippets {
      */
     public RequestOptions createInstance() {
         // BEGIN: io.clientcore.core.http.rest.requestoptions.instantiation
-        RequestOptions options = new RequestOptions()
+        RequestOptions options = new RequestOptionsBuilder()
             .setBody(BinaryData.fromString("{\"name\":\"Fluffy\"}"))
-            .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"));
+            .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"))
+            .build();
         // END: io.clientcore.core.http.rest.requestoptions.instantiation
         return options;
     }
@@ -55,13 +56,14 @@ public class RequestOptionsJavaDocCodeSnippets {
         // END: io.clientcore.core.http.rest.requestoptions.createjsonrequest
 
         // BEGIN: io.clientcore.core.http.rest.requestoptions.postrequest
-        RequestOptions options = new RequestOptions()
+        RequestOptions options = new RequestOptionsBuilder()
             .addRequestCallback(request -> request
                 // may already be set if request is created from a client
                 .setUri("https://petstore.example.com/pet")
                 .setMethod(HttpMethod.POST)
                 .setBody(requestBodyData)
-                .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
+                .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"))
+            .build();
         // END: io.clientcore.core.http.rest.requestoptions.postrequest
         return options;
     }

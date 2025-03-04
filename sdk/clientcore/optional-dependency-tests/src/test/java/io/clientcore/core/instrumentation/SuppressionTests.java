@@ -88,7 +88,7 @@ public class SuppressionTests {
             = new HttpPipelineBuilder().httpClient(request -> new MockHttpResponse(request, 200)).build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
-        client.protocolMethod(new RequestOptions());
+        client.protocolMethod(RequestOptions.none());
 
         // test that one span is created for simple method
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -102,7 +102,7 @@ public class SuppressionTests {
             = new HttpPipelineBuilder().httpClient(request -> new MockHttpResponse(request, 200)).build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
-        client.convenienceMethod(new RequestOptions());
+        client.convenienceMethod(RequestOptions.none());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData span = exporter.getFinishedSpanItems().get(0);
         assertEquals("convenienceMethod", span.getName());
@@ -119,7 +119,7 @@ public class SuppressionTests {
         SampleClientCallInstrumentation client
             = new SampleClientCallInstrumentation(pipeline, otelOptions, libraryInstrumentationOptions);
 
-        client.convenienceMethod(new RequestOptions());
+        client.convenienceMethod(RequestOptions.none());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData span = exporter.getFinishedSpanItems().get(0);
         assertEquals("convenience", span.getName());
@@ -139,7 +139,7 @@ public class SuppressionTests {
             = new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true);
         SampleClientCallInstrumentation client = new SampleClientCallInstrumentation(pipeline, otelOptions, libOptions);
 
-        client.convenienceMethod(new RequestOptions());
+        client.convenienceMethod(RequestOptions.none());
         assertEquals(2, exporter.getFinishedSpanItems().size());
         assertEquals("protocol", exporter.getFinishedSpanItems().get(0).getName());
         assertEquals("convenience", exporter.getFinishedSpanItems().get(1).getName());
@@ -157,9 +157,10 @@ public class SuppressionTests {
         Tracer outerTracer = tracer;
         Tracer innerTracer = Instrumentation.create(otelOptions, libOptions.disableSpanSuppression(true)).getTracer();
 
-        RequestOptions options = new RequestOptions();
+        RequestOptions options = RequestOptions.none();
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
-        Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
+        Span innerSpan
+            = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
 
         innerSpan.end();
         outerSpan.end();
@@ -180,9 +181,10 @@ public class SuppressionTests {
             .getTracer();
         Tracer innerTracer = tracer;
 
-        RequestOptions options = new RequestOptions();
+        RequestOptions options = RequestOptions.none();
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
-        Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
+        Span innerSpan
+            = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
         innerSpan.end();
         outerSpan.end();
 
@@ -210,7 +212,7 @@ public class SuppressionTests {
     public void multipleLayers() {
         Tracer tracer = Instrumentation.create(otelOptions, libOptions).getTracer();
 
-        RequestOptions options = new RequestOptions();
+        RequestOptions options = RequestOptions.none();
 
         Span outer = tracer.spanBuilder("outer", PRODUCER, options.getInstrumentationContext()).startSpan();
         Span inner = tracer.spanBuilder("inner", CLIENT, outer.getInstrumentationContext()).startSpan();
@@ -234,7 +236,7 @@ public class SuppressionTests {
     @MethodSource("suppressionTestCases")
     @SuppressWarnings("try")
     public void testSuppressionExplicitContext(SpanKind outerKind, SpanKind innerKind, int expectedSpanCount) {
-        RequestOptions options = new RequestOptions();
+        RequestOptions options = RequestOptions.none();
         Span outerSpan = tracer.spanBuilder("outerSpan", outerKind, options.getInstrumentationContext())
             .setAttribute("key", "valueOuter")
             .startSpan();
@@ -368,7 +370,7 @@ public class SuppressionTests {
         public void protocolMethod(RequestOptions options) {
             Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
 
-            options = options.setInstrumentationContext(span.getInstrumentationContext());
+            options = options.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
 
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response
@@ -388,7 +390,7 @@ public class SuppressionTests {
             Span span
                 = tracer.spanBuilder("convenienceMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
 
-            options = options.setInstrumentationContext(span.getInstrumentationContext());
+            options = options.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
 
             try (TracingScope scope = span.makeCurrent()) {
                 protocolMethod(options);

@@ -229,8 +229,8 @@ public class OTelInstrumentation implements Instrumentation {
             return operation.apply(requestOptions);
         }
 
-        if (requestOptions == null || requestOptions == RequestOptions.none()) {
-            requestOptions = new RequestOptions();
+        if (requestOptions == null) {
+            requestOptions = RequestOptions.none();
         }
 
         long startTimeNs = callDurationMetric.isEnabled() ? System.nanoTime() : 0;
@@ -243,7 +243,8 @@ public class OTelInstrumentation implements Instrumentation {
         RuntimeException error = null;
         try {
             if (span.getInstrumentationContext().isValid()) {
-                requestOptions = requestOptions.setInstrumentationContext(span.getInstrumentationContext());
+                requestOptions
+                    = requestOptions.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
             }
             return operation.apply(requestOptions);
         } catch (RuntimeException t) {

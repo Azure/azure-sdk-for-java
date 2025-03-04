@@ -247,7 +247,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         RequestOptions requestOptions = request.getRequestOptions();
         if (requestOptions == null) {
-            requestOptions = new RequestOptions();
+            requestOptions = RequestOptions.none();
             request.setRequestOptions(requestOptions);
         }
 
@@ -261,7 +261,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parentContext;
 
         if (context != null && context.isValid()) {
-            request.setRequestOptions(requestOptions.setInstrumentationContext(context));
+            request.setRequestOptions(requestOptions.toBuilder().setInstrumentationContext(context).build());
             // even if tracing is disabled, we could have a valid context to propagate
             // if it was provided by the application explicitly.
             traceContextPropagator.inject(context, request.getHeaders(), SETTER);

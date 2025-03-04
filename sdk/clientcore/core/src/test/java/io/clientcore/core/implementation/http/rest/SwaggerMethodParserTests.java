@@ -17,6 +17,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestOptionsBuilder;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.HttpResponse;
@@ -525,14 +526,17 @@ public class SwaggerMethodParserTests {
         Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestOptions", RequestOptions.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        RequestOptions bodyOptions = new RequestOptions().setBody(BinaryData.fromString("{\"id\":\"123\"}"));
+        RequestOptions bodyOptions
+            = new RequestOptionsBuilder().setBody(BinaryData.fromString("{\"id\":\"123\"}")).build();
 
         RequestOptions headerQueryOptions
-            = new RequestOptions().addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
-                .addQueryParam("foo", "bar");
+            = new RequestOptionsBuilder().addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
+                .addQueryParam("foo", "bar")
+                .build();
 
         RequestOptions uriOptions
-            = new RequestOptions().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com"));
+            = new RequestOptionsBuilder().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com"))
+                .build();
 
         // Add this test back if error options is ever made public.
         // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));

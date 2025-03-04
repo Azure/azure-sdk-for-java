@@ -3,6 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.models.RequestOptionsBuilder;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
@@ -155,8 +156,9 @@ public class TelemetryJavaDocCodeSnippets {
         // However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
         // and explicit io.clientcore.core.util.Context.
 
-        RequestOptions options = new RequestOptions()
-            .setInstrumentationContext(Instrumentation.createInstrumentationContext(span));
+        RequestOptions options = new RequestOptionsBuilder()
+            .setInstrumentationContext(Instrumentation.createInstrumentationContext(span))
+            .build();
 
         // run on another thread - all telemetry will be correlated with the span created above
         client.clientCall(options);

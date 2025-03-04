@@ -5,13 +5,13 @@ package io.clientcore.core.implementation.http.client;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.JdkHttpClientBuilder;
+import io.clientcore.core.http.models.RequestOptionsBuilder;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
@@ -271,7 +271,7 @@ public class DefaultHttpClientIT {
     private static Response<?> getResponse(HttpClient client, String path, Context context) throws IOException {
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
             .setUri(uri(server, path))
-            .setRequestOptions(new RequestOptions().setContext(context));
+            .setRequestOptions(new RequestOptionsBuilder().setContext(context).build());
 
         return client.send(request);
     }

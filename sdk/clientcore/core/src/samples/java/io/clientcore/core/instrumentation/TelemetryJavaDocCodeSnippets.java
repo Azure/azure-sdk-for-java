@@ -4,6 +4,7 @@
 package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestOptionsBuilder;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.tracing.Span;
@@ -98,8 +99,9 @@ public class TelemetryJavaDocCodeSnippets {
 
         SampleClient client = new SampleClientBuilder().build();
 
-        RequestOptions options = new RequestOptions()
-            .setInstrumentationContext(new MyInstrumentationContext("e4eaaaf2d48f4bf3b299a8a2a2a77ad7", "5e0c63257de34c56"));
+        RequestOptions options = new RequestOptionsBuilder()
+            .setInstrumentationContext(new MyInstrumentationContext("e4eaaaf2d48f4bf3b299a8a2a2a77ad7", "5e0c63257de34c56"))
+            .build();
 
         // run on another thread
         client.downloadContent(options);

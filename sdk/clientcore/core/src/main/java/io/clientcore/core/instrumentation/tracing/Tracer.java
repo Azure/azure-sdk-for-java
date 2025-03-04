@@ -28,9 +28,9 @@ public interface Tracer {
      * &#47;&#47; Libraries that write async code should propagate context explicitly in addition to implicit propagation.
      * if &#40;tracer.isEnabled&#40;&#41;&#41; &#123;
      *     if &#40;requestOptions == null&#41; &#123;
-     *         requestOptions = new RequestOptions&#40;&#41;;
+     *         requestOptions = RequestOptions.none&#40;&#41;;
      *     &#125;
-     *     requestOptions = requestOptions.setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;;
+     *     requestOptions = requestOptions.toBuilder&#40;&#41;.setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;.build&#40;&#41;;
      * &#125;
      *
      * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;

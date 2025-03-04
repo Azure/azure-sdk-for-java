@@ -3,16 +3,11 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.http.annotations.QueryParam;
-import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.implementation.http.rest.UriEscapers;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.ProgressReporter;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -32,9 +27,10 @@ import java.util.function.Consumer;
  * <p><strong>Creating an instance of RequestOptions</strong></p>
  * <!-- src_embed io.clientcore.core.http.rest.requestoptions.instantiation -->
  * <pre>
- * RequestOptions options = new RequestOptions&#40;&#41;
+ * RequestOptions options = new RequestOptionsBuilder&#40;&#41;
  *     .setBody&#40;BinaryData.fromString&#40;&quot;&#123;&#92;&quot;name&#92;&quot;:&#92;&quot;Fluffy&#92;&quot;&#125;&quot;&#41;&#41;
- *     .addHeader&#40;new HttpHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;;
+ *     .addHeader&#40;new HttpHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.instantiation -->
  *
@@ -100,20 +96,23 @@ import java.util.function.Consumer;
  *
  * <!-- src_embed io.clientcore.core.http.rest.requestoptions.postrequest -->
  * <pre>
- * RequestOptions options = new RequestOptions&#40;&#41;
+ * RequestOptions options = new RequestOptionsBuilder&#40;&#41;
  *     .addRequestCallback&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setMethod&#40;HttpMethod.POST&#41;
  *         .setBody&#40;requestBodyData&#41;
- *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
+ *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
-    // RequestOptions is a highly used, short-lived class, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
     private static final RequestOptions NONE = new RequestOptions();
+    private static final RequestOptions DESERIALIZE_BODY
+        = new RequestOptionsBuilder().setResponseBodyMode(ResponseBodyMode.DESERIALIZE).build();
+    private static final RequestOptions IGNORE_BODY
+        = new RequestOptionsBuilder().setResponseBodyMode(ResponseBodyMode.IGNORE).build();
 
     private final Consumer<HttpRequest> requestCallback;
     private final Context context;
@@ -122,10 +121,7 @@ public final class RequestOptions {
     private final InstrumentationContext instrumentationContext;
     private final ProgressReporter progressReporter;
 
-    /**
-     * Creates a new instance of {@link RequestOptions}.
-     */
-    public RequestOptions() {
+    private RequestOptions() {
         this.requestCallback = request -> {
             // No-op
         };
@@ -136,7 +132,10 @@ public final class RequestOptions {
         this.progressReporter = null;
     }
 
-    private RequestOptions(Consumer<HttpRequest> requestCallback, Context context, ResponseBodyMode responseBodyMode,
+    /**
+     * Creates a new instance of {@link RequestOptions}.
+     */
+    RequestOptions(Consumer<HttpRequest> requestCallback, Context context, ResponseBodyMode responseBodyMode,
         ClientLogger logger, InstrumentationContext instrumentationContext, ProgressReporter progressReporter) {
         this.requestCallback = requestCallback;
         this.context = context;
@@ -185,181 +184,12 @@ public final class RequestOptions {
     }
 
     /**
-     * Adds a header to the {@link HttpRequest}.
-     *
-     * <p>If a header with the given name exists, the {@code value} is added to the existing header (comma-separated),
-     * otherwise a new header will be created.</p>
-     *
-     * @param header The header key.
-     * @return The updated {@link RequestOptions} object.
-     * @throws NullPointerException If {@code header} is null.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions addHeader(HttpHeader header) {
-        Objects.requireNonNull(header, "'header' cannot be null.");
-        Consumer<HttpRequest> updatedCallback
-            = this.requestCallback.andThen(request -> request.getHeaders().add(header));
-
-        return new RequestOptions(updatedCallback, this.context, this.responseBodyMode, this.logger,
-            this.instrumentationContext, this.progressReporter);
-    }
-
-    /**
-     * Sets a header on the {@link HttpRequest}.
-     *
-     * <p>If a header with the given name exists it is overridden by the new {@code value}.</p>
-     *
-     * @param header The header key.
-     * @param value The header value.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setHeader(HttpHeaderName header, String value) {
-        Consumer<HttpRequest> updatedCallback
-            = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
-
-        return new RequestOptions(updatedCallback, this.context, this.responseBodyMode, this.logger,
-            this.instrumentationContext, this.progressReporter);
-    }
-
-    /**
-     * Adds a query parameter to the request URI. The parameter name and value will be URI encoded. To use an already
-     * encoded parameter name and value, call {@code addQueryParam("name", "value", true)}.
-     *
-     * @param parameterName The name of the query parameter.
-     * @param value The value of the query parameter.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions addQueryParam(String parameterName, String value) {
-        return addQueryParam(parameterName, value, false);
-    }
-
-    /**
-     * Adds a query parameter to the request URI, specifying whether the parameter is already encoded. A value
-     * {@code true} for this argument indicates that value of {@link QueryParam#value()} is already encoded hence the
-     * engine should not encode it. By default, the value will be encoded.
-     *
-     * @param parameterName The name of the query parameter.
-     * @param value The value of the query parameter.
-     * @param encoded Whether this query parameter is already encoded.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
-        Consumer<HttpRequest> updatedCallback = this.requestCallback.andThen(request -> {
-            String uri = request.getUri().toString();
-            String encodedParameterName = encoded ? parameterName : UriEscapers.QUERY_ESCAPER.escape(parameterName);
-            String encodedParameterValue = encoded ? value : UriEscapers.QUERY_ESCAPER.escape(value);
-
-            request.setUri(uri + (uri.contains("?") ? "&" : "?") + encodedParameterName + "=" + encodedParameterValue);
-        });
-
-        return new RequestOptions(updatedCallback, this.context, this.responseBodyMode, this.logger,
-            this.instrumentationContext, this.progressReporter);
-    }
-
-    /**
-     * Adds a custom request callback to modify the {@link HttpRequest} before it's sent by the {@link HttpClient}. The
-     * modifications made on a {@link RequestOptions} object are applied in order on the request.
-     *
-     * @param requestCallback The request callback.
-     * @return The updated {@link RequestOptions} object.
-     * @throws NullPointerException If {@code requestCallback} is null.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
-        Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
-
-        Consumer<HttpRequest> updatedCallback = this.requestCallback.andThen(requestCallback);
-        return new RequestOptions(updatedCallback, this.context, this.responseBodyMode, this.logger,
-            this.instrumentationContext, this.progressReporter);
-    }
-
-    /**
-     * Sets the body to send as part of the {@link HttpRequest}.
-     *
-     * @param requestBody the request body data
-     * @return The updated {@link RequestOptions} object.
-     * @throws NullPointerException If {@code requestBody} is {@code null}.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setBody(BinaryData requestBody) {
-        Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
-        return new RequestOptions(this.requestCallback.andThen(request -> request.setBody(requestBody)), this.context,
-            this.responseBodyMode, this.logger, this.instrumentationContext, this.progressReporter);
-    }
-
-    /**
-     * Sets the additional context on the request that is passed during the service call.
-     *
-     * @param context Additional context that is passed during the service call.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setContext(Context context) {
-        return new RequestOptions(this.requestCallback, context, this.responseBodyMode, this.logger,
-            this.instrumentationContext, this.progressReporter);
-    }
-
-    /**
-     * Sets the configuration indicating how the body of the resulting HTTP response should be handled. If {@code null},
-     * the response body will be handled based on the content type of the response.
-     *
-     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
-     *
-     * @param responseBodyMode The configuration indicating how the body of the resulting HTTP response should be
-     * handled.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setResponseBodyMode(ResponseBodyMode responseBodyMode) {
-        return new RequestOptions(this.requestCallback, this.context, responseBodyMode, this.logger,
-            this.instrumentationContext, this.progressReporter);
-    }
-
-    /**
-     * Sets the {@link ClientLogger} used to log the request and response.
-     *
-     * @param logger The {@link ClientLogger} used to log the request and response.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setLogger(ClientLogger logger) {
-        return new RequestOptions(this.requestCallback, this.context, this.responseBodyMode, logger,
-            this.instrumentationContext, this.progressReporter);
-    }
-
-    /**
-     * An empty {@link RequestOptions} that is immutable, used in situations where there is no request-specific
-     * configuration to pass into the request. Modifications to the {@link RequestOptions} will result in an
-     * {@link IllegalStateException}.
-     *
-     * @return The singleton instance of an empty {@link RequestOptions}.
-     */
-    public static RequestOptions none() {
-        return NONE;
-    }
-
-    /**
      * Gets the {@link InstrumentationContext} used to instrument the request.
      *
      * @return The {@link InstrumentationContext} used to instrument the request.
      */
     public InstrumentationContext getInstrumentationContext() {
         return instrumentationContext;
-    }
-
-    /**
-     * Sets the {@link InstrumentationContext} used to instrument the request.
-     *
-     * @param instrumentationContext The {@link InstrumentationContext} used to instrument the request.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
-        return new RequestOptions(this.requestCallback, this.context, this.responseBodyMode, this.logger,
-            instrumentationContext, this.progressReporter);
     }
 
     /**
@@ -372,14 +202,44 @@ public final class RequestOptions {
     }
 
     /**
-     * Sets the {@link ProgressReporter} used to track progress of I/O operations of the request.
+     * An empty {@link RequestOptions} used in situations where there is no request-specific
+     * configuration to pass into the request.
      *
-     * @param progressReporter The {@link ProgressReporter} used to track progress of I/O operations of the request.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
+     * @return The singleton instance of an empty {@link RequestOptions}.
      */
-    public RequestOptions setProgressReporter(ProgressReporter progressReporter) {
-        return new RequestOptions(this.requestCallback, this.context, this.responseBodyMode, this.logger,
-            this.instrumentationContext, progressReporter);
+    public static RequestOptions none() {
+        return NONE;
+    }
+
+    /**
+     * {@link RequestOptions} with the response body mode set to {@link ResponseBodyMode#DESERIALIZE}.
+     *
+     * @return A {@link RequestOptions} with the response body mode set to {@link ResponseBodyMode#DESERIALIZE}.
+     */
+    public static RequestOptions deserializeResponse() {
+        return DESERIALIZE_BODY;
+    }
+
+    /**
+     * {@link RequestOptions} with the response body mode set to {@link ResponseBodyMode#IGNORE}.
+     *
+     * @return A {@link RequestOptions} with the response body mode set to {@link ResponseBodyMode#IGNORE}.
+     */
+    public static RequestOptions ignoreResponse() {
+        return IGNORE_BODY;
+    }
+
+    /**
+     * Creates a new {@link RequestOptionsBuilder} to create a new instance of {@link RequestOptions}.
+     *
+     * @return A new {@link RequestOptionsBuilder}.
+     */
+    public RequestOptionsBuilder toBuilder() {
+        return new RequestOptionsBuilder().addRequestCallback(requestCallback)
+            .setContext(context)
+            .setResponseBodyMode(responseBodyMode)
+            .setLogger(logger)
+            .setInstrumentationContext(instrumentationContext)
+            .setProgressReporter(progressReporter);
     }
 }
