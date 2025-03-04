@@ -42,9 +42,6 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
 
     private TokenCredential credential;
 
-    private static final String FAKE_RESOURCE_ID
-        = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg/providers/Microsoft.Compute/virtualMachines/vm";
-
     @Override
     public void beforeTest() {
         super.beforeTest();
@@ -102,7 +99,7 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
     }
 
     private ConfigurationClient getConfigurationClient() {
-        String endPoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2", FAKE_RESOURCE_ID);
+        String endPoint = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_ENDPOINT");
         System.out.println("endPoint = " + endPoint);
         return new ConfigurationClientBuilder().credential(credential)
             .endpoint(
