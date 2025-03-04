@@ -116,7 +116,7 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
             SslBundle sslBundle = SslBundle.of(sslStoreBundle, sslBundleKey,
                 sslOptions,
                 bundle.getProtocol(),
-                SslManagerBundle.from(sslStoreBundle, sslBundleKey));
+                new KeyVaultSslManagerBundle(sslStoreBundle, sslBundleKey, bundle.isForClientAuth()));
 
             registry.registerBundle(bundleName, sslBundle);
 

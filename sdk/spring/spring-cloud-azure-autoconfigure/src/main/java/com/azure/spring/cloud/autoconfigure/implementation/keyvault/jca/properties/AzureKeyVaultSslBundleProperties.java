@@ -28,6 +28,11 @@ public class AzureKeyVaultSslBundleProperties {
     }
 
     public static class KeyVaultSslBundleProperties extends SslBundleProperties {
+
+        /**
+         * Whether to use this ssl bundle for client authentication.
+         */
+        private boolean forClientAuth;
         /**
          * Key Vault keystore properties.
          */
@@ -39,6 +44,14 @@ public class AzureKeyVaultSslBundleProperties {
          */
         @NestedConfigurationProperty
         private final KeyStoreProperties truststore = new KeyStoreProperties();
+
+        public boolean isForClientAuth() {
+            return forClientAuth;
+        }
+
+        public void setForClientAuth(boolean forClientAuth) {
+            this.forClientAuth = forClientAuth;
+        }
 
         public KeyStoreProperties getKeystore() {
             return keystore;
