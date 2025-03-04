@@ -151,7 +151,7 @@ public class SecretProperties implements JsonSerializable<SecretProperties> {
     /**
      * The number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
      */
-    Integer recoverableDays;
+    private Integer recoverableDays;
 
     SecretProperties(String secretName) {
         this.name = secretName;
