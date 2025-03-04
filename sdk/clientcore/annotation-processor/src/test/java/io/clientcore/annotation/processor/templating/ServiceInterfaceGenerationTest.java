@@ -34,7 +34,8 @@ public class ServiceInterfaceGenerationTest {
     @Test
     public void testProcessPackageName() {
         processor.process(templateInput, processingEnv);
-        assertEquals(templateInput.getPackageName(), processor.getCompilationUnit().getPackageDeclaration().get().getNameAsString());
+        assertEquals("com.azure.v2.dummy.implementation",
+            processor.getCompilationUnit().getPackageDeclaration().get().getNameAsString());
     }
 
     @Test
@@ -47,7 +48,8 @@ public class ServiceInterfaceGenerationTest {
     @Test
     public void testProcessServiceInterfaceAddedImport() {
         processor.process(templateInput, processingEnv);
-        assertEquals(templateInput.getServiceInterfaceFQN(), processor.getCompilationUnit().getImports().get(0).getNameAsString());
+        assertEquals(templateInput.getServiceInterfaceFQN(),
+            processor.getCompilationUnit().getImports().get(0).getNameAsString());
     }
 
     @Test
@@ -65,7 +67,8 @@ public class ServiceInterfaceGenerationTest {
     @Test
     public void testSetPackageDeclaration() {
         processor.setPackageDeclaration("com.example.service");
-        assertEquals("com.example.service", processor.getCompilationUnit().getPackageDeclaration().get().getNameAsString());
+        assertEquals("com.example.service",
+            processor.getCompilationUnit().getPackageDeclaration().get().getNameAsString());
     }
 
     @Test

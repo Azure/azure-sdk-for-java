@@ -96,6 +96,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     @Override
     public void process(TemplateInput templateInput, ProcessingEnvironment processingEnv) {
         String packageName = templateInput.getPackageName();
+        // Remove the last part of the package name to avoid clash with class name
+        packageName = packageName.substring(0, packageName.lastIndexOf('.'));
         String serviceInterfaceImplShortName = templateInput.getServiceInterfaceImplShortName();
         String serviceInterfaceShortName = templateInput.getServiceInterfaceShortName();
 
@@ -165,7 +167,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         for (HttpRequestContext method : templateInput.getHttpRequestContexts()) {
             if (!method.isConvenience()) {
-                configureInternalMethod(classBuilder.addMethod(method.getMethodName(), Modifier.Keyword.PUBLIC), method);
+                configureInternalMethod(classBuilder.addMethod(method.getMethodName(), Modifier.Keyword.PUBLIC),
+                    method);
             }
         }
 
@@ -442,7 +445,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                         });
                     });
                 });
-
             }
         }
         statement.setLineComment("\n Send the request through the pipeline");

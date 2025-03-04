@@ -4,6 +4,7 @@
 package io.clientcore.annotation.processor;
 
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.type.Type;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.Substitution;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -202,33 +203,37 @@ public class AnnotationProcessor extends AbstractProcessor {
     private void setReturnTypeForMethod(HttpRequestContext method, ExecutableElement requestMethod,
         TemplateInput templateInput) {
         TypeMirror returnType = requestMethod.getReturnType();
-        String returnTypeString = returnType.toString();
+        TypeKind returnTypeKind = returnType.getKind();
 
-        // Handle primitive and boxed types explicitly
-        if (returnType.getKind().isPrimitive() || "void".equals(returnTypeString)) {
-            method.setMethodReturnType(StaticJavaParser.parseType(returnTypeString));
-            return;
-        }
-        if ("java.lang.Void".equals(returnTypeString)) {
-            method.setMethodReturnType(StaticJavaParser.parseType("Void"));
+        // Handle primitive and void types explicitly
+        if (returnTypeKind.isPrimitive() || returnTypeKind == TypeKind.VOID) {
+            method.setMethodReturnType(StaticJavaParser.parseType(returnType.toString()));
             return;
         }
 
-        // Handle declared types (e.g., Response<T>)
-        if (returnType.getKind() == TypeKind.DECLARED) {
+        // Handle declared types (e.g., Response<T>, List<String>)
+        if (returnTypeKind == TypeKind.DECLARED) {
             DeclaredType declaredType = (DeclaredType) returnType;
             TypeElement typeElement = (TypeElement) declaredType.asElement();
+
+            if (typeElement.getQualifiedName().contentEquals("java.lang.Void")) {
+                method.setMethodReturnType(StaticJavaParser.parseType("Void"));
+                return;
+            }
+
+            // Add import for the base type
             String fullTypeName = templateInput.addImport(typeElement.getQualifiedName().toString());
 
-            if (!declaredType.getTypeArguments().isEmpty()) {
-                StringBuilder typeWithArguments = new StringBuilder(fullTypeName + "<");
-                for (TypeMirror typeArg : declaredType.getTypeArguments()) {
-                    String typeArgName = resolveTypeArgument(typeArg, templateInput);
-                    typeWithArguments.append(typeArgName).append(", ");
-                }
-                typeWithArguments.setLength(typeWithArguments.length() - 2); // Remove last comma
-                typeWithArguments.append(">");
-                method.setMethodReturnType(StaticJavaParser.parseType(typeWithArguments.toString()));
+            List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
+            if (!typeArguments.isEmpty()) {
+                List<Type> parsedArguments = typeArguments.stream()
+                    .map(typeArg -> StaticJavaParser.parseType(resolveTypeArgument(typeArg, templateInput)))
+                    .collect(Collectors.toList());
+
+                // Create a parameterized type using JavaParser's Type API
+                Type baseType = StaticJavaParser.parseType(fullTypeName);
+                method.setMethodReturnType(StaticJavaParser.parseType(baseType + "<"
+                    + parsedArguments.stream().map(Type::toString).collect(Collectors.joining(", ")) + ">"));
             } else {
                 method.setMethodReturnType(StaticJavaParser.parseType(fullTypeName));
             }
@@ -236,7 +241,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         // Handle array types
-        if (returnType.getKind() == TypeKind.ARRAY) {
+        if (returnTypeKind == TypeKind.ARRAY) {
             ArrayType arrayType = (ArrayType) returnType;
             TypeMirror componentType = arrayType.getComponentType();
             String componentTypeName = resolveTypeArgument(componentType, templateInput);
@@ -245,7 +250,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         // Fallback to default parsing
-        method.setMethodReturnType(StaticJavaParser.parseType(returnTypeString));
+        method.setMethodReturnType(StaticJavaParser.parseType(returnType.toString()));
     }
 
     private String resolveTypeArgument(TypeMirror typeArg, TemplateInput templateInput) {

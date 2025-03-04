@@ -167,7 +167,7 @@
             </goals>
             <configuration>
               <sources>
-                <source>${basedir}/target/generated-sources</source>
+                <source>${project.build.directory}/generated-sources/</source>
               </sources>
             </configuration>
           </execution>

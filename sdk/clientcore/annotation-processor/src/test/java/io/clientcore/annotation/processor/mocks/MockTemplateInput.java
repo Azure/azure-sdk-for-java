@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package io.clientcore.annotation.processor.mocks;
 
 import io.clientcore.annotation.processor.models.HttpRequestContext;
@@ -12,7 +13,7 @@ public class MockTemplateInput extends TemplateInput {
 
     @Override
     public String getPackageName() {
-        return "com.azure.v2.dummy.implementation";
+        return "com.azure.v2.dummy.implementation.DummyClientImpl";
     }
 
     @Override
