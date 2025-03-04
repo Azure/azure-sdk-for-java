@@ -1,5 +1,6 @@
 package com.azure.ai.openai.responses;
 
+import com.azure.ai.openai.OpenAIClientTestBase;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
 import com.azure.ai.openai.responses.models.ResponsesInputTextContentPart;
@@ -12,6 +13,10 @@ import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 
 import static com.azure.ai.openai.responses.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -73,7 +78,5 @@ public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
                 request,
                 requestOptions
         );
-
-        events.forEach(System.out::println);
     }
 }
