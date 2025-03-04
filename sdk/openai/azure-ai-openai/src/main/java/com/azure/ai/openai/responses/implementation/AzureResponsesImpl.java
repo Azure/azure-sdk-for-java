@@ -550,4 +550,13 @@ public final class AzureResponsesImpl {
         return service.listInputItemsSync(this.client.getEndpoint(), responseId, limit, order, after, before, accept,
             requestOptions, Context.NONE);
     }
+
+    /**
+     * Gets the endpoint this service is using.
+     *
+     * @return the endpoint URL.
+     */
+    public String getEndpoint() {
+        return this.client.getEndpoint();
+    }
 }

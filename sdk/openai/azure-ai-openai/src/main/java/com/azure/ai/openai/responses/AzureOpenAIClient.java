@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.openai.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
+
 /**
  * Initializes a new instance of the synchronous AzureOpenAIClient type.
  */
@@ -140,10 +142,10 @@ public final class AzureOpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createResponseWithResponse(String accept, BinaryData requestBody,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createResponseWithResponse(accept, requestBody, requestOptions);
     }
 
@@ -211,9 +213,9 @@ public final class AzureOpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getResponseWithResponse(responseId, requestOptions);
     }
 
@@ -249,10 +251,10 @@ public final class AzureOpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listInputItemsWithResponse(String responseId, int limit, String order, String after,
         String before, RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listInputItemsWithResponse(responseId, limit, order, after, before, requestOptions);
     }
 

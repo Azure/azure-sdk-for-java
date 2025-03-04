@@ -16,6 +16,8 @@ import java.util.Arrays;
 
 import static com.azure.ai.openai.responses.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
@@ -24,16 +26,11 @@ public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void createResponseBlocking(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         AzureOpenAIClient client = getResponseClient(httpClient, AzureOpenAIServiceVersion.V2024_12_01_PREVIEW);
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("api-version", AzureOpenAIServiceVersion.V2024_12_01_PREVIEW.getVersion());
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
                 new ResponsesUserMessage(Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
 
-        ResponsesResponse response = client.createResponse(
-                request,
-                requestOptions
-        );
+        ResponsesResponse response = client.createResponse(request);
 
         assertNotNull(response);
         assertNotNull(response.getId());
@@ -42,32 +39,26 @@ public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
         assertNotNull(response.getStatus());
         assertNotNull(response.getModel());
         assertNotNull(response.getOutput());
-        assertNotNull(response.getError());
+        assertNull(response.getError());
         assertNotNull(response.getTools());
-        assertNotNull(response.getTruncation());
-        assertNotNull(response.getTemperature());
-        assertNotNull(response.getTopP());
-        assertNotNull(response.getReasoningEffort());
+        assertNull(response.getTruncation());
+        assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
+        assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
+        assertNull(response.getReasoningEffort());
         assertNotNull(response.getUsage());
         assertNotNull(response.getMetadata());
-
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void createResponseStreaming(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         AzureOpenAIClient client = getResponseClient(httpClient, AzureOpenAIServiceVersion.V2024_12_01_PREVIEW);
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("api-version", AzureOpenAIServiceVersion.V2024_12_01_PREVIEW.getVersion());
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
                 new ResponsesUserMessage(Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
         request.setStream(true);
 
-        IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(
-                request,
-                requestOptions
-        );
+        IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request);
 
         events.forEach(event ->
                 System.out.println("Response: " + event.getClass().getSimpleName())
