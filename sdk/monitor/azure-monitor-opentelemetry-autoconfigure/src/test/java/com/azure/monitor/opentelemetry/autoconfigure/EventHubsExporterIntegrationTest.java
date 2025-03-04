@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.messaging.eventhubs.*;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -79,17 +80,15 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             return next.process();
         };
         Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
-        EventHubProducerAsyncClient producer = new EventHubClientBuilder().credential(credential)
+        EventHubProducerClient producer = new EventHubClientBuilder().credential(credential)
             .fullyQualifiedNamespace("namespace")
             .eventHubName("event-hub")
-            .buildAsyncProducerClient();
+            .buildProducerClient();
+
         Span span = tracer.spanBuilder(spanName).startSpan();
         Scope scope = span.makeCurrent();
         try {
-            producer.createBatch().flatMap(batch -> {
-                batch.tryAdd(new EventData("test event"));
-                return producer.send(batch);
-            }).subscribe();
+            producer.createBatch().tryAdd(new EventData("test event"));
         } finally {
             span.end();
             scope.close();
