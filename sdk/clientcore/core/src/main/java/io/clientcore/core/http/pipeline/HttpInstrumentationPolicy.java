@@ -86,9 +86,8 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * <pre>
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;
- *         new HttpRetryPolicy&#40;&#41;,
- *         new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
+ *     .addPolicy&#40;new HttpRetryPolicy&#40;&#41;&#41;
+ *     .addPolicy&#40;new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
  * </pre>
@@ -104,9 +103,8 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * instrumentationOptions.addAllowedQueryParamName&#40;&quot;documentId&quot;&#41;;
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;
- *         new HttpRetryPolicy&#40;&#41;,
- *         new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
+ *     .addPolicy&#40;new HttpRetryPolicy&#40;&#41;&#41;
+ *     .addPolicy&#40;new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
  * </pre>
@@ -116,22 +114,29 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * <!-- src_embed io.clientcore.core.instrumentation.enrichhttpspans -->
  * <pre>
  *
- * HttpPipelinePolicy enrichingPolicy = &#40;request, next&#41; -&gt; &#123;
- *     Span span = request.getRequestOptions&#40;&#41; == null
- *         ? Span.noop&#40;&#41;
- *         : request.getRequestOptions&#40;&#41;.getInstrumentationContext&#40;&#41;.getSpan&#40;&#41;;
- *     if &#40;span.isRecording&#40;&#41;&#41; &#123;
- *         span.setAttribute&#40;&quot;custom.request.id&quot;, request.getHeaders&#40;&#41;.getValue&#40;CUSTOM_REQUEST_ID&#41;&#41;;
+ * HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy&#40;&#41; &#123;
+ *     &#64;Override
+ *     public Response&lt;?&gt; process&#40;HttpRequest request, HttpPipelineNextPolicy next&#41; &#123;
+ *         Span span = request.getRequestOptions&#40;&#41; == null
+ *             ? Span.noop&#40;&#41;
+ *             : request.getRequestOptions&#40;&#41;.getInstrumentationContext&#40;&#41;.getSpan&#40;&#41;;
+ *         if &#40;span.isRecording&#40;&#41;&#41; &#123;
+ *             span.setAttribute&#40;&quot;custom.request.id&quot;, request.getHeaders&#40;&#41;.getValue&#40;CUSTOM_REQUEST_ID&#41;&#41;;
+ *         &#125;
+ *
+ *         return next.process&#40;&#41;;
  *     &#125;
  *
- *     return next.process&#40;&#41;;
+ *     &#64;Override
+ *     public HttpPipelinePosition getPipelinePosition&#40;&#41; &#123;
+ *         return HttpPipelinePosition.AFTER_INSTRUMENTATION;
+ *     &#125;
  * &#125;;
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;
- *         new HttpRetryPolicy&#40;&#41;,
- *         new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;,
- *         enrichingPolicy&#41;
+ *     .addPolicy&#40;new HttpRetryPolicy&#40;&#41;&#41;
+ *     .addPolicy&#40;new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
+ *     .addPolicy&#40;enrichingPolicy&#41;
  *     .build&#40;&#41;;
  *
  *

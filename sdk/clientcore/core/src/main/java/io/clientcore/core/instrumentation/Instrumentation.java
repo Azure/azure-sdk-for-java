@@ -31,7 +31,7 @@ public interface Instrumentation {
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
      *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
-     *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
+     *     .setSchemaUri&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
@@ -58,7 +58,7 @@ public interface Instrumentation {
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
      *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
-     *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
+     *     .setSchemaUri&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
@@ -82,7 +82,7 @@ public interface Instrumentation {
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
      *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
-     *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
+     *     .setSchemaUri&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.utils.union;
 
 import io.clientcore.core.implementation.GenericParameterizedType;
@@ -15,15 +18,15 @@ public class NestedUnion {
         NestedClassB nestedClassB = new NestedClassB();
         nestedClassB.setProp(Arrays.asList(1, 2, 3));
         System.out.println("Current Type of Nested Class B: " + nestedClassB.getProp().getCurrentType());
-        System.out.println("Value from Nested Class B: " +
-            nestedClassB.getProp().getValue(new GenericParameterizedType(List.class, Integer.class)));
+        System.out.println("Value from Nested Class B: "
+            + nestedClassB.getProp().getValue(new GenericParameterizedType(List.class, Integer.class)));
 
         ClassA outerClassA = new ClassA();
         outerClassA.setProp(nestedClassB);
         NestedClassB nestedClassBFromA = outerClassA.getProp().getValue(NestedClassB.class);
         System.out.println("Current Type of Nested Class B from Class A: " + nestedClassBFromA.getProp().getCurrentType());
-        System.out.println("Value of Nested Class B from Class A: " +
-            nestedClassBFromA.getProp().getValue(new GenericParameterizedType(List.class, Integer.class)));
+        System.out.println("Value of Nested Class B from Class A: "
+            + nestedClassBFromA.getProp().getValue(new GenericParameterizedType(List.class, Integer.class)));
     }
 
     private static class ClassA {
