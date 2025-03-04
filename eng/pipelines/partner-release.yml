@@ -84,7 +84,7 @@ extends:
           - template: /eng/pipelines/templates/steps/gpg-sign-and-flatten.yml
             parameters:
               ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
-              OutputDirectory: $(Pipeline.Workspace)/packages--esrp-gpg-signed
+              OutputDirectory: $(Pipeline.Workspace)/packages-esrp-gpg-signed
               FlattenedESRPDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
 
           # The packages-esrp-flattened will be used for the ESRP publish
