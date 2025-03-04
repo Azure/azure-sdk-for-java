@@ -51,6 +51,6 @@ class SampleClient {
     }
 
     private void createImpl(RequestOptions options) {
-        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestOptions(options)).close();
+        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestOptions(options));
     }
 }
