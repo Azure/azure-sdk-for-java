@@ -134,7 +134,3 @@ recipeList:
       matchOverrides: false
       ignoreDefinition: false
 
-  - com.azure.openrewrite.core.ResponseRecipe
-  - com.azure.openrewrite.core.RetryOptionsConstructorRecipe
-  - com.azure.openrewrite.TypeReferenceRecipe
-  - com.azure.openrewrite.RemoveFixedDelayRecipe

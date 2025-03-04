@@ -8,3 +8,10 @@ name: com.azure.openrewrite.migration.azure.core.models
 displayName: Migrate from azure.core.models to next generation stack
 description: This recipe migrates azure.core.models package to the next generation stack.
 recipeList:
+    # --------------------------------------------------------------------
+    # BinaryData
+    # --------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+        oldFullyQualifiedTypeName: com.azure.core.models.BinaryData
+        newFullyQualifiedTypeName: com.azure.v2.core.models.BinaryData

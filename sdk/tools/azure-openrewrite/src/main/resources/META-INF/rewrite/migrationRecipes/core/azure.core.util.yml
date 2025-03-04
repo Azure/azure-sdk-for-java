@@ -8,3 +8,10 @@ name: com.azure.openrewrite.migration.azure.core.util
 displayName: Migrate from azure.core.util to next generation stack
 description: This recipe migrates azure.core.util package to the next generation stack.
 recipeList:
+    # --------------------------------------------------------------------
+    # BinaryData
+    # --------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+        oldFullyQualifiedTypeName: com.azure.core.util.BinaryData
+        newFullyQualifiedTypeName: com.azure.v2.core.util.BinaryData
