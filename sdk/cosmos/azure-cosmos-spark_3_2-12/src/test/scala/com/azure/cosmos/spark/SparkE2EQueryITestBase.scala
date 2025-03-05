@@ -203,7 +203,8 @@ abstract class SparkE2EQueryITestBase
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.maxItemCount" -> "1",
-      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.responseContinuationTokenLimitInKb" -> "1"
     )
 
     val df = spark.read.format("cosmos.oltp").options(cfg).load()
