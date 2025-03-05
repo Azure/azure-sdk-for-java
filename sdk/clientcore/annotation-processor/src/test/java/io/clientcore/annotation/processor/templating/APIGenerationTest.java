@@ -32,12 +32,6 @@ public class APIGenerationTest {
 
     @Test
     public void testPublicAPIUserMethodGeneration() {
-        //@HttpRequestInformation(
-        //        method = HttpMethod.GET,
-        //        path = "/users/{userId}",
-        //        expectedStatusCodes = {200}
-        //    )
-        //    User getUser(@PathParam("userId") String userId);
         HttpRequestContext getUserMethodContext = new HttpRequestContext();
 
         getUserMethodContext.setHttpMethod(HttpMethod.GET);
@@ -60,6 +54,6 @@ public class APIGenerationTest {
             actual.append(statement.toString());
         }
 
-        assertEquals("return getUser();", actual.toString());
+        assertEquals("return getUserResponse().getValue();", actual.toString());
     }
 }

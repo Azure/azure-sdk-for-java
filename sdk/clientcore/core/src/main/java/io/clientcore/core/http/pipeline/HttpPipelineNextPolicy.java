@@ -6,6 +6,7 @@ package io.clientcore.core.http.pipeline;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpPipelineCallState;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.SharedExecutorService;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

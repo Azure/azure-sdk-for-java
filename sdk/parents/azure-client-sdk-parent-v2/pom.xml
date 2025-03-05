@@ -9,8 +9,8 @@
   <packaging>pom</packaging>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent-v2;current} -->
 
-  <name>Microsoft Azure SDK for Java - Client Libraries</name>
-  <description>Parent POM for Microsoft Azure SDK for Java</description>
+  <name>Microsoft Azure SDK for Java V2 - Client Libraries</name>
+  <description>Parent POM for Microsoft Azure SDK for Java V2</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <organization>
     <name>Microsoft Corporation</name>

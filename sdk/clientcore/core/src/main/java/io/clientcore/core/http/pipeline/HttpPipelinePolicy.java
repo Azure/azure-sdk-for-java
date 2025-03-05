@@ -16,11 +16,11 @@ import java.util.concurrent.CompletableFuture;
 @FunctionalInterface
 public interface HttpPipelinePolicy {
     /**
-     * Processes the provided HTTP request and invokes the next policy synchronously.
+     * Processes the provided HTTP request and invokes the next policy.
      *
      * @param httpRequest The HTTP request.
      * @param next The next policy to invoke.
-     * @return The response from the next policy or the HTTP client if there are no more policies.
+     * @return The {@link Response} from the next policy or the HTTP client if there are no more policies.
      */
     Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
 

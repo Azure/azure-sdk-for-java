@@ -5,34 +5,55 @@ The client-core annotation processor for introducing compile-time code generatio
 
 ## Usage
 
-1. Add the plugin dependency:
-   ```xml
-   <dependencies>
-    <dependency>
-        <groupId>io.clientcore</groupId>
-        <artifactId>annotation-processor</artifactId>
-        <version>1.0.0.beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;dependency} -->
-        <scope>provided</scope>
-    </dependency>
-   </dependencies>
-   ```
-   1.1. Add the plugin configuration to your `pom.xml`:
+1. Add the below plugin configuration to your `pom.xml`:
    ```xml
    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
-          <annotationProcessors>
-            <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
-          </annotationProcessors>
-        </configuration>
-      </plugin>
+        <executions>
+          <execution>
+            <id>run-annotation-processing</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+
+            <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+              <release>8</release>
+              <proc>only</proc>
+              <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
+              <annotationProcessorPaths>
+                <annotationProcessorPath>
+                  <groupId>io.clientcore</groupId>
+                  <artifactId>annotation-processor</artifactId>
+                  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+                </annotationProcessorPath>
+              </annotationProcessorPaths>
+              <annotationProcessors>
+                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
+              </annotationProcessors>
+
+              <compilerArgs>
+                <arg>-Xlint:-options</arg>
+              </compilerArgs>
+            </configuration>
+          </execution>
+        </executions>
+
+        <dependencies>
+          <dependency>
+            <groupId>io.clientcore</groupId>
+            <artifactId>annotation-processor</artifactId>
+            <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+          </dependency>
+        </dependencies>
     </plugins>
    ```
-2. Annotate your interfaces with `@ServiceInterface`,  `@HttpRequestInformation` and 
+2. Annotate your interfaces with `@ServiceInterface`,  `@HttpRequestInformation` and
    `@UnexpectedResponseExceptionDetail` such annotations:
    ```java 
    @ServiceInterface(name = "ExampleClient", host = "{endpoint}/example")
@@ -45,47 +66,27 @@ The client-core annotation processor for introducing compile-time code generatio
    }
    ```
 
-3. Build your project and the plugin will generate an implementation of the annotated interface.
-   The processor would generate an implementation:
+3. `mvn clean install annotation-processor/pom.xml` followed by `mvn clean compile` your project and the plugin
+   will generate an implementation of the annotated interface in the `target/generated-sources` directory.
    ```java
    public class ExampleServiceImpl implements ExampleService {
-    private static final ClientLogger LOGGER = new ClientLogger(OpenAIClientServiceImpl.class);
+      private static final ClientLogger LOGGER = new ClientLogger(TestInterfaceClientService.class);
 
     private final HttpPipeline defaultPipeline;
 
     private final ObjectSerializer serializer;
 
-    private final String endpoint;
-
-    private final ExampleServiceVersion serviceVersion;
-
-    private String apiVersion;
-
-    public ExampleServiceImpl (HttpPipeline defaultPipeline, ObjectSerializer serializer,
-       String endpoint, ExampleServiceVersion serviceVersion) {
-       this.defaultPipeline = defaultPipeline;
-       this.serializer = serializer;
-       this.endpoint = endpoint;
-       this.apiVersion = serviceVersion.getVersion();
-       this.serviceVersion = serviceVersion;
+    public ExampleServiceImpl(HttpPipeline defaultPipeline, ObjectSerializer serializer) {
+        this.defaultPipeline = defaultPipeline;
+        this.serializer = serializer == null ? new JsonSerializer() : serializer;
     }
 
-    public String getEndpoint() {
-        return endpoint;
+    public static ExampleService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer) {
+        return new ExampleServiceImpl(pipeline, serializer);
     }
 
-    public HttpPipeline getPipeline() {    
+    public HttpPipeline getPipeline() {
         return defaultPipeline;
-    }
-
-    public ExampleServiceVersion getServiceVersion() {
-        return serviceVersion;
-    }
-
-    private final HttpPipeline pipeline;
-
-    public ExampleServiceImpl(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
     }
       
     public Response<BinaryData> getUser(String userId, Context context) {

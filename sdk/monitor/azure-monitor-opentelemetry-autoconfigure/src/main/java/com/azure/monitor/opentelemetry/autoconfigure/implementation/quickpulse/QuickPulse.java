@@ -12,6 +12,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.HostName;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ThreadPoolUtils;
 import reactor.util.annotation.Nullable;
@@ -76,7 +77,8 @@ public class QuickPulse {
         if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
             LOGGER.verbose(
                 "Initializing QuickPulse with instrumentation key: {} , URL {}, rolename {}, role instance {}, sdk version {}",
-                maskIkey(instrumentationKey.get()), endpointUrl.get().toString(), roleName, roleInstance, sdkVersion);
+                IKeyMasker.mask(instrumentationKey.get()), endpointUrl.get().toString(), roleName, roleInstance,
+                sdkVersion);
         }
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
@@ -131,7 +133,4 @@ public class QuickPulse {
         this.collector = collector;
     }
 
-    private String maskIkey(String ikey) {
-        return "*" + ikey.substring(ikey.length() - 13);
-    }
 }

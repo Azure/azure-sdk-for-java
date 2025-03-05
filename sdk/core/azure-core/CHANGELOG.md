@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 1.55.2 (2025-02-20)
+
+### Other Changes
+
+- Fix for the `1.55.1` release as Netty dependencies weren't updated.
+
 ## 1.55.1 (2025-02-12)
 
 ### Other Changes

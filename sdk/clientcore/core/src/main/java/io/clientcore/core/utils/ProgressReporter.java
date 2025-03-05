@@ -7,18 +7,19 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.LongConsumer;
 
 /**
  * {@link ProgressReporter} offers a convenient way to add progress tracking to I/O operations.
  * <p>
- * The {@link ProgressReporter} can be used to track a single operation as well as the progress of
- * complex operations that involve multiple sub-operations. In the latter case {@link ProgressReporter}
- * forms a tree where child nodes track the progress of sub-operations and report to the parent which in turn
- * aggregates the total progress. The reporting tree can have arbitrary level of nesting.
+ * The {@link ProgressReporter} can be used to track a single operation as well as the progress of complex operations
+ * that involve multiple sub-operations. In the latter case {@link ProgressReporter} forms a tree where child nodes
+ * track the progress of sub-operations and report to the parent which in turn aggregates the total progress. The
+ * reporting tree can have arbitrary level of nesting.
  */
 public final class ProgressReporter {
 
-    private final ProgressListener progressListener;
+    private final LongConsumer progressListener;
     private final Lock listenerLock;
     private final ProgressReporter parent;
 
@@ -28,18 +29,23 @@ public final class ProgressReporter {
 
     /**
      * Creates top level {@link ProgressReporter}.
-     * Only top level {@link ProgressReporter} can have {@link ProgressListener}.
-     * @param progressListener The {@link ProgressListener} to be notified about progress.
+     * <p>
+     * Only top level {@link ProgressReporter} can have a {@link LongConsumer}.
+     *
+     * @param progressListener The {@link LongConsumer} to be notified about progress.
+     * @throws NullPointerException If {@code progressListener} is null.
      */
-    private ProgressReporter(ProgressListener progressListener) {
+    private ProgressReporter(LongConsumer progressListener) {
         this.progressListener = Objects.requireNonNull(progressListener, "'progressListener' must not be null");
         this.listenerLock = new ReentrantLock();
         this.parent = null;
     }
 
     /**
-     * Creates child {@link ProgressReporter}. It tracks it's own progress and reports to parent.
+     * Creates child {@link ProgressReporter}. It tracks its own progress and reports to parent.
+     *
      * @param parent The parent {@link ProgressReporter}. Must not be null.
+     * @throws NullPointerException If {@code parent} is null.
      */
     private ProgressReporter(ProgressReporter parent) {
         this.parent = Objects.requireNonNull(parent, "'parent' must not be null");
@@ -48,19 +54,21 @@ public final class ProgressReporter {
     }
 
     /**
-     * Creates a {@link ProgressReporter} that notifies {@link ProgressListener}.
-     * @param progressListener The {@link ProgressListener} to be notified about progress. Must not be null.
-     * @return The {@link ProgressReporter} instance.
+     * Creates a {@link ProgressReporter} that notifies a {@link LongConsumer} about progress.
+     *
+     * @param progressListener The {@link LongConsumer} to be notified about progress. Must not be null.
+     * @return A new {@link ProgressReporter} instance.
      * @throws NullPointerException If {@code progressReceiver} is null.
      */
-    public static ProgressReporter withProgressListener(ProgressListener progressListener) {
+    public static ProgressReporter withProgressListener(LongConsumer progressListener) {
         return new ProgressReporter(progressListener);
     }
 
     /**
-     * Creates child {@link ProgressReporter} that can be used to track sub-progress when tracked activity spans
-     * across concurrent processes. Child {@link ProgressReporter} notifies parent about progress and
-     * parent notifies {@link ProgressListener}.
+     * Creates a child {@link ProgressReporter} that can be used to track sub-progress when the tracked activity spans
+     * across concurrent processes. The child {@link ProgressReporter} notifies parent about progress and the parent
+     * notifies the {@link LongConsumer}.
+     *
      * @return The child {@link ProgressReporter}.
      */
     public ProgressReporter createChild() {
@@ -70,8 +78,8 @@ public final class ProgressReporter {
     /**
      * Resets progress to zero and notifies.
      * <p>
-     * If this is a root {@link ProgressReporter} then attached {@link ProgressListener} is notified.
-     * Otherwise, already accumulated progress is subtracted from the parent {@link ProgressReporter}'s progress.
+     * If this is the root {@link ProgressReporter} the attached {@link LongConsumer} is notified. Otherwise, already
+     * accumulated progress is subtracted from the parent {@link ProgressReporter}'s progress.
      * </p>
      */
     public void reset() {
@@ -84,7 +92,7 @@ public final class ProgressReporter {
                 parent.reportProgress(-1L * accumulated);
             }
             if (progressListener != null) {
-                progressListener.handleProgress(0L);
+                progressListener.accept(0L);
             }
         } finally {
             if (listenerLock != null) {
@@ -95,12 +103,9 @@ public final class ProgressReporter {
 
     /**
      * Accumulates the provided {@code progress} and notifies.
-     *
      * <p>
-     * If this is a root {@link ProgressReporter}
-     * then attached {@link ProgressListener} is notified about accumulated progress.
-     * Otherwise, the provided {@code progress} is reported to the parent {@link ProgressReporter}.
-     * </p>
+     * If this is the root {@link ProgressReporter} the attached {@link LongConsumer} is notified about accumulated
+     * progress. Otherwise, the provided {@code progress} is reported to the parent {@link ProgressReporter}.
      *
      * @param progress The number to be accumulated.
      */
@@ -114,7 +119,7 @@ public final class ProgressReporter {
                 parent.reportProgress(progress);
             }
             if (progressListener != null) {
-                progressListener.handleProgress(totalProgress);
+                progressListener.accept(totalProgress);
             }
         } finally {
             if (listenerLock != null) {
