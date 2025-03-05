@@ -100,10 +100,8 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
 
     private ConfigurationClient getConfigurationClient() {
         String endPoint = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_ENDPOINT");
-        System.out.println("endPoint = " + endPoint);
         return new ConfigurationClientBuilder().credential(credential)
-            .endpoint(
-                endPoint)
+            .endpoint(endPoint)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
     }
