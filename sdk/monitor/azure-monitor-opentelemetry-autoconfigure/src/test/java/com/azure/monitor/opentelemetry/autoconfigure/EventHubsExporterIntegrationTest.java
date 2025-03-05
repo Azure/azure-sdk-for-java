@@ -81,7 +81,9 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
         };
         Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
         String ehNamespace = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME");
+        System.out.println("ehNamespace = " + ehNamespace);
         String ehName = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_EVENT_HUB_NAME");
+        System.out.println("ehName = " + ehName);
         EventHubProducerClient producer = new EventHubClientBuilder().credential(credential)
             .fullyQualifiedNamespace(ehNamespace)
             .eventHubName(ehName)
