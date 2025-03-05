@@ -23,12 +23,6 @@ public final class ResponsesFunctionCallItem extends ResponsesItem {
     private ResponsesItemType type = ResponsesItemType.FUNCTION_CALL;
 
     /*
-     * The id property.
-     */
-    @Generated
-    private final String id;
-
-    /*
      * The name property.
      */
     @Generated
@@ -41,20 +35,6 @@ public final class ResponsesFunctionCallItem extends ResponsesItem {
     private final String arguments;
 
     /**
-     * Creates an instance of ResponsesFunctionCallItem class.
-     *
-     * @param id the id value to set.
-     * @param name the name value to set.
-     * @param arguments the arguments value to set.
-     */
-    @Generated
-    public ResponsesFunctionCallItem(String id, String name, String arguments) {
-        this.id = id;
-        this.name = name;
-        this.arguments = arguments;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -63,16 +43,6 @@ public final class ResponsesFunctionCallItem extends ResponsesItem {
     @Override
     public ResponsesItemType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the id property: The id property.
-     *
-     * @return the id value.
-     */
-    @Generated
-    public String getId() {
-        return this.id;
     }
 
     /**
@@ -102,7 +72,8 @@ public final class ResponsesFunctionCallItem extends ResponsesItem {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeStringField("call_id", this.callId);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("arguments", this.arguments);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
@@ -122,6 +93,7 @@ public final class ResponsesFunctionCallItem extends ResponsesItem {
     public static ResponsesFunctionCallItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
+            String callId = null;
             String name = null;
             String arguments = null;
             ResponsesItemType type = ResponsesItemType.FUNCTION_CALL;
@@ -130,6 +102,8 @@ public final class ResponsesFunctionCallItem extends ResponsesItem {
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
+                } else if ("call_id".equals(fieldName)) {
+                    callId = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("arguments".equals(fieldName)) {
@@ -141,9 +115,41 @@ public final class ResponsesFunctionCallItem extends ResponsesItem {
                 }
             }
             ResponsesFunctionCallItem deserializedResponsesFunctionCallItem
-                = new ResponsesFunctionCallItem(id, name, arguments);
+                = new ResponsesFunctionCallItem(id, callId, name, arguments);
             deserializedResponsesFunctionCallItem.type = type;
             return deserializedResponsesFunctionCallItem;
         });
+    }
+
+    /*
+     * The call_id property.
+     */
+    @Generated
+    private final String callId;
+
+    /**
+     * Creates an instance of ResponsesFunctionCallItem class.
+     *
+     * @param id the id value to set.
+     * @param callId the callId value to set.
+     * @param name the name value to set.
+     * @param arguments the arguments value to set.
+     */
+    @Generated
+    public ResponsesFunctionCallItem(String id, String callId, String name, String arguments) {
+        super(id);
+        this.callId = callId;
+        this.name = name;
+        this.arguments = arguments;
+    }
+
+    /**
+     * Get the callId property: The call_id property.
+     *
+     * @return the callId value.
+     */
+    @Generated
+    public String getCallId() {
+        return this.callId;
     }
 }

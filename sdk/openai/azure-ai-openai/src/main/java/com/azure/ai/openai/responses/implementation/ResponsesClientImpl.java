@@ -4,7 +4,7 @@
 
 package com.azure.ai.openai.responses.implementation;
 
-import com.azure.ai.openai.responses.AzureOpenAIServiceVersion;
+import com.azure.ai.openai.responses.AzureResponsesServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -22,56 +22,138 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in AzureResponses.
+ * Initializes a new instance of the ResponsesClient type.
  */
-public final class AzureResponsesImpl {
+public final class ResponsesClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final AzureResponsesService service;
+    private final ResponsesClientService service;
 
     /**
-     * The service client containing this operation class.
+     * Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus.api.cognitive.microsoft.com).
      */
-    private final AzureOpenAIClientImpl client;
+    private final String endpoint;
 
     /**
-     * Initializes an instance of AzureResponsesImpl.
+     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus.api.cognitive.microsoft.com).
      * 
-     * @param client the instance of the service client containing this operation class.
+     * @return the endpoint value.
      */
-    AzureResponsesImpl(AzureOpenAIClientImpl client) {
-        this.service
-            = RestProxy.create(AzureResponsesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+    public String getEndpoint() {
+        return this.endpoint;
     }
+
+    /**
+     * Service version.
+     */
+    private final AzureResponsesServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public AzureOpenAIServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+    public AzureResponsesServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
-     * The interface defining all the services for AzureOpenAIClientAzureResponses to be used by the proxy service to
-     * perform REST calls.
+     * The HTTP pipeline to send requests through.
+     */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     * 
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     * 
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /**
+     * Initializes an instance of ResponsesClient client.
+     * 
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus.api.cognitive.microsoft.com).
+     * @param serviceVersion Service version.
+     */
+    public ResponsesClientImpl(String endpoint, AzureResponsesServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of ResponsesClient client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus.api.cognitive.microsoft.com).
+     * @param serviceVersion Service version.
+     */
+    public ResponsesClientImpl(HttpPipeline httpPipeline, String endpoint,
+        AzureResponsesServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of ResponsesClient client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus.api.cognitive.microsoft.com).
+     * @param serviceVersion Service version.
+     */
+    public ResponsesClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        AzureResponsesServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.service = RestProxy.create(ResponsesClientService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for ResponsesClient to be used by the proxy service to perform REST
+     * calls.
      */
     @Host("{endpoint}/openai")
-    @ServiceInterface(name = "AzureOpenAIClientAzu")
-    public interface AzureResponsesService {
-        @Post("/responses")
+    @ServiceInterface(name = "ResponsesClient")
+    public interface ResponsesClientService {
+        @Post("/")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -81,7 +163,7 @@ public final class AzureResponsesImpl {
             @HeaderParam("accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
 
-        @Post("/responses")
+        @Post("/")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -91,7 +173,7 @@ public final class AzureResponsesImpl {
             @HeaderParam("accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
 
-        @Get("/responses/{response_id}")
+        @Get("/{response_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -101,7 +183,7 @@ public final class AzureResponsesImpl {
             @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/responses/{response_id}")
+        @Get("/{response_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -111,7 +193,7 @@ public final class AzureResponsesImpl {
             @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/responses/{response_id}/input_items")
+        @Get("/{response_id}/input_items")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -122,7 +204,7 @@ public final class AzureResponsesImpl {
             @QueryParam("order") String order, @QueryParam("after") String after, @QueryParam("before") String before,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/responses/{response_id}/input_items")
+        @Get("/{response_id}/input_items")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -151,7 +233,8 @@ public final class AzureResponsesImpl {
      *     }
      *     input (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/file_search_call/file_search_call_response/code_interpreter_call/code_interpreter_call_response/computer_call/computer_call_output) (Required)
+     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     previous_response_id: String (Optional)
@@ -182,7 +265,8 @@ public final class AzureResponsesImpl {
      *     previous_response_id: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/file_search_call/file_search_call_response/code_interpreter_call/code_interpreter_call_response/computer_call/computer_call_output) (Required)
+     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     error (Required): {
@@ -228,7 +312,7 @@ public final class AzureResponsesImpl {
     public Mono<Response<BinaryData>> createResponseWithResponseAsync(String accept, BinaryData requestBody,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        return FluxUtil.withContext(context -> service.createResponse(this.client.getEndpoint(), accept, contentType,
+        return FluxUtil.withContext(context -> service.createResponse(this.getEndpoint(), accept, contentType,
             requestBody, requestOptions, context));
     }
 
@@ -249,7 +333,8 @@ public final class AzureResponsesImpl {
      *     }
      *     input (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/file_search_call/file_search_call_response/code_interpreter_call/code_interpreter_call_response/computer_call/computer_call_output) (Required)
+     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     previous_response_id: String (Optional)
@@ -280,7 +365,8 @@ public final class AzureResponsesImpl {
      *     previous_response_id: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/file_search_call/file_search_call_response/code_interpreter_call/code_interpreter_call_response/computer_call/computer_call_output) (Required)
+     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     error (Required): {
@@ -326,7 +412,7 @@ public final class AzureResponsesImpl {
     public Response<BinaryData> createResponseWithResponse(String accept, BinaryData requestBody,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        return service.createResponseSync(this.client.getEndpoint(), accept, contentType, requestBody, requestOptions,
+        return service.createResponseSync(this.getEndpoint(), accept, contentType, requestBody, requestOptions,
             Context.NONE);
     }
 
@@ -353,7 +439,8 @@ public final class AzureResponsesImpl {
      *     previous_response_id: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/file_search_call/file_search_call_response/code_interpreter_call/code_interpreter_call_response/computer_call/computer_call_output) (Required)
+     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     error (Required): {
@@ -398,7 +485,7 @@ public final class AzureResponsesImpl {
     public Mono<Response<BinaryData>> getResponseWithResponseAsync(String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.getResponse(this.client.getEndpoint(), responseId, accept, requestOptions, context));
+            context -> service.getResponse(this.getEndpoint(), responseId, accept, requestOptions, context));
     }
 
     /**
@@ -424,7 +511,8 @@ public final class AzureResponsesImpl {
      *     previous_response_id: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/file_search_call/file_search_call_response/code_interpreter_call/code_interpreter_call_response/computer_call/computer_call_output) (Required)
+     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     error (Required): {
@@ -468,7 +556,7 @@ public final class AzureResponsesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getResponseSync(this.client.getEndpoint(), responseId, accept, requestOptions, Context.NONE);
+        return service.getResponseSync(this.getEndpoint(), responseId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -481,7 +569,8 @@ public final class AzureResponsesImpl {
      *     object: String (Required)
      *     data (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/file_search_call/file_search_call_response/code_interpreter_call/code_interpreter_call_response/computer_call/computer_call_output) (Required)
+     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     first_id: String (Required)
@@ -507,8 +596,8 @@ public final class AzureResponsesImpl {
     public Mono<Response<BinaryData>> listInputItemsWithResponseAsync(String responseId, int limit, String order,
         String after, String before, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listInputItems(this.client.getEndpoint(), responseId, limit,
-            order, after, before, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.listInputItems(this.getEndpoint(), responseId, limit, order,
+            after, before, accept, requestOptions, context));
     }
 
     /**
@@ -521,7 +610,8 @@ public final class AzureResponsesImpl {
      *     object: String (Required)
      *     data (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/file_search_call/file_search_call_response/code_interpreter_call/code_interpreter_call_response/computer_call/computer_call_output) (Required)
+     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     first_id: String (Required)
@@ -547,16 +637,7 @@ public final class AzureResponsesImpl {
     public Response<BinaryData> listInputItemsWithResponse(String responseId, int limit, String order, String after,
         String before, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listInputItemsSync(this.client.getEndpoint(), responseId, limit, order, after, before, accept,
+        return service.listInputItemsSync(this.getEndpoint(), responseId, limit, order, after, before, accept,
             requestOptions, Context.NONE);
-    }
-
-    /**
-     * Gets the endpoint this service is using.
-     *
-     * @return the endpoint URL.
-     */
-    public String getEndpoint() {
-        return this.client.getEndpoint();
     }
 }

@@ -21,7 +21,7 @@ public class ResponsesComputerCallItemAction implements JsonSerializable<Respons
      * The type property.
      */
     @Generated
-    private ResponsesComputerCallItemActionType type;
+    private ResponsesComputerCallActionType type;
 
     /**
      * Creates an instance of ResponsesComputerCallItemAction class.
@@ -36,7 +36,7 @@ public class ResponsesComputerCallItemAction implements JsonSerializable<Respons
      * @return the type value.
      */
     @Generated
-    public ResponsesComputerCallItemActionType getType() {
+    public ResponsesComputerCallActionType getType() {
         return this.type;
     }
 
@@ -79,6 +79,22 @@ public class ResponsesComputerCallItemAction implements JsonSerializable<Respons
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("screenshot".equals(discriminatorValue)) {
                     return ResponsesComputerCallScreenshotAction.fromJson(readerToUse.reset());
+                } else if ("click".equals(discriminatorValue)) {
+                    return ResponsesComputerCallClickAction.fromJson(readerToUse.reset());
+                } else if ("double_click".equals(discriminatorValue)) {
+                    return ResponsesComputerCallDoubleClickAction.fromJson(readerToUse.reset());
+                } else if ("scroll".equals(discriminatorValue)) {
+                    return ResponsesComputerCallScrollAction.fromJson(readerToUse.reset());
+                } else if ("type".equals(discriminatorValue)) {
+                    return ResponsesComputerCallTypeAction.fromJson(readerToUse.reset());
+                } else if ("wait".equals(discriminatorValue)) {
+                    return ResponsesComputerCallWaitAction.fromJson(readerToUse.reset());
+                } else if ("keypress".equals(discriminatorValue)) {
+                    return ResponsesComputerCallKeyPressAction.fromJson(readerToUse.reset());
+                } else if ("drag".equals(discriminatorValue)) {
+                    return ResponsesComputerCallDragAction.fromJson(readerToUse.reset());
+                } else if ("move".equals(discriminatorValue)) {
+                    return ResponsesComputerCallMoveAction.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -96,7 +112,7 @@ public class ResponsesComputerCallItemAction implements JsonSerializable<Respons
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     deserializedResponsesComputerCallItemAction.type
-                        = ResponsesComputerCallItemActionType.fromString(reader.getString());
+                        = ResponsesComputerCallActionType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -4,7 +4,7 @@
 package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.OpenAIServiceVersion;
-import com.azure.ai.openai.responses.AzureOpenAIServiceVersion;
+import com.azure.ai.openai.responses.AzureResponsesServiceVersion;
 import com.azure.core.http.rest.RequestOptions;
 
 /**
@@ -33,7 +33,7 @@ public final class OpenAIUtils {
      * Add the version query parameter to the request options if the service is not Azure OpenAI service.
      */
     public static void addAzureVersionToRequestOptions(String endpoint, RequestOptions requestOptions,
-                                                       AzureOpenAIServiceVersion serviceVersion) {
+                                                       AzureResponsesServiceVersion serviceVersion) {
         if (useAzureOpenAIService(endpoint)) {
             requestOptions.addQueryParam("api-version", serviceVersion.getVersion());
         }

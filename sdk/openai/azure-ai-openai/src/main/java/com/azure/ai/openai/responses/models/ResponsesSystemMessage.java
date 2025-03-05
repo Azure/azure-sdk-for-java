@@ -36,16 +36,6 @@ public final class ResponsesSystemMessage extends ResponsesMessage {
     private final List<ResponsesInputTextContentPart> content;
 
     /**
-     * Creates an instance of ResponsesSystemMessage class.
-     *
-     * @param content the content value to set.
-     */
-    @Generated
-    public ResponsesSystemMessage(List<ResponsesInputTextContentPart> content) {
-        this.content = content;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -85,6 +75,7 @@ public final class ResponsesSystemMessage extends ResponsesMessage {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         return jsonWriter.writeEndObject();
@@ -102,12 +93,15 @@ public final class ResponsesSystemMessage extends ResponsesMessage {
     @Generated
     public static ResponsesSystemMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String id = null;
             List<ResponsesInputTextContentPart> content = null;
             ResponsesMessageRole role = ResponsesMessageRole.SYSTEM;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("content".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> ResponsesInputTextContentPart.fromJson(reader1));
                 } else if ("role".equals(fieldName)) {
                     role = ResponsesMessageRole.fromString(reader.getString());
@@ -115,9 +109,21 @@ public final class ResponsesSystemMessage extends ResponsesMessage {
                     reader.skipChildren();
                 }
             }
-            ResponsesSystemMessage deserializedResponsesSystemMessage = new ResponsesSystemMessage(content);
+            ResponsesSystemMessage deserializedResponsesSystemMessage = new ResponsesSystemMessage(id, content);
             deserializedResponsesSystemMessage.role = role;
             return deserializedResponsesSystemMessage;
         });
+    }
+
+    /**
+     * Creates an instance of ResponsesSystemMessage class.
+     *
+     * @param id the id value to set.
+     * @param content the content value to set.
+     */
+    @Generated
+    public ResponsesSystemMessage(String id, List<ResponsesInputTextContentPart> content) {
+        super(id);
+        this.content = content;
     }
 }

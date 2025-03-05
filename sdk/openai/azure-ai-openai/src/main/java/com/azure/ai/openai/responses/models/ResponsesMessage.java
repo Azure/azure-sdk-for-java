@@ -29,13 +29,6 @@ public class ResponsesMessage extends ResponsesItem {
     private ResponsesMessageRole role;
 
     /**
-     * Creates an instance of ResponsesMessage class.
-     */
-    @Generated
-    public ResponsesMessage() {
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -64,6 +57,7 @@ public class ResponsesMessage extends ResponsesItem {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         return jsonWriter.writeEndObject();
     }
@@ -74,6 +68,7 @@ public class ResponsesMessage extends ResponsesItem {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResponsesMessage if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ResponsesMessage.
      */
     @Generated
@@ -112,17 +107,32 @@ public class ResponsesMessage extends ResponsesItem {
     @Generated
     static ResponsesMessage fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResponsesMessage deserializedResponsesMessage = new ResponsesMessage();
+            String id = null;
+            ResponsesMessageRole role = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("role".equals(fieldName)) {
-                    deserializedResponsesMessage.role = ResponsesMessageRole.fromString(reader.getString());
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    role = ResponsesMessageRole.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
+            ResponsesMessage deserializedResponsesMessage = new ResponsesMessage(id);
+            deserializedResponsesMessage.role = role;
             return deserializedResponsesMessage;
         });
+    }
+
+    /**
+     * Creates an instance of ResponsesMessage class.
+     *
+     * @param id the id value to set.
+     */
+    @Generated
+    public ResponsesMessage(String id) {
+        super(id);
     }
 }

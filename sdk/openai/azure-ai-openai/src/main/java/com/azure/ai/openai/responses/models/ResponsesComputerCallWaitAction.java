@@ -11,22 +11,22 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesComputerCallScreenshotAction model.
+ * The ResponsesComputerCallWaitAction model.
  */
 @Immutable
-public final class ResponsesComputerCallScreenshotAction extends ResponsesComputerCallItemAction {
+public final class ResponsesComputerCallWaitAction extends ResponsesComputerCallItemAction {
 
     /*
      * The type property.
      */
     @Generated
-    private ResponsesComputerCallActionType type = ResponsesComputerCallActionType.SCREENSHOT;
+    private ResponsesComputerCallActionType type = ResponsesComputerCallActionType.WAIT;
 
     /**
-     * Creates an instance of ResponsesComputerCallScreenshotAction class.
+     * Creates an instance of ResponsesComputerCallWaitAction class.
      */
     @Generated
-    public ResponsesComputerCallScreenshotAction() {
+    public ResponsesComputerCallWaitAction() {
     }
 
     /**
@@ -52,29 +52,29 @@ public final class ResponsesComputerCallScreenshotAction extends ResponsesComput
     }
 
     /**
-     * Reads an instance of ResponsesComputerCallScreenshotAction from the JsonReader.
+     * Reads an instance of ResponsesComputerCallWaitAction from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesComputerCallScreenshotAction if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResponsesComputerCallScreenshotAction.
+     * @return An instance of ResponsesComputerCallWaitAction if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResponsesComputerCallWaitAction.
      */
     @Generated
-    public static ResponsesComputerCallScreenshotAction fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesComputerCallWaitAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResponsesComputerCallScreenshotAction deserializedResponsesComputerCallScreenshotAction
-                = new ResponsesComputerCallScreenshotAction();
+            ResponsesComputerCallWaitAction deserializedResponsesComputerCallWaitAction
+                = new ResponsesComputerCallWaitAction();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedResponsesComputerCallScreenshotAction.type
+                    deserializedResponsesComputerCallWaitAction.type
                         = ResponsesComputerCallActionType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedResponsesComputerCallScreenshotAction;
+            return deserializedResponsesComputerCallWaitAction;
         });
     }
 }

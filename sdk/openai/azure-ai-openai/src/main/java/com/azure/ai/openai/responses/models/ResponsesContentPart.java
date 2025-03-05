@@ -81,12 +81,8 @@ public class ResponsesContentPart implements JsonSerializable<ResponsesContentPa
                     return ResponsesRefusalContentPart.fromJson(readerToUse.reset());
                 } else if ("output_text".equals(discriminatorValue)) {
                     return ResponsesOutputTextContentPart.fromJson(readerToUse.reset());
-                } else if ("code".equals(discriminatorValue)) {
-                    return ResponsesCodeContentPart.fromJson(readerToUse.reset());
                 } else if ("input_image".equals(discriminatorValue)) {
                     return ResponsesInputImageContentPart.fromJson(readerToUse.reset());
-                } else if ("reasoning".equals(discriminatorValue)) {
-                    return ResponsesReasoningContentPart.fromJson(readerToUse.reset());
                 } else if ("input_text".equals(discriminatorValue)) {
                     return ResponsesInputTextContentPart.fromJson(readerToUse.reset());
                 } else {

@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AzureOpenAIClientTestBase extends TestProxyTestBase {
 
-    AzureOpenAIClient getAzureResponseClient(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
-        AzureOpenAIClientBuilder builder = new AzureOpenAIClientBuilder()
+    ResponsesClient getAzureResponseClient(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClientBuilder builder = new ResponsesClientBuilder()
                 .serviceVersion(serviceVersion)
                 .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
                 .credential(new AzureKeyCredential(
@@ -32,8 +32,8 @@ public class AzureOpenAIClientTestBase extends TestProxyTestBase {
         return builder.buildClient();
     }
 
-    AzureOpenAIClient getResponseClient(HttpClient httpClient) {
-        AzureOpenAIClientBuilder builder = new AzureOpenAIClientBuilder()
+    ResponsesClient getResponseClient(HttpClient httpClient) {
+        ResponsesClientBuilder builder = new ResponsesClientBuilder()
                 .credential(new AzureKeyCredential(
                         Configuration.getGlobalConfiguration().get("OPENAI_KEY"))
                 )

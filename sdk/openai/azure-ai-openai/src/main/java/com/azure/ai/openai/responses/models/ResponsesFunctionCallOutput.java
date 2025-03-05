@@ -35,18 +35,6 @@ public final class ResponsesFunctionCallOutput extends ResponsesItem {
     private final String output;
 
     /**
-     * Creates an instance of ResponsesFunctionCallOutput class.
-     *
-     * @param callId the callId value to set.
-     * @param output the output value to set.
-     */
-    @Generated
-    public ResponsesFunctionCallOutput(String callId, String output) {
-        this.callId = callId;
-        this.output = output;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -84,6 +72,7 @@ public final class ResponsesFunctionCallOutput extends ResponsesItem {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("call_id", this.callId);
         jsonWriter.writeStringField("output", this.output);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
@@ -102,13 +91,16 @@ public final class ResponsesFunctionCallOutput extends ResponsesItem {
     @Generated
     public static ResponsesFunctionCallOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String id = null;
             String callId = null;
             String output = null;
             ResponsesItemType type = ResponsesItemType.FUNCTION_CALL_OUTPUT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("call_id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("call_id".equals(fieldName)) {
                     callId = reader.getString();
                 } else if ("output".equals(fieldName)) {
                     output = reader.getString();
@@ -119,9 +111,23 @@ public final class ResponsesFunctionCallOutput extends ResponsesItem {
                 }
             }
             ResponsesFunctionCallOutput deserializedResponsesFunctionCallOutput
-                = new ResponsesFunctionCallOutput(callId, output);
+                = new ResponsesFunctionCallOutput(id, callId, output);
             deserializedResponsesFunctionCallOutput.type = type;
             return deserializedResponsesFunctionCallOutput;
         });
+    }
+
+    /**
+     * Creates an instance of ResponsesFunctionCallOutput class.
+     *
+     * @param id the id value to set.
+     * @param callId the callId value to set.
+     * @param output the output value to set.
+     */
+    @Generated
+    public ResponsesFunctionCallOutput(String id, String callId, String output) {
+        super(id);
+        this.callId = callId;
+        this.output = output;
     }
 }

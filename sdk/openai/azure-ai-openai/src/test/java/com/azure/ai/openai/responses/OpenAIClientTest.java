@@ -23,11 +23,11 @@ public class OpenAIClientTest extends AzureOpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
-    public void createResponseBlocking(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
-        AzureOpenAIClient client = getResponseClient(httpClient);
+    public void createResponseBlocking(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClient client = getResponseClient(httpClient);
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
-                new ResponsesUserMessage(Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
+                new ResponsesUserMessage("id", Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
 
         ResponsesResponse response = client.createResponse(request);
 
@@ -50,11 +50,11 @@ public class OpenAIClientTest extends AzureOpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
-    public void createResponseStreaming(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
-        AzureOpenAIClient client = getResponseClient(httpClient);
+    public void createResponseStreaming(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClient client = getResponseClient(httpClient);
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
-                new ResponsesUserMessage(Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
+                new ResponsesUserMessage("id", Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
         request.setStream(true);
 
         IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request);

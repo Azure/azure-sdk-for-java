@@ -24,12 +24,6 @@ public final class ResponsesCodeInterpreterCallItem extends ResponsesItem {
     private ResponsesItemType type = ResponsesItemType.CODE_INTERPRETER_CALL;
 
     /*
-     * The id property.
-     */
-    @Generated
-    private final String id;
-
-    /*
      * The code property.
      */
     @Generated
@@ -58,7 +52,7 @@ public final class ResponsesCodeInterpreterCallItem extends ResponsesItem {
     @Generated
     public ResponsesCodeInterpreterCallItem(String id, String code, ResponsesCodeInterpreterCallItemStatus status,
         List<ResponsesCodeInterpreterCallItemResult> results) {
-        this.id = id;
+        super(id);
         this.code = code;
         this.status = status;
         this.results = results;
@@ -73,16 +67,6 @@ public final class ResponsesCodeInterpreterCallItem extends ResponsesItem {
     @Override
     public ResponsesItemType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the id property: The id property.
-     *
-     * @return the id value.
-     */
-    @Generated
-    public String getId() {
-        return this.id;
     }
 
     /**
@@ -122,7 +106,7 @@ public final class ResponsesCodeInterpreterCallItem extends ResponsesItem {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("code", this.code);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeArrayField("results", this.results, (writer, element) -> writer.writeJson(element));

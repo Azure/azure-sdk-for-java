@@ -21,14 +21,14 @@ public class TestUtils {
     static Stream<Arguments> getTestParametersResponses() {
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients().forEach(httpClient ->
-                Arrays.stream(AzureOpenAIServiceVersion.values())
+                Arrays.stream(AzureResponsesServiceVersion.values())
                         .filter(TestUtils::supportsResponses)
                         .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
     }
 
-    private static boolean supportsResponses(AzureOpenAIServiceVersion serviceVersion) {
-        return AzureOpenAIServiceVersion.V2024_12_01_PREVIEW.equals(serviceVersion);
+    private static boolean supportsResponses(AzureResponsesServiceVersion serviceVersion) {
+        return AzureResponsesServiceVersion.V2024_12_01_PREVIEW.equals(serviceVersion);
     }
 
 
@@ -37,7 +37,7 @@ public class TestUtils {
      *
      * <ul>
      * <li>Using latest service version as default if no environment variable is set.</li>
-     * <li>If it's set to ALL, all Service versions in {@link AzureOpenAIServiceVersion} will be tested.</li>
+     * <li>If it's set to ALL, all Service versions in {@link AzureResponsesServiceVersion} will be tested.</li>
      * <li>Otherwise, Service version string should match env variable.</li>
      * </ul>
      *
@@ -48,9 +48,9 @@ public class TestUtils {
      * @param serviceVersion ServiceVersion needs to check
      * @return Boolean indicates whether filters out the service version or not.
      */
-    private static boolean shouldServiceVersionBeTested(AzureOpenAIServiceVersion serviceVersion) {
+    private static boolean shouldServiceVersionBeTested(AzureResponsesServiceVersion serviceVersion) {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
-            return AzureOpenAIServiceVersion.getLatest().equals(serviceVersion);
+            return AzureResponsesServiceVersion.getLatest().equals(serviceVersion);
         }
         if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
             return true;

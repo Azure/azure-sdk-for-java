@@ -7,9 +7,9 @@ package com.azure.ai.openai.responses;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * Service version of AzureOpenAIClient.
+ * Service version of AzureResponsesClient.
  */
-public enum AzureOpenAIServiceVersion implements ServiceVersion {
+public enum AzureResponsesServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-02-15-preview.
      */
@@ -57,7 +57,7 @@ public enum AzureOpenAIServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    AzureOpenAIServiceVersion(String version) {
+    AzureResponsesServiceVersion(String version) {
         this.version = version;
     }
 
@@ -72,9 +72,9 @@ public enum AzureOpenAIServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      * 
-     * @return The latest {@link AzureOpenAIServiceVersion}.
+     * @return The latest {@link AzureResponsesServiceVersion}.
      */
-    public static AzureOpenAIServiceVersion getLatest() {
+    public static AzureResponsesServiceVersion getLatest() {
         return V2025_01_01_PREVIEW;
     }
 }

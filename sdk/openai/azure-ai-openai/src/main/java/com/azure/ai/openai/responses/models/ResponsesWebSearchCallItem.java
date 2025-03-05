@@ -12,22 +12,22 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ResponsesFileSearchCallItem model.
+ * The ResponsesWebSearchCallItem model.
  */
 @Immutable
-public final class ResponsesFileSearchCallItem extends ResponsesItem {
+public final class ResponsesWebSearchCallItem extends ResponsesItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ResponsesItemType type = ResponsesItemType.FILE_SEARCH_CALL;
+    private ResponsesItemType type = ResponsesItemType.WEB_SEARCH_CALL;
 
     /*
      * The status property.
      */
     @Generated
-    private final ResponsesFileSearchCallItemStatus status;
+    private final ResponsesWebSearchCallItemStatus status;
 
     /*
      * The queries property.
@@ -39,10 +39,10 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
      * The search_results property.
      */
     @Generated
-    private final List<ResponsesFileSearchCallItemResult> searchResults;
+    private final List<ResponsesWebSearchCallItemResult> searchResults;
 
     /**
-     * Creates an instance of ResponsesFileSearchCallItem class.
+     * Creates an instance of ResponsesWebSearchCallItem class.
      *
      * @param id the id value to set.
      * @param status the status value to set.
@@ -50,8 +50,8 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
      * @param searchResults the searchResults value to set.
      */
     @Generated
-    public ResponsesFileSearchCallItem(String id, ResponsesFileSearchCallItemStatus status, List<String> queries,
-        List<ResponsesFileSearchCallItemResult> searchResults) {
+    public ResponsesWebSearchCallItem(String id, ResponsesWebSearchCallItemStatus status, List<String> queries,
+        List<ResponsesWebSearchCallItemResult> searchResults) {
         super(id);
         this.status = status;
         this.queries = queries;
@@ -75,7 +75,7 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
      * @return the status value.
      */
     @Generated
-    public ResponsesFileSearchCallItemStatus getStatus() {
+    public ResponsesWebSearchCallItemStatus getStatus() {
         return this.status;
     }
 
@@ -95,7 +95,7 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
      * @return the searchResults value.
      */
     @Generated
-    public List<ResponsesFileSearchCallItemResult> getSearchResults() {
+    public List<ResponsesWebSearchCallItemResult> getSearchResults() {
         return this.searchResults;
     }
 
@@ -116,43 +116,43 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
     }
 
     /**
-     * Reads an instance of ResponsesFileSearchCallItem from the JsonReader.
+     * Reads an instance of ResponsesWebSearchCallItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesFileSearchCallItem if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of ResponsesWebSearchCallItem if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesFileSearchCallItem.
+     * @throws IOException If an error occurs while reading the ResponsesWebSearchCallItem.
      */
     @Generated
-    public static ResponsesFileSearchCallItem fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesWebSearchCallItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            ResponsesFileSearchCallItemStatus status = null;
+            ResponsesWebSearchCallItemStatus status = null;
             List<String> queries = null;
-            List<ResponsesFileSearchCallItemResult> searchResults = null;
-            ResponsesItemType type = ResponsesItemType.FILE_SEARCH_CALL;
+            List<ResponsesWebSearchCallItemResult> searchResults = null;
+            ResponsesItemType type = ResponsesItemType.WEB_SEARCH_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = ResponsesFileSearchCallItemStatus.fromString(reader.getString());
+                    status = ResponsesWebSearchCallItemStatus.fromString(reader.getString());
                 } else if ("queries".equals(fieldName)) {
                     queries = reader.readArray(reader1 -> reader1.getString());
                 } else if ("search_results".equals(fieldName)) {
-                    searchResults = reader.readArray(reader1 -> ResponsesFileSearchCallItemResult.fromJson(reader1));
+                    searchResults = reader.readArray(reader1 -> ResponsesWebSearchCallItemResult.fromJson(reader1));
                 } else if ("type".equals(fieldName)) {
                     type = ResponsesItemType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesFileSearchCallItem deserializedResponsesFileSearchCallItem
-                = new ResponsesFileSearchCallItem(id, status, queries, searchResults);
-            deserializedResponsesFileSearchCallItem.type = type;
-            return deserializedResponsesFileSearchCallItem;
+            ResponsesWebSearchCallItem deserializedResponsesWebSearchCallItem
+                = new ResponsesWebSearchCallItem(id, status, queries, searchResults);
+            deserializedResponsesWebSearchCallItem.type = type;
+            return deserializedResponsesWebSearchCallItem;
         });
     }
 }

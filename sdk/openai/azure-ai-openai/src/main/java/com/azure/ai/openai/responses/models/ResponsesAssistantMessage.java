@@ -42,18 +42,6 @@ public final class ResponsesAssistantMessage extends ResponsesMessage {
     private final List<ResponsesMessageAnnotation> annotations;
 
     /**
-     * Creates an instance of ResponsesAssistantMessage class.
-     *
-     * @param content the content value to set.
-     * @param annotations the annotations value to set.
-     */
-    @Generated
-    public ResponsesAssistantMessage(List<ResponsesContentPart> content, List<ResponsesMessageAnnotation> annotations) {
-        this.content = content;
-        this.annotations = annotations;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -103,6 +91,7 @@ public final class ResponsesAssistantMessage extends ResponsesMessage {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", this.annotations, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
@@ -121,13 +110,16 @@ public final class ResponsesAssistantMessage extends ResponsesMessage {
     @Generated
     public static ResponsesAssistantMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String id = null;
             List<ResponsesContentPart> content = null;
             List<ResponsesMessageAnnotation> annotations = null;
             ResponsesMessageRole role = ResponsesMessageRole.ASSISTANT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("content".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> ResponsesContentPart.fromJson(reader1));
                 } else if ("annotations".equals(fieldName)) {
                     annotations = reader.readArray(reader1 -> ResponsesMessageAnnotation.fromJson(reader1));
@@ -138,9 +130,24 @@ public final class ResponsesAssistantMessage extends ResponsesMessage {
                 }
             }
             ResponsesAssistantMessage deserializedResponsesAssistantMessage
-                = new ResponsesAssistantMessage(content, annotations);
+                = new ResponsesAssistantMessage(id, content, annotations);
             deserializedResponsesAssistantMessage.role = role;
             return deserializedResponsesAssistantMessage;
         });
+    }
+
+    /**
+     * Creates an instance of ResponsesAssistantMessage class.
+     *
+     * @param id the id value to set.
+     * @param content the content value to set.
+     * @param annotations the annotations value to set.
+     */
+    @Generated
+    public ResponsesAssistantMessage(String id, List<ResponsesContentPart> content,
+        List<ResponsesMessageAnnotation> annotations) {
+        super(id);
+        this.content = content;
+        this.annotations = annotations;
     }
 }
