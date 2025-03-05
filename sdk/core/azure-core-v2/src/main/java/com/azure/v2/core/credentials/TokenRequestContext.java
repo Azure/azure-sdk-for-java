@@ -3,6 +3,9 @@
 
 package com.azure.v2.core.credentials;
 
+import com.azure.v2.core.utils.CoreUtils;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,8 +21,7 @@ import java.util.Objects;
  * <p>
  * The {@link TokenRequestContext} is typically used with authentication mechanisms that require more advanced
  * configurations or options, such as
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)</a>
- * authentication.
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> authentication.
  * </p>
  *
  * <p>
@@ -33,7 +35,7 @@ import java.util.Objects;
  *
  * <li>Pass the TokenRequestContext instance to the appropriate authentication client or mechanism when
  * requesting an access token. The specific method or API to do this will depend on the authentication mechanism
- * you are using. For example, if you are using Azure Identity for AAD authentication, you would pass the
+ * you are using. For example, if you are using Azure Identity for Microsoft Entra authentication, you would pass the
  * TokenRequestContext instance to the getToken method of the {@link TokenCredential} implementation.</li>
  *
  * <li>The authentication client or mechanism will handle the token request and return an access token that can
@@ -43,8 +45,8 @@ import java.util.Objects;
  * @see com.azure.v2.core.credentials
  * @see TokenCredential
  */
-
 public class TokenRequestContext {
+    private static final ClientLogger LOGGER = new ClientLogger(TokenRequestContext.class);
     private final List<String> scopes;
     private String claims;
     private String tenantId;
@@ -81,8 +83,22 @@ public class TokenRequestContext {
      * Adds one or more scopes to the request scopes.
      * @param scopes one or more scopes to add
      * @return the TokenRequestContext itself
+     * @throws IllegalArgumentException if scopes list is empty or any of the provided is null or empty.
+     * @throws NullPointerException if scopes is null.
      */
     public TokenRequestContext addScopes(String... scopes) {
+        Objects.requireNonNull(scopes, "The scopes parameter cannot be null.");
+
+        if (scopes.length == 0) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("At least one scope must be provided."));
+        }
+
+        for (String scope : scopes) {
+            if (CoreUtils.isNullOrEmpty(scope)) {
+                throw LOGGER
+                    .logThrowableAsError(new IllegalArgumentException("Scopes cannot contain null or empty values."));
+            }
+        }
         this.scopes.addAll(Arrays.asList(scopes));
         return this;
     }

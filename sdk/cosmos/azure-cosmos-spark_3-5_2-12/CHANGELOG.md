@@ -1,5 +1,20 @@
 ## Release History
 
+### 4.38.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.37.0 (2025-02-20)
+
+#### Other Changes
+* Updated netty dependency
+
 ### 4.36.1 (2025-02-08)
 
 #### Bugs Fixed

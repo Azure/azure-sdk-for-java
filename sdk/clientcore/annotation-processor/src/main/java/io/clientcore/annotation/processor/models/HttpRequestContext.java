@@ -4,14 +4,13 @@
 package io.clientcore.annotation.processor.models;
 
 import io.clientcore.core.http.models.HttpMethod;
-
-import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.lang.model.type.TypeMirror;
 
 /**
  * Represents the context of an HTTP request, including its configuration, parameters, headers, and other details.
@@ -23,6 +22,7 @@ public final class HttpRequestContext {
     private String methodReturnType;
     private final List<MethodParameter> parameters;
     private HttpMethod httpMethod;
+    private boolean isConvenience;
 
     // This comes from the @Host annotation that is applied to the entire service interface, it will likely have one
     // or more substitutions in it, which will be replaced with the appropriate parameter values annotated with @HostParam.
@@ -263,6 +263,22 @@ public final class HttpRequestContext {
      */
     public List<Integer> getExpectedStatusCodes() {
         return Arrays.stream(expectedStatusCodes).boxed().collect(Collectors.toList());
+    }
+
+    /**
+     * Gets the boolean to true if the provided method is a default method
+     * @return the boolean to true if the provided method is a default method
+     */
+    public boolean isConvenience() {
+        return isConvenience;
+    }
+
+    /**
+     * Sets the boolean to true if the provided method is a default method
+     * @param isConvenience the provided method is a default method
+     */
+    public void setIsConvenience(boolean isConvenience) {
+        this.isConvenience = isConvenience;
     }
 
     /**

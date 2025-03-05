@@ -110,7 +110,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
     </dependency>
 
     <!-- Unit Test -->

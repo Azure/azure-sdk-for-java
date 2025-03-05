@@ -54,6 +54,8 @@ class QuickPulseDataSender implements Runnable {
         this.qpStatus = QuickPulseStatus.QP_IS_OFF;
         this.instrumentationKey = instrumentationKey;
         this.configuration = configuration;
+        logger.verbose("QuickPulseDataSender initialized with endpointUrl: {}, instrumentationKey: {}",
+            endpointUrl.get().toString(), instrumentationKey.get());
     }
 
     @Override
@@ -73,6 +75,7 @@ class QuickPulseDataSender implements Runnable {
             }
 
             long sendTime = System.nanoTime();
+            // should not include "QuickPulseService.svc/"
             String endpointPrefix
                 = Strings.isNullOrEmpty(redirectEndpointPrefix) ? getQuickPulseEndpoint() : redirectEndpointPrefix;
             // TODO (harskaur): for a future PR revisit caching & retry mechanism for failed post requests (shouldn't retry), send "cached" data points in the next post
@@ -88,6 +91,8 @@ class QuickPulseDataSender implements Runnable {
             }
 
             try {
+                // the swagger will add on the QuickPulseService.svc/ when creating the request.
+                logger.verbose("About to publish to quickpulse with the endpoint prefix: {}", endpointPrefix);
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
                     .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), etag,
                         transmissionTimeInTicks, dataPointList)
@@ -122,8 +127,7 @@ class QuickPulseDataSender implements Runnable {
 
             } catch (RuntimeException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
                 onPostError(sendTime);
-                logger.error(
-                    "QuickPulseDataSender received a service error while attempting to send data to quickpulse {}",
+                logger.error("QuickPulseDataSender received an error while attempting to send data to quickpulse {}",
                     e.getMessage());
             }
 
