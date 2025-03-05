@@ -435,7 +435,8 @@ public final class AzureAppConfigurationClient {
         String ifNoneMatch, KeyValue entity) {
         // Operation 'putKeyValue' can be invoked with multiple content-type. It is difficult to form a correct method
         // signature for convenience API, and hence the convenience API is not generated.
-        return this.serviceClient.putKeyValue(key, accept, label, syncToken, ifMatch, ifNoneMatch, entity.setValue("shawn"));
+        return this.serviceClient.putKeyValue(key, accept, label, syncToken, ifMatch, ifNoneMatch,
+            entity.setValue("shawn"));
     }
 
     /**
