@@ -373,6 +373,33 @@ public final class CoreUtils {
         }
     }
 
+    /**
+     * Create a parameterized type from a raw class and its type arguments.
+     *
+     * @param rawClass The raw class to construct the parameterized type.
+     * @param genericTypes The generic arguments.
+     *
+     * @return The parameterized type.
+     */
+    public static ParameterizedType createParameterizedType(Type rawClass, Type... genericTypes) {
+        return new ParameterizedType() {
+            @Override
+            public Type[] getActualTypeArguments() {
+                return genericTypes;
+            }
+
+            @Override
+            public Type getRawType() {
+                return rawClass;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        };
+    }
+
     private CoreUtils() {
     }
 }

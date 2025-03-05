@@ -3,7 +3,7 @@
 
 package io.clientcore.core.models.binarydata;
 
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.Person;
 import io.clientcore.core.serialization.ObjectSerializer;

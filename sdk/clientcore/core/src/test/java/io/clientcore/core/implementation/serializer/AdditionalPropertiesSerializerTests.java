@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.serializer;
 
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.JsonSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

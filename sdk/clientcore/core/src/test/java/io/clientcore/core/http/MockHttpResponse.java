@@ -7,7 +7,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.JsonSerializer;
 import io.clientcore.core.serialization.ObjectSerializer;
 
 public class MockHttpResponse extends HttpResponse<BinaryData> {
