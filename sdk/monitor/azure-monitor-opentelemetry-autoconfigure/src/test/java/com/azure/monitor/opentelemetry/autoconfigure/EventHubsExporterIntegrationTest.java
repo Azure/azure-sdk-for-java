@@ -84,15 +84,19 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
         System.out.println("ehNamespace = " + ehNamespace);
         String ehName = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_EVENT_HUB_NAME");
         System.out.println("ehName = " + ehName);
-        EventHubProducerClient producer = new EventHubClientBuilder().credential(credential)
+
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder().credential(credential)
             .fullyQualifiedNamespace(ehNamespace)
             .eventHubName(ehName)
-            .buildProducerClient();
+            .buildAsyncProducerClient();
 
         Span span = tracer.spanBuilder(spanName).startSpan();
         Scope scope = span.makeCurrent();
         try {
-            producer.createBatch().tryAdd(new EventData("test event"));
+            producer.createBatch().flatMap(batch -> {
+                batch.tryAdd(new EventData("test event"));
+                return producer.send(batch);
+            }).subscribe();
         } finally {
             span.end();
             scope.close();
