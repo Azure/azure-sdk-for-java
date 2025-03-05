@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.ssl.SslBundleRegistrar;
 import org.springframework.boot.ssl.SslBundle;
 import org.springframework.boot.ssl.SslBundleKey;
 import org.springframework.boot.ssl.SslBundleRegistry;
-import org.springframework.boot.ssl.SslManagerBundle;
 import org.springframework.boot.ssl.SslOptions;
 import org.springframework.boot.ssl.SslStoreBundle;
 import org.springframework.context.ResourceLoaderAware;
@@ -144,9 +143,12 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
         try {
             if (hasEmbeddedTomcat()) {
                 // DKS (Domain Key Store) type key store can act as a single logical key store and support key stores of various
-                // types (JKS - Java Key Store, pkcs12) within a single domain. If you do not use the DKS type, during the handshake,
-                // KeyVaultKeyManager.chooseEngineServerAlias is used to find the private key, since Key Vault JCA does not implement
-                // this method, it uses the empty method of its superclass and returns null, which ultimately causes the handshake to fail.
+                // types (JKS - Java Key Store, pkcs12) within a single domain. When configuring the Tomcat SSL context, if the
+                // KeyStore is not of type DKS, the final key store will be reinitialized and loaded, see source code from
+                // https://github.com/apache/tomcat/blob/cab38e5b9c4f498336f716afd1bf4161adedd71d/java/org/apache/tomcat/util/net/SSLUtilBase.java#L393~L403,
+                // which will result in the KeyManager being used not being wrapped by the JSSEKeyManager provided by Tomcat, see source code from
+                // https://github.com/apache/tomcat/blob/cab38e5b9c4f498336f716afd1bf4161adedd71d/java/org/apache/tomcat/util/net/SSLUtilBase.java#L424,
+                // so JSSEKeyManager#chooseEngineServerAlias does not delegate KeyVaultKeyManager.chooseEngineServerAlias, resulting in a null return value.
                 azureKeyVaultKeyStore = KeyStore.getInstance("DKS", KeyVaultJcaProvider.PROVIDER_NAME);
             } else {
                 azureKeyVaultKeyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
