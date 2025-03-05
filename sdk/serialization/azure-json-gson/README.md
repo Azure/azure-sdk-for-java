@@ -1,29 +1,39 @@
-# Azure Core Jackson Avro Serializer plugin library for Java
+# Azure GSON JSON shared library for Java
 
-Azure Core Jackson Avro Serializer is a plugin for the `azure-core` `AvroSerializer` API.
+[![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java)
+
+Azure GSON JSON provides an implementation of `azure-json` using GSON.
 
 ## Getting started
 
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
-  - Here are details about [Java 8 client compatibility with Azure Certificate Authority][java8_client_compatibility].
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-core-serializer-avro-jackson;current})
+#### Include direct dependency
+
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
+[//]: # ({x-version-update-start;com.azure:azure-json-gson;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-serializer-avro-jackson</artifactId>
-    <version>1.0.0-beta.2</version>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-json-gson</artifactId>
+  <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ## Key concepts
 
+See `azure-json` for key concepts.
+
 ## Examples
+
+See `azure-json` for examples.
 
 ## Next steps
 
@@ -33,12 +43,6 @@ Get started with Azure libraries that are [built using Azure Core](https://azure
 
 If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
 or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
-
-### Enabling Logging
-
-Azure SDKs for Java provide a consistent logging story to help aid in troubleshooting application errors and expedite
-their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
-locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Contributing
 
@@ -51,8 +55,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 5. Create new Pull Request
 
 <!-- links -->
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 
 
