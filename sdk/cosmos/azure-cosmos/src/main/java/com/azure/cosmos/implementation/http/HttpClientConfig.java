@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.core.http.ProxyOptions;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 
 import java.time.Duration;
@@ -99,7 +100,7 @@ public class HttpClientConfig {
         return this;
     }
 
-    public HttpClientConfig withHttp2Config(Http2ConnectionConfig http2ConnectionConfig) {
+    public HttpClientConfig withHttp2ConnectionConfig(Http2ConnectionConfig http2ConnectionConfig) {
         this.http2ConnectionConfig = http2ConnectionConfig;
         return this;
     }
@@ -160,16 +161,17 @@ public class HttpClientConfig {
         return serverCertValidationDisabled;
     }
 
-    public Http2ConnectionConfig getHttp2Config() {
-        return http2ConnectionConfig;
+    public Http2ConnectionConfig getHttp2ConnectionConfig() {
+        return this.http2ConnectionConfig;
     }
 
     public String toDiagnosticsString() {
-        return String.format("(cps:%s, nrto:%s, icto:%s, cto:%s, p:%s)",
+        return String.format("(cps:%s, nrto:%s, icto:%s, cto:%s, p:%s, http2:%s)",
             maxPoolSize,
             networkRequestTimeout,
             maxIdleConnectionTimeout,
             connectionAcquireTimeout,
-            proxy != null);
+            proxy != null,
+            http2ConnectionConfig == null ? null : http2ConnectionConfig.toDiagnosticsString());
     }
 }
