@@ -1399,7 +1399,8 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // hold the participant
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
-            callMediaAsync.hold(receiver).block();
+            PlaySource holdPlaySource = new FileSource().setUrl(MEDIA_SOURCE);
+            callMediaAsync.hold(receiver, holdPlaySource).block();
             sleepIfRunningAgainstService(3000);
             HoldAudioStarted holdAudioStarted
                 = waitForEvent(HoldAudioStarted.class, callerConnectionId, Duration.ofSeconds(20));
