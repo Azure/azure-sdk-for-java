@@ -3,13 +3,15 @@
 
 package com.azure.storage.file.datalake.options;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.datalake.DataLakePathClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 
 /**
  * Parameters when calling getSystemProperties on {@link DataLakePathClient}
  */
-public class PathGetSystemPropertiesOptions {
+@Fluent
+public final class PathGetSystemPropertiesOptions {
     private DataLakeRequestConditions requestConditions;
 
     /**

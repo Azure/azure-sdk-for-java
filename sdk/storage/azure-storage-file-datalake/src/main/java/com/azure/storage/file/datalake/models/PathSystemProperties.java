@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 /**
  * This class contains the response information returned from the service when getting system assigned path properties.
  */
-public class PathSystemProperties {
+public final class PathSystemProperties {
     private final OffsetDateTime creationTime;
     private final OffsetDateTime lastModified;
     private final String eTag;
