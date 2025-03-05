@@ -22,7 +22,6 @@ import java.time.ZoneOffset;
 import java.util.Base64;
 import java.util.Locale;
 
-import static com.azure.v2.core.utils.CoreUtils.isNullOrEmpty;
 import static com.azure.v2.data.appconfiguration.implementation.FakeCredentialConstants.SECRET_PLACEHOLDER;
 
 /**
@@ -129,7 +128,7 @@ public class ConfigurationClientCredentials {
         }
 
         CredentialInformation(String connectionString) {
-            if (isNullOrEmpty(connectionString)) {
+            if (connectionString == null || connectionString.isEmpty()) {
                 throw new IllegalArgumentException("'connectionString' cannot be null or empty.");
             }
 
@@ -163,7 +162,11 @@ public class ConfigurationClientCredentials {
             this.id = id;
             this.secret = secret;
 
-            if (this.baseUri == null || isNullOrEmpty(this.id) || this.secret == null || this.secret.length == 0) {
+            if (this.baseUri == null
+                || this.id == null
+                || this.id.isEmpty()
+                || this.secret == null
+                || this.secret.length == 0) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."
                     + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
             }

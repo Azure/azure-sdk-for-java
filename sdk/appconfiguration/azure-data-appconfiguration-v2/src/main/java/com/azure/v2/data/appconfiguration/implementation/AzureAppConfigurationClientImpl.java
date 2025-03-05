@@ -19,6 +19,7 @@ import com.azure.v2.data.appconfiguration.models.SnapshotStatus;
 import com.azure.v2.data.appconfiguration.models.SnapshotUpdateParameters;
 import com.azure.v2.data.appconfiguration.models.UpdateSnapshotRequestContentType;
 import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -56,7 +57,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -70,7 +71,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public AzureAppConfigurationServiceVersion getServiceVersion() {
@@ -84,7 +85,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -93,7 +94,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Initializes an instance of AzureAppConfigurationClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint
      * @param serviceVersion Service version.
@@ -105,6 +106,8 @@ public final class AzureAppConfigurationClientImpl {
         this.serviceVersion = serviceVersion;
         this.service = com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientServiceImpl
             .getNewInstance(this.httpPipeline, null);
+
+//        this.service = RestProxy.create(AzureAppConfigurationClientService.class, this.httpPipeline);
     }
 
     /**
@@ -350,7 +353,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -395,7 +398,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -649,7 +652,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -1155,7 +1158,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1521,7 +1524,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -2026,7 +2029,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * Get the next page of items.
      *
      * @param nextLink The URL to get the next list of items.
@@ -2077,7 +2080,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * Get the next page of items.
      *
      * @param nextLink The URL to get the next list of items.
@@ -2125,7 +2128,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * Get the next page of items.
      *
      * @param nextLink The URL to get the next list of items.
@@ -2147,7 +2150,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * Get the next page of items.
      *
      * @param nextLink The URL to get the next list of items.
@@ -2217,7 +2220,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * Get the next page of items.
      *
      * @param nextLink The URL to get the next list of items.

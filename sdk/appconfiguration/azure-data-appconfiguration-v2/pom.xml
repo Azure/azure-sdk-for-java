@@ -47,7 +47,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.6</version> <!-- {x-version-update;io.clientcore:core;external_dependency} -->
+      <version>1.0.0-beta.5</version> <!-- {x-version-update;io.clientcore:core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -69,6 +69,7 @@
               <goal>compile</goal>
             </goals>
             <configuration>
+              <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
               <source>1.11</source>
               <target>1.11</target>
               <release>11</release>
@@ -96,6 +97,26 @@
             <version>1.0.0-beta.1</version>
           </dependency>
         </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>add-generated-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${basedir}/target/generated-sources</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
