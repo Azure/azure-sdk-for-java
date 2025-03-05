@@ -175,7 +175,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
             this.recordingChannelType == null ? null : this.recordingChannelType.toString());
         jsonWriter.writeStringField("recordingFormatType",
             this.recordingFormatType == null ? null : this.recordingFormatType.toString());
-        jsonWriter.writeNumberField("recordingDurationMs", this.recordingDuration);
+        jsonWriter.writeNumberField("recordingDuration", this.recordingDuration);
         jsonWriter.writeStringField("sessionEndReason", this.sessionEndReason);
         return jsonWriter.writeEndObject();
     }
@@ -213,7 +213,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
                     recordingChannelType = RecordingChannelType.fromString(reader.getString());
                 } else if ("recordingFormatType".equals(fieldName)) {
                     recordingFormatType = RecordingFormatType.fromString(reader.getString());
-                } else if ("recordingDurationMs".equals(fieldName)) {
+                } else if ("recordingDuration".equals(fieldName)) {
                     recordingDuration = reader.getNullable(JsonReader::getLong);
                 } else if ("sessionEndReason".equals(fieldName)) {
                     sessionEndReason = reader.getString();

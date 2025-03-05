@@ -82,7 +82,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.replyKind == null ? null : this.replyKind.toString());
+        jsonWriter.writeStringField("replyKind", this.replyKind == null ? null : this.replyKind.toString());
         jsonWriter.writeJsonField("buttonReply", this.buttonReply);
         jsonWriter.writeJsonField("listReply", this.listReply);
         return jsonWriter.writeEndObject();
@@ -107,7 +107,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("type".equals(fieldName)) {
+                if ("replyKind".equals(fieldName)) {
                     replyKind = AcsInteractiveReplyKind.fromString(reader.getString());
                 } else if ("buttonReply".equals(fieldName)) {
                     buttonReply = AcsMessageInteractiveButtonReplyContent.fromJson(reader);

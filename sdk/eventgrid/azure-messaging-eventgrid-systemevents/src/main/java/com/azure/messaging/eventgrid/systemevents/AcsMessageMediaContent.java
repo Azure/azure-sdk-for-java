@@ -117,7 +117,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mimeType", this.mimeType);
-        jsonWriter.writeStringField("id", this.mediaId);
+        jsonWriter.writeStringField("mediaId", this.mediaId);
         jsonWriter.writeStringField("fileName", this.fileName);
         jsonWriter.writeStringField("caption", this.caption);
         jsonWriter.writeBooleanField("animated", this.animated);
@@ -147,7 +147,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
 
                 if ("mimeType".equals(fieldName)) {
                     mimeType = reader.getString();
-                } else if ("id".equals(fieldName)) {
+                } else if ("mediaId".equals(fieldName)) {
                     mediaId = reader.getString();
                 } else if ("fileName".equals(fieldName)) {
                     fileName = reader.getString();

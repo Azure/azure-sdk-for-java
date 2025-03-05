@@ -165,8 +165,8 @@ public final class KeyVaultCertificateNearExpiryEventData
         jsonWriter.writeStringField("ObjectType", this.objectType);
         jsonWriter.writeStringField("ObjectName", this.objectName);
         jsonWriter.writeStringField("Version", this.version);
-        jsonWriter.writeDoubleField("NBF", this.nbf);
-        jsonWriter.writeDoubleField("EXP", this.exp);
+        jsonWriter.writeDoubleField("Nbf", this.nbf);
+        jsonWriter.writeDoubleField("Exp", this.exp);
         return jsonWriter.writeEndObject();
     }
 
@@ -203,9 +203,9 @@ public final class KeyVaultCertificateNearExpiryEventData
                     objectName = reader.getString();
                 } else if ("Version".equals(fieldName)) {
                     version = reader.getString();
-                } else if ("NBF".equals(fieldName)) {
+                } else if ("Nbf".equals(fieldName)) {
                     nbf = reader.getDouble();
-                } else if ("EXP".equals(fieldName)) {
+                } else if ("Exp".equals(fieldName)) {
                     exp = reader.getDouble();
                 } else {
                     reader.skipChildren();

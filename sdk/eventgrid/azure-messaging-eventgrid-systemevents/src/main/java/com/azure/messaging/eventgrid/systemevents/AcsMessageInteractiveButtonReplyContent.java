@@ -64,7 +64,7 @@ public final class AcsMessageInteractiveButtonReplyContent
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.buttonId);
+        jsonWriter.writeStringField("buttonId", this.buttonId);
         jsonWriter.writeStringField("title", this.title);
         return jsonWriter.writeEndObject();
     }
@@ -86,7 +86,7 @@ public final class AcsMessageInteractiveButtonReplyContent
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
+                if ("buttonId".equals(fieldName)) {
                     deserializedAcsMessageInteractiveButtonReplyContent.buttonId = reader.getString();
                 } else if ("title".equals(fieldName)) {
                     deserializedAcsMessageInteractiveButtonReplyContent.title = reader.getString();

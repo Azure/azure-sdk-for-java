@@ -113,13 +113,13 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
-        jsonWriter.writeStringField("receivedTimeStamp",
+        jsonWriter.writeStringField("receivedTimestamp",
             getReceivedTimestamp() == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimestamp()));
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeStringField("channelType", this.channelKind == null ? null : this.channelKind.toString());
+        jsonWriter.writeStringField("channelKind", this.channelKind == null ? null : this.channelKind.toString());
         jsonWriter.writeStringField("messageId", this.messageId);
         return jsonWriter.writeEndObject();
     }
@@ -150,14 +150,14 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
                     from = reader.getString();
                 } else if ("to".equals(fieldName)) {
                     to = reader.getString();
-                } else if ("receivedTimeStamp".equals(fieldName)) {
+                } else if ("receivedTimestamp".equals(fieldName)) {
                     receivedTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {
                     error = AcsMessageChannelEventError.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
                     status = AcsMessageDeliveryStatus.fromString(reader.getString());
-                } else if ("channelType".equals(fieldName)) {
+                } else if ("channelKind".equals(fieldName)) {
                     channelKind = AcsMessageChannelKind.fromString(reader.getString());
                 } else if ("messageId".equals(fieldName)) {
                     messageId = reader.getString();

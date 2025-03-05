@@ -71,8 +71,8 @@ public class ResourceNotificationsResourceDeletedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourceInfo", this.resourceDetails);
-        jsonWriter.writeJsonField("operationalInfo", this.operationalDetails);
+        jsonWriter.writeJsonField("resourceDetails", this.resourceDetails);
+        jsonWriter.writeJsonField("operationalDetails", this.operationalDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -94,9 +94,9 @@ public class ResourceNotificationsResourceDeletedEventData
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("resourceInfo".equals(fieldName)) {
+                if ("resourceDetails".equals(fieldName)) {
                     resourceDetails = ResourceNotificationsResourceDeletedDetails.fromJson(reader);
-                } else if ("operationalInfo".equals(fieldName)) {
+                } else if ("operationalDetails".equals(fieldName)) {
                     operationalDetails = ResourceNotificationsOperationalDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();

@@ -64,7 +64,7 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("from", this.from);
-        jsonWriter.writeStringField("id", this.messageId);
+        jsonWriter.writeStringField("messageId", this.messageId);
         return jsonWriter.writeEndObject();
     }
 
@@ -86,7 +86,7 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
 
                 if ("from".equals(fieldName)) {
                     deserializedAcsMessageContext.from = reader.getString();
-                } else if ("id".equals(fieldName)) {
+                } else if ("messageId".equals(fieldName)) {
                     deserializedAcsMessageContext.messageId = reader.getString();
                 } else {
                     reader.skipChildren();

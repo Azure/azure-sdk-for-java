@@ -145,9 +145,9 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("labelOperator", this.labelOperator == null ? null : this.labelOperator.toString());
-        jsonWriter.writeFieldName("value");
+        jsonWriter.writeFieldName("labelValue");
         this.labelValue.writeTo(jsonWriter);
-        jsonWriter.writeDoubleField("ttlSeconds", this.timeToLive);
+        jsonWriter.writeDoubleField("timeToLive", this.timeToLive);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("expirationTime",
             this.expirationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTime));
@@ -178,10 +178,10 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
                 reader.nextToken();
                 if ("labelOperator".equals(fieldName)) {
                     labelOperator = AcsRouterLabelOperator.fromString(reader.getString());
-                } else if ("value".equals(fieldName)) {
+                } else if ("labelValue".equals(fieldName)) {
                     labelValue
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
-                } else if ("ttlSeconds".equals(fieldName)) {
+                } else if ("timeToLive".equals(fieldName)) {
                     timeToLive = reader.getDouble();
                 } else if ("state".equals(fieldName)) {
                     state = AcsRouterWorkerSelectorState.fromString(reader.getString());

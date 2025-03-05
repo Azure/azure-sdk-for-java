@@ -208,20 +208,20 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
-        jsonWriter.writeStringField("receivedTimeStamp",
+        jsonWriter.writeStringField("receivedTimestamp",
             getReceivedTimestamp() == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimestamp()));
         jsonWriter.writeJsonField("error", getError());
-        jsonWriter.writeStringField("channelType", this.channelKind == null ? null : this.channelKind.toString());
+        jsonWriter.writeStringField("channelKind", this.channelKind == null ? null : this.channelKind.toString());
         jsonWriter.writeStringField("messageType", this.messageType);
         jsonWriter.writeStringField("content", this.content);
         jsonWriter.writeStringField("messageId", this.messageId);
-        jsonWriter.writeJsonField("media", this.mediaContent);
+        jsonWriter.writeJsonField("mediaContent", this.mediaContent);
         jsonWriter.writeJsonField("reaction", this.reaction);
         jsonWriter.writeJsonField("context", this.context);
         jsonWriter.writeJsonField("button", this.button);
-        jsonWriter.writeJsonField("interactive", this.interactiveContent);
+        jsonWriter.writeJsonField("interactiveContent", this.interactiveContent);
         return jsonWriter.writeEndObject();
     }
 
@@ -257,12 +257,12 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
                     from = reader.getString();
                 } else if ("to".equals(fieldName)) {
                     to = reader.getString();
-                } else if ("receivedTimeStamp".equals(fieldName)) {
+                } else if ("receivedTimestamp".equals(fieldName)) {
                     receivedTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {
                     error = AcsMessageChannelEventError.fromJson(reader);
-                } else if ("channelType".equals(fieldName)) {
+                } else if ("channelKind".equals(fieldName)) {
                     channelKind = AcsMessageChannelKind.fromString(reader.getString());
                 } else if ("messageType".equals(fieldName)) {
                     messageType = reader.getString();
@@ -270,7 +270,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
                     content = reader.getString();
                 } else if ("messageId".equals(fieldName)) {
                     messageId = reader.getString();
-                } else if ("media".equals(fieldName)) {
+                } else if ("mediaContent".equals(fieldName)) {
                     mediaContent = AcsMessageMediaContent.fromJson(reader);
                 } else if ("reaction".equals(fieldName)) {
                     reaction = AcsMessageReactionContent.fromJson(reader);
@@ -278,7 +278,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
                     context = AcsMessageContext.fromJson(reader);
                 } else if ("button".equals(fieldName)) {
                     button = AcsMessageButtonContent.fromJson(reader);
-                } else if ("interactive".equals(fieldName)) {
+                } else if ("interactiveContent".equals(fieldName)) {
                     interactiveContent = AcsMessageInteractiveContent.fromJson(reader);
                 } else {
                     reader.skipChildren();

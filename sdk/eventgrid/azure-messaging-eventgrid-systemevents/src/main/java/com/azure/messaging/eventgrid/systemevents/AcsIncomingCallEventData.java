@@ -168,13 +168,13 @@ public final class AcsIncomingCallEventData implements JsonSerializable<AcsIncom
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("to", this.toCommunicationIdentifier);
-        jsonWriter.writeJsonField("from", this.fromCommunicationIdentifier);
+        jsonWriter.writeJsonField("toCommunicationIdentifier", this.toCommunicationIdentifier);
+        jsonWriter.writeJsonField("fromCommunicationIdentifier", this.fromCommunicationIdentifier);
         jsonWriter.writeJsonField("customContext", this.customContext);
         jsonWriter.writeStringField("serverCallId", this.serverCallId);
         jsonWriter.writeStringField("callerDisplayName", this.callerDisplayName);
         jsonWriter.writeStringField("incomingCallContext", this.incomingCallContext);
-        jsonWriter.writeJsonField("onBehalfOfCallee", this.onBehalfOfCommunicationIdentifier);
+        jsonWriter.writeJsonField("onBehalfOfCommunicationIdentifier", this.onBehalfOfCommunicationIdentifier);
         jsonWriter.writeStringField("correlationId", this.correlationId);
         return jsonWriter.writeEndObject();
     }
@@ -203,9 +203,9 @@ public final class AcsIncomingCallEventData implements JsonSerializable<AcsIncom
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("to".equals(fieldName)) {
+                if ("toCommunicationIdentifier".equals(fieldName)) {
                     toCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("from".equals(fieldName)) {
+                } else if ("fromCommunicationIdentifier".equals(fieldName)) {
                     fromCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("customContext".equals(fieldName)) {
                     customContext = AcsIncomingCallCustomContext.fromJson(reader);
@@ -215,7 +215,7 @@ public final class AcsIncomingCallEventData implements JsonSerializable<AcsIncom
                     callerDisplayName = reader.getString();
                 } else if ("incomingCallContext".equals(fieldName)) {
                     incomingCallContext = reader.getString();
-                } else if ("onBehalfOfCallee".equals(fieldName)) {
+                } else if ("onBehalfOfCommunicationIdentifier".equals(fieldName)) {
                     onBehalfOfCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("correlationId".equals(fieldName)) {
                     correlationId = reader.getString();

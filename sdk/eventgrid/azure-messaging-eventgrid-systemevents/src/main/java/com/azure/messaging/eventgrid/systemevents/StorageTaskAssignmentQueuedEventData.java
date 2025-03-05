@@ -70,7 +70,7 @@ public final class StorageTaskAssignmentQueuedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("queuedDateTime",
+        jsonWriter.writeStringField("queuedOn",
             this.queuedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queuedOn));
         jsonWriter.writeStringField("taskExecutionId", this.taskExecutionId);
         return jsonWriter.writeEndObject();
@@ -94,7 +94,7 @@ public final class StorageTaskAssignmentQueuedEventData
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("queuedDateTime".equals(fieldName)) {
+                if ("queuedOn".equals(fieldName)) {
                     queuedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("taskExecutionId".equals(fieldName)) {

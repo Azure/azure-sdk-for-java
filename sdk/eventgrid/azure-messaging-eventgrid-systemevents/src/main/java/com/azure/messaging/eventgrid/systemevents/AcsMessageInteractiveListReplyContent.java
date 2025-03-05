@@ -80,7 +80,7 @@ public final class AcsMessageInteractiveListReplyContent
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.listItemId);
+        jsonWriter.writeStringField("listItemId", this.listItemId);
         jsonWriter.writeStringField("title", this.title);
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
@@ -103,7 +103,7 @@ public final class AcsMessageInteractiveListReplyContent
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
+                if ("listItemId".equals(fieldName)) {
                     deserializedAcsMessageInteractiveListReplyContent.listItemId = reader.getString();
                 } else if ("title".equals(fieldName)) {
                     deserializedAcsMessageInteractiveListReplyContent.title = reader.getString();

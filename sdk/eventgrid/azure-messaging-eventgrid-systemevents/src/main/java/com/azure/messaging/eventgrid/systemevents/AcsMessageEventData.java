@@ -121,7 +121,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("from", this.from);
         jsonWriter.writeStringField("to", this.to);
-        jsonWriter.writeStringField("receivedTimeStamp",
+        jsonWriter.writeStringField("receivedTimestamp",
             this.receivedTimestamp == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
@@ -152,7 +152,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
                     from = reader.getString();
                 } else if ("to".equals(fieldName)) {
                     to = reader.getString();
-                } else if ("receivedTimeStamp".equals(fieldName)) {
+                } else if ("receivedTimestamp".equals(fieldName)) {
                     receivedTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {

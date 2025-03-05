@@ -39,8 +39,8 @@ public final class ResourceNotificationsResourceManagementCreatedOrUpdatedEventD
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourceInfo", getResourceDetails());
-        jsonWriter.writeJsonField("operationalInfo", getOperationalDetails());
+        jsonWriter.writeJsonField("resourceDetails", getResourceDetails());
+        jsonWriter.writeJsonField("operationalDetails", getOperationalDetails());
         jsonWriter.writeStringField("apiVersion", getApiVersion());
         return jsonWriter.writeEndObject();
     }
@@ -66,9 +66,9 @@ public final class ResourceNotificationsResourceManagementCreatedOrUpdatedEventD
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("resourceInfo".equals(fieldName)) {
+                if ("resourceDetails".equals(fieldName)) {
                     resourceDetails = ResourceNotificationsResourceUpdatedDetails.fromJson(reader);
-                } else if ("operationalInfo".equals(fieldName)) {
+                } else if ("operationalDetails".equals(fieldName)) {
                     operationalDetails = ResourceNotificationsOperationalDetails.fromJson(reader);
                 } else if ("apiVersion".equals(fieldName)) {
                     apiVersion = reader.getString();
