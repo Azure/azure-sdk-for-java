@@ -378,13 +378,14 @@ public final class Union implements JsonSerializable<Union> {
             jsonWriter.writeBoolean((Boolean) value);
         } else if (value instanceof byte[]) {
             jsonWriter.writeBinary((byte[]) value);
-        } else if (value instanceof List && ((List<?>) value).isEmpty()) {
-            jsonWriter.writeStartArray();
-            jsonWriter.writeEndArray();
         } else if (value instanceof List<?>) {
             jsonWriter.writeStartArray();
             for (Object item : (List<?>) value) {
-                writeValue(jsonWriter, item);
+                if (item == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    writeValue(jsonWriter, item);
+                }
             }
             jsonWriter.writeEndArray();
         } else {
