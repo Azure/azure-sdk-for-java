@@ -69,21 +69,34 @@ public final class PathBuilder {
             buffer.append("?");
 
             method.getQueryParams().forEach((key, value) -> {
-                if (key.isEmpty() || value.isEmpty()) {
-                    throw new IllegalArgumentException("Query parameter key and value must not be empty");
+                // Only append if both key and value are non-null and non-empty
+
+                if (key == null || key.isEmpty()) {
+                    throw new IllegalArgumentException("Query parameter key must not be null or empty");
                 }
-                buffer.append(key).append("=\" + ").append(Objects.toString(value, "null")).append(" + \"&");
+
+                if (value != null && !value.isEmpty()) {
+                    buffer.append(key).append("=\" + ").append(Objects.toString(value, "null")).append(" + \"&");
+                }
             });
 
-            // Remove the trailing '&'
-            buffer.setLength(buffer.length() - 1);
+            // Remove the trailing '&' if present
+            if (buffer.length() > 0 && buffer.charAt(buffer.length() - 1) == '&') {
+                buffer.setLength(buffer.length() - 1);
+            }
+
+            // Remove the trailing '?' if no valid query parameters were appended
+            if (buffer.length() > 0 && buffer.charAt(buffer.length() - 1) == '?') {
+                buffer.setLength(buffer.length() - 1);
+            }
         }
 
         // Ensure the output is properly quoted
         if (buffer.charAt(0) != '"' && !rawHost.startsWith("{")) {
             buffer.insert(0, '"');
         }
-        if (!hasQueryParams && buffer.charAt(buffer.length() - 1) != '"' && !rawHost.endsWith("}")) {
+
+        if (buffer.charAt(buffer.length() - 1) != '"' && !rawHost.endsWith("}")) {
             buffer.append('"');
         }
 
