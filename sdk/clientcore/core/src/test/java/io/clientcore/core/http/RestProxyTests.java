@@ -23,7 +23,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.serializer.Foo;
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Context;
 import org.junit.jupiter.api.Disabled;

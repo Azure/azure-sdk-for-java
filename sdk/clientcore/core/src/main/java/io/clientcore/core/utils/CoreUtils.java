@@ -288,7 +288,7 @@ public final class CoreUtils {
      * @param typeArguments The type arguments.
      * @return The instance of {@link ParameterizedType}.
      */
-    public static ParameterizedType getParameterizedType(Type rawType, Type... typeArguments) {
+    public static ParameterizedType createParameterizedType(Type rawType, Type... typeArguments) {
         return new ParameterizedType() {
             @Override
             public Type[] getActualTypeArguments() {
