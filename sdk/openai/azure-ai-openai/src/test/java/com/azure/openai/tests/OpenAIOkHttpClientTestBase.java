@@ -57,8 +57,7 @@ public class OpenAIOkHttpClientTestBase {
         return azureOpenaiEndpoint;
     }
 
-    // This method will be removed when Azure Identity library supports Azure TokenCredential as a Supplier of String
-    static Supplier<String> getBearerTokenCredentialProvider(TokenCredential azureTokenCredential) {
+    static Supplier<String> getBearerTokenCredentialProvider() {
         return AuthenticationUtil.getBearerTokenSupplier(new DefaultAzureCredentialBuilder().build(),
             "https://cognitiveservices.azure.com/.default");
     }

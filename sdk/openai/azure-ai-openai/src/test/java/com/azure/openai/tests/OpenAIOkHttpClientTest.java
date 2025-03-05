@@ -89,7 +89,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     // Azure-Only Test
-    @Disabled("Pipeline not working with EntraID")
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureAdTokenOnly")
     public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel) {
@@ -97,8 +96,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         if (AZURE_OPEN_AI.equals(apiType)) {
             setAzureServiceApiVersion(clientBuilder, apiVersion).baseUrl(getEndpoint())
                 // This requires `azure-identity` dependency.
-                .credential(BearerTokenCredential
-                    .create(getBearerTokenCredentialProvider(new DefaultAzureCredentialBuilder().build())));
+                .credential(BearerTokenCredential.create(getBearerTokenCredentialProvider()));
         } else {
             throw new IllegalArgumentException("Invalid API type");
         }
