@@ -6,6 +6,9 @@ package com.azure.monitor.opentelemetry.autoconfigure;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -18,7 +21,8 @@ class TokenCredentialUtil {
      */
     static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isLiveMode()) {
-            return new AzurePowerShellCredentialBuilder().build();
+            // return new AzurePowerShellCredentialBuilder().build();
+            return getPipelineCredential();
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
@@ -26,4 +30,27 @@ class TokenCredentialUtil {
         }
     }
 
+    private static TokenCredential getPipelineCredential() {
+        final String serviceConnectionId = getPropertyValue("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        final String clientId = getPropertyValue("AZURESUBSCRIPTION_CLIENT_ID");
+        final String tenantId = getPropertyValue("AZURESUBSCRIPTION_TENANT_ID");
+        final String systemAccessToken = getPropertyValue("SYSTEM_ACCESSTOKEN");
+
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId)
+            || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId)
+            || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            return null;
+        }
+
+        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .build();
+    }
+
+    private static String getPropertyValue(String propertyName) {
+        return Configuration.getGlobalConfiguration().get(propertyName, System.getenv(propertyName));
+    }
 }
