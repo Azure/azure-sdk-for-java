@@ -12,17 +12,17 @@ public final class RelationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelationInner model = BinaryData.fromString(
-            "{\"properties\":{\"relatedResourceId\":\"hvgyuguosvmk\",\"relatedResourceName\":\"sxqu\",\"relatedResourceType\":\"fpl\",\"relatedResourceKind\":\"gsxnkjzkdeslpv\"},\"etag\":\"pwiyig\",\"id\":\"pkdwzbai\",\"name\":\"ebb\",\"type\":\"umnyqu\"}")
+            "{\"properties\":{\"relatedResourceId\":\"wlycoduhpkxkg\",\"relatedResourceName\":\"areqna\",\"relatedResourceType\":\"qugjhkycube\",\"relatedResourceKind\":\"gssofwq\"},\"etag\":\"qal\",\"id\":\"mnjijpxacqqudf\",\"name\":\"byxbaaabjy\",\"type\":\"ayffim\"}")
             .toObject(RelationInner.class);
-        Assertions.assertEquals("pwiyig", model.etag());
-        Assertions.assertEquals("hvgyuguosvmk", model.relatedResourceId());
+        Assertions.assertEquals("qal", model.etag());
+        Assertions.assertEquals("wlycoduhpkxkg", model.relatedResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RelationInner model = new RelationInner().withEtag("pwiyig").withRelatedResourceId("hvgyuguosvmk");
+        RelationInner model = new RelationInner().withEtag("qal").withRelatedResourceId("wlycoduhpkxkg");
         model = BinaryData.fromObject(model).toObject(RelationInner.class);
-        Assertions.assertEquals("pwiyig", model.etag());
-        Assertions.assertEquals("hvgyuguosvmk", model.relatedResourceId());
+        Assertions.assertEquals("qal", model.etag());
+        Assertions.assertEquals("wlycoduhpkxkg", model.relatedResourceId());
     }
 }

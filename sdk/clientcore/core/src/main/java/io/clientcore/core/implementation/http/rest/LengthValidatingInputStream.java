@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.IOException;
 import java.io.InputStream;

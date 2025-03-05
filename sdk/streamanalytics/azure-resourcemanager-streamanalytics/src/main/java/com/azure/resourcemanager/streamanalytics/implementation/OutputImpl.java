@@ -7,14 +7,10 @@ package com.azure.resourcemanager.streamanalytics.implementation;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner;
 import com.azure.resourcemanager.streamanalytics.models.Diagnostics;
-import com.azure.resourcemanager.streamanalytics.models.LastOutputEventTimestamp;
 import com.azure.resourcemanager.streamanalytics.models.Output;
 import com.azure.resourcemanager.streamanalytics.models.OutputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.OutputWatermarkProperties;
 import com.azure.resourcemanager.streamanalytics.models.ResourceTestStatus;
 import com.azure.resourcemanager.streamanalytics.models.Serialization;
-import java.util.Collections;
-import java.util.List;
 
 public final class OutputImpl implements Output, Output.Definition, Output.Update {
     private OutputInner innerObject;
@@ -55,19 +51,6 @@ public final class OutputImpl implements Output, Output.Definition, Output.Updat
 
     public String etag() {
         return this.innerModel().etag();
-    }
-
-    public List<LastOutputEventTimestamp> lastOutputEventTimestamps() {
-        List<LastOutputEventTimestamp> inner = this.innerModel().lastOutputEventTimestamps();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public OutputWatermarkProperties watermarkSettings() {
-        return this.innerModel().watermarkSettings();
     }
 
     public String resourceGroupName() {
@@ -202,11 +185,6 @@ public final class OutputImpl implements Output, Output.Definition, Output.Updat
 
     public OutputImpl withSerialization(Serialization serialization) {
         this.innerModel().withSerialization(serialization);
-        return this;
-    }
-
-    public OutputImpl withWatermarkSettings(OutputWatermarkProperties watermarkSettings) {
-        this.innerModel().withWatermarkSettings(watermarkSettings);
         return this;
     }
 

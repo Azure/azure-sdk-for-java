@@ -10,8 +10,7 @@ package com.azure.resourcemanager.botservice.generated;
 public final class ChannelsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/DeleteChannel.
-     * json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/DeleteChannel.json
      */
     /**
      * Sample code: Delete Channel.
@@ -25,8 +24,7 @@ public final class ChannelsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
+     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
      * DeleteDirectLineSpeechChannel.json
      */
     /**

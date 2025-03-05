@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
 
@@ -13,6 +14,8 @@ public class DerivedMetricProjections {
 
     public static final String COUNT = "Count()";
     private final Map<String, DerivedMetricAggregation> derivedMetricValues = new HashMap<>();
+
+    private static final ClientLogger LOGGER = new ClientLogger(DerivedMetricProjections.class);
 
     public DerivedMetricProjections(Map<String, AggregationType> projectionInfo) {
         for (Map.Entry<String, AggregationType> entry : projectionInfo.entrySet()) {
@@ -61,7 +64,10 @@ public class DerivedMetricProjections {
             // For now, such cases produce Double.Nan and get skipped when calculating projection.
         }
 
-        if (!Double.isNaN(incrementBy)) {
+        if (Double.isNaN(incrementBy)) {
+            LOGGER.verbose(
+                "This telemetry item will not be counted in derived metric projections because the Duration or a CustomDimension column could not be interpreted as a numeric value.");
+        } else {
             calculateAggregation(derivedMetricInfo.getId(), incrementBy);
         }
     }

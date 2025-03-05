@@ -28,6 +28,12 @@ import java.io.IOException;
 @Fluent
 public final class ServerPropertiesForUpdate implements JsonSerializable<ServerPropertiesForUpdate> {
     /*
+     * The administrator's login name of a server. Can only be specified when the server is trying to switch to password
+     * authentication and does not have default administrator login.
+     */
+    private String administratorLogin;
+
+    /*
      * The password of the administrator login.
      */
     private String administratorLoginPassword;
@@ -93,6 +99,28 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
      * Creates an instance of ServerPropertiesForUpdate class.
      */
     public ServerPropertiesForUpdate() {
+    }
+
+    /**
+     * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
+     * server is trying to switch to password authentication and does not have default administrator login.
+     * 
+     * @return the administratorLogin value.
+     */
+    public String administratorLogin() {
+        return this.administratorLogin;
+    }
+
+    /**
+     * Set the administratorLogin property: The administrator's login name of a server. Can only be specified when the
+     * server is trying to switch to password authentication and does not have default administrator login.
+     * 
+     * @param administratorLogin the administratorLogin value to set.
+     * @return the ServerPropertiesForUpdate object itself.
+     */
+    public ServerPropertiesForUpdate withAdministratorLogin(String administratorLogin) {
+        this.administratorLogin = administratorLogin;
+        return this;
     }
 
     /**
@@ -377,6 +405,7 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
         jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
         jsonWriter.writeStringField("version", this.version == null ? null : this.version.toString());
         jsonWriter.writeJsonField("storage", this.storage);
@@ -408,7 +437,9 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("administratorLoginPassword".equals(fieldName)) {
+                if ("administratorLogin".equals(fieldName)) {
+                    deserializedServerPropertiesForUpdate.administratorLogin = reader.getString();
+                } else if ("administratorLoginPassword".equals(fieldName)) {
                     deserializedServerPropertiesForUpdate.administratorLoginPassword = reader.getString();
                 } else if ("version".equals(fieldName)) {
                     deserializedServerPropertiesForUpdate.version = ServerVersion.fromString(reader.getString());

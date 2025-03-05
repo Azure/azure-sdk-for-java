@@ -28,7 +28,7 @@ public final class VirtualNetworkLinksDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.virtualNetworkLinks()
-            .delete("sxkkg", "h", "rghxjb", "hqxvcxgfrpdsofbs", com.azure.core.util.Context.NONE);
+            .delete("hevxcced", "pnmdyodnwzxltjcv", "hlt", "ugcxnavvwxq", com.azure.core.util.Context.NONE);
 
     }
 }

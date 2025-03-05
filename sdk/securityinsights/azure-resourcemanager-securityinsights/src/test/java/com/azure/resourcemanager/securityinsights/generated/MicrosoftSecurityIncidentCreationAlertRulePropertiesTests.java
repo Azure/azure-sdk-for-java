@@ -15,16 +15,15 @@ public final class MicrosoftSecurityIncidentCreationAlertRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftSecurityIncidentCreationAlertRuleProperties model = BinaryData.fromString(
-            "{\"alertRuleTemplateName\":\"lojfkqidnqto\",\"description\":\"jhqxc\",\"displayName\":\"qhtkbt\",\"enabled\":false,\"lastModifiedUtc\":\"2021-03-09T03:00:11Z\",\"displayNamesFilter\":[\"ld\",\"biipsnawwlqkznx\",\"hllxricctkw\",\"uqqoaj\"],\"displayNamesExcludeFilter\":[\"y\",\"lesrwva\"],\"productFilter\":\"Microsoft Defender Advanced Threat Protection\",\"severitiesFilter\":[\"Low\",\"Informational\",\"Low\",\"Informational\"]}")
+            "{\"alertRuleTemplateName\":\"zivj\",\"description\":\"rqttbajlkatnw\",\"displayName\":\"yiopi\",\"enabled\":false,\"lastModifiedUtc\":\"2021-07-26T10:21:10Z\",\"displayNamesFilter\":[\"uvscxkdmligov\",\"brxk\",\"mloazuru\"],\"displayNamesExcludeFilter\":[\"goorbteo\"],\"productFilter\":\"Azure Security Center for IoT\",\"severitiesFilter\":[\"Medium\"]}")
             .toObject(MicrosoftSecurityIncidentCreationAlertRuleProperties.class);
-        Assertions.assertEquals("ld", model.displayNamesFilter().get(0));
-        Assertions.assertEquals("y", model.displayNamesExcludeFilter().get(0));
-        Assertions.assertEquals(MicrosoftSecurityProductName.MICROSOFT_DEFENDER_ADVANCED_THREAT_PROTECTION,
-            model.productFilter());
-        Assertions.assertEquals(AlertSeverity.LOW, model.severitiesFilter().get(0));
-        Assertions.assertEquals("lojfkqidnqto", model.alertRuleTemplateName());
-        Assertions.assertEquals("jhqxc", model.description());
-        Assertions.assertEquals("qhtkbt", model.displayName());
+        Assertions.assertEquals("uvscxkdmligov", model.displayNamesFilter().get(0));
+        Assertions.assertEquals("goorbteo", model.displayNamesExcludeFilter().get(0));
+        Assertions.assertEquals(MicrosoftSecurityProductName.AZURE_SECURITY_CENTER_FOR_IOT, model.productFilter());
+        Assertions.assertEquals(AlertSeverity.MEDIUM, model.severitiesFilter().get(0));
+        Assertions.assertEquals("zivj", model.alertRuleTemplateName());
+        Assertions.assertEquals("rqttbajlkatnw", model.description());
+        Assertions.assertEquals("yiopi", model.displayName());
         Assertions.assertEquals(false, model.enabled());
     }
 
@@ -32,24 +31,22 @@ public final class MicrosoftSecurityIncidentCreationAlertRulePropertiesTests {
     public void testSerialize() throws Exception {
         MicrosoftSecurityIncidentCreationAlertRuleProperties model
             = new MicrosoftSecurityIncidentCreationAlertRuleProperties()
-                .withDisplayNamesFilter(Arrays.asList("ld", "biipsnawwlqkznx", "hllxricctkw", "uqqoaj"))
-                .withDisplayNamesExcludeFilter(Arrays.asList("y", "lesrwva"))
-                .withProductFilter(MicrosoftSecurityProductName.MICROSOFT_DEFENDER_ADVANCED_THREAT_PROTECTION)
-                .withSeveritiesFilter(Arrays.asList(AlertSeverity.LOW, AlertSeverity.INFORMATIONAL, AlertSeverity.LOW,
-                    AlertSeverity.INFORMATIONAL))
-                .withAlertRuleTemplateName("lojfkqidnqto")
-                .withDescription("jhqxc")
-                .withDisplayName("qhtkbt")
+                .withDisplayNamesFilter(Arrays.asList("uvscxkdmligov", "brxk", "mloazuru"))
+                .withDisplayNamesExcludeFilter(Arrays.asList("goorbteo"))
+                .withProductFilter(MicrosoftSecurityProductName.AZURE_SECURITY_CENTER_FOR_IOT)
+                .withSeveritiesFilter(Arrays.asList(AlertSeverity.MEDIUM))
+                .withAlertRuleTemplateName("zivj")
+                .withDescription("rqttbajlkatnw")
+                .withDisplayName("yiopi")
                 .withEnabled(false);
         model = BinaryData.fromObject(model).toObject(MicrosoftSecurityIncidentCreationAlertRuleProperties.class);
-        Assertions.assertEquals("ld", model.displayNamesFilter().get(0));
-        Assertions.assertEquals("y", model.displayNamesExcludeFilter().get(0));
-        Assertions.assertEquals(MicrosoftSecurityProductName.MICROSOFT_DEFENDER_ADVANCED_THREAT_PROTECTION,
-            model.productFilter());
-        Assertions.assertEquals(AlertSeverity.LOW, model.severitiesFilter().get(0));
-        Assertions.assertEquals("lojfkqidnqto", model.alertRuleTemplateName());
-        Assertions.assertEquals("jhqxc", model.description());
-        Assertions.assertEquals("qhtkbt", model.displayName());
+        Assertions.assertEquals("uvscxkdmligov", model.displayNamesFilter().get(0));
+        Assertions.assertEquals("goorbteo", model.displayNamesExcludeFilter().get(0));
+        Assertions.assertEquals(MicrosoftSecurityProductName.AZURE_SECURITY_CENTER_FOR_IOT, model.productFilter());
+        Assertions.assertEquals(AlertSeverity.MEDIUM, model.severitiesFilter().get(0));
+        Assertions.assertEquals("zivj", model.alertRuleTemplateName());
+        Assertions.assertEquals("rqttbajlkatnw", model.description());
+        Assertions.assertEquals("yiopi", model.displayName());
         Assertions.assertEquals(false, model.enabled());
     }
 }

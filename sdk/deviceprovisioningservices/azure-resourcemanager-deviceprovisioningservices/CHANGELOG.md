@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,93 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2025-01-03)
+
+- Azure Resource Manager IotDps client library for Java. This package contains Microsoft Azure SDK for IotDps Management SDK. API for using the Azure IoT Hub Device Provisioning Service features. Package tag package-2022-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+#### `models.ErrorMesssage` was removed
+
+#### `models.CertificateBodyDescription` was removed
+
+#### `models.AsyncOperationResult` was modified
+
+* `models.ErrorMesssage error()` -> `models.ErrorMessage error()`
+
+#### `models.CertificateResponse$Update` was modified
+
+* `withCertificate(java.lang.String)` was removed
+
+#### `models.CertificateResponse$Definition` was modified
+
+* `withCertificate(java.lang.String)` was removed
+
+### Features Added
+
+* `models.ErrorMessage` was added
+
+#### `models.ErrorDetails` was modified
+
+* `getTarget()` was added
+* `getCode()` was added
+* `getMessage()` was added
+* `getAdditionalInfo()` was added
+* `getDetails()` was added
+
+#### `models.IotDpsPropertiesDescription` was modified
+
+* `withEnableDataResidency(java.lang.Boolean)` was added
+* `enableDataResidency()` was added
+
+#### `models.CertificateProperties` was modified
+
+* `withCertificate(byte[])` was added
+* `withIsVerified(java.lang.Boolean)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `resourceGroupName()` was added
+* `systemData()` was added
+
+#### `models.CertificateResponse$Update` was modified
+
+* `withProperties(models.CertificateProperties)` was added
+
+#### `models.ProvisioningServiceDescription` was modified
+
+* `resourceGroupName()` was added
+* `systemData()` was added
+
+#### `models.CertificateResponse$Definition` was modified
+
+* `withProperties(models.CertificateProperties)` was added
+
+#### `models.CertificateResponse` was modified
+
+* `resourceGroupName()` was added
+* `systemData()` was added
+
+#### `IotDpsManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `IotDpsManager$Configurable` was modified
+
+* `withScope(java.lang.String)` was added
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
 
 ## 1.1.0-beta.2 (2022-07-12)
 

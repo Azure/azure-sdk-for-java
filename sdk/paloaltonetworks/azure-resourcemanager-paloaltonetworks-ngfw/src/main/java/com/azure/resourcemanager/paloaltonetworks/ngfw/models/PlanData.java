@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Billing plan information.
  */
 @Fluent
-public final class PlanData {
+public final class PlanData implements JsonSerializable<PlanData> {
     /*
      * different usage type like PAYG/COMMITTED
      */
-    @JsonProperty(value = "usageType")
     private UsageType usageType;
 
     /*
      * different billing cycles like MONTHLY/WEEKLY
      */
-    @JsonProperty(value = "billingCycle", required = true)
     private BillingCycle billingCycle;
 
     /*
      * plan id as published by Liftr.PAN
      */
-    @JsonProperty(value = "planId", required = true)
     private String planId;
 
     /*
      * date when plan was applied
      */
-    @JsonProperty(value = "effectiveDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime effectiveDate;
 
     /**
@@ -120,14 +121,60 @@ public final class PlanData {
      */
     public void validate() {
         if (billingCycle() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property billingCycle in model PlanData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property billingCycle in model PlanData"));
         }
         if (planId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property planId in model PlanData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property planId in model PlanData"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PlanData.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingCycle", this.billingCycle == null ? null : this.billingCycle.toString());
+        jsonWriter.writeStringField("planId", this.planId);
+        jsonWriter.writeStringField("usageType", this.usageType == null ? null : this.usageType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlanData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlanData if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PlanData.
+     */
+    public static PlanData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlanData deserializedPlanData = new PlanData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingCycle".equals(fieldName)) {
+                    deserializedPlanData.billingCycle = BillingCycle.fromString(reader.getString());
+                } else if ("planId".equals(fieldName)) {
+                    deserializedPlanData.planId = reader.getString();
+                } else if ("usageType".equals(fieldName)) {
+                    deserializedPlanData.usageType = UsageType.fromString(reader.getString());
+                } else if ("effectiveDate".equals(fieldName)) {
+                    deserializedPlanData.effectiveDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlanData;
+        });
+    }
 }

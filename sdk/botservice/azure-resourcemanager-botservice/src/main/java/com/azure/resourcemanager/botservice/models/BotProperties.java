@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.botservice.fluent.models.PrivateEndpointConnectionInner;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -169,11 +168,6 @@ public final class BotProperties implements JsonSerializable<BotProperties> {
      * The storage resourceId for the bot
      */
     private String storageResourceId;
-
-    /*
-     * List of Private Endpoint Connections configured for the bot
-     */
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * The hint to browser (e.g. protocol handler) on how to open the bot for authoring
@@ -738,15 +732,6 @@ public final class BotProperties implements JsonSerializable<BotProperties> {
     }
 
     /**
-     * Get the privateEndpointConnections property: List of Private Endpoint Connections configured for the bot.
-     * 
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
      * Get the openWithHint property: The hint to browser (e.g. protocol handler) on how to open the bot for authoring.
      * 
      * @return the openWithHint value.
@@ -832,9 +817,6 @@ public final class BotProperties implements JsonSerializable<BotProperties> {
         if (msaAppId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property msaAppId in model BotProperties"));
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 
@@ -959,10 +941,6 @@ public final class BotProperties implements JsonSerializable<BotProperties> {
                     deserializedBotProperties.schemaTransformationVersion = reader.getString();
                 } else if ("storageResourceId".equals(fieldName)) {
                     deserializedBotProperties.storageResourceId = reader.getString();
-                } else if ("privateEndpointConnections".equals(fieldName)) {
-                    List<PrivateEndpointConnectionInner> privateEndpointConnections
-                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
-                    deserializedBotProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("openWithHint".equals(fieldName)) {
                     deserializedBotProperties.openWithHint = reader.getString();
                 } else if ("appPasswordHint".equals(fieldName)) {

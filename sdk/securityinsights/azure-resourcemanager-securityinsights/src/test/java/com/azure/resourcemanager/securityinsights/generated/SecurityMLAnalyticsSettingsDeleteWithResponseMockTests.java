@@ -28,7 +28,7 @@ public final class SecurityMLAnalyticsSettingsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.securityMLAnalyticsSettings()
-            .deleteWithResponse("f", "zukryxpijvapea", "fdmc", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("xlbtp", "kft", "gatwmykyu", com.azure.core.util.Context.NONE);
 
     }
 }

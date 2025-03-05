@@ -10,11 +10,11 @@ package com.azure.resourcemanager.securityinsights.generated;
 public final class WatchlistItemsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
-     * watchlists/DeleteWatchlistItem.json
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/watchlists/
+     * DeleteWatchlistItem.json
      */
     /**
-     * Sample code: Delete a watchlist Item.
+     * Sample code: Delete a watchlist item.
      * 
      * @param manager Entry point to SecurityInsightsManager.
      */

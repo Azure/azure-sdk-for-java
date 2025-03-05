@@ -79,12 +79,8 @@ public class Serialization implements JsonSerializable<Serialization> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("Delta".equals(discriminatorValue)) {
-                    return DeltaSerialization.fromJson(readerToUse.reset());
-                } else if ("Parquet".equals(discriminatorValue)) {
+                if ("Parquet".equals(discriminatorValue)) {
                     return ParquetSerialization.fromJson(readerToUse.reset());
-                } else if ("CustomClr".equals(discriminatorValue)) {
-                    return CustomClrSerialization.fromJson(readerToUse.reset());
                 } else if ("Csv".equals(discriminatorValue)) {
                     return CsvSerialization.fromJson(readerToUse.reset());
                 } else if ("Json".equals(discriminatorValue)) {

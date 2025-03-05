@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for IpFilterActionType. */
+/**
+ * The desired action for requests captured by this rule.
+ */
 public enum IpFilterActionType {
-    /** Enum value Accept. */
+    /**
+     * Enum value Accept.
+     */
     ACCEPT("Accept"),
 
-    /** Enum value Reject. */
+    /**
+     * Enum value Reject.
+     */
     REJECT("Reject");
 
-    /** The actual serialized value for a IpFilterActionType instance. */
+    /**
+     * The actual serialized value for a IpFilterActionType instance.
+     */
     private final String value;
 
     IpFilterActionType(String value) {
@@ -24,12 +29,14 @@ public enum IpFilterActionType {
 
     /**
      * Parses a serialized value to a IpFilterActionType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed IpFilterActionType object, or null if unable to parse.
      */
-    @JsonCreator
     public static IpFilterActionType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IpFilterActionType[] items = IpFilterActionType.values();
         for (IpFilterActionType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum IpFilterActionType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

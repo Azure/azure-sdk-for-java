@@ -6,22 +6,18 @@ package com.azure.resourcemanager.securityinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.securityinsights.fluent.models.IoTDeviceEntityProperties;
-import com.azure.resourcemanager.securityinsights.models.DeviceImportance;
-import org.junit.jupiter.api.Assertions;
 
 public final class IoTDeviceEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTDeviceEntityProperties model = BinaryData.fromString(
-            "{\"deviceId\":\"fiwjbctvbp\",\"deviceName\":\"jqjtotd\",\"source\":\"osc\",\"iotSecurityAgentId\":\"61c24298-b4e6-491d-9564-38e8a3f83205\",\"deviceType\":\"wuusiecktybh\",\"vendor\":\"xidhhxomil\",\"edgeId\":\"xj\",\"macAddress\":\"ugxwjwilmqrslaat\",\"model\":\"twujjzgx\",\"serialNumber\":\"qwlxrhg\",\"firmwareVersion\":\"hvtqqykbkk\",\"operatingSystem\":\"ozejo\",\"iotHubEntityId\":\"korvvm\",\"hostEntityId\":\"cof\",\"ipAddressEntityId\":\"h\",\"threatIntelligence\":[{\"confidence\":86.90540909602258,\"providerName\":\"qliwkmzojf\",\"reportLink\":\"yalhtgm\",\"threatDescription\":\"azg\",\"threatName\":\"bhrpgiqsttc\",\"threatType\":\"rcmmaixpqj\"},{\"confidence\":20.758308552873718,\"providerName\":\"bk\",\"reportLink\":\"dttohq\",\"threatDescription\":\"naihtgsiqikvllr\",\"threatName\":\"p\",\"threatType\":\"lxkoi\"},{\"confidence\":53.872948671255486,\"providerName\":\"wrqkza\",\"reportLink\":\"unmpaklwzl\",\"threatDescription\":\"epr\",\"threatName\":\"jzltkaszfjs\",\"threatType\":\"cbduxapgrcqebmvr\"},{\"confidence\":33.21412156777779,\"providerName\":\"nwsb\",\"reportLink\":\"dls\",\"threatDescription\":\"x\",\"threatName\":\"esdfedsb\",\"threatType\":\"ancoinmphymcqid\"}],\"protocols\":[\"vdhqnufbxw\",\"iibntojo\",\"fnybydhuihaouw\"],\"owners\":[\"uaorhjk\"],\"nicEntityIds\":[\"vumosqircamqp\",\"l\",\"brugejcvjkjycz\",\"mtagelajdyol\"],\"site\":\"qy\",\"zone\":\"fmzsizzhravr\",\"sensor\":\"kjymgqbgcxh\",\"deviceSubType\":\"xgzxlermkmer\",\"importance\":\"Low\",\"purdueLayer\":\"irhnpupkcbkfukd\",\"isAuthorized\":false,\"isProgramming\":true,\"isScanner\":false,\"additionalData\":{\"aloow\":\"datadshkpaf\"},\"friendlyName\":\"izzn\"}")
+            "{\"deviceId\":\"jxtxrdc\",\"deviceName\":\"jvidttge\",\"source\":\"slvyjtcvuwkasi\",\"iotSecurityAgentId\":\"ba3f9ce6-cacb-4c01-8778-a7a6e4bf0e08\",\"deviceType\":\"sfuughtuqfecjx\",\"vendor\":\"gtuhxuicbu\",\"edgeId\":\"mr\",\"macAddress\":\"njlx\",\"model\":\"rhwpus\",\"serialNumber\":\"baqehgpdoh\",\"firmwareVersion\":\"qatucoigebxnc\",\"operatingSystem\":\"fepbnwgfmxjgc\",\"iotHubEntityId\":\"jbgdlfgtdysnaquf\",\"hostEntityId\":\"bctqhamzjrwd\",\"ipAddressEntityId\":\"zeqyjleziun\",\"threatIntelligence\":[{\"confidence\":52.45288148920413,\"providerName\":\"tkw\",\"reportLink\":\"gyamlbnseqacjjv\",\"threatDescription\":\"lguooqjagmd\",\"threatName\":\"gueiookjbsahrtdt\",\"threatType\":\"elqacslmot\"},{\"confidence\":44.88763883209227,\"providerName\":\"xofvcjk\",\"reportLink\":\"irazftxejwabmd\",\"threatDescription\":\"tmvcop\",\"threatName\":\"c\",\"threatType\":\"urbuhhlkyqltq\"},{\"confidence\":20.089415326798854,\"providerName\":\"uwkffdjktsysid\",\"reportLink\":\"c\",\"threatDescription\":\"lxnfuijtkbusqogs\",\"threatName\":\"kayi\",\"threatType\":\"sharujtj\"}],\"protocols\":[\"fzyjqt\"],\"additionalData\":{\"qqekewvnqvcdlgu\":\"datakpqhjpenuygbq\",\"nlaxpunjqikcz\":\"dataucmfdj\",\"xmfcsserxhtv\":\"datavitac\",\"tsjgqrsx\":\"dataoxhlw\"},\"friendlyName\":\"ruuuybnch\"}")
             .toObject(IoTDeviceEntityProperties.class);
-        Assertions.assertEquals(DeviceImportance.LOW, model.importance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTDeviceEntityProperties model = new IoTDeviceEntityProperties().withImportance(DeviceImportance.LOW);
+        IoTDeviceEntityProperties model = new IoTDeviceEntityProperties();
         model = BinaryData.fromObject(model).toObject(IoTDeviceEntityProperties.class);
-        Assertions.assertEquals(DeviceImportance.LOW, model.importance());
     }
 }

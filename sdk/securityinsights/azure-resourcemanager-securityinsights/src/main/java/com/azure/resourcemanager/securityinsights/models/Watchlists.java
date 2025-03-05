@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface Watchlists {
     /**
-     * Gets all watchlists, without watchlist items.
+     * Get all watchlists, without watchlist items.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -25,7 +25,7 @@ public interface Watchlists {
     PagedIterable<Watchlist> list(String resourceGroupName, String workspaceName);
 
     /**
-     * Gets all watchlists, without watchlist items.
+     * Get all watchlists, without watchlist items.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -41,11 +41,11 @@ public interface Watchlists {
     PagedIterable<Watchlist> list(String resourceGroupName, String workspaceName, String skipToken, Context context);
 
     /**
-     * Gets a watchlist, without its watchlist items.
+     * Get a watchlist, without its watchlist items.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param watchlistAlias Watchlist Alias.
+     * @param watchlistAlias The watchlist alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,11 +56,11 @@ public interface Watchlists {
         Context context);
 
     /**
-     * Gets a watchlist, without its watchlist items.
+     * Get a watchlist, without its watchlist items.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param watchlistAlias Watchlist Alias.
+     * @param watchlistAlias The watchlist alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -73,14 +73,14 @@ public interface Watchlists {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param watchlistAlias Watchlist Alias.
+     * @param watchlistAlias The watchlist alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
-    WatchlistsDeleteResponse deleteWithResponse(String resourceGroupName, String workspaceName, String watchlistAlias,
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String watchlistAlias,
         Context context);
 
     /**
@@ -88,7 +88,7 @@ public interface Watchlists {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param watchlistAlias Watchlist Alias.
+     * @param watchlistAlias The watchlist alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -96,7 +96,7 @@ public interface Watchlists {
     void delete(String resourceGroupName, String workspaceName, String watchlistAlias);
 
     /**
-     * Gets a watchlist, without its watchlist items.
+     * Get a watchlist, without its watchlist items.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,7 +107,7 @@ public interface Watchlists {
     Watchlist getById(String id);
 
     /**
-     * Gets a watchlist, without its watchlist items.
+     * Get a watchlist, without its watchlist items.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -136,9 +136,9 @@ public interface Watchlists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
-    WatchlistsDeleteResponse deleteByIdWithResponse(String id, Context context);
+    Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new Watchlist resource.

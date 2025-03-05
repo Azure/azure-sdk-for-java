@@ -101,7 +101,7 @@ public final class ScheduledAlertRuleTemplateProperties
     private List<AttackTactic> tactics;
 
     /*
-     * The techniques of the alert rule
+     * The techniques of the alert rule template
      */
     private List<String> techniques;
 
@@ -397,7 +397,7 @@ public final class ScheduledAlertRuleTemplateProperties
     }
 
     /**
-     * Get the techniques property: The techniques of the alert rule.
+     * Get the techniques property: The techniques of the alert rule template.
      * 
      * @return the techniques value.
      */
@@ -406,7 +406,7 @@ public final class ScheduledAlertRuleTemplateProperties
     }
 
     /**
-     * Set the techniques property: The techniques of the alert rule.
+     * Set the techniques property: The techniques of the alert rule template.
      * 
      * @param techniques the techniques value to set.
      * @return the ScheduledAlertRuleTemplateProperties object itself.

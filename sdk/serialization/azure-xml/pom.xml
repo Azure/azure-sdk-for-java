@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-xml</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-xml;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-xml;current} -->
 
   <name>Microsoft Azure Java XML Library</name>
   <description>This package provides interfaces for reading and writing XML.</description>
@@ -264,7 +264,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.4.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.5.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>add-license-comment</id>

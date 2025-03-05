@@ -23,9 +23,10 @@ public final class CertificateObjectGlobalRulestackCreateOrUpdateSamples {
      */
     public static void certificateObjectGlobalRulestackCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.certificateObjectGlobalRulestacks().createOrUpdate("praval", "armid1",
-            new CertificateObjectGlobalRulestackResourceInner().withCertificateSelfSigned(BooleanEnum.TRUE),
-            com.azure.core.util.Context.NONE);
+        manager.certificateObjectGlobalRulestacks()
+            .createOrUpdate("praval", "armid1",
+                new CertificateObjectGlobalRulestackResourceInner().withCertificateSelfSigned(BooleanEnum.TRUE),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -40,10 +41,13 @@ public final class CertificateObjectGlobalRulestackCreateOrUpdateSamples {
      */
     public static void certificateObjectGlobalRulestackCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.certificateObjectGlobalRulestacks().createOrUpdate("praval", "armid1",
-            new CertificateObjectGlobalRulestackResourceInner().withCertificateSignerResourceId("")
-                .withCertificateSelfSigned(BooleanEnum.TRUE).withAuditComment("comment").withDescription("description")
-                .withEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"),
-            com.azure.core.util.Context.NONE);
+        manager.certificateObjectGlobalRulestacks()
+            .createOrUpdate("praval", "armid1",
+                new CertificateObjectGlobalRulestackResourceInner().withCertificateSignerResourceId("")
+                    .withCertificateSelfSigned(BooleanEnum.TRUE)
+                    .withAuditComment("comment")
+                    .withDescription("description")
+                    .withEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class UserInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserInfo model = BinaryData.fromString(
-            "{\"email\":\"lihkaetcktvfc\",\"name\":\"fsnkymuctq\",\"objectId\":\"c0c6a569-9baf-44b3-aadd-1545c3e7866c\"}")
+        UserInfo model = BinaryData
+            .fromString(
+                "{\"email\":\"wgqyw\",\"name\":\"drvyn\",\"objectId\":\"ff6b336d-8339-4403-92f4-094015b0b9fa\"}")
             .toObject(UserInfo.class);
-        Assertions.assertEquals(UUID.fromString("c0c6a569-9baf-44b3-aadd-1545c3e7866c"), model.objectId());
+        Assertions.assertEquals(UUID.fromString("ff6b336d-8339-4403-92f4-094015b0b9fa"), model.objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserInfo model = new UserInfo().withObjectId(UUID.fromString("c0c6a569-9baf-44b3-aadd-1545c3e7866c"));
+        UserInfo model = new UserInfo().withObjectId(UUID.fromString("ff6b336d-8339-4403-92f4-094015b0b9fa"));
         model = BinaryData.fromObject(model).toObject(UserInfo.class);
-        Assertions.assertEquals(UUID.fromString("c0c6a569-9baf-44b3-aadd-1545c3e7866c"), model.objectId());
+        Assertions.assertEquals(UUID.fromString("ff6b336d-8339-4403-92f4-094015b0b9fa"), model.objectId());
     }
 }

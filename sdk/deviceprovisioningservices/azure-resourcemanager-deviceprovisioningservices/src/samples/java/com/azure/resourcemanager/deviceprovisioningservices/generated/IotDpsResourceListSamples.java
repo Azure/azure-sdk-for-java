@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for IotDpsResource List. */
+/**
+ * Samples for IotDpsResource List.
+ */
 public final class IotDpsResourceListSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListBySubscription.json
+     * x-ms-original-file:
+     * specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/
+     * DPSListBySubscription.json
      */
     /**
      * Sample code: DPSListBySubscription.
-     *
+     * 
      * @param manager Entry point to IotDpsManager.
      */
-    public static void dPSListBySubscription(
-        com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
-        manager.iotDpsResources().list(Context.NONE);
+    public static void
+        dPSListBySubscription(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources().list(com.azure.core.util.Context.NONE);
     }
 }

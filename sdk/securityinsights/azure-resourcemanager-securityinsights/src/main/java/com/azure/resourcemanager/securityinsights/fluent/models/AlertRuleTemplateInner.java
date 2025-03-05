@@ -12,11 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleKind;
 import com.azure.resourcemanager.securityinsights.models.FusionAlertRuleTemplate;
-import com.azure.resourcemanager.securityinsights.models.MLBehaviorAnalyticsAlertRuleTemplate;
 import com.azure.resourcemanager.securityinsights.models.MicrosoftSecurityIncidentCreationAlertRuleTemplate;
-import com.azure.resourcemanager.securityinsights.models.NrtAlertRuleTemplate;
 import com.azure.resourcemanager.securityinsights.models.ScheduledAlertRuleTemplate;
-import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceAlertRuleTemplate;
 import java.io.IOException;
 
 /**
@@ -25,7 +22,7 @@ import java.io.IOException;
 @Immutable
 public class AlertRuleTemplateInner extends ProxyResource {
     /*
-     * The kind of the alert rule
+     * The alert rule kind
      */
     private AlertRuleKind kind = AlertRuleKind.fromString("AlertRuleTemplate");
 
@@ -56,7 +53,7 @@ public class AlertRuleTemplateInner extends ProxyResource {
     }
 
     /**
-     * Get the kind property: The kind of the alert rule.
+     * Get the kind property: The alert rule kind.
      * 
      * @return the kind value.
      */
@@ -157,18 +154,12 @@ public class AlertRuleTemplateInner extends ProxyResource {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("MLBehaviorAnalytics".equals(discriminatorValue)) {
-                    return MLBehaviorAnalyticsAlertRuleTemplate.fromJson(readerToUse.reset());
-                } else if ("Fusion".equals(discriminatorValue)) {
+                if ("Fusion".equals(discriminatorValue)) {
                     return FusionAlertRuleTemplate.fromJson(readerToUse.reset());
-                } else if ("ThreatIntelligence".equals(discriminatorValue)) {
-                    return ThreatIntelligenceAlertRuleTemplate.fromJson(readerToUse.reset());
                 } else if ("MicrosoftSecurityIncidentCreation".equals(discriminatorValue)) {
                     return MicrosoftSecurityIncidentCreationAlertRuleTemplate.fromJson(readerToUse.reset());
                 } else if ("Scheduled".equals(discriminatorValue)) {
                     return ScheduledAlertRuleTemplate.fromJson(readerToUse.reset());
-                } else if ("NRT".equals(discriminatorValue)) {
-                    return NrtAlertRuleTemplate.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

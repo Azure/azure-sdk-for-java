@@ -14,7 +14,7 @@ This script will update all the path triggers for the ci.yml files based on our 
  - all pom.xml files will be in the exclude list to help prevent triggering all pipelines whenever we only do version number changes.
 
 As a workaround to prevent every pipeline in the repo from
-triggering when we increment the verison of azure-core we are
+triggering when we increment the version of azure-core we are
 excluding pom.xml file only changes from triggering the other
 pipelines.
 

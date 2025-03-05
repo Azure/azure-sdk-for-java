@@ -25,11 +25,6 @@ public final class TelegramChannel extends Channel {
      */
     private TelegramChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of TelegramChannel class.
      */
@@ -64,16 +59,6 @@ public final class TelegramChannel extends Channel {
     public TelegramChannel withProperties(TelegramChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class TelegramChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedTelegramChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedTelegramChannel.provisioningState = reader.getString();
+                    deserializedTelegramChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedTelegramChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

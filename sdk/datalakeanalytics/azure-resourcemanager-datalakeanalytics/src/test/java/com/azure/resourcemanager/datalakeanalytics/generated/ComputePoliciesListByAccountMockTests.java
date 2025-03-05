@@ -22,7 +22,7 @@ public final class ComputePoliciesListByAccountMockTests {
     @Test
     public void testListByAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"objectId\":\"e6f320c8-3df9-4e99-b637-0b0765982682\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":470627882,\"minPriorityPerJob\":1769429451},\"name\":\"thzvaytdwkqbrqu\",\"type\":\"axhexiilivp\",\"id\":\"iirqtd\"}]}";
+            = "{\"value\":[{\"properties\":{\"objectId\":\"6b8e4639-12fc-46d8-9649-2772a919f5b4\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":470627882,\"minPriorityPerJob\":1769429451},\"name\":\"thzvaytdwkqbrqu\",\"type\":\"axhexiilivp\",\"id\":\"iirqtd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

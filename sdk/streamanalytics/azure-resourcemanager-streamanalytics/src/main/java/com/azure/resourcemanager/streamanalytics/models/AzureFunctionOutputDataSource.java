@@ -49,7 +49,7 @@ public final class AzureFunctionOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private AzureFunctionOutputDataSourceProperties innerProperties() {
+    AzureFunctionOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

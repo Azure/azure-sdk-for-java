@@ -9,8 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.streamanalytics.models.PrivateEndpointProperties;
+import com.azure.resourcemanager.streamanalytics.models.PrivateLinkServiceConnection;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Complete information about the private endpoint.
@@ -20,7 +21,7 @@ public final class PrivateEndpointInner extends ProxyResource {
     /*
      * The properties associated with a private endpoint.
      */
-    private PrivateEndpointProperties properties;
+    private PrivateEndpointProperties innerProperties;
 
     /*
      * Unique opaque string (generally a GUID) that represents the metadata state of the resource (private endpoint) and
@@ -50,23 +51,12 @@ public final class PrivateEndpointInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: The properties associated with a private endpoint.
+     * Get the innerProperties property: The properties associated with a private endpoint.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public PrivateEndpointProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The properties associated with a private endpoint.
-     * 
-     * @param properties the properties value to set.
-     * @return the PrivateEndpointInner object itself.
-     */
-    public PrivateEndpointInner withProperties(PrivateEndpointProperties properties) {
-        this.properties = properties;
-        return this;
+    private PrivateEndpointProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -110,13 +100,48 @@ public final class PrivateEndpointInner extends ProxyResource {
     }
 
     /**
+     * Get the createdDate property: The date when this private endpoint was created.
+     * 
+     * @return the createdDate value.
+     */
+    public String createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the manualPrivateLinkServiceConnections property: A list of connections to the remote resource. Immutable
+     * after it is set.
+     * 
+     * @return the manualPrivateLinkServiceConnections value.
+     */
+    public List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().manualPrivateLinkServiceConnections();
+    }
+
+    /**
+     * Set the manualPrivateLinkServiceConnections property: A list of connections to the remote resource. Immutable
+     * after it is set.
+     * 
+     * @param manualPrivateLinkServiceConnections the manualPrivateLinkServiceConnections value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withManualPrivateLinkServiceConnections(
+        List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointProperties();
+        }
+        this.innerProperties().withManualPrivateLinkServiceConnections(manualPrivateLinkServiceConnections);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 
@@ -126,7 +151,7 @@ public final class PrivateEndpointInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -153,7 +178,7 @@ public final class PrivateEndpointInner extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedPrivateEndpointInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedPrivateEndpointInner.properties = PrivateEndpointProperties.fromJson(reader);
+                    deserializedPrivateEndpointInner.innerProperties = PrivateEndpointProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedPrivateEndpointInner.etag = reader.getString();
                 } else {

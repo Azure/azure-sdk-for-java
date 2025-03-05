@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.AccountEntityProperties;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
@@ -19,11 +18,11 @@ import java.util.UUID;
  * Represents an account entity.
  */
 @Immutable
-public final class AccountEntity extends EntityInner {
+public final class AccountEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.ACCOUNT;
+    private EntityKindEnum kind = EntityKindEnum.ACCOUNT;
 
     /*
      * Account entity properties
@@ -62,7 +61,7 @@ public final class AccountEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -172,7 +171,7 @@ public final class AccountEntity extends EntityInner {
     }
 
     /**
-     * Get the ntDomain property: The NetBIOS domain name as it appears in the alert format domain/username. Examples:
+     * Get the ntDomain property: The NetBIOS domain name as it appears in the alert format - domain/username. Examples:
      * NT AUTHORITY.
      * 
      * @return the ntDomain value.
@@ -296,7 +295,7 @@ public final class AccountEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedAccountEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedAccountEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedAccountEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedAccountEntity.innerProperties = AccountEntityProperties.fromJson(reader);
                 } else {

@@ -6,8 +6,13 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+
 public abstract class CosmosItemSerializerNoExceptionWrapping extends CosmosItemSerializer {
     public CosmosItemSerializerNoExceptionWrapping() {
-        super(false);
+        ImplementationBridgeHelpers
+            .CosmosItemSerializerHelper
+            .getCosmosItemSerializerAccessor()
+            .setShouldWrapSerializationExceptions(this, false);
     }
 }

@@ -23,11 +23,6 @@ public final class AzureBareMetalHardwareTypeNamesEnum
     public static final AzureBareMetalHardwareTypeNamesEnum HPE = fromString("HPE");
 
     /**
-     * Static value SDFLEX for AzureBareMetalHardwareTypeNamesEnum.
-     */
-    public static final AzureBareMetalHardwareTypeNamesEnum SDFLEX = fromString("SDFLEX");
-
-    /**
      * Creates a new instance of AzureBareMetalHardwareTypeNamesEnum value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

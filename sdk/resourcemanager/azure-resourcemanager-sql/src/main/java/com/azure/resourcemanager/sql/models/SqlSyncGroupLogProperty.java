@@ -11,21 +11,45 @@ import java.time.OffsetDateTime;
 @Fluent
 public interface SqlSyncGroupLogProperty extends HasInnerModel<SyncGroupLogPropertiesInner> {
 
-    /** @return timestamp of the sync group log */
+    /**
+     * Gets timestamp of the sync group log.
+     *
+     * @return timestamp of the sync group log
+     */
     OffsetDateTime timestamp();
 
-    /** @return the type of the sync group log */
+    /**
+     * Gets the type of the sync group log.
+     *
+     * @return the type of the sync group log
+     */
     SyncGroupLogType type();
 
-    /** @return the source of the sync group log. */
+    /**
+     * Gets the source of the sync group log.
+     *
+     * @return the source of the sync group log.
+     */
     String source();
 
-    /** @return the details of the sync group log. */
+    /**
+     * Gets the details of the sync group log.
+     *
+     * @return the details of the sync group log.
+     */
     String details();
 
-    /** @return the tracing ID of the sync group log. */
+    /**
+     * Gets the tracing ID of the sync group log.
+     *
+     * @return the tracing ID of the sync group log.
+     */
     String tracingId();
 
-    /** @return operation status of the sync group log. */
+    /**
+     * Gets operation status of the sync group log.
+     *
+     * @return operation status of the sync group log.
+     */
     String operationStatus();
 }

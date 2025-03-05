@@ -14,16 +14,19 @@ public final class SecurityMLAnalyticsSettingsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityMLAnalyticsSettingsList model = BinaryData.fromString(
-            "{\"nextLink\":\"nfxtgdd\",\"value\":[{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"hehnmnaoya\",\"id\":\"coeqswankltytm\",\"name\":\"droznn\",\"type\":\"drlktg\"}]}")
+            "{\"nextLink\":\"brqubp\",\"value\":[{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"exiili\",\"id\":\"dtiirqt\",\"name\":\"qoaxoruzfgs\",\"type\":\"uyfxrxxleptramxj\"},{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"wlwnwxuqlcv\",\"id\":\"ypatdooaojkniod\",\"name\":\"oo\",\"type\":\"bw\"},{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"jhemms\",\"id\":\"dkcrodt\",\"name\":\"infwjlfltkacjve\",\"type\":\"kdlfoa\"},{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"gkfpaga\",\"id\":\"pulpqblylsyxk\",\"name\":\"jnsjervtiagxsd\",\"type\":\"zuempsbzkf\"}]}")
             .toObject(SecurityMLAnalyticsSettingsList.class);
-        Assertions.assertEquals("hehnmnaoya", model.value().get(0).etag());
+        Assertions.assertEquals("exiili", model.value().get(0).etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecurityMLAnalyticsSettingsList model = new SecurityMLAnalyticsSettingsList()
-            .withValue(Arrays.asList(new SecurityMLAnalyticsSettingInner().withEtag("hehnmnaoya")));
+            .withValue(Arrays.asList(new SecurityMLAnalyticsSettingInner().withEtag("exiili"),
+                new SecurityMLAnalyticsSettingInner().withEtag("wlwnwxuqlcv"),
+                new SecurityMLAnalyticsSettingInner().withEtag("jhemms"),
+                new SecurityMLAnalyticsSettingInner().withEtag("gkfpaga")));
         model = BinaryData.fromObject(model).toObject(SecurityMLAnalyticsSettingsList.class);
-        Assertions.assertEquals("hehnmnaoya", model.value().get(0).etag());
+        Assertions.assertEquals("exiili", model.value().get(0).etag());
     }
 }

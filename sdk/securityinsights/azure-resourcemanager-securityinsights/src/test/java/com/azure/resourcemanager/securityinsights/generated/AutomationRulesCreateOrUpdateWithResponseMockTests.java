@@ -27,7 +27,7 @@ public final class AutomationRulesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"ceecvjwyu\",\"order\":1949694958,\"triggeringLogic\":{\"isEnabled\":true,\"expirationTimeUtc\":\"2021-09-14T21:24:49Z\",\"triggersOn\":\"Alerts\",\"triggersWhen\":\"Created\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":509063673}],\"lastModifiedTimeUtc\":\"2021-03-30T18:23:35Z\",\"createdTimeUtc\":\"2021-06-27T01:07:59Z\",\"lastModifiedBy\":{\"email\":\"ztk\",\"name\":\"ivz\",\"objectId\":\"6650a3de-1dae-444d-bfaa-367df9c885fa\",\"userPrincipalName\":\"mbrygmw\"},\"createdBy\":{\"email\":\"osiqsykqfdqwdrtx\",\"name\":\"daglmrcok\",\"objectId\":\"7046a32e-1058-4b8e-a626-34ad94697070\",\"userPrincipalName\":\"rtkou\"}},\"etag\":\"siywhubymfpopi\",\"id\":\"ebqnnfy\",\"name\":\"tkqowsd\",\"type\":\"khczygpm\"}";
+            = "{\"properties\":{\"displayName\":\"v\",\"order\":1938856045,\"triggeringLogic\":{\"isEnabled\":true,\"expirationTimeUtc\":\"2021-11-25T05:19:39Z\",\"triggersOn\":\"Incidents\",\"triggersWhen\":\"Updated\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":1192045217}],\"lastModifiedTimeUtc\":\"2021-05-27T17:09:08Z\",\"createdTimeUtc\":\"2021-03-12T14:36:14Z\",\"lastModifiedBy\":{\"email\":\"zutgqztwhghmupg\",\"name\":\"jtcdxabbujftaben\",\"objectId\":\"42efc29e-75ce-45b7-b0d9-52c8c0b6a44c\",\"userPrincipalName\":\"lqpx\"},\"createdBy\":{\"email\":\"afeddwwnlza\",\"name\":\"xud\",\"objectId\":\"75f3e2c4-d29d-41ef-aeb2-f5ffaece5807\",\"userPrincipalName\":\"gookrtalvnb\"}},\"etag\":\"pbeme\",\"id\":\"clvdjjukyrdnqod\",\"name\":\"ahhxhqfaqnvzoqg\",\"type\":\"ipemchgavscz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,28 +37,29 @@ public final class AutomationRulesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutomationRule response = manager.automationRules()
-            .define("aqipmnxclfrsbzrn")
-            .withExistingWorkspace("ygnbknhjgclxaxwc", "faspsdzkucszghd")
-            .withDisplayName("u")
-            .withOrder(1040404447)
+            .define("pt")
+            .withExistingWorkspace("abzoghktdpyczhco", "ocnhzqrottjzcfyj")
+            .withDisplayName("rl")
+            .withOrder(132522705)
             .withTriggeringLogic(new AutomationRuleTriggeringLogic().withIsEnabled(false)
-                .withExpirationTimeUtc(OffsetDateTime.parse("2021-06-27T05:35:43Z"))
-                .withTriggersOn(TriggersOn.ALERTS)
+                .withExpirationTimeUtc(OffsetDateTime.parse("2021-03-15T17:03:59Z"))
+                .withTriggersOn(TriggersOn.INCIDENTS)
                 .withTriggersWhen(TriggersWhen.UPDATED)
                 .withConditions(Arrays.asList(new AutomationRuleCondition(), new AutomationRuleCondition(),
                     new AutomationRuleCondition())))
-            .withActions(Arrays.asList(new AutomationRuleAction().withOrder(500362290)))
-            .withEtag("mofbnivd")
+            .withActions(Arrays.asList(new AutomationRuleAction().withOrder(1373677319),
+                new AutomationRuleAction().withOrder(1335089450), new AutomationRuleAction().withOrder(1375742572)))
+            .withEtag("vcacoyv")
             .create();
 
-        Assertions.assertEquals("siywhubymfpopi", response.etag());
-        Assertions.assertEquals("ceecvjwyu", response.displayName());
-        Assertions.assertEquals(1949694958, response.order());
+        Assertions.assertEquals("pbeme", response.etag());
+        Assertions.assertEquals("v", response.displayName());
+        Assertions.assertEquals(1938856045, response.order());
         Assertions.assertEquals(true, response.triggeringLogic().isEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T21:24:49Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T05:19:39Z"),
             response.triggeringLogic().expirationTimeUtc());
-        Assertions.assertEquals(TriggersOn.ALERTS, response.triggeringLogic().triggersOn());
-        Assertions.assertEquals(TriggersWhen.CREATED, response.triggeringLogic().triggersWhen());
-        Assertions.assertEquals(509063673, response.actions().get(0).order());
+        Assertions.assertEquals(TriggersOn.INCIDENTS, response.triggeringLogic().triggersOn());
+        Assertions.assertEquals(TriggersWhen.UPDATED, response.triggeringLogic().triggersWhen());
+        Assertions.assertEquals(1192045217, response.actions().get(0).order());
     }
 }

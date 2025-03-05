@@ -25,11 +25,6 @@ public final class AlexaChannel extends Channel {
      */
     private AlexaChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of AlexaChannel class.
      */
@@ -64,16 +59,6 @@ public final class AlexaChannel extends Channel {
     public AlexaChannel withProperties(AlexaChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class AlexaChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedAlexaChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedAlexaChannel.provisioningState = reader.getString();
+                    deserializedAlexaChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedAlexaChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

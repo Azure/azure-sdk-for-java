@@ -22,7 +22,7 @@ public final class DnsForwardingRulesetsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"ltiugcxnavv\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"ibyqunyowxwlmdj\"}],\"provisioningState\":\"Failed\",\"resourceGuid\":\"g\"},\"location\":\"fvpdbo\",\"tags\":{\"bdeibqipqk\":\"izsjqlhkrr\",\"rwkq\":\"hvxndzwmkrefajpj\",\"sjabibs\":\"yhgbijtjivfx\",\"bjxbkzbzk\":\"stawfsdjpvkv\"},\"id\":\"vncjabudurgk\",\"name\":\"kmokz\",\"type\":\"jjklff\"}]}";
+            = "{\"value\":[{\"etag\":\"jhfjxwm\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"kfoqreyfkzikfj\"}],\"provisioningState\":\"Creating\",\"resourceGuid\":\"a\"},\"location\":\"xwczelpcire\",\"tags\":{\"wabfatkl\":\"eae\",\"sphyoulpjrvxa\":\"dxbjhwuaanozj\"},\"id\":\"l\",\"name\":\"vimjwos\",\"type\":\"tx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class DnsForwardingRulesetsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DnsForwardingRuleset> response
-            = manager.dnsForwardingRulesets().listByResourceGroup("jc", 424916927, com.azure.core.util.Context.NONE);
+            = manager.dnsForwardingRulesets().listByResourceGroup("wi", 1772217773, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fvpdbo", response.iterator().next().location());
-        Assertions.assertEquals("izsjqlhkrr", response.iterator().next().tags().get("bdeibqipqk"));
-        Assertions.assertEquals("ibyqunyowxwlmdj",
+        Assertions.assertEquals("xwczelpcire", response.iterator().next().location());
+        Assertions.assertEquals("eae", response.iterator().next().tags().get("wabfatkl"));
+        Assertions.assertEquals("kfoqreyfkzikfj",
             response.iterator().next().dnsResolverOutboundEndpoints().get(0).id());
     }
 }

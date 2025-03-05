@@ -28,7 +28,7 @@ public final class SentinelOnboardingStatesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sentinelOnboardingStates()
-            .deleteWithResponse("pse", "ivytabvbbkflewg", "ltutbuvedwuuq", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("myck", "exn", "akckywym", com.azure.core.util.Context.NONE);
 
     }
 }

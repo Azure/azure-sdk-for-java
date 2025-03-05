@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class FieldMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FieldMapping model = BinaryData.fromString("{\"identifier\":\"xf\",\"columnName\":\"aknokzwjjzrl\"}")
+        FieldMapping model = BinaryData.fromString("{\"identifier\":\"gnitgvkxlzyq\",\"columnName\":\"fegcea\"}")
             .toObject(FieldMapping.class);
-        Assertions.assertEquals("xf", model.identifier());
-        Assertions.assertEquals("aknokzwjjzrl", model.columnName());
+        Assertions.assertEquals("gnitgvkxlzyq", model.identifier());
+        Assertions.assertEquals("fegcea", model.columnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FieldMapping model = new FieldMapping().withIdentifier("xf").withColumnName("aknokzwjjzrl");
+        FieldMapping model = new FieldMapping().withIdentifier("gnitgvkxlzyq").withColumnName("fegcea");
         model = BinaryData.fromObject(model).toObject(FieldMapping.class);
-        Assertions.assertEquals("xf", model.identifier());
-        Assertions.assertEquals("aknokzwjjzrl", model.columnName());
+        Assertions.assertEquals("gnitgvkxlzyq", model.identifier());
+        Assertions.assertEquals("fegcea", model.columnName());
     }
 }

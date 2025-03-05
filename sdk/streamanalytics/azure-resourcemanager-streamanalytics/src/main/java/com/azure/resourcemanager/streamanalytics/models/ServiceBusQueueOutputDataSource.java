@@ -50,7 +50,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private ServiceBusQueueOutputDataSourceProperties innerProperties() {
+    ServiceBusQueueOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

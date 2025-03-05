@@ -28,8 +28,7 @@ public final class OutboundEndpointsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.outboundEndpoints()
-            .delete("pulpqblylsyxk", "jnsjervtiagxsd", "zuempsbzkf", "beyvpnqicvinvkjj",
-                com.azure.core.util.Context.NONE);
+            .delete("ljuti", "swacffgdkzz", "wkfvhqcrailvp", "ppfufl", com.azure.core.util.Context.NONE);
 
     }
 }

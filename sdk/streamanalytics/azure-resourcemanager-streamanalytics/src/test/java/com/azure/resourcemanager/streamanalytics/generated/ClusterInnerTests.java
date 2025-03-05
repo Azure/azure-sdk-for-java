@@ -6,7 +6,6 @@ package com.azure.resourcemanager.streamanalytics.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterInner;
-import com.azure.resourcemanager.streamanalytics.models.ClusterProperties;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSku;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSkuName;
 import java.util.HashMap;
@@ -17,26 +16,24 @@ public final class ClusterInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterInner model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"Default\",\"capacity\":1813898530},\"etag\":\"kcxywnyt\",\"properties\":{\"createdDate\":\"2021-02-23T04:05:10Z\",\"clusterId\":\"lqidyby\",\"provisioningState\":\"Succeeded\",\"capacityAllocated\":858824887,\"capacityAssigned\":751467546},\"location\":\"aaxdbabphlwrq\",\"tags\":{\"yyazttbt\":\"tsthsucocm\",\"ckzywbiexzfeyue\":\"wrqpue\",\"zyoxaepdkzjan\":\"xibxujwbhqwalm\",\"hdwbavxbniwdjs\":\"ux\"},\"id\":\"zt\",\"name\":\"dbpgnxytxhp\",\"type\":\"xbzpfzab\"}")
+            "{\"sku\":{\"name\":\"Default\",\"capacity\":202688177},\"etag\":\"ujjugwdkcglh\",\"properties\":{\"createdDate\":\"2021-06-29T07:35:32Z\",\"clusterId\":\"dyggdtjixhbku\",\"provisioningState\":\"Canceled\",\"capacityAllocated\":194127225,\"capacityAssigned\":363488888},\"location\":\"hmenevfyexfwhybc\",\"tags\":{\"dectehfiqsc\":\"yvdcsitynnaa\",\"hcjrefovgmk\":\"eypvhezrkg\"},\"id\":\"sle\",\"name\":\"yvxyqjp\",\"type\":\"cattpngjcrcczsq\"}")
             .toObject(ClusterInner.class);
-        Assertions.assertEquals("aaxdbabphlwrq", model.location());
-        Assertions.assertEquals("tsthsucocm", model.tags().get("yyazttbt"));
+        Assertions.assertEquals("hmenevfyexfwhybc", model.location());
+        Assertions.assertEquals("yvdcsitynnaa", model.tags().get("dectehfiqsc"));
         Assertions.assertEquals(ClusterSkuName.DEFAULT, model.sku().name());
-        Assertions.assertEquals(1813898530, model.sku().capacity());
+        Assertions.assertEquals(202688177, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterInner model = new ClusterInner().withLocation("aaxdbabphlwrq")
-            .withTags(mapOf("yyazttbt", "tsthsucocm", "ckzywbiexzfeyue", "wrqpue", "zyoxaepdkzjan", "xibxujwbhqwalm",
-                "hdwbavxbniwdjs", "ux"))
-            .withSku(new ClusterSku().withName(ClusterSkuName.DEFAULT).withCapacity(1813898530))
-            .withProperties(new ClusterProperties());
+        ClusterInner model = new ClusterInner().withLocation("hmenevfyexfwhybc")
+            .withTags(mapOf("dectehfiqsc", "yvdcsitynnaa", "hcjrefovgmk", "eypvhezrkg"))
+            .withSku(new ClusterSku().withName(ClusterSkuName.DEFAULT).withCapacity(202688177));
         model = BinaryData.fromObject(model).toObject(ClusterInner.class);
-        Assertions.assertEquals("aaxdbabphlwrq", model.location());
-        Assertions.assertEquals("tsthsucocm", model.tags().get("yyazttbt"));
+        Assertions.assertEquals("hmenevfyexfwhybc", model.location());
+        Assertions.assertEquals("yvdcsitynnaa", model.tags().get("dectehfiqsc"));
         Assertions.assertEquals(ClusterSkuName.DEFAULT, model.sku().name());
-        Assertions.assertEquals(1813898530, model.sku().capacity());
+        Assertions.assertEquals(202688177, model.sku().capacity());
     }
 
     // Use "Map.of" if available

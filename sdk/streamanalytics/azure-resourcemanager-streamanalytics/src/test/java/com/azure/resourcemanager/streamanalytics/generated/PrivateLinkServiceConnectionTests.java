@@ -14,19 +14,19 @@ public final class PrivateLinkServiceConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnection model = BinaryData.fromString(
-            "{\"properties\":{\"privateLinkServiceId\":\"prnxipeil\",\"groupIds\":[\"uaejxdultsk\",\"bbtdzumvee\"],\"requestMessage\":\"pwo\",\"privateLinkServiceConnectionState\":{\"status\":\"kfpbs\",\"description\":\"ofd\",\"actionsRequired\":\"uusdttouwa\"}}}")
+            "{\"properties\":{\"privateLinkServiceId\":\"bzpfzab\",\"groupIds\":[\"uhxwtctyqiklbbov\"],\"requestMessage\":\"wzbhvgyugu\",\"privateLinkServiceConnectionState\":{\"status\":\"mkfssxqukkfplgm\",\"description\":\"xnkjzkdesl\",\"actionsRequired\":\"lopwiyig\"}}}")
             .toObject(PrivateLinkServiceConnection.class);
-        Assertions.assertEquals("prnxipeil", model.privateLinkServiceId());
-        Assertions.assertEquals("uaejxdultsk", model.groupIds().get(0));
+        Assertions.assertEquals("bzpfzab", model.privateLinkServiceId());
+        Assertions.assertEquals("uhxwtctyqiklbbov", model.groupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnection model = new PrivateLinkServiceConnection().withPrivateLinkServiceId("prnxipeil")
-            .withGroupIds(Arrays.asList("uaejxdultsk", "bbtdzumvee"))
+        PrivateLinkServiceConnection model = new PrivateLinkServiceConnection().withPrivateLinkServiceId("bzpfzab")
+            .withGroupIds(Arrays.asList("uhxwtctyqiklbbov"))
             .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState());
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnection.class);
-        Assertions.assertEquals("prnxipeil", model.privateLinkServiceId());
-        Assertions.assertEquals("uaejxdultsk", model.groupIds().get(0));
+        Assertions.assertEquals("bzpfzab", model.privateLinkServiceId());
+        Assertions.assertEquals("uhxwtctyqiklbbov", model.groupIds().get(0));
     }
 }

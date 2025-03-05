@@ -11,7 +11,7 @@ public final class AzureResourceEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureResourceEntity model = BinaryData.fromString(
-            "{\"kind\":\"AzureResource\",\"properties\":{\"resourceId\":\"mdbgi\",\"subscriptionId\":\"hfgsmd\",\"additionalData\":{\"kljmtznpaxwfq\":\"dataqbpxt\"},\"friendlyName\":\"yqiprclt\"},\"id\":\"gbsoljckmiigzb\",\"name\":\"uck\",\"type\":\"kdskswtiiqqc\"}")
+            "{\"kind\":\"AzureResource\",\"properties\":{\"resourceId\":\"fvwbcb\",\"subscriptionId\":\"mbnkb\",\"additionalData\":{\"uwfmduragegizvc\":\"datavxkdivqihebwtswb\",\"gbqi\":\"datafelisdjub\"},\"friendlyName\":\"xkbsazgakgac\"},\"id\":\"cmjdmspof\",\"name\":\"pv\",\"type\":\"hryl\"}")
             .toObject(AzureResourceEntity.class);
     }
 

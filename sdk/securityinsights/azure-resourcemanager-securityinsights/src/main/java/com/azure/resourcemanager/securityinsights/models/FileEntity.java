@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.FileEntityProperties;
 import java.io.IOException;
 import java.util.List;
@@ -19,11 +18,11 @@ import java.util.Map;
  * Represents a file entity.
  */
 @Immutable
-public final class FileEntity extends EntityInner {
+public final class FileEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.FILE;
+    private EntityKindEnum kind = EntityKindEnum.FILE;
 
     /*
      * File entity properties
@@ -62,7 +61,7 @@ public final class FileEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -219,7 +218,7 @@ public final class FileEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedFileEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedFileEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedFileEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedFileEntity.innerProperties = FileEntityProperties.fromJson(reader);
                 } else {

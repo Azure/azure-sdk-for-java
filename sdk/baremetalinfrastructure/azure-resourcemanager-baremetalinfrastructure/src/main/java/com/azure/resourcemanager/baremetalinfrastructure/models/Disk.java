@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Specifies the disk information fo the Azure Bare Metal Instance.
+ * Specifies the disk information fo the AzureBareMetal instance.
  */
 @Fluent
 public final class Disk implements JsonSerializable<Disk> {

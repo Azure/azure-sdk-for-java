@@ -207,9 +207,9 @@ public final class LocalRulesResourceImpl
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.localRulestackName = Utils.getValueFromIdByName(innerObject.id(), "localRulestacks");
-        this.priority = Utils.getValueFromIdByName(innerObject.id(), "localRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.localRulestackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRulestacks");
+        this.priority = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRules");
     }
 
     public LocalRulesResource refresh() {

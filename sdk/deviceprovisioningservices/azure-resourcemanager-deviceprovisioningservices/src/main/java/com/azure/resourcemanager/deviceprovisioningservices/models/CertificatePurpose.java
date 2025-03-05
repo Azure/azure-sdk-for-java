@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificatePurpose. */
+/**
+ * Defines values for CertificatePurpose.
+ */
 public final class CertificatePurpose extends ExpandableStringEnum<CertificatePurpose> {
-    /** Static value clientAuthentication for CertificatePurpose. */
+    /**
+     * Static value clientAuthentication for CertificatePurpose.
+     */
     public static final CertificatePurpose CLIENT_AUTHENTICATION = fromString("clientAuthentication");
 
-    /** Static value serverAuthentication for CertificatePurpose. */
+    /**
+     * Static value serverAuthentication for CertificatePurpose.
+     */
     public static final CertificatePurpose SERVER_AUTHENTICATION = fromString("serverAuthentication");
 
     /**
+     * Creates a new instance of CertificatePurpose value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificatePurpose() {
+    }
+
+    /**
      * Creates or finds a CertificatePurpose from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CertificatePurpose.
      */
-    @JsonCreator
     public static CertificatePurpose fromString(String name) {
         return fromString(name, CertificatePurpose.class);
     }
 
     /**
      * Gets known CertificatePurpose values.
-     *
+     * 
      * @return known CertificatePurpose values.
      */
     public static Collection<CertificatePurpose> values() {

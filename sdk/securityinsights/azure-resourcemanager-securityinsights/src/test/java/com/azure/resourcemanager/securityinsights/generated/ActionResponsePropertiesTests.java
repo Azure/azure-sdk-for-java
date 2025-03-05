@@ -12,18 +12,18 @@ public final class ActionResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionResponseProperties model
-            = BinaryData.fromString("{\"workflowId\":\"ilzyd\",\"logicAppResourceId\":\"h\"}")
+            = BinaryData.fromString("{\"workflowId\":\"wixjsprozvcp\",\"logicAppResourceId\":\"tegjvwmf\"}")
                 .toObject(ActionResponseProperties.class);
-        Assertions.assertEquals("h", model.logicAppResourceId());
-        Assertions.assertEquals("ilzyd", model.workflowId());
+        Assertions.assertEquals("tegjvwmf", model.logicAppResourceId());
+        Assertions.assertEquals("wixjsprozvcp", model.workflowId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActionResponseProperties model
-            = new ActionResponseProperties().withLogicAppResourceId("h").withWorkflowId("ilzyd");
+            = new ActionResponseProperties().withLogicAppResourceId("tegjvwmf").withWorkflowId("wixjsprozvcp");
         model = BinaryData.fromObject(model).toObject(ActionResponseProperties.class);
-        Assertions.assertEquals("h", model.logicAppResourceId());
-        Assertions.assertEquals("ilzyd", model.workflowId());
+        Assertions.assertEquals("tegjvwmf", model.logicAppResourceId());
+        Assertions.assertEquals("wixjsprozvcp", model.workflowId());
     }
 }

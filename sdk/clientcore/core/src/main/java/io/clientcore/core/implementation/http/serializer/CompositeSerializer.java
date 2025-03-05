@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package io.clientcore.core.implementation.http.serializer;
 
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.serializer.ObjectSerializer;
-import io.clientcore.core.util.serializer.SerializationFormat;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;

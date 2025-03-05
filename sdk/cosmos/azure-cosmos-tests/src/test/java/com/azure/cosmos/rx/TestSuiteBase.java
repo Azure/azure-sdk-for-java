@@ -56,6 +56,7 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -669,6 +670,32 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(collectionId, partitionKeyDef);
 
         return collectionDefinition;
+    }
+
+    static protected CosmosContainerProperties getCollectionDefinitionForHashV2WithHpk(String collectionId) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/state");
+        paths.add("/city");
+        paths.add("/zipcode");
+        partitionKeyDef.setPaths(paths);
+        partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+        partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+
+        return new CosmosContainerProperties(collectionId, partitionKeyDef);
+    }
+
+
+    static protected CosmosContainerProperties getCollectionDefinitionWithHpk(String collectionId) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/state");
+        paths.add("/city");
+        paths.add("/zipcode");
+        partitionKeyDef.setPaths(paths);
+        partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+
+        return new CosmosContainerProperties(collectionId, partitionKeyDef);
     }
 
     static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey() {

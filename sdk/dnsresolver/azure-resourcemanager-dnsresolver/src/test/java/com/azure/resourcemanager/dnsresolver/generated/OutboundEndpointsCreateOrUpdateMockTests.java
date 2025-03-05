@@ -24,7 +24,7 @@ public final class OutboundEndpointsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"fgmjzrwrdgrt\",\"properties\":{\"subnet\":{\"id\":\"enuuzkopbm\"},\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"dwoyuhhziuiefoz\"},\"location\":\"dmsmlm\",\"tags\":{\"xicslfao\":\"oftrmaequia\",\"iyylhalnswhccsp\":\"z\"},\"id\":\"kaivwit\",\"name\":\"scywuggwoluhc\",\"type\":\"bwemhairs\"}";
+            = "{\"etag\":\"qkvpuvksgplsakn\",\"properties\":{\"subnet\":{\"id\":\"fsynljphuop\"},\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"qiy\"},\"location\":\"orzihle\",\"tags\":{\"yzrpzbchckqqzq\":\"swsrms\",\"ysuiizynkedya\":\"ox\",\"pyy\":\"rwyhqmibzyhwitsm\"},\"id\":\"pcdpumnz\",\"name\":\"mwzn\",\"type\":\"abikns\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,19 @@ public final class OutboundEndpointsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         OutboundEndpoint response = manager.outboundEndpoints()
-            .define("zxkhnzbonlwnto")
-            .withRegion("tlmngu")
-            .withExistingDnsResolver("oxciqopidoamcio", "hkh")
-            .withSubnet(new SubResource().withId("kszzcmrvexztv"))
-            .withTags(mapOf("ldsyuuximerqfob", "q", "utwpfhp", "yznkby"))
-            .withIfMatch("gvbbejdcng")
-            .withIfNoneMatch("qmoa")
+            .define("nqxwbp")
+            .withRegion("butauvfb")
+            .withExistingDnsResolver("voqacpiexpbt", "iwbwoenwashrtdtk")
+            .withSubnet(new SubResource().withId("asipqiio"))
+            .withTags(mapOf("afnn", "whhmhykojo", "ymkcdyhb", "lpichk", "ovljxywsu", "kkpwdreqnovvq", "aeneqnzarrwl",
+                "syrsndsytgadgvra"))
+            .withIfMatch("iipfpubj")
+            .withIfNoneMatch("bwwift")
             .create();
 
-        Assertions.assertEquals("dmsmlm", response.location());
-        Assertions.assertEquals("oftrmaequia", response.tags().get("xicslfao"));
-        Assertions.assertEquals("enuuzkopbm", response.subnet().id());
+        Assertions.assertEquals("orzihle", response.location());
+        Assertions.assertEquals("swsrms", response.tags().get("yzrpzbchckqqzq"));
+        Assertions.assertEquals("fsynljphuop", response.subnet().id());
     }
 
     // Use "Map.of" if available

@@ -87,8 +87,8 @@ public final class MigrationResourceProperties implements JsonSerializable<Migra
     private String sourceDbServerResourceId;
 
     /*
-     * Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always
-     * use it for connection
+     * Source server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it,
+     * migration service will always use it for connection
      */
     private String sourceDbServerFullyQualifiedDomainName;
 
@@ -98,8 +98,8 @@ public final class MigrationResourceProperties implements JsonSerializable<Migra
     private String targetDbServerResourceId;
 
     /*
-     * Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always
-     * use it for connection
+     * Target server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it,
+     * migration service will always use it for connection
      */
     private String targetDbServerFullyQualifiedDomainName;
 
@@ -336,8 +336,8 @@ public final class MigrationResourceProperties implements JsonSerializable<Migra
     }
 
     /**
-     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
+     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
      * 
      * @return the sourceDbServerFullyQualifiedDomainName value.
      */
@@ -346,8 +346,8 @@ public final class MigrationResourceProperties implements JsonSerializable<Migra
     }
 
     /**
-     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
+     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
      * 
      * @param sourceDbServerFullyQualifiedDomainName the sourceDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceProperties object itself.
@@ -368,8 +368,8 @@ public final class MigrationResourceProperties implements JsonSerializable<Migra
     }
 
     /**
-     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
+     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
      * 
      * @return the targetDbServerFullyQualifiedDomainName value.
      */
@@ -378,8 +378,8 @@ public final class MigrationResourceProperties implements JsonSerializable<Migra
     }
 
     /**
-     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
+     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
      * 
      * @param targetDbServerFullyQualifiedDomainName the targetDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceProperties object itself.

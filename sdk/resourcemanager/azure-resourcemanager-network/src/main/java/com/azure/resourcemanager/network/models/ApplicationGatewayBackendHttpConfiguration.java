@@ -16,39 +16,75 @@ import java.util.Map;
 public interface ApplicationGatewayBackendHttpConfiguration
     extends HasInnerModel<ApplicationGatewayBackendHttpSettings>, ChildResource<ApplicationGateway>,
     HasProtocol<ApplicationGatewayProtocol>, HasPort {
-    /** @return authentication certificates associated with this backend HTTPS configuration */
+    /**
+     * Gets authentication certificates associated with this backend HTTPS configuration.
+     *
+     * @return authentication certificates associated with this backend HTTPS configuration
+     */
     Map<String, ApplicationGatewayAuthenticationCertificate> authenticationCertificates();
 
-    /** @return true if cookie based affinity (sticky sessions) is enabled, else false */
+    /**
+     * Checks whether cookie based affinity (sticky sessions) is enabled.
+     *
+     * @return true if cookie based affinity (sticky sessions) is enabled, else false
+     */
     boolean cookieBasedAffinity();
 
     /**
+     * Gets HTTP request timeout in seconds.
+     *
      * @return HTTP request timeout in seconds. Requests will fail if no response is received within the specified time.
      */
     int requestTimeout();
 
-    /** @return the probe associated with this backend */
+    /**
+     * Gets the probe associated with this backend.
+     *
+     * @return the probe associated with this backend
+     */
     ApplicationGatewayProbe probe();
 
-    /** @return host header to be sent to the backend servers */
+    /**
+     * Gets host header to be sent to the backend servers.
+     *
+     * @return host header to be sent to the backend servers
+     */
     String hostHeader();
 
-    /** @return whether the host header should come from the host name of the backend server */
+    /**
+     * Checks whether the host header should come from the host name of the backend server.
+     *
+     * @return whether the host header should come from the host name of the backend server
+     */
     boolean isHostHeaderFromBackend();
 
-    /** @return true if the probe is enabled */
+    /**
+     * Checks whether the probe is enabled.
+     *
+     * @return true if the probe is enabled
+     */
     boolean isProbeEnabled();
 
     /**
+     * Gets the number of seconds when connection draining is active.
+     *
      * @return if 0 then connection draining is not enabled, otherwise if between 1 and 3600, then the number of seconds
      *     when connection draining is active
      */
     int connectionDrainingTimeoutInSeconds();
 
-    /** @return name used for the affinity cookie */
+    /**
+     * Gets name used for the affinity cookie.
+     *
+     * @return name used for the affinity cookie
+     */
     String affinityCookieName();
 
-    /** @return the path, if any, used as a prefix for all HTTP requests */
+    /**
+     * Gets the path used as a prefix for all HTTP requests.
+     *
+     * @return the path, if any, used as a prefix for all HTTP requests
+     */
     String path();
 
     /** Grouping of application gateway backend HTTPS configuration stages. */

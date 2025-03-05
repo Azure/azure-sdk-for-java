@@ -11,7 +11,7 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"uujitcjc\",\"isDataAction\":true,\"display\":{\"provider\":\"ndhkrw\",\"resource\":\"appd\",\"operation\":\"dkvwrwjfe\",\"description\":\"nhutjeltmrldhugj\"}},{\"name\":\"datqxhocdgeabl\",\"isDataAction\":true,\"display\":{\"provider\":\"icndvkaozwyifty\",\"resource\":\"hurokftyxoln\",\"operation\":\"pwcukjfkgiawxk\",\"description\":\"ypl\"}},{\"name\":\"kbasyypn\",\"isDataAction\":true,\"display\":{\"provider\":\"cbacphejkotynqg\",\"resource\":\"l\",\"operation\":\"dlikwyqkgfgibma\",\"description\":\"akeqs\"}},{\"name\":\"yb\",\"isDataAction\":true,\"display\":{\"provider\":\"qytbciq\",\"resource\":\"uflmm\",\"operation\":\"zsm\",\"description\":\"mglougpbkw\"}}],\"nextLink\":\"utduqktapspwgcu\"}")
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"}},{\"name\":\"ownoizhw\",\"isDataAction\":true,\"display\":{\"provider\":\"qsoqijgkd\",\"resource\":\"pazlobcufpdz\",\"operation\":\"btcqq\",\"description\":\"qglhq\"}},{\"name\":\"ufo\",\"isDataAction\":false,\"display\":{\"provider\":\"ifsqesaagdfmg\",\"resource\":\"lhjxr\",\"operation\":\"kwm\",\"description\":\"ktsizntocipaou\"}}],\"nextLink\":\"psqucmpoyf\"}")
             .toObject(OperationListResult.class);
     }
 

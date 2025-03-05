@@ -4,11 +4,10 @@
 
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.models.DeviceImportance;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligence;
 import java.io.IOException;
@@ -19,7 +18,7 @@ import java.util.UUID;
 /**
  * IoTDevice entity property bag.
  */
-@Fluent
+@Immutable
 public final class IoTDeviceEntityProperties extends EntityCommonProperties {
     /*
      * The ID of the IoT Device in the IoT Hub
@@ -105,61 +104,6 @@ public final class IoTDeviceEntityProperties extends EntityCommonProperties {
      * A list of protocols of the IoTDevice entity.
      */
     private List<String> protocols;
-
-    /*
-     * A list of owners of the IoTDevice entity.
-     */
-    private List<String> owners;
-
-    /*
-     * A list of Nic entity ids of the IoTDevice entity.
-     */
-    private List<String> nicEntityIds;
-
-    /*
-     * The site of the device
-     */
-    private String site;
-
-    /*
-     * The zone location of the device within a site
-     */
-    private String zone;
-
-    /*
-     * The sensor the device is monitored by
-     */
-    private String sensor;
-
-    /*
-     * The subType of the device ('PLC', 'HMI', 'EWS', etc.)
-     */
-    private String deviceSubType;
-
-    /*
-     * Device importance, determines if the device classified as 'crown jewel'
-     */
-    private DeviceImportance importance;
-
-    /*
-     * The Purdue Layer of the device
-     */
-    private String purdueLayer;
-
-    /*
-     * Determines whether the device classified as authorized device
-     */
-    private Boolean isAuthorized;
-
-    /*
-     * Determines whether the device classified as programming device
-     */
-    private Boolean isProgramming;
-
-    /*
-     * Is the device classified as a scanner device
-     */
-    private Boolean isScanner;
 
     /*
      * The graph item display name which is a short humanly readable description of the graph item instance. This
@@ -332,116 +276,6 @@ public final class IoTDeviceEntityProperties extends EntityCommonProperties {
     }
 
     /**
-     * Get the owners property: A list of owners of the IoTDevice entity.
-     * 
-     * @return the owners value.
-     */
-    public List<String> owners() {
-        return this.owners;
-    }
-
-    /**
-     * Get the nicEntityIds property: A list of Nic entity ids of the IoTDevice entity.
-     * 
-     * @return the nicEntityIds value.
-     */
-    public List<String> nicEntityIds() {
-        return this.nicEntityIds;
-    }
-
-    /**
-     * Get the site property: The site of the device.
-     * 
-     * @return the site value.
-     */
-    public String site() {
-        return this.site;
-    }
-
-    /**
-     * Get the zone property: The zone location of the device within a site.
-     * 
-     * @return the zone value.
-     */
-    public String zone() {
-        return this.zone;
-    }
-
-    /**
-     * Get the sensor property: The sensor the device is monitored by.
-     * 
-     * @return the sensor value.
-     */
-    public String sensor() {
-        return this.sensor;
-    }
-
-    /**
-     * Get the deviceSubType property: The subType of the device ('PLC', 'HMI', 'EWS', etc.).
-     * 
-     * @return the deviceSubType value.
-     */
-    public String deviceSubType() {
-        return this.deviceSubType;
-    }
-
-    /**
-     * Get the importance property: Device importance, determines if the device classified as 'crown jewel'.
-     * 
-     * @return the importance value.
-     */
-    public DeviceImportance importance() {
-        return this.importance;
-    }
-
-    /**
-     * Set the importance property: Device importance, determines if the device classified as 'crown jewel'.
-     * 
-     * @param importance the importance value to set.
-     * @return the IoTDeviceEntityProperties object itself.
-     */
-    public IoTDeviceEntityProperties withImportance(DeviceImportance importance) {
-        this.importance = importance;
-        return this;
-    }
-
-    /**
-     * Get the purdueLayer property: The Purdue Layer of the device.
-     * 
-     * @return the purdueLayer value.
-     */
-    public String purdueLayer() {
-        return this.purdueLayer;
-    }
-
-    /**
-     * Get the isAuthorized property: Determines whether the device classified as authorized device.
-     * 
-     * @return the isAuthorized value.
-     */
-    public Boolean isAuthorized() {
-        return this.isAuthorized;
-    }
-
-    /**
-     * Get the isProgramming property: Determines whether the device classified as programming device.
-     * 
-     * @return the isProgramming value.
-     */
-    public Boolean isProgramming() {
-        return this.isProgramming;
-    }
-
-    /**
-     * Get the isScanner property: Is the device classified as a scanner device.
-     * 
-     * @return the isScanner value.
-     */
-    public Boolean isScanner() {
-        return this.isScanner;
-    }
-
-    /**
      * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
      * graph item instance. This property is optional and might be system generated.
      * 
@@ -481,7 +315,6 @@ public final class IoTDeviceEntityProperties extends EntityCommonProperties {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("importance", this.importance == null ? null : this.importance.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -543,30 +376,6 @@ public final class IoTDeviceEntityProperties extends EntityCommonProperties {
                 } else if ("protocols".equals(fieldName)) {
                     List<String> protocols = reader.readArray(reader1 -> reader1.getString());
                     deserializedIoTDeviceEntityProperties.protocols = protocols;
-                } else if ("owners".equals(fieldName)) {
-                    List<String> owners = reader.readArray(reader1 -> reader1.getString());
-                    deserializedIoTDeviceEntityProperties.owners = owners;
-                } else if ("nicEntityIds".equals(fieldName)) {
-                    List<String> nicEntityIds = reader.readArray(reader1 -> reader1.getString());
-                    deserializedIoTDeviceEntityProperties.nicEntityIds = nicEntityIds;
-                } else if ("site".equals(fieldName)) {
-                    deserializedIoTDeviceEntityProperties.site = reader.getString();
-                } else if ("zone".equals(fieldName)) {
-                    deserializedIoTDeviceEntityProperties.zone = reader.getString();
-                } else if ("sensor".equals(fieldName)) {
-                    deserializedIoTDeviceEntityProperties.sensor = reader.getString();
-                } else if ("deviceSubType".equals(fieldName)) {
-                    deserializedIoTDeviceEntityProperties.deviceSubType = reader.getString();
-                } else if ("importance".equals(fieldName)) {
-                    deserializedIoTDeviceEntityProperties.importance = DeviceImportance.fromString(reader.getString());
-                } else if ("purdueLayer".equals(fieldName)) {
-                    deserializedIoTDeviceEntityProperties.purdueLayer = reader.getString();
-                } else if ("isAuthorized".equals(fieldName)) {
-                    deserializedIoTDeviceEntityProperties.isAuthorized = reader.getNullable(JsonReader::getBoolean);
-                } else if ("isProgramming".equals(fieldName)) {
-                    deserializedIoTDeviceEntityProperties.isProgramming = reader.getNullable(JsonReader::getBoolean);
-                } else if ("isScanner".equals(fieldName)) {
-                    deserializedIoTDeviceEntityProperties.isScanner = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

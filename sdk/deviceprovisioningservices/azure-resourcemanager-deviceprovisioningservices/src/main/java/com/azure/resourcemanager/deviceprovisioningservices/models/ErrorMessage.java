@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Error response containing message and code. */
+/**
+ * Error response containing message and code.
+ */
 @Fluent
-public final class ErrorMessage {
+public final class ErrorMessage implements JsonSerializable<ErrorMessage> {
     /*
      * standard error code
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * standard error description
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * detailed summary of error
      */
-    @JsonProperty(value = "details")
     private String details;
 
     /**
+     * Creates an instance of ErrorMessage class.
+     */
+    public ErrorMessage() {
+    }
+
+    /**
      * Get the code property: standard error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -39,7 +48,7 @@ public final class ErrorMessage {
 
     /**
      * Set the code property: standard error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ErrorMessage object itself.
      */
@@ -50,7 +59,7 @@ public final class ErrorMessage {
 
     /**
      * Get the message property: standard error description.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -59,7 +68,7 @@ public final class ErrorMessage {
 
     /**
      * Set the message property: standard error description.
-     *
+     * 
      * @param message the message value to set.
      * @return the ErrorMessage object itself.
      */
@@ -70,7 +79,7 @@ public final class ErrorMessage {
 
     /**
      * Get the details property: detailed summary of error.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -79,7 +88,7 @@ public final class ErrorMessage {
 
     /**
      * Set the details property: detailed summary of error.
-     *
+     * 
      * @param details the details value to set.
      * @return the ErrorMessage object itself.
      */
@@ -90,9 +99,51 @@ public final class ErrorMessage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("details", this.details);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorMessage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorMessage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorMessage.
+     */
+    public static ErrorMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorMessage deserializedErrorMessage = new ErrorMessage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedErrorMessage.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedErrorMessage.message = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    deserializedErrorMessage.details = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorMessage;
+        });
     }
 }

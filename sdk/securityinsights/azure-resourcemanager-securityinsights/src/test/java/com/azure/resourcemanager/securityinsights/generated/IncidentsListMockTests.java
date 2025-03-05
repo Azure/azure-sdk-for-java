@@ -28,7 +28,7 @@ public final class IncidentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"additionalData\":{\"alertsCount\":593185294,\"bookmarksCount\":225410271,\"commentsCount\":1614789605,\"alertProductNames\":[\"kdnnyufxuzms\",\"zyq\",\"brnxhjtlxfikj\",\"xaravwwuasnjeglh\"],\"providerIncidentUrl\":\"xbozpcjcnwjz\",\"tactics\":[\"Reconnaissance\"],\"techniques\":[\"nw\"]},\"classification\":\"TruePositive\",\"classificationComment\":\"oq\",\"classificationReason\":\"SuspiciousActivity\",\"createdTimeUtc\":\"2021-09-24T19:24:08Z\",\"description\":\"dsorgfhjxsawo\",\"firstActivityTimeUtc\":\"2021-07-25T08:24:52Z\",\"incidentUrl\":\"fh\",\"incidentNumber\":2033631275,\"labels\":[{\"labelName\":\"wzrdqyoybm\",\"labelType\":\"User\"},{\"labelName\":\"to\",\"labelType\":\"User\"},{\"labelName\":\"zdaiovrb\",\"labelType\":\"User\"}],\"providerName\":\"phkvyyz\",\"providerIncidentId\":\"crxylaypdt\",\"lastActivityTimeUtc\":\"2021-02-03T11:45:23Z\",\"lastModifiedTimeUtc\":\"2021-04-01T17:14:06Z\",\"owner\":{\"email\":\"ohuriwhjdfrwp\",\"assignedTo\":\"h\",\"objectId\":\"44330aad-162c-4c74-a964-cf0277f42ff4\",\"userPrincipalName\":\"kcclpctuo\",\"ownerType\":\"Unknown\"},\"relatedAnalyticRuleIds\":[\"jfsgmospoebnxs\",\"cowscuyfqlam\"],\"severity\":\"Low\",\"status\":\"Active\",\"teamInformation\":{\"teamId\":\"u\",\"primaryChannelUrl\":\"afuzpnxqpwnik\",\"teamCreationTimeUtc\":\"2021-03-11T10:42:02Z\",\"name\":\"jgrbrctsvgooc\",\"description\":\"azmzlpcx\"},\"title\":\"tm\"},\"etag\":\"xrq\",\"id\":\"fzfvwj\",\"name\":\"thkvpyey\",\"type\":\"afinmp\"}]}";
+            = "{\"value\":[{\"properties\":{\"additionalData\":{\"alertsCount\":1963541859,\"bookmarksCount\":743054032,\"commentsCount\":1998617228,\"alertProductNames\":[\"dgglmepjpfs\",\"ykgsangpszng\",\"fpgylkve\"],\"tactics\":[\"Collection\",\"Execution\"]},\"classification\":\"BenignPositive\",\"classificationComment\":\"adyedmzrgjfok\",\"classificationReason\":\"SuspiciousButExpected\",\"createdTimeUtc\":\"2021-05-30T12:16:13Z\",\"description\":\"tp\",\"firstActivityTimeUtc\":\"2021-11-22T23:37:09Z\",\"incidentUrl\":\"rgdg\",\"incidentNumber\":1339773074,\"labels\":[{\"labelName\":\"raswugyxpqit\",\"labelType\":\"User\"},{\"labelName\":\"alwvskbu\",\"labelType\":\"AutoAssigned\"},{\"labelName\":\"caqt\",\"labelType\":\"User\"},{\"labelName\":\"co\",\"labelType\":\"AutoAssigned\"}],\"lastActivityTimeUtc\":\"2021-03-15T06:39:11Z\",\"lastModifiedTimeUtc\":\"2021-06-10T09:18:11Z\",\"owner\":{\"email\":\"akuejk\",\"assignedTo\":\"bizt\",\"objectId\":\"856fd1dd-2865-403f-94ab-ca27791198b8\",\"userPrincipalName\":\"qcvov\",\"ownerType\":\"Group\"},\"relatedAnalyticRuleIds\":[\"sj\",\"lbemyej\"],\"severity\":\"Informational\",\"status\":\"New\",\"title\":\"uxegthortudawlpj\"},\"etag\":\"lqerpptcbgqnzm\",\"id\":\"iilialwc\",\"name\":\"gckbb\",\"type\":\"ccgzpraoxnyu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,30 +38,27 @@ public final class IncidentsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Incident> response = manager.incidents()
-            .list("nirupkqnst", "aqpibjg", "vswmehfxrtt", "bmsennqfabqcama", 954316010, "ctcxs",
-                com.azure.core.util.Context.NONE);
+            .list("rftb", "ve", "reuquowtljvf", "hreagk", 1184787439, "xv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xrq", response.iterator().next().etag());
-        Assertions.assertEquals(IncidentClassification.TRUE_POSITIVE, response.iterator().next().classification());
-        Assertions.assertEquals("oq", response.iterator().next().classificationComment());
-        Assertions.assertEquals(IncidentClassificationReason.SUSPICIOUS_ACTIVITY,
+        Assertions.assertEquals("lqerpptcbgqnzm", response.iterator().next().etag());
+        Assertions.assertEquals(IncidentClassification.BENIGN_POSITIVE, response.iterator().next().classification());
+        Assertions.assertEquals("adyedmzrgjfok", response.iterator().next().classificationComment());
+        Assertions.assertEquals(IncidentClassificationReason.SUSPICIOUS_BUT_EXPECTED,
             response.iterator().next().classificationReason());
-        Assertions.assertEquals("dsorgfhjxsawo", response.iterator().next().description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T08:24:52Z"),
+        Assertions.assertEquals("tp", response.iterator().next().description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T23:37:09Z"),
             response.iterator().next().firstActivityTimeUtc());
-        Assertions.assertEquals("wzrdqyoybm", response.iterator().next().labels().get(0).labelName());
-        Assertions.assertEquals("phkvyyz", response.iterator().next().providerName());
-        Assertions.assertEquals("crxylaypdt", response.iterator().next().providerIncidentId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T11:45:23Z"),
+        Assertions.assertEquals("raswugyxpqit", response.iterator().next().labels().get(0).labelName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T06:39:11Z"),
             response.iterator().next().lastActivityTimeUtc());
-        Assertions.assertEquals("ohuriwhjdfrwp", response.iterator().next().owner().email());
-        Assertions.assertEquals("h", response.iterator().next().owner().assignedTo());
-        Assertions.assertEquals(UUID.fromString("44330aad-162c-4c74-a964-cf0277f42ff4"),
+        Assertions.assertEquals("akuejk", response.iterator().next().owner().email());
+        Assertions.assertEquals("bizt", response.iterator().next().owner().assignedTo());
+        Assertions.assertEquals(UUID.fromString("856fd1dd-2865-403f-94ab-ca27791198b8"),
             response.iterator().next().owner().objectId());
-        Assertions.assertEquals("kcclpctuo", response.iterator().next().owner().userPrincipalName());
-        Assertions.assertEquals(OwnerType.UNKNOWN, response.iterator().next().owner().ownerType());
-        Assertions.assertEquals(IncidentSeverity.LOW, response.iterator().next().severity());
-        Assertions.assertEquals(IncidentStatus.ACTIVE, response.iterator().next().status());
-        Assertions.assertEquals("tm", response.iterator().next().title());
+        Assertions.assertEquals("qcvov", response.iterator().next().owner().userPrincipalName());
+        Assertions.assertEquals(OwnerType.GROUP, response.iterator().next().owner().ownerType());
+        Assertions.assertEquals(IncidentSeverity.INFORMATIONAL, response.iterator().next().severity());
+        Assertions.assertEquals(IncidentStatus.NEW, response.iterator().next().status());
+        Assertions.assertEquals("uxegthortudawlpj", response.iterator().next().title());
     }
 }

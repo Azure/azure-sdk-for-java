@@ -180,13 +180,6 @@ public interface PostgreSqlManagementClient {
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
-     * Gets the QuotaUsagesClient object to access its operations.
-     * 
-     * @return the QuotaUsagesClient object.
-     */
-    QuotaUsagesClient getQuotaUsages();
-
-    /**
      * Gets the ReplicasClient object to access its operations.
      * 
      * @return the ReplicasClient object.

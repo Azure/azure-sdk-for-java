@@ -31,14 +31,16 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
         String localRulestackName) {
         PagedIterable<CertificateObjectLocalRulestackResourceInner> inner
             = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
-        return Utils.mapPage(inner, inner1 -> new CertificateObjectLocalRulestackResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CertificateObjectLocalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CertificateObjectLocalRulestackResource> listByLocalRulestacks(String resourceGroupName,
         String localRulestackName, Context context) {
         PagedIterable<CertificateObjectLocalRulestackResourceInner> inner
             = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName, context);
-        return Utils.mapPage(inner, inner1 -> new CertificateObjectLocalRulestackResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CertificateObjectLocalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public Response<CertificateObjectLocalRulestackResource> getWithResponse(String resourceGroupName,
@@ -73,17 +75,17 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
     }
 
     public CertificateObjectLocalRulestackResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "certificates");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -92,17 +94,17 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
     }
 
     public Response<CertificateObjectLocalRulestackResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "certificates");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -111,17 +113,17 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "certificates");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -130,17 +132,17 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "certificates");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));

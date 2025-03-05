@@ -18,54 +18,54 @@ public final class HuntingBookmarkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HuntingBookmark model = BinaryData.fromString(
-            "{\"kind\":\"Bookmark\",\"properties\":{\"created\":\"2021-06-28T21:32:59Z\",\"createdBy\":{\"email\":\"xzbujrtrhqvwr\",\"name\":\"khgn\",\"objectId\":\"f4201bbc-a5b5-4648-9e74-42e6303e2331\"},\"displayName\":\"zonzlrpiqywnc\",\"eventTime\":\"2021-05-30T03:29:47Z\",\"labels\":[\"cof\"],\"notes\":\"e\",\"query\":\"tdhgbjkvrelj\",\"queryResult\":\"murvzm\",\"updated\":\"2021-05-28T09:11:12Z\",\"updatedBy\":{\"email\":\"nashcxlp\",\"name\":\"erbdk\",\"objectId\":\"5a86f080-db49-4d34-8708-0751dba8cbff\"},\"incidentInfo\":{\"incidentId\":\"di\",\"severity\":\"Low\",\"title\":\"db\",\"relationName\":\"xjmonf\"},\"additionalData\":{\"cypuuwwlt\":\"dataw\",\"tzenk\":\"datauqj\",\"zhmkdasvflyh\":\"dataif\"},\"friendlyName\":\"cu\"},\"id\":\"hxgsrboldfor\",\"name\":\"bwjl\",\"type\":\"izbfhfovvacq\"}")
+            "{\"kind\":\"Bookmark\",\"properties\":{\"created\":\"2021-07-24T11:16:02Z\",\"createdBy\":{\"email\":\"bttdumorppxe\",\"name\":\"nzbtbhj\",\"objectId\":\"4bf124bc-99cc-4faa-85c8-ac8955183b5b\"},\"displayName\":\"lkfg\",\"eventTime\":\"2021-10-17T15:49:25Z\",\"labels\":[\"uel\"],\"notes\":\"hsd\",\"query\":\"htozfikdow\",\"queryResult\":\"uuvxz\",\"updated\":\"2021-05-22T14:25:48Z\",\"updatedBy\":{\"email\":\"thhqzonosggbh\",\"name\":\"hfwdsjnkaljutiis\",\"objectId\":\"c71c5eae-5991-47f9-b132-4c85e149f460\"},\"incidentInfo\":{\"incidentId\":\"fgdkzzew\",\"severity\":\"Medium\",\"title\":\"qcrailvpnppfufl\",\"relationName\":\"dmhdlxyjr\"},\"additionalData\":{\"bcvkcvqvpkeq\":\"datagafcnihgwqapnedg\",\"obzdopcjwvnhdl\":\"datacvdrhvoodsot\",\"mutwuoe\":\"datawmgxcxrsl\",\"yqsluic\":\"datarpkhjwn\"},\"friendlyName\":\"ggkzzlvmbmpa\"},\"id\":\"odfvuefywsbp\",\"name\":\"vmwy\",\"type\":\"rfouyftaakcpw\"}")
             .toObject(HuntingBookmark.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T21:32:59Z"), model.created());
-        Assertions.assertEquals(UUID.fromString("f4201bbc-a5b5-4648-9e74-42e6303e2331"), model.createdBy().objectId());
-        Assertions.assertEquals("zonzlrpiqywnc", model.displayName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-30T03:29:47Z"), model.eventTime());
-        Assertions.assertEquals("cof", model.labels().get(0));
-        Assertions.assertEquals("e", model.notes());
-        Assertions.assertEquals("tdhgbjkvrelj", model.query());
-        Assertions.assertEquals("murvzm", model.queryResult());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T09:11:12Z"), model.updated());
-        Assertions.assertEquals(UUID.fromString("5a86f080-db49-4d34-8708-0751dba8cbff"), model.updatedBy().objectId());
-        Assertions.assertEquals("di", model.incidentInfo().incidentId());
-        Assertions.assertEquals(IncidentSeverity.LOW, model.incidentInfo().severity());
-        Assertions.assertEquals("db", model.incidentInfo().title());
-        Assertions.assertEquals("xjmonf", model.incidentInfo().relationName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T11:16:02Z"), model.created());
+        Assertions.assertEquals(UUID.fromString("4bf124bc-99cc-4faa-85c8-ac8955183b5b"), model.createdBy().objectId());
+        Assertions.assertEquals("lkfg", model.displayName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T15:49:25Z"), model.eventTime());
+        Assertions.assertEquals("uel", model.labels().get(0));
+        Assertions.assertEquals("hsd", model.notes());
+        Assertions.assertEquals("htozfikdow", model.query());
+        Assertions.assertEquals("uuvxz", model.queryResult());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T14:25:48Z"), model.updated());
+        Assertions.assertEquals(UUID.fromString("c71c5eae-5991-47f9-b132-4c85e149f460"), model.updatedBy().objectId());
+        Assertions.assertEquals("fgdkzzew", model.incidentInfo().incidentId());
+        Assertions.assertEquals(IncidentSeverity.MEDIUM, model.incidentInfo().severity());
+        Assertions.assertEquals("qcrailvpnppfufl", model.incidentInfo().title());
+        Assertions.assertEquals("dmhdlxyjr", model.incidentInfo().relationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HuntingBookmark model = new HuntingBookmark().withCreated(OffsetDateTime.parse("2021-06-28T21:32:59Z"))
-            .withCreatedBy(new UserInfo().withObjectId(UUID.fromString("f4201bbc-a5b5-4648-9e74-42e6303e2331")))
-            .withDisplayName("zonzlrpiqywnc")
-            .withEventTime(OffsetDateTime.parse("2021-05-30T03:29:47Z"))
-            .withLabels(Arrays.asList("cof"))
-            .withNotes("e")
-            .withQuery("tdhgbjkvrelj")
-            .withQueryResult("murvzm")
-            .withUpdated(OffsetDateTime.parse("2021-05-28T09:11:12Z"))
-            .withUpdatedBy(new UserInfo().withObjectId(UUID.fromString("5a86f080-db49-4d34-8708-0751dba8cbff")))
-            .withIncidentInfo(new IncidentInfo().withIncidentId("di")
-                .withSeverity(IncidentSeverity.LOW)
-                .withTitle("db")
-                .withRelationName("xjmonf"));
+        HuntingBookmark model = new HuntingBookmark().withCreated(OffsetDateTime.parse("2021-07-24T11:16:02Z"))
+            .withCreatedBy(new UserInfo().withObjectId(UUID.fromString("4bf124bc-99cc-4faa-85c8-ac8955183b5b")))
+            .withDisplayName("lkfg")
+            .withEventTime(OffsetDateTime.parse("2021-10-17T15:49:25Z"))
+            .withLabels(Arrays.asList("uel"))
+            .withNotes("hsd")
+            .withQuery("htozfikdow")
+            .withQueryResult("uuvxz")
+            .withUpdated(OffsetDateTime.parse("2021-05-22T14:25:48Z"))
+            .withUpdatedBy(new UserInfo().withObjectId(UUID.fromString("c71c5eae-5991-47f9-b132-4c85e149f460")))
+            .withIncidentInfo(new IncidentInfo().withIncidentId("fgdkzzew")
+                .withSeverity(IncidentSeverity.MEDIUM)
+                .withTitle("qcrailvpnppfufl")
+                .withRelationName("dmhdlxyjr"));
         model = BinaryData.fromObject(model).toObject(HuntingBookmark.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T21:32:59Z"), model.created());
-        Assertions.assertEquals(UUID.fromString("f4201bbc-a5b5-4648-9e74-42e6303e2331"), model.createdBy().objectId());
-        Assertions.assertEquals("zonzlrpiqywnc", model.displayName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-30T03:29:47Z"), model.eventTime());
-        Assertions.assertEquals("cof", model.labels().get(0));
-        Assertions.assertEquals("e", model.notes());
-        Assertions.assertEquals("tdhgbjkvrelj", model.query());
-        Assertions.assertEquals("murvzm", model.queryResult());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T09:11:12Z"), model.updated());
-        Assertions.assertEquals(UUID.fromString("5a86f080-db49-4d34-8708-0751dba8cbff"), model.updatedBy().objectId());
-        Assertions.assertEquals("di", model.incidentInfo().incidentId());
-        Assertions.assertEquals(IncidentSeverity.LOW, model.incidentInfo().severity());
-        Assertions.assertEquals("db", model.incidentInfo().title());
-        Assertions.assertEquals("xjmonf", model.incidentInfo().relationName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T11:16:02Z"), model.created());
+        Assertions.assertEquals(UUID.fromString("4bf124bc-99cc-4faa-85c8-ac8955183b5b"), model.createdBy().objectId());
+        Assertions.assertEquals("lkfg", model.displayName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T15:49:25Z"), model.eventTime());
+        Assertions.assertEquals("uel", model.labels().get(0));
+        Assertions.assertEquals("hsd", model.notes());
+        Assertions.assertEquals("htozfikdow", model.query());
+        Assertions.assertEquals("uuvxz", model.queryResult());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T14:25:48Z"), model.updated());
+        Assertions.assertEquals(UUID.fromString("c71c5eae-5991-47f9-b132-4c85e149f460"), model.updatedBy().objectId());
+        Assertions.assertEquals("fgdkzzew", model.incidentInfo().incidentId());
+        Assertions.assertEquals(IncidentSeverity.MEDIUM, model.incidentInfo().severity());
+        Assertions.assertEquals("qcrailvpnppfufl", model.incidentInfo().title());
+        Assertions.assertEquals("dmhdlxyjr", model.incidentInfo().relationName());
     }
 }

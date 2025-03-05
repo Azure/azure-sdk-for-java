@@ -12,17 +12,17 @@ public final class IncidentCommentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncidentCommentInner model = BinaryData.fromString(
-            "{\"properties\":{\"createdTimeUtc\":\"2021-02-16T08:02:42Z\",\"lastModifiedTimeUtc\":\"2021-10-19T03:06:18Z\",\"message\":\"ey\",\"author\":{\"email\":\"nqzi\",\"name\":\"fkbg\",\"objectId\":\"c7883207-ecfe-4a52-a4d3-960116b69e9f\",\"userPrincipalName\":\"owxeqocljmy\"}},\"etag\":\"kzq\",\"id\":\"jeokbzefezrxccz\",\"name\":\"rtle\",\"type\":\"pqxbkwvzgnzvdf\"}")
+            "{\"properties\":{\"createdTimeUtc\":\"2021-09-15T00:41:47Z\",\"lastModifiedTimeUtc\":\"2021-02-25T17:15:42Z\",\"message\":\"kwqqtchealmf\",\"author\":{\"email\":\"aayg\",\"name\":\"wvgpiohg\",\"objectId\":\"536577d5-ac9a-4bef-9da3-73c391d07dd5\",\"userPrincipalName\":\"tfudxepx\"}},\"etag\":\"qagvrvm\",\"id\":\"k\",\"name\":\"kghimdblxgwimfnj\",\"type\":\"fjxwmsz\"}")
             .toObject(IncidentCommentInner.class);
-        Assertions.assertEquals("kzq", model.etag());
-        Assertions.assertEquals("ey", model.message());
+        Assertions.assertEquals("qagvrvm", model.etag());
+        Assertions.assertEquals("kwqqtchealmf", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncidentCommentInner model = new IncidentCommentInner().withEtag("kzq").withMessage("ey");
+        IncidentCommentInner model = new IncidentCommentInner().withEtag("qagvrvm").withMessage("kwqqtchealmf");
         model = BinaryData.fromObject(model).toObject(IncidentCommentInner.class);
-        Assertions.assertEquals("kzq", model.etag());
-        Assertions.assertEquals("ey", model.message());
+        Assertions.assertEquals("qagvrvm", model.etag());
+        Assertions.assertEquals("kwqqtchealmf", model.message());
     }
 }

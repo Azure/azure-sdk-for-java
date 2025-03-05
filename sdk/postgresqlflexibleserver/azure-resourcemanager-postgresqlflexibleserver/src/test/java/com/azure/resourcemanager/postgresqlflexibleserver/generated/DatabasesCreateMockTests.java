@@ -21,7 +21,7 @@ public final class DatabasesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"charset\":\"ctfnmdxotng\",\"collation\":\"gugey\"},\"id\":\"hgrky\",\"name\":\"i\",\"type\":\"absnmfpp\"}";
+            = "{\"properties\":{\"charset\":\"d\",\"collation\":\"nsiru\"},\"id\":\"z\",\"name\":\"mes\",\"type\":\"kdlpa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class DatabasesCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Database response = manager.databases()
-            .define("xfuojrn")
-            .withExistingFlexibleServer("ihrraiouaub", "jtlo")
-            .withCharset("l")
-            .withCollation("pasccbi")
+            .define("tvtzeexavoxtfg")
+            .withExistingFlexibleServer("awddjibab", "vit")
+            .withCharset("dmdqb")
+            .withCollation("ypq")
             .create();
 
-        Assertions.assertEquals("ctfnmdxotng", response.charset());
-        Assertions.assertEquals("gugey", response.collation());
+        Assertions.assertEquals("d", response.charset());
+        Assertions.assertEquals("nsiru", response.collation());
     }
 }

@@ -25,11 +25,6 @@ public final class TelephonyChannel extends Channel {
      */
     private TelephonyChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of TelephonyChannel class.
      */
@@ -64,16 +59,6 @@ public final class TelephonyChannel extends Channel {
     public TelephonyChannel withProperties(TelephonyChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class TelephonyChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedTelephonyChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedTelephonyChannel.provisioningState = reader.getString();
+                    deserializedTelephonyChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedTelephonyChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

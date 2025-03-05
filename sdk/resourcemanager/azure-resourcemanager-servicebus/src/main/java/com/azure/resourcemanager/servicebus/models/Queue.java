@@ -22,122 +22,170 @@ import java.time.OffsetDateTime;
 public interface Queue
     extends IndependentChildResource<ServiceBusManager, SBQueueInner>, Refreshable<Queue>, Updatable<Queue.Update> {
     /**
+     * Gets the exact time the queue was created.
+     *
      * @return the exact time the queue was created
      */
     OffsetDateTime createdAt();
 
     /**
+     * Gets last time a message was sent, or the last time there was a receive request to this queue.
+     *
      * @return last time a message was sent, or the last time there was a receive request to this queue
      */
     OffsetDateTime accessedAt();
 
     /**
+     * Gets the exact time the queue was updated.
+     *
      * @return the exact time the queue was updated
      */
     OffsetDateTime updatedAt();
 
     /**
+     * Gets the maximum size of memory allocated for the queue in megabytes.
+     *
      * @return the maximum size of memory allocated for the queue in megabytes
      */
     long maxSizeInMB();
 
     /**
+     * Gets current size of the queue.
+     *
      * @return current size of the queue, in bytes
      */
     long currentSizeInBytes();
 
     /**
+     * Checks whether server-side batched operations are enabled.
+     *
      * @return indicates whether server-side batched operations are enabled
      */
     boolean isBatchedOperationsEnabled();
 
     /**
+     * Checks whether this queue has dead letter support when a message expires.
+     *
      * @return indicates whether this queue has dead letter support when a message expires
      */
     boolean isDeadLetteringEnabledForExpiredMessages();
 
     /**
+     * Checks whether express entities are enabled.
+     *
      * @return indicates whether express entities are enabled
      */
     boolean isExpressEnabled();
 
     /**
+     * Checks whether the queue is to be partitioned across multiple message brokers.
+     *
      * @return indicates whether the queue is to be partitioned across multiple message brokers
      */
     boolean isPartitioningEnabled();
 
     /**
+     * Checks whether the queue supports sessions.
+     *
      * @return indicates whether the queue supports sessions
      */
     boolean isSessionEnabled();
 
     /**
+     * Checks whether this queue requires duplicate detection.
+     *
      * @return indicates if this queue requires duplicate detection
      */
     boolean isDuplicateDetectionEnabled();
 
     /**
+     * Gets the duration of peek-lock which is the amount of time that the message is locked for other receivers.
+     *
      * @return the duration of peek-lock which is the amount of time that the message is locked for other receivers
      */
     long lockDurationInSeconds();
 
     /**
+     * Gets the idle duration after which the queue is automatically deleted.
+     *
      * @return the idle duration after which the queue is automatically deleted
      */
     long deleteOnIdleDurationInMinutes();
 
     /**
+     * Gets the duration after which the message expires.
+     *
      * @return the duration after which the message expires, starting from when the message is sent to queue
      */
     Duration defaultMessageTtlDuration();
 
     /**
+     * GEts the duration of the duplicate detection history.
+     *
      * @return the duration of the duplicate detection history
      */
     Duration duplicateMessageDetectionHistoryDuration();
 
     /**
+     * Gets the maximum number of a message delivery before marking it as dead-lettered.
+     *
      * @return the maximum number of a message delivery before marking it as dead-lettered
      */
     int maxDeliveryCountBeforeDeadLetteringMessage();
 
     /**
+     * Gets the number of messages in the queue.
+     *
      * @return the number of messages in the queue
      */
     long messageCount();
 
     /**
+     * Gets number of active messages in the queue.
+     *
      * @return number of active messages in the queue
      */
     long activeMessageCount();
 
     /**
+     * Gets number of messages in the dead-letter queue.
+     *
      * @return number of messages in the dead-letter queue
      */
     long deadLetterMessageCount();
 
     /**
+     * Gets number of messages sent to the queue that are yet to be released for consumption
+     *
      * @return number of messages sent to the queue that are yet to be released
      * for consumption
      */
     long scheduledMessageCount();
 
     /**
+     * Gets number of messages transferred into dead letters.
+     *
      * @return number of messages transferred into dead letters
      */
     long transferDeadLetterMessageCount();
 
     /**
+     * Gets number of messages transferred to another queue, topic, or subscription.
+     *
      * @return number of messages transferred to another queue, topic, or subscription
      */
     long transferMessageCount();
 
     /**
+     * Gets the current status of the queue.
+     *
      * @return the current status of the queue
      */
     EntityStatus status();
 
     /**
+     * Gets entry point to manage authorization rules for the Service Bus queue.
+     *
      * @return entry point to manage authorization rules for the Service Bus queue
      */
     QueueAuthorizationRules authorizationRules();

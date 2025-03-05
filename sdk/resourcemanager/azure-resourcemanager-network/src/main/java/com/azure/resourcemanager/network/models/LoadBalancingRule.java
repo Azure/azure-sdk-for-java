@@ -16,10 +16,18 @@ import java.util.List;
 public interface LoadBalancingRule extends HasInnerModel<LoadBalancingRuleInner>, ChildResource<LoadBalancer>,
     HasBackendPort, HasFrontend, HasFloatingIP, HasProtocol<TransportProtocol>, HasFrontendPort {
 
-    /** @return the method of load distribution */
+    /**
+     * Gets the method of load distribution.
+     *
+     * @return the method of load distribution
+     */
     LoadDistribution loadDistribution();
 
-    /** @return the number of minutes before an inactive connection is closed */
+    /**
+     * Gets the number of minutes before an inactive connection is closed.
+     *
+     * @return the number of minutes before an inactive connection is closed
+     */
     int idleTimeoutInMinutes();
 
     /**
@@ -32,7 +40,11 @@ public interface LoadBalancingRule extends HasInnerModel<LoadBalancingRuleInner>
      */
     LoadBalancerBackend backend();
 
-    /** @return the probe associated with the load balancing rule */
+    /**
+     * Gets the probe associated with the load balancing rule.
+     *
+     * @return the probe associated with the load balancing rule
+     */
     LoadBalancerProbe probe();
 
     /**

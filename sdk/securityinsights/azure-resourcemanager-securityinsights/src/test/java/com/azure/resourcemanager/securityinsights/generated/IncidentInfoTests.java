@@ -12,25 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class IncidentInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IncidentInfo model = BinaryData.fromString(
-            "{\"incidentId\":\"bebrjcxerfuwuttt\",\"severity\":\"Informational\",\"title\":\"rbirphxe\",\"relationName\":\"yva\"}")
+        IncidentInfo model = BinaryData
+            .fromString(
+                "{\"incidentId\":\"pphrcgynco\",\"severity\":\"Medium\",\"title\":\"fvm\",\"relationName\":\"oo\"}")
             .toObject(IncidentInfo.class);
-        Assertions.assertEquals("bebrjcxerfuwuttt", model.incidentId());
-        Assertions.assertEquals(IncidentSeverity.INFORMATIONAL, model.severity());
-        Assertions.assertEquals("rbirphxe", model.title());
-        Assertions.assertEquals("yva", model.relationName());
+        Assertions.assertEquals("pphrcgynco", model.incidentId());
+        Assertions.assertEquals(IncidentSeverity.MEDIUM, model.severity());
+        Assertions.assertEquals("fvm", model.title());
+        Assertions.assertEquals("oo", model.relationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncidentInfo model = new IncidentInfo().withIncidentId("bebrjcxerfuwuttt")
-            .withSeverity(IncidentSeverity.INFORMATIONAL)
-            .withTitle("rbirphxe")
-            .withRelationName("yva");
+        IncidentInfo model = new IncidentInfo().withIncidentId("pphrcgynco")
+            .withSeverity(IncidentSeverity.MEDIUM)
+            .withTitle("fvm")
+            .withRelationName("oo");
         model = BinaryData.fromObject(model).toObject(IncidentInfo.class);
-        Assertions.assertEquals("bebrjcxerfuwuttt", model.incidentId());
-        Assertions.assertEquals(IncidentSeverity.INFORMATIONAL, model.severity());
-        Assertions.assertEquals("rbirphxe", model.title());
-        Assertions.assertEquals("yva", model.relationName());
+        Assertions.assertEquals("pphrcgynco", model.incidentId());
+        Assertions.assertEquals(IncidentSeverity.MEDIUM, model.severity());
+        Assertions.assertEquals("fvm", model.title());
+        Assertions.assertEquals("oo", model.relationName());
     }
 }

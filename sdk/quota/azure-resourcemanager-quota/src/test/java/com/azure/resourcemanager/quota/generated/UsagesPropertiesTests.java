@@ -15,25 +15,25 @@ public final class UsagesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsagesProperties model = BinaryData.fromString(
-            "{\"usages\":{\"value\":1146785059,\"usagesType\":\"Combined\"},\"unit\":\"axkffei\",\"name\":{\"value\":\"lvmezyvshxmzsbbz\",\"localizedValue\":\"gigr\"},\"resourceType\":\"burvjxxjnspy\",\"quotaPeriod\":\"tko\",\"isQuotaApplicable\":true,\"properties\":\"datauknvudwti\"}")
+            "{\"usages\":{\"value\":1010959661,\"usagesType\":\"Combined\"},\"unit\":\"fksymddystki\",\"name\":{\"value\":\"hqyudxorrqnbpoc\",\"localizedValue\":\"yifqrvkdvjsllrmv\"},\"resourceType\":\"f\",\"quotaPeriod\":\"t\",\"isQuotaApplicable\":false,\"properties\":\"dataulexxbczwtr\"}")
             .toObject(UsagesProperties.class);
-        Assertions.assertEquals(1146785059, model.usages().value());
+        Assertions.assertEquals(1010959661, model.usages().value());
         Assertions.assertEquals(UsagesTypes.COMBINED, model.usages().usagesType());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.name().value());
-        Assertions.assertEquals("burvjxxjnspy", model.resourceType());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.name().value());
+        Assertions.assertEquals("f", model.resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UsagesProperties model = new UsagesProperties()
-            .withUsages(new UsagesObject().withValue(1146785059).withUsagesType(UsagesTypes.COMBINED))
-            .withName(new ResourceName().withValue("lvmezyvshxmzsbbz"))
-            .withResourceType("burvjxxjnspy")
-            .withProperties("datauknvudwti");
+            .withUsages(new UsagesObject().withValue(1010959661).withUsagesType(UsagesTypes.COMBINED))
+            .withName(new ResourceName().withValue("hqyudxorrqnbpoc"))
+            .withResourceType("f")
+            .withProperties("dataulexxbczwtr");
         model = BinaryData.fromObject(model).toObject(UsagesProperties.class);
-        Assertions.assertEquals(1146785059, model.usages().value());
+        Assertions.assertEquals(1010959661, model.usages().value());
         Assertions.assertEquals(UsagesTypes.COMBINED, model.usages().usagesType());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.name().value());
-        Assertions.assertEquals("burvjxxjnspy", model.resourceType());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.name().value());
+        Assertions.assertEquals("f", model.resourceType());
     }
 }

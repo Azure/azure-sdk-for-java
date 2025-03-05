@@ -27,7 +27,7 @@ public final class ClustersStartMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.clusters().start("uxakjsqzhzbezk", "imsidxasicddyvvj", com.azure.core.util.Context.NONE);
+        manager.clusters().start("tfgle", "dmdqb", com.azure.core.util.Context.NONE);
 
     }
 }

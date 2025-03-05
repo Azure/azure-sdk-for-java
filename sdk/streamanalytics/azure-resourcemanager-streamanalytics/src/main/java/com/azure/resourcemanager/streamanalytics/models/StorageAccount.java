@@ -26,11 +26,6 @@ public class StorageAccount implements JsonSerializable<StorageAccount> {
      */
     private String accountKey;
 
-    /*
-     * Authentication Mode.
-     */
-    private AuthenticationMode authenticationMode;
-
     /**
      * Creates an instance of StorageAccount class.
      */
@@ -80,26 +75,6 @@ public class StorageAccount implements JsonSerializable<StorageAccount> {
     }
 
     /**
-     * Get the authenticationMode property: Authentication Mode.
-     * 
-     * @return the authenticationMode value.
-     */
-    public AuthenticationMode authenticationMode() {
-        return this.authenticationMode;
-    }
-
-    /**
-     * Set the authenticationMode property: Authentication Mode.
-     * 
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the StorageAccount object itself.
-     */
-    public StorageAccount withAuthenticationMode(AuthenticationMode authenticationMode) {
-        this.authenticationMode = authenticationMode;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -115,8 +90,6 @@ public class StorageAccount implements JsonSerializable<StorageAccount> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("accountName", this.accountName);
         jsonWriter.writeStringField("accountKey", this.accountKey);
-        jsonWriter.writeStringField("authenticationMode",
-            this.authenticationMode == null ? null : this.authenticationMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -139,8 +112,6 @@ public class StorageAccount implements JsonSerializable<StorageAccount> {
                     deserializedStorageAccount.accountName = reader.getString();
                 } else if ("accountKey".equals(fieldName)) {
                     deserializedStorageAccount.accountKey = reader.getString();
-                } else if ("authenticationMode".equals(fieldName)) {
-                    deserializedStorageAccount.authenticationMode = AuthenticationMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

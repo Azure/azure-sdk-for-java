@@ -10,8 +10,7 @@ package com.azure.resourcemanager.botservice.generated;
 public final class BotConnectionListWithSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetConnection.
-     * json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetConnection.json
      */
     /**
      * Sample code: List Connection Setting With Secrets.

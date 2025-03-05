@@ -23,7 +23,7 @@ public final class AdministratorsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"principalType\":\"User\",\"principalName\":\"nrwrbiork\",\"objectId\":\"lywjhh\",\"tenantId\":\"nhxmsi\"},\"id\":\"omi\",\"name\":\"ox\",\"type\":\"gdufiqnd\"}]}";
+            = "{\"value\":[{\"properties\":{\"principalType\":\"Group\",\"principalName\":\"yxgtczh\",\"objectId\":\"dbsdshm\",\"tenantId\":\"maehvbbxurip\"},\"id\":\"fnhtbaxkgxyw\",\"name\":\"ckpyklyhplu\",\"type\":\"dpvruud\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class AdministratorsListByServerMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ActiveDirectoryAdministrator> response
-            = manager.administrators().listByServer("epzl", "phwzsoldweyuqdu", com.azure.core.util.Context.NONE);
+            = manager.administrators().listByServer("vpkjpr", "kwcf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrincipalType.USER, response.iterator().next().principalType());
-        Assertions.assertEquals("nrwrbiork", response.iterator().next().principalName());
-        Assertions.assertEquals("lywjhh", response.iterator().next().objectId());
-        Assertions.assertEquals("nhxmsi", response.iterator().next().tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, response.iterator().next().principalType());
+        Assertions.assertEquals("yxgtczh", response.iterator().next().principalName());
+        Assertions.assertEquals("dbsdshm", response.iterator().next().objectId());
+        Assertions.assertEquals("maehvbbxurip", response.iterator().next().tenantId());
     }
 }

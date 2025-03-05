@@ -50,7 +50,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private EventHubOutputDataSourceProperties innerProperties() {
+    EventHubOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -120,29 +120,6 @@ public final class EventHubOutputDataSource extends OutputDataSource {
             this.innerProperties = new EventHubOutputDataSourceProperties();
         }
         this.innerProperties().withEventHubName(eventHubName);
-        return this;
-    }
-
-    /**
-     * Get the partitionCount property: The partition count of the event hub data source. Range 1 - 256.
-     * 
-     * @return the partitionCount value.
-     */
-    public Integer partitionCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().partitionCount();
-    }
-
-    /**
-     * Set the partitionCount property: The partition count of the event hub data source. Range 1 - 256.
-     * 
-     * @param partitionCount the partitionCount value to set.
-     * @return the EventHubOutputDataSource object itself.
-     */
-    public EventHubOutputDataSource withPartitionCount(Integer partitionCount) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EventHubOutputDataSourceProperties();
-        }
-        this.innerProperties().withPartitionCount(partitionCount);
         return this;
     }
 

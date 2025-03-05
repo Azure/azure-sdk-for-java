@@ -134,6 +134,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- links -->
-[event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[event_hubs_create]: https://learn.microsoft.com/azure/event-hubs/event-hubs-create
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/

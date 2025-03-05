@@ -20,8 +20,8 @@ public final class LocalRulestacksGetSupportInfoSamples {
      */
     public static void localRulestacksGetSupportInfoMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRulestacks().getSupportInfoWithResponse("rgopenapi", "lrs1", null,
-            com.azure.core.util.Context.NONE);
+        manager.localRulestacks()
+            .getSupportInfoWithResponse("rgopenapi", "lrs1", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class LocalRulestacksGetSupportInfoSamples {
      */
     public static void localRulestacksGetSupportInfoMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRulestacks().getSupportInfoWithResponse("rgopenapi", "lrs1", "user1@domain.com",
-            com.azure.core.util.Context.NONE);
+        manager.localRulestacks()
+            .getSupportInfoWithResponse("rgopenapi", "lrs1", "user1@domain.com", com.azure.core.util.Context.NONE);
     }
 }

@@ -15,19 +15,19 @@ public final class AadDataConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AadDataConnectorProperties model
-            = BinaryData.fromString("{\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}},\"tenantId\":\"ipneychb\"}")
+            = BinaryData.fromString("{\"tenantId\":\"wpgdak\",\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}}}")
                 .toObject(AadDataConnectorProperties.class);
-        Assertions.assertEquals("ipneychb", model.tenantId());
+        Assertions.assertEquals("wpgdak", model.tenantId());
         Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AadDataConnectorProperties model = new AadDataConnectorProperties().withTenantId("ipneychb")
+        AadDataConnectorProperties model = new AadDataConnectorProperties().withTenantId("wpgdak")
             .withDataTypes(new AlertsDataTypeOfDataConnector()
                 .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(AadDataConnectorProperties.class);
-        Assertions.assertEquals("ipneychb", model.tenantId());
+        Assertions.assertEquals("wpgdak", model.tenantId());
         Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
     }
 }

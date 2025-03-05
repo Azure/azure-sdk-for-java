@@ -11,7 +11,7 @@ public final class DnsEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsEntity model = BinaryData.fromString(
-            "{\"kind\":\"DnsResolution\",\"properties\":{\"dnsServerIpEntityId\":\"ws\",\"domainName\":\"fo\",\"hostIpAddressEntityId\":\"worimmovzwdehk\",\"ipAddressEntityIds\":[\"hzfova\"],\"additionalData\":{\"wikfyaqandmym\":\"datavaprtgelgw\",\"umov\":\"dataqoq\",\"woxfaxdtnqifbsa\":\"datafbpbvzopaxmfmvsm\"},\"friendlyName\":\"oiauesugmocpcj\"},\"id\":\"boel\",\"name\":\"gttwfldsi\",\"type\":\"or\"}")
+            "{\"kind\":\"DnsResolution\",\"properties\":{\"dnsServerIpEntityId\":\"mikzeb\",\"domainName\":\"bsmswziqgf\",\"hostIpAddressEntityId\":\"okzrus\",\"ipAddressEntityIds\":[\"hczznvf\",\"ycjsx\",\"wwixzvumw\"],\"additionalData\":{\"djh\":\"datahndvnoamldsehao\",\"pelnjetag\":\"dataflzokxco\",\"npbs\":\"datatsxoatftgz\"},\"friendlyName\":\"e\"},\"id\":\"occsr\",\"name\":\"ozihmipgawt\",\"type\":\"xp\"}")
             .toObject(DnsEntity.class);
     }
 

@@ -15,16 +15,32 @@ import java.util.Map;
 public interface ApplicationGatewayUrlPathMap
     extends HasInnerModel<ApplicationGatewayUrlPathMapInner>, ChildResource<ApplicationGateway> {
 
-    /** @return default backend address pool */
+    /**
+     * Gets default backend address pool.
+     *
+     * @return default backend address pool
+     */
     ApplicationGatewayBackend defaultBackend();
 
-    /** @return default backend HTTP settings configuration */
+    /**
+     * Gets default backend HTTP settings configuration.
+     *
+     * @return default backend HTTP settings configuration
+     */
     ApplicationGatewayBackendHttpConfiguration defaultBackendHttpConfiguration();
 
-    /** @return default redirect configuration */
+    /**
+     * Gets default redirect configuration.
+     *
+     * @return default redirect configuration
+     */
     ApplicationGatewayRedirectConfiguration defaultRedirectConfiguration();
 
-    /** @return path rules of URL path map resource */
+    /**
+     * Gets path rules of URL path map resource.
+     *
+     * @return path rules of URL path map resource
+     */
     Map<String, ApplicationGatewayPathRule> pathRules();
 
     /** Grouping of application gateway URL path map definition stages. */

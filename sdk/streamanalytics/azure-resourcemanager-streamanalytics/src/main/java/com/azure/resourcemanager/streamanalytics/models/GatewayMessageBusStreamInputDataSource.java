@@ -49,7 +49,7 @@ public final class GatewayMessageBusStreamInputDataSource extends StreamInputDat
      * 
      * @return the innerProperties value.
      */
-    private GatewayMessageBusStreamInputDataSourceProperties innerProperties() {
+    GatewayMessageBusStreamInputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

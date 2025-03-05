@@ -13,9 +13,17 @@ import java.util.Map;
 @Fluent
 public interface SecurityGroupView
     extends HasInnerModel<SecurityGroupViewResultInner>, HasParent<NetworkWatcher>, Refreshable<SecurityGroupView> {
-    /** @return network interfaces on the specified VM */
+    /**
+     * Gets network interfaces on the specified VM.
+     *
+     * @return network interfaces on the specified VM
+     */
     Map<String, SecurityGroupNetworkInterface> networkInterfaces();
 
-    /** @return virtual machine id */
+    /**
+     * Gets virtual machine id.
+     *
+     * @return virtual machine id
+     */
     String vmId();
 }

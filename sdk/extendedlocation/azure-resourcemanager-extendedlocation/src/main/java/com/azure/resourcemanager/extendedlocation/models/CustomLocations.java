@@ -179,41 +179,6 @@ public interface CustomLocations {
         Context context);
 
     /**
-     * Gets matching target resource group for resource sync.
-     * 
-     * Returns the target resource group associated with the resource sync rules of the Custom Location that match the
-     * rules passed in with the Find Target Resource Group Request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Custom Locations name.
-     * @param parameters Parameters of the find target resource group request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Find Target Resource Group operation response along with {@link Response}.
-     */
-    Response<CustomLocationFindTargetResourceGroupResult> findTargetResourceGroupWithResponse(String resourceGroupName,
-        String resourceName, CustomLocationFindTargetResourceGroupProperties parameters, Context context);
-
-    /**
-     * Gets matching target resource group for resource sync.
-     * 
-     * Returns the target resource group associated with the resource sync rules of the Custom Location that match the
-     * rules passed in with the Find Target Resource Group Request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Custom Locations name.
-     * @param parameters Parameters of the find target resource group request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Find Target Resource Group operation response.
-     */
-    CustomLocationFindTargetResourceGroupResult findTargetResourceGroup(String resourceGroupName, String resourceName,
-        CustomLocationFindTargetResourceGroupProperties parameters);
-
-    /**
      * Gets a Custom Location.
      * 
      * Gets the details of the customLocation with a specified resource group and name.

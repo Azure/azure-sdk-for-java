@@ -22,7 +22,7 @@ public final class OutboundEndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"sahmky\",\"properties\":{\"subnet\":{\"id\":\"rauwjuetaebu\"},\"provisioningState\":\"Deleting\",\"resourceGuid\":\"movsmzlxwabmqoe\"},\"location\":\"ifrvtpu\",\"tags\":{\"btndo\":\"mqlgk\",\"jitcjedftwwaez\":\"ongbjcnt\"},\"id\":\"ojvdcpzfoqo\",\"name\":\"i\",\"type\":\"ybxarzgszu\"}]}";
+            = "{\"value\":[{\"etag\":\"ojvpa\",\"properties\":{\"subnet\":{\"id\":\"gxysmocmbqfqvm\"},\"provisioningState\":\"Creating\",\"resourceGuid\":\"zapvhelx\"},\"location\":\"glyatddckcbcuej\",\"tags\":{\"sxsdqrhzoymibm\":\"gciqibrh\"},\"id\":\"qyib\",\"name\":\"hwflu\",\"type\":\"zdtmhrkwofy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class OutboundEndpointsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<OutboundEndpoint> response
-            = manager.outboundEndpoints().list("gdknnqv", "aznqntoru", 761865502, com.azure.core.util.Context.NONE);
+        PagedIterable<OutboundEndpoint> response = manager.outboundEndpoints()
+            .list("zksmondj", "quxvypomgkop", 1364703724, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ifrvtpu", response.iterator().next().location());
-        Assertions.assertEquals("mqlgk", response.iterator().next().tags().get("btndo"));
-        Assertions.assertEquals("rauwjuetaebu", response.iterator().next().subnet().id());
+        Assertions.assertEquals("glyatddckcbcuej", response.iterator().next().location());
+        Assertions.assertEquals("gciqibrh", response.iterator().next().tags().get("sxsdqrhzoymibm"));
+        Assertions.assertEquals("gxysmocmbqfqvm", response.iterator().next().subnet().id());
     }
 }

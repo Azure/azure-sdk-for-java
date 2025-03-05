@@ -6,17 +6,20 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * PAN Rulestack Describe Object.
  */
 @Fluent
-public final class GlobalRulestackInfoInner {
+public final class GlobalRulestackInfoInner implements JsonSerializable<GlobalRulestackInfoInner> {
     /*
      * rulestack description
      */
-    @JsonProperty(value = "azureId", required = true)
     private String azureId;
 
     /**
@@ -52,10 +55,48 @@ public final class GlobalRulestackInfoInner {
      */
     public void validate() {
         if (azureId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property azureId in model GlobalRulestackInfoInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azureId in model GlobalRulestackInfoInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GlobalRulestackInfoInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureId", this.azureId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GlobalRulestackInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GlobalRulestackInfoInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GlobalRulestackInfoInner.
+     */
+    public static GlobalRulestackInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GlobalRulestackInfoInner deserializedGlobalRulestackInfoInner = new GlobalRulestackInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureId".equals(fieldName)) {
+                    deserializedGlobalRulestackInfoInner.azureId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGlobalRulestackInfoInner;
+        });
+    }
 }

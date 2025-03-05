@@ -4,7 +4,7 @@
 package io.clientcore.core.http;
 
 import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -18,7 +18,7 @@ import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.concurrent.TimeUnit;
 
-import static io.clientcore.core.util.TestUtils.findFirstOfType;
+import static io.clientcore.core.utils.TestUtils.findFirstOfType;
 
 /**
  * Benchmarks retrieving the special parameters {@link Context} and {@link RequestOptions}.

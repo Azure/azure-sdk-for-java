@@ -16,25 +16,53 @@ import java.util.Map;
 public interface LoadBalancerOutboundRule extends HasInnerModel<OutboundRuleInner>,
     HasProtocol<LoadBalancerOutboundRuleProtocol>, ChildResource<LoadBalancer> {
 
-    /** @return the associated frontends */
+    /**
+     * Gets the associated frontends.
+     *
+     * @return the associated frontends
+     */
     Map<String, LoadBalancerFrontend> frontends();
 
-    /** @return the associated backend */
+    /**
+     * Gets the associated backend.
+     *
+     * @return the associated backend
+     */
     LoadBalancerBackend backend();
 
-    /** @return the number of outbound ports to be used for NAT */
+    /**
+     * Gets the number of outbound ports to be used for NAT.
+     *
+     * @return the number of outbound ports to be used for NAT
+     */
     int allocatedOutboundPorts();
 
-    /** @return the provisioning state of the outbound rule resource */
+    /**
+     * Gets the provisioning state of the outbound rule resource.
+     *
+     * @return the provisioning state of the outbound rule resource
+     */
     ProvisioningState provisioningState();
 
-    /** @return the number of minutes before an idle connection is closed */
+    /**
+     * Gets the number of minutes before an idle connection is closed.
+     *
+     * @return the number of minutes before an idle connection is closed
+     */
     int idleTimeoutInMinutes();
 
-    /** @return if TCP reset is enabled */
+    /**
+     * Checks whether TCP reset is enabled.
+     *
+     * @return if TCP reset is enabled
+     */
     boolean tcpResetEnabled();
 
-    /** @return outbound rule protocol */
+    /**
+     * Gets outbound rule protocol.
+     *
+     * @return outbound rule protocol
+     */
     LoadBalancerOutboundRuleProtocol protocol();
 
     /** Grouping of outbound rule definition stages. */
@@ -150,7 +178,11 @@ public interface LoadBalancerOutboundRule extends HasInnerModel<OutboundRuleInne
 
     /** Grouping of outbound rule update stages. */
     interface UpdateStages {
-        /** The stage of an outbound rule update allowing to specify the backend pool. */
+        /**
+         * The stage of an outbound rule update allowing to specify the backend pool.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithBackend<ParentT> {
             /**
              * Specifies the backend pool.
@@ -161,7 +193,11 @@ public interface LoadBalancerOutboundRule extends HasInnerModel<OutboundRuleInne
             Update<ParentT> fromBackend(String name);
         }
 
-        /** The stage of an outbound rule update allowing to specify a frontend for the rule to apply to. */
+        /**
+         * The stage of an outbound rule update allowing to specify a frontend for the rule to apply to.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * */
         interface WithFrontend<ParentT> {
             /**
              * Specifies the frontend IP Address
@@ -180,6 +216,8 @@ public interface LoadBalancerOutboundRule extends HasInnerModel<OutboundRuleInne
 
         /**
          * The stage of an outbound rule update allowing to specify the transport protocol for the rule to apply to.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithProtocol<ParentT>
             extends HasProtocol.UpdateStages.WithProtocol<Update<ParentT>, LoadBalancerOutboundRuleProtocol> {
@@ -189,6 +227,7 @@ public interface LoadBalancerOutboundRule extends HasInnerModel<OutboundRuleInne
          * The stage of an outbound rule definition allowing to update the TCP reset enablement for this outbound
          * rule.
          *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithEnableTcpReset<ParentT> {
             /**
@@ -203,6 +242,8 @@ public interface LoadBalancerOutboundRule extends HasInnerModel<OutboundRuleInne
         /**
          * The stage of an inbound NAT rule update allowing to specify the idle connection timeout for this inbound NAT
          * rule.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithIdleTimeout<ParentT> {
             /**
@@ -215,7 +256,11 @@ public interface LoadBalancerOutboundRule extends HasInnerModel<OutboundRuleInne
         }
     }
 
-    /** The entirety of an inbound NAT rule update as part of a load balancer update. */
+    /**
+     * The entirety of an inbound NAT rule update as part of a load balancer update.
+     *
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+     */
     interface Update<ParentT> extends Settable<ParentT>, LoadBalancerOutboundRule.UpdateStages.WithProtocol<ParentT>,
         LoadBalancerOutboundRule.UpdateStages.WithBackend<ParentT>,
         LoadBalancerOutboundRule.UpdateStages.WithFrontend<ParentT>,

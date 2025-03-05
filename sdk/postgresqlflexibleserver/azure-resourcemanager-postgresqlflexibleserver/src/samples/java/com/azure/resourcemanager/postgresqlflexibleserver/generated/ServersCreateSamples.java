@@ -34,7 +34,7 @@ import java.util.Map;
 public final class ServersCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * ServerCreateWithDataEncryptionEnabled.json
      */
     /**
@@ -76,7 +76,7 @@ public final class ServersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * ServerCreateReviveDropped.json
      */
     /**
@@ -99,7 +99,7 @@ public final class ServersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * ServerCreateGeoRestoreWithDataEncryptionEnabled.json
      */
     /**
@@ -134,8 +134,7 @@ public final class ServersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
-     * ServerCreate.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/ServerCreate.json
      */
     /**
      * Sample code: Create a new server.
@@ -168,7 +167,7 @@ public final class ServersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * ServerCreateWithAadAuthEnabled.json
      */
     /**
@@ -207,7 +206,7 @@ public final class ServersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * ServerCreateReplica.json
      */
     /**
@@ -239,7 +238,7 @@ public final class ServersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * ServerCreatePointInTimeRestore.json
      */
     /**

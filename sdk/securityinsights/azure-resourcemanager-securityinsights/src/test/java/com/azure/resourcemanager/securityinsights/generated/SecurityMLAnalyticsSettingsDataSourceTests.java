@@ -12,19 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityMLAnalyticsSettingsDataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityMLAnalyticsSettingsDataSource model
-            = BinaryData.fromString("{\"connectorId\":\"hr\",\"dataTypes\":[\"l\",\"jtv\"]}")
-                .toObject(SecurityMLAnalyticsSettingsDataSource.class);
-        Assertions.assertEquals("hr", model.connectorId());
-        Assertions.assertEquals("l", model.dataTypes().get(0));
+        SecurityMLAnalyticsSettingsDataSource model = BinaryData.fromString(
+            "{\"connectorId\":\"xtbjwgnyfusfzsv\",\"dataTypes\":[\"kzhajqglcfhm\",\"rqryxynqn\",\"rd\",\"sovwxznptgoeiyb\"]}")
+            .toObject(SecurityMLAnalyticsSettingsDataSource.class);
+        Assertions.assertEquals("xtbjwgnyfusfzsv", model.connectorId());
+        Assertions.assertEquals("kzhajqglcfhm", model.dataTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityMLAnalyticsSettingsDataSource model = new SecurityMLAnalyticsSettingsDataSource().withConnectorId("hr")
-            .withDataTypes(Arrays.asList("l", "jtv"));
+        SecurityMLAnalyticsSettingsDataSource model
+            = new SecurityMLAnalyticsSettingsDataSource().withConnectorId("xtbjwgnyfusfzsv")
+                .withDataTypes(Arrays.asList("kzhajqglcfhm", "rqryxynqn", "rd", "sovwxznptgoeiyb"));
         model = BinaryData.fromObject(model).toObject(SecurityMLAnalyticsSettingsDataSource.class);
-        Assertions.assertEquals("hr", model.connectorId());
-        Assertions.assertEquals("l", model.dataTypes().get(0));
+        Assertions.assertEquals("xtbjwgnyfusfzsv", model.connectorId());
+        Assertions.assertEquals("kzhajqglcfhm", model.dataTypes().get(0));
     }
 }

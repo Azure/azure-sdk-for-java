@@ -18,16 +18,6 @@ import java.util.List;
 @Fluent
 public final class ConnectionSettingProperties implements JsonSerializable<ConnectionSettingProperties> {
     /*
-     * Id of the Connection Setting.
-     */
-    private String id;
-
-    /*
-     * Name of the Connection Setting.
-     */
-    private String name;
-
-    /*
      * Client Id associated with the Connection Setting.
      */
     private String clientId;
@@ -71,46 +61,6 @@ public final class ConnectionSettingProperties implements JsonSerializable<Conne
      * Creates an instance of ConnectionSettingProperties class.
      */
     public ConnectionSettingProperties() {
-    }
-
-    /**
-     * Get the id property: Id of the Connection Setting.
-     * 
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Set the id property: Id of the Connection Setting.
-     * 
-     * @param id the id value to set.
-     * @return the ConnectionSettingProperties object itself.
-     */
-    public ConnectionSettingProperties withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the name property: Name of the Connection Setting.
-     * 
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: Name of the Connection Setting.
-     * 
-     * @param name the name value to set.
-     * @return the ConnectionSettingProperties object itself.
-     */
-    public ConnectionSettingProperties withName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -281,8 +231,6 @@ public final class ConnectionSettingProperties implements JsonSerializable<Conne
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("clientId", this.clientId);
         jsonWriter.writeStringField("clientSecret", this.clientSecret);
         jsonWriter.writeStringField("scopes", this.scopes);
@@ -308,11 +256,7 @@ public final class ConnectionSettingProperties implements JsonSerializable<Conne
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedConnectionSettingProperties.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedConnectionSettingProperties.name = reader.getString();
-                } else if ("clientId".equals(fieldName)) {
+                if ("clientId".equals(fieldName)) {
                     deserializedConnectionSettingProperties.clientId = reader.getString();
                 } else if ("settingId".equals(fieldName)) {
                     deserializedConnectionSettingProperties.settingId = reader.getString();

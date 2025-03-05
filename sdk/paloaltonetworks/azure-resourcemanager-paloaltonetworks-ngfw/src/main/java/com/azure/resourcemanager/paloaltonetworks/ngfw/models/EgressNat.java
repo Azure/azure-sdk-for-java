@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class EgressNat extends ExpandableStringEnum<EgressNat> {
      * @param name a name to look for.
      * @return the corresponding EgressNat.
      */
-    @JsonCreator
     public static EgressNat fromString(String name) {
         return fromString(name, EgressNat.class);
     }

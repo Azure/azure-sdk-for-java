@@ -83,8 +83,6 @@ public class ReferenceInputDataSource implements JsonSerializable<ReferenceInput
                     return FileReferenceInputDataSource.fromJson(readerToUse.reset());
                 } else if ("Microsoft.Storage/Blob".equals(discriminatorValue)) {
                     return BlobReferenceInputDataSource.fromJson(readerToUse.reset());
-                } else if ("Raw".equals(discriminatorValue)) {
-                    return RawReferenceInputDataSource.fromJson(readerToUse.reset());
                 } else if ("Microsoft.Sql/Server/Database".equals(discriminatorValue)) {
                     return AzureSqlReferenceInputDataSource.fromJson(readerToUse.reset());
                 } else {

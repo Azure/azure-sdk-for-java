@@ -18,33 +18,34 @@ public final class BotChannelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BotChannelInner model = BinaryData.fromString(
-            "{\"properties\":{\"channelName\":\"Channel\",\"etag\":\"aozwyiftyhxhu\",\"provisioningState\":\"k\",\"location\":\"yxolniwp\"},\"sku\":{\"name\":\"S1\",\"tier\":\"Standard\"},\"kind\":\"designer\",\"etag\":\"iawxklry\",\"zones\":[\"ckbasyypndd\",\"sgcbac\",\"hejkotynqgou\"],\"location\":\"zndlikwy\",\"tags\":{\"rxybz\":\"fgibmadgakeq\",\"mnkzsmod\":\"qedqytbciqfoufl\"},\"id\":\"glougpbk\",\"name\":\"tmut\",\"type\":\"uqktap\"}")
+            "{\"properties\":{\"channelName\":\"Channel\",\"etag\":\"zrnf\",\"provisioningState\":\"xgispemvtzfkufu\",\"location\":\"jofxqe\"},\"sku\":{\"name\":\"F0\",\"tier\":\"Free\"},\"kind\":\"azurebot\",\"etag\":\"qjbasvms\",\"zones\":[\"ulngsntn\",\"ybkzgcwr\",\"clxxwrljdo\",\"skcqvkocrcjd\"],\"location\":\"wtnhxbnjbiksqr\",\"tags\":{\"jfm\":\"sainqpjwnzl\",\"vmgxsab\":\"pee\",\"jczdzevndh\":\"yqduujit\",\"feusnhut\":\"rwpdappdsbdkvwrw\"},\"id\":\"eltmrldhugjzzdat\",\"name\":\"xhocdgeablgphuti\",\"type\":\"ndv\"}")
             .toObject(BotChannelInner.class);
-        Assertions.assertEquals("zndlikwy", model.location());
-        Assertions.assertEquals("fgibmadgakeq", model.tags().get("rxybz"));
-        Assertions.assertEquals("aozwyiftyhxhu", model.properties().etag());
-        Assertions.assertEquals("yxolniwp", model.properties().location());
-        Assertions.assertEquals(SkuName.S1, model.sku().name());
-        Assertions.assertEquals(Kind.DESIGNER, model.kind());
-        Assertions.assertEquals("iawxklry", model.etag());
+        Assertions.assertEquals("wtnhxbnjbiksqr", model.location());
+        Assertions.assertEquals("sainqpjwnzl", model.tags().get("jfm"));
+        Assertions.assertEquals("zrnf", model.properties().etag());
+        Assertions.assertEquals("jofxqe", model.properties().location());
+        Assertions.assertEquals(SkuName.F0, model.sku().name());
+        Assertions.assertEquals(Kind.AZUREBOT, model.kind());
+        Assertions.assertEquals("qjbasvms", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BotChannelInner model = new BotChannelInner().withLocation("zndlikwy")
-            .withTags(mapOf("rxybz", "fgibmadgakeq", "mnkzsmod", "qedqytbciqfoufl"))
-            .withProperties(new Channel().withEtag("aozwyiftyhxhu").withLocation("yxolniwp"))
-            .withSku(new Sku().withName(SkuName.S1))
-            .withKind(Kind.DESIGNER)
-            .withEtag("iawxklry");
+        BotChannelInner model = new BotChannelInner().withLocation("wtnhxbnjbiksqr")
+            .withTags(
+                mapOf("jfm", "sainqpjwnzl", "vmgxsab", "pee", "jczdzevndh", "yqduujit", "feusnhut", "rwpdappdsbdkvwrw"))
+            .withProperties(new Channel().withEtag("zrnf").withLocation("jofxqe"))
+            .withSku(new Sku().withName(SkuName.F0))
+            .withKind(Kind.AZUREBOT)
+            .withEtag("qjbasvms");
         model = BinaryData.fromObject(model).toObject(BotChannelInner.class);
-        Assertions.assertEquals("zndlikwy", model.location());
-        Assertions.assertEquals("fgibmadgakeq", model.tags().get("rxybz"));
-        Assertions.assertEquals("aozwyiftyhxhu", model.properties().etag());
-        Assertions.assertEquals("yxolniwp", model.properties().location());
-        Assertions.assertEquals(SkuName.S1, model.sku().name());
-        Assertions.assertEquals(Kind.DESIGNER, model.kind());
-        Assertions.assertEquals("iawxklry", model.etag());
+        Assertions.assertEquals("wtnhxbnjbiksqr", model.location());
+        Assertions.assertEquals("sainqpjwnzl", model.tags().get("jfm"));
+        Assertions.assertEquals("zrnf", model.properties().etag());
+        Assertions.assertEquals("jofxqe", model.properties().location());
+        Assertions.assertEquals(SkuName.F0, model.sku().name());
+        Assertions.assertEquals(Kind.AZUREBOT, model.kind());
+        Assertions.assertEquals("qjbasvms", model.etag());
     }
 
     // Use "Map.of" if available

@@ -13,7 +13,6 @@ import com.azure.resourcemanager.streamanalytics.models.ClusterInfo;
 import com.azure.resourcemanager.streamanalytics.models.CompatibilityLevel;
 import com.azure.resourcemanager.streamanalytics.models.ContentStoragePolicy;
 import com.azure.resourcemanager.streamanalytics.models.EventsOutOfOrderPolicy;
-import com.azure.resourcemanager.streamanalytics.models.External;
 import com.azure.resourcemanager.streamanalytics.models.Identity;
 import com.azure.resourcemanager.streamanalytics.models.JobStorageAccount;
 import com.azure.resourcemanager.streamanalytics.models.JobType;
@@ -31,17 +30,13 @@ import java.util.Map;
 @Fluent
 public final class StreamingJobInner extends Resource {
     /*
-     * Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
-     */
-    private Sku sku;
-
-    /*
      * The properties that are associated with a streaming job. Required on PUT (CreateOrReplace) requests.
      */
     private StreamingJobPropertiesInner innerProperties;
 
     /*
-     * Describes the managed identity assigned to this job that can be used to authenticate with inputs and outputs.
+     * Describes the system-assigned managed identity assigned to this job that can be used to authenticate with inputs
+     * and outputs.
      */
     private Identity identity;
 
@@ -67,26 +62,6 @@ public final class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the sku property: Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
-     * 
-     * @return the sku value.
-     */
-    public Sku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
-     * 
-     * @param sku the sku value to set.
-     * @return the StreamingJobInner object itself.
-     */
-    public StreamingJobInner withSku(Sku sku) {
-        this.sku = sku;
-        return this;
-    }
-
-    /**
      * Get the innerProperties property: The properties that are associated with a streaming job. Required on PUT
      * (CreateOrReplace) requests.
      * 
@@ -97,8 +72,8 @@ public final class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the identity property: Describes the managed identity assigned to this job that can be used to authenticate
-     * with inputs and outputs.
+     * Get the identity property: Describes the system-assigned managed identity assigned to this job that can be used
+     * to authenticate with inputs and outputs.
      * 
      * @return the identity value.
      */
@@ -107,8 +82,8 @@ public final class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the identity property: Describes the managed identity assigned to this job that can be used to authenticate
-     * with inputs and outputs.
+     * Set the identity property: Describes the system-assigned managed identity assigned to this job that can be used
+     * to authenticate with inputs and outputs.
      * 
      * @param identity the identity value to set.
      * @return the StreamingJobInner object itself.
@@ -171,7 +146,7 @@ public final class StreamingJobInner extends Resource {
      * 
      * @return the sku value.
      */
-    public Sku skuPropertiesSku() {
+    public Sku sku() {
         return this.innerProperties() == null ? null : this.innerProperties().sku();
     }
 
@@ -181,7 +156,7 @@ public final class StreamingJobInner extends Resource {
      * @param sku the sku value to set.
      * @return the StreamingJobInner object itself.
      */
-    public StreamingJobInner withSkuPropertiesSku(Sku sku) {
+    public StreamingJobInner withSku(Sku sku) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StreamingJobPropertiesInner();
         }
@@ -643,29 +618,6 @@ public final class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the externals property: The storage account where the custom code artifacts are located.
-     * 
-     * @return the externals value.
-     */
-    public External externals() {
-        return this.innerProperties() == null ? null : this.innerProperties().externals();
-    }
-
-    /**
-     * Set the externals property: The storage account where the custom code artifacts are located.
-     * 
-     * @param externals the externals value to set.
-     * @return the StreamingJobInner object itself.
-     */
-    public StreamingJobInner withExternals(External externals) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StreamingJobPropertiesInner();
-        }
-        this.innerProperties().withExternals(externals);
-        return this;
-    }
-
-    /**
      * Get the cluster property: The cluster which streaming jobs will run on.
      * 
      * @return the cluster value.
@@ -694,9 +646,6 @@ public final class StreamingJobInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -713,7 +662,6 @@ public final class StreamingJobInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
@@ -746,8 +694,6 @@ public final class StreamingJobInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedStreamingJobInner.withTags(tags);
-                } else if ("sku".equals(fieldName)) {
-                    deserializedStreamingJobInner.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedStreamingJobInner.innerProperties = StreamingJobPropertiesInner.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {

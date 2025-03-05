@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.UrlEntityProperties;
 import java.io.IOException;
 import java.util.Map;
@@ -18,11 +17,11 @@ import java.util.Map;
  * Represents a url entity.
  */
 @Immutable
-public final class UrlEntity extends EntityInner {
+public final class UrlEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.URL;
+    private EntityKindEnum kind = EntityKindEnum.URL;
 
     /*
      * Url entity properties
@@ -61,7 +60,7 @@ public final class UrlEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -191,7 +190,7 @@ public final class UrlEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedUrlEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedUrlEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedUrlEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedUrlEntity.innerProperties = UrlEntityProperties.fromJson(reader);
                 } else {

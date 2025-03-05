@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.DataConnectorsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
 import com.azure.resourcemanager.securityinsights.models.DataConnector;
-import com.azure.resourcemanager.securityinsights.models.DataConnectorConnectBody;
 import com.azure.resourcemanager.securityinsights.models.DataConnectors;
 
 public final class DataConnectorsImpl implements DataConnectors {
@@ -89,26 +88,6 @@ public final class DataConnectorsImpl implements DataConnectors {
 
     public void delete(String resourceGroupName, String workspaceName, String dataConnectorId) {
         this.serviceClient().delete(resourceGroupName, workspaceName, dataConnectorId);
-    }
-
-    public Response<Void> connectWithResponse(String resourceGroupName, String workspaceName, String dataConnectorId,
-        DataConnectorConnectBody connectBody, Context context) {
-        return this.serviceClient()
-            .connectWithResponse(resourceGroupName, workspaceName, dataConnectorId, connectBody, context);
-    }
-
-    public void connect(String resourceGroupName, String workspaceName, String dataConnectorId,
-        DataConnectorConnectBody connectBody) {
-        this.serviceClient().connect(resourceGroupName, workspaceName, dataConnectorId, connectBody);
-    }
-
-    public Response<Void> disconnectWithResponse(String resourceGroupName, String workspaceName, String dataConnectorId,
-        Context context) {
-        return this.serviceClient().disconnectWithResponse(resourceGroupName, workspaceName, dataConnectorId, context);
-    }
-
-    public void disconnect(String resourceGroupName, String workspaceName, String dataConnectorId) {
-        this.serviceClient().disconnect(resourceGroupName, workspaceName, dataConnectorId);
     }
 
     private DataConnectorsClient serviceClient() {

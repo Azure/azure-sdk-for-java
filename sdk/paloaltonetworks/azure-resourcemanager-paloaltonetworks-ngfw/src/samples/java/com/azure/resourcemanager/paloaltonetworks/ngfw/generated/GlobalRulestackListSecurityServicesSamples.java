@@ -22,8 +22,9 @@ public final class GlobalRulestackListSecurityServicesSamples {
      */
     public static void globalRulestackListSecurityServicesMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.globalRulestacks().listSecurityServicesWithResponse("praval",
-            SecurityServicesTypeEnum.fromString("globalRulestacks"), null, null, com.azure.core.util.Context.NONE);
+        manager.globalRulestacks()
+            .listSecurityServicesWithResponse("praval", SecurityServicesTypeEnum.fromString("globalRulestacks"), null,
+                null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -38,7 +39,8 @@ public final class GlobalRulestackListSecurityServicesSamples {
      */
     public static void globalRulestackListSecurityServicesMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.globalRulestacks().listSecurityServicesWithResponse("praval",
-            SecurityServicesTypeEnum.fromString("globalRulestacks"), "a6a321", 20, com.azure.core.util.Context.NONE);
+        manager.globalRulestacks()
+            .listSecurityServicesWithResponse("praval", SecurityServicesTypeEnum.fromString("globalRulestacks"),
+                "a6a321", 20, com.azure.core.util.Context.NONE);
     }
 }

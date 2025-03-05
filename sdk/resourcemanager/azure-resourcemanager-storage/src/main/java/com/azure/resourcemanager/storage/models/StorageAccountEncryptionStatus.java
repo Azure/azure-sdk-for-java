@@ -9,17 +9,31 @@ import java.time.OffsetDateTime;
 /** Type representing the encryption status of a storage service. */
 @Fluent
 public interface StorageAccountEncryptionStatus {
-    /** @return the storage service type */
+    /**
+     * Gets the storage service type.
+     *
+     * @return the storage service type
+     */
     StorageService storageService();
 
-    /** @return true if the encryption is enabled for the service false otherwise */
+    /**
+     * Checks whether the encryption is enabled for the service false otherwise.
+     *
+     * @return true if the encryption is enabled for the service false otherwise
+     */
     boolean isEnabled();
 
     /**
+     * Gets rough estimate of the date/time when the encryption was last enabled.
+     *
      * @return rough estimate of the date/time when the encryption was last enabled, null if the encryption is disabled
      */
     OffsetDateTime lastEnabledTime();
 
-    /** @return the type of the key used to encrypt the storage service */
+    /**
+     * Gets the type of the key used to encrypt the storage service.
+     *
+     * @return the type of the key used to encrypt the storage service
+     */
     KeyType keyType();
 }

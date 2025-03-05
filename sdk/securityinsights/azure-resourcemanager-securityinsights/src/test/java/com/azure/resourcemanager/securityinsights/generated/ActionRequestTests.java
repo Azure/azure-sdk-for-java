@@ -12,20 +12,20 @@ public final class ActionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionRequest model = BinaryData.fromString(
-            "{\"properties\":{\"triggerUri\":\"ixjsprozvcputeg\",\"logicAppResourceId\":\"vwmf\"},\"etag\":\"t\",\"id\":\"mdvpjhulsu\",\"name\":\"vmkjozkrwfndiodj\",\"type\":\"slwejdpvw\"}")
+            "{\"properties\":{\"triggerUri\":\"jhulsuuvmkjo\",\"logicAppResourceId\":\"k\"},\"etag\":\"f\",\"id\":\"iodjp\",\"name\":\"lwejdpv\",\"type\":\"ryo\"}")
             .toObject(ActionRequest.class);
-        Assertions.assertEquals("t", model.etag());
-        Assertions.assertEquals("ixjsprozvcputeg", model.triggerUri());
-        Assertions.assertEquals("vwmf", model.logicAppResourceId());
+        Assertions.assertEquals("f", model.etag());
+        Assertions.assertEquals("jhulsuuvmkjo", model.triggerUri());
+        Assertions.assertEquals("k", model.logicAppResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActionRequest model
-            = new ActionRequest().withEtag("t").withTriggerUri("ixjsprozvcputeg").withLogicAppResourceId("vwmf");
+            = new ActionRequest().withEtag("f").withTriggerUri("jhulsuuvmkjo").withLogicAppResourceId("k");
         model = BinaryData.fromObject(model).toObject(ActionRequest.class);
-        Assertions.assertEquals("t", model.etag());
-        Assertions.assertEquals("ixjsprozvcputeg", model.triggerUri());
-        Assertions.assertEquals("vwmf", model.logicAppResourceId());
+        Assertions.assertEquals("f", model.etag());
+        Assertions.assertEquals("jhulsuuvmkjo", model.triggerUri());
+        Assertions.assertEquals("k", model.logicAppResourceId());
     }
 }

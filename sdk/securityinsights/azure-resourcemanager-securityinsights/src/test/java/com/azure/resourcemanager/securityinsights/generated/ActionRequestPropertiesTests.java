@@ -12,18 +12,18 @@ public final class ActionRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionRequestProperties model
-            = BinaryData.fromString("{\"triggerUri\":\"yoqpsoaccta\",\"logicAppResourceId\":\"akl\"}")
+            = BinaryData.fromString("{\"triggerUri\":\"psoacctazakljl\",\"logicAppResourceId\":\"hbcryffdfdosyge\"}")
                 .toObject(ActionRequestProperties.class);
-        Assertions.assertEquals("akl", model.logicAppResourceId());
-        Assertions.assertEquals("yoqpsoaccta", model.triggerUri());
+        Assertions.assertEquals("hbcryffdfdosyge", model.logicAppResourceId());
+        Assertions.assertEquals("psoacctazakljl", model.triggerUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActionRequestProperties model
-            = new ActionRequestProperties().withLogicAppResourceId("akl").withTriggerUri("yoqpsoaccta");
+            = new ActionRequestProperties().withLogicAppResourceId("hbcryffdfdosyge").withTriggerUri("psoacctazakljl");
         model = BinaryData.fromObject(model).toObject(ActionRequestProperties.class);
-        Assertions.assertEquals("akl", model.logicAppResourceId());
-        Assertions.assertEquals("yoqpsoaccta", model.triggerUri());
+        Assertions.assertEquals("hbcryffdfdosyge", model.logicAppResourceId());
+        Assertions.assertEquals("psoacctazakljl", model.triggerUri());
     }
 }

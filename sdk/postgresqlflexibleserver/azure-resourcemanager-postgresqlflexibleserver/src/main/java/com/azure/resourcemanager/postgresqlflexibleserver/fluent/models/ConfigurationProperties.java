@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class ConfigurationProperties implements JsonSerializable<ConfigurationProperties> {
     /*
-     * Value of the configuration.
+     * Value of the configuration. Required to update the configuration.
      */
     private String value;
 
@@ -43,7 +43,7 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     private String allowedValues;
 
     /*
-     * Source of the configuration.
+     * Source of the configuration. Required to update the configuration.
      */
     private String source;
 
@@ -79,7 +79,7 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the value property: Value of the configuration.
+     * Get the value property: Value of the configuration. Required to update the configuration.
      * 
      * @return the value value.
      */
@@ -88,7 +88,7 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Set the value property: Value of the configuration.
+     * Set the value property: Value of the configuration. Required to update the configuration.
      * 
      * @param value the value value to set.
      * @return the ConfigurationProperties object itself.
@@ -135,7 +135,7 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the source property: Source of the configuration.
+     * Get the source property: Source of the configuration. Required to update the configuration.
      * 
      * @return the source value.
      */
@@ -144,7 +144,7 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Set the source property: Source of the configuration.
+     * Set the source property: Source of the configuration. Required to update the configuration.
      * 
      * @param source the source value to set.
      * @return the ConfigurationProperties object itself.

@@ -23,7 +23,7 @@ public final class ThreatIntelligenceIndicatorModel extends ThreatIntelligenceIn
     /*
      * The kind of the entity.
      */
-    private ThreatIntelligenceResourceKindEnum kind = ThreatIntelligenceResourceKindEnum.INDICATOR;
+    private ThreatIntelligenceResourceInnerKind kind = ThreatIntelligenceResourceInnerKind.INDICATOR;
 
     /*
      * Threat Intelligence Entity properties
@@ -62,7 +62,7 @@ public final class ThreatIntelligenceIndicatorModel extends ThreatIntelligenceIn
      * @return the kind value.
      */
     @Override
-    public ThreatIntelligenceResourceKindEnum kind() {
+    public ThreatIntelligenceResourceInnerKind kind() {
         return this.kind;
     }
 
@@ -844,7 +844,7 @@ public final class ThreatIntelligenceIndicatorModel extends ThreatIntelligenceIn
                     deserializedThreatIntelligenceIndicatorModel.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedThreatIntelligenceIndicatorModel.kind
-                        = ThreatIntelligenceResourceKindEnum.fromString(reader.getString());
+                        = ThreatIntelligenceResourceInnerKind.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedThreatIntelligenceIndicatorModel.innerProperties
                         = ThreatIntelligenceIndicatorProperties.fromJson(reader);

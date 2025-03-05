@@ -12,7 +12,6 @@ extends:
         groupId: com.azure
         safeName: azuremessagingwebpubsubclient
     TimeoutInMinutes: 60
-    SupportedClouds: 'Public,UsGov,China'
     EnvVars:
       AZURE_LOG_LEVEL: 2
       AZURE_SUBSCRIPTION_ID: $(WEBPUBSUB_SUBSCRIPTION_ID)

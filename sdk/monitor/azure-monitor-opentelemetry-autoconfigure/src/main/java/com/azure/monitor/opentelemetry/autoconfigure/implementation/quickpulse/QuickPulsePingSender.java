@@ -17,6 +17,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 import reactor.util.annotation.Nullable;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -77,12 +78,15 @@ class QuickPulsePingSender {
 
         Date currentDate = new Date();
         long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
+        // should not include "QuickPulseService.svc/"
         String endpointPrefix
             = Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
+        logger.verbose("About to ping quickpulse with the endpoint prefix: {}", endpointPrefix);
 
         long sendTime = System.nanoTime();
 
         try {
+            // The swagger api appends QuickPulseService.svc/ when creating the request.
             Response<CollectionConfigurationInfo> responseMono
                 = liveMetricsRestAPIsForClientSDKs
                     .isSubscribedNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey,
@@ -104,6 +108,12 @@ class QuickPulsePingSender {
 
             CollectionConfigurationInfo body = responseMono.getValue();
             if (body != null && !configuration.get().getETag().equals(body.getETag())) {
+                try {
+                    logger.verbose("Received a new live metrics filtering configuration from ping response: {}",
+                        body.toJsonString());
+                } catch (IOException e) {
+                    logger.verbose(e.getMessage());
+                }
                 configuration.set(new FilteringConfiguration(body));
             }
 
@@ -111,9 +121,9 @@ class QuickPulsePingSender {
         } catch (RuntimeException e) {
             // 404 landed here
             Throwable t = e.getCause();
-            if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(t, getQuickPulseEndpoint(),
+            if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(t, endpointPrefix,
                 friendlyExceptionThrown, logger)) {
-                operationLogger.recordFailure(t.getMessage() + " (" + endpointPrefix + ")", t, QUICK_PULSE_PING_ERROR);
+                operationLogger.recordFailure(t.getMessage(), t, QUICK_PULSE_PING_ERROR);
             }
         }
         return onPingError(sendTime);

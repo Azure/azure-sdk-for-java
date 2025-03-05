@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
-import com.azure.cosmos.models.PartitionKind;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -220,18 +219,15 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
                        PartitionKeyDefinition pkDefinition =
                            collectionValueHolder.v.getPartitionKey();
 
-                       if (targetedSplitCount <= 1 ||
-                           effectiveRange.isSingleValue() ||
-                           // splitting ranges into sub ranges only possible for hash partitioning
-                           pkDefinition.getKind() != PartitionKind.HASH) {
+                       if (targetedSplitCount <= 1 || effectiveRange.isSingleValue()) {
 
                            return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
                        }
 
                        PartitionKeyDefinitionVersion effectivePKVersion =
-                           pkDefinition.getVersion() != null
-                           ? pkDefinition.getVersion()
-                           : PartitionKeyDefinitionVersion.V1;
+                               pkDefinition.getVersion() != null
+                                       ? pkDefinition.getVersion()
+                                       : PartitionKeyDefinitionVersion.V1;
                        switch (effectivePKVersion) {
                            case V1:
                                return trySplitWithHashV1(effectiveRange, targetedSplitCount);
@@ -244,6 +240,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
                        }
                    });
     }
+
 
     static List<FeedRangeEpkImpl> trySplitWithHashV1(
         Range<String> effectiveRange,

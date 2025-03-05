@@ -18,8 +18,8 @@ import java.util.UUID;
 public final class IncidentsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
-     * incidents/CreateIncident.json
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/incidents/
+     * CreateIncident.json
      */
     /**
      * Sample code: Creates or updates an incident.

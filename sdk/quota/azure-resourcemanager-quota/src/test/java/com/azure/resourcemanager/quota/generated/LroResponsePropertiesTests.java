@@ -11,7 +11,7 @@ public final class LroResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LroResponseProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Created\"}").toObject(LroResponseProperties.class);
+            = BinaryData.fromString("{\"provisioningState\":\"Accepted\"}").toObject(LroResponseProperties.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -40,7 +40,6 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -391,7 +390,7 @@ public final class MessageUtils {
             long tickTime = (long) described - EPOCH_TICKS;
             int nano = (int) ((tickTime % TICK_PER_SECOND) * TIME_LENGTH_DELTA);
             long seconds = tickTime / TICK_PER_SECOND;
-            return (T) OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds, nano), ZoneId.systemDefault());
+            return (T) OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds, nano), ZoneOffset.UTC);
         } else if (ServiceBusConstants.DURATION_SYMBOL.equals(descriptor)) {
             return (T) Duration.ofNanos(((long) described) * TIME_LENGTH_DELTA);
         }

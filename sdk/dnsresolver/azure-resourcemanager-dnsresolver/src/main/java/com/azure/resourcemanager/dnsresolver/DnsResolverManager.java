@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,28 +20,19 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.fluent.DnsResolverManagementClient;
 import com.azure.resourcemanager.dnsresolver.implementation.DnsForwardingRulesetsImpl;
-import com.azure.resourcemanager.dnsresolver.implementation.DnsResolverDomainListsImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.DnsResolverManagementClientBuilder;
-import com.azure.resourcemanager.dnsresolver.implementation.DnsResolverPoliciesImpl;
-import com.azure.resourcemanager.dnsresolver.implementation.DnsResolverPolicyVirtualNetworkLinksImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.DnsResolversImpl;
-import com.azure.resourcemanager.dnsresolver.implementation.DnsSecurityRulesImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.ForwardingRulesImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.InboundEndpointsImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.OutboundEndpointsImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.VirtualNetworkLinksImpl;
 import com.azure.resourcemanager.dnsresolver.models.DnsForwardingRulesets;
-import com.azure.resourcemanager.dnsresolver.models.DnsResolverDomainLists;
-import com.azure.resourcemanager.dnsresolver.models.DnsResolverPolicies;
-import com.azure.resourcemanager.dnsresolver.models.DnsResolverPolicyVirtualNetworkLinks;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolvers;
-import com.azure.resourcemanager.dnsresolver.models.DnsSecurityRules;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRules;
 import com.azure.resourcemanager.dnsresolver.models.InboundEndpoints;
 import com.azure.resourcemanager.dnsresolver.models.OutboundEndpoints;
@@ -68,14 +60,6 @@ public final class DnsResolverManager {
     private ForwardingRules forwardingRules;
 
     private VirtualNetworkLinks virtualNetworkLinks;
-
-    private DnsResolverPolicies dnsResolverPolicies;
-
-    private DnsSecurityRules dnsSecurityRules;
-
-    private DnsResolverPolicyVirtualNetworkLinks dnsResolverPolicyVirtualNetworkLinks;
-
-    private DnsResolverDomainLists dnsResolverDomainLists;
 
     private final DnsResolverManagementClient clientObject;
 
@@ -241,7 +225,7 @@ public final class DnsResolverManager {
                 .append("-")
                 .append("com.azure.resourcemanager.dnsresolver")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -274,7 +258,7 @@ public final class DnsResolverManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -357,57 +341,6 @@ public final class DnsResolverManager {
             this.virtualNetworkLinks = new VirtualNetworkLinksImpl(clientObject.getVirtualNetworkLinks(), this);
         }
         return virtualNetworkLinks;
-    }
-
-    /**
-     * Gets the resource collection API of DnsResolverPolicies. It manages DnsResolverPolicy.
-     * 
-     * @return Resource collection API of DnsResolverPolicies.
-     */
-    public DnsResolverPolicies dnsResolverPolicies() {
-        if (this.dnsResolverPolicies == null) {
-            this.dnsResolverPolicies = new DnsResolverPoliciesImpl(clientObject.getDnsResolverPolicies(), this);
-        }
-        return dnsResolverPolicies;
-    }
-
-    /**
-     * Gets the resource collection API of DnsSecurityRules. It manages DnsSecurityRule.
-     * 
-     * @return Resource collection API of DnsSecurityRules.
-     */
-    public DnsSecurityRules dnsSecurityRules() {
-        if (this.dnsSecurityRules == null) {
-            this.dnsSecurityRules = new DnsSecurityRulesImpl(clientObject.getDnsSecurityRules(), this);
-        }
-        return dnsSecurityRules;
-    }
-
-    /**
-     * Gets the resource collection API of DnsResolverPolicyVirtualNetworkLinks. It manages
-     * DnsResolverPolicyVirtualNetworkLink.
-     * 
-     * @return Resource collection API of DnsResolverPolicyVirtualNetworkLinks.
-     */
-    public DnsResolverPolicyVirtualNetworkLinks dnsResolverPolicyVirtualNetworkLinks() {
-        if (this.dnsResolverPolicyVirtualNetworkLinks == null) {
-            this.dnsResolverPolicyVirtualNetworkLinks = new DnsResolverPolicyVirtualNetworkLinksImpl(
-                clientObject.getDnsResolverPolicyVirtualNetworkLinks(), this);
-        }
-        return dnsResolverPolicyVirtualNetworkLinks;
-    }
-
-    /**
-     * Gets the resource collection API of DnsResolverDomainLists. It manages DnsResolverDomainList.
-     * 
-     * @return Resource collection API of DnsResolverDomainLists.
-     */
-    public DnsResolverDomainLists dnsResolverDomainLists() {
-        if (this.dnsResolverDomainLists == null) {
-            this.dnsResolverDomainLists
-                = new DnsResolverDomainListsImpl(clientObject.getDnsResolverDomainLists(), this);
-        }
-        return dnsResolverDomainLists;
     }
 
     /**

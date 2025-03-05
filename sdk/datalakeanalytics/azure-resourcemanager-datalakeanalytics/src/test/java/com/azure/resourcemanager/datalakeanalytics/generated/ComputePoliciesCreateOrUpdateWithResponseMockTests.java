@@ -23,7 +23,7 @@ public final class ComputePoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"objectId\":\"a8c1ee1e-7e02-446a-a147-271ad13fb85b\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":1236978734,\"minPriorityPerJob\":2111682042},\"name\":\"f\",\"type\":\"eyvpnqicvinvkj\",\"id\":\"dxrbuukzcle\"}";
+            = "{\"properties\":{\"objectId\":\"cd7cdd38-7565-443e-9c33-4f9f976bb3b2\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":1236978734,\"minPriorityPerJob\":2111682042},\"name\":\"f\",\"type\":\"eyvpnqicvinvkj\",\"id\":\"dxrbuukzcle\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,7 +35,7 @@ public final class ComputePoliciesCreateOrUpdateWithResponseMockTests {
         ComputePolicy response = manager.computePolicies()
             .define("sjervti")
             .withExistingAccount("ggkfpagaowpul", "qblylsyxkqj")
-            .withObjectId(UUID.fromString("97f93afd-2da0-4573-a531-02eeca5cd4fc"))
+            .withObjectId(UUID.fromString("1ecb9b59-4670-4d6f-a33e-da2c79814590"))
             .withObjectType(AadObjectType.GROUP)
             .withMaxDegreeOfParallelismPerJob(1353667842)
             .withMinPriorityPerJob(424844999)

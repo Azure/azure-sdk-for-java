@@ -30,7 +30,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     private AzureBareMetalInstanceProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The system metadata relating to this resource.
      */
     private SystemData systemData;
 
@@ -65,7 +65,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: The system metadata relating to this resource.
      * 
      * @return the systemData value.
      */
@@ -122,7 +122,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Get the hardwareProfile property: Specifies the hardware settings for the Azure Bare Metal Instance.
+     * Get the hardwareProfile property: Specifies the hardware settings for the AzureBareMetal instance.
      * 
      * @return the hardwareProfile value.
      */
@@ -131,7 +131,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Set the hardwareProfile property: Specifies the hardware settings for the Azure Bare Metal Instance.
+     * Set the hardwareProfile property: Specifies the hardware settings for the AzureBareMetal instance.
      * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the AzureBareMetalInstanceInner object itself.
@@ -145,7 +145,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Get the storageProfile property: Specifies the storage settings for the Azure Bare Metal Instance disks.
+     * Get the storageProfile property: Specifies the storage settings for the AzureBareMetal instance disks.
      * 
      * @return the storageProfile value.
      */
@@ -154,7 +154,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Set the storageProfile property: Specifies the storage settings for the Azure Bare Metal Instance disks.
+     * Set the storageProfile property: Specifies the storage settings for the AzureBareMetal instance disks.
      * 
      * @param storageProfile the storageProfile value to set.
      * @return the AzureBareMetalInstanceInner object itself.
@@ -168,7 +168,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Get the osProfile property: Specifies the operating system settings for the Azure Bare Metal Instance.
+     * Get the osProfile property: Specifies the operating system settings for the AzureBareMetal instance.
      * 
      * @return the osProfile value.
      */
@@ -177,7 +177,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Set the osProfile property: Specifies the operating system settings for the Azure Bare Metal Instance.
+     * Set the osProfile property: Specifies the operating system settings for the AzureBareMetal instance.
      * 
      * @param osProfile the osProfile value to set.
      * @return the AzureBareMetalInstanceInner object itself.
@@ -191,7 +191,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Get the networkProfile property: Specifies the network settings for the Azure Bare Metal Instance.
+     * Get the networkProfile property: Specifies the network settings for the AzureBareMetal instance.
      * 
      * @return the networkProfile value.
      */
@@ -200,7 +200,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Set the networkProfile property: Specifies the network settings for the Azure Bare Metal Instance.
+     * Set the networkProfile property: Specifies the network settings for the AzureBareMetal instance.
      * 
      * @param networkProfile the networkProfile value to set.
      * @return the AzureBareMetalInstanceInner object itself.
@@ -214,7 +214,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Get the azureBareMetalInstanceId property: Specifies the Azure Bare Metal Instance unique ID.
+     * Get the azureBareMetalInstanceId property: Specifies the AzureBareMetal instance unique ID.
      * 
      * @return the azureBareMetalInstanceId value.
      */
@@ -241,7 +241,7 @@ public final class AzureBareMetalInstanceInner extends Resource {
     }
 
     /**
-     * Get the hwRevision property: Hardware revision of an Azure Bare Metal Instance.
+     * Get the hwRevision property: Hardware revision of an AzureBareMetal instance.
      * 
      * @return the hwRevision value.
      */

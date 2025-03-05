@@ -6,32 +6,34 @@ package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
 
-/** An immutable client-side representation of SharedAccessSignatureAuthorizationRule. */
+/**
+ * An immutable client-side representation of SharedAccessSignatureAuthorizationRule.
+ */
 public interface SharedAccessSignatureAuthorizationRule {
     /**
      * Gets the keyName property: Name of the key.
-     *
+     * 
      * @return the keyName value.
      */
     String keyName();
 
     /**
      * Gets the primaryKey property: Primary SAS key value.
-     *
+     * 
      * @return the primaryKey value.
      */
     String primaryKey();
 
     /**
      * Gets the secondaryKey property: Secondary SAS key value.
-     *
+     * 
      * @return the secondaryKey value.
      */
     String secondaryKey();
 
     /**
      * Gets the rights property: Rights that this key has.
-     *
+     * 
      * @return the rights value.
      */
     AccessRightsDescription rights();
@@ -40,7 +42,7 @@ public interface SharedAccessSignatureAuthorizationRule {
      * Gets the inner
      * com.azure.resourcemanager.deviceprovisioningservices.fluent.models.SharedAccessSignatureAuthorizationRuleInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     SharedAccessSignatureAuthorizationRuleInner innerModel();

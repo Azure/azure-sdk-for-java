@@ -11,7 +11,7 @@ public final class FileEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileEntityProperties model = BinaryData.fromString(
-            "{\"directory\":\"uxdtzcq\",\"fileHashEntityIds\":[\"dudgcozzomeh\",\"lantolamlb\"],\"fileName\":\"uxkqllczipvwdt\",\"hostEntityId\":\"kzdqiqdlratrkwxo\",\"additionalData\":{\"lglh\":\"dataxsuykznhrfg\",\"f\":\"datary\"},\"friendlyName\":\"huioaeoc\"}")
+            "{\"directory\":\"fl\",\"fileHashEntityIds\":[\"pizruwnpqxpxiw\",\"cng\"],\"fileName\":\"aas\",\"hostEntityId\":\"xtmkzjvkviir\",\"additionalData\":{\"ra\":\"datagrwsdp\",\"ctctbrxkjz\":\"datazvzbglbyv\",\"bkgozxwopdbydpi\":\"datargxffmshkw\",\"nugj\":\"dataqaclnapxbiy\"},\"friendlyName\":\"fsmfcttuxuuyi\"}")
             .toObject(FileEntityProperties.class);
     }
 

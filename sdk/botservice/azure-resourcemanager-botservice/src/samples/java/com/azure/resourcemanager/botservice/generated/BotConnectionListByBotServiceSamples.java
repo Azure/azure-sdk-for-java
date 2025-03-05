@@ -9,8 +9,7 @@ package com.azure.resourcemanager.botservice.generated;
  */
 public final class BotConnectionListByBotServiceSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
+     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
      * ListConnectionsByBotService.json
      */
     /**

@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Specifies the hardware settings for the Azure Bare Metal Instance.
+ * Specifies the hardware settings for the AzureBareMetal instance.
  */
 @Immutable
 public final class HardwareProfile implements JsonSerializable<HardwareProfile> {
@@ -22,7 +22,7 @@ public final class HardwareProfile implements JsonSerializable<HardwareProfile> 
     private AzureBareMetalHardwareTypeNamesEnum hardwareType;
 
     /*
-     * Specifies the Azure Bare Metal Instance SKU.
+     * Specifies the AzureBareMetal instance SKU.
      */
     private AzureBareMetalInstanceSizeNamesEnum azureBareMetalInstanceSize;
 
@@ -42,7 +42,7 @@ public final class HardwareProfile implements JsonSerializable<HardwareProfile> 
     }
 
     /**
-     * Get the azureBareMetalInstanceSize property: Specifies the Azure Bare Metal Instance SKU.
+     * Get the azureBareMetalInstanceSize property: Specifies the AzureBareMetal instance SKU.
      * 
      * @return the azureBareMetalInstanceSize value.
      */

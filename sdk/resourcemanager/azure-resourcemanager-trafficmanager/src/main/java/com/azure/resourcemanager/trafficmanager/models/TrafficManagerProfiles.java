@@ -40,6 +40,10 @@ public interface TrafficManagerProfiles
      */
     Mono<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel);
 
-    /** @return the default geographic hierarchy used by the Geographic traffic routing method. */
+    /**
+     * Gets the default geographic hierarchy used by the Geographic traffic.
+     *
+     * @return the default geographic hierarchy used by the Geographic traffic routing method.
+     */
     GeographicLocation getGeographicHierarchyRoot();
 }

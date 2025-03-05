@@ -1,5 +1,12 @@
 # Azure Monitor OpenTelemetry Exporter client library for Java
 
+## Deprecation Notice
+
+> Please note, this package has been deprecated and will no longer be maintained. We encourage you to
+> upgrade to the replacement package, `azure-monitor-opentelemetry-autoconfigure`, to continue receiving updates.
+> Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+> Checkout the [Migration Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-opentelemetry-exporter/MIGRATION.md) for detailed instructions on how to update your application code from version 1.0.0-beta.x to the `azure-monitor-opentelemetry-autoconfigure` library.
+
 This client library provides support for exporting OpenTelemetry data to Azure Monitor. This package assumes your
  application is already instrumented with the [OpenTelemetry SDK][opentelemetry_sdk] following the [OpenTelemetry
  Specification][opentelemetry_specification].
@@ -162,23 +169,23 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter/src
 [azure_subscription]: https://azure.microsoft.com/free/
-[api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
+[api_reference_doc]: https://learn.microsoft.com/azure/azure-monitor/overview
 [package_mvn]: https://central.sonatype.com/artifact/com.azure/azure-monitor-opentelemetry-exporter
-[product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[product_documentation]: https://learn.microsoft.com/azure/azure-monitor/overview
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
-[custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
+[custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [opentelemetry_sdk]: https://github.com/open-telemetry/opentelemetry-java/blob/master/QUICKSTART.md
 [opentelemetry_specification]: https://github.com/open-telemetry/opentelemetry-specification
-[application_insights_resource]: https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource
-[application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
+[application_insights_resource]: https://learn.microsoft.com/azure/azure-monitor/app/create-new-resource
+[application_insights_intro]: https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview
 [azure_portal]: https://ms.portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/microsoft.insights%2Fcomponents
 [opentelemetry_io]: https://opentelemetry.io/ 
 [span_data]: https://opentelemetry.lightstep.com/spans
@@ -196,4 +203,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%monitor%2Fazure-monitor-opentelemetry-exporter%2FREADME.png)
+

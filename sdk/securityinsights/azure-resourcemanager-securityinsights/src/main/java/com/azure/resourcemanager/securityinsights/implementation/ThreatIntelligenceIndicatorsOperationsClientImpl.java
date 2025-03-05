@@ -71,8 +71,8 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
         Mono<Response<ThreatIntelligenceInformationList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @QueryParam("$filter") String filter, @QueryParam("$orderby") String orderby,
-            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @QueryParam("$orderby") String orderby,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -90,11 +90,11 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
      * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
      * a starting point to use for subsequent calls. Optional.
+     * @param orderby Sorts the results. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -103,7 +103,7 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ThreatIntelligenceInformationInner>> listSinglePageAsync(String resourceGroupName,
-        String workspaceName, String filter, String orderby, Integer top, String skipToken) {
+        String workspaceName, String filter, Integer top, String skipToken, String orderby) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -122,7 +122,7 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, filter, orderby, top, skipToken,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, filter, top, skipToken, orderby,
                 accept, context))
             .<PagedResponse<ThreatIntelligenceInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -135,11 +135,11 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
      * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
      * a starting point to use for subsequent calls. Optional.
+     * @param orderby Sorts the results. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -149,7 +149,7 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ThreatIntelligenceInformationInner>> listSinglePageAsync(String resourceGroupName,
-        String workspaceName, String filter, String orderby, Integer top, String skipToken, Context context) {
+        String workspaceName, String filter, Integer top, String skipToken, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -169,7 +169,7 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, filter, orderby, top, skipToken, accept, context)
+                resourceGroupName, workspaceName, filter, top, skipToken, orderby, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -180,11 +180,11 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
      * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
      * a starting point to use for subsequent calls. Optional.
+     * @param orderby Sorts the results. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -192,9 +192,9 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ThreatIntelligenceInformationInner> listAsync(String resourceGroupName, String workspaceName,
-        String filter, String orderby, Integer top, String skipToken) {
+        String filter, Integer top, String skipToken, String orderby) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, filter, orderby, top, skipToken),
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, filter, top, skipToken, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -211,11 +211,11 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ThreatIntelligenceInformationInner> listAsync(String resourceGroupName, String workspaceName) {
         final String filter = null;
-        final String orderby = null;
         final Integer top = null;
         final String skipToken = null;
+        final String orderby = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, filter, orderby, top, skipToken),
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, filter, top, skipToken, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -225,11 +225,11 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
      * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
      * a starting point to use for subsequent calls. Optional.
+     * @param orderby Sorts the results. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -238,9 +238,9 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ThreatIntelligenceInformationInner> listAsync(String resourceGroupName, String workspaceName,
-        String filter, String orderby, Integer top, String skipToken, Context context) {
+        String filter, Integer top, String skipToken, String orderby, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, filter, orderby, top, skipToken, context),
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, filter, top, skipToken, orderby, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -257,10 +257,10 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ThreatIntelligenceInformationInner> list(String resourceGroupName, String workspaceName) {
         final String filter = null;
-        final String orderby = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, filter, orderby, top, skipToken));
+        final String orderby = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, filter, top, skipToken, orderby));
     }
 
     /**
@@ -269,11 +269,11 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
      * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
      * a starting point to use for subsequent calls. Optional.
+     * @param orderby Sorts the results. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -282,9 +282,9 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ThreatIntelligenceInformationInner> list(String resourceGroupName, String workspaceName,
-        String filter, String orderby, Integer top, String skipToken, Context context) {
+        String filter, Integer top, String skipToken, String orderby, Context context) {
         return new PagedIterable<>(
-            listAsync(resourceGroupName, workspaceName, filter, orderby, top, skipToken, context));
+            listAsync(resourceGroupName, workspaceName, filter, top, skipToken, orderby, context));
     }
 
     /**

@@ -11,7 +11,7 @@ public final class AccountEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccountEntityProperties model = BinaryData.fromString(
-            "{\"aadTenantId\":\"amt\",\"aadUserId\":\"kwppthuzdprmimr\",\"accountName\":\"dpoqfxyem\",\"displayName\":\"ftb\",\"hostEntityId\":\"whtecloamfmxtll\",\"isDomainJoined\":true,\"ntDomain\":\"mq\",\"objectGuid\":\"0c9f7e29-fd9b-4dea-aa54-16f9842a463f\",\"puid\":\"rfijhggabq\",\"sid\":\"amklilirwdv\",\"upnSuffix\":\"hsdp\",\"dnsDomain\":\"uhktq\",\"additionalData\":{\"llygta\":\"datawqnjxrdfddt\",\"a\":\"dataczcxdfw\",\"lxrljphraspifl\":\"datayf\"},\"friendlyName\":\"m\"}")
+            "{\"aadTenantId\":\"akoi\",\"aadUserId\":\"nsmjbl\",\"accountName\":\"jhlnymzotqyryu\",\"displayName\":\"bmqqvxmvw\",\"hostEntityId\":\"tayx\",\"isDomainJoined\":false,\"ntDomain\":\"peujlzqn\",\"objectGuid\":\"e11db145-e5d8-4876-a6f6-cfb9fd0e7038\",\"puid\":\"sqltnzo\",\"sid\":\"gsxgnxfyqon\",\"upnSuffix\":\"qoxwd\",\"dnsDomain\":\"dbxiqx\",\"additionalData\":{\"htmwwinh\":\"dataqbi\"},\"friendlyName\":\"f\"}")
             .toObject(AccountEntityProperties.class);
     }
 

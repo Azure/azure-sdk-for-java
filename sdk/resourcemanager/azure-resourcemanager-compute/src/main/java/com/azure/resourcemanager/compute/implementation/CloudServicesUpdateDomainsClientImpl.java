@@ -143,7 +143,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-04";
+        final String apiVersion = "2024-11-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -188,7 +188,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-04";
+        final String apiVersion = "2024-11-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.walkUpdateDomain(this.client.getEndpoint(), resourceGroupName, cloudServiceName, updateDomain,
@@ -433,7 +433,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-04";
+        final String apiVersion = "2024-11-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getUpdateDomain(this.client.getEndpoint(), resourceGroupName,
@@ -475,7 +475,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-04";
+        final String apiVersion = "2024-11-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getUpdateDomain(this.client.getEndpoint(), resourceGroupName, cloudServiceName, updateDomain,
@@ -570,7 +570,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-04";
+        final String apiVersion = "2024-11-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listUpdateDomains(this.client.getEndpoint(), resourceGroupName,
@@ -611,7 +611,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-04";
+        final String apiVersion = "2024-11-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

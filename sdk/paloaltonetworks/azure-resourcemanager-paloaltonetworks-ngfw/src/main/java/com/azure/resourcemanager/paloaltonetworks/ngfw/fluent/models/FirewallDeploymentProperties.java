@@ -6,6 +6,10 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.DnsSettings;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.FrontendSetting;
@@ -15,72 +19,62 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PanoramaConfig;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PlanData;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.RulestackDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties specific to the Firewall resource deployment.
  */
 @Fluent
-public final class FirewallDeploymentProperties {
+public final class FirewallDeploymentProperties implements JsonSerializable<FirewallDeploymentProperties> {
     /*
      * panEtag info
      */
-    @JsonProperty(value = "panEtag")
     private String panEtag;
 
     /*
      * Network settings
      */
-    @JsonProperty(value = "networkProfile", required = true)
     private NetworkProfile networkProfile;
 
     /*
      * Panorama Managed: Default is False. Default will be CloudSec managed
      */
-    @JsonProperty(value = "isPanoramaManaged")
     private BooleanEnum isPanoramaManaged;
 
     /*
      * Panorama Configuration
      */
-    @JsonProperty(value = "panoramaConfig")
     private PanoramaConfig panoramaConfig;
 
     /*
      * Associated Rulestack
      */
-    @JsonProperty(value = "associatedRulestack")
     private RulestackDetails associatedRulestack;
 
     /*
      * DNS settings for Firewall
      */
-    @JsonProperty(value = "dnsSettings", required = true)
     private DnsSettings dnsSettings;
 
     /*
      * Frontend settings for Firewall
      */
-    @JsonProperty(value = "frontEndSettings")
     private List<FrontendSetting> frontEndSettings;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Billing plan information.
      */
-    @JsonProperty(value = "planData", required = true)
     private PlanData planData;
 
     /*
      * Marketplace details
      */
-    @JsonProperty(value = "marketplaceDetails", required = true)
     private MarketplaceDetails marketplaceDetails;
 
     /**
@@ -285,8 +279,9 @@ public final class FirewallDeploymentProperties {
      */
     public void validate() {
         if (networkProfile() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkProfile in model FirewallDeploymentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkProfile in model FirewallDeploymentProperties"));
         } else {
             networkProfile().validate();
         }
@@ -297,8 +292,9 @@ public final class FirewallDeploymentProperties {
             associatedRulestack().validate();
         }
         if (dnsSettings() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dnsSettings in model FirewallDeploymentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dnsSettings in model FirewallDeploymentProperties"));
         } else {
             dnsSettings().validate();
         }
@@ -306,18 +302,89 @@ public final class FirewallDeploymentProperties {
             frontEndSettings().forEach(e -> e.validate());
         }
         if (planData() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property planData in model FirewallDeploymentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property planData in model FirewallDeploymentProperties"));
         } else {
             planData().validate();
         }
         if (marketplaceDetails() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property marketplaceDetails in model FirewallDeploymentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property marketplaceDetails in model FirewallDeploymentProperties"));
         } else {
             marketplaceDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FirewallDeploymentProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
+        jsonWriter.writeJsonField("planData", this.planData);
+        jsonWriter.writeJsonField("marketplaceDetails", this.marketplaceDetails);
+        jsonWriter.writeStringField("panEtag", this.panEtag);
+        jsonWriter.writeStringField("isPanoramaManaged",
+            this.isPanoramaManaged == null ? null : this.isPanoramaManaged.toString());
+        jsonWriter.writeJsonField("panoramaConfig", this.panoramaConfig);
+        jsonWriter.writeJsonField("associatedRulestack", this.associatedRulestack);
+        jsonWriter.writeArrayField("frontEndSettings", this.frontEndSettings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallDeploymentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallDeploymentProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FirewallDeploymentProperties.
+     */
+    public static FirewallDeploymentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallDeploymentProperties deserializedFirewallDeploymentProperties = new FirewallDeploymentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkProfile".equals(fieldName)) {
+                    deserializedFirewallDeploymentProperties.networkProfile = NetworkProfile.fromJson(reader);
+                } else if ("dnsSettings".equals(fieldName)) {
+                    deserializedFirewallDeploymentProperties.dnsSettings = DnsSettings.fromJson(reader);
+                } else if ("planData".equals(fieldName)) {
+                    deserializedFirewallDeploymentProperties.planData = PlanData.fromJson(reader);
+                } else if ("marketplaceDetails".equals(fieldName)) {
+                    deserializedFirewallDeploymentProperties.marketplaceDetails = MarketplaceDetails.fromJson(reader);
+                } else if ("panEtag".equals(fieldName)) {
+                    deserializedFirewallDeploymentProperties.panEtag = reader.getString();
+                } else if ("isPanoramaManaged".equals(fieldName)) {
+                    deserializedFirewallDeploymentProperties.isPanoramaManaged
+                        = BooleanEnum.fromString(reader.getString());
+                } else if ("panoramaConfig".equals(fieldName)) {
+                    deserializedFirewallDeploymentProperties.panoramaConfig = PanoramaConfig.fromJson(reader);
+                } else if ("associatedRulestack".equals(fieldName)) {
+                    deserializedFirewallDeploymentProperties.associatedRulestack = RulestackDetails.fromJson(reader);
+                } else if ("frontEndSettings".equals(fieldName)) {
+                    List<FrontendSetting> frontEndSettings
+                        = reader.readArray(reader1 -> FrontendSetting.fromJson(reader1));
+                    deserializedFirewallDeploymentProperties.frontEndSettings = frontEndSettings;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFirewallDeploymentProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallDeploymentProperties;
+        });
+    }
 }

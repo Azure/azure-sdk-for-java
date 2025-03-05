@@ -15,22 +15,22 @@ public final class MdatpDataConnectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MdatpDataConnector model = BinaryData.fromString(
-            "{\"kind\":\"MicrosoftDefenderAdvancedThreatProtection\",\"properties\":{\"dataTypes\":{\"alerts\":{\"state\":\"Disabled\"}},\"tenantId\":\"sxjmfmeftvhkmoo\"},\"etag\":\"rh\",\"id\":\"bwgmjgrul\",\"name\":\"fogxhcxnw\",\"type\":\"tpfdzxcouzfwofwa\"}")
+            "{\"kind\":\"MicrosoftDefenderAdvancedThreatProtection\",\"properties\":{\"tenantId\":\"uyxoaf\",\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}}},\"etag\":\"faey\",\"id\":\"nm\",\"name\":\"gv\",\"type\":\"irpghriypoqeyh\"}")
             .toObject(MdatpDataConnector.class);
-        Assertions.assertEquals("rh", model.etag());
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().alerts().state());
-        Assertions.assertEquals("sxjmfmeftvhkmoo", model.tenantId());
+        Assertions.assertEquals("faey", model.etag());
+        Assertions.assertEquals("uyxoaf", model.tenantId());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MdatpDataConnector model = new MdatpDataConnector().withEtag("rh")
+        MdatpDataConnector model = new MdatpDataConnector().withEtag("faey")
+            .withTenantId("uyxoaf")
             .withDataTypes(new AlertsDataTypeOfDataConnector()
-                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.DISABLED)))
-            .withTenantId("sxjmfmeftvhkmoo");
+                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(MdatpDataConnector.class);
-        Assertions.assertEquals("rh", model.etag());
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().alerts().state());
-        Assertions.assertEquals("sxjmfmeftvhkmoo", model.tenantId());
+        Assertions.assertEquals("faey", model.etag());
+        Assertions.assertEquals("uyxoaf", model.tenantId());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
     }
 }

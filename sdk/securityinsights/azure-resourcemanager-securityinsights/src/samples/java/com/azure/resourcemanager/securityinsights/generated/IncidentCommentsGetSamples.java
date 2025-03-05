@@ -10,8 +10,8 @@ package com.azure.resourcemanager.securityinsights.generated;
 public final class IncidentCommentsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
-     * incidents/comments/GetIncidentCommentById.json
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/incidents/
+     * comments/GetIncidentCommentById.json
      */
     /**
      * Sample code: Get an incident comment.

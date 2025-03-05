@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class JavaScriptFunctionBindingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JavaScriptFunctionBinding model = BinaryData
-            .fromString(
-                "{\"type\":\"Microsoft.StreamAnalytics/JavascriptUdf\",\"properties\":{\"script\":\"uoujmkcjhwqy\"}}")
+        JavaScriptFunctionBinding model = BinaryData.fromString(
+            "{\"type\":\"Microsoft.StreamAnalytics/JavascriptUdf\",\"properties\":{\"script\":\"iccjzkzivgvvcna\"}}")
             .toObject(JavaScriptFunctionBinding.class);
-        Assertions.assertEquals("uoujmkcjhwqy", model.script());
+        Assertions.assertEquals("iccjzkzivgvvcna", model.script());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JavaScriptFunctionBinding model = new JavaScriptFunctionBinding().withScript("uoujmkcjhwqy");
+        JavaScriptFunctionBinding model = new JavaScriptFunctionBinding().withScript("iccjzkzivgvvcna");
         model = BinaryData.fromObject(model).toObject(JavaScriptFunctionBinding.class);
-        Assertions.assertEquals("uoujmkcjhwqy", model.script());
+        Assertions.assertEquals("iccjzkzivgvvcna", model.script());
     }
 }

@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.securityinsights.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.securityinsights.models.EntityKind;
+import com.azure.resourcemanager.securityinsights.models.EntityKindEnum;
 import com.azure.resourcemanager.securityinsights.models.IncidentEntitiesResultsMetadata;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,18 +13,18 @@ public final class IncidentEntitiesResultsMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncidentEntitiesResultsMetadata model
-            = BinaryData.fromString("{\"count\":733290659,\"entityKind\":\"CloudApplication\"}")
+            = BinaryData.fromString("{\"count\":1410903229,\"entityKind\":\"Bookmark\"}")
                 .toObject(IncidentEntitiesResultsMetadata.class);
-        Assertions.assertEquals(733290659, model.count());
-        Assertions.assertEquals(EntityKind.CLOUD_APPLICATION, model.entityKind());
+        Assertions.assertEquals(1410903229, model.count());
+        Assertions.assertEquals(EntityKindEnum.BOOKMARK, model.entityKind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IncidentEntitiesResultsMetadata model
-            = new IncidentEntitiesResultsMetadata().withCount(733290659).withEntityKind(EntityKind.CLOUD_APPLICATION);
+            = new IncidentEntitiesResultsMetadata().withCount(1410903229).withEntityKind(EntityKindEnum.BOOKMARK);
         model = BinaryData.fromObject(model).toObject(IncidentEntitiesResultsMetadata.class);
-        Assertions.assertEquals(733290659, model.count());
-        Assertions.assertEquals(EntityKind.CLOUD_APPLICATION, model.entityKind());
+        Assertions.assertEquals(1410903229, model.count());
+        Assertions.assertEquals(EntityKindEnum.BOOKMARK, model.entityKind());
     }
 }

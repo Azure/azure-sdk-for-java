@@ -25,11 +25,6 @@ public final class SmsChannel extends Channel {
      */
     private SmsChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of SmsChannel class.
      */
@@ -64,16 +59,6 @@ public final class SmsChannel extends Channel {
     public SmsChannel withProperties(SmsChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class SmsChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedSmsChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedSmsChannel.provisioningState = reader.getString();
+                    deserializedSmsChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedSmsChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

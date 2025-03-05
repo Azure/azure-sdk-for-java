@@ -4,7 +4,7 @@
 package io.clientcore.core.serialization.xml;
 
 import io.clientcore.core.serialization.xml.implementation.aalto.stax.InputFactoryImpl;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;

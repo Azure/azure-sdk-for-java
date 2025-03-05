@@ -10,7 +10,7 @@ package com.azure.resourcemanager.streamanalytics.generated;
 public final class FunctionsTestSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Test_AzureML.json
      */
     /**
@@ -20,12 +20,12 @@ public final class FunctionsTestSamples {
      */
     public static void testTheConnectionForAnAzureMLFunction(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.functions().test("sjrg", "sjName", "function588", null, com.azure.core.util.Context.NONE);
+        manager.functions().test("sjrg7", "sj9093", "function588", null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Test_JavaScript.json
      */
     /**

@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The type used for update operations of the GlobalRulestackResource.
  */
 @Fluent
-public final class GlobalRulestackResourceUpdate {
+public final class GlobalRulestackResourceUpdate implements JsonSerializable<GlobalRulestackResourceUpdate> {
     /*
      * Global Location
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "identity")
     private AzureResourceManagerManagedIdentityProperties identity;
 
     /*
      * The updatable properties of the GlobalRulestackResource.
      */
-    @JsonProperty(value = "properties")
     private GlobalRulestackResourceUpdateProperties properties;
 
     /**
@@ -108,5 +109,50 @@ public final class GlobalRulestackResourceUpdate {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GlobalRulestackResourceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GlobalRulestackResourceUpdate if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GlobalRulestackResourceUpdate.
+     */
+    public static GlobalRulestackResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GlobalRulestackResourceUpdate deserializedGlobalRulestackResourceUpdate
+                = new GlobalRulestackResourceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedGlobalRulestackResourceUpdate.location = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedGlobalRulestackResourceUpdate.identity
+                        = AzureResourceManagerManagedIdentityProperties.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGlobalRulestackResourceUpdate.properties
+                        = GlobalRulestackResourceUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGlobalRulestackResourceUpdate;
+        });
     }
 }

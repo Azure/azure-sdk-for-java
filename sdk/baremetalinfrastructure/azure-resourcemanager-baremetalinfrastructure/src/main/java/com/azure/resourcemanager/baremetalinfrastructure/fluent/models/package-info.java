@@ -4,6 +4,6 @@
 
 /**
  * Package containing the inner data models for BareMetalInfrastructureClient.
- * The Bare Metal Infrastructure Management client.
+ * The BareMetalInfrastructure Management client.
  */
 package com.azure.resourcemanager.baremetalinfrastructure.fluent.models;

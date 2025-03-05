@@ -17,6 +17,11 @@ public final class Origin extends ExpandableStringEnum<Origin> {
     public static final Origin FULL = fromString("Full");
 
     /**
+     * Static value Customer On-Demand for Origin.
+     */
+    public static final Origin CUSTOMER_ON_DEMAND = fromString("Customer On-Demand");
+
+    /**
      * Creates a new instance of Origin value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

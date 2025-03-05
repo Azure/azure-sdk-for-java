@@ -22,7 +22,7 @@ public final class AccountsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"accountId\":\"7ec5dcba-c2cc-416b-b72d-53b0df94118b\",\"provisioningState\":\"Creating\",\"state\":\"Suspended\",\"creationTime\":\"2021-06-02T09:19:15Z\",\"lastModifiedTime\":\"2021-03-02T12:24:45Z\",\"endpoint\":\"ltyfsop\"},\"location\":\"usue\",\"tags\":{\"jbavorxzdm\":\"wd\",\"nvowgujju\":\"hctbqvudwxdn\",\"zj\":\"wdkcglhsl\"},\"id\":\"yggdtjixh\",\"name\":\"kuofqweykhme\",\"type\":\"evfyexfwhybcib\"}]}";
+            = "{\"value\":[{\"properties\":{\"accountId\":\"35a8200f-b642-4a47-8b4d-d5070765b19c\",\"provisioningState\":\"Creating\",\"state\":\"Suspended\",\"creationTime\":\"2021-06-02T09:19:15Z\",\"lastModifiedTime\":\"2021-03-02T12:24:45Z\",\"endpoint\":\"ltyfsop\"},\"location\":\"usue\",\"tags\":{\"jbavorxzdm\":\"wd\",\"nvowgujju\":\"hctbqvudwxdn\",\"zj\":\"wdkcglhsl\"},\"id\":\"yggdtjixh\",\"name\":\"kuofqweykhme\",\"type\":\"evfyexfwhybcib\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

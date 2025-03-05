@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** List of possible provisioning service SKUs. */
+/**
+ * List of possible provisioning service SKUs.
+ */
 @Fluent
-public final class IotDpsSkuInfo {
+public final class IotDpsSkuInfo implements JsonSerializable<IotDpsSkuInfo> {
     /*
      * Sku name.
      */
-    @JsonProperty(value = "name")
     private IotDpsSku name;
 
     /*
      * Pricing tier name of the provisioning service.
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
     /*
      * The number of units to provision
      */
-    @JsonProperty(value = "capacity")
     private Long capacity;
 
     /**
+     * Creates an instance of IotDpsSkuInfo class.
+     */
+    public IotDpsSkuInfo() {
+    }
+
+    /**
      * Get the name property: Sku name.
-     *
+     * 
      * @return the name value.
      */
     public IotDpsSku name() {
@@ -39,7 +48,7 @@ public final class IotDpsSkuInfo {
 
     /**
      * Set the name property: Sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the IotDpsSkuInfo object itself.
      */
@@ -50,7 +59,7 @@ public final class IotDpsSkuInfo {
 
     /**
      * Get the tier property: Pricing tier name of the provisioning service.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -59,7 +68,7 @@ public final class IotDpsSkuInfo {
 
     /**
      * Get the capacity property: The number of units to provision.
-     *
+     * 
      * @return the capacity value.
      */
     public Long capacity() {
@@ -68,7 +77,7 @@ public final class IotDpsSkuInfo {
 
     /**
      * Set the capacity property: The number of units to provision.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the IotDpsSkuInfo object itself.
      */
@@ -79,9 +88,50 @@ public final class IotDpsSkuInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotDpsSkuInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotDpsSkuInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotDpsSkuInfo.
+     */
+    public static IotDpsSkuInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotDpsSkuInfo deserializedIotDpsSkuInfo = new IotDpsSkuInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIotDpsSkuInfo.name = IotDpsSku.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedIotDpsSkuInfo.tier = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedIotDpsSkuInfo.capacity = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotDpsSkuInfo;
+        });
     }
 }

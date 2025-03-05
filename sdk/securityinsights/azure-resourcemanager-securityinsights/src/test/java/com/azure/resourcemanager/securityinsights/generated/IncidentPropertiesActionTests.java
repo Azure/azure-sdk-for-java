@@ -21,46 +21,45 @@ public final class IncidentPropertiesActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncidentPropertiesAction model = BinaryData.fromString(
-            "{\"severity\":\"Informational\",\"status\":\"Closed\",\"classification\":\"FalsePositive\",\"classificationReason\":\"IncorrectAlertLogic\",\"classificationComment\":\"vbiiftksdwgdnk\",\"owner\":{\"email\":\"mwdhcebuvczldbg\",\"assignedTo\":\"outbaaqgzeka\",\"objectId\":\"5d0e32ba-0dd7-4dd0-9914-2cc1c138c74e\",\"userPrincipalName\":\"yzgsnorbjgmnz\",\"ownerType\":\"User\"},\"labels\":[{\"labelName\":\"rxkhlob\",\"labelType\":\"AutoAssigned\"},{\"labelName\":\"bhvhdiqay\",\"labelType\":\"User\"},{\"labelName\":\"iyu\",\"labelType\":\"User\"}]}")
+            "{\"severity\":\"Low\",\"status\":\"Closed\",\"classification\":\"FalsePositive\",\"classificationReason\":\"SuspiciousButExpected\",\"classificationComment\":\"rddga\",\"owner\":{\"email\":\"hiosrsjuiv\",\"assignedTo\":\"disyirnxz\",\"objectId\":\"1947767a-4bde-49e4-bfcc-d92753ab77d6\",\"userPrincipalName\":\"exrxzbujrtrhq\",\"ownerType\":\"Group\"},\"labels\":[{\"labelName\":\"khgn\",\"labelType\":\"AutoAssigned\"}]}")
             .toObject(IncidentPropertiesAction.class);
-        Assertions.assertEquals(IncidentSeverity.INFORMATIONAL, model.severity());
+        Assertions.assertEquals(IncidentSeverity.LOW, model.severity());
         Assertions.assertEquals(IncidentStatus.CLOSED, model.status());
         Assertions.assertEquals(IncidentClassification.FALSE_POSITIVE, model.classification());
-        Assertions.assertEquals(IncidentClassificationReason.INCORRECT_ALERT_LOGIC, model.classificationReason());
-        Assertions.assertEquals("vbiiftksdwgdnk", model.classificationComment());
-        Assertions.assertEquals("mwdhcebuvczldbg", model.owner().email());
-        Assertions.assertEquals("outbaaqgzeka", model.owner().assignedTo());
-        Assertions.assertEquals(UUID.fromString("5d0e32ba-0dd7-4dd0-9914-2cc1c138c74e"), model.owner().objectId());
-        Assertions.assertEquals("yzgsnorbjgmnz", model.owner().userPrincipalName());
-        Assertions.assertEquals(OwnerType.USER, model.owner().ownerType());
-        Assertions.assertEquals("rxkhlob", model.labels().get(0).labelName());
+        Assertions.assertEquals(IncidentClassificationReason.SUSPICIOUS_BUT_EXPECTED, model.classificationReason());
+        Assertions.assertEquals("rddga", model.classificationComment());
+        Assertions.assertEquals("hiosrsjuiv", model.owner().email());
+        Assertions.assertEquals("disyirnxz", model.owner().assignedTo());
+        Assertions.assertEquals(UUID.fromString("1947767a-4bde-49e4-bfcc-d92753ab77d6"), model.owner().objectId());
+        Assertions.assertEquals("exrxzbujrtrhq", model.owner().userPrincipalName());
+        Assertions.assertEquals(OwnerType.GROUP, model.owner().ownerType());
+        Assertions.assertEquals("khgn", model.labels().get(0).labelName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncidentPropertiesAction model = new IncidentPropertiesAction().withSeverity(IncidentSeverity.INFORMATIONAL)
+        IncidentPropertiesAction model = new IncidentPropertiesAction().withSeverity(IncidentSeverity.LOW)
             .withStatus(IncidentStatus.CLOSED)
             .withClassification(IncidentClassification.FALSE_POSITIVE)
-            .withClassificationReason(IncidentClassificationReason.INCORRECT_ALERT_LOGIC)
-            .withClassificationComment("vbiiftksdwgdnk")
-            .withOwner(new IncidentOwnerInfo().withEmail("mwdhcebuvczldbg")
-                .withAssignedTo("outbaaqgzeka")
-                .withObjectId(UUID.fromString("5d0e32ba-0dd7-4dd0-9914-2cc1c138c74e"))
-                .withUserPrincipalName("yzgsnorbjgmnz")
-                .withOwnerType(OwnerType.USER))
-            .withLabels(Arrays.asList(new IncidentLabel().withLabelName("rxkhlob"),
-                new IncidentLabel().withLabelName("bhvhdiqay"), new IncidentLabel().withLabelName("iyu")));
+            .withClassificationReason(IncidentClassificationReason.SUSPICIOUS_BUT_EXPECTED)
+            .withClassificationComment("rddga")
+            .withOwner(new IncidentOwnerInfo().withEmail("hiosrsjuiv")
+                .withAssignedTo("disyirnxz")
+                .withObjectId(UUID.fromString("1947767a-4bde-49e4-bfcc-d92753ab77d6"))
+                .withUserPrincipalName("exrxzbujrtrhq")
+                .withOwnerType(OwnerType.GROUP))
+            .withLabels(Arrays.asList(new IncidentLabel().withLabelName("khgn")));
         model = BinaryData.fromObject(model).toObject(IncidentPropertiesAction.class);
-        Assertions.assertEquals(IncidentSeverity.INFORMATIONAL, model.severity());
+        Assertions.assertEquals(IncidentSeverity.LOW, model.severity());
         Assertions.assertEquals(IncidentStatus.CLOSED, model.status());
         Assertions.assertEquals(IncidentClassification.FALSE_POSITIVE, model.classification());
-        Assertions.assertEquals(IncidentClassificationReason.INCORRECT_ALERT_LOGIC, model.classificationReason());
-        Assertions.assertEquals("vbiiftksdwgdnk", model.classificationComment());
-        Assertions.assertEquals("mwdhcebuvczldbg", model.owner().email());
-        Assertions.assertEquals("outbaaqgzeka", model.owner().assignedTo());
-        Assertions.assertEquals(UUID.fromString("5d0e32ba-0dd7-4dd0-9914-2cc1c138c74e"), model.owner().objectId());
-        Assertions.assertEquals("yzgsnorbjgmnz", model.owner().userPrincipalName());
-        Assertions.assertEquals(OwnerType.USER, model.owner().ownerType());
-        Assertions.assertEquals("rxkhlob", model.labels().get(0).labelName());
+        Assertions.assertEquals(IncidentClassificationReason.SUSPICIOUS_BUT_EXPECTED, model.classificationReason());
+        Assertions.assertEquals("rddga", model.classificationComment());
+        Assertions.assertEquals("hiosrsjuiv", model.owner().email());
+        Assertions.assertEquals("disyirnxz", model.owner().assignedTo());
+        Assertions.assertEquals(UUID.fromString("1947767a-4bde-49e4-bfcc-d92753ab77d6"), model.owner().objectId());
+        Assertions.assertEquals("exrxzbujrtrhq", model.owner().userPrincipalName());
+        Assertions.assertEquals(OwnerType.GROUP, model.owner().ownerType());
+        Assertions.assertEquals("khgn", model.labels().get(0).labelName());
     }
 }

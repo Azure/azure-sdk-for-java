@@ -15,7 +15,6 @@ import com.azure.resourcemanager.securityinsights.models.UserInfo;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 /**
  * Describes watchlist item properties.
@@ -65,12 +64,12 @@ public final class WatchlistItemProperties implements JsonSerializable<Watchlist
     /*
      * key-value pairs for a watchlist item
      */
-    private Map<String, Object> itemsKeyValue;
+    private Object itemsKeyValue;
 
     /*
      * key-value pairs for a watchlist item entity mapping
      */
-    private Map<String, Object> entityMapping;
+    private Object entityMapping;
 
     /**
      * Creates an instance of WatchlistItemProperties class.
@@ -243,7 +242,7 @@ public final class WatchlistItemProperties implements JsonSerializable<Watchlist
      * 
      * @return the itemsKeyValue value.
      */
-    public Map<String, Object> itemsKeyValue() {
+    public Object itemsKeyValue() {
         return this.itemsKeyValue;
     }
 
@@ -253,7 +252,7 @@ public final class WatchlistItemProperties implements JsonSerializable<Watchlist
      * @param itemsKeyValue the itemsKeyValue value to set.
      * @return the WatchlistItemProperties object itself.
      */
-    public WatchlistItemProperties withItemsKeyValue(Map<String, Object> itemsKeyValue) {
+    public WatchlistItemProperties withItemsKeyValue(Object itemsKeyValue) {
         this.itemsKeyValue = itemsKeyValue;
         return this;
     }
@@ -263,7 +262,7 @@ public final class WatchlistItemProperties implements JsonSerializable<Watchlist
      * 
      * @return the entityMapping value.
      */
-    public Map<String, Object> entityMapping() {
+    public Object entityMapping() {
         return this.entityMapping;
     }
 
@@ -273,7 +272,7 @@ public final class WatchlistItemProperties implements JsonSerializable<Watchlist
      * @param entityMapping the entityMapping value to set.
      * @return the WatchlistItemProperties object itself.
      */
-    public WatchlistItemProperties withEntityMapping(Map<String, Object> entityMapping) {
+    public WatchlistItemProperties withEntityMapping(Object entityMapping) {
         this.entityMapping = entityMapping;
         return this;
     }
@@ -305,8 +304,7 @@ public final class WatchlistItemProperties implements JsonSerializable<Watchlist
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("itemsKeyValue", this.itemsKeyValue,
-            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("itemsKeyValue", this.itemsKeyValue);
         jsonWriter.writeStringField("watchlistItemType", this.watchlistItemType);
         jsonWriter.writeStringField("watchlistItemId", this.watchlistItemId);
         jsonWriter.writeStringField("tenantId", this.tenantId);
@@ -317,8 +315,7 @@ public final class WatchlistItemProperties implements JsonSerializable<Watchlist
             this.updated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updated));
         jsonWriter.writeJsonField("createdBy", this.createdBy);
         jsonWriter.writeJsonField("updatedBy", this.updatedBy);
-        jsonWriter.writeMapField("entityMapping", this.entityMapping,
-            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("entityMapping", this.entityMapping);
         return jsonWriter.writeEndObject();
     }
 
@@ -339,8 +336,7 @@ public final class WatchlistItemProperties implements JsonSerializable<Watchlist
                 reader.nextToken();
 
                 if ("itemsKeyValue".equals(fieldName)) {
-                    Map<String, Object> itemsKeyValue = reader.readMap(reader1 -> reader1.readUntyped());
-                    deserializedWatchlistItemProperties.itemsKeyValue = itemsKeyValue;
+                    deserializedWatchlistItemProperties.itemsKeyValue = reader.readUntyped();
                 } else if ("watchlistItemType".equals(fieldName)) {
                     deserializedWatchlistItemProperties.watchlistItemType = reader.getString();
                 } else if ("watchlistItemId".equals(fieldName)) {
@@ -360,8 +356,7 @@ public final class WatchlistItemProperties implements JsonSerializable<Watchlist
                 } else if ("updatedBy".equals(fieldName)) {
                     deserializedWatchlistItemProperties.updatedBy = UserInfo.fromJson(reader);
                 } else if ("entityMapping".equals(fieldName)) {
-                    Map<String, Object> entityMapping = reader.readMap(reader1 -> reader1.readUntyped());
-                    deserializedWatchlistItemProperties.entityMapping = entityMapping;
+                    deserializedWatchlistItemProperties.entityMapping = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

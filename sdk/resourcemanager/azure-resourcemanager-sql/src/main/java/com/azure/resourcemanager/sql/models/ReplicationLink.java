@@ -19,40 +19,88 @@ import java.time.OffsetDateTime;
 public interface ReplicationLink
     extends Refreshable<ReplicationLink>, HasInnerModel<ReplicationLinkInner>, HasResourceGroup, HasName, HasId {
 
-    /** @return name of the SQL Server to which this replication belongs */
+    /**
+     * Gets name of the SQL Server to which this replication belongs.
+     *
+     * @return name of the SQL Server to which this replication belongs
+     */
     String sqlServerName();
 
-    /** @return name of the SQL Database to which this replication belongs */
+    /**
+     * Gets name of the SQL Database to which this replication belongs.
+     *
+     * @return name of the SQL Database to which this replication belongs
+     */
     String databaseName();
 
-    /** @return the name of the Azure SQL Server hosting the partner Azure SQL Database. */
+    /**
+     * Gets the name of the Azure SQL Server hosting the partner Azure SQL Database.
+     *
+     * @return the name of the Azure SQL Server hosting the partner Azure SQL Database.
+     */
     String partnerServer();
 
-    /** @return the name of the partner Azure SQL Database */
+    /**
+     * Gets the name of the partner Azure SQL Database.
+     *
+     * @return the name of the partner Azure SQL Database
+     */
     String partnerDatabase();
 
-    /** @return the Azure Region of the partner Azure SQL Database */
+    /**
+     * Gets the Azure Region of the partner Azure SQL Database.
+     *
+     * @return the Azure Region of the partner Azure SQL Database
+     */
     String partnerLocation();
 
-    /** @return the role of the SQL Database in the replication link */
+    /**
+     * Gets the role of the SQL Database in the replication link.
+     *
+     * @return the role of the SQL Database in the replication link
+     */
     ReplicationRole role();
 
-    /** @return the role of the partner SQL Database in the replication link */
+    /**
+     * Gets the role of the partner SQL Database in the replication link.
+     *
+     * @return the role of the partner SQL Database in the replication link
+     */
     ReplicationRole partnerRole();
 
-    /** @return start time for the replication link (ISO8601 format) */
+    /**
+     * Gets start time for the replication link.
+     *
+     * @return start time for the replication link (ISO8601 format)
+     */
     OffsetDateTime startTime();
 
-    /** @return the percentage of the seeding completed for the replication link */
+    /**
+     * Gets the percentage of the seeding completed for the replication link.
+     *
+     * @return the percentage of the seeding completed for the replication link
+     */
     int percentComplete();
 
-    /** @return the replication state for the replication link */
+    /**
+     * Gets the replication state for the replication link.
+     *
+     * @return the replication state for the replication link
+     */
     ReplicationState replicationState();
 
-    /** @return the legacy value indicating whether termination is allowed (currently always returns true) */
+    /**
+     * Checks whether termination is allowed.
+     *
+     * @return the legacy value indicating whether termination is allowed (currently always returns true)
+     */
     boolean isTerminationAllowed();
 
-    /** @return the replication mode of this replication link */
+    /**
+     * Gets the replication mode of this replication link.
+     *
+     * @return the replication mode of this replication link
+     */
     String replicationMode();
 
     /** Deletes the replication link. */

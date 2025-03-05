@@ -20,8 +20,8 @@ public final class PrefixListLocalRulestackGetSamples {
      */
     public static void prefixListLocalRulestackGetMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.prefixListLocalRulestacks().getWithResponse("rgopenapi", "lrs1", "armid1",
-            com.azure.core.util.Context.NONE);
+        manager.prefixListLocalRulestacks()
+            .getWithResponse("rgopenapi", "lrs1", "armid1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class PrefixListLocalRulestackGetSamples {
      */
     public static void prefixListLocalRulestackGetMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.prefixListLocalRulestacks().getWithResponse("rgopenapi", "lrs1", "armid1",
-            com.azure.core.util.Context.NONE);
+        manager.prefixListLocalRulestacks()
+            .getWithResponse("rgopenapi", "lrs1", "armid1", com.azure.core.util.Context.NONE);
     }
 }

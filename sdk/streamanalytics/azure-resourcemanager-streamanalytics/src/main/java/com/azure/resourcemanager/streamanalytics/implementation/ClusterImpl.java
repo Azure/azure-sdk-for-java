@@ -10,8 +10,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterInner;
 import com.azure.resourcemanager.streamanalytics.models.Cluster;
 import com.azure.resourcemanager.streamanalytics.models.ClusterJob;
-import com.azure.resourcemanager.streamanalytics.models.ClusterProperties;
+import com.azure.resourcemanager.streamanalytics.models.ClusterProvisioningState;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSku;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -53,8 +54,24 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().etag();
     }
 
-    public ClusterProperties properties() {
-        return this.innerModel().properties();
+    public OffsetDateTime createdDate() {
+        return this.innerModel().createdDate();
+    }
+
+    public String clusterId() {
+        return this.innerModel().clusterId();
+    }
+
+    public ClusterProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public Integer capacityAllocated() {
+        return this.innerModel().capacityAllocated();
+    }
+
+    public Integer capacityAssigned() {
+        return this.innerModel().capacityAssigned();
     }
 
     public Region region() {
@@ -184,11 +201,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public ClusterImpl withSku(ClusterSku sku) {
         this.innerModel().withSku(sku);
-        return this;
-    }
-
-    public ClusterImpl withProperties(ClusterProperties properties) {
-        this.innerModel().withProperties(properties);
         return this;
     }
 

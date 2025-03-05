@@ -27,7 +27,7 @@ public final class AdministratorsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.administrators().delete("ufactk", "hzovaj", "ziuxxpshnee", com.azure.core.util.Context.NONE);
+        manager.administrators().delete("rykqgaifmvikl", "ydv", "hbejdznxcvdsrhnj", com.azure.core.util.Context.NONE);
 
     }
 }

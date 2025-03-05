@@ -22,9 +22,14 @@ public final class FqdnListLocalRulestackCreateOrUpdateSamples {
      */
     public static void fqdnListLocalRulestackCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.fqdnListLocalRulestacks().define("armid1").withExistingLocalRulestack("rgopenapi", "lrs1")
-            .withFqdnList(Arrays.asList("string1", "string2")).withDescription("string").withEtag("aaaaaaaaaaaaaaaaaa")
-            .withAuditComment("string").create();
+        manager.fqdnListLocalRulestacks()
+            .define("armid1")
+            .withExistingLocalRulestack("rgopenapi", "lrs1")
+            .withFqdnList(Arrays.asList("string1", "string2"))
+            .withDescription("string")
+            .withEtag("aaaaaaaaaaaaaaaaaa")
+            .withAuditComment("string")
+            .create();
     }
 
     /*
@@ -39,7 +44,10 @@ public final class FqdnListLocalRulestackCreateOrUpdateSamples {
      */
     public static void fqdnListLocalRulestackCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.fqdnListLocalRulestacks().define("armid1").withExistingLocalRulestack("rgopenapi", "lrs1")
-            .withFqdnList(Arrays.asList("string1", "string2")).create();
+        manager.fqdnListLocalRulestacks()
+            .define("armid1")
+            .withExistingLocalRulestack("rgopenapi", "lrs1")
+            .withFqdnList(Arrays.asList("string1", "string2"))
+            .create();
     }
 }

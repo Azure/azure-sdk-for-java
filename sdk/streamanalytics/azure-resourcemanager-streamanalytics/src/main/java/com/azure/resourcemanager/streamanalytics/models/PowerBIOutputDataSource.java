@@ -49,7 +49,7 @@ public final class PowerBIOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private PowerBIOutputDataSourceProperties innerProperties() {
+    PowerBIOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

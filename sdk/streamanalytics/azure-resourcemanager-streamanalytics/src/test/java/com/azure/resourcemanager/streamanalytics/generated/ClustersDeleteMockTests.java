@@ -27,7 +27,7 @@ public final class ClustersDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.clusters().delete("cvhrfsp", "uagrttikteusqc", com.azure.core.util.Context.NONE);
+        manager.clusters().delete("zlwfffiakp", "pqqmted", com.azure.core.util.Context.NONE);
 
     }
 }

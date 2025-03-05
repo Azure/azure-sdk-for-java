@@ -13,27 +13,27 @@ public final class TransformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransformationInner model = BinaryData.fromString(
-            "{\"properties\":{\"streamingUnits\":1007195801,\"validStreamingUnits\":[1299140464,769076909],\"query\":\"cyshurzafbljjgp\",\"etag\":\"oq\"},\"name\":\"mkljavb\",\"type\":\"dtqajzyulpkudj\",\"id\":\"lkhbz\"}")
+            "{\"properties\":{\"streamingUnits\":545631747,\"validStreamingUnits\":[677143395],\"query\":\"f\",\"etag\":\"s\"},\"name\":\"zgvfcjrwz\",\"type\":\"xjtfelluwfzit\",\"id\":\"peqfpjkjl\"}")
             .toObject(TransformationInner.class);
-        Assertions.assertEquals("lkhbz", model.id());
-        Assertions.assertEquals("mkljavb", model.name());
-        Assertions.assertEquals(1007195801, model.streamingUnits());
-        Assertions.assertEquals(1299140464, model.validStreamingUnits().get(0));
-        Assertions.assertEquals("cyshurzafbljjgp", model.query());
+        Assertions.assertEquals("peqfpjkjl", model.id());
+        Assertions.assertEquals("zgvfcjrwz", model.name());
+        Assertions.assertEquals(545631747, model.streamingUnits());
+        Assertions.assertEquals(677143395, model.validStreamingUnits().get(0));
+        Assertions.assertEquals("f", model.query());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransformationInner model = new TransformationInner().withId("lkhbz")
-            .withName("mkljavb")
-            .withStreamingUnits(1007195801)
-            .withValidStreamingUnits(Arrays.asList(1299140464, 769076909))
-            .withQuery("cyshurzafbljjgp");
+        TransformationInner model = new TransformationInner().withId("peqfpjkjl")
+            .withName("zgvfcjrwz")
+            .withStreamingUnits(545631747)
+            .withValidStreamingUnits(Arrays.asList(677143395))
+            .withQuery("f");
         model = BinaryData.fromObject(model).toObject(TransformationInner.class);
-        Assertions.assertEquals("lkhbz", model.id());
-        Assertions.assertEquals("mkljavb", model.name());
-        Assertions.assertEquals(1007195801, model.streamingUnits());
-        Assertions.assertEquals(1299140464, model.validStreamingUnits().get(0));
-        Assertions.assertEquals("cyshurzafbljjgp", model.query());
+        Assertions.assertEquals("peqfpjkjl", model.id());
+        Assertions.assertEquals("zgvfcjrwz", model.name());
+        Assertions.assertEquals(545631747, model.streamingUnits());
+        Assertions.assertEquals(677143395, model.validStreamingUnits().get(0));
+        Assertions.assertEquals("f", model.query());
     }
 }

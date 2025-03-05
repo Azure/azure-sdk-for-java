@@ -12,19 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertRuleTemplateDataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertRuleTemplateDataSource model
-            = BinaryData.fromString("{\"connectorId\":\"zmwntopagt\",\"dataTypes\":[\"mmagoaqylkjzt\"]}")
-                .toObject(AlertRuleTemplateDataSource.class);
-        Assertions.assertEquals("zmwntopagt", model.connectorId());
-        Assertions.assertEquals("mmagoaqylkjzt", model.dataTypes().get(0));
+        AlertRuleTemplateDataSource model = BinaryData
+            .fromString(
+                "{\"connectorId\":\"stgktst\",\"dataTypes\":[\"eclze\",\"qbcvhzlhplod\",\"kdl\",\"wqfbumlkxtrqjfsm\"]}")
+            .toObject(AlertRuleTemplateDataSource.class);
+        Assertions.assertEquals("stgktst", model.connectorId());
+        Assertions.assertEquals("eclze", model.dataTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertRuleTemplateDataSource model = new AlertRuleTemplateDataSource().withConnectorId("zmwntopagt")
-            .withDataTypes(Arrays.asList("mmagoaqylkjzt"));
+        AlertRuleTemplateDataSource model = new AlertRuleTemplateDataSource().withConnectorId("stgktst")
+            .withDataTypes(Arrays.asList("eclze", "qbcvhzlhplod", "kdl", "wqfbumlkxtrqjfsm"));
         model = BinaryData.fromObject(model).toObject(AlertRuleTemplateDataSource.class);
-        Assertions.assertEquals("zmwntopagt", model.connectorId());
-        Assertions.assertEquals("mmagoaqylkjzt", model.dataTypes().get(0));
+        Assertions.assertEquals("stgktst", model.connectorId());
+        Assertions.assertEquals("eclze", model.dataTypes().get(0));
     }
 }

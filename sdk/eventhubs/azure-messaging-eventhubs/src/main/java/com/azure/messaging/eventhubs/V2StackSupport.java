@@ -35,7 +35,7 @@ final class V2StackSupport {
     private static final ConfigurationProperty<Boolean> V2_STACK_PROPERTY
         = ConfigurationPropertyBuilder.ofBoolean(V2_STACK_KEY)
             .environmentVariableName(V2_STACK_KEY)
-            .defaultValue(false)
+            .defaultValue(true)
             .shared(true)
             .build();
     private final AtomicReference<Boolean> v2StackFlag = new AtomicReference<>();
@@ -62,7 +62,7 @@ final class V2StackSupport {
      * @return true if the clients should use the v2 stack.
      */
     boolean isV2StackEnabled(Configuration configuration) {
-        return isOptedIn(configuration, V2_STACK_PROPERTY, v2StackFlag);
+        return !isOptedOut(configuration, V2_STACK_PROPERTY, v2StackFlag);
     }
 
     /**
@@ -109,33 +109,6 @@ final class V2StackSupport {
                     = "If your application fails to work without explicitly setting {} configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
                 logger.info(logMessage, propName);
             }
-        }
-        return choiceFlag.get();
-    }
-
-    private boolean isOptedIn(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
-        AtomicReference<Boolean> choiceFlag) {
-        final Boolean flag = choiceFlag.get();
-        if (flag != null) {
-            return flag;
-        }
-
-        final String propName = configProperty.getName();
-        final boolean isOptedIn;
-        if (configuration != null) {
-            isOptedIn = configuration.get(configProperty);
-        } else {
-            assert !CoreUtils.isNullOrEmpty(propName);
-            if (!CoreUtils.isNullOrEmpty(System.getenv(propName))) {
-                isOptedIn = "true".equalsIgnoreCase(System.getenv(propName));
-            } else if (!CoreUtils.isNullOrEmpty(System.getProperty(propName))) {
-                isOptedIn = "true".equalsIgnoreCase(System.getProperty(propName));
-            } else {
-                isOptedIn = false;
-            }
-        }
-        if (choiceFlag.compareAndSet(null, isOptedIn)) {
-            logger.verbose("Selected configuration {}={}", propName, isOptedIn);
         }
         return choiceFlag.get();
     }

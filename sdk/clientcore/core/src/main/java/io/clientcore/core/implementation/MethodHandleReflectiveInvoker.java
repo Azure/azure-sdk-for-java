@@ -43,6 +43,71 @@ final class MethodHandleReflectiveInvoker implements ReflectiveInvoker {
     }
 
     @Override
+    public Object invoke() throws Exception {
+        try {
+            return methodHandle.invoke();
+        } catch (Throwable throwable) {
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            } else {
+                throw (Exception) throwable;
+            }
+        }
+    }
+
+    @Override
+    public Object invoke(Object argOrTarget) throws Exception {
+        try {
+            return methodHandle.invoke(argOrTarget);
+        } catch (Throwable throwable) {
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            } else {
+                throw (Exception) throwable;
+            }
+        }
+    }
+
+    @Override
+    public Object invoke(Object argOrTarget, Object arg1) throws Exception {
+        try {
+            return methodHandle.invoke(argOrTarget, arg1);
+        } catch (Throwable throwable) {
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            } else {
+                throw (Exception) throwable;
+            }
+        }
+    }
+
+    @Override
+    public Object invoke(Object argOrTarget, Object arg1, Object arg2) throws Exception {
+        try {
+            return methodHandle.invoke(argOrTarget, arg1, arg2);
+        } catch (Throwable throwable) {
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            } else {
+                throw (Exception) throwable;
+            }
+        }
+    }
+
+    @Override
+    public Object invoke(Object argOrTarget, Object arg1, Object arg2, Object arg3) throws Exception {
+        try {
+            return methodHandle.invoke(argOrTarget, arg1, arg2, arg3);
+        } catch (Throwable throwable) {
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            } else {
+                throw (Exception) throwable;
+            }
+        }
+    }
+
+    @Override
     public int getParameterCount() {
         return methodHandle.type().parameterCount();
     }

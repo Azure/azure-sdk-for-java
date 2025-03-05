@@ -21,7 +21,7 @@ public final class ActionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"workflowId\":\"ep\",\"logicAppResourceId\":\"wh\"},\"etag\":\"nfd\",\"id\":\"ggcj\",\"name\":\"zhblivw\",\"type\":\"hsudymymb\"}";
+            = "{\"etag\":\"zgwldoychillcec\",\"properties\":{\"workflowId\":\"uwaoaguhicqlli\",\"logicAppResourceId\":\"stacsjvhrweftkwq\"},\"id\":\"pmvssehaep\",\"name\":\"a\",\"type\":\"cxtczhupeukn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class ActionsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ActionResponse response = manager.actions()
-            .define("wanvmwdvgjqcrbko")
-            .withExistingAlertRule("gowxxbhtp", "yioqe", "qwtqszzgyksik")
-            .withEtag("pgcmahiwfr")
-            .withTriggerUri("nbnfg")
-            .withLogicAppResourceId("weoj")
+            .define("mghihp")
+            .withExistingAlertRule("aupia", "cxnafbwqrooh", "uovmaonurjt")
+            .withEtag("xigc")
+            .withTriggerUri("cmslclblyjxltbs")
+            .withLogicAppResourceId("uscv")
             .create();
 
-        Assertions.assertEquals("nfd", response.etag());
-        Assertions.assertEquals("ep", response.workflowId());
-        Assertions.assertEquals("wh", response.logicAppResourceId());
+        Assertions.assertEquals("zgwldoychillcec", response.etag());
+        Assertions.assertEquals("uwaoaguhicqlli", response.workflowId());
+        Assertions.assertEquals("stacsjvhrweftkwq", response.logicAppResourceId());
     }
 }

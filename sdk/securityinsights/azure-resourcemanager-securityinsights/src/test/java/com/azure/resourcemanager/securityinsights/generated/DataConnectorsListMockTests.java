@@ -22,7 +22,7 @@ public final class DataConnectorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"DataConnector\",\"etag\":\"islxyljzbk\",\"id\":\"lfjwxgvtkjctv\",\"name\":\"peawzzkvfccozv\",\"type\":\"xsp\"}]}";
+            = "{\"value\":[{\"kind\":\"DataConnector\",\"etag\":\"vxrh\",\"id\":\"d\",\"name\":\"wrso\",\"type\":\"pl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class DataConnectorsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DataConnector> response
-            = manager.dataConnectors().list("agwaakktbjort", "tkajqhsnsej", com.azure.core.util.Context.NONE);
+            = manager.dataConnectors().list("kpbafvafhl", "ylcc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("islxyljzbk", response.iterator().next().etag());
+        Assertions.assertEquals("vxrh", response.iterator().next().etag());
     }
 }

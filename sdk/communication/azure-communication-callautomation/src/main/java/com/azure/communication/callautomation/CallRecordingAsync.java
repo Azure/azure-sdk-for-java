@@ -128,22 +128,23 @@ public final class CallRecordingAsync {
     }
 
     private StartCallRecordingRequestInternal getStartCallRecordingRequest(StartRecordingOptions options) {
-        CallLocator callLocator = options.getCallLocator();
-        CallLocatorInternal callLocatorInternal
-            = new CallLocatorInternal().setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
+        StartCallRecordingRequestInternal request = new StartCallRecordingRequestInternal();
+        if (options.getCallLocator() != null) {
+            CallLocator callLocator = options.getCallLocator();
+            CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
+                .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
 
-        if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
-            callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
-        } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
-            callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
-        } else if (callLocator.getKind() == CallLocatorKind.ROOM_CALL_LOCATOR) {
-            callLocatorInternal.setRoomId(((RoomCallLocator) callLocator).getRoomId());
-        } else {
-            throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
+            if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
+                callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
+                callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.ROOM_CALL_LOCATOR) {
+                callLocatorInternal.setRoomId(((RoomCallLocator) callLocator).getRoomId());
+            } else {
+                throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
+            }
+            request.setCallLocator(callLocatorInternal);
         }
-
-        StartCallRecordingRequestInternal request
-            = new StartCallRecordingRequestInternal().setCallLocator(callLocatorInternal);
 
         if (options.getRecordingContent() != null) {
             request
@@ -187,7 +188,9 @@ public final class CallRecordingAsync {
         if (options.isPauseOnStart() != null) {
             request.setPauseOnStart(options.isPauseOnStart());
         }
-
+        if (options.getCallConnectionId() != null) {
+            request.setCallConnectionId(options.getCallConnectionId());
+        }
         return request;
     }
 

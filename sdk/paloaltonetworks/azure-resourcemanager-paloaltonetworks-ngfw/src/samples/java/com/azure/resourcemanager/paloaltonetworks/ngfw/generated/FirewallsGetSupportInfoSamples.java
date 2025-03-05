@@ -20,8 +20,8 @@ public final class FirewallsGetSupportInfoSamples {
      */
     public static void firewallsGetSupportInfoMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.firewalls().getSupportInfoWithResponse("rgopenapi", "firewall1", null,
-            com.azure.core.util.Context.NONE);
+        manager.firewalls()
+            .getSupportInfoWithResponse("rgopenapi", "firewall1", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class FirewallsGetSupportInfoSamples {
      */
     public static void firewallsGetSupportInfoMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.firewalls().getSupportInfoWithResponse("rgopenapi", "firewall1", "user1@domain.com",
-            com.azure.core.util.Context.NONE);
+        manager.firewalls()
+            .getSupportInfoWithResponse("rgopenapi", "firewall1", "user1@domain.com", com.azure.core.util.Context.NONE);
     }
 }

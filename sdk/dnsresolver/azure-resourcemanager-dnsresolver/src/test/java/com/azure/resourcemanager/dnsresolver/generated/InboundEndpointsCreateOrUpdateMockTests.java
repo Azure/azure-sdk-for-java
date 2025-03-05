@@ -27,7 +27,7 @@ public final class InboundEndpointsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"zvaytdwkqbr\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"paxh\"},\"privateIpAddress\":\"iilivpdtiirqtd\",\"privateIpAllocationMethod\":\"Dynamic\"},{\"subnet\":{\"id\":\"oruzfgsquyfxrxx\"},\"privateIpAddress\":\"ptramxj\",\"privateIpAllocationMethod\":\"Dynamic\"}],\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"wxuqlcvydypatdoo\"},\"location\":\"jkniodko\",\"tags\":{\"rodtjinfwjlfl\":\"wnujhemmsbvdk\"},\"id\":\"kacjvefkdlfo\",\"name\":\"kggkfpa\",\"type\":\"ao\"}";
+            = "{\"etag\":\"ibqdxbxwakbogqx\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"kzgxhurip\"},\"privateIpAddress\":\"podxunkb\",\"privateIpAllocationMethod\":\"Dynamic\"},{\"subnet\":{\"id\":\"ubyyntw\"},\"privateIpAddress\":\"bqtkoievseotgqr\",\"privateIpAllocationMethod\":\"Dynamic\"},{\"subnet\":{\"id\":\"u\"},\"privateIpAddress\":\"auwzizxbmpgc\",\"privateIpAllocationMethod\":\"Dynamic\"}],\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"uvpb\"},\"location\":\"d\",\"tags\":{\"xe\":\"rp\",\"bhjpglkfgohdne\":\"mnzb\",\"phsdyhto\":\"el\",\"v\":\"fikdowwqu\"},\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,31 +37,21 @@ public final class InboundEndpointsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         InboundEndpoint response = manager.inboundEndpoints()
-            .define("cktqumiekkezzi")
-            .withRegion("ajxq")
-            .withExistingDnsResolver("ag", "rvimjwosytxitcsk")
-            .withIpConfigurations(Arrays.asList(
-                new IpConfiguration().withSubnet(new SubResource().withId("dgqggebdu"))
-                    .withPrivateIpAddress("g")
-                    .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC),
-                new IpConfiguration().withSubnet(new SubResource().withId("db"))
-                    .withPrivateIpAddress("atpxl")
-                    .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC),
-                new IpConfiguration().withSubnet(new SubResource().withId("yjmoadsu"))
-                    .withPrivateIpAddress("r")
-                    .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC),
-                new IpConfiguration().withSubnet(new SubResource().withId("mjsjqb"))
-                    .withPrivateIpAddress("hyxxrwlycoduhpk")
-                    .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)))
-            .withTags(mapOf("ubeddg", "hky", "pxacqqudfn", "sofwqmzqalkrmnji"))
-            .withIfMatch("vfdnwnwmewzsyyce")
-            .withIfNoneMatch("zsoibjudpfrxtr")
+            .define("qlfmmdnbb")
+            .withRegion("zdzucerscdntnevf")
+            .withExistingDnsResolver("uie", "tgccymvaolpss")
+            .withIpConfigurations(Arrays.asList(new IpConfiguration().withSubnet(new SubResource().withId("zdxss"))
+                .withPrivateIpAddress("bzmnvdfznud")
+                .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)))
+            .withTags(mapOf("tmweriofzpyq", "mygtdssls", "hhszh", "emwabnet", "lvwiwubmwmbesl", "d", "pp", "nkww"))
+            .withIfMatch("v")
+            .withIfNoneMatch("gureodkwobdag")
             .create();
 
-        Assertions.assertEquals("jkniodko", response.location());
-        Assertions.assertEquals("wnujhemmsbvdk", response.tags().get("rodtjinfwjlfl"));
-        Assertions.assertEquals("paxh", response.ipConfigurations().get(0).subnet().id());
-        Assertions.assertEquals("iilivpdtiirqtd", response.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals("d", response.location());
+        Assertions.assertEquals("rp", response.tags().get("xe"));
+        Assertions.assertEquals("kzgxhurip", response.ipConfigurations().get(0).subnet().id());
+        Assertions.assertEquals("podxunkb", response.ipConfigurations().get(0).privateIpAddress());
         Assertions.assertEquals(IpAllocationMethod.DYNAMIC,
             response.ipConfigurations().get(0).privateIpAllocationMethod());
     }

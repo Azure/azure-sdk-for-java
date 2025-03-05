@@ -11,9 +11,17 @@ import java.util.Map;
 @Fluent
 public interface VirtualMachineScaleSetNetworkInterface
     extends NetworkInterfaceBase, Resource, Refreshable<VirtualMachineScaleSetNetworkInterface> {
-    /** @return the IP configurations of this network interface, indexed by their names */
+    /**
+     * Gets the IP configurations of this network interface.
+     *
+     * @return the IP configurations of this network interface, indexed by their names
+     */
     Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigurations();
 
-    /** @return the primary IP configuration of this network interface */
+    /**
+     * Gets the primary IP configuration of this network interface.
+     *
+     * @return the primary IP configuration of this network interface
+     */
     VirtualMachineScaleSetNicIpConfiguration primaryIPConfiguration();
 }

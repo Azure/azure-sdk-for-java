@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -30,19 +30,13 @@ import com.azure.resourcemanager.botservice.implementation.BotsImpl;
 import com.azure.resourcemanager.botservice.implementation.ChannelsImpl;
 import com.azure.resourcemanager.botservice.implementation.DirectLinesImpl;
 import com.azure.resourcemanager.botservice.implementation.HostSettingsImpl;
-import com.azure.resourcemanager.botservice.implementation.OperationResultsImpl;
 import com.azure.resourcemanager.botservice.implementation.OperationsImpl;
-import com.azure.resourcemanager.botservice.implementation.PrivateEndpointConnectionsImpl;
-import com.azure.resourcemanager.botservice.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.botservice.models.BotConnections;
 import com.azure.resourcemanager.botservice.models.Bots;
 import com.azure.resourcemanager.botservice.models.Channels;
 import com.azure.resourcemanager.botservice.models.DirectLines;
 import com.azure.resourcemanager.botservice.models.HostSettings;
-import com.azure.resourcemanager.botservice.models.OperationResults;
 import com.azure.resourcemanager.botservice.models.Operations;
-import com.azure.resourcemanager.botservice.models.PrivateEndpointConnections;
-import com.azure.resourcemanager.botservice.models.PrivateLinkResources;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -66,12 +60,6 @@ public final class BotServiceManager {
     private BotConnections botConnections;
 
     private HostSettings hostSettings;
-
-    private OperationResults operationResults;
-
-    private PrivateEndpointConnections privateEndpointConnections;
-
-    private PrivateLinkResources privateLinkResources;
 
     private final AzureBotService clientObject;
 
@@ -237,7 +225,7 @@ public final class BotServiceManager {
                 .append("-")
                 .append("com.azure.resourcemanager.botservice")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -270,7 +258,7 @@ public final class BotServiceManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -353,43 +341,6 @@ public final class BotServiceManager {
             this.hostSettings = new HostSettingsImpl(clientObject.getHostSettings(), this);
         }
         return hostSettings;
-    }
-
-    /**
-     * Gets the resource collection API of OperationResults.
-     * 
-     * @return Resource collection API of OperationResults.
-     */
-    public OperationResults operationResults() {
-        if (this.operationResults == null) {
-            this.operationResults = new OperationResultsImpl(clientObject.getOperationResults(), this);
-        }
-        return operationResults;
-    }
-
-    /**
-     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     * 
-     * @return Resource collection API of PrivateEndpointConnections.
-     */
-    public PrivateEndpointConnections privateEndpointConnections() {
-        if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections
-                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
-        }
-        return privateEndpointConnections;
-    }
-
-    /**
-     * Gets the resource collection API of PrivateLinkResources.
-     * 
-     * @return Resource collection API of PrivateLinkResources.
-     */
-    public PrivateLinkResources privateLinkResources() {
-        if (this.privateLinkResources == null) {
-            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
-        }
-        return privateLinkResources;
     }
 
     /**

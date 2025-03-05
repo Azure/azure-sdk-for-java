@@ -10,8 +10,8 @@ package com.azure.resourcemanager.botservice.generated;
 public final class BotsListSamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
-     * ListBotsBySubscription.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/ListBotsBySubscription.
+     * json
      */
     /**
      * Sample code: List Bots by Subscription.

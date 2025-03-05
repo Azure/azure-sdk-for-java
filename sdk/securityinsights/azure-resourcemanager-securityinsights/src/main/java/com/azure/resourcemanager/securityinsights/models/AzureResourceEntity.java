@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.AzureResourceEntityProperties;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import java.io.IOException;
 import java.util.Map;
 
@@ -18,11 +17,11 @@ import java.util.Map;
  * Represents an azure resource entity.
  */
 @Immutable
-public final class AzureResourceEntity extends EntityInner {
+public final class AzureResourceEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.AZURE_RESOURCE;
+    private EntityKindEnum kind = EntityKindEnum.AZURE_RESOURCE;
 
     /*
      * AzureResource entity properties
@@ -61,7 +60,7 @@ public final class AzureResourceEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -200,7 +199,7 @@ public final class AzureResourceEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedAzureResourceEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedAzureResourceEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedAzureResourceEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedAzureResourceEntity.innerProperties = AzureResourceEntityProperties.fromJson(reader);
                 } else {

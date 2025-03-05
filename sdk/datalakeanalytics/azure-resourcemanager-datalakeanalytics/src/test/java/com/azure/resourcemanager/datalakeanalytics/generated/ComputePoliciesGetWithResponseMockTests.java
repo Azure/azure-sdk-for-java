@@ -21,7 +21,7 @@ public final class ComputePoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"objectId\":\"fd2b2093-672a-47f4-8500-8aba8a0ec8c6\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":2099315083,\"minPriorityPerJob\":1402038644},\"name\":\"vydypatdoo\",\"type\":\"jkniodko\",\"id\":\"bw\"}";
+            = "{\"properties\":{\"objectId\":\"b72ef991-cc4a-492e-9444-6e9f0cb7f1b9\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":2099315083,\"minPriorityPerJob\":1402038644},\"name\":\"vydypatdoo\",\"type\":\"jkniodko\",\"id\":\"bw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

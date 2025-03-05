@@ -42,7 +42,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [CHANGEFEED_SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-changefeed/README.md
 [SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-changefeed/README.md#contributing
 [samples_basic]: java/com/azure/storage/blob/changefeed/ReadmeCodeSamples.java
-[storageblob_rest]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
-[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[storageblob_rest]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob-changefeed%2Fsrc%2Fsamples%2FREADME.png)
+

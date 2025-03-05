@@ -10,10 +10,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.securityinsights.SecurityInsightsManager;
-import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.Bookmark;
-import com.azure.resourcemanager.securityinsights.models.BookmarkEntityMappings;
-import com.azure.resourcemanager.securityinsights.models.EntityFieldMapping;
 import com.azure.resourcemanager.securityinsights.models.IncidentInfo;
 import com.azure.resourcemanager.securityinsights.models.IncidentSeverity;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
@@ -29,7 +26,7 @@ public final class BookmarksCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"created\":\"2021-05-25T08:47:30Z\",\"createdBy\":{\"email\":\"ajejirvavrvkgpo\",\"name\":\"lbjuvlnhxnrnjh\",\"objectId\":\"e7a743a8-0a8c-4f3d-9cf5-3a6c3240d814\"},\"displayName\":\"aege\",\"labels\":[\"nepqmjmop\",\"ukfyk\"],\"notes\":\"hsovadkrmj\",\"query\":\"mwqpdkesjqbzkqm\",\"queryResult\":\"poriwbwggijtspzj\",\"updated\":\"2021-07-13T20:29:57Z\",\"updatedBy\":{\"email\":\"kwsbzrhdugquh\",\"name\":\"gzfrunjfhrjhi\",\"objectId\":\"59bc9926-ad35-4161-8956-bd5eed74951c\"},\"eventTime\":\"2021-11-19T19:49:29Z\",\"queryStartTime\":\"2020-12-22T18:00:16Z\",\"queryEndTime\":\"2021-06-11T10:51:56Z\",\"incidentInfo\":{\"incidentId\":\"zkvihvtu\",\"severity\":\"Informational\",\"title\":\"qwzszoszjgzunkfn\",\"relationName\":\"k\"},\"entityMappings\":[{\"entityType\":\"qhcza\",\"fieldMappings\":[{},{}]},{\"entityType\":\"slhip\",\"fieldMappings\":[{},{},{}]}],\"tactics\":[\"Collection\"],\"techniques\":[\"xprrvchy\"]},\"etag\":\"qal\",\"id\":\"ufjjf\",\"name\":\"tiztqds\",\"type\":\"ahhhsaaxxsritr\"}";
+            = "{\"properties\":{\"created\":\"2021-06-02T10:49:39Z\",\"createdBy\":{\"email\":\"jj\",\"name\":\"ybwfdbkjb\",\"objectId\":\"7c87954f-318a-4af8-a0a9-ee6bfdd4d195\"},\"displayName\":\"ensvkzykjtj\",\"labels\":[\"xfwush\",\"dpkupnqrmgjf\",\"pkuwxeoioj\"],\"notes\":\"zfav\",\"query\":\"jzwfb\",\"queryResult\":\"aykmmf\",\"updated\":\"2021-10-29T00:02:40Z\",\"updatedBy\":{\"email\":\"xrzxmdewsrsxkrp\",\"name\":\"jazejwwviyoyp\",\"objectId\":\"aa116b26-98f9-41fc-8b37-b5ba791f653a\"},\"eventTime\":\"2021-03-21T06:31:37Z\",\"queryStartTime\":\"2021-02-25T20:04:53Z\",\"queryEndTime\":\"2021-09-20T22:56:33Z\",\"incidentInfo\":{\"incidentId\":\"sqwjhqkbiwetpozy\",\"severity\":\"Informational\",\"title\":\"qyhgf\",\"relationName\":\"tzlexbs\"}},\"etag\":\"e\",\"id\":\"no\",\"name\":\"pziuwfbzkkdtnh\",\"type\":\"sycljsel\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,61 +35,46 @@ public final class BookmarksCreateOrUpdateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Bookmark response
-            = manager.bookmarks()
-                .define("rcxuibsdqbdyblp")
-                .withExistingWorkspace("wakkchsfo", "lb")
-                .withEtag("nqyxfedq")
-                .withCreated(OffsetDateTime.parse("2021-01-02T18:05:15Z"))
-                .withCreatedBy(new UserInfo().withObjectId(UUID.fromString("e47e52c1-347b-4f3e-89e1-86156fb32d06")))
-                .withDisplayName("bymjjvtpne")
-                .withLabels(Arrays.asList("jeazrahelhbimyii", "qamcthtpqgfz"))
-                .withNotes("sizkdiuvflg")
-                .withQuery("hcw")
-                .withQueryResult("wahcrxofgrutv")
-                .withUpdated(OffsetDateTime.parse("2021-03-16T13:00:41Z"))
-                .withUpdatedBy(new UserInfo().withObjectId(UUID.fromString("3b468247-644f-4e5b-9571-ce56834a2f85")))
-                .withEventTime(OffsetDateTime.parse("2021-03-23T07:00:49Z"))
-                .withQueryStartTime(OffsetDateTime.parse("2021-11-20T11:13:55Z"))
-                .withQueryEndTime(OffsetDateTime.parse("2021-06-27T11:10:57Z"))
-                .withIncidentInfo(new IncidentInfo().withIncidentId("q")
-                    .withSeverity(IncidentSeverity.INFORMATIONAL)
-                    .withTitle("jvpmxnht")
-                    .withRelationName("stqlfxolrwv"))
-                .withEntityMappings(Arrays.asList(
-                    new BookmarkEntityMappings().withEntityType("yfjswequf")
-                        .withFieldMappings(Arrays.asList(new EntityFieldMapping(), new EntityFieldMapping(),
-                            new EntityFieldMapping())),
-                    new BookmarkEntityMappings().withEntityType("op")
-                        .withFieldMappings(Arrays.asList(new EntityFieldMapping())),
-                    new BookmarkEntityMappings().withEntityType("wwgw")
-                        .withFieldMappings(Arrays.asList(new EntityFieldMapping()))))
-                .withTactics(Arrays.asList(AttackTactic.RESOURCE_DEVELOPMENT, AttackTactic.EXECUTION,
-                    AttackTactic.EXFILTRATION, AttackTactic.EXECUTION))
-                .withTechniques(Arrays.asList("wjie", "imdtnpowewjs", "reeedddrftfquul", "clhsiigeeuw"))
-                .create();
+        Bookmark response = manager.bookmarks()
+            .define("a")
+            .withExistingWorkspace("qyv", "eh")
+            .withEtag("eslk")
+            .withCreated(OffsetDateTime.parse("2021-11-16T18:17:43Z"))
+            .withCreatedBy(new UserInfo().withObjectId(UUID.fromString("622c50a3-4b55-4566-a757-18bded4e2909")))
+            .withDisplayName("imipskdyzatvfuz")
+            .withLabels(Arrays.asList("tjvv", "uxwigsyeipqdsm", "tgrqgdgkkile", "lkcsmknhwtbbae"))
+            .withNotes("rvvmqfloygb")
+            .withQuery("gwumgxdgdhpa")
+            .withQueryResult("dexjddvjs")
+            .withUpdated(OffsetDateTime.parse("2021-10-15T10:21:04Z"))
+            .withUpdatedBy(new UserInfo().withObjectId(UUID.fromString("2c0be9fc-ea00-4fe5-9b7f-028f20d18d5c")))
+            .withEventTime(OffsetDateTime.parse("2021-10-07T17:44:14Z"))
+            .withQueryStartTime(OffsetDateTime.parse("2021-05-27T02:17:12Z"))
+            .withQueryEndTime(OffsetDateTime.parse("2021-06-27T11:48:43Z"))
+            .withIncidentInfo(new IncidentInfo().withIncidentId("hv")
+                .withSeverity(IncidentSeverity.INFORMATIONAL)
+                .withTitle("ek")
+                .withRelationName("eksnbksdqhjvyk"))
+            .create();
 
-        Assertions.assertEquals("qal", response.etag());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T08:47:30Z"), response.created());
-        Assertions.assertEquals(UUID.fromString("e7a743a8-0a8c-4f3d-9cf5-3a6c3240d814"),
+        Assertions.assertEquals("e", response.etag());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T10:49:39Z"), response.created());
+        Assertions.assertEquals(UUID.fromString("7c87954f-318a-4af8-a0a9-ee6bfdd4d195"),
             response.createdBy().objectId());
-        Assertions.assertEquals("aege", response.displayName());
-        Assertions.assertEquals("nepqmjmop", response.labels().get(0));
-        Assertions.assertEquals("hsovadkrmj", response.notes());
-        Assertions.assertEquals("mwqpdkesjqbzkqm", response.query());
-        Assertions.assertEquals("poriwbwggijtspzj", response.queryResult());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T20:29:57Z"), response.updated());
-        Assertions.assertEquals(UUID.fromString("59bc9926-ad35-4161-8956-bd5eed74951c"),
+        Assertions.assertEquals("ensvkzykjtj", response.displayName());
+        Assertions.assertEquals("xfwush", response.labels().get(0));
+        Assertions.assertEquals("zfav", response.notes());
+        Assertions.assertEquals("jzwfb", response.query());
+        Assertions.assertEquals("aykmmf", response.queryResult());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T00:02:40Z"), response.updated());
+        Assertions.assertEquals(UUID.fromString("aa116b26-98f9-41fc-8b37-b5ba791f653a"),
             response.updatedBy().objectId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T19:49:29Z"), response.eventTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T18:00:16Z"), response.queryStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T10:51:56Z"), response.queryEndTime());
-        Assertions.assertEquals("zkvihvtu", response.incidentInfo().incidentId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-21T06:31:37Z"), response.eventTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T20:04:53Z"), response.queryStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-20T22:56:33Z"), response.queryEndTime());
+        Assertions.assertEquals("sqwjhqkbiwetpozy", response.incidentInfo().incidentId());
         Assertions.assertEquals(IncidentSeverity.INFORMATIONAL, response.incidentInfo().severity());
-        Assertions.assertEquals("qwzszoszjgzunkfn", response.incidentInfo().title());
-        Assertions.assertEquals("k", response.incidentInfo().relationName());
-        Assertions.assertEquals("qhcza", response.entityMappings().get(0).entityType());
-        Assertions.assertEquals(AttackTactic.COLLECTION, response.tactics().get(0));
-        Assertions.assertEquals("xprrvchy", response.techniques().get(0));
+        Assertions.assertEquals("qyhgf", response.incidentInfo().title());
+        Assertions.assertEquals("tzlexbs", response.incidentInfo().relationName());
     }
 }

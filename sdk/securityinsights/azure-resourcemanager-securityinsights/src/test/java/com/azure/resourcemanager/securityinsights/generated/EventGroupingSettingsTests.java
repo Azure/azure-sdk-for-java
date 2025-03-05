@@ -13,15 +13,15 @@ public final class EventGroupingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventGroupingSettings model
-            = BinaryData.fromString("{\"aggregationKind\":\"AlertPerResult\"}").toObject(EventGroupingSettings.class);
-        Assertions.assertEquals(EventGroupingAggregationKind.ALERT_PER_RESULT, model.aggregationKind());
+            = BinaryData.fromString("{\"aggregationKind\":\"SingleAlert\"}").toObject(EventGroupingSettings.class);
+        Assertions.assertEquals(EventGroupingAggregationKind.SINGLE_ALERT, model.aggregationKind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventGroupingSettings model
-            = new EventGroupingSettings().withAggregationKind(EventGroupingAggregationKind.ALERT_PER_RESULT);
+            = new EventGroupingSettings().withAggregationKind(EventGroupingAggregationKind.SINGLE_ALERT);
         model = BinaryData.fromObject(model).toObject(EventGroupingSettings.class);
-        Assertions.assertEquals(EventGroupingAggregationKind.ALERT_PER_RESULT, model.aggregationKind());
+        Assertions.assertEquals(EventGroupingAggregationKind.SINGLE_ALERT, model.aggregationKind());
     }
 }

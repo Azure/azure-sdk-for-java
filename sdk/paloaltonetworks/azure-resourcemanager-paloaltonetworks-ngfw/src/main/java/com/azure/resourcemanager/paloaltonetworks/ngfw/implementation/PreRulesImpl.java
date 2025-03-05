@@ -33,12 +33,12 @@ public final class PreRulesImpl implements PreRules {
 
     public PagedIterable<PreRulesResource> list(String globalRulestackName) {
         PagedIterable<PreRulesResourceInner> inner = this.serviceClient().list(globalRulestackName);
-        return Utils.mapPage(inner, inner1 -> new PreRulesResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PreRulesResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PreRulesResource> list(String globalRulestackName, Context context) {
         PagedIterable<PreRulesResourceInner> inner = this.serviceClient().list(globalRulestackName, context);
-        return Utils.mapPage(inner, inner1 -> new PreRulesResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PreRulesResourceImpl(inner1, this.manager()));
     }
 
     public Response<PreRulesResource> getWithResponse(String globalRulestackName, String priority, Context context) {

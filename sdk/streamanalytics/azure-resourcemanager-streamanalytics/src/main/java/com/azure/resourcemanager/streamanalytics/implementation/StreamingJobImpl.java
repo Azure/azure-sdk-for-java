@@ -15,7 +15,6 @@ import com.azure.resourcemanager.streamanalytics.models.ClusterInfo;
 import com.azure.resourcemanager.streamanalytics.models.CompatibilityLevel;
 import com.azure.resourcemanager.streamanalytics.models.ContentStoragePolicy;
 import com.azure.resourcemanager.streamanalytics.models.EventsOutOfOrderPolicy;
-import com.azure.resourcemanager.streamanalytics.models.External;
 import com.azure.resourcemanager.streamanalytics.models.Function;
 import com.azure.resourcemanager.streamanalytics.models.Identity;
 import com.azure.resourcemanager.streamanalytics.models.Input;
@@ -65,16 +64,12 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
         }
     }
 
-    public Sku sku() {
-        return this.innerModel().sku();
-    }
-
     public Identity identity() {
         return this.innerModel().identity();
     }
 
-    public Sku skuPropertiesSku() {
-        return this.innerModel().skuPropertiesSku();
+    public Sku sku() {
+        return this.innerModel().sku();
     }
 
     public String jobId() {
@@ -182,10 +177,6 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
 
     public ContentStoragePolicy contentStoragePolicy() {
         return this.innerModel().contentStoragePolicy();
-    }
-
-    public External externals() {
-        return this.innerModel().externals();
     }
 
     public ClusterInfo cluster() {
@@ -336,18 +327,13 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
         return this;
     }
 
-    public StreamingJobImpl withSku(Sku sku) {
-        this.innerModel().withSku(sku);
-        return this;
-    }
-
     public StreamingJobImpl withIdentity(Identity identity) {
         this.innerModel().withIdentity(identity);
         return this;
     }
 
-    public StreamingJobImpl withSkuPropertiesSku(Sku skuPropertiesSku) {
-        this.innerModel().withSkuPropertiesSku(skuPropertiesSku);
+    public StreamingJobImpl withSku(Sku sku) {
+        this.innerModel().withSku(sku);
         return this;
     }
 
@@ -423,11 +409,6 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
 
     public StreamingJobImpl withContentStoragePolicy(ContentStoragePolicy contentStoragePolicy) {
         this.innerModel().withContentStoragePolicy(contentStoragePolicy);
-        return this;
-    }
-
-    public StreamingJobImpl withExternals(External externals) {
-        this.innerModel().withExternals(externals);
         return this;
     }
 

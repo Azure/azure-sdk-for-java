@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -280,7 +281,7 @@ public class ClientTelemetry {
                         URI targetEndpoint = new URI(endpoint);
                         ByteBuffer byteBuffer =
                             InternalObjectNode.serializeJsonToByteBuffer(this.clientTelemetryInfo,
-                                CosmosItemSerializer.DEFAULT_SERIALIZER,
+                                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
                                 null,
                                 false);
                         byte[] tempBuffer = RxDocumentServiceRequest.toByteArray(byteBuffer);

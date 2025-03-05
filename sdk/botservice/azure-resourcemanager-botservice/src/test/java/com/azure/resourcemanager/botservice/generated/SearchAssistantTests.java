@@ -12,17 +12,17 @@ public final class SearchAssistantTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SearchAssistant model = BinaryData.fromString(
-            "{\"channelName\":\"SearchAssistant\",\"etag\":\"ervnaenqpehi\",\"provisioningState\":\"oygmift\",\"location\":\"zdnds\"}")
+            "{\"channelName\":\"SearchAssistant\",\"etag\":\"zdnds\",\"provisioningState\":\"nayqi\",\"location\":\"nduhavhqlkthum\"}")
             .toObject(SearchAssistant.class);
-        Assertions.assertEquals("ervnaenqpehi", model.etag());
-        Assertions.assertEquals("zdnds", model.location());
+        Assertions.assertEquals("zdnds", model.etag());
+        Assertions.assertEquals("nduhavhqlkthum", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SearchAssistant model = new SearchAssistant().withEtag("ervnaenqpehi").withLocation("zdnds");
+        SearchAssistant model = new SearchAssistant().withEtag("zdnds").withLocation("nduhavhqlkthum");
         model = BinaryData.fromObject(model).toObject(SearchAssistant.class);
-        Assertions.assertEquals("ervnaenqpehi", model.etag());
-        Assertions.assertEquals("zdnds", model.location());
+        Assertions.assertEquals("zdnds", model.etag());
+        Assertions.assertEquals("nduhavhqlkthum", model.location());
     }
 }

@@ -13,16 +13,16 @@ public final class ThreatIntelligenceAppendTagsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligenceAppendTags model
-            = BinaryData.fromString("{\"threatIntelligenceTags\":[\"nqodxahhxhq\",\"aqnvzoqgyipemchg\"]}")
+            = BinaryData.fromString("{\"threatIntelligenceTags\":[\"qufegxuvwzfbn\",\"lmctlpd\",\"gitvg\"]}")
                 .toObject(ThreatIntelligenceAppendTags.class);
-        Assertions.assertEquals("nqodxahhxhq", model.threatIntelligenceTags().get(0));
+        Assertions.assertEquals("qufegxuvwzfbn", model.threatIntelligenceTags().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThreatIntelligenceAppendTags model = new ThreatIntelligenceAppendTags()
-            .withThreatIntelligenceTags(Arrays.asList("nqodxahhxhq", "aqnvzoqgyipemchg"));
+            .withThreatIntelligenceTags(Arrays.asList("qufegxuvwzfbn", "lmctlpd", "gitvg"));
         model = BinaryData.fromObject(model).toObject(ThreatIntelligenceAppendTags.class);
-        Assertions.assertEquals("nqodxahhxhq", model.threatIntelligenceTags().get(0));
+        Assertions.assertEquals("qufegxuvwzfbn", model.threatIntelligenceTags().get(0));
     }
 }

@@ -51,7 +51,7 @@ public interface ThreatIntelligenceInformation {
      * 
      * @return the kind value.
      */
-    ThreatIntelligenceResourceKindEnum kind();
+    ThreatIntelligenceResourceInnerKind kind();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.ThreatIntelligenceInformationInner

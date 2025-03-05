@@ -23,7 +23,7 @@ public final class ServerThreatProtectionSettingsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-08-18T08:22:43Z\"},\"id\":\"gwbsreurf\",\"name\":\"kfuarenlv\",\"type\":\"htkln\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-01-01T06:59:38Z\"},\"id\":\"ynpdkvgfab\",\"name\":\"iyji\",\"type\":\"uzphdugnei\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class ServerThreatProtectionSettingsListByServerMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ServerThreatProtectionSettingsModel> response = manager.serverThreatProtectionSettings()
-            .listByServer("evrh", "ljyoogwx", com.azure.core.util.Context.NONE);
+            .listByServer("cugswvxwlmzqw", "vtxnjmxmcuqud", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ThreatProtectionState.ENABLED, response.iterator().next().state());
     }

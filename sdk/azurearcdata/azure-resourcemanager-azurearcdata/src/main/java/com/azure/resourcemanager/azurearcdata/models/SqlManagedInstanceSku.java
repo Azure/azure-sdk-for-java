@@ -19,7 +19,7 @@ public final class SqlManagedInstanceSku implements JsonSerializable<SqlManagedI
     /*
      * The name of the SKU.
      */
-    private String name = "vCore";
+    private final String name = "vCore";
 
     /*
      * The pricing tier for the instance.
@@ -60,17 +60,6 @@ public final class SqlManagedInstanceSku implements JsonSerializable<SqlManagedI
      */
     public String name() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the SKU.
-     * 
-     * @param name the name value to set.
-     * @return the SqlManagedInstanceSku object itself.
-     */
-    public SqlManagedInstanceSku withName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**

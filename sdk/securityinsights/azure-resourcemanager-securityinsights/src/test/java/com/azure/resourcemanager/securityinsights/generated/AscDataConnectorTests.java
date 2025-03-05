@@ -15,22 +15,22 @@ public final class AscDataConnectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AscDataConnector model = BinaryData.fromString(
-            "{\"kind\":\"AzureSecurityCenter\",\"properties\":{\"subscriptionId\":\"uzpbgkzcscpi\",\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}}},\"etag\":\"unhdimjuk\",\"id\":\"r\",\"name\":\"kaugpucdocfqplwg\",\"type\":\"f\"}")
+            "{\"kind\":\"AzureSecurityCenter\",\"properties\":{\"subscriptionId\":\"gydcw\",\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}}},\"etag\":\"vqqolih\",\"id\":\"aiouaubrjt\",\"name\":\"oq\",\"type\":\"fuojrngif\"}")
             .toObject(AscDataConnector.class);
-        Assertions.assertEquals("unhdimjuk", model.etag());
-        Assertions.assertEquals("uzpbgkzcscpi", model.subscriptionId());
+        Assertions.assertEquals("vqqolih", model.etag());
+        Assertions.assertEquals("gydcw", model.subscriptionId());
         Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AscDataConnector model = new AscDataConnector().withEtag("unhdimjuk")
-            .withSubscriptionId("uzpbgkzcscpi")
+        AscDataConnector model = new AscDataConnector().withEtag("vqqolih")
+            .withSubscriptionId("gydcw")
             .withDataTypes(new AlertsDataTypeOfDataConnector()
                 .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(AscDataConnector.class);
-        Assertions.assertEquals("unhdimjuk", model.etag());
-        Assertions.assertEquals("uzpbgkzcscpi", model.subscriptionId());
+        Assertions.assertEquals("vqqolih", model.etag());
+        Assertions.assertEquals("gydcw", model.subscriptionId());
         Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
     }
 }

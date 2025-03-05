@@ -705,28 +705,48 @@ private[cosmos] class CosmosRowConverterBase(
 
     private def parseId(objectNode: ObjectNode): String = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
-        currentNode.get(IdAttributeName) match {
-            case valueNode: JsonNode =>
-                Option(valueNode).fold(null: String)(v => v.asText(null))
-            case _ => null
+        if (currentNode != null) {
+            currentNode.get(IdAttributeName) match {
+                case valueNode: JsonNode =>
+                    Option(valueNode).fold(null: String)(v => v.asText(null))
+                case _ => null
+            }
+        } else {
+            objectNode.get(MetadataJsonBodyAttributeName) match {
+                case metadataNode: JsonNode =>
+                    metadataNode.get(IdAttributeName) match {
+                        case valueNode: JsonNode =>
+                            Option(valueNode).fold(null: String)(v => v.asText(null))
+                        case _ => null
+                    }
+                case _ => null
+            }
         }
     }
 
     private def parseTimestamp(objectNode: ObjectNode): Long = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
-        currentNode.get(TimestampAttributeName) match {
-            case valueNode: JsonNode =>
-                Option(valueNode).fold(-1L)(v => v.asLong(-1))
-            case _ => -1L
+        if (currentNode != null) {
+            currentNode.get(TimestampAttributeName) match {
+                case valueNode: JsonNode =>
+                    Option(valueNode).fold(-1L)(v => v.asLong(-1))
+                case _ => -1L
+            }
+        } else {
+            -1L
         }
     }
 
     private def parseETag(objectNode: ObjectNode): String = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
-        currentNode.get(ETagAttributeName) match {
-            case valueNode: JsonNode =>
-                Option(valueNode).fold(null: String)(v => v.asText(null))
-            case _ => null
+        if (currentNode != null) {
+            currentNode.get(ETagAttributeName) match {
+                case valueNode: JsonNode =>
+                    Option(valueNode).fold(null: String)(v => v.asText(null))
+                case _ => null
+            }
+        } else {
+            null
         }
     }
 

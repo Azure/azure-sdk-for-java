@@ -14,18 +14,17 @@ public final class ThreatIntelligenceInformationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligenceInformationList model = BinaryData.fromString(
-            "{\"nextLink\":\"qejpmvssehaepwa\",\"value\":[{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"tczhupeuknijd\",\"id\":\"yespydjfbocyv\",\"name\":\"hulrtywikdmhla\",\"type\":\"uflgbhgauacdixm\"},{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"f\",\"id\":\"ryjqgdkf\",\"name\":\"ozo\",\"type\":\"oqbvjhvefgwbmqj\"},{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"ntasfaymxbu\",\"id\":\"zealbmqkyo\",\"name\":\"wyvf\",\"type\":\"mbtsuahxsg\"}]}")
+            "{\"nextLink\":\"xnavvwxq\",\"value\":[{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"qunyowxwlmdjr\",\"id\":\"fgbvfvpdbo\",\"name\":\"acizsjqlhkrr\",\"type\":\"bdeibqipqk\"},{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"vxndz\",\"id\":\"krefajpjo\",\"name\":\"wkqnyhg\",\"type\":\"ij\"}]}")
             .toObject(ThreatIntelligenceInformationList.class);
-        Assertions.assertEquals("tczhupeuknijd", model.value().get(0).etag());
+        Assertions.assertEquals("qunyowxwlmdjr", model.value().get(0).etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThreatIntelligenceInformationList model = new ThreatIntelligenceInformationList()
-            .withValue(Arrays.asList(new ThreatIntelligenceInformationInner().withEtag("tczhupeuknijd"),
-                new ThreatIntelligenceInformationInner().withEtag("f"),
-                new ThreatIntelligenceInformationInner().withEtag("ntasfaymxbu")));
+            .withValue(Arrays.asList(new ThreatIntelligenceInformationInner().withEtag("qunyowxwlmdjr"),
+                new ThreatIntelligenceInformationInner().withEtag("vxndz")));
         model = BinaryData.fromObject(model).toObject(ThreatIntelligenceInformationList.class);
-        Assertions.assertEquals("tczhupeuknijd", model.value().get(0).etag());
+        Assertions.assertEquals("qunyowxwlmdjr", model.value().get(0).etag());
     }
 }

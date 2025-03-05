@@ -9,15 +9,31 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 /** Contains stats associated with the peering. */
 @Fluent
 public interface ExpressRouteCircuitStats extends HasInnerModel<ExpressRouteCircuitStatsInner> {
-    /** @return inbound bytes through primary channel of the peering */
+    /**
+     * Gets inbound bytes through primary channel of the peering.
+     *
+     * @return inbound bytes through primary channel of the peering
+     */
     long primaryBytesIn();
 
-    /** @return outbound bytes through primary channel of the peering */
+    /**
+     * Gets outbound bytes through primary channel of the peering.
+     *
+     * @return outbound bytes through primary channel of the peering
+     */
     long primaryBytesOut();
 
-    /** @return inbound bytes through secondary channel of the peering */
+    /**
+     * Gets inbound bytes through secondary channel of the peering.
+     *
+     * @return inbound bytes through secondary channel of the peering
+     */
     long secondaryBytesIn();
 
-    /** @return outbound bytes through secondary channel of the peering */
+    /**
+     * Gets outbound bytes through secondary channel of the peering.
+     *
+     * @return outbound bytes through secondary channel of the peering
+     */
     long secondaryBytesOut();
 }

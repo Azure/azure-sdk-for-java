@@ -28,7 +28,7 @@ public final class DataConnectorsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.dataConnectors()
-            .deleteWithResponse("reneggpdtyz", "xlitwkejmgem", "dupe", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("zuqnwsithuqo", "yahluqwqulsutr", "bhxykfhyqezvqqug", com.azure.core.util.Context.NONE);
 
     }
 }

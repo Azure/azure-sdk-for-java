@@ -21,7 +21,7 @@ import java.util.UUID;
 public final class SecurityMLAnalyticsSettingsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/
      * securityMLAnalyticsSettings/CreateAnomalySecurityMLAnalyticsSetting.json
      */
     /**

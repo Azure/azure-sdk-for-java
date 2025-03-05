@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Associated rulestack details.
  */
 @Fluent
-public final class RulestackDetails {
+public final class RulestackDetails implements JsonSerializable<RulestackDetails> {
     /*
      * Resource Id
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Associated rulestack Id
      */
-    @JsonProperty(value = "rulestackId")
     private String rulestackId;
 
     /*
      * Rulestack location
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /**
@@ -102,5 +103,47 @@ public final class RulestackDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("rulestackId", this.rulestackId);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RulestackDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RulestackDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RulestackDetails.
+     */
+    public static RulestackDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RulestackDetails deserializedRulestackDetails = new RulestackDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedRulestackDetails.resourceId = reader.getString();
+                } else if ("rulestackId".equals(fieldName)) {
+                    deserializedRulestackDetails.rulestackId = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRulestackDetails.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRulestackDetails;
+        });
     }
 }

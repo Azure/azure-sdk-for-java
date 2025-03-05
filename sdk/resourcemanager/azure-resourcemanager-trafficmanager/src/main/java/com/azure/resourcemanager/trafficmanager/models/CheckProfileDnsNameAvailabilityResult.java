@@ -19,6 +19,8 @@ public class CheckProfileDnsNameAvailabilityResult {
     }
 
     /**
+     * Checks whether the DNS name is available to use.
+     *
      * @return true if the DNS name is available to use, false if the name has already been taken or invalid and cannot
      *     be used.
      */
@@ -26,12 +28,20 @@ public class CheckProfileDnsNameAvailabilityResult {
         return inner.nameAvailable();
     }
 
-    /** @return the reason that the DNS name could not be used */
+    /**
+     * Gets the reason that the DNS name could not be used.
+     *
+     * @return the reason that the DNS name could not be used
+     */
     public ProfileDnsNameUnavailableReason reason() {
         return new ProfileDnsNameUnavailableReason(inner.reason());
     }
 
-    /** @return an error message explaining the reason value in more detail */
+    /**
+     * Gets an error message explaining the reason value in more detail.
+     *
+     * @return an error message explaining the reason value in more detail
+     */
     public String message() {
         return inner.message();
     }

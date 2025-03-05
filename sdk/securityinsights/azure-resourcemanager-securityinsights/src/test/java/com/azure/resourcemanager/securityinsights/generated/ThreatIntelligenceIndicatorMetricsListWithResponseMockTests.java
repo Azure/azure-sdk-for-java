@@ -21,7 +21,7 @@ public final class ThreatIntelligenceIndicatorMetricsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"lastUpdatedTimeUtc\":\"gjijzqjhljsazm\",\"threatTypeMetrics\":[{},{},{},{}],\"patternTypeMetrics\":[{},{}],\"sourceMetrics\":[{},{},{},{}]}}]}";
+            = "{\"value\":[{\"properties\":{\"lastUpdatedTimeUtc\":\"bicziuswswj\",\"threatTypeMetrics\":[{}],\"patternTypeMetrics\":[{},{}],\"sourceMetrics\":[{},{},{},{}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"qqvyfscyrfw\",\"threatTypeMetrics\":[{},{}],\"patternTypeMetrics\":[{},{},{}],\"sourceMetrics\":[{},{}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"yzwvbhlimbyqec\",\"threatTypeMetrics\":[{},{},{},{}],\"patternTypeMetrics\":[{},{}],\"sourceMetrics\":[{},{},{},{}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"rdaasaxxo\",\"threatTypeMetrics\":[{},{},{}],\"patternTypeMetrics\":[{}],\"sourceMetrics\":[{},{}]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ThreatIntelligenceIndicatorMetricsListWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ThreatIntelligenceMetricsList response = manager.threatIntelligenceIndicatorMetrics()
-            .listWithResponse("tjwrvewojo", "fxqetxtdqiuspgu", com.azure.core.util.Context.NONE)
+            .listWithResponse("cldpkawn", "nlaimouxwksqmudm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gjijzqjhljsazm", response.value().get(0).properties().lastUpdatedTimeUtc());
+        Assertions.assertEquals("bicziuswswj", response.value().get(0).properties().lastUpdatedTimeUtc());
     }
 }

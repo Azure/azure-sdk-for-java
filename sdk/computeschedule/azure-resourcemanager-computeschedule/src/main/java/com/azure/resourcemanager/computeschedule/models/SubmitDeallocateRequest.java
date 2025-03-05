@@ -33,7 +33,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
     private Resources resources;
 
     /*
-     * Correlationid item
+     * CorrelationId item
      */
     private String correlationid;
 
@@ -104,7 +104,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
     }
 
     /**
-     * Get the correlationid property: Correlationid item.
+     * Get the correlationid property: CorrelationId item.
      * 
      * @return the correlationid value.
      */
@@ -113,7 +113,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
     }
 
     /**
-     * Set the correlationid property: Correlationid item.
+     * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
      * @return the SubmitDeallocateRequest object itself.

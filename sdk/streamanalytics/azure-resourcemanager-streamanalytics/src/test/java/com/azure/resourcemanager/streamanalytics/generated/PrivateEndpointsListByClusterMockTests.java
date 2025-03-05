@@ -22,7 +22,7 @@ public final class PrivateEndpointsListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdDate\":\"piymerteea\",\"manualPrivateLinkServiceConnections\":[{\"properties\":{\"privateLinkServiceId\":\"ekkkzd\",\"groupIds\":[\"kgdoj\",\"mxvavrefdee\",\"vecuijpx\"],\"requestMessage\":\"s\",\"privateLinkServiceConnectionState\":{}}},{\"properties\":{\"privateLinkServiceId\":\"tujwsawdd\",\"groupIds\":[\"abxvi\",\"itvtzeexavo\",\"tfgle\"],\"requestMessage\":\"m\",\"privateLinkServiceConnectionState\":{}}},{\"properties\":{\"privateLinkServiceId\":\"pypqtgsfj\",\"groupIds\":[\"slhhxudbxv\"],\"requestMessage\":\"htnsi\",\"privateLinkServiceConnectionState\":{}}},{\"properties\":{\"privateLinkServiceId\":\"z\",\"groupIds\":[\"sckdlp\"],\"requestMessage\":\"zrcxfailcfxwmdbo\",\"privateLinkServiceConnectionState\":{}}}]},\"etag\":\"gsftufqobrjlnacg\",\"id\":\"ckknhxkizvy\",\"name\":\"nrzvuljraaer\",\"type\":\"nok\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdDate\":\"jyxgtczh\",\"manualPrivateLinkServiceConnections\":[{\"properties\":{\"privateLinkServiceId\":\"dshmkxmaehvbbx\",\"groupIds\":[\"pltfnhtba\"],\"requestMessage\":\"gx\",\"privateLinkServiceConnectionState\":{}}},{\"properties\":{\"privateLinkServiceId\":\"kpyklyhp\",\"groupIds\":[\"dpvruud\",\"gzibthostgktstv\",\"xeclzedqbcvhzlhp\",\"odqkdlwwqfb\"],\"requestMessage\":\"lkxt\",\"privateLinkServiceConnectionState\":{}}}]},\"etag\":\"fsmlmbtxhwgfw\",\"id\":\"rtawcoezb\",\"name\":\"hubskhudygooo\",\"type\":\"kqfqjbvl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,11 @@ public final class PrivateEndpointsListByClusterMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpoint> response
-            = manager.privateEndpoints().listByCluster("svxeizzgwklnsr", "ffeycx", com.azure.core.util.Context.NONE);
+            = manager.privateEndpoints().listByCluster("vpkjpr", "kwcf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ekkkzd",
-            response.iterator()
-                .next()
-                .properties()
-                .manualPrivateLinkServiceConnections()
-                .get(0)
-                .privateLinkServiceId());
-        Assertions.assertEquals("kgdoj",
-            response.iterator().next().properties().manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("dshmkxmaehvbbx",
+            response.iterator().next().manualPrivateLinkServiceConnections().get(0).privateLinkServiceId());
+        Assertions.assertEquals("pltfnhtba",
+            response.iterator().next().manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
     }
 }

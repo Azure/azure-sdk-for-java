@@ -13,193 +13,103 @@ import com.azure.core.util.Context;
  */
 public interface AzureBareMetalInstances {
     /**
-     * Start a Bare Metal Instance.
+     * Gets a list of Azure BareMetal instances in the specified subscription.
      * 
-     * The operation to start an Azure Bare Metal instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the OperationStatus object returns the state of an asynchronous operation.
-     */
-    OperationStatus start(String resourceGroupName, String azureBareMetalInstanceName);
-
-    /**
-     * Start a Bare Metal Instance.
-     * 
-     * The operation to start an Azure Bare Metal instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the OperationStatus object returns the state of an asynchronous operation.
-     */
-    OperationStatus start(String resourceGroupName, String azureBareMetalInstanceName, Context context);
-
-    /**
-     * Restart a Bare Metal Instance.
-     * 
-     * The operation to restart an Azure Bare Metal Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the OperationStatus object returns the state of an asynchronous operation.
-     */
-    OperationStatus restart(String resourceGroupName, String azureBareMetalInstanceName);
-
-    /**
-     * Restart a Bare Metal Instance.
-     * 
-     * The operation to restart an Azure Bare Metal Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
-     * @param forceParameter When set to 'active', this parameter empowers the server with the ability to forcefully
-     * terminate and halt any existing processes that may be running on the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the OperationStatus object returns the state of an asynchronous operation.
-     */
-    OperationStatus restart(String resourceGroupName, String azureBareMetalInstanceName, ForceState forceParameter,
-        Context context);
-
-    /**
-     * Shutdown a Bare Metal Instance.
-     * 
-     * The operation to shutdown an Azure Bare Metal Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the OperationStatus object returns the state of an asynchronous operation.
-     */
-    OperationStatus shutdown(String resourceGroupName, String azureBareMetalInstanceName);
-
-    /**
-     * Shutdown a Bare Metal Instance.
-     * 
-     * The operation to shutdown an Azure Bare Metal Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the OperationStatus object returns the state of an asynchronous operation.
-     */
-    OperationStatus shutdown(String resourceGroupName, String azureBareMetalInstanceName, Context context);
-
-    /**
-     * Returns a list of Azure Bare Metal Instances in the specified subscription.
-     * 
-     * Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
-     * properties of each Azure Bare Metal Instance.
+     * Gets a list of AzureBareMetal instances in the specified subscription. The operations returns various properties
+     * of each Azure BareMetal instance.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Azure Bare Metal Instances operation as paginated response with
+     * @return a list of AzureBareMetal instances in the specified subscription as paginated response with
      * {@link PagedIterable}.
      */
     PagedIterable<AzureBareMetalInstance> list();
 
     /**
-     * Returns a list of Azure Bare Metal Instances in the specified subscription.
+     * Gets a list of Azure BareMetal instances in the specified subscription.
      * 
-     * Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
-     * properties of each Azure Bare Metal Instance.
+     * Gets a list of AzureBareMetal instances in the specified subscription. The operations returns various properties
+     * of each Azure BareMetal instance.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Azure Bare Metal Instances operation as paginated response with
+     * @return a list of AzureBareMetal instances in the specified subscription as paginated response with
      * {@link PagedIterable}.
      */
     PagedIterable<AzureBareMetalInstance> list(Context context);
 
     /**
-     * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group.
+     * Gets a list of Azure BareMetal instances in the specified subscription and resource group.
      * 
-     * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
-     * returns various properties of each Azure Bare Metal Instance.
+     * Gets a list of AzureBareMetal instances in the specified subscription and resource group. The operations returns
+     * various properties of each Azure BareMetal instance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Bare Metal Instances in the specified subscription and resource group as paginated
-     * response with {@link PagedIterable}.
+     * @return a list of AzureBareMetal instances in the specified subscription and resource group as paginated response
+     * with {@link PagedIterable}.
      */
     PagedIterable<AzureBareMetalInstance> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group.
+     * Gets a list of Azure BareMetal instances in the specified subscription and resource group.
      * 
-     * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
-     * returns various properties of each Azure Bare Metal Instance.
+     * Gets a list of AzureBareMetal instances in the specified subscription and resource group. The operations returns
+     * various properties of each Azure BareMetal instance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Bare Metal Instances in the specified subscription and resource group as paginated
-     * response with {@link PagedIterable}.
+     * @return a list of AzureBareMetal instances in the specified subscription and resource group as paginated response
+     * with {@link PagedIterable}.
      */
     PagedIterable<AzureBareMetalInstance> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Gets an Azure Bare Metal Instance.
+     * Gets an Azure BareMetal instance.
      * 
-     * Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
+     * Gets an Azure BareMetal instance for the specified subscription, resource group, and instance name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
+     * @param azureBareMetalInstanceName Name of the Azure BareMetal on Azure instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Bare Metal Instance for the specified subscription, resource group, and instance name along with
+     * @return an Azure BareMetal instance for the specified subscription, resource group, and instance name along with
      * {@link Response}.
      */
     Response<AzureBareMetalInstance> getByResourceGroupWithResponse(String resourceGroupName,
         String azureBareMetalInstanceName, Context context);
 
     /**
-     * Gets an Azure Bare Metal Instance.
+     * Gets an Azure BareMetal instance.
      * 
-     * Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
+     * Gets an Azure BareMetal instance for the specified subscription, resource group, and instance name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
+     * @param azureBareMetalInstanceName Name of the Azure BareMetal on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
+     * @return an Azure BareMetal instance for the specified subscription, resource group, and instance name.
      */
     AzureBareMetalInstance getByResourceGroup(String resourceGroupName, String azureBareMetalInstanceName);
 
     /**
-     * Patches the Tags field of a Azure Bare Metal Instance.
+     * Patches the Tags field of a Azure BareMetal instance.
      * 
-     * Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
-     * instance name.
+     * Patches the Tags field of a Azure BareMetal instance for the specified subscription, resource group, and instance
+     * name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
+     * @param azureBareMetalInstanceName Name of the Azure BareMetal on Azure instance.
      * @param tagsParameter Request body that only contains the new Tags field.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -212,13 +122,13 @@ public interface AzureBareMetalInstances {
         Tags tagsParameter, Context context);
 
     /**
-     * Patches the Tags field of a Azure Bare Metal Instance.
+     * Patches the Tags field of a Azure BareMetal instance.
      * 
-     * Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
-     * instance name.
+     * Patches the Tags field of a Azure BareMetal instance for the specified subscription, resource group, and instance
+     * name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
+     * @param azureBareMetalInstanceName Name of the Azure BareMetal on Azure instance.
      * @param tagsParameter Request body that only contains the new Tags field.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.deviceprovisioningservices.models.NameUnavailabilityReason;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Description of name availability. */
+/**
+ * Description of name availability.
+ */
 @Fluent
-public final class NameAvailabilityInfoInner {
+public final class NameAvailabilityInfoInner implements JsonSerializable<NameAvailabilityInfoInner> {
     /*
      * specifies if a name is available or not
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /*
      * specifies the reason a name is unavailable
      */
-    @JsonProperty(value = "reason")
     private NameUnavailabilityReason reason;
 
     /*
      * message containing a detailed reason name is unavailable
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
+     * Creates an instance of NameAvailabilityInfoInner class.
+     */
+    public NameAvailabilityInfoInner() {
+    }
+
+    /**
      * Get the nameAvailable property: specifies if a name is available or not.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -40,7 +49,7 @@ public final class NameAvailabilityInfoInner {
 
     /**
      * Set the nameAvailable property: specifies if a name is available or not.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the NameAvailabilityInfoInner object itself.
      */
@@ -51,7 +60,7 @@ public final class NameAvailabilityInfoInner {
 
     /**
      * Get the reason property: specifies the reason a name is unavailable.
-     *
+     * 
      * @return the reason value.
      */
     public NameUnavailabilityReason reason() {
@@ -60,7 +69,7 @@ public final class NameAvailabilityInfoInner {
 
     /**
      * Set the reason property: specifies the reason a name is unavailable.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the NameAvailabilityInfoInner object itself.
      */
@@ -71,7 +80,7 @@ public final class NameAvailabilityInfoInner {
 
     /**
      * Get the message property: message containing a detailed reason name is unavailable.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -80,7 +89,7 @@ public final class NameAvailabilityInfoInner {
 
     /**
      * Set the message property: message containing a detailed reason name is unavailable.
-     *
+     * 
      * @param message the message value to set.
      * @return the NameAvailabilityInfoInner object itself.
      */
@@ -91,9 +100,52 @@ public final class NameAvailabilityInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("reason", this.reason == null ? null : this.reason.toString());
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityInfoInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameAvailabilityInfoInner.
+     */
+    public static NameAvailabilityInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityInfoInner deserializedNameAvailabilityInfoInner = new NameAvailabilityInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedNameAvailabilityInfoInner.nameAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedNameAvailabilityInfoInner.reason
+                        = NameUnavailabilityReason.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedNameAvailabilityInfoInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityInfoInner;
+        });
     }
 }

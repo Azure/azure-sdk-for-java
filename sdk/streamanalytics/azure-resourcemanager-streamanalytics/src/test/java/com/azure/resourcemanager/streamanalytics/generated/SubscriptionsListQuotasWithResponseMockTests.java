@@ -20,7 +20,7 @@ public final class SubscriptionsListQuotasWithResponseMockTests {
     @Test
     public void testListQuotasWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"maxCount\":1862028450,\"currentCount\":156368674},\"name\":\"ygdxpgpqchis\",\"type\":\"pnnbjc\",\"id\":\"gibbdaxc\"},{\"properties\":{\"maxCount\":1224339207,\"currentCount\":536315027},\"name\":\"orsukokwbqp\",\"type\":\"lvnuuepzlrph\",\"id\":\"soldweyuqdunv\"}]}";
+            = "{\"value\":[{\"properties\":{\"maxCount\":1513768261,\"currentCount\":930430831},\"name\":\"vuzlm\",\"type\":\"elfk\",\"id\":\"plcrpwjxeznoig\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class SubscriptionsListQuotasWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SubscriptionQuotasListResult response
-            = manager.subscriptions().listQuotasWithResponse("lnorwmdu", com.azure.core.util.Context.NONE).getValue();
+            = manager.subscriptions().listQuotasWithResponse("hjglikk", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class LocationBasedCapabilitiesExecuteSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * CapabilitiesByLocation.json
      */
     /**
@@ -19,6 +19,6 @@ public final class LocationBasedCapabilitiesExecuteSamples {
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void capabilitiesList(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.locationBasedCapabilities().execute("westus", com.azure.core.util.Context.NONE);
+        manager.locationBasedCapabilities().execute("eastus", com.azure.core.util.Context.NONE);
     }
 }

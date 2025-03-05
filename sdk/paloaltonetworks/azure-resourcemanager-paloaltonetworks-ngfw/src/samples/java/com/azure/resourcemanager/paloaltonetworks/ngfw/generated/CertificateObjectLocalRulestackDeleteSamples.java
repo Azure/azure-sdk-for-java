@@ -20,8 +20,8 @@ public final class CertificateObjectLocalRulestackDeleteSamples {
      */
     public static void certificateObjectLocalRulestackDeleteMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.certificateObjectLocalRulestacks().delete("rgopenapi", "lrs1", "armid1",
-            com.azure.core.util.Context.NONE);
+        manager.certificateObjectLocalRulestacks()
+            .delete("rgopenapi", "lrs1", "armid1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class CertificateObjectLocalRulestackDeleteSamples {
      */
     public static void certificateObjectLocalRulestackDeleteMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.certificateObjectLocalRulestacks().delete("rgopenapi", "lrs1", "armid1",
-            com.azure.core.util.Context.NONE);
+        manager.certificateObjectLocalRulestacks()
+            .delete("rgopenapi", "lrs1", "armid1", com.azure.core.util.Context.NONE);
     }
 }

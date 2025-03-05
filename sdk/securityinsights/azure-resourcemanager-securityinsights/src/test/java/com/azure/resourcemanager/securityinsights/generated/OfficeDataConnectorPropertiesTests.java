@@ -17,25 +17,25 @@ public final class OfficeDataConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfficeDataConnectorProperties model = BinaryData.fromString(
-            "{\"dataTypes\":{\"exchange\":{\"state\":\"Disabled\"},\"sharePoint\":{\"state\":\"Disabled\"},\"teams\":{\"state\":\"Disabled\"}},\"tenantId\":\"zlm\"}")
+            "{\"tenantId\":\"sufco\",\"dataTypes\":{\"exchange\":{\"state\":\"Disabled\"},\"sharePoint\":{\"state\":\"Disabled\"},\"teams\":{\"state\":\"Enabled\"}}}")
             .toObject(OfficeDataConnectorProperties.class);
-        Assertions.assertEquals("zlm", model.tenantId());
+        Assertions.assertEquals("sufco", model.tenantId());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().exchange().state());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().sharePoint().state());
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().teams().state());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().teams().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OfficeDataConnectorProperties model = new OfficeDataConnectorProperties().withTenantId("zlm")
+        OfficeDataConnectorProperties model = new OfficeDataConnectorProperties().withTenantId("sufco")
             .withDataTypes(new OfficeDataConnectorDataTypes()
                 .withExchange(new OfficeDataConnectorDataTypesExchange().withState(DataTypeState.DISABLED))
                 .withSharePoint(new OfficeDataConnectorDataTypesSharePoint().withState(DataTypeState.DISABLED))
-                .withTeams(new OfficeDataConnectorDataTypesTeams().withState(DataTypeState.DISABLED)));
+                .withTeams(new OfficeDataConnectorDataTypesTeams().withState(DataTypeState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(OfficeDataConnectorProperties.class);
-        Assertions.assertEquals("zlm", model.tenantId());
+        Assertions.assertEquals("sufco", model.tenantId());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().exchange().state());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().sharePoint().state());
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().teams().state());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().teams().state());
     }
 }

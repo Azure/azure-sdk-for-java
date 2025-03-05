@@ -12,18 +12,18 @@ public final class ThreatIntelligenceMetricEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligenceMetricEntity model
-            = BinaryData.fromString("{\"metricName\":\"meluclvdjj\",\"metricValue\":1658208052}")
+            = BinaryData.fromString("{\"metricName\":\"vyhgs\",\"metricValue\":2121939227}")
                 .toObject(ThreatIntelligenceMetricEntity.class);
-        Assertions.assertEquals("meluclvdjj", model.metricName());
-        Assertions.assertEquals(1658208052, model.metricValue());
+        Assertions.assertEquals("vyhgs", model.metricName());
+        Assertions.assertEquals(2121939227, model.metricValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThreatIntelligenceMetricEntity model
-            = new ThreatIntelligenceMetricEntity().withMetricName("meluclvdjj").withMetricValue(1658208052);
+            = new ThreatIntelligenceMetricEntity().withMetricName("vyhgs").withMetricValue(2121939227);
         model = BinaryData.fromObject(model).toObject(ThreatIntelligenceMetricEntity.class);
-        Assertions.assertEquals("meluclvdjj", model.metricName());
-        Assertions.assertEquals(1658208052, model.metricValue());
+        Assertions.assertEquals("vyhgs", model.metricName());
+        Assertions.assertEquals(2121939227, model.metricValue());
     }
 }

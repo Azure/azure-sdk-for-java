@@ -6,7 +6,7 @@ package com.azure.cosmos
 import com.azure.cosmos.implementation.{DocumentCollection, ImplementationBridgeHelpers, PartitionKeyRange, SparkBridgeImplementationInternal}
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{CosmosContainerProperties, CosmosQueryRequestOptions, FeedRange, ModelBridgeInternal}
+import com.azure.cosmos.models.{CosmosContainerProperties, CosmosQueryRequestOptions}
 import com.azure.cosmos.spark.NormalizedRange
 
 import java.time.Duration
@@ -46,17 +46,6 @@ private[cosmos] object SparkBridgeInternal {
   private[cosmos] def getCacheKeyForContainer(container: CosmosAsyncContainer): String = {
     val database = container.getDatabase
     s"${database.getClient.getServiceEndpoint}|${database.getId}|${container.getId}"
-  }
-
-  private[cosmos] def getNormalizedEffectiveRange
-  (
-    container: CosmosAsyncContainer,
-    feedRange: FeedRange
-  ) : NormalizedRange = {
-
-    SparkBridgeImplementationInternal
-      .rangeToNormalizedRange(
-        container.getNormalizedEffectiveRange(feedRange).block)
   }
 
   private[cosmos] def getPartitionKeyRanges

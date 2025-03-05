@@ -30,7 +30,7 @@ public final class DefaultAccountsRemoveWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.defaultAccounts()
-            .removeWithResponse(UUID.fromString("23db7178-2b95-4cdb-81c3-6ac4e182a60e"), ScopeType.SUBSCRIPTION,
+            .removeWithResponse(UUID.fromString("3d413161-70c7-4157-8943-e0458db2584e"), ScopeType.SUBSCRIPTION,
                 "jayvblmhv", com.azure.core.util.Context.NONE);
 
     }

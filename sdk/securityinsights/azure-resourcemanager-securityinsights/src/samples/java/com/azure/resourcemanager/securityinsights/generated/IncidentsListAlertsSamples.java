@@ -10,8 +10,8 @@ package com.azure.resourcemanager.securityinsights.generated;
 public final class IncidentsListAlertsSamples {
     /*
      * x-ms-original-file:
-     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
-     * incidents/GetAllIncidentAlerts.json
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/incidents/
+     * GetAllIncidentAlerts.json
      */
     /**
      * Sample code: Get all incident alerts.

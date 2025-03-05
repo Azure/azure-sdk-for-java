@@ -10,8 +10,7 @@ package com.azure.resourcemanager.dnsresolver.generated;
 public final class DnsResolversDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
-     * DnsResolver_Delete.json
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Delete.json
      */
     /**
      * Sample code: Delete DNS resolver.

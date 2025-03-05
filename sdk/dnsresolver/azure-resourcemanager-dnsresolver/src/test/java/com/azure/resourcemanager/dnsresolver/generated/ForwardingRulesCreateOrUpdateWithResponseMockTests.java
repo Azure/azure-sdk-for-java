@@ -26,7 +26,7 @@ public final class ForwardingRulesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"fdntwjchrdgoih\",\"properties\":{\"domainName\":\"umwctondz\",\"targetDnsServers\":[{\"ipAddress\":\"uu\",\"port\":1575839239},{\"ipAddress\":\"lwg\",\"port\":950264717},{\"ipAddress\":\"sb\",\"port\":1284513946},{\"ipAddress\":\"vvt\",\"port\":1304318948}],\"metadata\":{\"fxqknpirgneptt\":\"qfi\",\"lpijnkrxfrd\":\"qmsniffcdmqnro\",\"zzronasx\":\"hcrat\"},\"forwardingRuleState\":\"Disabled\",\"provisioningState\":\"Creating\"},\"id\":\"yzhftwesgogczh\",\"name\":\"nnxk\",\"type\":\"lgnyhmo\"}";
+            = "{\"etag\":\"yylhalnswhccsp\",\"properties\":{\"domainName\":\"kaivwit\",\"targetDnsServers\":[{\"ipAddress\":\"cywuggwol\",\"port\":1226562367},{\"ipAddress\":\"zbwemh\",\"port\":200585156},{\"ipAddress\":\"sbrgz\",\"port\":1820040321},{\"ipAddress\":\"swe\",\"port\":151812446}],\"metadata\":{\"tlstvlzywem\":\"xggicccnxqhuexmk\",\"lusiy\":\"zrncsdt\",\"cy\":\"bsfgytguslfea\",\"xgfpelolppv\":\"qukyhejhzi\"},\"forwardingRuleState\":\"Enabled\",\"provisioningState\":\"Updating\"},\"id\":\"ujzra\",\"name\":\"htwdwrftswibyrcd\",\"type\":\"bhshfwpracstwity\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,22 +36,22 @@ public final class ForwardingRulesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ForwardingRule response = manager.forwardingRules()
-            .define("j")
-            .withExistingDnsForwardingRuleset("qjjlwuen", "rkpyouaibrebqaay")
-            .withDomainName("tezlwff")
-            .withTargetDnsServers(
-                Arrays.asList(new TargetDnsServer().withIpAddress("akpjpqqmtedlt").withPort(997938264)))
-            .withMetadata(mapOf("upkvipmdsc", "yeozphvwauyqncy", "totxhojujb", "xqupevzhf", "n", "pelmcuvhixbjxyf"))
+            .define("r")
+            .withExistingDnsForwardingRuleset("uximerqfobw", "znkbykutwpfhpagm")
+            .withDomainName("kkze")
+            .withTargetDnsServers(Arrays.asList(new TargetDnsServer().withIpAddress("l").withPort(1094584073),
+                new TargetDnsServer().withIpAddress("pusdstt").withPort(1072941550)))
+            .withMetadata(mapOf("akufgmjz", "bbejdcngqqm", "grtwae", "wr", "zkopb", "u"))
             .withForwardingRuleState(ForwardingRuleState.ENABLED)
-            .withIfMatch("iwii")
-            .withIfNoneMatch("htywubxcbihwq")
+            .withIfMatch("equi")
+            .withIfNoneMatch("hxicslfaoqz")
             .create();
 
-        Assertions.assertEquals("umwctondz", response.domainName());
-        Assertions.assertEquals("uu", response.targetDnsServers().get(0).ipAddress());
-        Assertions.assertEquals(1575839239, response.targetDnsServers().get(0).port());
-        Assertions.assertEquals("qfi", response.metadata().get("fxqknpirgneptt"));
-        Assertions.assertEquals(ForwardingRuleState.DISABLED, response.forwardingRuleState());
+        Assertions.assertEquals("kaivwit", response.domainName());
+        Assertions.assertEquals("cywuggwol", response.targetDnsServers().get(0).ipAddress());
+        Assertions.assertEquals(1226562367, response.targetDnsServers().get(0).port());
+        Assertions.assertEquals("xggicccnxqhuexmk", response.metadata().get("tlstvlzywem"));
+        Assertions.assertEquals(ForwardingRuleState.ENABLED, response.forwardingRuleState());
     }
 
     // Use "Map.of" if available

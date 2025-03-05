@@ -19,22 +19,46 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface ImmutabilityPolicy extends HasInnerModel<ImmutabilityPolicyInner>, Indexable,
     Refreshable<ImmutabilityPolicy>, Updatable<ImmutabilityPolicy.Update>, HasManager<StorageManager> {
-    /** @return the etag value. */
+    /**
+     * Gets the etag.
+     *
+     * @return the etag value.
+     */
     String etag();
 
-    /** @return the id value. */
+    /**
+     * Gets resource ID.
+     *
+     * @return the id value.
+     */
     String id();
 
-    /** @return the immutabilityPeriodSinceCreationInDays value. */
+    /**
+     * Gets the immutability period since creation in days.
+     *
+     * @return the immutabilityPeriodSinceCreationInDays value.
+     */
     int immutabilityPeriodSinceCreationInDays();
 
-    /** @return the name value. */
+    /**
+     * Gets immutability policy name.
+     *
+     * @return the name value.
+     */
     String name();
 
-    /** @return the state value. */
+    /**
+     * Gets immutability policy state.
+     *
+     * @return the state value.
+     */
     ImmutabilityPolicyState state();
 
-    /** @return the type value. */
+    /**
+     * Gets the type of immutability policy.
+     *
+     * @return the type value.
+     */
     String type();
 
     /**

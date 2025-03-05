@@ -6,38 +6,37 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The properties of the managed service identities assigned to this resource.
  */
 @Fluent
-public final class AzureResourceManagerManagedIdentityProperties {
+public final class AzureResourceManagerManagedIdentityProperties
+    implements JsonSerializable<AzureResourceManagerManagedIdentityProperties> {
     /*
      * The Active Directory tenant id of the principal.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * The active directory identifier of this principal.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The type of managed identity assigned to this resource.
      */
-    @JsonProperty(value = "type", required = true)
     private ManagedIdentityType type;
 
     /*
      * The identities assigned to this resource by the user.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AzureResourceManagerUserAssignedIdentity> userAssignedIdentities;
 
     /**
@@ -112,8 +111,9 @@ public final class AzureResourceManagerManagedIdentityProperties {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property type in model AzureResourceManagerManagedIdentityProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property type in model AzureResourceManagerManagedIdentityProperties"));
         }
         if (userAssignedIdentities() != null) {
             userAssignedIdentities().values().forEach(e -> {
@@ -125,4 +125,54 @@ public final class AzureResourceManagerManagedIdentityProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureResourceManagerManagedIdentityProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureResourceManagerManagedIdentityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureResourceManagerManagedIdentityProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureResourceManagerManagedIdentityProperties.
+     */
+    public static AzureResourceManagerManagedIdentityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureResourceManagerManagedIdentityProperties deserializedAzureResourceManagerManagedIdentityProperties
+                = new AzureResourceManagerManagedIdentityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureResourceManagerManagedIdentityProperties.type
+                        = ManagedIdentityType.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedAzureResourceManagerManagedIdentityProperties.tenantId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedAzureResourceManagerManagedIdentityProperties.principalId = reader.getString();
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, AzureResourceManagerUserAssignedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> AzureResourceManagerUserAssignedIdentity.fromJson(reader1));
+                    deserializedAzureResourceManagerManagedIdentityProperties.userAssignedIdentities
+                        = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureResourceManagerManagedIdentityProperties;
+        });
+    }
 }

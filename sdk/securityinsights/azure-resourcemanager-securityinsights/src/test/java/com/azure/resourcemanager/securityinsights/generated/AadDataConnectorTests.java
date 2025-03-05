@@ -15,22 +15,22 @@ public final class AadDataConnectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AadDataConnector model = BinaryData.fromString(
-            "{\"kind\":\"AzureActiveDirectory\",\"properties\":{\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}},\"tenantId\":\"zg\"},\"etag\":\"hjvmabzzbwaybfm\",\"id\":\"fb\",\"name\":\"ymqtnapreojx\",\"type\":\"jnbscon\"}")
+            "{\"kind\":\"AzureActiveDirectory\",\"properties\":{\"tenantId\":\"rkywuhpsvfuu\",\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}}},\"etag\":\"xxwla\",\"id\":\"iexzsrzpge\",\"name\":\"q\",\"type\":\"yb\"}")
             .toObject(AadDataConnector.class);
-        Assertions.assertEquals("hjvmabzzbwaybfm", model.etag());
+        Assertions.assertEquals("xxwla", model.etag());
+        Assertions.assertEquals("rkywuhpsvfuu", model.tenantId());
         Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
-        Assertions.assertEquals("zg", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AadDataConnector model = new AadDataConnector().withEtag("hjvmabzzbwaybfm")
+        AadDataConnector model = new AadDataConnector().withEtag("xxwla")
+            .withTenantId("rkywuhpsvfuu")
             .withDataTypes(new AlertsDataTypeOfDataConnector()
-                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)))
-            .withTenantId("zg");
+                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(AadDataConnector.class);
-        Assertions.assertEquals("hjvmabzzbwaybfm", model.etag());
+        Assertions.assertEquals("xxwla", model.etag());
+        Assertions.assertEquals("rkywuhpsvfuu", model.tenantId());
         Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
-        Assertions.assertEquals("zg", model.tenantId());
     }
 }

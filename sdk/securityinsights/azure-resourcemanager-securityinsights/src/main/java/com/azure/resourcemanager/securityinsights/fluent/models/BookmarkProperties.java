@@ -11,8 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.models.AttackTactic;
-import com.azure.resourcemanager.securityinsights.models.BookmarkEntityMappings;
 import com.azure.resourcemanager.securityinsights.models.IncidentInfo;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
 import java.io.IOException;
@@ -89,21 +87,6 @@ public final class BookmarkProperties implements JsonSerializable<BookmarkProper
      * Describes an incident that relates to bookmark
      */
     private IncidentInfo incidentInfo;
-
-    /*
-     * Describes the entity mappings of the bookmark
-     */
-    private List<BookmarkEntityMappings> entityMappings;
-
-    /*
-     * A list of relevant mitre attacks
-     */
-    private List<AttackTactic> tactics;
-
-    /*
-     * A list of relevant mitre techniques
-     */
-    private List<String> techniques;
 
     /**
      * Creates an instance of BookmarkProperties class.
@@ -372,66 +355,6 @@ public final class BookmarkProperties implements JsonSerializable<BookmarkProper
     }
 
     /**
-     * Get the entityMappings property: Describes the entity mappings of the bookmark.
-     * 
-     * @return the entityMappings value.
-     */
-    public List<BookmarkEntityMappings> entityMappings() {
-        return this.entityMappings;
-    }
-
-    /**
-     * Set the entityMappings property: Describes the entity mappings of the bookmark.
-     * 
-     * @param entityMappings the entityMappings value to set.
-     * @return the BookmarkProperties object itself.
-     */
-    public BookmarkProperties withEntityMappings(List<BookmarkEntityMappings> entityMappings) {
-        this.entityMappings = entityMappings;
-        return this;
-    }
-
-    /**
-     * Get the tactics property: A list of relevant mitre attacks.
-     * 
-     * @return the tactics value.
-     */
-    public List<AttackTactic> tactics() {
-        return this.tactics;
-    }
-
-    /**
-     * Set the tactics property: A list of relevant mitre attacks.
-     * 
-     * @param tactics the tactics value to set.
-     * @return the BookmarkProperties object itself.
-     */
-    public BookmarkProperties withTactics(List<AttackTactic> tactics) {
-        this.tactics = tactics;
-        return this;
-    }
-
-    /**
-     * Get the techniques property: A list of relevant mitre techniques.
-     * 
-     * @return the techniques value.
-     */
-    public List<String> techniques() {
-        return this.techniques;
-    }
-
-    /**
-     * Set the techniques property: A list of relevant mitre techniques.
-     * 
-     * @param techniques the techniques value to set.
-     * @return the BookmarkProperties object itself.
-     */
-    public BookmarkProperties withTechniques(List<String> techniques) {
-        this.techniques = techniques;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -453,9 +376,6 @@ public final class BookmarkProperties implements JsonSerializable<BookmarkProper
         }
         if (incidentInfo() != null) {
             incidentInfo().validate();
-        }
-        if (entityMappings() != null) {
-            entityMappings().forEach(e -> e.validate());
         }
     }
 
@@ -485,11 +405,6 @@ public final class BookmarkProperties implements JsonSerializable<BookmarkProper
         jsonWriter.writeStringField("queryEndTime",
             this.queryEndTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queryEndTime));
         jsonWriter.writeJsonField("incidentInfo", this.incidentInfo);
-        jsonWriter.writeArrayField("entityMappings", this.entityMappings,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("tactics", this.tactics,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeArrayField("techniques", this.techniques, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -541,17 +456,6 @@ public final class BookmarkProperties implements JsonSerializable<BookmarkProper
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("incidentInfo".equals(fieldName)) {
                     deserializedBookmarkProperties.incidentInfo = IncidentInfo.fromJson(reader);
-                } else if ("entityMappings".equals(fieldName)) {
-                    List<BookmarkEntityMappings> entityMappings
-                        = reader.readArray(reader1 -> BookmarkEntityMappings.fromJson(reader1));
-                    deserializedBookmarkProperties.entityMappings = entityMappings;
-                } else if ("tactics".equals(fieldName)) {
-                    List<AttackTactic> tactics
-                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
-                    deserializedBookmarkProperties.tactics = tactics;
-                } else if ("techniques".equals(fieldName)) {
-                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
-                    deserializedBookmarkProperties.techniques = techniques;
                 } else {
                     reader.skipChildren();
                 }

@@ -11,7 +11,7 @@ public final class IncidentAdditionalDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncidentAdditionalData model = BinaryData.fromString(
-            "{\"alertsCount\":478345716,\"bookmarksCount\":113317343,\"commentsCount\":1715905241,\"alertProductNames\":[\"ehhr\",\"kbunzoz\",\"dhcxgkmoy\",\"cdyuibhmfdnbzyd\"],\"providerIncidentUrl\":\"vfcjnaeoisrvhmg\",\"tactics\":[\"ResourceDevelopment\",\"InitialAccess\",\"InitialAccess\"],\"techniques\":[\"cvwmzhwplefa\",\"vxilcbt\",\"nhnzeyqxt\"]}")
+            "{\"alertsCount\":2118768153,\"bookmarksCount\":2142840160,\"commentsCount\":1096564755,\"alertProductNames\":[\"thsu\",\"ocmnyyazttbtwwrq\"],\"tactics\":[\"InhibitResponseFunction\",\"Impact\",\"LateralMovement\",\"PreAttack\"]}")
             .toObject(IncidentAdditionalData.class);
     }
 

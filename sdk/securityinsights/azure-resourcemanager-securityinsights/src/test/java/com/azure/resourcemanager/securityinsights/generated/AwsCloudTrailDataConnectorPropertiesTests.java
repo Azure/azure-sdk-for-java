@@ -14,21 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class AwsCloudTrailDataConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AwsCloudTrailDataConnectorProperties model = BinaryData
-            .fromString("{\"awsRoleArn\":\"kcxwnujvqynvavi\",\"dataTypes\":{\"logs\":{\"state\":\"Enabled\"}}}")
-            .toObject(AwsCloudTrailDataConnectorProperties.class);
-        Assertions.assertEquals("kcxwnujvqynvavi", model.awsRoleArn());
-        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().logs().state());
+        AwsCloudTrailDataConnectorProperties model
+            = BinaryData.fromString("{\"awsRoleArn\":\"bsnmfpph\",\"dataTypes\":{\"logs\":{\"state\":\"Disabled\"}}}")
+                .toObject(AwsCloudTrailDataConnectorProperties.class);
+        Assertions.assertEquals("bsnmfpph", model.awsRoleArn());
+        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().logs().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AwsCloudTrailDataConnectorProperties model
-            = new AwsCloudTrailDataConnectorProperties().withAwsRoleArn("kcxwnujvqynvavi")
+            = new AwsCloudTrailDataConnectorProperties().withAwsRoleArn("bsnmfpph")
                 .withDataTypes(new AwsCloudTrailDataConnectorDataTypes()
-                    .withLogs(new AwsCloudTrailDataConnectorDataTypesLogs().withState(DataTypeState.ENABLED)));
+                    .withLogs(new AwsCloudTrailDataConnectorDataTypesLogs().withState(DataTypeState.DISABLED)));
         model = BinaryData.fromObject(model).toObject(AwsCloudTrailDataConnectorProperties.class);
-        Assertions.assertEquals("kcxwnujvqynvavi", model.awsRoleArn());
-        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().logs().state());
+        Assertions.assertEquals("bsnmfpph", model.awsRoleArn());
+        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().logs().state());
     }
 }

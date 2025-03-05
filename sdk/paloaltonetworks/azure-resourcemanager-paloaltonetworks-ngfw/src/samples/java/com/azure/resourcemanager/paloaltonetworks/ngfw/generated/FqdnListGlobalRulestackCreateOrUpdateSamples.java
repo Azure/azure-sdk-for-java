@@ -23,11 +23,13 @@ public final class FqdnListGlobalRulestackCreateOrUpdateSamples {
      */
     public static void fqdnListGlobalRulestackCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.fqdnListGlobalRulestacks().createOrUpdate("praval", "armid1",
-            new FqdnListGlobalRulestackResourceInner().withDescription("string")
-                .withFqdnList(Arrays.asList("string1", "string2")).withEtag("aaaaaaaaaaaaaaaaaa")
-                .withAuditComment("string"),
-            com.azure.core.util.Context.NONE);
+        manager.fqdnListGlobalRulestacks()
+            .createOrUpdate("praval", "armid1",
+                new FqdnListGlobalRulestackResourceInner().withDescription("string")
+                    .withFqdnList(Arrays.asList("string1", "string2"))
+                    .withEtag("aaaaaaaaaaaaaaaaaa")
+                    .withAuditComment("string"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -42,8 +44,9 @@ public final class FqdnListGlobalRulestackCreateOrUpdateSamples {
      */
     public static void fqdnListGlobalRulestackCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.fqdnListGlobalRulestacks().createOrUpdate("praval", "armid1",
-            new FqdnListGlobalRulestackResourceInner().withFqdnList(Arrays.asList("string1", "string2")),
-            com.azure.core.util.Context.NONE);
+        manager.fqdnListGlobalRulestacks()
+            .createOrUpdate("praval", "armid1",
+                new FqdnListGlobalRulestackResourceInner().withFqdnList(Arrays.asList("string1", "string2")),
+                com.azure.core.util.Context.NONE);
     }
 }

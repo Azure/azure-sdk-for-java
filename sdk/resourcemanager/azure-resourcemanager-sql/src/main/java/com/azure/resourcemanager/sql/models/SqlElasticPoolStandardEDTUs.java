@@ -47,7 +47,11 @@ public enum SqlElasticPoolStandardEDTUs {
         this.value = eDTU;
     }
 
-    /** @return the reserved eDTU for the SQL Elastic Pool */
+    /**
+     * Gets the reserved eDTU for the SQL Elastic Pool.
+     *
+     * @return the reserved eDTU for the SQL Elastic Pool
+     */
     public int value() {
         return this.value;
     }

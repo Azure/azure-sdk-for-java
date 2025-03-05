@@ -10,8 +10,8 @@ package com.azure.resourcemanager.baremetalinfrastructure.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-
-     * preview/examples/AzureBareMetalOperations_List.json
+     * specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/
+     * examples/AzureBareMetalOperations_List.json
      */
     /**
      * Sample code: List all management operations supported by the AzureBareMetal RP.

@@ -20,8 +20,8 @@ public final class LocalRulestacksListPredefinedUrlCategoriesSamples {
      */
     public static void localRulestacksListPredefinedUrlCategoriesMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRulestacks().listPredefinedUrlCategoriesWithResponse("rgopenapi", "lrs1", null, null,
-            com.azure.core.util.Context.NONE);
+        manager.localRulestacks()
+            .listPredefinedUrlCategoriesWithResponse("rgopenapi", "lrs1", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,8 @@ public final class LocalRulestacksListPredefinedUrlCategoriesSamples {
      */
     public static void localRulestacksListPredefinedUrlCategoriesMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRulestacks().listPredefinedUrlCategoriesWithResponse("rgopenapi", "lrs1", "a6a321", 20,
-            com.azure.core.util.Context.NONE);
+        manager.localRulestacks()
+            .listPredefinedUrlCategoriesWithResponse("rgopenapi", "lrs1", "a6a321", 20,
+                com.azure.core.util.Context.NONE);
     }
 }

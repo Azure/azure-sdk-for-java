@@ -114,6 +114,31 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
     }
 
     /**
+     * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
+     * server is trying to switch to password authentication and does not have default administrator login.
+     * 
+     * @return the administratorLogin value.
+     */
+    public String administratorLogin() {
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLogin();
+    }
+
+    /**
+     * Set the administratorLogin property: The administrator's login name of a server. Can only be specified when the
+     * server is trying to switch to password authentication and does not have default administrator login.
+     * 
+     * @param administratorLogin the administratorLogin value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withAdministratorLogin(String administratorLogin) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withAdministratorLogin(administratorLogin);
+        return this;
+    }
+
+    /**
      * Get the administratorLoginPassword property: The password of the administrator login.
      * 
      * @return the administratorLoginPassword value.

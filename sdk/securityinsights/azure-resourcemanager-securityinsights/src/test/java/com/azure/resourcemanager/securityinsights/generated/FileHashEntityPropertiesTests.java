@@ -11,7 +11,7 @@ public final class FileHashEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileHashEntityProperties model = BinaryData.fromString(
-            "{\"algorithm\":\"SHA256\",\"hashValue\":\"a\",\"additionalData\":{\"idtoakat\":\"databhpowcnxtpzdlys\",\"tvcshtkutzcttb\":\"datarytgrhzbqfdpfawr\",\"m\":\"datagdirda\"},\"friendlyName\":\"jgcf\"}")
+            "{\"algorithm\":\"SHA1\",\"hashValue\":\"spshckfkyjp\",\"additionalData\":{\"yogtieyujtvczkcn\":\"databpssdfp\",\"unjdx\":\"dataxrx\",\"ivbgkcv\":\"dataglnkvxlxpagl\"},\"friendlyName\":\"pzvuqdflvo\"}")
             .toObject(FileHashEntityProperties.class);
     }
 

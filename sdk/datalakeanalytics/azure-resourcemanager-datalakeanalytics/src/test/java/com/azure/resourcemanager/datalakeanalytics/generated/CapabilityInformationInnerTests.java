@@ -11,7 +11,7 @@ public final class CapabilityInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilityInformationInner model = BinaryData.fromString(
-            "{\"subscriptionId\":\"cbc9380a-5876-46af-ac36-3c515a004067\",\"state\":\"Unregistered\",\"maxAccountCount\":1577221415,\"accountCount\":1139203375,\"migrationState\":false}")
+            "{\"subscriptionId\":\"d1a4d262-28b8-42b6-b525-3050c57cf5c3\",\"state\":\"Unregistered\",\"maxAccountCount\":1577221415,\"accountCount\":1139203375,\"migrationState\":false}")
             .toObject(CapabilityInformationInner.class);
     }
 

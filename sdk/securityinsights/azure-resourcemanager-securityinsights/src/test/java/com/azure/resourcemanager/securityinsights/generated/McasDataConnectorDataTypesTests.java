@@ -14,19 +14,19 @@ public final class McasDataConnectorDataTypesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         McasDataConnectorDataTypes model
-            = BinaryData.fromString("{\"discoveryLogs\":{\"state\":\"Enabled\"},\"alerts\":{\"state\":\"Enabled\"}}")
+            = BinaryData.fromString("{\"discoveryLogs\":{\"state\":\"Disabled\"},\"alerts\":{\"state\":\"Enabled\"}}")
                 .toObject(McasDataConnectorDataTypes.class);
         Assertions.assertEquals(DataTypeState.ENABLED, model.alerts().state());
-        Assertions.assertEquals(DataTypeState.ENABLED, model.discoveryLogs().state());
+        Assertions.assertEquals(DataTypeState.DISABLED, model.discoveryLogs().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         McasDataConnectorDataTypes model = new McasDataConnectorDataTypes()
             .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED))
-            .withDiscoveryLogs(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED));
+            .withDiscoveryLogs(new DataConnectorDataTypeCommon().withState(DataTypeState.DISABLED));
         model = BinaryData.fromObject(model).toObject(McasDataConnectorDataTypes.class);
         Assertions.assertEquals(DataTypeState.ENABLED, model.alerts().state());
-        Assertions.assertEquals(DataTypeState.ENABLED, model.discoveryLogs().state());
+        Assertions.assertEquals(DataTypeState.DISABLED, model.discoveryLogs().state());
     }
 }

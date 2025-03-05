@@ -15,6 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 public interface NamespaceAuthorizationRule
     extends AuthorizationRule<NamespaceAuthorizationRule>, Updatable<NamespaceAuthorizationRule.Update> {
     /**
+     * Gets the name of the parent namespace name.
+     *
      * @return the name of the parent namespace name
      */
     String namespaceName();

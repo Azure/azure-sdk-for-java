@@ -12,15 +12,15 @@ public final class DataConnectorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataConnectorInner model = BinaryData.fromString(
-            "{\"kind\":\"DataConnector\",\"etag\":\"exreu\",\"id\":\"owtljvfw\",\"name\":\"reagkhyxvrqt\",\"type\":\"bczsulmdgglmepjp\"}")
+            "{\"kind\":\"DataConnector\",\"etag\":\"masxazjpqyegu\",\"id\":\"hb\",\"name\":\"xhejjzzvdud\",\"type\":\"wdslfhotwmcy\"}")
             .toObject(DataConnectorInner.class);
-        Assertions.assertEquals("exreu", model.etag());
+        Assertions.assertEquals("masxazjpqyegu", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataConnectorInner model = new DataConnectorInner().withEtag("exreu");
+        DataConnectorInner model = new DataConnectorInner().withEtag("masxazjpqyegu");
         model = BinaryData.fromObject(model).toObject(DataConnectorInner.class);
-        Assertions.assertEquals("exreu", model.etag());
+        Assertions.assertEquals("masxazjpqyegu", model.etag());
     }
 }

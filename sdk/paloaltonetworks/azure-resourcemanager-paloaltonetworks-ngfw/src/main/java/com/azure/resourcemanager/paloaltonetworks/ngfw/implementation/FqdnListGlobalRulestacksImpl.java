@@ -29,13 +29,15 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
 
     public PagedIterable<FqdnListGlobalRulestackResource> list(String globalRulestackName) {
         PagedIterable<FqdnListGlobalRulestackResourceInner> inner = this.serviceClient().list(globalRulestackName);
-        return Utils.mapPage(inner, inner1 -> new FqdnListGlobalRulestackResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new FqdnListGlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FqdnListGlobalRulestackResource> list(String globalRulestackName, Context context) {
         PagedIterable<FqdnListGlobalRulestackResourceInner> inner
             = this.serviceClient().list(globalRulestackName, context);
-        return Utils.mapPage(inner, inner1 -> new FqdnListGlobalRulestackResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new FqdnListGlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public Response<FqdnListGlobalRulestackResource> getWithResponse(String globalRulestackName, String name,

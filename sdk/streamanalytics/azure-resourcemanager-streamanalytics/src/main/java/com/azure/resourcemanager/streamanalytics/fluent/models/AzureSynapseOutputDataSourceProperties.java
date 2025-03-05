@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.AzureSynapseDataSourceProperties;
 import java.io.IOException;
 
@@ -69,15 +68,6 @@ public final class AzureSynapseOutputDataSourceProperties extends AzureSynapseDa
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AzureSynapseOutputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
-        super.withAuthenticationMode(authenticationMode);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -97,8 +87,6 @@ public final class AzureSynapseOutputDataSourceProperties extends AzureSynapseDa
         jsonWriter.writeStringField("table", table());
         jsonWriter.writeStringField("user", user());
         jsonWriter.writeStringField("password", password());
-        jsonWriter.writeStringField("authenticationMode",
-            authenticationMode() == null ? null : authenticationMode().toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -128,9 +116,6 @@ public final class AzureSynapseOutputDataSourceProperties extends AzureSynapseDa
                     deserializedAzureSynapseOutputDataSourceProperties.withUser(reader.getString());
                 } else if ("password".equals(fieldName)) {
                     deserializedAzureSynapseOutputDataSourceProperties.withPassword(reader.getString());
-                } else if ("authenticationMode".equals(fieldName)) {
-                    deserializedAzureSynapseOutputDataSourceProperties
-                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
                 } else {
                     reader.skipChildren();
                 }

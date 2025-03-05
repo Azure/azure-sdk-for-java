@@ -9,9 +9,10 @@ import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.streamanalytics.models.ClusterProperties;
+import com.azure.resourcemanager.streamanalytics.models.ClusterProvisioningState;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSku;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -35,7 +36,7 @@ public final class ClusterInner extends Resource {
     /*
      * The properties associated with a Stream Analytics cluster.
      */
-    private ClusterProperties properties;
+    private ClusterProperties innerProperties;
 
     /*
      * The type of the resource.
@@ -92,23 +93,12 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the properties property: The properties associated with a Stream Analytics cluster.
+     * Get the innerProperties property: The properties associated with a Stream Analytics cluster.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public ClusterProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The properties associated with a Stream Analytics cluster.
-     * 
-     * @param properties the properties value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withProperties(ClusterProperties properties) {
-        this.properties = properties;
-        return this;
+    private ClusterProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -160,6 +150,53 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the createdDate property: The date this cluster was created.
+     * 
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the clusterId property: Unique identifier for the cluster.
+     * 
+     * @return the clusterId value.
+     */
+    public String clusterId() {
+        return this.innerProperties() == null ? null : this.innerProperties().clusterId();
+    }
+
+    /**
+     * Get the provisioningState property: The status of the cluster provisioning. The three terminal states are:
+     * Succeeded, Failed and Canceled.
+     * 
+     * @return the provisioningState value.
+     */
+    public ClusterProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the capacityAllocated property: Represents the number of streaming units currently being used on the cluster.
+     * 
+     * @return the capacityAllocated value.
+     */
+    public Integer capacityAllocated() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityAllocated();
+    }
+
+    /**
+     * Get the capacityAssigned property: Represents the sum of the SUs of all streaming jobs associated with the
+     * cluster. If all of the jobs were running, this would be the capacity allocated.
+     * 
+     * @return the capacityAssigned value.
+     */
+    public Integer capacityAssigned() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityAssigned();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -168,8 +205,8 @@ public final class ClusterInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 
@@ -182,7 +219,7 @@ public final class ClusterInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("sku", this.sku);
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -218,7 +255,7 @@ public final class ClusterInner extends Resource {
                 } else if ("etag".equals(fieldName)) {
                     deserializedClusterInner.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedClusterInner.properties = ClusterProperties.fromJson(reader);
+                    deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

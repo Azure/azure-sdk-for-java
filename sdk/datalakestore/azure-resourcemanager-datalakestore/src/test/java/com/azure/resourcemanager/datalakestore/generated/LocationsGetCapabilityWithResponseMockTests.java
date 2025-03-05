@@ -20,7 +20,7 @@ public final class LocationsGetCapabilityWithResponseMockTests {
     @Test
     public void testGetCapabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"subscriptionId\":\"0dfba5f7-66de-42f4-9802-f618a90cf7a7\",\"state\":\"Suspended\",\"maxAccountCount\":392126366,\"accountCount\":1640882234,\"migrationState\":false}";
+            = "{\"subscriptionId\":\"c674c534-d474-4f14-bae7-40970997eb6a\",\"state\":\"Suspended\",\"maxAccountCount\":392126366,\"accountCount\":1640882234,\"migrationState\":false}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.botservice.generated;
  */
 public final class ChannelsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
+     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
      * GetDirectLineSpeechChannel.json
      */
     /**
@@ -26,8 +25,7 @@ public final class ChannelsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
-     * GetAlexaChannel.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetAlexaChannel.json
      */
     /**
      * Sample code: Get Alexa Channel.
@@ -41,8 +39,7 @@ public final class ChannelsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetLineChannel
-     * .json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetLineChannel.json
      */
     /**
      * Sample code: Get Line Channel.
@@ -56,8 +53,7 @@ public final class ChannelsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetChannel.
-     * json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetChannel.json
      */
     /**
      * Sample code: Get Channel.

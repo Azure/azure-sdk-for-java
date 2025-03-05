@@ -124,6 +124,29 @@ public final class TIDataConnector extends DataConnectorInner {
     }
 
     /**
+     * Get the tenantId property: The tenant id to connect to, and get the data from.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
+    }
+
+    /**
+     * Set the tenantId property: The tenant id to connect to, and get the data from.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the TIDataConnector object itself.
+     */
+    public TIDataConnector withTenantId(String tenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TIDataConnectorProperties();
+        }
+        this.innerProperties().withTenantId(tenantId);
+        return this;
+    }
+
+    /**
      * Get the tipLookbackPeriod property: The lookback period for the feed to be imported.
      * 
      * @return the tipLookbackPeriod value.
@@ -166,29 +189,6 @@ public final class TIDataConnector extends DataConnectorInner {
             this.innerProperties = new TIDataConnectorProperties();
         }
         this.innerProperties().withDataTypes(dataTypes);
-        return this;
-    }
-
-    /**
-     * Get the tenantId property: The tenant id to connect to, and get the data from.
-     * 
-     * @return the tenantId value.
-     */
-    public String tenantId() {
-        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
-    }
-
-    /**
-     * Set the tenantId property: The tenant id to connect to, and get the data from.
-     * 
-     * @param tenantId the tenantId value to set.
-     * @return the TIDataConnector object itself.
-     */
-    public TIDataConnector withTenantId(String tenantId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new TIDataConnectorProperties();
-        }
-        this.innerProperties().withTenantId(tenantId);
         return this;
     }
 

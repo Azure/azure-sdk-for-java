@@ -10,12 +10,9 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.Diagnostics;
-import com.azure.resourcemanager.streamanalytics.models.LastOutputEventTimestamp;
 import com.azure.resourcemanager.streamanalytics.models.OutputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.OutputWatermarkProperties;
 import com.azure.resourcemanager.streamanalytics.models.Serialization;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The properties that are associated with an output.
@@ -54,17 +51,6 @@ public final class OutputProperties implements JsonSerializable<OutputProperties
      * for optimistic concurrency.
      */
     private String etag;
-
-    /*
-     * A list of the last output event times for each output partition. The index of the array corresponds to the
-     * partition number.
-     */
-    private List<LastOutputEventTimestamp> lastOutputEventTimestamps;
-
-    /*
-     * Settings which determine whether to send watermarks to downstream.
-     */
-    private OutputWatermarkProperties watermarkSettings;
 
     /**
      * Creates an instance of OutputProperties class.
@@ -178,36 +164,6 @@ public final class OutputProperties implements JsonSerializable<OutputProperties
     }
 
     /**
-     * Get the lastOutputEventTimestamps property: A list of the last output event times for each output partition. The
-     * index of the array corresponds to the partition number.
-     * 
-     * @return the lastOutputEventTimestamps value.
-     */
-    public List<LastOutputEventTimestamp> lastOutputEventTimestamps() {
-        return this.lastOutputEventTimestamps;
-    }
-
-    /**
-     * Get the watermarkSettings property: Settings which determine whether to send watermarks to downstream.
-     * 
-     * @return the watermarkSettings value.
-     */
-    public OutputWatermarkProperties watermarkSettings() {
-        return this.watermarkSettings;
-    }
-
-    /**
-     * Set the watermarkSettings property: Settings which determine whether to send watermarks to downstream.
-     * 
-     * @param watermarkSettings the watermarkSettings value to set.
-     * @return the OutputProperties object itself.
-     */
-    public OutputProperties withWatermarkSettings(OutputWatermarkProperties watermarkSettings) {
-        this.watermarkSettings = watermarkSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -222,12 +178,6 @@ public final class OutputProperties implements JsonSerializable<OutputProperties
         if (diagnostics() != null) {
             diagnostics().validate();
         }
-        if (lastOutputEventTimestamps() != null) {
-            lastOutputEventTimestamps().forEach(e -> e.validate());
-        }
-        if (watermarkSettings() != null) {
-            watermarkSettings().validate();
-        }
     }
 
     /**
@@ -240,7 +190,6 @@ public final class OutputProperties implements JsonSerializable<OutputProperties
         jsonWriter.writeStringField("timeWindow", this.timeWindow);
         jsonWriter.writeNumberField("sizeWindow", this.sizeWindow);
         jsonWriter.writeJsonField("serialization", this.serialization);
-        jsonWriter.writeJsonField("watermarkSettings", this.watermarkSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -271,12 +220,6 @@ public final class OutputProperties implements JsonSerializable<OutputProperties
                     deserializedOutputProperties.diagnostics = Diagnostics.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedOutputProperties.etag = reader.getString();
-                } else if ("lastOutputEventTimestamps".equals(fieldName)) {
-                    List<LastOutputEventTimestamp> lastOutputEventTimestamps
-                        = reader.readArray(reader1 -> LastOutputEventTimestamp.fromJson(reader1));
-                    deserializedOutputProperties.lastOutputEventTimestamps = lastOutputEventTimestamps;
-                } else if ("watermarkSettings".equals(fieldName)) {
-                    deserializedOutputProperties.watermarkSettings = OutputWatermarkProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

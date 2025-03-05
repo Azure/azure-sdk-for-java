@@ -177,7 +177,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
             <dependencies>
               <dependency>
                 <groupId>com.azure</groupId>
@@ -211,7 +211,7 @@
               <dependency>
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm</artifactId>
-                <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+                <version>9.7.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
               </dependency>
             </dependencies>
             <configuration>
@@ -251,7 +251,7 @@
               <pipelineConfiguration>
                 <filters>
                   <include>
-                    <item>azure-sdk-tree-provider</item>
+                    <item>class-and-package-tree-filter-provider</item>
                   </include>
                 </filters>
               </pipelineConfiguration>
@@ -270,7 +270,7 @@
               <dependency>
                 <groupId>org.revapi</groupId>
                 <artifactId>revapi-reporter-json</artifactId>
-                <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+                <version>0.5.0</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
               </dependency>
             </dependencies>
           </plugin>

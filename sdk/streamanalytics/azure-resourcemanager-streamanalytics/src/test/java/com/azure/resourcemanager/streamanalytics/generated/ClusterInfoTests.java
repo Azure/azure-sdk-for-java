@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterInfo model = BinaryData.fromString("{\"id\":\"exxppofmxaxcfjp\"}").toObject(ClusterInfo.class);
-        Assertions.assertEquals("exxppofmxaxcfjp", model.id());
+        ClusterInfo model = BinaryData.fromString("{\"id\":\"tyxolniwpwc\"}").toObject(ClusterInfo.class);
+        Assertions.assertEquals("tyxolniwpwc", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterInfo model = new ClusterInfo().withId("exxppofmxaxcfjp");
+        ClusterInfo model = new ClusterInfo().withId("tyxolniwpwc");
         model = BinaryData.fromObject(model).toObject(ClusterInfo.class);
-        Assertions.assertEquals("exxppofmxaxcfjp", model.id());
+        Assertions.assertEquals("tyxolniwpwc", model.id());
     }
 }

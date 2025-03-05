@@ -28,7 +28,7 @@ public final class CustomLocationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"njbkcnxdhbttkph\",\"tenantId\":\"pnvjtoqnermclf\",\"type\":\"SystemAssigned\"},\"properties\":{\"authentication\":{\"type\":\"uscrpabgyepsb\",\"value\":\"azqugxywpmueefj\"},\"clusterExtensionIds\":[\"qkqujidsu\",\"onobglaocqx\"],\"displayName\":\"cmgyud\",\"hostResourceId\":\"tlmoyrx\",\"hostType\":\"Kubernetes\",\"namespace\":\"dw\",\"provisioningState\":\"Succeeded\"},\"location\":\"lhrxsbkyvpyc\",\"tags\":{\"p\":\"z\",\"hhseyv\":\"kafkuwbcrnwbm\",\"tslhspkdeem\":\"us\"},\"id\":\"ofmxagkvtmelmqkr\",\"name\":\"ahvljuaha\",\"type\":\"uhcdhm\"}";
+            = "{\"identity\":{\"principalId\":\"ivfsnk\",\"tenantId\":\"uctqhjfbe\",\"type\":\"None\"},\"properties\":{\"authentication\":{\"type\":\"rfuwutt\",\"value\":\"fvjrbirphxepcy\"},\"clusterExtensionIds\":[\"fnljky\",\"xjvuujqgidokg\"],\"displayName\":\"jyoxgvclt\",\"hostResourceId\":\"sncghkjeszz\",\"hostType\":\"Kubernetes\",\"namespace\":\"htxfvgxbfsmxnehm\",\"provisioningState\":\"Succeeded\"},\"location\":\"odebfqkkrbmpu\",\"tags\":{\"lzlfbxzpuz\":\"iw\",\"yydhibnuqqk\":\"cispnqzahmgkbr\",\"drgvtqagn\":\"ik\"},\"id\":\"uynhijg\",\"name\":\"mebf\",\"type\":\"iarbutrcvpna\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,30 +38,32 @@ public final class CustomLocationsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CustomLocation response = manager.customLocations()
-            .define("zjancuxr")
-            .withRegion("nyqupedeojnabck")
-            .withExistingResourceGroup("qwalmuzyoxaepd")
-            .withTags(mapOf("ie", "txp", "jdhtldwkyzxu", "tfhvpesapskrdqmh", "svlxotogtwrup", "tkncwsc"))
-            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-            .withAuthentication(new CustomLocationPropertiesAuthentication().withType("pzxbz").withValue("zabglcuhxwt"))
-            .withClusterExtensionIds(Arrays.asList("qik", "bbovplwzbhvgyugu", "svmkfssxquk", "fpl"))
-            .withDisplayName("gsxnkjzkdeslpv")
-            .withHostResourceId("pwiyig")
+            .define("wburvjxxjnspydpt")
+            .withRegion("ixzbinjeputtmryw")
+            .withExistingResourceGroup("gigr")
+            .withTags(mapOf("yx", "oqftiyqzrnkcq", "nwvlryavwhheunmm", "whzlsicohoq", "koklya", "hgyxzkonoc",
+                "ewrmjmwvvjektc", "uconuqszfkbey"))
+            .withIdentity(new Identity().withType(ResourceIdentityType.NONE))
+            .withAuthentication(
+                new CustomLocationPropertiesAuthentication().withType("yxoegukgjnp").withValue("cgygev"))
+            .withClusterExtensionIds(Arrays.asList("typmrbpizcdrqjsd", "ydnfyhxdeoejz", "cwif", "jttgzf"))
+            .withDisplayName("shcbkhajdeyeamdp")
+            .withHostResourceId("g")
             .withHostType(HostType.KUBERNETES)
-            .withNamespace("dwzbaiue")
-            .withProvisioningState("a")
+            .withNamespace("uxwgipwho")
+            .withProvisioningState("wkgshwa")
             .create();
 
-        Assertions.assertEquals("lhrxsbkyvpyc", response.location());
-        Assertions.assertEquals("z", response.tags().get("p"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("uscrpabgyepsb", response.authentication().type());
-        Assertions.assertEquals("azqugxywpmueefj", response.authentication().value());
-        Assertions.assertEquals("qkqujidsu", response.clusterExtensionIds().get(0));
-        Assertions.assertEquals("cmgyud", response.displayName());
-        Assertions.assertEquals("tlmoyrx", response.hostResourceId());
+        Assertions.assertEquals("odebfqkkrbmpu", response.location());
+        Assertions.assertEquals("iw", response.tags().get("lzlfbxzpuz"));
+        Assertions.assertEquals(ResourceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("rfuwutt", response.authentication().type());
+        Assertions.assertEquals("fvjrbirphxepcy", response.authentication().value());
+        Assertions.assertEquals("fnljky", response.clusterExtensionIds().get(0));
+        Assertions.assertEquals("jyoxgvclt", response.displayName());
+        Assertions.assertEquals("sncghkjeszz", response.hostResourceId());
         Assertions.assertEquals(HostType.KUBERNETES, response.hostType());
-        Assertions.assertEquals("dw", response.namespace());
+        Assertions.assertEquals("htxfvgxbfsmxnehm", response.namespace());
         Assertions.assertEquals("Succeeded", response.provisioningState());
     }
 

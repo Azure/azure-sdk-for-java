@@ -20,12 +20,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { BareMetalInfrastructureClientImpl.class })
 public final class BareMetalInfrastructureClientBuilder {
     /*
-     * The ID of the target subscription. The value must be an UUID.
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription. The value must be an UUID.
+     * Sets The ID of the target subscription.
      * 
      * @param subscriptionId the subscriptionId value.
      * @return the BareMetalInfrastructureClientBuilder.

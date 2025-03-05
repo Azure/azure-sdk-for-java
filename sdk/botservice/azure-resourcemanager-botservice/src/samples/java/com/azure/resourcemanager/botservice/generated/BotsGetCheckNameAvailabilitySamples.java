@@ -12,8 +12,8 @@ import com.azure.resourcemanager.botservice.models.CheckNameAvailabilityRequestB
 public final class BotsGetCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
-     * CheckNameAvailability.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/CheckNameAvailability.
+     * json
      */
     /**
      * Sample code: check Name Availability.

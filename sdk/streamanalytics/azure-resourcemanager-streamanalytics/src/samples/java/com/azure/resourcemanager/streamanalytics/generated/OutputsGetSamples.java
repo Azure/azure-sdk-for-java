@@ -10,21 +10,7 @@ package com.azure.resourcemanager.streamanalytics.generated;
 public final class OutputsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Get_DeltaLake.json
-     */
-    /**
-     * Sample code: Get a Delta Lake output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void getADeltaLakeOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg", "sjName", "output1221", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_DocumentDB.json
      */
     /**
@@ -38,7 +24,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_EventHub_JSON.json
      */
     /**
@@ -53,7 +39,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_AzureSQL.json
      */
     /**
@@ -68,7 +54,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_ServiceBusQueue_Avro.json
      */
     /**
@@ -83,7 +69,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_AzureTable.json
      */
     /**
@@ -97,7 +83,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_PowerBI.json
      */
     /**
@@ -111,7 +97,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_Blob_CSV.json
      */
     /**
@@ -126,7 +112,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_ServiceBusTopic_CSV.json
      */
     /**
@@ -141,7 +127,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_AzureDataLakeStore_JSON.json
      */
     /**
@@ -156,7 +142,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_DataWarehouse.json
      */
     /**
@@ -171,7 +157,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_AzureFunction.json
      */
     /**

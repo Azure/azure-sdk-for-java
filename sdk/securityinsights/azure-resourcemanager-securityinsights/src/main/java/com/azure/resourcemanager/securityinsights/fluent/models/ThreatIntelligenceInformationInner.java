@@ -11,7 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceIndicatorModel;
-import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceResourceKindEnum;
+import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceResourceInnerKind;
 import java.io.IOException;
 
 /**
@@ -22,8 +22,8 @@ public class ThreatIntelligenceInformationInner extends ResourceWithEtag {
     /*
      * The kind of the entity.
      */
-    private ThreatIntelligenceResourceKindEnum kind
-        = ThreatIntelligenceResourceKindEnum.fromString("ThreatIntelligenceInformation");
+    private ThreatIntelligenceResourceInnerKind kind
+        = ThreatIntelligenceResourceInnerKind.fromString("ThreatIntelligenceInformation");
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -56,7 +56,7 @@ public class ThreatIntelligenceInformationInner extends ResourceWithEtag {
      * 
      * @return the kind value.
      */
-    public ThreatIntelligenceResourceKindEnum kind() {
+    public ThreatIntelligenceResourceInnerKind kind() {
         return this.kind;
     }
 
@@ -183,7 +183,7 @@ public class ThreatIntelligenceInformationInner extends ResourceWithEtag {
                     deserializedThreatIntelligenceInformationInner.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedThreatIntelligenceInformationInner.kind
-                        = ThreatIntelligenceResourceKindEnum.fromString(reader.getString());
+                        = ThreatIntelligenceResourceInnerKind.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

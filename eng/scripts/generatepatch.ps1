@@ -16,7 +16,7 @@ This script will do a number of things when ran:
 - It will update the changelog and readme to point to the new version.
 
 .PARAMETER ArtifactIds
-The artifact id. The script currently assumes groupId is com.azure
+The artifact id. The script currently assumes groupId is com.azure by default, set the GroupId parameter if the groupId is different.
 
 .PARAMETER ServiceDirectoryName
 Optional: The service directory that contains all the artifacts. If this is not provided the service directory is calculated from the first artifact.
@@ -29,6 +29,9 @@ the branch name is release/{ArtifactId}_{ReleaseVersion}. The script pushes the 
 .PARAMETER PushToRemote
 Optional: Whether the commited changes should be pushed to the remote branch or not.The default value is false.
 
+.PARAMETER GroupId
+Optional: The groupId of the artifact. The default value is com.azure
+
 .EXAMPLE
 PS> ./eng/scripts/Generate-Patch.ps1 -ArtifactId azure-mixedreality-remoterendering
 This creates a remote branch "release/azure-mixedreality-remoterendering" with all the necessary changes.
@@ -40,7 +43,8 @@ You should make any additional changes to the change log to capture the changes 
 param(
   [string[]]$ArtifactIds,
   [string]$ServiceDirectoryName,
-  [string]$BranchName
+  [string]$BranchName,
+  [string]$GroupId = 'com.azure'
 )
 
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
@@ -83,7 +87,7 @@ foreach ($artifactId in $ArtifactIds) {
     $patchInfo = [ArtifactPatchInfo]::new()
     $patchInfo.ArtifactId = $artifactId
     $patchInfo.ServiceDirectoryName = $ServiceDirectoryName
-    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId "com.azure"
+    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId
     #TriggerPipeline -PatchInfos $patchInfo -BranchName $BranchName
 }
 

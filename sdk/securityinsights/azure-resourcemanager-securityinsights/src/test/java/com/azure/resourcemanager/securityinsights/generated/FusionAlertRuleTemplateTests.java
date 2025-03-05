@@ -9,9 +9,6 @@ import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateDataSo
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.FusionAlertRuleTemplate;
-import com.azure.resourcemanager.securityinsights.models.FusionTemplateSourceSetting;
-import com.azure.resourcemanager.securityinsights.models.FusionTemplateSourceSubType;
-import com.azure.resourcemanager.securityinsights.models.FusionTemplateSubTypeSeverityFilter;
 import com.azure.resourcemanager.securityinsights.models.TemplateStatus;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -20,84 +17,46 @@ public final class FusionAlertRuleTemplateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FusionAlertRuleTemplate model = BinaryData.fromString(
-            "{\"kind\":\"Fusion\",\"properties\":{\"alertRulesCreatedByTemplateCount\":1408166178,\"createdDateUTC\":\"2021-04-12T01:27:50Z\",\"lastUpdatedDateUTC\":\"2021-09-25T20:37:43Z\",\"description\":\"yjanepubdp\",\"displayName\":\"yqvgxia\",\"requiredDataConnectors\":[{\"connectorId\":\"vohkxdxuws\",\"dataTypes\":[\"m\",\"wnosbzlehgcvkbck\"]},{\"connectorId\":\"olg\",\"dataTypes\":[\"xpvelszerqzevxo\",\"eintxwaljglzobl\",\"waafrqulh\",\"zyqbhd\"]},{\"connectorId\":\"fjrqpjiyr\",\"dataTypes\":[\"rgaxwmzwdf\",\"bnrzorpdltbqctq\",\"fg\"]},{\"connectorId\":\"saetgzdgvpyig\",\"dataTypes\":[\"qilzdc\"]}],\"status\":\"NotAvailable\",\"severity\":\"Informational\",\"tactics\":[\"DefenseEvasion\",\"Execution\",\"CredentialAccess\"],\"techniques\":[\"aifpaurwwgil\",\"jqqacdmkx\",\"xdcvjwcy\"],\"sourceSettings\":[{\"sourceName\":\"keciqchxrtuicd\",\"sourceSubTypes\":[{\"sourceSubTypeName\":\"dfmmpzhzzwvy\",\"sourceSubTypeDisplayName\":\"gyngydgrpxncak\",\"severityFilter\":{\"isSupported\":false}},{\"sourceSubTypeName\":\"aondjrkclamgg\",\"sourceSubTypeDisplayName\":\"lmf\",\"severityFilter\":{\"isSupported\":false}},{\"sourceSubTypeName\":\"doqey\",\"sourceSubTypeDisplayName\":\"ltygxhqfgqkayej\",\"severityFilter\":{\"isSupported\":true}},{\"sourceSubTypeName\":\"tlgflwfgz\",\"sourceSubTypeDisplayName\":\"u\",\"severityFilter\":{\"isSupported\":false}}]},{\"sourceName\":\"jjceatlijjjr\",\"sourceSubTypes\":[{\"sourceSubTypeName\":\"mcaszknxkv\",\"sourceSubTypeDisplayName\":\"xetyvku\",\"severityFilter\":{\"isSupported\":true}}]},{\"sourceName\":\"ignohi\",\"sourceSubTypes\":[{\"sourceSubTypeName\":\"qo\",\"sourceSubTypeDisplayName\":\"wpin\",\"severityFilter\":{\"isSupported\":true}},{\"sourceSubTypeName\":\"dvabbxbhmedeilb\",\"sourceSubTypeDisplayName\":\"wfcfxzirzz\",\"severityFilter\":{\"isSupported\":false}},{\"sourceSubTypeName\":\"vwypusuvjsl\",\"sourceSubTypeDisplayName\":\"wci\",\"severityFilter\":{\"isSupported\":false}},{\"sourceSubTypeName\":\"jsllfryvd\",\"sourceSubTypeDisplayName\":\"x\",\"severityFilter\":{\"isSupported\":true}}]}]},\"id\":\"acfrgna\",\"name\":\"bab\",\"type\":\"fbktyjmfczlf\"}")
+            "{\"kind\":\"Fusion\",\"properties\":{\"alertRulesCreatedByTemplateCount\":73539511,\"createdDateUTC\":\"2021-02-15T15:09:11Z\",\"lastUpdatedDateUTC\":\"2021-07-09T07:02:02Z\",\"description\":\"pshneekulfgslq\",\"displayName\":\"kwdlenrdsutujba\",\"requiredDataConnectors\":[{\"connectorId\":\"o\",\"dataTypes\":[\"nyfln\",\"rwm\",\"uvwpklvxwmyg\",\"xpgpq\"]},{\"connectorId\":\"isze\",\"dataTypes\":[\"bjcrxgibbdaxco\"]},{\"connectorId\":\"ozauorsukokwb\",\"dataTypes\":[\"hlvnuuepzlr\"]},{\"connectorId\":\"wzsoldweyuqdunv\",\"dataTypes\":[\"rwrbi\",\"rk\",\"alywjhhgdn\"]}],\"status\":\"NotAvailable\",\"severity\":\"Low\",\"tactics\":[\"PreAttack\",\"PreAttack\",\"Exfiltration\"],\"techniques\":[\"xggdufi\"]},\"id\":\"dieuzaofj\",\"name\":\"hvcyyysfg\",\"type\":\"otcubi\"}")
             .toObject(FusionAlertRuleTemplate.class);
-        Assertions.assertEquals(1408166178, model.alertRulesCreatedByTemplateCount());
-        Assertions.assertEquals("yjanepubdp", model.description());
-        Assertions.assertEquals("yqvgxia", model.displayName());
-        Assertions.assertEquals("vohkxdxuws", model.requiredDataConnectors().get(0).connectorId());
-        Assertions.assertEquals("m", model.requiredDataConnectors().get(0).dataTypes().get(0));
+        Assertions.assertEquals(73539511, model.alertRulesCreatedByTemplateCount());
+        Assertions.assertEquals("pshneekulfgslq", model.description());
+        Assertions.assertEquals("kwdlenrdsutujba", model.displayName());
+        Assertions.assertEquals("o", model.requiredDataConnectors().get(0).connectorId());
+        Assertions.assertEquals("nyfln", model.requiredDataConnectors().get(0).dataTypes().get(0));
         Assertions.assertEquals(TemplateStatus.NOT_AVAILABLE, model.status());
-        Assertions.assertEquals(AlertSeverity.INFORMATIONAL, model.severity());
-        Assertions.assertEquals(AttackTactic.DEFENSE_EVASION, model.tactics().get(0));
-        Assertions.assertEquals("aifpaurwwgil", model.techniques().get(0));
-        Assertions.assertEquals("keciqchxrtuicd", model.sourceSettings().get(0).sourceName());
-        Assertions.assertEquals("dfmmpzhzzwvy",
-            model.sourceSettings().get(0).sourceSubTypes().get(0).sourceSubTypeName());
-        Assertions.assertEquals(false,
-            model.sourceSettings().get(0).sourceSubTypes().get(0).severityFilter().isSupported());
+        Assertions.assertEquals(AlertSeverity.LOW, model.severity());
+        Assertions.assertEquals(AttackTactic.PRE_ATTACK, model.tactics().get(0));
+        Assertions.assertEquals("xggdufi", model.techniques().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FusionAlertRuleTemplate model
-            = new FusionAlertRuleTemplate().withAlertRulesCreatedByTemplateCount(1408166178)
-                .withDescription("yjanepubdp")
-                .withDisplayName("yqvgxia")
-                .withRequiredDataConnectors(Arrays.asList(
-                    new AlertRuleTemplateDataSource().withConnectorId("vohkxdxuws")
-                        .withDataTypes(Arrays.asList("m", "wnosbzlehgcvkbck")),
-                    new AlertRuleTemplateDataSource().withConnectorId("olg")
-                        .withDataTypes(Arrays.asList("xpvelszerqzevxo", "eintxwaljglzobl", "waafrqulh", "zyqbhd")),
-                    new AlertRuleTemplateDataSource().withConnectorId("fjrqpjiyr")
-                        .withDataTypes(Arrays.asList("rgaxwmzwdf", "bnrzorpdltbqctq", "fg")),
-                    new AlertRuleTemplateDataSource().withConnectorId("saetgzdgvpyig")
-                        .withDataTypes(Arrays.asList("qilzdc"))))
-                .withStatus(TemplateStatus.NOT_AVAILABLE)
-                .withSeverity(AlertSeverity.INFORMATIONAL)
-                .withTactics(
-                    Arrays.asList(AttackTactic.DEFENSE_EVASION, AttackTactic.EXECUTION, AttackTactic.CREDENTIAL_ACCESS))
-                .withTechniques(Arrays.asList("aifpaurwwgil", "jqqacdmkx", "xdcvjwcy"))
-                .withSourceSettings(Arrays.asList(
-                    new FusionTemplateSourceSetting().withSourceName("keciqchxrtuicd")
-                        .withSourceSubTypes(Arrays.asList(
-                            new FusionTemplateSourceSubType().withSourceSubTypeName("dfmmpzhzzwvy")
-                                .withSeverityFilter(new FusionTemplateSubTypeSeverityFilter().withIsSupported(false)),
-                            new FusionTemplateSourceSubType().withSourceSubTypeName("aondjrkclamgg")
-                                .withSeverityFilter(new FusionTemplateSubTypeSeverityFilter().withIsSupported(false)),
-                            new FusionTemplateSourceSubType().withSourceSubTypeName("doqey")
-                                .withSeverityFilter(new FusionTemplateSubTypeSeverityFilter().withIsSupported(true)),
-                            new FusionTemplateSourceSubType().withSourceSubTypeName("tlgflwfgz")
-                                .withSeverityFilter(new FusionTemplateSubTypeSeverityFilter().withIsSupported(false)))),
-                    new FusionTemplateSourceSetting().withSourceName("jjceatlijjjr")
-                        .withSourceSubTypes(Arrays
-                            .asList(new FusionTemplateSourceSubType().withSourceSubTypeName("mcaszknxkv")
-                                .withSeverityFilter(new FusionTemplateSubTypeSeverityFilter().withIsSupported(true)))),
-                    new FusionTemplateSourceSetting().withSourceName("ignohi")
-                        .withSourceSubTypes(Arrays.asList(
-                            new FusionTemplateSourceSubType().withSourceSubTypeName("qo")
-                                .withSeverityFilter(new FusionTemplateSubTypeSeverityFilter().withIsSupported(true)),
-                            new FusionTemplateSourceSubType().withSourceSubTypeName("dvabbxbhmedeilb")
-                                .withSeverityFilter(new FusionTemplateSubTypeSeverityFilter().withIsSupported(false)),
-                            new FusionTemplateSourceSubType().withSourceSubTypeName("vwypusuvjsl")
-                                .withSeverityFilter(new FusionTemplateSubTypeSeverityFilter().withIsSupported(false)),
-                            new FusionTemplateSourceSubType().withSourceSubTypeName("jsllfryvd")
-                                .withSeverityFilter(
-                                    new FusionTemplateSubTypeSeverityFilter().withIsSupported(true))))));
+        FusionAlertRuleTemplate model = new FusionAlertRuleTemplate().withAlertRulesCreatedByTemplateCount(73539511)
+            .withDescription("pshneekulfgslq")
+            .withDisplayName("kwdlenrdsutujba")
+            .withRequiredDataConnectors(Arrays.asList(
+                new AlertRuleTemplateDataSource().withConnectorId("o")
+                    .withDataTypes(Arrays.asList("nyfln", "rwm", "uvwpklvxwmyg", "xpgpq")),
+                new AlertRuleTemplateDataSource().withConnectorId("isze")
+                    .withDataTypes(Arrays.asList("bjcrxgibbdaxco")),
+                new AlertRuleTemplateDataSource().withConnectorId("ozauorsukokwb")
+                    .withDataTypes(Arrays.asList("hlvnuuepzlr")),
+                new AlertRuleTemplateDataSource().withConnectorId("wzsoldweyuqdunv")
+                    .withDataTypes(Arrays.asList("rwrbi", "rk", "alywjhhgdn"))))
+            .withStatus(TemplateStatus.NOT_AVAILABLE)
+            .withSeverity(AlertSeverity.LOW)
+            .withTactics(Arrays.asList(AttackTactic.PRE_ATTACK, AttackTactic.PRE_ATTACK, AttackTactic.EXFILTRATION))
+            .withTechniques(Arrays.asList("xggdufi"));
         model = BinaryData.fromObject(model).toObject(FusionAlertRuleTemplate.class);
-        Assertions.assertEquals(1408166178, model.alertRulesCreatedByTemplateCount());
-        Assertions.assertEquals("yjanepubdp", model.description());
-        Assertions.assertEquals("yqvgxia", model.displayName());
-        Assertions.assertEquals("vohkxdxuws", model.requiredDataConnectors().get(0).connectorId());
-        Assertions.assertEquals("m", model.requiredDataConnectors().get(0).dataTypes().get(0));
+        Assertions.assertEquals(73539511, model.alertRulesCreatedByTemplateCount());
+        Assertions.assertEquals("pshneekulfgslq", model.description());
+        Assertions.assertEquals("kwdlenrdsutujba", model.displayName());
+        Assertions.assertEquals("o", model.requiredDataConnectors().get(0).connectorId());
+        Assertions.assertEquals("nyfln", model.requiredDataConnectors().get(0).dataTypes().get(0));
         Assertions.assertEquals(TemplateStatus.NOT_AVAILABLE, model.status());
-        Assertions.assertEquals(AlertSeverity.INFORMATIONAL, model.severity());
-        Assertions.assertEquals(AttackTactic.DEFENSE_EVASION, model.tactics().get(0));
-        Assertions.assertEquals("aifpaurwwgil", model.techniques().get(0));
-        Assertions.assertEquals("keciqchxrtuicd", model.sourceSettings().get(0).sourceName());
-        Assertions.assertEquals("dfmmpzhzzwvy",
-            model.sourceSettings().get(0).sourceSubTypes().get(0).sourceSubTypeName());
-        Assertions.assertEquals(false,
-            model.sourceSettings().get(0).sourceSubTypes().get(0).severityFilter().isSupported());
+        Assertions.assertEquals(AlertSeverity.LOW, model.severity());
+        Assertions.assertEquals(AttackTactic.PRE_ATTACK, model.tactics().get(0));
+        Assertions.assertEquals("xggdufi", model.techniques().get(0));
     }
 }

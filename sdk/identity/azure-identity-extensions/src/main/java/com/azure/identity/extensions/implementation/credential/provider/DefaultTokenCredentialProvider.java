@@ -67,7 +67,8 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
                         .clientId(clientId);
 
                 if (hasText(options.getClientCertificatePassword())) {
-                    builder.pfxCertificate(clientCertificatePath, options.getClientCertificatePassword());
+                    builder.pfxCertificate(clientCertificatePath)
+                        .clientCertificatePassword(options.getClientCertificatePassword());
                 } else {
                     builder.pemCertificate(clientCertificatePath);
                 }

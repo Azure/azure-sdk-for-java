@@ -30,9 +30,9 @@ public final class StreamingJobsStartMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.streamingJobs()
-            .start("w", "fwsrtawcoezbrhu",
-                new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.JOB_START_TIME)
-                    .withOutputStartTime(OffsetDateTime.parse("2021-02-17T00:43:35Z")),
+            .start("owpulpq", "lyls",
+                new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.CUSTOM_TIME)
+                    .withOutputStartTime(OffsetDateTime.parse("2021-02-19T09:01:36Z")),
                 com.azure.core.util.Context.NONE);
 
     }

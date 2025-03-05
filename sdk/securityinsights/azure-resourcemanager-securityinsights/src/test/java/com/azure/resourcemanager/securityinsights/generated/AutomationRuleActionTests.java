@@ -12,15 +12,15 @@ public final class AutomationRuleActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationRuleAction model
-            = BinaryData.fromString("{\"actionType\":\"AutomationRuleAction\",\"order\":1278778169}")
+            = BinaryData.fromString("{\"actionType\":\"AutomationRuleAction\",\"order\":967174365}")
                 .toObject(AutomationRuleAction.class);
-        Assertions.assertEquals(1278778169, model.order());
+        Assertions.assertEquals(967174365, model.order());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationRuleAction model = new AutomationRuleAction().withOrder(1278778169);
+        AutomationRuleAction model = new AutomationRuleAction().withOrder(967174365);
         model = BinaryData.fromObject(model).toObject(AutomationRuleAction.class);
-        Assertions.assertEquals(1278778169, model.order());
+        Assertions.assertEquals(967174365, model.order());
     }
 }

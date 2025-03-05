@@ -50,7 +50,7 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private IoTHubStreamInputDataSourceProperties innerProperties() {
+    IoTHubStreamInputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

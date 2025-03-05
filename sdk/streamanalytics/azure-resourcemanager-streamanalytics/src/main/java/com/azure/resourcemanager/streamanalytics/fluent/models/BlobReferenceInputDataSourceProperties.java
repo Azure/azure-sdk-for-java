@@ -19,137 +19,10 @@ import java.util.List;
  */
 @Fluent
 public final class BlobReferenceInputDataSourceProperties extends BlobDataSourceProperties {
-    /*
-     * The name of the blob input.
-     */
-    private String blobName;
-
-    /*
-     * The path pattern of the delta snapshot.
-     */
-    private String deltaPathPattern;
-
-    /*
-     * The partition count of the blob input data source. Range 1 - 256.
-     */
-    private Integer sourcePartitionCount;
-
-    /*
-     * The refresh interval of the blob input data source.
-     */
-    private String fullSnapshotRefreshRate;
-
-    /*
-     * The interval that the user generates a delta snapshot of this reference blob input data source.
-     */
-    private String deltaSnapshotRefreshRate;
-
     /**
      * Creates an instance of BlobReferenceInputDataSourceProperties class.
      */
     public BlobReferenceInputDataSourceProperties() {
-    }
-
-    /**
-     * Get the blobName property: The name of the blob input.
-     * 
-     * @return the blobName value.
-     */
-    public String blobName() {
-        return this.blobName;
-    }
-
-    /**
-     * Set the blobName property: The name of the blob input.
-     * 
-     * @param blobName the blobName value to set.
-     * @return the BlobReferenceInputDataSourceProperties object itself.
-     */
-    public BlobReferenceInputDataSourceProperties withBlobName(String blobName) {
-        this.blobName = blobName;
-        return this;
-    }
-
-    /**
-     * Get the deltaPathPattern property: The path pattern of the delta snapshot.
-     * 
-     * @return the deltaPathPattern value.
-     */
-    public String deltaPathPattern() {
-        return this.deltaPathPattern;
-    }
-
-    /**
-     * Set the deltaPathPattern property: The path pattern of the delta snapshot.
-     * 
-     * @param deltaPathPattern the deltaPathPattern value to set.
-     * @return the BlobReferenceInputDataSourceProperties object itself.
-     */
-    public BlobReferenceInputDataSourceProperties withDeltaPathPattern(String deltaPathPattern) {
-        this.deltaPathPattern = deltaPathPattern;
-        return this;
-    }
-
-    /**
-     * Get the sourcePartitionCount property: The partition count of the blob input data source. Range 1 - 256.
-     * 
-     * @return the sourcePartitionCount value.
-     */
-    public Integer sourcePartitionCount() {
-        return this.sourcePartitionCount;
-    }
-
-    /**
-     * Set the sourcePartitionCount property: The partition count of the blob input data source. Range 1 - 256.
-     * 
-     * @param sourcePartitionCount the sourcePartitionCount value to set.
-     * @return the BlobReferenceInputDataSourceProperties object itself.
-     */
-    public BlobReferenceInputDataSourceProperties withSourcePartitionCount(Integer sourcePartitionCount) {
-        this.sourcePartitionCount = sourcePartitionCount;
-        return this;
-    }
-
-    /**
-     * Get the fullSnapshotRefreshRate property: The refresh interval of the blob input data source.
-     * 
-     * @return the fullSnapshotRefreshRate value.
-     */
-    public String fullSnapshotRefreshRate() {
-        return this.fullSnapshotRefreshRate;
-    }
-
-    /**
-     * Set the fullSnapshotRefreshRate property: The refresh interval of the blob input data source.
-     * 
-     * @param fullSnapshotRefreshRate the fullSnapshotRefreshRate value to set.
-     * @return the BlobReferenceInputDataSourceProperties object itself.
-     */
-    public BlobReferenceInputDataSourceProperties withFullSnapshotRefreshRate(String fullSnapshotRefreshRate) {
-        this.fullSnapshotRefreshRate = fullSnapshotRefreshRate;
-        return this;
-    }
-
-    /**
-     * Get the deltaSnapshotRefreshRate property: The interval that the user generates a delta snapshot of this
-     * reference blob input data source.
-     * 
-     * @return the deltaSnapshotRefreshRate value.
-     */
-    public String deltaSnapshotRefreshRate() {
-        return this.deltaSnapshotRefreshRate;
-    }
-
-    /**
-     * Set the deltaSnapshotRefreshRate property: The interval that the user generates a delta snapshot of this
-     * reference blob input data source.
-     * 
-     * @param deltaSnapshotRefreshRate the deltaSnapshotRefreshRate value to set.
-     * @return the BlobReferenceInputDataSourceProperties object itself.
-     */
-    public BlobReferenceInputDataSourceProperties withDeltaSnapshotRefreshRate(String deltaSnapshotRefreshRate) {
-        this.deltaSnapshotRefreshRate = deltaSnapshotRefreshRate;
-        return this;
     }
 
     /**
@@ -232,11 +105,6 @@ public final class BlobReferenceInputDataSourceProperties extends BlobDataSource
         jsonWriter.writeStringField("timeFormat", timeFormat());
         jsonWriter.writeStringField("authenticationMode",
             authenticationMode() == null ? null : authenticationMode().toString());
-        jsonWriter.writeStringField("blobName", this.blobName);
-        jsonWriter.writeStringField("deltaPathPattern", this.deltaPathPattern);
-        jsonWriter.writeNumberField("sourcePartitionCount", this.sourcePartitionCount);
-        jsonWriter.writeStringField("fullSnapshotRefreshRate", this.fullSnapshotRefreshRate);
-        jsonWriter.writeStringField("deltaSnapshotRefreshRate", this.deltaSnapshotRefreshRate);
         return jsonWriter.writeEndObject();
     }
 
@@ -271,17 +139,6 @@ public final class BlobReferenceInputDataSourceProperties extends BlobDataSource
                 } else if ("authenticationMode".equals(fieldName)) {
                     deserializedBlobReferenceInputDataSourceProperties
                         .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
-                } else if ("blobName".equals(fieldName)) {
-                    deserializedBlobReferenceInputDataSourceProperties.blobName = reader.getString();
-                } else if ("deltaPathPattern".equals(fieldName)) {
-                    deserializedBlobReferenceInputDataSourceProperties.deltaPathPattern = reader.getString();
-                } else if ("sourcePartitionCount".equals(fieldName)) {
-                    deserializedBlobReferenceInputDataSourceProperties.sourcePartitionCount
-                        = reader.getNullable(JsonReader::getInt);
-                } else if ("fullSnapshotRefreshRate".equals(fieldName)) {
-                    deserializedBlobReferenceInputDataSourceProperties.fullSnapshotRefreshRate = reader.getString();
-                } else if ("deltaSnapshotRefreshRate".equals(fieldName)) {
-                    deserializedBlobReferenceInputDataSourceProperties.deltaSnapshotRefreshRate = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

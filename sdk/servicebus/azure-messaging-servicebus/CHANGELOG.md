@@ -4,13 +4,35 @@
 
 ### Features Added
 
-- Added support for Service Bus Emulator connection string. Refer [Azure Service Bus Emulator](https://github.com/Azure/azure-service-bus-emulator-installer) for emulator installation and supported connection strings. ([38735](https://github.com/Azure/azure-sdk-for-java/issues/38735)).
-
 ### Breaking Changes
 
 ### Bugs Fixed
 
+* Fixed issue where OffsetDateTimeDescribedType would be translated to user's system time instead of UTC. ([42995](https://github.com/Azure/azure-sdk-for-java/pull/42995))
+
+## 7.17.9 (2025-02-25)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-core-amqp` from `2.9.12` to version `2.9.15`.
+- Upgraded `azure-xml` from `1.1.0` to version `1.2.0`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+
+
+## 7.17.8 (2025-01-09)
+
+### Features Added
+
+- Added support for Service Bus Emulator connection string. Refer [Azure Service Bus Emulator](https://github.com/Azure/azure-service-bus-emulator-installer) for emulator installation and supported connection strings. ([38735](https://github.com/Azure/azure-sdk-for-java/issues/38735)).
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.14.1` to `1.14.2`.
 
 ## 7.17.7 (2024-12-04)
 
@@ -844,4 +866,4 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FCHANGELOG.png)
+

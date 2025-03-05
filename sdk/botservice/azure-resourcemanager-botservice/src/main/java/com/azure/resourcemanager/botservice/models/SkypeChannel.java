@@ -25,11 +25,6 @@ public final class SkypeChannel extends Channel {
      */
     private SkypeChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of SkypeChannel class.
      */
@@ -64,16 +59,6 @@ public final class SkypeChannel extends Channel {
     public SkypeChannel withProperties(SkypeChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class SkypeChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedSkypeChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedSkypeChannel.provisioningState = reader.getString();
+                    deserializedSkypeChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedSkypeChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

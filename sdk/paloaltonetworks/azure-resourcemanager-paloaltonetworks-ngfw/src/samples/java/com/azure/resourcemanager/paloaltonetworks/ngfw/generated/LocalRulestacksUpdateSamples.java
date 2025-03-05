@@ -33,22 +33,30 @@ public final class LocalRulestacksUpdateSamples {
     public static void localRulestacksUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         LocalRulestackResource resource = manager.localRulestacks()
-            .getByResourceGroupWithResponse("rgopenapi", "lrs1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("tagName", "value"))
+            .getByResourceGroupWithResponse("rgopenapi", "lrs1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("tagName", "value"))
             .withIdentity(new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf("key16",
                     new AzureResourceManagerUserAssignedIdentity().withClientId("aaaa")
                         .withPrincipalId("aaaaaaaaaaaaaaa"))))
             .withProperties(
                 new LocalRulestackResourceUpdateProperties().withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
-                    .withPanLocation("eastus").withScope(ScopeType.LOCAL)
+                    .withPanLocation("eastus")
+                    .withScope(ScopeType.LOCAL)
                     .withAssociatedSubscriptions(Arrays.asList("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"))
-                    .withDescription("local rulestacks").withDefaultMode(DefaultMode.IPS).withMinAppIdVersion("8.5.3")
-                    .withSecurityServices(
-                        new SecurityServices().withVulnerabilityProfile("default").withAntiSpywareProfile("default")
-                            .withAntiVirusProfile("default").withUrlFilteringProfile("default")
-                            .withFileBlockingProfile("default").withDnsSubscription("default")
-                            .withOutboundUnTrustCertificate("default").withOutboundTrustCertificate("default")))
+                    .withDescription("local rulestacks")
+                    .withDefaultMode(DefaultMode.IPS)
+                    .withMinAppIdVersion("8.5.3")
+                    .withSecurityServices(new SecurityServices().withVulnerabilityProfile("default")
+                        .withAntiSpywareProfile("default")
+                        .withAntiVirusProfile("default")
+                        .withUrlFilteringProfile("default")
+                        .withFileBlockingProfile("default")
+                        .withDnsSubscription("default")
+                        .withOutboundUnTrustCertificate("default")
+                        .withOutboundTrustCertificate("default")))
             .apply();
     }
 
@@ -65,7 +73,8 @@ public final class LocalRulestacksUpdateSamples {
     public static void localRulestacksUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         LocalRulestackResource resource = manager.localRulestacks()
-            .getByResourceGroupWithResponse("rgopenapi", "lrs1", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rgopenapi", "lrs1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 

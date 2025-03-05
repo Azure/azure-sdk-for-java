@@ -22,7 +22,7 @@ public final class AdministratorsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principalType\":\"User\",\"principalName\":\"ywdxsmic\",\"objectId\":\"rwfscjfnynszquj\",\"tenantId\":\"dvoqyt\"},\"id\":\"yo\",\"name\":\"bblgyavut\",\"type\":\"thjoxoism\"}";
+            = "{\"properties\":{\"principalType\":\"Group\",\"principalName\":\"brhu\",\"objectId\":\"kh\",\"tenantId\":\"ygo\"},\"id\":\"kkqfqjbvle\",\"name\":\"rfmluiqtq\",\"type\":\"fa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class AdministratorsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ActiveDirectoryAdministrator response = manager.administrators()
-            .define("cubiipuipw")
-            .withExistingFlexibleServer("euzaof", "chvcyyysfgdo")
+            .define("odqkdlwwqfb")
+            .withExistingFlexibleServer("gzibthostgktstv", "xeclzedqbcvhzlhp")
             .withPrincipalType(PrincipalType.USER)
-            .withPrincipalName("acjekni")
-            .withTenantId("hqvcimpevfgmblr")
+            .withPrincipalName("trqjfsmlmbtx")
+            .withTenantId("gfwsrtaw")
             .create();
 
-        Assertions.assertEquals(PrincipalType.USER, response.principalType());
-        Assertions.assertEquals("ywdxsmic", response.principalName());
-        Assertions.assertEquals("rwfscjfnynszquj", response.objectId());
-        Assertions.assertEquals("dvoqyt", response.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, response.principalType());
+        Assertions.assertEquals("brhu", response.principalName());
+        Assertions.assertEquals("kh", response.objectId());
+        Assertions.assertEquals("ygo", response.tenantId());
     }
 }

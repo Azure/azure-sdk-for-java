@@ -15,22 +15,22 @@ public final class AatpDataConnectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AatpDataConnector model = BinaryData.fromString(
-            "{\"kind\":\"AzureAdvancedThreatProtection\",\"properties\":{\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}},\"tenantId\":\"mfd\"},\"etag\":\"vlkpzwb\",\"id\":\"recchdidrmu\",\"name\":\"kahmjedbiucvkhhw\",\"type\":\"jpjbweunxcqr\"}")
+            "{\"kind\":\"AzureAdvancedThreatProtection\",\"properties\":{\"tenantId\":\"cxkjibnxmysuxswq\",\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}}},\"etag\":\"ijpstte\",\"id\":\"qqpwcyyuf\",\"name\":\"hruncuwmq\",\"type\":\"pkcdqzhlct\"}")
             .toObject(AatpDataConnector.class);
-        Assertions.assertEquals("vlkpzwb", model.etag());
+        Assertions.assertEquals("ijpstte", model.etag());
+        Assertions.assertEquals("cxkjibnxmysuxswq", model.tenantId());
         Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
-        Assertions.assertEquals("mfd", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AatpDataConnector model = new AatpDataConnector().withEtag("vlkpzwb")
+        AatpDataConnector model = new AatpDataConnector().withEtag("ijpstte")
+            .withTenantId("cxkjibnxmysuxswq")
             .withDataTypes(new AlertsDataTypeOfDataConnector()
-                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)))
-            .withTenantId("mfd");
+                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(AatpDataConnector.class);
-        Assertions.assertEquals("vlkpzwb", model.etag());
+        Assertions.assertEquals("ijpstte", model.etag());
+        Assertions.assertEquals("cxkjibnxmysuxswq", model.tenantId());
         Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
-        Assertions.assertEquals("mfd", model.tenantId());
     }
 }

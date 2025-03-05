@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration;
@@ -16,18 +17,28 @@ public class RequestDataColumns implements TelemetryColumns {
     private final Map<String, Object> mapping = new HashMap<>();
     private final CustomDimensions customDims;
 
+    private static final ClientLogger LOGGER = new ClientLogger(RequestDataColumns.class);
+
     public RequestDataColumns(RequestData requestData) {
         customDims = new CustomDimensions(requestData.getProperties(), requestData.getMeasurements());
         mapping.put(KnownRequestColumns.URL, requestData.getUrl());
         mapping.put(KnownRequestColumns.SUCCESS, requestData.isSuccess());
-        mapping.put(KnownRequestColumns.DURATION,
-            FormattedDuration.getDurationFromTelemetryItemDurationString(requestData.getDuration()));
+
+        long durationMicroSec = FormattedDuration.getDurationFromTelemetryItemDurationString(requestData.getDuration());
+        if (durationMicroSec == -1) {
+            LOGGER.verbose("The provided timestamp {} could not be converted to microseconds",
+                requestData.getDuration());
+        }
+
+        mapping.put(KnownRequestColumns.DURATION, durationMicroSec);
         mapping.put(KnownRequestColumns.NAME, requestData.getName());
         int responseCode;
         try {
             responseCode = Integer.parseInt(requestData.getResponseCode());
         } catch (NumberFormatException e) {
             responseCode = -1;
+            LOGGER.verbose("The provided response code {} could not be converted to a numeric value",
+                requestData.getResponseCode());
         }
         mapping.put(KnownRequestColumns.RESPONSE_CODE, responseCode);
     }

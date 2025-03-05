@@ -21,7 +21,7 @@ public final class PrivateEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"createdDate\":\"wigdi\",\"manualPrivateLinkServiceConnections\":[{\"properties\":{\"privateLinkServiceId\":\"gomfajuwasq\",\"groupIds\":[\"e\",\"y\"],\"requestMessage\":\"xakjsqzhzb\",\"privateLinkServiceConnectionState\":{}}},{\"properties\":{\"privateLinkServiceId\":\"imsidxasicddyvvj\",\"groupIds\":[\"fmocwahpq\"],\"requestMessage\":\"tjeaahhvjhh\",\"privateLinkServiceConnectionState\":{}}}]},\"etag\":\"zybbj\",\"id\":\"idjks\",\"name\":\"xkyxvxevblbj\",\"type\":\"dnlj\"}";
+            = "{\"properties\":{\"createdDate\":\"yftumrtwna\",\"manualPrivateLinkServiceConnections\":[{\"properties\":{\"privateLinkServiceId\":\"iw\",\"groupIds\":[\"gcyztsfmznbae\",\"ph\",\"hqnrn\",\"pxehuwrykqga\"],\"requestMessage\":\"mvikl\",\"privateLinkServiceConnectionState\":{}}}]},\"etag\":\"vkhbejdznx\",\"id\":\"vdsrhnjiv\",\"name\":\"lvtno\",\"type\":\"qfzgemjdftul\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,11 @@ public final class PrivateEndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpoint response = manager.privateEndpoints()
-            .getWithResponse("zyqdrfegcealzx", "hcans", "moy", com.azure.core.util.Context.NONE)
+            .getWithResponse("foimwkslircizjxv", "dfcea", "vlhv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gomfajuwasq",
-            response.properties().manualPrivateLinkServiceConnections().get(0).privateLinkServiceId());
-        Assertions.assertEquals("e",
-            response.properties().manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("iw", response.manualPrivateLinkServiceConnections().get(0).privateLinkServiceId());
+        Assertions.assertEquals("gcyztsfmznbae",
+            response.manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
     }
 }

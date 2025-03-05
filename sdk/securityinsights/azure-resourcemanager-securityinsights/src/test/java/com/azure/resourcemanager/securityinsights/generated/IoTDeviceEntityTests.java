@@ -5,23 +5,19 @@
 package com.azure.resourcemanager.securityinsights.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.securityinsights.models.DeviceImportance;
 import com.azure.resourcemanager.securityinsights.models.IoTDeviceEntity;
-import org.junit.jupiter.api.Assertions;
 
 public final class IoTDeviceEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTDeviceEntity model = BinaryData.fromString(
-            "{\"kind\":\"IoTDevice\",\"properties\":{\"deviceId\":\"tdahneaoovtyjzti\",\"deviceName\":\"wjlofzekfsrm\",\"source\":\"klajvcfocz\",\"iotSecurityAgentId\":\"21871e44-13f6-4feb-8e42-75357b396ff7\",\"deviceType\":\"ejov\",\"vendor\":\"wxn\",\"edgeId\":\"hhnoyrzaaoee\",\"macAddress\":\"mjenvjeatea\",\"model\":\"crxoxdj\",\"serialNumber\":\"dnaryyinzk\",\"firmwareVersion\":\"lrndwdbvxvza\",\"operatingSystem\":\"doyqx\",\"iotHubEntityId\":\"nkfthmcxqqxmyz\",\"hostEntityId\":\"a\",\"ipAddressEntityId\":\"n\",\"threatIntelligence\":[{\"confidence\":25.90985658814706,\"providerName\":\"rqra\",\"reportLink\":\"divznl\",\"threatDescription\":\"slkskhjqjpvbai\",\"threatName\":\"jtgzgtaiywbq\",\"threatType\":\"oig\"},{\"confidence\":26.09572540677624,\"providerName\":\"saenwl\",\"reportLink\":\"mhljqlxspm\",\"threatDescription\":\"ctr\",\"threatName\":\"dsxebuhsxrz\",\"threatType\":\"gsdaluyckh\"},{\"confidence\":95.66258494039998,\"providerName\":\"s\",\"reportLink\":\"erbgpxeb\",\"threatDescription\":\"udcaytujrax\",\"threatName\":\"pryj\",\"threatType\":\"tnsewou\"},{\"confidence\":15.398868057423554,\"providerName\":\"vvyljurkepose\",\"reportLink\":\"qylmpctwjwdsd\",\"threatDescription\":\"mkxerxxxoteeh\",\"threatName\":\"owgomvvhxowp\",\"threatType\":\"apnpxraqawbmp\"}],\"protocols\":[\"eylqlocvvujexayg\"],\"owners\":[\"kgjn\",\"zpaslavxjfiuo\",\"pieidzlvssqy\",\"jopackyhydv\"],\"nicEntityIds\":[\"fngp\",\"illxg\",\"scizwgsoriobijei\",\"dye\"],\"site\":\"nhbokayrgwybrio\",\"zone\":\"weoftnorw\",\"sensor\":\"gsioc\",\"deviceSubType\":\"kmv\",\"importance\":\"Unknown\",\"purdueLayer\":\"vzff\",\"isAuthorized\":false,\"isProgramming\":false,\"isScanner\":false,\"additionalData\":{\"zqfcwrriomxee\":\"datatfjxtvlx\",\"hc\":\"datawyhjmbjiqegmxdbs\"},\"friendlyName\":\"pyvdkgdets\"},\"id\":\"canzb\",\"name\":\"ekwuyckyvn\",\"type\":\"nsm\"}")
+            "{\"kind\":\"IoTDevice\",\"properties\":{\"deviceId\":\"ebqinjipnw\",\"deviceName\":\"ujqlafcbahh\",\"source\":\"pofoi\",\"iotSecurityAgentId\":\"34cc2481-801e-491b-a659-2b18f00be92c\",\"deviceType\":\"p\",\"vendor\":\"lkmkkholvdndvi\",\"edgeId\":\"ogphuartvtiu\",\"macAddress\":\"efchn\",\"model\":\"ahmnxhkxjqirw\",\"serialNumber\":\"eooxffifh\",\"firmwareVersion\":\"rsnewmozqvbubqma\",\"operatingSystem\":\"sycxhxzgaz\",\"iotHubEntityId\":\"abo\",\"hostEntityId\":\"vmfqhppubo\",\"ipAddressEntityId\":\"epdfgkmtdherng\",\"threatIntelligence\":[{\"confidence\":33.38182566342388,\"providerName\":\"okqtobk\",\"reportLink\":\"xof\",\"threatDescription\":\"fphwpnu\",\"threatName\":\"iywzejy\",\"threatType\":\"slwkojpl\"}],\"protocols\":[\"npdwr\",\"qafgfugsnnfhyet\",\"fypococtfjgti\"],\"additionalData\":{\"wolba\":\"datavzuyturmlmu\",\"pngajin\":\"datairopionszon\"},\"friendlyName\":\"xjawrt\"},\"id\":\"fjmyccxlzhco\",\"name\":\"ovne\",\"type\":\"henlusfnr\"}")
             .toObject(IoTDeviceEntity.class);
-        Assertions.assertEquals(DeviceImportance.UNKNOWN, model.importance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTDeviceEntity model = new IoTDeviceEntity().withImportance(DeviceImportance.UNKNOWN);
+        IoTDeviceEntity model = new IoTDeviceEntity();
         model = BinaryData.fromObject(model).toObject(IoTDeviceEntity.class);
-        Assertions.assertEquals(DeviceImportance.UNKNOWN, model.importance());
     }
 }

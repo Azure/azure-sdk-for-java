@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies the Azure Bare Metal Instance SKU.
+ * Specifies the AzureBareMetal instance SKU.
  */
 public final class AzureBareMetalInstanceSizeNamesEnum
     extends ExpandableStringEnum<AzureBareMetalInstanceSizeNamesEnum> {
@@ -136,11 +136,6 @@ public final class AzureBareMetalInstanceSizeNamesEnum
      * Static value S448ooo for AzureBareMetalInstanceSizeNamesEnum.
      */
     public static final AzureBareMetalInstanceSizeNamesEnum S448OOO = fromString("S448ooo");
-
-    /**
-     * Static value S448se for AzureBareMetalInstanceSizeNamesEnum.
-     */
-    public static final AzureBareMetalInstanceSizeNamesEnum S448SE = fromString("S448se");
 
     /**
      * Static value S576m for AzureBareMetalInstanceSizeNamesEnum.

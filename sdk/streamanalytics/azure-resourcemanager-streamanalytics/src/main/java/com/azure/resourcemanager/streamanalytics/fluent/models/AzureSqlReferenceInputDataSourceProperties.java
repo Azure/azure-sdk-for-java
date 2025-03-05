@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.RefreshType;
 import java.io.IOException;
 
@@ -45,6 +44,11 @@ public final class AzureSqlReferenceInputDataSourceProperties
     private String password;
 
     /*
+     * This element is associated with the datasource element. The name of the table in the Azure SQL database..
+     */
+    private String table;
+
+    /*
      * Indicates the type of data refresh option.
      */
     private RefreshType refreshType;
@@ -65,11 +69,6 @@ public final class AzureSqlReferenceInputDataSourceProperties
      * SQL database. To use this option, we recommend using temporal tables in Azure SQL Database.
      */
     private String deltaSnapshotQuery;
-
-    /*
-     * Authentication Mode.
-     */
-    private AuthenticationMode authenticationMode;
 
     /**
      * Creates an instance of AzureSqlReferenceInputDataSourceProperties class.
@@ -166,6 +165,28 @@ public final class AzureSqlReferenceInputDataSourceProperties
     }
 
     /**
+     * Get the table property: This element is associated with the datasource element. The name of the table in the
+     * Azure SQL database..
+     * 
+     * @return the table value.
+     */
+    public String table() {
+        return this.table;
+    }
+
+    /**
+     * Set the table property: This element is associated with the datasource element. The name of the table in the
+     * Azure SQL database..
+     * 
+     * @param table the table value to set.
+     * @return the AzureSqlReferenceInputDataSourceProperties object itself.
+     */
+    public AzureSqlReferenceInputDataSourceProperties withTable(String table) {
+        this.table = table;
+        return this;
+    }
+
+    /**
      * Get the refreshType property: Indicates the type of data refresh option.
      * 
      * @return the refreshType value.
@@ -254,26 +275,6 @@ public final class AzureSqlReferenceInputDataSourceProperties
     }
 
     /**
-     * Get the authenticationMode property: Authentication Mode.
-     * 
-     * @return the authenticationMode value.
-     */
-    public AuthenticationMode authenticationMode() {
-        return this.authenticationMode;
-    }
-
-    /**
-     * Set the authenticationMode property: Authentication Mode.
-     * 
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the AzureSqlReferenceInputDataSourceProperties object itself.
-     */
-    public AzureSqlReferenceInputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
-        this.authenticationMode = authenticationMode;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -291,12 +292,11 @@ public final class AzureSqlReferenceInputDataSourceProperties
         jsonWriter.writeStringField("database", this.database);
         jsonWriter.writeStringField("user", this.user);
         jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("table", this.table);
         jsonWriter.writeStringField("refreshType", this.refreshType == null ? null : this.refreshType.toString());
         jsonWriter.writeStringField("refreshRate", this.refreshRate);
         jsonWriter.writeStringField("fullSnapshotQuery", this.fullSnapshotQuery);
         jsonWriter.writeStringField("deltaSnapshotQuery", this.deltaSnapshotQuery);
-        jsonWriter.writeStringField("authenticationMode",
-            this.authenticationMode == null ? null : this.authenticationMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -324,6 +324,8 @@ public final class AzureSqlReferenceInputDataSourceProperties
                     deserializedAzureSqlReferenceInputDataSourceProperties.user = reader.getString();
                 } else if ("password".equals(fieldName)) {
                     deserializedAzureSqlReferenceInputDataSourceProperties.password = reader.getString();
+                } else if ("table".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSourceProperties.table = reader.getString();
                 } else if ("refreshType".equals(fieldName)) {
                     deserializedAzureSqlReferenceInputDataSourceProperties.refreshType
                         = RefreshType.fromString(reader.getString());
@@ -333,9 +335,6 @@ public final class AzureSqlReferenceInputDataSourceProperties
                     deserializedAzureSqlReferenceInputDataSourceProperties.fullSnapshotQuery = reader.getString();
                 } else if ("deltaSnapshotQuery".equals(fieldName)) {
                     deserializedAzureSqlReferenceInputDataSourceProperties.deltaSnapshotQuery = reader.getString();
-                } else if ("authenticationMode".equals(fieldName)) {
-                    deserializedAzureSqlReferenceInputDataSourceProperties.authenticationMode
-                        = AuthenticationMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

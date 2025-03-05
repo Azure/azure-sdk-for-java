@@ -38,7 +38,7 @@ public final class ConfigurationForUpdate implements JsonSerializable<Configurat
     }
 
     /**
-     * Get the value property: Value of the configuration.
+     * Get the value property: Value of the configuration. Required to update the configuration.
      * 
      * @return the value value.
      */
@@ -47,7 +47,7 @@ public final class ConfigurationForUpdate implements JsonSerializable<Configurat
     }
 
     /**
-     * Set the value property: Value of the configuration.
+     * Set the value property: Value of the configuration. Required to update the configuration.
      * 
      * @param value the value value to set.
      * @return the ConfigurationForUpdate object itself.
@@ -97,7 +97,7 @@ public final class ConfigurationForUpdate implements JsonSerializable<Configurat
     }
 
     /**
-     * Get the source property: Source of the configuration.
+     * Get the source property: Source of the configuration. Required to update the configuration.
      * 
      * @return the source value.
      */
@@ -106,7 +106,7 @@ public final class ConfigurationForUpdate implements JsonSerializable<Configurat
     }
 
     /**
-     * Set the source property: Source of the configuration.
+     * Set the source property: Source of the configuration. Required to update the configuration.
      * 
      * @param source the source value to set.
      * @return the ConfigurationForUpdate object itself.

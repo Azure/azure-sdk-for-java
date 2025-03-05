@@ -78,12 +78,8 @@ public class AutomationRuleCondition implements JsonSerializable<AutomationRuleC
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("Boolean".equals(discriminatorValue)) {
-                    return BooleanConditionProperties.fromJson(readerToUse.reset());
-                } else if ("PropertyArrayChanged".equals(discriminatorValue)) {
+                if ("PropertyArrayChanged".equals(discriminatorValue)) {
                     return PropertyArrayChangedConditionProperties.fromJson(readerToUse.reset());
-                } else if ("PropertyArray".equals(discriminatorValue)) {
-                    return PropertyArrayConditionProperties.fromJson(readerToUse.reset());
                 } else if ("PropertyChanged".equals(discriminatorValue)) {
                     return PropertyChangedConditionProperties.fromJson(readerToUse.reset());
                 } else if ("Property".equals(discriminatorValue)) {

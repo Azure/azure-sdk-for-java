@@ -12,12 +12,24 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure SQL server capabilities for a given region. */
 @Fluent
 public interface RegionCapabilities extends HasInnerModel<LocationCapabilitiesInner> {
-    /** @return the location name */
+    /**
+     * Gets the location name.
+     *
+     * @return the location name
+     */
     Region region();
 
-    /** @return the Azure SQL Database's status for the location */
+    /**
+     * Gets the Azure SQL Database's status for the location.
+     *
+     * @return the Azure SQL Database's status for the location
+     */
     CapabilityStatus status();
 
-    /** @return the list of supported server versions */
+    /**
+     * Gets the list of supported server versions.
+     *
+     * @return the list of supported server versions
+     */
     Map<String, ServerVersionCapability> supportedCapabilitiesByServerVersion();
 }

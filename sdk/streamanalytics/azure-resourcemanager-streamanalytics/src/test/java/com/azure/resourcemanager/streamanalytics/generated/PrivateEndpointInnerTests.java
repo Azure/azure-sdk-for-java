@@ -6,7 +6,6 @@ package com.azure.resourcemanager.streamanalytics.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.streamanalytics.fluent.models.PrivateEndpointInner;
-import com.azure.resourcemanager.streamanalytics.models.PrivateEndpointProperties;
 import com.azure.resourcemanager.streamanalytics.models.PrivateLinkConnectionState;
 import com.azure.resourcemanager.streamanalytics.models.PrivateLinkServiceConnection;
 import java.util.Arrays;
@@ -16,34 +15,26 @@ public final class PrivateEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointInner model = BinaryData.fromString(
-            "{\"properties\":{\"createdDate\":\"fm\",\"manualPrivateLinkServiceConnections\":[{\"properties\":{\"privateLinkServiceId\":\"t\",\"groupIds\":[\"mqkrhahvljuahaqu\",\"c\",\"hmdua\"],\"requestMessage\":\"exq\",\"privateLinkServiceConnectionState\":{\"status\":\"adm\",\"description\":\"rcrgvx\",\"actionsRequired\":\"gomz\"}}},{\"properties\":{\"privateLinkServiceId\":\"isgwbnbbeldawkz\",\"groupIds\":[\"io\",\"rqhakauha\",\"hsfwxosowzxcug\"],\"requestMessage\":\"jooxdjebw\",\"privateLinkServiceConnectionState\":{\"status\":\"wwfvov\",\"description\":\"meue\",\"actionsRequired\":\"vyhzceuojgjrwj\"}}},{\"properties\":{\"privateLinkServiceId\":\"otwmcdyt\",\"groupIds\":[\"it\"],\"requestMessage\":\"rjaw\",\"privateLinkServiceConnectionState\":{\"status\":\"gxhnisk\",\"description\":\"bkpyc\",\"actionsRequired\":\"lwn\"}}},{\"properties\":{\"privateLinkServiceId\":\"jdauwhvy\",\"groupIds\":[\"btdhxujznbm\"],\"requestMessage\":\"wuwprzqlv\",\"privateLinkServiceConnectionState\":{\"status\":\"lupj\",\"description\":\"hfxobbcswsrtj\",\"actionsRequired\":\"plrbpbewtghf\"}}}]},\"etag\":\"lcgwxzvlvqh\",\"id\":\"kbegibt\",\"name\":\"mxiebw\",\"type\":\"aloayqcgwrtzju\"}")
+            "{\"properties\":{\"createdDate\":\"wgipwhono\",\"manualPrivateLinkServiceConnections\":[{\"properties\":{\"privateLinkServiceId\":\"wankixzbi\",\"groupIds\":[\"pu\",\"tmryw\",\"uzoqft\",\"yqzrnkcqvyxlw\"],\"requestMessage\":\"lsicohoqqnwv\",\"privateLinkServiceConnectionState\":{\"status\":\"avwhheunm\",\"description\":\"hgyxzkonoc\",\"actionsRequired\":\"oklyaxuconuq\"}}},{\"properties\":{\"privateLinkServiceId\":\"kbeype\",\"groupIds\":[\"jmwvvj\",\"kt\",\"xsenhwlr\"],\"requestMessage\":\"frzpwvlqdqgb\",\"privateLinkServiceConnectionState\":{\"status\":\"lihkaetcktvfc\",\"description\":\"fsnkymuctq\",\"actionsRequired\":\"fbebrjcxer\"}}},{\"properties\":{\"privateLinkServiceId\":\"utttxfvjrbirp\",\"groupIds\":[\"pcyvahfnljkyqx\",\"vuujq\",\"idokgjlj\"],\"requestMessage\":\"xgvcl\",\"privateLinkServiceConnectionState\":{\"status\":\"sncghkjeszz\",\"description\":\"ijhtxf\",\"actionsRequired\":\"xbf\"}}}]},\"etag\":\"xnehmpvec\",\"id\":\"godebfqkkrbmpu\",\"name\":\"gr\",\"type\":\"wflzlfbxzpuzy\"}")
             .toObject(PrivateEndpointInner.class);
-        Assertions.assertEquals("t",
-            model.properties().manualPrivateLinkServiceConnections().get(0).privateLinkServiceId());
-        Assertions.assertEquals("mqkrhahvljuahaqu",
-            model.properties().manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("wankixzbi", model.manualPrivateLinkServiceConnections().get(0).privateLinkServiceId());
+        Assertions.assertEquals("pu", model.manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointInner model = new PrivateEndpointInner()
-            .withProperties(new PrivateEndpointProperties().withManualPrivateLinkServiceConnections(Arrays.asList(
-                new PrivateLinkServiceConnection().withPrivateLinkServiceId("t")
-                    .withGroupIds(Arrays.asList("mqkrhahvljuahaqu", "c", "hmdua"))
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()),
-                new PrivateLinkServiceConnection().withPrivateLinkServiceId("isgwbnbbeldawkz")
-                    .withGroupIds(Arrays.asList("io", "rqhakauha", "hsfwxosowzxcug"))
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()),
-                new PrivateLinkServiceConnection().withPrivateLinkServiceId("otwmcdyt")
-                    .withGroupIds(Arrays.asList("it"))
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()),
-                new PrivateLinkServiceConnection().withPrivateLinkServiceId("jdauwhvy")
-                    .withGroupIds(Arrays.asList("btdhxujznbm"))
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()))));
+        PrivateEndpointInner model = new PrivateEndpointInner().withManualPrivateLinkServiceConnections(Arrays.asList(
+            new PrivateLinkServiceConnection().withPrivateLinkServiceId("wankixzbi")
+                .withGroupIds(Arrays.asList("pu", "tmryw", "uzoqft", "yqzrnkcqvyxlw"))
+                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()),
+            new PrivateLinkServiceConnection().withPrivateLinkServiceId("kbeype")
+                .withGroupIds(Arrays.asList("jmwvvj", "kt", "xsenhwlr"))
+                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()),
+            new PrivateLinkServiceConnection().withPrivateLinkServiceId("utttxfvjrbirp")
+                .withGroupIds(Arrays.asList("pcyvahfnljkyqx", "vuujq", "idokgjlj"))
+                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState())));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointInner.class);
-        Assertions.assertEquals("t",
-            model.properties().manualPrivateLinkServiceConnections().get(0).privateLinkServiceId());
-        Assertions.assertEquals("mqkrhahvljuahaqu",
-            model.properties().manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("wankixzbi", model.manualPrivateLinkServiceConnections().get(0).privateLinkServiceId());
+        Assertions.assertEquals("pu", model.manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
     }
 }

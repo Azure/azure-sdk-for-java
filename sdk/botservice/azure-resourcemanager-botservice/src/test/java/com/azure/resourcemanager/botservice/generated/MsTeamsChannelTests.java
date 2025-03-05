@@ -13,36 +13,36 @@ public final class MsTeamsChannelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MsTeamsChannel model = BinaryData.fromString(
-            "{\"channelName\":\"MsTeamsChannel\",\"properties\":{\"enableCalling\":false,\"callingWebhook\":\"sbkyvpycanuzbp\",\"isEnabled\":true,\"incomingCallRoute\":\"fkuwbcrnwbmehhse\",\"deploymentEnvironment\":\"jusrtslhspk\",\"acceptedTerms\":true},\"etag\":\"aofmxagkvtme\",\"provisioningState\":\"qkrhahvljua\",\"location\":\"quhcdhmduala\"}")
+            "{\"channelName\":\"MsTeamsChannel\",\"properties\":{\"enableCalling\":true,\"callingWebhook\":\"mx\",\"isEnabled\":true,\"incomingCallRoute\":\"vt\",\"deploymentEnvironment\":\"lmqkrhahvlj\",\"acceptedTerms\":false},\"etag\":\"quhcdhmduala\",\"provisioningState\":\"qpv\",\"location\":\"dmwsrcrgvxpvgomz\"}")
             .toObject(MsTeamsChannel.class);
-        Assertions.assertEquals("aofmxagkvtme", model.etag());
-        Assertions.assertEquals("quhcdhmduala", model.location());
-        Assertions.assertEquals(false, model.properties().enableCalling());
-        Assertions.assertEquals("sbkyvpycanuzbp", model.properties().callingWebhook());
+        Assertions.assertEquals("quhcdhmduala", model.etag());
+        Assertions.assertEquals("dmwsrcrgvxpvgomz", model.location());
+        Assertions.assertEquals(true, model.properties().enableCalling());
+        Assertions.assertEquals("mx", model.properties().callingWebhook());
         Assertions.assertEquals(true, model.properties().isEnabled());
-        Assertions.assertEquals("fkuwbcrnwbmehhse", model.properties().incomingCallRoute());
-        Assertions.assertEquals("jusrtslhspk", model.properties().deploymentEnvironment());
-        Assertions.assertEquals(true, model.properties().acceptedTerms());
+        Assertions.assertEquals("vt", model.properties().incomingCallRoute());
+        Assertions.assertEquals("lmqkrhahvlj", model.properties().deploymentEnvironment());
+        Assertions.assertEquals(false, model.properties().acceptedTerms());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MsTeamsChannel model = new MsTeamsChannel().withEtag("aofmxagkvtme")
-            .withLocation("quhcdhmduala")
-            .withProperties(new MsTeamsChannelProperties().withEnableCalling(false)
-                .withCallingWebhook("sbkyvpycanuzbp")
+        MsTeamsChannel model = new MsTeamsChannel().withEtag("quhcdhmduala")
+            .withLocation("dmwsrcrgvxpvgomz")
+            .withProperties(new MsTeamsChannelProperties().withEnableCalling(true)
+                .withCallingWebhook("mx")
                 .withIsEnabled(true)
-                .withIncomingCallRoute("fkuwbcrnwbmehhse")
-                .withDeploymentEnvironment("jusrtslhspk")
-                .withAcceptedTerms(true));
+                .withIncomingCallRoute("vt")
+                .withDeploymentEnvironment("lmqkrhahvlj")
+                .withAcceptedTerms(false));
         model = BinaryData.fromObject(model).toObject(MsTeamsChannel.class);
-        Assertions.assertEquals("aofmxagkvtme", model.etag());
-        Assertions.assertEquals("quhcdhmduala", model.location());
-        Assertions.assertEquals(false, model.properties().enableCalling());
-        Assertions.assertEquals("sbkyvpycanuzbp", model.properties().callingWebhook());
+        Assertions.assertEquals("quhcdhmduala", model.etag());
+        Assertions.assertEquals("dmwsrcrgvxpvgomz", model.location());
+        Assertions.assertEquals(true, model.properties().enableCalling());
+        Assertions.assertEquals("mx", model.properties().callingWebhook());
         Assertions.assertEquals(true, model.properties().isEnabled());
-        Assertions.assertEquals("fkuwbcrnwbmehhse", model.properties().incomingCallRoute());
-        Assertions.assertEquals("jusrtslhspk", model.properties().deploymentEnvironment());
-        Assertions.assertEquals(true, model.properties().acceptedTerms());
+        Assertions.assertEquals("vt", model.properties().incomingCallRoute());
+        Assertions.assertEquals("lmqkrhahvlj", model.properties().deploymentEnvironment());
+        Assertions.assertEquals(false, model.properties().acceptedTerms());
     }
 }

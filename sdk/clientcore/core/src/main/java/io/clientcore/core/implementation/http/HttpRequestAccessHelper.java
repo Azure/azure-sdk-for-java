@@ -16,46 +16,50 @@ public final class HttpRequestAccessHelper {
      */
     public interface HttpRequestAccessor {
         /**
-         * Gets the number of times the request has been retried.
+         * Gets the number of times the request has been attempted. It's 0 during the first attempt
+         * and increments after attempt is made.
          *
-         * @param httpRequest The {@link HttpRequest} to set the retry count of.
+         * @param httpRequest The {@link HttpRequest} to set the try count of.
          *
-         * @return The {@link HttpRequest} retry count.
+         * @return The {@link HttpRequest} try count.
          */
-        int getRetryCount(HttpRequest httpRequest);
+        int getTryCount(HttpRequest httpRequest);
 
         /**
-         * Sets the number of times the request has been retried.
+         * Sets the number of times the request has been attempted. It's 0 during the first attempt
+         * and increments after attempt is made.
          *
-         * @param httpRequest The {@link HttpRequest} to set the retry count of.
-         * @param retryCount The number of times the request has been retried.
+         * @param httpRequest The {@link HttpRequest} to set the try count of.
+         * @param tryCount The number of times the request has been attempted.
          *
          * @return The modified {@link HttpRequest}.
          */
-        HttpRequest setRetryCount(HttpRequest httpRequest, int retryCount);
+        HttpRequest setTryCount(HttpRequest httpRequest, int tryCount);
     }
 
     /**
-     * Gets the number of times the request has been retried.
+     * Gets the number of times the request has already been retried. It's 0 during the first attempt
+     * and increments after attempt is made.
      *
-     * @param httpRequest The {@link HttpRequest} to set the retry count of.
+     * @param httpRequest The {@link HttpRequest} to set the try count of.
      *
-     * @return The {@link HttpRequest} retry count.
+     * @return The {@link HttpRequest} try count.
      */
-    public static int getRetryCount(HttpRequest httpRequest) {
-        return accessor.getRetryCount(httpRequest);
+    public static int getTryCount(HttpRequest httpRequest) {
+        return accessor.getTryCount(httpRequest);
     }
 
     /**
-     * Sets the number of times the request has been retried.
+     * Sets the number of times the request has been attempted. It's 0 during the first attempt
+     * and increments after attempt is made.
      *
-     * @param httpRequest The {@link HttpRequest} to set the retry count of.
-     * @param retryCount The number of times the request has been retried.
+     * @param httpRequest The {@link HttpRequest} to set the try count of.
+     * @param tryCount The number of times the request has been retried.
      *
      * @return The updated {@link HttpRequest} object.
      */
-    public static HttpRequest setRetryCount(HttpRequest httpRequest, int retryCount) {
-        return accessor.setRetryCount(httpRequest, retryCount);
+    public static HttpRequest setTryCount(HttpRequest httpRequest, int tryCount) {
+        return accessor.setTryCount(httpRequest, tryCount);
     }
 
     /**

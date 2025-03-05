@@ -16,10 +16,10 @@ public final class OfficeDataConnectorDataTypesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfficeDataConnectorDataTypes model = BinaryData.fromString(
-            "{\"exchange\":{\"state\":\"Disabled\"},\"sharePoint\":{\"state\":\"Enabled\"},\"teams\":{\"state\":\"Disabled\"}}")
+            "{\"exchange\":{\"state\":\"Disabled\"},\"sharePoint\":{\"state\":\"Disabled\"},\"teams\":{\"state\":\"Disabled\"}}")
             .toObject(OfficeDataConnectorDataTypes.class);
         Assertions.assertEquals(DataTypeState.DISABLED, model.exchange().state());
-        Assertions.assertEquals(DataTypeState.ENABLED, model.sharePoint().state());
+        Assertions.assertEquals(DataTypeState.DISABLED, model.sharePoint().state());
         Assertions.assertEquals(DataTypeState.DISABLED, model.teams().state());
     }
 
@@ -27,11 +27,11 @@ public final class OfficeDataConnectorDataTypesTests {
     public void testSerialize() throws Exception {
         OfficeDataConnectorDataTypes model = new OfficeDataConnectorDataTypes()
             .withExchange(new OfficeDataConnectorDataTypesExchange().withState(DataTypeState.DISABLED))
-            .withSharePoint(new OfficeDataConnectorDataTypesSharePoint().withState(DataTypeState.ENABLED))
+            .withSharePoint(new OfficeDataConnectorDataTypesSharePoint().withState(DataTypeState.DISABLED))
             .withTeams(new OfficeDataConnectorDataTypesTeams().withState(DataTypeState.DISABLED));
         model = BinaryData.fromObject(model).toObject(OfficeDataConnectorDataTypes.class);
         Assertions.assertEquals(DataTypeState.DISABLED, model.exchange().state());
-        Assertions.assertEquals(DataTypeState.ENABLED, model.sharePoint().state());
+        Assertions.assertEquals(DataTypeState.DISABLED, model.sharePoint().state());
         Assertions.assertEquals(DataTypeState.DISABLED, model.teams().state());
     }
 }

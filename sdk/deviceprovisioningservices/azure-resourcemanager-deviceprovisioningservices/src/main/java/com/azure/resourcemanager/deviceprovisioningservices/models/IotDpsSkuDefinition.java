@@ -6,11 +6,13 @@ package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.IotDpsSkuDefinitionInner;
 
-/** An immutable client-side representation of IotDpsSkuDefinition. */
+/**
+ * An immutable client-side representation of IotDpsSkuDefinition.
+ */
 public interface IotDpsSkuDefinition {
     /**
      * Gets the name property: Sku name.
-     *
+     * 
      * @return the name value.
      */
     IotDpsSku name();
@@ -18,7 +20,7 @@ public interface IotDpsSkuDefinition {
     /**
      * Gets the inner com.azure.resourcemanager.deviceprovisioningservices.fluent.models.IotDpsSkuDefinitionInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     IotDpsSkuDefinitionInner innerModel();

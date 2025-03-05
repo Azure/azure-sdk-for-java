@@ -13,15 +13,15 @@ public final class HostEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HostEntityProperties model = BinaryData.fromString(
-            "{\"azureID\":\"zwilfngo\",\"dnsDomain\":\"sqeb\",\"hostName\":\"xjxhfxfj\",\"isDomainJoined\":true,\"netBiosName\":\"ktpmbmxb\",\"ntDomain\":\"rwgzzxl\",\"omsAgentID\":\"khxsdplaumy\",\"osFamily\":\"Windows\",\"osVersion\":\"eqjfyxydgtokvq\",\"additionalData\":{\"esrfgamqiydvx\":\"dataglgwzpvxakglhp\",\"soy\":\"datagdhyhgoq\",\"cbqp\":\"datayxyj\"},\"friendlyName\":\"spglq\"}")
+            "{\"azureID\":\"cugswvxwlmzqw\",\"dnsDomain\":\"tx\",\"hostName\":\"mxmcuqudtcvclxy\",\"isDomainJoined\":true,\"netBiosName\":\"vgfab\",\"ntDomain\":\"yjibuzphdugne\",\"omsAgentID\":\"n\",\"osFamily\":\"Unknown\",\"osVersion\":\"gjiuqhibto\",\"additionalData\":{\"edmurrxxge\":\"dataqw\",\"qylkmqpzoyhlf\":\"datapkt\"},\"friendlyName\":\"gwgcl\"}")
             .toObject(HostEntityProperties.class);
-        Assertions.assertEquals(OSFamily.WINDOWS, model.osFamily());
+        Assertions.assertEquals(OSFamily.UNKNOWN, model.osFamily());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HostEntityProperties model = new HostEntityProperties().withOsFamily(OSFamily.WINDOWS);
+        HostEntityProperties model = new HostEntityProperties().withOsFamily(OSFamily.UNKNOWN);
         model = BinaryData.fromObject(model).toObject(HostEntityProperties.class);
-        Assertions.assertEquals(OSFamily.WINDOWS, model.osFamily());
+        Assertions.assertEquals(OSFamily.UNKNOWN, model.osFamily());
     }
 }

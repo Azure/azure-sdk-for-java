@@ -25,11 +25,6 @@ public final class KikChannel extends Channel {
      */
     private KikChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of KikChannel class.
      */
@@ -64,16 +59,6 @@ public final class KikChannel extends Channel {
     public KikChannel withProperties(KikChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class KikChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedKikChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedKikChannel.provisioningState = reader.getString();
+                    deserializedKikChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedKikChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

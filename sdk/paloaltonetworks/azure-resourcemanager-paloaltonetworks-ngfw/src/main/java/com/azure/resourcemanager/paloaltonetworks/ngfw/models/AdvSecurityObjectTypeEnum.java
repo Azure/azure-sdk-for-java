@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AdvSecurityObjectTypeEnum extends ExpandableStringEnum<AdvSec
      * @param name a name to look for.
      * @return the corresponding AdvSecurityObjectTypeEnum.
      */
-    @JsonCreator
     public static AdvSecurityObjectTypeEnum fromString(String name) {
         return fromString(name, AdvSecurityObjectTypeEnum.class);
     }

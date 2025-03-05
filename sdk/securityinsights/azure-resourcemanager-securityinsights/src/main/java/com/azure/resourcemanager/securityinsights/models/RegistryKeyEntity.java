@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.RegistryKeyEntityProperties;
 import java.io.IOException;
 import java.util.Map;
@@ -18,11 +17,11 @@ import java.util.Map;
  * Represents a registry key entity.
  */
 @Immutable
-public final class RegistryKeyEntity extends EntityInner {
+public final class RegistryKeyEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.REGISTRY_KEY;
+    private EntityKindEnum kind = EntityKindEnum.REGISTRY_KEY;
 
     /*
      * RegistryKey entity properties
@@ -61,7 +60,7 @@ public final class RegistryKeyEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -200,7 +199,7 @@ public final class RegistryKeyEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedRegistryKeyEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedRegistryKeyEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedRegistryKeyEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedRegistryKeyEntity.innerProperties = RegistryKeyEntityProperties.fromJson(reader);
                 } else {

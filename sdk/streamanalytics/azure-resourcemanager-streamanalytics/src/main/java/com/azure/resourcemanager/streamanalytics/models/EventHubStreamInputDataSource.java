@@ -50,7 +50,7 @@ public final class EventHubStreamInputDataSource extends StreamInputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private EventHubStreamInputDataSourceProperties innerProperties() {
+    EventHubStreamInputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -84,29 +84,6 @@ public final class EventHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the prefetchCount property: The number of messages that the message receiver can simultaneously request.
-     * 
-     * @return the prefetchCount value.
-     */
-    public Integer prefetchCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().prefetchCount();
-    }
-
-    /**
-     * Set the prefetchCount property: The number of messages that the message receiver can simultaneously request.
-     * 
-     * @param prefetchCount the prefetchCount value to set.
-     * @return the EventHubStreamInputDataSource object itself.
-     */
-    public EventHubStreamInputDataSource withPrefetchCount(Integer prefetchCount) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EventHubStreamInputDataSourceProperties();
-        }
-        this.innerProperties().withPrefetchCount(prefetchCount);
-        return this;
-    }
-
-    /**
      * Get the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
      * 
      * @return the eventHubName value.
@@ -126,29 +103,6 @@ public final class EventHubStreamInputDataSource extends StreamInputDataSource {
             this.innerProperties = new EventHubStreamInputDataSourceProperties();
         }
         this.innerProperties().withEventHubName(eventHubName);
-        return this;
-    }
-
-    /**
-     * Get the partitionCount property: The partition count of the event hub data source. Range 1 - 256.
-     * 
-     * @return the partitionCount value.
-     */
-    public Integer partitionCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().partitionCount();
-    }
-
-    /**
-     * Set the partitionCount property: The partition count of the event hub data source. Range 1 - 256.
-     * 
-     * @param partitionCount the partitionCount value to set.
-     * @return the EventHubStreamInputDataSource object itself.
-     */
-    public EventHubStreamInputDataSource withPartitionCount(Integer partitionCount) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EventHubStreamInputDataSourceProperties();
-        }
-        this.innerProperties().withPartitionCount(partitionCount);
         return this;
     }
 

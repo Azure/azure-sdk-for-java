@@ -30,14 +30,14 @@ public final class FirewallStatusImpl implements FirewallStatus {
     public PagedIterable<FirewallStatusResource> listByFirewalls(String resourceGroupName, String firewallName) {
         PagedIterable<FirewallStatusResourceInner> inner
             = this.serviceClient().listByFirewalls(resourceGroupName, firewallName);
-        return Utils.mapPage(inner, inner1 -> new FirewallStatusResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FirewallStatusResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FirewallStatusResource> listByFirewalls(String resourceGroupName, String firewallName,
         Context context) {
         PagedIterable<FirewallStatusResourceInner> inner
             = this.serviceClient().listByFirewalls(resourceGroupName, firewallName, context);
-        return Utils.mapPage(inner, inner1 -> new FirewallStatusResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FirewallStatusResourceImpl(inner1, this.manager()));
     }
 
     public Response<FirewallStatusResource> getWithResponse(String resourceGroupName, String firewallName,

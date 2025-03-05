@@ -98,7 +98,11 @@ public enum SqlElasticPoolStandardStorage {
         this.capacityInGB = capacityInGB;
     }
 
-    /** @return the maximum allowed storage capacity in MB for the SQL Elastic Pool */
+    /**
+     * Gets the maximum allowed storage capacity in MB for the SQL Elastic Pool.
+     *
+     * @return the maximum allowed storage capacity in MB for the SQL Elastic Pool
+     */
     public int capacityInMB() {
         return this.capacityInGB * 1024;
     }

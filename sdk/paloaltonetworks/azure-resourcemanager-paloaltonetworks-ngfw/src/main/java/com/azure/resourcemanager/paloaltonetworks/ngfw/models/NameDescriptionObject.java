@@ -6,23 +6,25 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * object type info.
  */
 @Fluent
-public final class NameDescriptionObject {
+public final class NameDescriptionObject implements JsonSerializable<NameDescriptionObject> {
     /*
      * name value
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * description value
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -78,10 +80,50 @@ public final class NameDescriptionObject {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model NameDescriptionObject"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model NameDescriptionObject"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NameDescriptionObject.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameDescriptionObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameDescriptionObject if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NameDescriptionObject.
+     */
+    public static NameDescriptionObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameDescriptionObject deserializedNameDescriptionObject = new NameDescriptionObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNameDescriptionObject.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedNameDescriptionObject.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameDescriptionObject;
+        });
+    }
 }

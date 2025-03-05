@@ -16,27 +16,27 @@ public final class PropertyConditionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PropertyConditionProperties model = BinaryData.fromString(
-            "{\"conditionType\":\"Property\",\"conditionProperties\":{\"propertyName\":\"RegistryValueData\",\"operator\":\"NotContains\",\"propertyValues\":[\"txfvonfe\",\"qgpkrie\",\"bgnixxoww\"]}}")
+            "{\"conditionType\":\"Property\",\"conditionProperties\":{\"propertyName\":\"HostAzureID\",\"operator\":\"NotStartsWith\",\"propertyValues\":[\"fovvacqpbtuodxes\",\"abbelawumuaslzk\",\"rrwoycqucwyhahn\"]}}")
             .toObject(PropertyConditionProperties.class);
-        Assertions.assertEquals(AutomationRulePropertyConditionSupportedProperty.REGISTRY_VALUE_DATA,
+        Assertions.assertEquals(AutomationRulePropertyConditionSupportedProperty.HOST_AZURE_ID,
             model.conditionProperties().propertyName());
-        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_CONTAINS,
+        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_STARTS_WITH,
             model.conditionProperties().operator());
-        Assertions.assertEquals("txfvonfe", model.conditionProperties().propertyValues().get(0));
+        Assertions.assertEquals("fovvacqpbtuodxes", model.conditionProperties().propertyValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PropertyConditionProperties model
             = new PropertyConditionProperties().withConditionProperties(new AutomationRulePropertyValuesCondition()
-                .withPropertyName(AutomationRulePropertyConditionSupportedProperty.REGISTRY_VALUE_DATA)
-                .withOperator(AutomationRulePropertyConditionSupportedOperator.NOT_CONTAINS)
-                .withPropertyValues(Arrays.asList("txfvonfe", "qgpkrie", "bgnixxoww")));
+                .withPropertyName(AutomationRulePropertyConditionSupportedProperty.HOST_AZURE_ID)
+                .withOperator(AutomationRulePropertyConditionSupportedOperator.NOT_STARTS_WITH)
+                .withPropertyValues(Arrays.asList("fovvacqpbtuodxes", "abbelawumuaslzk", "rrwoycqucwyhahn")));
         model = BinaryData.fromObject(model).toObject(PropertyConditionProperties.class);
-        Assertions.assertEquals(AutomationRulePropertyConditionSupportedProperty.REGISTRY_VALUE_DATA,
+        Assertions.assertEquals(AutomationRulePropertyConditionSupportedProperty.HOST_AZURE_ID,
             model.conditionProperties().propertyName());
-        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_CONTAINS,
+        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_STARTS_WITH,
             model.conditionProperties().operator());
-        Assertions.assertEquals("txfvonfe", model.conditionProperties().propertyValues().get(0));
+        Assertions.assertEquals("fovvacqpbtuodxes", model.conditionProperties().propertyValues().get(0));
     }
 }

@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import java.io.IOException;
 
 /**
  * Action for alert rule.
  */
 @Fluent
-public final class ActionResponseInner extends ResourceWithEtag {
+public final class ActionResponseInner extends ProxyResource {
+    /*
+     * Etag of the action.
+     */
+    private String etag;
+
     /*
      * Action properties for get request
      */
@@ -49,6 +54,26 @@ public final class ActionResponseInner extends ResourceWithEtag {
     }
 
     /**
+     * Get the etag property: Etag of the action.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Etag of the action.
+     * 
+     * @param etag the etag value to set.
+     * @return the ActionResponseInner object itself.
+     */
+    public ActionResponseInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: Action properties for get request.
      * 
      * @return the innerProperties value.
@@ -62,7 +87,6 @@ public final class ActionResponseInner extends ResourceWithEtag {
      * 
      * @return the systemData value.
      */
-    @Override
     public SystemData systemData() {
         return this.systemData;
     }
@@ -95,15 +119,6 @@ public final class ActionResponseInner extends ResourceWithEtag {
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ActionResponseInner withEtag(String etag) {
-        super.withEtag(etag);
-        return this;
     }
 
     /**
@@ -159,7 +174,6 @@ public final class ActionResponseInner extends ResourceWithEtag {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -172,7 +186,7 @@ public final class ActionResponseInner extends ResourceWithEtag {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("etag", this.etag);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -200,11 +214,11 @@ public final class ActionResponseInner extends ResourceWithEtag {
                 } else if ("type".equals(fieldName)) {
                     deserializedActionResponseInner.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedActionResponseInner.withEtag(reader.getString());
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedActionResponseInner.systemData = SystemData.fromJson(reader);
+                    deserializedActionResponseInner.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedActionResponseInner.innerProperties = ActionResponseProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedActionResponseInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

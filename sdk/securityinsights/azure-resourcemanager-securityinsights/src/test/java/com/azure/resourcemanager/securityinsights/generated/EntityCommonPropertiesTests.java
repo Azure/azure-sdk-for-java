@@ -10,9 +10,9 @@ import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 public final class EntityCommonPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityCommonProperties model = BinaryData.fromString(
-            "{\"additionalData\":{\"kssjhoiftxfk\":\"dataafidltugsres\",\"tillucbiqtg\":\"datawegprh\",\"hm\":\"dataq\",\"lllibph\":\"datawsldrizetpwbr\"},\"friendlyName\":\"zmizakakan\"}")
-            .toObject(EntityCommonProperties.class);
+        EntityCommonProperties model
+            = BinaryData.fromString("{\"additionalData\":{\"ac\":\"dataygpfqb\"},\"friendlyName\":\"pzfqrhhuaoppp\"}")
+                .toObject(EntityCommonProperties.class);
     }
 
     @org.junit.jupiter.api.Test

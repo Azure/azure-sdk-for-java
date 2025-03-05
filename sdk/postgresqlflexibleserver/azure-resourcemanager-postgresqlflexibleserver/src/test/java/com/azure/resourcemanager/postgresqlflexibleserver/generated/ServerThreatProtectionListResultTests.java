@@ -11,7 +11,7 @@ public final class ServerThreatProtectionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerThreatProtectionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-05-10T08:06:55Z\"},\"id\":\"iwyczuh\",\"name\":\"a\",\"type\":\"pqjlihhyusps\"},{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-06-21T01:18:29Z\"},\"id\":\"mfwdgzxu\",\"name\":\"ucvpamrs\",\"type\":\"euzvx\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-08-12T14:06:46Z\"},\"id\":\"hn\",\"name\":\"txifqj\",\"type\":\"gxmrhublwp\"}],\"nextLink\":\"sutrgjup\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-01-02T14:34:14Z\"},\"id\":\"twqmsniffcdmqnr\",\"name\":\"jlpijnkrx\",\"type\":\"rddh\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-10-24T17:40:19Z\"},\"id\":\"zronasxift\",\"name\":\"zq\",\"type\":\"zh\"},{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-11-23T02:30:56Z\"},\"id\":\"ogczhonnxkrlg\",\"name\":\"yhmossxkkg\",\"type\":\"h\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-07-14T05:25:31Z\"},\"id\":\"bdhqxvcxgf\",\"name\":\"pdso\",\"type\":\"bshrnsvbuswd\"}],\"nextLink\":\"yybyc\"}")
             .toObject(ServerThreatProtectionListResult.class);
     }
 

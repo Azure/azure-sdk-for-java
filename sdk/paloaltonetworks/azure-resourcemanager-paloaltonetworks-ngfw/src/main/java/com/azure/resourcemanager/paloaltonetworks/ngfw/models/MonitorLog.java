@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * MonitorLog configurations.
  */
 @Fluent
-public final class MonitorLog {
+public final class MonitorLog implements JsonSerializable<MonitorLog> {
     /*
      * Resource ID of MonitorLog
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Subscription Id
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * MonitorLog workspace
      */
-    @JsonProperty(value = "workspace")
     private String workspace;
 
     /*
      * Primary Key value for Monitor
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
      * Secondary Key value for Monitor
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /**
@@ -154,5 +153,53 @@ public final class MonitorLog {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("workspace", this.workspace);
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitorLog from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitorLog if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the MonitorLog.
+     */
+    public static MonitorLog fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitorLog deserializedMonitorLog = new MonitorLog();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMonitorLog.id = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedMonitorLog.subscriptionId = reader.getString();
+                } else if ("workspace".equals(fieldName)) {
+                    deserializedMonitorLog.workspace = reader.getString();
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedMonitorLog.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedMonitorLog.secondaryKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitorLog;
+        });
     }
 }

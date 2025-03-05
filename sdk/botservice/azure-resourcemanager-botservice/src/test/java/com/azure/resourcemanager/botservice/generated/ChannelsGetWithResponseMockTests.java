@@ -23,7 +23,7 @@ public final class ChannelsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"channelName\":\"Channel\",\"etag\":\"fbtndoaong\",\"provisioningState\":\"cn\",\"location\":\"jitcjedftwwaez\"},\"sku\":{\"name\":\"S1\",\"tier\":\"Free\"},\"kind\":\"sdk\",\"etag\":\"foqouicybx\",\"zones\":[\"gszufoxciqopid\"],\"location\":\"amcio\",\"tags\":{\"khnzbonlw\":\"haz\",\"dwbwhkszzcmrvexz\":\"toego\",\"owtlmnguxawqald\":\"vbtqgsfraoyzk\",\"bykutw\":\"yuuximerqfobwyzn\"},\"id\":\"fhpagmhrskdsnf\",\"name\":\"sd\",\"type\":\"akgtdlmkkzevdlh\"}";
+            = "{\"properties\":{\"channelName\":\"Channel\",\"etag\":\"ntuji\",\"provisioningState\":\"jed\",\"location\":\"wwa\"},\"sku\":{\"name\":\"F0\",\"tier\":\"Standard\"},\"kind\":\"designer\",\"etag\":\"pzfoqoui\",\"zones\":[\"xarzgszufoxciq\",\"p\",\"doamciodhkha\",\"xkhnzbonlwnto\"],\"location\":\"gokdwbwhks\",\"tags\":{\"xztvbtqgsfraoyzk\":\"mrv\",\"yuuximerqfobwyzn\":\"owtlmnguxawqald\"},\"id\":\"bykutw\",\"name\":\"fhpagmhrskdsnf\",\"type\":\"sd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class ChannelsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BotChannel response = manager.channels()
-            .getWithResponse("s", "zlxwabmqoefkifr", "tpuqujmq", com.azure.core.util.Context.NONE)
+            .getWithResponse("zlxwabmqoefkifr", "tpuqujmq", "gkfbtndoaong", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("amcio", response.location());
-        Assertions.assertEquals("haz", response.tags().get("khnzbonlw"));
-        Assertions.assertEquals("fbtndoaong", response.properties().etag());
-        Assertions.assertEquals("jitcjedftwwaez", response.properties().location());
-        Assertions.assertEquals(SkuName.S1, response.sku().name());
-        Assertions.assertEquals(Kind.SDK, response.kind());
-        Assertions.assertEquals("foqouicybx", response.etag());
+        Assertions.assertEquals("gokdwbwhks", response.location());
+        Assertions.assertEquals("mrv", response.tags().get("xztvbtqgsfraoyzk"));
+        Assertions.assertEquals("ntuji", response.properties().etag());
+        Assertions.assertEquals("wwa", response.properties().location());
+        Assertions.assertEquals(SkuName.F0, response.sku().name());
+        Assertions.assertEquals(Kind.DESIGNER, response.kind());
+        Assertions.assertEquals("pzfoqoui", response.etag());
     }
 }

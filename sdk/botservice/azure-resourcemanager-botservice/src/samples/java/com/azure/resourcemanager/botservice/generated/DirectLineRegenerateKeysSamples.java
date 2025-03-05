@@ -13,8 +13,7 @@ import com.azure.resourcemanager.botservice.models.SiteInfo;
  */
 public final class DirectLineRegenerateKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
+     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
      * DirectlineRegenerateKeys.json
      */
     /**
@@ -32,8 +31,8 @@ public final class DirectLineRegenerateKeysSamples {
 
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
-     * WebChatRegenerateKeys.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/WebChatRegenerateKeys.
+     * json
      */
     /**
      * Sample code: Regenerate Keys for WebChat Channel Site.

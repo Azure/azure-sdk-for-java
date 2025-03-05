@@ -5,66 +5,61 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The updatable properties of the FirewallResource.
  */
 @Fluent
-public final class FirewallResourceUpdateProperties {
+public final class FirewallResourceUpdateProperties implements JsonSerializable<FirewallResourceUpdateProperties> {
     /*
      * panEtag info
      */
-    @JsonProperty(value = "panEtag")
     private String panEtag;
 
     /*
      * Network settings
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * Panorama Managed: Default is False. Default will be CloudSec managed
      */
-    @JsonProperty(value = "isPanoramaManaged")
     private BooleanEnum isPanoramaManaged;
 
     /*
      * Panorama Configuration
      */
-    @JsonProperty(value = "panoramaConfig")
     private PanoramaConfig panoramaConfig;
 
     /*
      * Associated Rulestack
      */
-    @JsonProperty(value = "associatedRulestack")
     private RulestackDetails associatedRulestack;
 
     /*
      * DNS settings for Firewall
      */
-    @JsonProperty(value = "dnsSettings")
     private DnsSettings dnsSettings;
 
     /*
      * Frontend settings for Firewall
      */
-    @JsonProperty(value = "frontEndSettings")
     private List<FrontendSetting> frontEndSettings;
 
     /*
      * Billing plan information.
      */
-    @JsonProperty(value = "planData")
     private PlanData planData;
 
     /*
      * Marketplace details
      */
-    @JsonProperty(value = "marketplaceDetails")
     private MarketplaceDetails marketplaceDetails;
 
     /**
@@ -280,5 +275,73 @@ public final class FirewallResourceUpdateProperties {
         if (marketplaceDetails() != null) {
             marketplaceDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("panEtag", this.panEtag);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeStringField("isPanoramaManaged",
+            this.isPanoramaManaged == null ? null : this.isPanoramaManaged.toString());
+        jsonWriter.writeJsonField("panoramaConfig", this.panoramaConfig);
+        jsonWriter.writeJsonField("associatedRulestack", this.associatedRulestack);
+        jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
+        jsonWriter.writeArrayField("frontEndSettings", this.frontEndSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("planData", this.planData);
+        jsonWriter.writeJsonField("marketplaceDetails", this.marketplaceDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallResourceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallResourceUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallResourceUpdateProperties.
+     */
+    public static FirewallResourceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallResourceUpdateProperties deserializedFirewallResourceUpdateProperties
+                = new FirewallResourceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("panEtag".equals(fieldName)) {
+                    deserializedFirewallResourceUpdateProperties.panEtag = reader.getString();
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedFirewallResourceUpdateProperties.networkProfile = NetworkProfile.fromJson(reader);
+                } else if ("isPanoramaManaged".equals(fieldName)) {
+                    deserializedFirewallResourceUpdateProperties.isPanoramaManaged
+                        = BooleanEnum.fromString(reader.getString());
+                } else if ("panoramaConfig".equals(fieldName)) {
+                    deserializedFirewallResourceUpdateProperties.panoramaConfig = PanoramaConfig.fromJson(reader);
+                } else if ("associatedRulestack".equals(fieldName)) {
+                    deserializedFirewallResourceUpdateProperties.associatedRulestack
+                        = RulestackDetails.fromJson(reader);
+                } else if ("dnsSettings".equals(fieldName)) {
+                    deserializedFirewallResourceUpdateProperties.dnsSettings = DnsSettings.fromJson(reader);
+                } else if ("frontEndSettings".equals(fieldName)) {
+                    List<FrontendSetting> frontEndSettings
+                        = reader.readArray(reader1 -> FrontendSetting.fromJson(reader1));
+                    deserializedFirewallResourceUpdateProperties.frontEndSettings = frontEndSettings;
+                } else if ("planData".equals(fieldName)) {
+                    deserializedFirewallResourceUpdateProperties.planData = PlanData.fromJson(reader);
+                } else if ("marketplaceDetails".equals(fieldName)) {
+                    deserializedFirewallResourceUpdateProperties.marketplaceDetails
+                        = MarketplaceDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallResourceUpdateProperties;
+        });
     }
 }

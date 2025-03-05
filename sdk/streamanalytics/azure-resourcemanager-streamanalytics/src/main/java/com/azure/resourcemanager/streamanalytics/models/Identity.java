@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Describes how identity is verified.
@@ -18,24 +17,19 @@ import java.util.Map;
 @Fluent
 public final class Identity implements JsonSerializable<Identity> {
     /*
-     * The tenantId of the identity.
+     * The identity tenantId
      */
     private String tenantId;
 
     /*
-     * The principalId of the identity.
+     * The identity principal ID
      */
     private String principalId;
 
     /*
-     * The type of identity, can be SystemAssigned or UserAssigned.
+     * The identity type
      */
     private String type;
-
-    /*
-     * The user assigned identities associated with the streaming job resource.
-     */
-    private Map<String, Object> userAssignedIdentities;
 
     /**
      * Creates an instance of Identity class.
@@ -44,7 +38,7 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the tenantId property: The tenantId of the identity.
+     * Get the tenantId property: The identity tenantId.
      * 
      * @return the tenantId value.
      */
@@ -53,7 +47,7 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the principalId property: The principalId of the identity.
+     * Get the principalId property: The identity principal ID.
      * 
      * @return the principalId value.
      */
@@ -62,7 +56,7 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the type property: The type of identity, can be SystemAssigned or UserAssigned.
+     * Get the type property: The identity type.
      * 
      * @return the type value.
      */
@@ -71,33 +65,13 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Set the type property: The type of identity, can be SystemAssigned or UserAssigned.
+     * Set the type property: The identity type.
      * 
      * @param type the type value to set.
      * @return the Identity object itself.
      */
     public Identity withType(String type) {
         this.type = type;
-        return this;
-    }
-
-    /**
-     * Get the userAssignedIdentities property: The user assigned identities associated with the streaming job resource.
-     * 
-     * @return the userAssignedIdentities value.
-     */
-    public Map<String, Object> userAssignedIdentities() {
-        return this.userAssignedIdentities;
-    }
-
-    /**
-     * Set the userAssignedIdentities property: The user assigned identities associated with the streaming job resource.
-     * 
-     * @param userAssignedIdentities the userAssignedIdentities value to set.
-     * @return the Identity object itself.
-     */
-    public Identity withUserAssignedIdentities(Map<String, Object> userAssignedIdentities) {
-        this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
@@ -116,8 +90,6 @@ public final class Identity implements JsonSerializable<Identity> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
-            (writer, element) -> writer.writeUntyped(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -142,9 +114,6 @@ public final class Identity implements JsonSerializable<Identity> {
                     deserializedIdentity.principalId = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedIdentity.type = reader.getString();
-                } else if ("userAssignedIdentities".equals(fieldName)) {
-                    Map<String, Object> userAssignedIdentities = reader.readMap(reader1 -> reader1.readUntyped());
-                    deserializedIdentity.userAssignedIdentities = userAssignedIdentities;
                 } else {
                     reader.skipChildren();
                 }

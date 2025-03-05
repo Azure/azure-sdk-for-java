@@ -12,7 +12,7 @@ import com.azure.resourcemanager.streamanalytics.models.ScaleStreamingJobParamet
 public final class StreamingJobsScaleSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Scale.json
      */
     /**
@@ -22,7 +22,7 @@ public final class StreamingJobsScaleSamples {
      */
     public static void scaleAStreamingJob(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         manager.streamingJobs()
-            .scale("sjrg", "sjName", new ScaleStreamingJobParameters().withStreamingUnits(36),
+            .scale("sjrg6936", "sj59", new ScaleStreamingJobParameters().withStreamingUnits(36),
                 com.azure.core.util.Context.NONE);
     }
 }

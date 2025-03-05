@@ -744,8 +744,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [radiology_insights_docs]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/overview
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
-[cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[cognitive_resource_cli]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [radiology_insights_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/main/java/com/azure/health/insights/radiologyinsights/RadiologyInsightsClient.java
 [ri_sync_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleCriticalResultInferenceSync.java
 [ri_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleCriticalResultInferenceAsync.java

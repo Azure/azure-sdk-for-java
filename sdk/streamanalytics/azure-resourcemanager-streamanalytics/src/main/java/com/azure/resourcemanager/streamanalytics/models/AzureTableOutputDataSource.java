@@ -50,7 +50,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private AzureTableOutputDataSourceProperties innerProperties() {
+    AzureTableOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

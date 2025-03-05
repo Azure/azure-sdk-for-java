@@ -15,22 +15,22 @@ public final class AwsCloudTrailDataConnectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AwsCloudTrailDataConnector model = BinaryData.fromString(
-            "{\"kind\":\"AmazonWebServicesCloudTrail\",\"properties\":{\"awsRoleArn\":\"lkv\",\"dataTypes\":{\"logs\":{\"state\":\"Disabled\"}}},\"etag\":\"kyjtkakvl\",\"id\":\"shjvpzaptuoskaoi\",\"name\":\"jixwfgc\",\"type\":\"i\"}")
+            "{\"kind\":\"AmazonWebServicesCloudTrail\",\"properties\":{\"awsRoleArn\":\"dlyjdf\",\"dataTypes\":{\"logs\":{\"state\":\"Disabled\"}}},\"etag\":\"qufdvruzslzojh\",\"id\":\"tfnmdx\",\"name\":\"tngfdgugeyzihgr\",\"type\":\"yui\"}")
             .toObject(AwsCloudTrailDataConnector.class);
-        Assertions.assertEquals("kyjtkakvl", model.etag());
-        Assertions.assertEquals("lkv", model.awsRoleArn());
+        Assertions.assertEquals("qufdvruzslzojh", model.etag());
+        Assertions.assertEquals("dlyjdf", model.awsRoleArn());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().logs().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AwsCloudTrailDataConnector model = new AwsCloudTrailDataConnector().withEtag("kyjtkakvl")
-            .withAwsRoleArn("lkv")
+        AwsCloudTrailDataConnector model = new AwsCloudTrailDataConnector().withEtag("qufdvruzslzojh")
+            .withAwsRoleArn("dlyjdf")
             .withDataTypes(new AwsCloudTrailDataConnectorDataTypes()
                 .withLogs(new AwsCloudTrailDataConnectorDataTypesLogs().withState(DataTypeState.DISABLED)));
         model = BinaryData.fromObject(model).toObject(AwsCloudTrailDataConnector.class);
-        Assertions.assertEquals("kyjtkakvl", model.etag());
-        Assertions.assertEquals("lkv", model.awsRoleArn());
+        Assertions.assertEquals("qufdvruzslzojh", model.etag());
+        Assertions.assertEquals("dlyjdf", model.awsRoleArn());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().logs().state());
     }
 }

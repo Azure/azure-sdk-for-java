@@ -12,24 +12,24 @@ public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationDisplay model = BinaryData.fromString(
-            "{\"description\":\"bqxvhcsyhzlwxae\",\"operation\":\"vurex\",\"provider\":\"d\",\"resource\":\"dwead\"}")
+            "{\"description\":\"ltfnhtbaxkgx\",\"operation\":\"rc\",\"provider\":\"yklyhpluodpvruud\",\"resource\":\"zibt\"}")
             .toObject(OperationDisplay.class);
-        Assertions.assertEquals("bqxvhcsyhzlwxae", model.description());
-        Assertions.assertEquals("vurex", model.operation());
-        Assertions.assertEquals("d", model.provider());
-        Assertions.assertEquals("dwead", model.resource());
+        Assertions.assertEquals("ltfnhtbaxkgx", model.description());
+        Assertions.assertEquals("rc", model.operation());
+        Assertions.assertEquals("yklyhpluodpvruud", model.provider());
+        Assertions.assertEquals("zibt", model.resource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationDisplay model = new OperationDisplay().withDescription("bqxvhcsyhzlwxae")
-            .withOperation("vurex")
-            .withProvider("d")
-            .withResource("dwead");
+        OperationDisplay model = new OperationDisplay().withDescription("ltfnhtbaxkgx")
+            .withOperation("rc")
+            .withProvider("yklyhpluodpvruud")
+            .withResource("zibt");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("bqxvhcsyhzlwxae", model.description());
-        Assertions.assertEquals("vurex", model.operation());
-        Assertions.assertEquals("d", model.provider());
-        Assertions.assertEquals("dwead", model.resource());
+        Assertions.assertEquals("ltfnhtbaxkgx", model.description());
+        Assertions.assertEquals("rc", model.operation());
+        Assertions.assertEquals("yklyhpluodpvruud", model.provider());
+        Assertions.assertEquals("zibt", model.resource());
     }
 }

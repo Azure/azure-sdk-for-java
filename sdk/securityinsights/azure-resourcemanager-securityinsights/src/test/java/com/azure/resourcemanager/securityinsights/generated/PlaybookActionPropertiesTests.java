@@ -13,18 +13,18 @@ public final class PlaybookActionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaybookActionProperties model = BinaryData
-            .fromString("{\"logicAppResourceId\":\"eoxinhgre\",\"tenantId\":\"7a5639f0-d8aa-4afe-bc72-240bb426f5c0\"}")
+            .fromString("{\"logicAppResourceId\":\"v\",\"tenantId\":\"47ec73ff-0a55-4f22-8db8-cbf311a170e2\"}")
             .toObject(PlaybookActionProperties.class);
-        Assertions.assertEquals("eoxinhgre", model.logicAppResourceId());
-        Assertions.assertEquals(UUID.fromString("7a5639f0-d8aa-4afe-bc72-240bb426f5c0"), model.tenantId());
+        Assertions.assertEquals("v", model.logicAppResourceId());
+        Assertions.assertEquals(UUID.fromString("47ec73ff-0a55-4f22-8db8-cbf311a170e2"), model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlaybookActionProperties model = new PlaybookActionProperties().withLogicAppResourceId("eoxinhgre")
-            .withTenantId(UUID.fromString("7a5639f0-d8aa-4afe-bc72-240bb426f5c0"));
+        PlaybookActionProperties model = new PlaybookActionProperties().withLogicAppResourceId("v")
+            .withTenantId(UUID.fromString("47ec73ff-0a55-4f22-8db8-cbf311a170e2"));
         model = BinaryData.fromObject(model).toObject(PlaybookActionProperties.class);
-        Assertions.assertEquals("eoxinhgre", model.logicAppResourceId());
-        Assertions.assertEquals(UUID.fromString("7a5639f0-d8aa-4afe-bc72-240bb426f5c0"), model.tenantId());
+        Assertions.assertEquals("v", model.logicAppResourceId());
+        Assertions.assertEquals(UUID.fromString("47ec73ff-0a55-4f22-8db8-cbf311a170e2"), model.tenantId());
     }
 }

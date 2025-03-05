@@ -47,7 +47,7 @@ public final class JavaScriptFunctionBinding extends FunctionBinding {
      * 
      * @return the innerProperties value.
      */
-    private JavaScriptFunctionBindingProperties innerProperties() {
+    JavaScriptFunctionBindingProperties innerProperties() {
         return this.innerProperties;
     }
 

@@ -13,13 +13,25 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 @Fluent()
 public interface Route extends HasInnerModel<RouteInner>, ChildResource<RouteTable> {
 
-    /** @return the destination address prefix, expressed using the CIDR notation, to which the route applies */
+    /**
+     * Gets the destination address prefix.
+     *
+     * @return the destination address prefix, expressed using the CIDR notation, to which the route applies
+     */
     String destinationAddressPrefix();
 
-    /** @return the type of the next hop */
+    /**
+     * Gets the type of the next hop.
+     *
+     * @return the type of the next hop
+     */
     RouteNextHopType nextHopType();
 
-    /** @return the IP address of the next hop */
+    /**
+     * Gets the IP address of the next hop.
+     *
+     * @return the IP address of the next hop
+     */
     String nextHopIpAddress();
 
     // Grouping of route definition stages

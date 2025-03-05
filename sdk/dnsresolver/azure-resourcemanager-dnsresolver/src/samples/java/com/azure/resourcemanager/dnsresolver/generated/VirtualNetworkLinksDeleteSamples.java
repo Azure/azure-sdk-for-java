@@ -10,8 +10,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 public final class VirtualNetworkLinksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
-     * VirtualNetworkLink_Delete.json
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Delete
+     * .json
      */
     /**
      * Sample code: Delete virtual network link to a DNS forwarding ruleset.

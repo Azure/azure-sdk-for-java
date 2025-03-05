@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterInner;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -67,11 +68,42 @@ public interface Cluster {
     String etag();
 
     /**
-     * Gets the properties property: The properties associated with a Stream Analytics cluster.
+     * Gets the createdDate property: The date this cluster was created.
      * 
-     * @return the properties value.
+     * @return the createdDate value.
      */
-    ClusterProperties properties();
+    OffsetDateTime createdDate();
+
+    /**
+     * Gets the clusterId property: Unique identifier for the cluster.
+     * 
+     * @return the clusterId value.
+     */
+    String clusterId();
+
+    /**
+     * Gets the provisioningState property: The status of the cluster provisioning. The three terminal states are:
+     * Succeeded, Failed and Canceled.
+     * 
+     * @return the provisioningState value.
+     */
+    ClusterProvisioningState provisioningState();
+
+    /**
+     * Gets the capacityAllocated property: Represents the number of streaming units currently being used on the
+     * cluster.
+     * 
+     * @return the capacityAllocated value.
+     */
+    Integer capacityAllocated();
+
+    /**
+     * Gets the capacityAssigned property: Represents the sum of the SUs of all streaming jobs associated with the
+     * cluster. If all of the jobs were running, this would be the capacity allocated.
+     * 
+     * @return the capacityAssigned value.
+     */
+    Integer capacityAssigned();
 
     /**
      * Gets the region of the resource.
@@ -156,8 +188,8 @@ public interface Cluster {
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku,
-            DefinitionStages.WithProperties, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku, DefinitionStages.WithIfMatch,
+            DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -203,19 +235,6 @@ public interface Cluster {
         }
 
         /**
-         * The stage of the Cluster definition allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The properties associated with a Stream Analytics cluster..
-             * 
-             * @param properties The properties associated with a Stream Analytics cluster.
-             * @return the next definition stage.
-             */
-            WithCreate withProperties(ClusterProperties properties);
-        }
-
-        /**
          * The stage of the Cluster definition allowing to specify ifMatch.
          */
         interface WithIfMatch {
@@ -256,8 +275,7 @@ public interface Cluster {
     /**
      * The template for Cluster update.
      */
-    interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithProperties, UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -304,19 +322,6 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withSku(ClusterSku sku);
-        }
-
-        /**
-         * The stage of the Cluster update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The properties associated with a Stream Analytics cluster..
-             * 
-             * @param properties The properties associated with a Stream Analytics cluster.
-             * @return the next definition stage.
-             */
-            Update withProperties(ClusterProperties properties);
         }
 
         /**

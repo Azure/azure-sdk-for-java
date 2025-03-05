@@ -16,64 +16,115 @@ import java.util.Set;
 @Fluent
 public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, ChildResource<NetworkSecurityGroup> {
 
-    /** @return the direction of the network traffic that the network security rule applies to. */
+    /**
+     * Gets the direction of the network traffic that the network security rule applies to.
+     *
+     * @return the direction of the network traffic that the network security rule applies to.
+     */
     SecurityRuleDirection direction();
 
-    /** @return the network protocol the rule applies to */
+    /**
+     * Gets the network protocol the rule applies to.
+     *
+     * @return the network protocol the rule applies to
+     */
     SecurityRuleProtocol protocol();
 
-    /** @return the user-defined description of the security rule */
+    /**
+     * Gets the user-defined description of the security rule.
+     *
+     * @return the user-defined description of the security rule
+     */
     String description();
 
-    /** @return the type of access the rule enforces */
+    /**
+     * Gets the type of access the rule enforces.
+     *
+     * @return the type of access the rule enforces
+     */
     SecurityRuleAccess access();
 
     /**
+     * Gets the source address prefix the rule applies to.
+     *
      * @return the source address prefix the rule applies to, expressed using the CIDR notation in the format:
      *     "###.###.###.###/##", and "*" means "any"
      */
     String sourceAddressPrefix();
 
     /**
+     * Gets the list of source address prefixes the rule applies to.
+     *
      * @return the list of source address prefixes the rule applies to, expressed using the CIDR notation in the format:
      *     "###.###.###.###/##", and "*" means "any", or IP addresses
      */
     List<String> sourceAddressPrefixes();
 
-    /** @return the source port range that the rule applies to, in the format "##-##", where "*" means "any" */
+    /**
+     * Gets the source port range that the rule applies to.
+     *
+     * @return the source port range that the rule applies to, in the format "##-##", where "*" means "any"
+     */
     String sourcePortRange();
 
-    /** @return the source port ranges that the rule applies to, in the format "##-##", where "*" means "any" */
+    /**
+     * Gets the source port ranges that the rule applies to.
+     *
+     * @return the source port ranges that the rule applies to, in the format "##-##", where "*" means "any"
+     */
     List<String> sourcePortRanges();
 
     /**
+     * Gets the destination address prefix the rule applies to.
+     *
      * @return the destination address prefix the rule applies to, expressed using the CIDR notation in the format:
      *     "###.###.###.###/##", and "*" means "any"
      */
     String destinationAddressPrefix();
 
     /**
+     * Gets the list of destination address prefixes the rule applies to.
+     *
      * @return the list of destination address prefixes the rule applies to, expressed using the CIDR notation in the
      *     format: "###.###.###.###/##", and "*" means "any", or IP addresses
      */
     List<String> destinationAddressPrefixes();
 
-    /** @return the destination port range that the rule applies to, in the format "##-##", where "*" means any */
+    /**
+     * Gets the destination port range that the rule applies to.
+     *
+     * @return the destination port range that the rule applies to, in the format "##-##", where "*" means any
+     */
     String destinationPortRange();
 
-    /** @return the destination port ranges that the rule applies to, in the format "##-##", where "*" means any */
+    /**
+     * Gets the destination port ranges that the rule applies to.
+     *
+     * @return the destination port ranges that the rule applies to, in the format "##-##", where "*" means any
+     */
     List<String> destinationPortRanges();
 
     /**
+     * Gets the priority number of this rule based on which this rule will be applied relative to the priority
+     *     numbers of any other rules specified for this network security group.
+     *
      * @return the priority number of this rule based on which this rule will be applied relative to the priority
      *     numbers of any other rules specified for this network security group
      */
     int priority();
 
-    /** @return list of application security group ids specified as source */
+    /**
+     * Gets list of application security group ids specified as source.
+     *
+     * @return list of application security group ids specified as source
+     */
     Set<String> sourceApplicationSecurityGroupIds();
 
-    /** @return list of application security group ids specified as destination */
+    /**
+     * Gets list of application security group ids specified as destination.
+     *
+     * @return list of application security group ids specified as destination
+     */
     Set<String> destinationApplicationSecurityGroupIds();
 
     /**

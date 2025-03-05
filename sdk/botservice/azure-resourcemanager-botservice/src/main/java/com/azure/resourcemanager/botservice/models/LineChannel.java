@@ -25,11 +25,6 @@ public final class LineChannel extends Channel {
      */
     private LineChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of LineChannel class.
      */
@@ -64,16 +59,6 @@ public final class LineChannel extends Channel {
     public LineChannel withProperties(LineChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class LineChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedLineChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedLineChannel.provisioningState = reader.getString();
+                    deserializedLineChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedLineChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

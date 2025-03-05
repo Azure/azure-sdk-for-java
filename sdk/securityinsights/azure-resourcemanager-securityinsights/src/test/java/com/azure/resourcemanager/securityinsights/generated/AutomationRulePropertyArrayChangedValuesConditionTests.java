@@ -14,9 +14,9 @@ public final class AutomationRulePropertyArrayChangedValuesConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationRulePropertyArrayChangedValuesCondition model
-            = BinaryData.fromString("{\"arrayType\":\"Alerts\",\"changeType\":\"Added\"}")
+            = BinaryData.fromString("{\"arrayType\":\"Comments\",\"changeType\":\"Added\"}")
                 .toObject(AutomationRulePropertyArrayChangedValuesCondition.class);
-        Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedArrayType.ALERTS,
+        Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedArrayType.COMMENTS,
             model.arrayType());
         Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedChangeType.ADDED,
             model.changeType());
@@ -26,10 +26,10 @@ public final class AutomationRulePropertyArrayChangedValuesConditionTests {
     public void testSerialize() throws Exception {
         AutomationRulePropertyArrayChangedValuesCondition model
             = new AutomationRulePropertyArrayChangedValuesCondition()
-                .withArrayType(AutomationRulePropertyArrayChangedConditionSupportedArrayType.ALERTS)
+                .withArrayType(AutomationRulePropertyArrayChangedConditionSupportedArrayType.COMMENTS)
                 .withChangeType(AutomationRulePropertyArrayChangedConditionSupportedChangeType.ADDED);
         model = BinaryData.fromObject(model).toObject(AutomationRulePropertyArrayChangedValuesCondition.class);
-        Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedArrayType.ALERTS,
+        Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedArrayType.COMMENTS,
             model.arrayType());
         Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedChangeType.ADDED,
             model.changeType());

@@ -22,7 +22,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"fhir\",\"isDataAction\":true,\"display\":{\"provider\":\"xoftpipiwyczu\",\"resource\":\"a\",\"operation\":\"qjlihhyuspska\",\"description\":\"vlmfwdgzxulucv\"}}]}";
+            = "{\"value\":[{\"name\":\"eaivxwczel\",\"isDataAction\":false,\"display\":{\"provider\":\"lsfeaenwabfatkld\",\"resource\":\"bjhwuaan\",\"operation\":\"jos\",\"description\":\"youlp\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,6 +33,6 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(true, response.iterator().next().isDataAction());
+        Assertions.assertEquals(false, response.iterator().next().isDataAction());
     }
 }

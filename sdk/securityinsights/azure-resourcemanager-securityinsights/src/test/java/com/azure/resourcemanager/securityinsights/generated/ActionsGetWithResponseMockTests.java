@@ -21,7 +21,7 @@ public final class ActionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"workflowId\":\"nlzuvigvlghf\",\"logicAppResourceId\":\"bzakp\"},\"etag\":\"cqra\",\"id\":\"ojpsucm\",\"name\":\"imcwqxynqjgsa\",\"type\":\"kyvscbgngcrus\"}";
+            = "{\"etag\":\"zyvneezaifghtmo\",\"properties\":{\"workflowId\":\"lffhz\",\"logicAppResourceId\":\"krkjjjavf\"},\"id\":\"vhnqo\",\"name\":\"wdogiyetesyp\",\"type\":\"idbz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,11 @@ public final class ActionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ActionResponse response = manager.actions()
-            .getWithResponse("nqnxhgkordwzej", "ecwzvcmbpwdluda", "prldidwm", "ffbvtzldzchub",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("k", "ctwwgzw", "jlmec", "og", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cqra", response.etag());
-        Assertions.assertEquals("nlzuvigvlghf", response.workflowId());
-        Assertions.assertEquals("bzakp", response.logicAppResourceId());
+        Assertions.assertEquals("zyvneezaifghtmo", response.etag());
+        Assertions.assertEquals("lffhz", response.workflowId());
+        Assertions.assertEquals("krkjjjavf", response.logicAppResourceId());
     }
 }

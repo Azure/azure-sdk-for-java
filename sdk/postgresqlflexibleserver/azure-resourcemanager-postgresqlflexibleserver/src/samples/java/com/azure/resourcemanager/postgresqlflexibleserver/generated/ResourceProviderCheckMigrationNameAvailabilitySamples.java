@@ -12,7 +12,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.Migratio
 public final class ResourceProviderCheckMigrationNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * CheckMigrationNameAvailability.json
      */
     /**

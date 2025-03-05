@@ -10,8 +10,6 @@ import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistItemInn
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
 import com.azure.resourcemanager.securityinsights.models.WatchlistItem;
 import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.Map;
 
 public final class WatchlistItemImpl implements WatchlistItem, WatchlistItem.Definition, WatchlistItem.Update {
     private WatchlistItemInner innerObject;
@@ -70,22 +68,12 @@ public final class WatchlistItemImpl implements WatchlistItem, WatchlistItem.Def
         return this.innerModel().updatedBy();
     }
 
-    public Map<String, Object> itemsKeyValue() {
-        Map<String, Object> inner = this.innerModel().itemsKeyValue();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
+    public Object itemsKeyValue() {
+        return this.innerModel().itemsKeyValue();
     }
 
-    public Map<String, Object> entityMapping() {
-        Map<String, Object> inner = this.innerModel().entityMapping();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
+    public Object entityMapping() {
+        return this.innerModel().entityMapping();
     }
 
     public String resourceGroupName() {
@@ -233,12 +221,12 @@ public final class WatchlistItemImpl implements WatchlistItem, WatchlistItem.Def
         return this;
     }
 
-    public WatchlistItemImpl withItemsKeyValue(Map<String, Object> itemsKeyValue) {
+    public WatchlistItemImpl withItemsKeyValue(Object itemsKeyValue) {
         this.innerModel().withItemsKeyValue(itemsKeyValue);
         return this;
     }
 
-    public WatchlistItemImpl withEntityMapping(Map<String, Object> entityMapping) {
+    public WatchlistItemImpl withEntityMapping(Object entityMapping) {
         this.innerModel().withEntityMapping(entityMapping);
         return this;
     }

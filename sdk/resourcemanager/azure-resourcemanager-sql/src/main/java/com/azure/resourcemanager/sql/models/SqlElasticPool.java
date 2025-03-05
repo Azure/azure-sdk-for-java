@@ -25,45 +25,97 @@ import java.util.List;
 public interface SqlElasticPool extends ExternalChildResource<SqlElasticPool, SqlServer>,
     HasInnerModel<ElasticPoolInner>, HasResourceGroup, Refreshable<SqlElasticPool>, Updatable<SqlElasticPool.Update> {
 
-    /** @return name of the SQL Server to which this elastic pool belongs */
+    /**
+     * Gets name of the SQL Server to which this elastic pool belongs.
+     *
+     * @return name of the SQL Server to which this elastic pool belongs
+     */
     String sqlServerName();
 
-    /** @return the creation date of the Azure SQL Elastic Pool */
+    /**
+     * Gets the creation date of the Azure SQL Elastic Pool.
+     *
+     * @return the creation date of the Azure SQL Elastic Pool
+     */
     OffsetDateTime creationDate();
 
-    /** @return the state of the Azure SQL Elastic Pool */
+    /**
+     * Gets the state of the Azure SQL Elastic Pool.
+     *
+     * @return the state of the Azure SQL Elastic Pool
+     */
     ElasticPoolState state();
 
-    /** @return the edition of Azure SQL Elastic Pool */
+    /**
+     * Gets the edition of Azure SQL Elastic Pool.
+     *
+     * @return the edition of Azure SQL Elastic Pool
+     */
     ElasticPoolEdition edition();
 
-    /** @return The total shared DTU for the SQL Azure Database Elastic Pool */
+    /**
+     * Gets the total shared DTU for the SQL Azure Database Elastic Pool.
+     *
+     * @return The total shared DTU for the SQL Azure Database Elastic Pool
+     */
     int dtu();
 
-    /** @return the maximum DTU any one SQL Azure database can consume. */
+    /**
+     * Gets the maximum DTU any one SQL Azure database can consume.
+     *
+     * @return the maximum DTU any one SQL Azure database can consume.
+     */
     Double databaseDtuMax();
 
-    /** @return the minimum DTU all SQL Azure Databases are guaranteed */
+    /**
+     * Gets the minimum DTU all SQL Azure Databases are guaranteed.
+     *
+     * @return the minimum DTU all SQL Azure Databases are guaranteed
+     */
     Double databaseDtuMin();
 
-    /** @return the storage capacity limit for the SQL Azure Database Elastic Pool in Bytes */
+    /**
+     * Gets the storage capacity limit for the SQL Azure Database Elastic Pool in Bytes.
+     *
+     * @return the storage capacity limit for the SQL Azure Database Elastic Pool in Bytes
+     */
     Long storageCapacity();
 
-    /** @return the parent SQL server ID */
+    /**
+     * Gets the parent SQL server ID.
+     *
+     * @return the parent SQL server ID
+     */
     String parentId();
 
-    /** @return the name of the region the resource is in */
+    /**
+     * Gets the name of the region the resource is in.
+     *
+     * @return the name of the region the resource is in
+     */
     String regionName();
 
-    /** @return the region the resource is in */
+    /**
+     * Gets the region the resource is in.
+     *
+     * @return the region the resource is in
+     */
     Region region();
 
     // Actions
 
-    /** @return the information about elastic pool activities */
+    /**
+     * Gets the information about elastic pool activities.
+     *
+     * @return the information about elastic pool activities
+     */
     List<ElasticPoolActivity> listActivities();
 
-    /** @return a representation of the deferred computation of the information about elastic pool activities */
+    /**
+     * Gets a representation of the deferred computation of the information about elastic pool activities.
+     *
+     * @return a representation of the deferred computation of the information about elastic pool activities
+     */
     PagedFlux<ElasticPoolActivity> listActivitiesAsync();
 
     /**

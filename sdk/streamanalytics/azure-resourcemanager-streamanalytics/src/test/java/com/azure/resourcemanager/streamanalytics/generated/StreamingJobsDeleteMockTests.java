@@ -27,7 +27,7 @@ public final class StreamingJobsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.streamingJobs().delete("amrsreuzv", "urisjnhnytxifqj", com.azure.core.util.Context.NONE);
+        manager.streamingJobs().delete("rvxaglrvimjwosy", "xitc", com.azure.core.util.Context.NONE);
 
     }
 }

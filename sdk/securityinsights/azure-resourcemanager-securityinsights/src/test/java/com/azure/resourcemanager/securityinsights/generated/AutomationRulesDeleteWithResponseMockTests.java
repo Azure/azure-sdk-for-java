@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 public final class AutomationRulesDeleteWithResponseMockTests {
     @Test
     public void testDeleteWithResponse() throws Exception {
-        String responseStr = "\"dataerxlobk\"";
+        String responseStr = "\"datajpnnbmjksibjgsj\"";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -28,7 +28,7 @@ public final class AutomationRulesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Object response = manager.automationRules()
-            .deleteWithResponse("zzmrgtxdhmfpp", "nmgikesmkw", "zgfragjh", com.azure.core.util.Context.NONE)
+            .deleteWithResponse("t", "ormkfqlwxldyk", "lsygaol", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

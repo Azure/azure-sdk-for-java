@@ -15,20 +15,20 @@ public final class AscDataConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AscDataConnectorProperties model
-            = BinaryData.fromString("{\"subscriptionId\":\"xwr\",\"dataTypes\":{\"alerts\":{\"state\":\"Disabled\"}}}")
+            = BinaryData.fromString("{\"subscriptionId\":\"z\",\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}}}")
                 .toObject(AscDataConnectorProperties.class);
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().alerts().state());
-        Assertions.assertEquals("xwr", model.subscriptionId());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
+        Assertions.assertEquals("z", model.subscriptionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AscDataConnectorProperties model = new AscDataConnectorProperties()
             .withDataTypes(new AlertsDataTypeOfDataConnector()
-                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.DISABLED)))
-            .withSubscriptionId("xwr");
+                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)))
+            .withSubscriptionId("z");
         model = BinaryData.fromObject(model).toObject(AscDataConnectorProperties.class);
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().alerts().state());
-        Assertions.assertEquals("xwr", model.subscriptionId());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
+        Assertions.assertEquals("z", model.subscriptionId());
     }
 }

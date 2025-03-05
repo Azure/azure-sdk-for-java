@@ -27,7 +27,7 @@ public final class DnsResolversDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.dnsResolvers().delete("mwmbes", "dnkwwtppjflcxog", "okonzmnsikvmkqz", com.azure.core.util.Context.NONE);
+        manager.dnsResolvers().delete("k", "nxdhbt", "kphywpnvjto", com.azure.core.util.Context.NONE);
 
     }
 }

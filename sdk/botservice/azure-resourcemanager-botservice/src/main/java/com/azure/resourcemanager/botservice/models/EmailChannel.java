@@ -25,11 +25,6 @@ public final class EmailChannel extends Channel {
      */
     private EmailChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of EmailChannel class.
      */
@@ -64,16 +59,6 @@ public final class EmailChannel extends Channel {
     public EmailChannel withProperties(EmailChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class EmailChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedEmailChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedEmailChannel.provisioningState = reader.getString();
+                    deserializedEmailChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedEmailChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

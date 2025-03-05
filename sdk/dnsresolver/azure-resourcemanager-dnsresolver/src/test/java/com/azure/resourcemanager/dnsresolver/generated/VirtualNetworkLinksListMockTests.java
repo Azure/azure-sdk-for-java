@@ -22,7 +22,7 @@ public final class VirtualNetworkLinksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"ujviylwdshfs\",\"properties\":{\"virtualNetwork\":{\"id\":\"rbgyefry\"},\"metadata\":{\"nc\":\"aojfm\",\"hirctymoxoftpipi\":\"tmr\"},\"provisioningState\":\"Creating\"},\"id\":\"uh\",\"name\":\"a\",\"type\":\"pqjlihhyusps\"}]}";
+            = "{\"value\":[{\"etag\":\"vtldgmfpgvmpip\",\"properties\":{\"virtualNetwork\":{\"id\":\"ltha\"},\"metadata\":{\"wutwbdsre\":\"ss\"},\"provisioningState\":\"Succeeded\"},\"id\":\"hneuyowqkd\",\"name\":\"ytisibir\",\"type\":\"gpikpzimejza\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class VirtualNetworkLinksListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<VirtualNetworkLink> response
-            = manager.virtualNetworkLinks().list("rujbzbomvzzbtdc", "vp", 1569127875, com.azure.core.util.Context.NONE);
+            = manager.virtualNetworkLinks().list("bizikayuhq", "bjbsybb", 549914749, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rbgyefry", response.iterator().next().virtualNetwork().id());
-        Assertions.assertEquals("aojfm", response.iterator().next().metadata().get("nc"));
+        Assertions.assertEquals("ltha", response.iterator().next().virtualNetwork().id());
+        Assertions.assertEquals("ss", response.iterator().next().metadata().get("wutwbdsre"));
     }
 }

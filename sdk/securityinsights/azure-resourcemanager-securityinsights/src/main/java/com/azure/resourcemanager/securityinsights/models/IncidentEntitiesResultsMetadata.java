@@ -25,7 +25,7 @@ public final class IncidentEntitiesResultsMetadata implements JsonSerializable<I
     /*
      * The kind of the aggregated entity.
      */
-    private EntityKind entityKind;
+    private EntityKindEnum entityKind;
 
     /**
      * Creates an instance of IncidentEntitiesResultsMetadata class.
@@ -58,7 +58,7 @@ public final class IncidentEntitiesResultsMetadata implements JsonSerializable<I
      * 
      * @return the entityKind value.
      */
-    public EntityKind entityKind() {
+    public EntityKindEnum entityKind() {
         return this.entityKind;
     }
 
@@ -68,7 +68,7 @@ public final class IncidentEntitiesResultsMetadata implements JsonSerializable<I
      * @param entityKind the entityKind value to set.
      * @return the IncidentEntitiesResultsMetadata object itself.
      */
-    public IncidentEntitiesResultsMetadata withEntityKind(EntityKind entityKind) {
+    public IncidentEntitiesResultsMetadata withEntityKind(EntityKindEnum entityKind) {
         this.entityKind = entityKind;
         return this;
     }
@@ -119,7 +119,8 @@ public final class IncidentEntitiesResultsMetadata implements JsonSerializable<I
                 if ("count".equals(fieldName)) {
                     deserializedIncidentEntitiesResultsMetadata.count = reader.getInt();
                 } else if ("entityKind".equals(fieldName)) {
-                    deserializedIncidentEntitiesResultsMetadata.entityKind = EntityKind.fromString(reader.getString());
+                    deserializedIncidentEntitiesResultsMetadata.entityKind
+                        = EntityKindEnum.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

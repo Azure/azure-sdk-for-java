@@ -50,7 +50,7 @@ public final class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private AzureDataLakeStoreOutputDataSourceProperties innerProperties() {
+    AzureDataLakeStoreOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

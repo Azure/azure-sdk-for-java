@@ -11,7 +11,7 @@ public final class DnsEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsEntityProperties model = BinaryData.fromString(
-            "{\"dnsServerIpEntityId\":\"ikcedpk\",\"domainName\":\"iwm\",\"hostIpAddressEntityId\":\"mqr\",\"ipAddressEntityIds\":[\"qvvyczyay\"],\"additionalData\":{\"bxiqahragpxmibpl\":\"datag\"},\"friendlyName\":\"poyryefqmwovyzt\"}")
+            "{\"dnsServerIpEntityId\":\"jcxcjxgrytfmpcyc\",\"domainName\":\"rmcaykgg\",\"hostIpAddressEntityId\":\"xu\",\"ipAddressEntityIds\":[\"ksxwpnd\",\"cpfnznthjtwkja\",\"srxuzvoam\"],\"additionalData\":{\"os\":\"dataq\",\"ltlaprltzkatbhj\":\"datagbzahgxqdlyr\",\"gunbtgfebwlnbm\":\"dataznnbsoqeqalarvl\"},\"friendlyName\":\"reeudzqavb\"}")
             .toObject(DnsEntityProperties.class);
     }
 

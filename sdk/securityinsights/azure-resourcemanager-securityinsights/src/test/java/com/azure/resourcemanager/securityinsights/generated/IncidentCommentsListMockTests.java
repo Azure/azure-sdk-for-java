@@ -22,7 +22,7 @@ public final class IncidentCommentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdTimeUtc\":\"2021-09-10T00:27:10Z\",\"lastModifiedTimeUtc\":\"2021-08-11T02:24:35Z\",\"message\":\"cc\",\"author\":{\"email\":\"fpjmspau\",\"name\":\"qom\",\"objectId\":\"f29f7b24-525d-47a4-9f8f-c651ad352925\",\"userPrincipalName\":\"lknuyapvibzicyvi\"}},\"etag\":\"captkhjxnrkbnvf\",\"id\":\"k\",\"name\":\"z\",\"type\":\"znfgvlx\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdTimeUtc\":\"2021-11-12T06:00:22Z\",\"lastModifiedTimeUtc\":\"2021-11-20T04:49:09Z\",\"message\":\"yrqjcrga\",\"author\":{\"email\":\"z\",\"name\":\"fkb\",\"objectId\":\"bf85342e-23c3-46e5-8608-dea2e8692b16\",\"userPrincipalName\":\"orpdltbqct\"}},\"etag\":\"fg\",\"id\":\"saetgzdgvpyig\",\"name\":\"aqqilzdcduwjoed\",\"type\":\"ngucaifpaurww\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class IncidentCommentsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IncidentComment> response = manager.incidentComments()
-            .list("xayzqbyeyw", "mohnrtl", "kffydztkqrfbgy", "zfwvzdteqjmy", "xuhgkaxnypri", 284597579, "oxxjxb",
+            .list("gjyy", "pvelszerqze", "xoqeintxwalj", "lzoblqwaafr", "ulhmzyq", 2020132379, "dvaf",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("captkhjxnrkbnvf", response.iterator().next().etag());
-        Assertions.assertEquals("cc", response.iterator().next().message());
+        Assertions.assertEquals("fg", response.iterator().next().etag());
+        Assertions.assertEquals("yrqjcrga", response.iterator().next().message());
     }
 }

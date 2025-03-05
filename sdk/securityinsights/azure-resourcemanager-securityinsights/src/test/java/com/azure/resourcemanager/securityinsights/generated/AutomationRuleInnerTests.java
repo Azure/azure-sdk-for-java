@@ -19,41 +19,40 @@ public final class AutomationRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationRuleInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"nmayhuybb\",\"order\":1813280112,\"triggeringLogic\":{\"isEnabled\":true,\"expirationTimeUtc\":\"2021-04-30T05:44:17Z\",\"triggersOn\":\"Incidents\",\"triggersWhen\":\"Updated\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":895630833},{\"actionType\":\"AutomationRuleAction\",\"order\":1899394591},{\"actionType\":\"AutomationRuleAction\",\"order\":1290742637}],\"lastModifiedTimeUtc\":\"2021-09-02T14:02:48Z\",\"createdTimeUtc\":\"2021-08-22T21:04:42Z\",\"lastModifiedBy\":{\"email\":\"gnarxzxtheo\",\"name\":\"si\",\"objectId\":\"9855681c-ee23-4c63-819c-6e077902cbaa\",\"userPrincipalName\":\"v\"},\"createdBy\":{\"email\":\"qi\",\"name\":\"hungbwjzrnf\",\"objectId\":\"a5d67a67-7de6-4990-b65c-66cd0c960607\",\"userPrincipalName\":\"gispemvtzfkufubl\"}},\"etag\":\"fxqeof\",\"id\":\"e\",\"name\":\"jhqjbasvmsmjqul\",\"type\":\"gsntnbybkzgcwr\"}")
+            "{\"properties\":{\"displayName\":\"fublj\",\"order\":1488023344,\"triggeringLogic\":{\"isEnabled\":true,\"expirationTimeUtc\":\"2021-09-01T11:04:48Z\",\"triggersOn\":\"Alerts\",\"triggersWhen\":\"Created\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":1887671612}],\"lastModifiedTimeUtc\":\"2021-01-23T13:20:17Z\",\"createdTimeUtc\":\"2021-11-28T09:58Z\",\"lastModifiedBy\":{\"email\":\"s\",\"name\":\"smjqulngsntnbyb\",\"objectId\":\"38e16d6d-321d-402d-9e1a-e8ca9de546c2\",\"userPrincipalName\":\"cwrwclxxwrljdous\"},\"createdBy\":{\"email\":\"vkocrcjdkwtn\",\"name\":\"bnjbiksqrglssain\",\"objectId\":\"4c8a18d6-c9d2-4ae9-b3e2-bc30b3b2ec9e\",\"userPrincipalName\":\"wnzlljfmppeeb\"}},\"etag\":\"gxsabkyq\",\"id\":\"ujitcjcz\",\"name\":\"zevndhkrwpdappds\",\"type\":\"dkvwrwjfe\"}")
             .toObject(AutomationRuleInner.class);
-        Assertions.assertEquals("fxqeof", model.etag());
-        Assertions.assertEquals("nmayhuybb", model.displayName());
-        Assertions.assertEquals(1813280112, model.order());
+        Assertions.assertEquals("gxsabkyq", model.etag());
+        Assertions.assertEquals("fublj", model.displayName());
+        Assertions.assertEquals(1488023344, model.order());
         Assertions.assertEquals(true, model.triggeringLogic().isEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T05:44:17Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T11:04:48Z"),
             model.triggeringLogic().expirationTimeUtc());
-        Assertions.assertEquals(TriggersOn.INCIDENTS, model.triggeringLogic().triggersOn());
-        Assertions.assertEquals(TriggersWhen.UPDATED, model.triggeringLogic().triggersWhen());
-        Assertions.assertEquals(895630833, model.actions().get(0).order());
+        Assertions.assertEquals(TriggersOn.ALERTS, model.triggeringLogic().triggersOn());
+        Assertions.assertEquals(TriggersWhen.CREATED, model.triggeringLogic().triggersWhen());
+        Assertions.assertEquals(1887671612, model.actions().get(0).order());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationRuleInner model = new AutomationRuleInner().withEtag("fxqeof")
-            .withDisplayName("nmayhuybb")
-            .withOrder(1813280112)
+        AutomationRuleInner model = new AutomationRuleInner().withEtag("gxsabkyq")
+            .withDisplayName("fublj")
+            .withOrder(1488023344)
             .withTriggeringLogic(new AutomationRuleTriggeringLogic().withIsEnabled(true)
-                .withExpirationTimeUtc(OffsetDateTime.parse("2021-04-30T05:44:17Z"))
-                .withTriggersOn(TriggersOn.INCIDENTS)
-                .withTriggersWhen(TriggersWhen.UPDATED)
+                .withExpirationTimeUtc(OffsetDateTime.parse("2021-09-01T11:04:48Z"))
+                .withTriggersOn(TriggersOn.ALERTS)
+                .withTriggersWhen(TriggersWhen.CREATED)
                 .withConditions(Arrays.asList(new AutomationRuleCondition(), new AutomationRuleCondition(),
-                    new AutomationRuleCondition())))
-            .withActions(Arrays.asList(new AutomationRuleAction().withOrder(895630833),
-                new AutomationRuleAction().withOrder(1899394591), new AutomationRuleAction().withOrder(1290742637)));
+                    new AutomationRuleCondition(), new AutomationRuleCondition())))
+            .withActions(Arrays.asList(new AutomationRuleAction().withOrder(1887671612)));
         model = BinaryData.fromObject(model).toObject(AutomationRuleInner.class);
-        Assertions.assertEquals("fxqeof", model.etag());
-        Assertions.assertEquals("nmayhuybb", model.displayName());
-        Assertions.assertEquals(1813280112, model.order());
+        Assertions.assertEquals("gxsabkyq", model.etag());
+        Assertions.assertEquals("fublj", model.displayName());
+        Assertions.assertEquals(1488023344, model.order());
         Assertions.assertEquals(true, model.triggeringLogic().isEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T05:44:17Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T11:04:48Z"),
             model.triggeringLogic().expirationTimeUtc());
-        Assertions.assertEquals(TriggersOn.INCIDENTS, model.triggeringLogic().triggersOn());
-        Assertions.assertEquals(TriggersWhen.UPDATED, model.triggeringLogic().triggersWhen());
-        Assertions.assertEquals(895630833, model.actions().get(0).order());
+        Assertions.assertEquals(TriggersOn.ALERTS, model.triggeringLogic().triggersOn());
+        Assertions.assertEquals(TriggersWhen.CREATED, model.triggeringLogic().triggersWhen());
+        Assertions.assertEquals(1887671612, model.actions().get(0).order());
     }
 }

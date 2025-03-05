@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datalakestore.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,12 +15,12 @@ import java.util.UUID;
 /**
  * The encryption identity properties.
  */
-@Fluent
+@Immutable
 public final class EncryptionIdentity implements JsonSerializable<EncryptionIdentity> {
     /*
      * The type of encryption being used. Currently the only supported type is 'SystemAssigned'.
      */
-    private String type = "SystemAssigned";
+    private final String type = "SystemAssigned";
 
     /*
      * The principal identifier associated with the encryption.
@@ -45,17 +45,6 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The type of encryption being used. Currently the only supported type is 'SystemAssigned'.
-     * 
-     * @param type the type value to set.
-     * @return the EncryptionIdentity object itself.
-     */
-    public EncryptionIdentity withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.botservice.generated;
 
 import com.azure.resourcemanager.botservice.models.BotProperties;
 import com.azure.resourcemanager.botservice.models.Kind;
-import com.azure.resourcemanager.botservice.models.MsaAppType;
 import com.azure.resourcemanager.botservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.botservice.models.Sku;
 import com.azure.resourcemanager.botservice.models.SkuName;
@@ -20,7 +19,7 @@ import java.util.Map;
 public final class BotsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/CreateBot.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/CreateBot.json
      */
     /**
      * Sample code: Create Bot.
@@ -37,11 +36,7 @@ public final class BotsCreateSamples {
                 .withDescription("The description of the bot")
                 .withIconUrl("http://myicon")
                 .withEndpoint("http://mybot.coffee")
-                .withMsaAppType(MsaAppType.USER_ASSIGNED_MSI)
                 .withMsaAppId("exampleappid")
-                .withMsaAppTenantId("exampleapptenantid")
-                .withMsaAppMsiResourceId(
-                    "/subscriptions/foo/resourcegroups/bar/providers/microsoft.managedidentity/userassignedidentities/sampleId")
                 .withDeveloperAppInsightKey("fakeTokenPlaceholder")
                 .withDeveloperAppInsightsApiKey("fakeTokenPlaceholder")
                 .withDeveloperAppInsightsApplicationId("appinsightsappid")
@@ -50,7 +45,6 @@ public final class BotsCreateSamples {
                 .withIsCmekEnabled(true)
                 .withCmekKeyVaultUrl("fakeTokenPlaceholder")
                 .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                .withDisableLocalAuth(true)
                 .withSchemaTransformationVersion("1.0"))
             .withSku(new Sku().withName(SkuName.S1))
             .withKind(Kind.SDK)

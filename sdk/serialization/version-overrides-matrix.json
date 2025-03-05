@@ -1,0 +1,41 @@
+{
+  "matrix": {
+    "Agent": {
+      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+    },
+    "TestConfig": {
+      "version_override": {
+        "TestVersionSupport": true,
+        "VERSION_OVERRIDE_TESTS": true,
+        "TestGoals": "surefire:test",
+        // This has to be stringified json
+        "ArtifactsJson": "{
+          \"name\": \"azure-json-reflect\",
+          \"groupId\": \"com.azure\",
+          \"safeName\": \"azurejsonreflect\"
+        }",
+        // blank this out so we don't pick up the defaults from ci.yml
+        "AdditionalModulesJson": ""
+      }
+    },
+    "VersionOverride": [
+      "gson_2.4",
+      "gson_2.5",
+      "gson_2.6",
+      "gson_2.7",
+      "gson_2.8",
+      "gson_2.9",
+      "gson_2.10",
+      "gson_2.11",
+      "jackson_2.10",
+      "jackson_2.11",
+      "jackson_2.12",
+      "jackson_2.13",
+      "jackson_2.14",
+      "jackson_2.15",
+      "jackson_2.16",
+      "jackson_2.17",
+      "jackson_2.18"
+    ]
+  }
+}

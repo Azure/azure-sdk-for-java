@@ -15,24 +15,22 @@ public final class AutomationRulePropertyValuesConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationRulePropertyValuesCondition model = BinaryData.fromString(
-            "{\"propertyName\":\"MailMessageSubject\",\"operator\":\"NotEquals\",\"propertyValues\":[\"nctagfyvrtpqpem\",\"z\",\"gkrepdqhqyhw\"]}")
+            "{\"propertyName\":\"AccountSid\",\"operator\":\"NotEquals\",\"propertyValues\":[\"mjerbdk\",\"lvidizozs\",\"bccxjmonfdgn\",\"n\"]}")
             .toObject(AutomationRulePropertyValuesCondition.class);
-        Assertions.assertEquals(AutomationRulePropertyConditionSupportedProperty.MAIL_MESSAGE_SUBJECT,
-            model.propertyName());
+        Assertions.assertEquals(AutomationRulePropertyConditionSupportedProperty.ACCOUNT_SID, model.propertyName());
         Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_EQUALS, model.operator());
-        Assertions.assertEquals("nctagfyvrtpqpem", model.propertyValues().get(0));
+        Assertions.assertEquals("mjerbdk", model.propertyValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutomationRulePropertyValuesCondition model = new AutomationRulePropertyValuesCondition()
-            .withPropertyName(AutomationRulePropertyConditionSupportedProperty.MAIL_MESSAGE_SUBJECT)
+            .withPropertyName(AutomationRulePropertyConditionSupportedProperty.ACCOUNT_SID)
             .withOperator(AutomationRulePropertyConditionSupportedOperator.NOT_EQUALS)
-            .withPropertyValues(Arrays.asList("nctagfyvrtpqpem", "z", "gkrepdqhqyhw"));
+            .withPropertyValues(Arrays.asList("mjerbdk", "lvidizozs", "bccxjmonfdgn", "n"));
         model = BinaryData.fromObject(model).toObject(AutomationRulePropertyValuesCondition.class);
-        Assertions.assertEquals(AutomationRulePropertyConditionSupportedProperty.MAIL_MESSAGE_SUBJECT,
-            model.propertyName());
+        Assertions.assertEquals(AutomationRulePropertyConditionSupportedProperty.ACCOUNT_SID, model.propertyName());
         Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_EQUALS, model.operator());
-        Assertions.assertEquals("nctagfyvrtpqpem", model.propertyValues().get(0));
+        Assertions.assertEquals("mjerbdk", model.propertyValues().get(0));
     }
 }

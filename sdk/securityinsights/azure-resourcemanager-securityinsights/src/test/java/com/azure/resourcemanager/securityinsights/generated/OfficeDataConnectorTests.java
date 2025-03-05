@@ -17,28 +17,28 @@ public final class OfficeDataConnectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfficeDataConnector model = BinaryData.fromString(
-            "{\"kind\":\"Office365\",\"properties\":{\"dataTypes\":{\"exchange\":{\"state\":\"Disabled\"},\"sharePoint\":{\"state\":\"Disabled\"},\"teams\":{\"state\":\"Enabled\"}},\"tenantId\":\"ihezomucmq\"},\"etag\":\"snio\",\"id\":\"tb\",\"name\":\"dr\",\"type\":\"puenx\"}")
+            "{\"kind\":\"Office365\",\"properties\":{\"tenantId\":\"mdtzfjltfvnzc\",\"dataTypes\":{\"exchange\":{\"state\":\"Disabled\"},\"sharePoint\":{\"state\":\"Enabled\"},\"teams\":{\"state\":\"Disabled\"}}},\"etag\":\"dbzqgqqihed\",\"id\":\"qwthmky\",\"name\":\"bcysih\",\"type\":\"gqcwdhohsdtmc\"}")
             .toObject(OfficeDataConnector.class);
-        Assertions.assertEquals("snio", model.etag());
+        Assertions.assertEquals("dbzqgqqihed", model.etag());
+        Assertions.assertEquals("mdtzfjltfvnzc", model.tenantId());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().exchange().state());
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().sharePoint().state());
-        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().teams().state());
-        Assertions.assertEquals("ihezomucmq", model.tenantId());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().sharePoint().state());
+        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().teams().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OfficeDataConnector model = new OfficeDataConnector().withEtag("snio")
+        OfficeDataConnector model = new OfficeDataConnector().withEtag("dbzqgqqihed")
+            .withTenantId("mdtzfjltfvnzc")
             .withDataTypes(new OfficeDataConnectorDataTypes()
                 .withExchange(new OfficeDataConnectorDataTypesExchange().withState(DataTypeState.DISABLED))
-                .withSharePoint(new OfficeDataConnectorDataTypesSharePoint().withState(DataTypeState.DISABLED))
-                .withTeams(new OfficeDataConnectorDataTypesTeams().withState(DataTypeState.ENABLED)))
-            .withTenantId("ihezomucmq");
+                .withSharePoint(new OfficeDataConnectorDataTypesSharePoint().withState(DataTypeState.ENABLED))
+                .withTeams(new OfficeDataConnectorDataTypesTeams().withState(DataTypeState.DISABLED)));
         model = BinaryData.fromObject(model).toObject(OfficeDataConnector.class);
-        Assertions.assertEquals("snio", model.etag());
+        Assertions.assertEquals("dbzqgqqihed", model.etag());
+        Assertions.assertEquals("mdtzfjltfvnzc", model.tenantId());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().exchange().state());
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().sharePoint().state());
-        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().teams().state());
-        Assertions.assertEquals("ihezomucmq", model.tenantId());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().sharePoint().state());
+        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().teams().state());
     }
 }

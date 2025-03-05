@@ -15,41 +15,63 @@ import java.util.Set;
 public interface ApplicationGatewayProbe extends HasInnerModel<ApplicationGatewayProbeInner>,
     ChildResource<ApplicationGateway>, HasProtocol<ApplicationGatewayProtocol> {
 
-    /** @return the number of seconds between probe retries */
+    /**
+     * Gets the number of seconds between probe retries.
+     *
+     * @return the number of seconds between probe retries
+     */
     int timeBetweenProbesInSeconds();
 
     /**
+     * Gets HTTP response code ranges in the format ###-### returned by the backend which the probe considers
+     *     healthy.
+     *
      * @return HTTP response code ranges in the format ###-### returned by the backend which the probe considers
      *     healthy.
      */
     Set<String> healthyHttpResponseStatusCodeRanges();
 
     /**
+     * Gets the body contents of an HTTP response to a probe to check for to determine backend health, or null if
+     *     none specified
+     *
      * @return the body contents of an HTTP response to a probe to check for to determine backend health, or null if
      *     none specified
      */
     String healthyHttpResponseBodyContents();
 
-    /** @return the relative path to be called by the probe */
+    /**
+     * Gets the relative path to be called by the probe.
+     *
+     * @return the relative path to be called by the probe
+     */
     String path();
 
     /**
+     * Gets the number of seconds waiting for a response after which the probe times out and it is marked as failed.
+     *
      * @return the number of seconds waiting for a response after which the probe times out and it is marked as failed
      *     <p>Acceptable values are from 1 to 86400 seconds.
      */
     int timeoutInSeconds();
 
     /**
+     * Gets the number of failed retry probes before the backend server is marked as being down.
+     *
      * @return the number of failed retry probes before the backend server is marked as being down
      *     <p>Acceptable values are from 1 second to 20.
      */
     int retriesBeforeUnhealthy();
 
-    /** @return host name to send the probe to */
+    /**
+     * Gets host name to send the probe to.
+     *
+     * @return host name to send the probe to
+     */
     String host();
 
     /**
-     * Whether probe uses the host name from the HTTP settings to which this probe is associated.
+     * Checks whether probe uses the host name from the HTTP settings to which this probe is associated.
      *
      * @return Whether probe uses the host name from the HTTP settings.
      */

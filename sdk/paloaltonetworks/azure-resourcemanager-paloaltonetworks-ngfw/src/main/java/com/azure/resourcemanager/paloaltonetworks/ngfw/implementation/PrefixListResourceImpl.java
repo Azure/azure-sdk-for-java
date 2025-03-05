@@ -126,9 +126,9 @@ public final class PrefixListResourceImpl
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.localRulestackName = Utils.getValueFromIdByName(innerObject.id(), "localRulestacks");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "prefixlists");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.localRulestackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRulestacks");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "prefixlists");
     }
 
     public PrefixListResource refresh() {

@@ -22,7 +22,7 @@ public final class DatabasesListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"charset\":\"pkcdqzhlct\",\"collation\":\"unqndyfpchrqb\"},\"id\":\"jrcg\",\"name\":\"gydcw\",\"type\":\"oxjumvqqo\"}]}";
+            = "{\"value\":[{\"properties\":{\"charset\":\"ekkkzd\",\"collation\":\"tkgdojbmxva\"},\"id\":\"efdeesve\",\"name\":\"uij\",\"type\":\"xtxsuwprtujw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class DatabasesListByServerMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Database> response
-            = manager.databases().listByServer("ttexoqqpwcyyufmh", "uncuw", com.azure.core.util.Context.NONE);
+            = manager.databases().listByServer("klnsrmffey", "xcktpiymerteeamm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pkcdqzhlct", response.iterator().next().charset());
-        Assertions.assertEquals("unqndyfpchrqb", response.iterator().next().collation());
+        Assertions.assertEquals("ekkkzd", response.iterator().next().charset());
+        Assertions.assertEquals("tkgdojbmxva", response.iterator().next().collation());
     }
 }

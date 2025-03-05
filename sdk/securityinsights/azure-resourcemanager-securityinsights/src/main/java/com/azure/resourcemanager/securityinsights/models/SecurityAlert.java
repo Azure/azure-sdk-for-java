@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.SecurityAlertProperties;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -20,11 +19,11 @@ import java.util.Map;
  * Represents a security alert entity.
  */
 @Fluent
-public final class SecurityAlert extends EntityInner {
+public final class SecurityAlert extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.SECURITY_ALERT;
+    private EntityKindEnum kind = EntityKindEnum.SECURITY_ALERT;
 
     /*
      * SecurityAlert entity properties
@@ -63,7 +62,7 @@ public final class SecurityAlert extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -426,7 +425,7 @@ public final class SecurityAlert extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSecurityAlert.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedSecurityAlert.kind = EntityKind.fromString(reader.getString());
+                    deserializedSecurityAlert.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedSecurityAlert.innerProperties = SecurityAlertProperties.fromJson(reader);
                 } else {

@@ -6,23 +6,25 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Predefined URL category object.
  */
 @Fluent
-public final class PredefinedUrlCategory {
+public final class PredefinedUrlCategory implements JsonSerializable<PredefinedUrlCategory> {
     /*
      * The action property.
      */
-    @JsonProperty(value = "action", required = true)
     private String action;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
@@ -78,14 +80,54 @@ public final class PredefinedUrlCategory {
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property action in model PredefinedUrlCategory"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model PredefinedUrlCategory"));
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model PredefinedUrlCategory"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PredefinedUrlCategory"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PredefinedUrlCategory.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredefinedUrlCategory from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredefinedUrlCategory if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PredefinedUrlCategory.
+     */
+    public static PredefinedUrlCategory fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredefinedUrlCategory deserializedPredefinedUrlCategory = new PredefinedUrlCategory();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedPredefinedUrlCategory.action = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPredefinedUrlCategory.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredefinedUrlCategory;
+        });
+    }
 }

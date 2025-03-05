@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface BareMetalInfrastructureClient {
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets The ID of the target subscription.
      * 
      * @return the subscriptionId value.
      */
@@ -59,11 +59,4 @@ public interface BareMetalInfrastructureClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
-
-    /**
-     * Gets the AzureBareMetalStorageInstancesClient object to access its operations.
-     * 
-     * @return the AzureBareMetalStorageInstancesClient object.
-     */
-    AzureBareMetalStorageInstancesClient getAzureBareMetalStorageInstances();
 }

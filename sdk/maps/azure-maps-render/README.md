@@ -2,7 +2,7 @@
 
 Azure Maps SDK Render client library for Java.
 
-This package contains Microsoft Azure SDK for Render Management SDK which contains Azure Maps Render REST APIs. Azure Maps Render retrieves copyrigt information or map/state tiles. For documentation on how to use this package, please see [Azure Maps Render](https://docs.microsoft.com/rest/api/maps/render-v2).
+This package contains Microsoft Azure SDK for Render Management SDK which contains Azure Maps Render REST APIs. Azure Maps Render retrieves copyrigt information or map/state tiles. For documentation on how to use this package, please see [Azure Maps Render](https://learn.microsoft.com/rest/api/maps/render-v2).
 
 [Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
 
@@ -157,14 +157,14 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-render/src
 [samples]:  https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-render/src/samples
-[rest_docs]: https://docs.microsoft.com/rest/api/maps
-[product_docs]: https://docs.microsoft.com/azure/azure-maps/
+[rest_docs]: https://learn.microsoft.com/rest/api/maps
+[product_docs]: https://learn.microsoft.com/azure/azure-maps/
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmaps%2Fazure-maps-render%2FREADME.png)
+

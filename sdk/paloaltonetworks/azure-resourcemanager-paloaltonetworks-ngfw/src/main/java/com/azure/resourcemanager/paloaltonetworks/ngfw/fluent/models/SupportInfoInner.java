@@ -5,84 +5,76 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Support information for the resource.
  */
 @Fluent
-public final class SupportInfoInner {
+public final class SupportInfoInner implements JsonSerializable<SupportInfoInner> {
     /*
      * product SKU associated with given resource
      */
-    @JsonProperty(value = "productSku")
     private String productSku;
 
     /*
      * product Serial associated with given resource
      */
-    @JsonProperty(value = "productSerial")
     private String productSerial;
 
     /*
      * account registered in Customer Support Portal
      */
-    @JsonProperty(value = "accountRegistered")
     private BooleanEnum accountRegistered;
 
     /*
      * Support account associated with given resource
      */
-    @JsonProperty(value = "accountId")
     private String accountId;
 
     /*
      * user domain is supported in Customer Support Portal
      */
-    @JsonProperty(value = "userDomainSupported")
     private BooleanEnum userDomainSupported;
 
     /*
      * user registered in Customer Support Portal
      */
-    @JsonProperty(value = "userRegistered")
     private BooleanEnum userRegistered;
 
     /*
      * Product usage is in free trial period
      */
-    @JsonProperty(value = "freeTrial")
     private BooleanEnum freeTrial;
 
     /*
      * Free trial days remaining
      */
-    @JsonProperty(value = "freeTrialDaysLeft")
     private Integer freeTrialDaysLeft;
 
     /*
      * Free trial credit remaining
      */
-    @JsonProperty(value = "freeTrialCreditLeft")
     private Integer freeTrialCreditLeft;
 
     /*
      * URL for paloaltonetworks live community
      */
-    @JsonProperty(value = "helpURL")
     private String helpUrl;
 
     /*
      * URL for paloaltonetworks Customer Service Portal
      */
-    @JsonProperty(value = "supportURL")
     private String supportUrl;
 
     /*
      * URL for registering product in paloaltonetworks Customer Service Portal
      */
-    @JsonProperty(value = "registerURL")
     private String registerUrl;
 
     /**
@@ -337,5 +329,77 @@ public final class SupportInfoInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("productSku", this.productSku);
+        jsonWriter.writeStringField("productSerial", this.productSerial);
+        jsonWriter.writeStringField("accountRegistered",
+            this.accountRegistered == null ? null : this.accountRegistered.toString());
+        jsonWriter.writeStringField("accountId", this.accountId);
+        jsonWriter.writeStringField("userDomainSupported",
+            this.userDomainSupported == null ? null : this.userDomainSupported.toString());
+        jsonWriter.writeStringField("userRegistered",
+            this.userRegistered == null ? null : this.userRegistered.toString());
+        jsonWriter.writeStringField("freeTrial", this.freeTrial == null ? null : this.freeTrial.toString());
+        jsonWriter.writeNumberField("freeTrialDaysLeft", this.freeTrialDaysLeft);
+        jsonWriter.writeNumberField("freeTrialCreditLeft", this.freeTrialCreditLeft);
+        jsonWriter.writeStringField("helpURL", this.helpUrl);
+        jsonWriter.writeStringField("supportURL", this.supportUrl);
+        jsonWriter.writeStringField("registerURL", this.registerUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportInfoInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportInfoInner.
+     */
+    public static SupportInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportInfoInner deserializedSupportInfoInner = new SupportInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("productSku".equals(fieldName)) {
+                    deserializedSupportInfoInner.productSku = reader.getString();
+                } else if ("productSerial".equals(fieldName)) {
+                    deserializedSupportInfoInner.productSerial = reader.getString();
+                } else if ("accountRegistered".equals(fieldName)) {
+                    deserializedSupportInfoInner.accountRegistered = BooleanEnum.fromString(reader.getString());
+                } else if ("accountId".equals(fieldName)) {
+                    deserializedSupportInfoInner.accountId = reader.getString();
+                } else if ("userDomainSupported".equals(fieldName)) {
+                    deserializedSupportInfoInner.userDomainSupported = BooleanEnum.fromString(reader.getString());
+                } else if ("userRegistered".equals(fieldName)) {
+                    deserializedSupportInfoInner.userRegistered = BooleanEnum.fromString(reader.getString());
+                } else if ("freeTrial".equals(fieldName)) {
+                    deserializedSupportInfoInner.freeTrial = BooleanEnum.fromString(reader.getString());
+                } else if ("freeTrialDaysLeft".equals(fieldName)) {
+                    deserializedSupportInfoInner.freeTrialDaysLeft = reader.getNullable(JsonReader::getInt);
+                } else if ("freeTrialCreditLeft".equals(fieldName)) {
+                    deserializedSupportInfoInner.freeTrialCreditLeft = reader.getNullable(JsonReader::getInt);
+                } else if ("helpURL".equals(fieldName)) {
+                    deserializedSupportInfoInner.helpUrl = reader.getString();
+                } else if ("supportURL".equals(fieldName)) {
+                    deserializedSupportInfoInner.supportUrl = reader.getString();
+                } else if ("registerURL".equals(fieldName)) {
+                    deserializedSupportInfoInner.registerUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportInfoInner;
+        });
     }
 }

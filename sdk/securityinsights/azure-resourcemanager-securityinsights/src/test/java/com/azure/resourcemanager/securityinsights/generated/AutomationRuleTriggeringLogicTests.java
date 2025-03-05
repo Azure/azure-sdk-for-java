@@ -17,25 +17,25 @@ public final class AutomationRuleTriggeringLogicTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationRuleTriggeringLogic model = BinaryData.fromString(
-            "{\"isEnabled\":true,\"expirationTimeUtc\":\"2021-03-01T11:43:50Z\",\"triggersOn\":\"Alerts\",\"triggersWhen\":\"Updated\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"}]}")
+            "{\"isEnabled\":false,\"expirationTimeUtc\":\"2021-07-12T14:06:09Z\",\"triggersOn\":\"Alerts\",\"triggersWhen\":\"Created\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"}]}")
             .toObject(AutomationRuleTriggeringLogic.class);
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-01T11:43:50Z"), model.expirationTimeUtc());
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-12T14:06:09Z"), model.expirationTimeUtc());
         Assertions.assertEquals(TriggersOn.ALERTS, model.triggersOn());
-        Assertions.assertEquals(TriggersWhen.UPDATED, model.triggersWhen());
+        Assertions.assertEquals(TriggersWhen.CREATED, model.triggersWhen());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationRuleTriggeringLogic model = new AutomationRuleTriggeringLogic().withIsEnabled(true)
-            .withExpirationTimeUtc(OffsetDateTime.parse("2021-03-01T11:43:50Z"))
+        AutomationRuleTriggeringLogic model = new AutomationRuleTriggeringLogic().withIsEnabled(false)
+            .withExpirationTimeUtc(OffsetDateTime.parse("2021-07-12T14:06:09Z"))
             .withTriggersOn(TriggersOn.ALERTS)
-            .withTriggersWhen(TriggersWhen.UPDATED)
-            .withConditions(Arrays.asList(new AutomationRuleCondition(), new AutomationRuleCondition()));
+            .withTriggersWhen(TriggersWhen.CREATED)
+            .withConditions(Arrays.asList(new AutomationRuleCondition()));
         model = BinaryData.fromObject(model).toObject(AutomationRuleTriggeringLogic.class);
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-01T11:43:50Z"), model.expirationTimeUtc());
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-12T14:06:09Z"), model.expirationTimeUtc());
         Assertions.assertEquals(TriggersOn.ALERTS, model.triggersOn());
-        Assertions.assertEquals(TriggersWhen.UPDATED, model.triggersWhen());
+        Assertions.assertEquals(TriggersWhen.CREATED, model.triggersWhen());
     }
 }

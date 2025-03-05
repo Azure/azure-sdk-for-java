@@ -1,0 +1,35 @@
+parameters:
+  ArtifactDirectory: not-specified
+  OutputDirectory: not-specified
+  FlattenedESRPDirectory: not-specified
+  GroupID:
+  ArtifactID:
+  GPGExecutablePath: $(Pipeline.Workspace)/azure-sdk-build-tools/tools/gpg/bin/gpg.exe
+  JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Gpg sign and hash packages'
+    inputs:
+      pwsh: true
+      workingDirectory: $(Agent.BuildDirectory)
+      filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/SignAndHash-MavenPackages.ps1
+      arguments: >
+        -Path ${{ parameters.ArtifactDirectory }}
+        -DestinationPath ${{ parameters.OutputDirectory }}
+        -GroupIDFilter "${{ parameters.GroupID }}"
+        -ArtifactIDFilter "${{ parameters.ArtifactID }}"
+        -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
+        -InformationAction Continue
+  # ESRP needs to have the output folder flattened in order to do a bulk publish
+  # The flattened folder is only used by ESRP
+  - task: PowerShell@2
+    displayName: 'Flatten output folder for ESRP'
+    inputs:
+      pwsh: true
+      workingDirectory: $(Agent.BuildDirectory)
+      filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Flatten-MavenPackageFolder.ps1
+      arguments: >
+        -SignedDirectory ${{ parameters.OutputDirectory }}
+        -FlattenedDirectory ${{ parameters.FlattenedESRPDirectory }}
+        -InformationAction Continue

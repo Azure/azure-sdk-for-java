@@ -13,15 +13,15 @@ public final class OfficeDataConnectorDataTypesSharePointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfficeDataConnectorDataTypesSharePoint model
-            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(OfficeDataConnectorDataTypesSharePoint.class);
-        Assertions.assertEquals(DataTypeState.DISABLED, model.state());
+            = BinaryData.fromString("{\"state\":\"Enabled\"}").toObject(OfficeDataConnectorDataTypesSharePoint.class);
+        Assertions.assertEquals(DataTypeState.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OfficeDataConnectorDataTypesSharePoint model
-            = new OfficeDataConnectorDataTypesSharePoint().withState(DataTypeState.DISABLED);
+            = new OfficeDataConnectorDataTypesSharePoint().withState(DataTypeState.ENABLED);
         model = BinaryData.fromObject(model).toObject(OfficeDataConnectorDataTypesSharePoint.class);
-        Assertions.assertEquals(DataTypeState.DISABLED, model.state());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.state());
     }
 }

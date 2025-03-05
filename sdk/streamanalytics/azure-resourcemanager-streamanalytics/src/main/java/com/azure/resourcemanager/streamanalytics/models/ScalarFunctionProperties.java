@@ -22,18 +22,6 @@ public final class ScalarFunctionProperties extends FunctionProperties {
      */
     private String type = "Scalar";
 
-    /*
-     * The properties property.
-     */
-    private FunctionConfiguration innerProperties;
-
-    /*
-     * The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource
-     * has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations
-     * for optimistic concurrency.
-     */
-    private String etag;
-
     /**
      * Creates an instance of ScalarFunctionProperties class.
      */
@@ -48,27 +36,6 @@ public final class ScalarFunctionProperties extends FunctionProperties {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the innerProperties property: The properties property.
-     * 
-     * @return the innerProperties value.
-     */
-    private FunctionConfiguration innerProperties() {
-        return this.innerProperties;
-    }
-
-    /**
-     * Get the etag property: The current entity tag for the function. This is an opaque string. You can use it to
-     * detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match
-     * headers for write operations for optimistic concurrency.
-     * 
-     * @return the etag value.
-     */
-    @Override
-    public String etag() {
-        return this.etag;
     }
 
     /**
@@ -88,7 +55,7 @@ public final class ScalarFunctionProperties extends FunctionProperties {
      */
     public ScalarFunctionProperties withInputs(List<FunctionInput> inputs) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FunctionConfiguration();
+            this.withInnerProperties(new FunctionConfiguration());
         }
         this.innerProperties().withInputs(inputs);
         return this;
@@ -111,7 +78,7 @@ public final class ScalarFunctionProperties extends FunctionProperties {
      */
     public ScalarFunctionProperties withOutput(FunctionOutput output) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FunctionConfiguration();
+            this.withInnerProperties(new FunctionConfiguration());
         }
         this.innerProperties().withOutput(output);
         return this;
@@ -136,7 +103,7 @@ public final class ScalarFunctionProperties extends FunctionProperties {
      */
     public ScalarFunctionProperties withBinding(FunctionBinding binding) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FunctionConfiguration();
+            this.withInnerProperties(new FunctionConfiguration());
         }
         this.innerProperties().withBinding(binding);
         return this;
@@ -181,9 +148,9 @@ public final class ScalarFunctionProperties extends FunctionProperties {
                 reader.nextToken();
 
                 if ("etag".equals(fieldName)) {
-                    deserializedScalarFunctionProperties.etag = reader.getString();
+                    deserializedScalarFunctionProperties.withEtag(reader.getString());
                 } else if ("properties".equals(fieldName)) {
-                    deserializedScalarFunctionProperties.innerProperties = FunctionConfiguration.fromJson(reader);
+                    deserializedScalarFunctionProperties.withInnerProperties(FunctionConfiguration.fromJson(reader));
                 } else if ("type".equals(fieldName)) {
                     deserializedScalarFunctionProperties.type = reader.getString();
                 } else {

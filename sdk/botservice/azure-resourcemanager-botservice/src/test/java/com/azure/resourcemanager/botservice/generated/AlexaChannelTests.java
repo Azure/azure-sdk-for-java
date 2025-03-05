@@ -13,23 +13,23 @@ public final class AlexaChannelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlexaChannel model = BinaryData.fromString(
-            "{\"channelName\":\"AlexaChannel\",\"properties\":{\"alexaSkillId\":\"aiuebbaumnyqu\",\"urlFragment\":\"deoj\",\"serviceEndpointUri\":\"bckhsmtxpsi\",\"isEnabled\":true},\"etag\":\"fhvpesaps\",\"provisioningState\":\"dqmh\",\"location\":\"dhtldwkyz\"}")
+            "{\"channelName\":\"AlexaChannel\",\"properties\":{\"alexaSkillId\":\"ceoveilovno\",\"urlFragment\":\"fj\",\"serviceEndpointUri\":\"njbkcnxdhbttkph\",\"isEnabled\":false},\"etag\":\"nv\",\"provisioningState\":\"oqnermclfpl\",\"location\":\"oxuscrpabgyepsbj\"}")
             .toObject(AlexaChannel.class);
-        Assertions.assertEquals("fhvpesaps", model.etag());
-        Assertions.assertEquals("dhtldwkyz", model.location());
-        Assertions.assertEquals("aiuebbaumnyqu", model.properties().alexaSkillId());
-        Assertions.assertEquals(true, model.properties().isEnabled());
+        Assertions.assertEquals("nv", model.etag());
+        Assertions.assertEquals("oxuscrpabgyepsbj", model.location());
+        Assertions.assertEquals("ceoveilovno", model.properties().alexaSkillId());
+        Assertions.assertEquals(false, model.properties().isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlexaChannel model = new AlexaChannel().withEtag("fhvpesaps")
-            .withLocation("dhtldwkyz")
-            .withProperties(new AlexaChannelProperties().withAlexaSkillId("aiuebbaumnyqu").withIsEnabled(true));
+        AlexaChannel model = new AlexaChannel().withEtag("nv")
+            .withLocation("oxuscrpabgyepsbj")
+            .withProperties(new AlexaChannelProperties().withAlexaSkillId("ceoveilovno").withIsEnabled(false));
         model = BinaryData.fromObject(model).toObject(AlexaChannel.class);
-        Assertions.assertEquals("fhvpesaps", model.etag());
-        Assertions.assertEquals("dhtldwkyz", model.location());
-        Assertions.assertEquals("aiuebbaumnyqu", model.properties().alexaSkillId());
-        Assertions.assertEquals(true, model.properties().isEnabled());
+        Assertions.assertEquals("nv", model.etag());
+        Assertions.assertEquals("oxuscrpabgyepsbj", model.location());
+        Assertions.assertEquals("ceoveilovno", model.properties().alexaSkillId());
+        Assertions.assertEquals(false, model.properties().isEnabled());
     }
 }

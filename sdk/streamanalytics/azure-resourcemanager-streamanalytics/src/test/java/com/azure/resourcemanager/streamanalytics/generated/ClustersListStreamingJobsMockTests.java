@@ -21,7 +21,7 @@ public final class ClustersListStreamingJobsMockTests {
     @Test
     public void testListStreamingJobs() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"gncxykxhdj\",\"streamingUnits\":1418215471,\"jobState\":\"Failed\"}]}";
+            = "{\"value\":[{\"id\":\"rrghxjbdhqxvcxgf\",\"streamingUnits\":469495787,\"jobState\":\"Running\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ClustersListStreamingJobsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ClusterJob> response
-            = manager.clusters().listStreamingJobs("usnfepgfewet", "l", com.azure.core.util.Context.NONE);
+            = manager.clusters().listStreamingJobs("lgnyhmo", "sxkkg", com.azure.core.util.Context.NONE);
 
     }
 }

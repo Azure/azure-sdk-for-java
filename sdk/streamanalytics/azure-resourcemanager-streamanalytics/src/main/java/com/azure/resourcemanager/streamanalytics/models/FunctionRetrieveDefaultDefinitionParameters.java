@@ -80,15 +80,10 @@ public class FunctionRetrieveDefaultDefinitionParameters
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("Microsoft.MachineLearning/WebService".equals(discriminatorValue)) {
-                    return AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters
-                        .fromJson(readerToUse.reset());
-                } else if ("Microsoft.MachineLearningServices".equals(discriminatorValue)) {
-                    return AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters
+                    return AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters
                         .fromJson(readerToUse.reset());
                 } else if ("Microsoft.StreamAnalytics/JavascriptUdf".equals(discriminatorValue)) {
                     return JavaScriptFunctionRetrieveDefaultDefinitionParameters.fromJson(readerToUse.reset());
-                } else if ("Microsoft.StreamAnalytics/CLRUdf".equals(discriminatorValue)) {
-                    return CSharpFunctionRetrieveDefaultDefinitionParameters.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

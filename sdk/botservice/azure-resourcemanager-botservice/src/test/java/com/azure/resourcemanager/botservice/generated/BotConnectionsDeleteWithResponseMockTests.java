@@ -27,7 +27,8 @@ public final class BotConnectionsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.botConnections().deleteWithResponse("rlazszrnw", "iin", "fpwpjylwbt", com.azure.core.util.Context.NONE);
+        manager.botConnections()
+            .deleteWithResponse("frl", "zszrnwoiindfpw", "jylwbtlhflsj", com.azure.core.util.Context.NONE);
 
     }
 }

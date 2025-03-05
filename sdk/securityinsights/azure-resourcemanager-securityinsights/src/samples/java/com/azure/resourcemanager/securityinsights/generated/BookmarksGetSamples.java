@@ -10,8 +10,8 @@ package com.azure.resourcemanager.securityinsights.generated;
 public final class BookmarksGetSamples {
     /*
      * x-ms-original-file:
-     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
-     * bookmarks/GetBookmarkById.json
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/bookmarks/
+     * GetBookmarkById.json
      */
     /**
      * Sample code: Get a bookmark.

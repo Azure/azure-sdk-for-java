@@ -15,16 +15,32 @@ import java.util.List;
 public interface ApplicationGatewayPathRule
     extends HasInnerModel<ApplicationGatewayPathRuleInner>, ChildResource<ApplicationGatewayUrlPathMap> {
 
-    /** @return backend address pool resource of URL path map path rule */
+    /**
+     * Gets backend address pool resource of URL path map path rule.
+     *
+     * @return backend address pool resource of URL path map path rule
+     */
     ApplicationGatewayBackend backend();
 
-    /** @return backend http settings resource of URL path map path rule */
+    /**
+     * Gets backend http settings resource of URL path map path rule.
+     *
+     * @return backend http settings resource of URL path map path rule
+     */
     ApplicationGatewayBackendHttpConfiguration backendHttpConfiguration();
 
-    /** @return redirect configuration resource of URL path map path rule */
+    /**
+     * Gets redirect configuration resource of URL path map path rule.
+     *
+     * @return redirect configuration resource of URL path map path rule
+     */
     ApplicationGatewayRedirectConfiguration redirectConfiguration();
 
-    /** @return paths for URL path map rule. */
+    /**
+     * Gets paths for URL path map rule.
+     *
+     * @return paths for URL path map rule.
+     */
     List<String> paths();
 
     /** Grouping of application gateway URL path map definition stages. */
@@ -47,12 +63,16 @@ public interface ApplicationGatewayPathRule
          */
         interface WithPath<ReturnT> {
             /**
+             * Specifies path for the path rule.
+             *
              * @param path for the path rule
              * @return the next stage of the definition
              */
             WithAttach<ReturnT> withPath(String path);
 
             /**
+             * Specifies path for the path rule.
+             *
              * @param paths for the path rule
              * @return the next stage of the definition
              */
@@ -200,12 +220,16 @@ public interface ApplicationGatewayPathRule
          */
         interface WithPath<ReturnT> {
             /**
+             * Specifies path for the path rule.
+             *
              * @param path for the path rule
              * @return the next stage of the definition
              */
             WithAttach<ReturnT> withPath(String path);
 
             /**
+             * Specifies path for the path rule.
+             *
              * @param paths for the path rule
              * @return the next stage of the definition
              */

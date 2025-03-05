@@ -13,22 +13,22 @@ public final class ThreatIntelligenceGranularMarkingModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligenceGranularMarkingModel model = BinaryData.fromString(
-            "{\"language\":\"sjuscvsfxigctmg\",\"markingRef\":1067127377,\"selectors\":[\"ezq\",\"cydrtceukdqkk\",\"ihztgeqmgqzgwldo\"]}")
+            "{\"language\":\"ygqukyhejh\",\"markingRef\":435176888,\"selectors\":[\"fpel\",\"lppvksrpq\",\"ujzra\",\"htwdwrftswibyrcd\"]}")
             .toObject(ThreatIntelligenceGranularMarkingModel.class);
-        Assertions.assertEquals("sjuscvsfxigctmg", model.language());
-        Assertions.assertEquals(1067127377, model.markingRef());
-        Assertions.assertEquals("ezq", model.selectors().get(0));
+        Assertions.assertEquals("ygqukyhejh", model.language());
+        Assertions.assertEquals(435176888, model.markingRef());
+        Assertions.assertEquals("fpel", model.selectors().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThreatIntelligenceGranularMarkingModel model
-            = new ThreatIntelligenceGranularMarkingModel().withLanguage("sjuscvsfxigctmg")
-                .withMarkingRef(1067127377)
-                .withSelectors(Arrays.asList("ezq", "cydrtceukdqkk", "ihztgeqmgqzgwldo"));
+            = new ThreatIntelligenceGranularMarkingModel().withLanguage("ygqukyhejh")
+                .withMarkingRef(435176888)
+                .withSelectors(Arrays.asList("fpel", "lppvksrpq", "ujzra", "htwdwrftswibyrcd"));
         model = BinaryData.fromObject(model).toObject(ThreatIntelligenceGranularMarkingModel.class);
-        Assertions.assertEquals("sjuscvsfxigctmg", model.language());
-        Assertions.assertEquals(1067127377, model.markingRef());
-        Assertions.assertEquals("ezq", model.selectors().get(0));
+        Assertions.assertEquals("ygqukyhejh", model.language());
+        Assertions.assertEquals(435176888, model.markingRef());
+        Assertions.assertEquals("fpel", model.selectors().get(0));
     }
 }

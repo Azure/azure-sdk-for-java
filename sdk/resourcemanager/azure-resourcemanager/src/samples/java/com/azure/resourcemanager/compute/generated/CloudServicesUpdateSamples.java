@@ -14,7 +14,7 @@ import java.util.Map;
 public final class CloudServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
      * CloudService_Update_ToIncludeTags.json
      */
     /**

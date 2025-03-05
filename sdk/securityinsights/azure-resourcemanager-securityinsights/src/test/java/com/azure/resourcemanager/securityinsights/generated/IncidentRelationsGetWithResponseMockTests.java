@@ -21,7 +21,7 @@ public final class IncidentRelationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"relatedResourceId\":\"loccuhplx\",\"relatedResourceName\":\"nsshvqnpszbe\",\"relatedResourceType\":\"butcdzj\",\"relatedResourceKind\":\"tvpeyxdyuxurxr\"},\"etag\":\"qmmijgpq\",\"id\":\"wnaeikczscym\",\"name\":\"fvxgwpqny\",\"type\":\"mzapdokez\"}";
+            = "{\"properties\":{\"relatedResourceId\":\"srziuct\",\"relatedResourceName\":\"gbdsuifrev\",\"relatedResourceType\":\"apezkiswqjmdghs\",\"relatedResourceKind\":\"arybjufptbjc\"},\"etag\":\"nciuiyqvldaswvpp\",\"id\":\"qqzlgcndhz\",\"name\":\"rr\",\"type\":\"cfsrhkhgsn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class IncidentRelationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Relation response = manager.incidentRelations()
-            .getWithResponse("bhsermclyqwwu", "yqkaaptb", "svkb", "bptw", com.azure.core.util.Context.NONE)
+            .getWithResponse("ri", "fohyk", "kxbbcbrwjiutgnj", "zbeewoiymrvzbju", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qmmijgpq", response.etag());
-        Assertions.assertEquals("loccuhplx", response.relatedResourceId());
+        Assertions.assertEquals("nciuiyqvldaswvpp", response.etag());
+        Assertions.assertEquals("srziuct", response.relatedResourceId());
     }
 }

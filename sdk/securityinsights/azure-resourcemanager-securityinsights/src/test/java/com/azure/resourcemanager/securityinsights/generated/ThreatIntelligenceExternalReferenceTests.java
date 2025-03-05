@@ -14,28 +14,29 @@ public final class ThreatIntelligenceExternalReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligenceExternalReference model = BinaryData.fromString(
-            "{\"description\":\"idbz\",\"externalId\":\"hqtfbovn\",\"sourceName\":\"kbwetnj\",\"url\":\"p\",\"hashes\":{\"accxnafbwqroohtu\":\"kzyaup\",\"mghihp\":\"vmaonurjt\",\"jxl\":\"ecmslclbl\"}}")
+            "{\"description\":\"swhccsphk\",\"externalId\":\"vwitqscyw\",\"sourceName\":\"gwol\",\"url\":\"czbwemhairsbr\",\"hashes\":{\"ggicccnxqhue\":\"wmsweypqwd\",\"zrncsdt\":\"mkttlstvlzywem\",\"bsfgytguslfea\":\"lusiy\"}}")
             .toObject(ThreatIntelligenceExternalReference.class);
-        Assertions.assertEquals("idbz", model.description());
-        Assertions.assertEquals("hqtfbovn", model.externalId());
-        Assertions.assertEquals("kbwetnj", model.sourceName());
-        Assertions.assertEquals("p", model.url());
-        Assertions.assertEquals("kzyaup", model.hashes().get("accxnafbwqroohtu"));
+        Assertions.assertEquals("swhccsphk", model.description());
+        Assertions.assertEquals("vwitqscyw", model.externalId());
+        Assertions.assertEquals("gwol", model.sourceName());
+        Assertions.assertEquals("czbwemhairsbr", model.url());
+        Assertions.assertEquals("wmsweypqwd", model.hashes().get("ggicccnxqhue"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThreatIntelligenceExternalReference model = new ThreatIntelligenceExternalReference().withDescription("idbz")
-            .withExternalId("hqtfbovn")
-            .withSourceName("kbwetnj")
-            .withUrl("p")
-            .withHashes(mapOf("accxnafbwqroohtu", "kzyaup", "mghihp", "vmaonurjt", "jxl", "ecmslclbl"));
+        ThreatIntelligenceExternalReference model
+            = new ThreatIntelligenceExternalReference().withDescription("swhccsphk")
+                .withExternalId("vwitqscyw")
+                .withSourceName("gwol")
+                .withUrl("czbwemhairsbr")
+                .withHashes(mapOf("ggicccnxqhue", "wmsweypqwd", "zrncsdt", "mkttlstvlzywem", "bsfgytguslfea", "lusiy"));
         model = BinaryData.fromObject(model).toObject(ThreatIntelligenceExternalReference.class);
-        Assertions.assertEquals("idbz", model.description());
-        Assertions.assertEquals("hqtfbovn", model.externalId());
-        Assertions.assertEquals("kbwetnj", model.sourceName());
-        Assertions.assertEquals("p", model.url());
-        Assertions.assertEquals("kzyaup", model.hashes().get("accxnafbwqroohtu"));
+        Assertions.assertEquals("swhccsphk", model.description());
+        Assertions.assertEquals("vwitqscyw", model.externalId());
+        Assertions.assertEquals("gwol", model.sourceName());
+        Assertions.assertEquals("czbwemhairsbr", model.url());
+        Assertions.assertEquals("wmsweypqwd", model.hashes().get("ggicccnxqhue"));
     }
 
     // Use "Map.of" if available

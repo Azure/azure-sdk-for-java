@@ -17,34 +17,33 @@ public final class GroupingConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupingConfiguration model = BinaryData.fromString(
-            "{\"enabled\":false,\"reopenClosedIncident\":false,\"lookbackDuration\":\"PT87H26M18S\",\"matchingMethod\":\"AnyAlert\",\"groupByEntities\":[\"SubmissionMail\"],\"groupByAlertDetails\":[\"DisplayName\",\"Severity\",\"DisplayName\",\"Severity\"],\"groupByCustomDetails\":[\"kbudbtwaokb\",\"vlyttaaknwfrke\"]}")
+            "{\"enabled\":true,\"reopenClosedIncident\":false,\"lookbackDuration\":\"PT10H40M44S\",\"matchingMethod\":\"AllEntities\",\"groupByEntities\":[\"MailCluster\",\"CloudApplication\"],\"groupByAlertDetails\":[\"Severity\"],\"groupByCustomDetails\":[\"f\"]}")
             .toObject(GroupingConfiguration.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(false, model.reopenClosedIncident());
-        Assertions.assertEquals(Duration.parse("PT87H26M18S"), model.lookbackDuration());
-        Assertions.assertEquals(MatchingMethod.ANY_ALERT, model.matchingMethod());
-        Assertions.assertEquals(EntityMappingType.SUBMISSION_MAIL, model.groupByEntities().get(0));
-        Assertions.assertEquals(AlertDetail.DISPLAY_NAME, model.groupByAlertDetails().get(0));
-        Assertions.assertEquals("kbudbtwaokb", model.groupByCustomDetails().get(0));
+        Assertions.assertEquals(Duration.parse("PT10H40M44S"), model.lookbackDuration());
+        Assertions.assertEquals(MatchingMethod.ALL_ENTITIES, model.matchingMethod());
+        Assertions.assertEquals(EntityMappingType.MAIL_CLUSTER, model.groupByEntities().get(0));
+        Assertions.assertEquals(AlertDetail.SEVERITY, model.groupByAlertDetails().get(0));
+        Assertions.assertEquals("f", model.groupByCustomDetails().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupingConfiguration model = new GroupingConfiguration().withEnabled(false)
+        GroupingConfiguration model = new GroupingConfiguration().withEnabled(true)
             .withReopenClosedIncident(false)
-            .withLookbackDuration(Duration.parse("PT87H26M18S"))
-            .withMatchingMethod(MatchingMethod.ANY_ALERT)
-            .withGroupByEntities(Arrays.asList(EntityMappingType.SUBMISSION_MAIL))
-            .withGroupByAlertDetails(Arrays.asList(AlertDetail.DISPLAY_NAME, AlertDetail.SEVERITY,
-                AlertDetail.DISPLAY_NAME, AlertDetail.SEVERITY))
-            .withGroupByCustomDetails(Arrays.asList("kbudbtwaokb", "vlyttaaknwfrke"));
+            .withLookbackDuration(Duration.parse("PT10H40M44S"))
+            .withMatchingMethod(MatchingMethod.ALL_ENTITIES)
+            .withGroupByEntities(Arrays.asList(EntityMappingType.MAIL_CLUSTER, EntityMappingType.CLOUD_APPLICATION))
+            .withGroupByAlertDetails(Arrays.asList(AlertDetail.SEVERITY))
+            .withGroupByCustomDetails(Arrays.asList("f"));
         model = BinaryData.fromObject(model).toObject(GroupingConfiguration.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(false, model.reopenClosedIncident());
-        Assertions.assertEquals(Duration.parse("PT87H26M18S"), model.lookbackDuration());
-        Assertions.assertEquals(MatchingMethod.ANY_ALERT, model.matchingMethod());
-        Assertions.assertEquals(EntityMappingType.SUBMISSION_MAIL, model.groupByEntities().get(0));
-        Assertions.assertEquals(AlertDetail.DISPLAY_NAME, model.groupByAlertDetails().get(0));
-        Assertions.assertEquals("kbudbtwaokb", model.groupByCustomDetails().get(0));
+        Assertions.assertEquals(Duration.parse("PT10H40M44S"), model.lookbackDuration());
+        Assertions.assertEquals(MatchingMethod.ALL_ENTITIES, model.matchingMethod());
+        Assertions.assertEquals(EntityMappingType.MAIL_CLUSTER, model.groupByEntities().get(0));
+        Assertions.assertEquals(AlertDetail.SEVERITY, model.groupByAlertDetails().get(0));
+        Assertions.assertEquals("f", model.groupByCustomDetails().get(0));
     }
 }

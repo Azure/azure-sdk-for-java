@@ -20,11 +20,6 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
      */
     private String eventHubName;
 
-    /*
-     * The partition count of the event hub data source. Range 1 - 256.
-     */
-    private Integer partitionCount;
-
     /**
      * Creates an instance of EventHubDataSourceProperties class.
      */
@@ -48,26 +43,6 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
      */
     public EventHubDataSourceProperties withEventHubName(String eventHubName) {
         this.eventHubName = eventHubName;
-        return this;
-    }
-
-    /**
-     * Get the partitionCount property: The partition count of the event hub data source. Range 1 - 256.
-     * 
-     * @return the partitionCount value.
-     */
-    public Integer partitionCount() {
-        return this.partitionCount;
-    }
-
-    /**
-     * Set the partitionCount property: The partition count of the event hub data source. Range 1 - 256.
-     * 
-     * @param partitionCount the partitionCount value to set.
-     * @return the EventHubDataSourceProperties object itself.
-     */
-    public EventHubDataSourceProperties withPartitionCount(Integer partitionCount) {
-        this.partitionCount = partitionCount;
         return this;
     }
 
@@ -128,7 +103,6 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
         jsonWriter.writeStringField("authenticationMode",
             authenticationMode() == null ? null : authenticationMode().toString());
         jsonWriter.writeStringField("eventHubName", this.eventHubName);
-        jsonWriter.writeNumberField("partitionCount", this.partitionCount);
         return jsonWriter.writeEndObject();
     }
 
@@ -158,8 +132,6 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
                         .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
                 } else if ("eventHubName".equals(fieldName)) {
                     deserializedEventHubDataSourceProperties.eventHubName = reader.getString();
-                } else if ("partitionCount".equals(fieldName)) {
-                    deserializedEventHubDataSourceProperties.partitionCount = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

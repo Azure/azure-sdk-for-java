@@ -4,6 +4,7 @@
 package com.azure.core.experimental.http;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.BinaryData;
@@ -41,6 +42,7 @@ public class DynamicRequestJavaDocCodeSnippets {
         DynamicResponse response = dynamicRequest
             .setUrl("https://petstore.example.com/pet/{petId}") // may already be set if request is created from a client
             .setPathParam("petId", "2343245")
+            .setHttpMethod(HttpMethod.POST)
             .send(); // makes the service call
         // END: com.azure.core.experimental.http.dynamicrequest.getrequest
     }

@@ -28,7 +28,7 @@ public final class DatabasesDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.databases()
-            .delete("vacqpbtuodxesz", "bbelawumuaslzk", "rrwoycqucwyhahn", com.azure.core.util.Context.NONE);
+            .delete("uxakjsqzhzbezk", "imsidxasicddyvvj", "kgfmocwahpq", com.azure.core.util.Context.NONE);
 
     }
 }

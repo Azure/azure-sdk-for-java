@@ -11,7 +11,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager;
 import com.azure.resourcemanager.streamanalytics.models.Cluster;
-import com.azure.resourcemanager.streamanalytics.models.ClusterProperties;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSku;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSkuName;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +25,7 @@ public final class ClustersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"sku\":{\"name\":\"Default\",\"capacity\":2105592893},\"etag\":\"nygq\",\"properties\":{\"createdDate\":\"2021-05-14T00:08:21Z\",\"clusterId\":\"zdzgtilaxhnfhqly\",\"provisioningState\":\"Succeeded\",\"capacityAllocated\":2065118929,\"capacityAssigned\":316735321},\"location\":\"vk\",\"tags\":{\"ti\":\"zunbixx\",\"vtsoxf\":\"vcpwpgclrc\",\"m\":\"kenx\",\"ao\":\"yefrpmpdnqqska\"},\"id\":\"vmm\",\"name\":\"npqfrtqlkzmeg\",\"type\":\"itgvkx\"}";
+            = "{\"sku\":{\"name\":\"Default\",\"capacity\":515426509},\"etag\":\"frymsgaojfmwnc\",\"properties\":{\"createdDate\":\"2021-05-09T10:35:28Z\",\"clusterId\":\"hirctymoxoftpipi\",\"provisioningState\":\"Succeeded\",\"capacityAllocated\":422952763,\"capacityAssigned\":1967043899},\"location\":\"a\",\"tags\":{\"skasdvlmfwdgzxu\":\"jlihhyus\",\"euzvx\":\"ucvpamrs\",\"xmrhu\":\"risjnhnytxifqjz\",\"cesutrgjupauut\":\"lw\"},\"id\":\"woqhihe\",\"name\":\"qg\",\"type\":\"zpnfqntcypsxj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,21 +35,19 @@ public final class ClustersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Cluster response = manager.clusters()
-            .define("bcporxvxcjzhqizx")
-            .withRegion("vmmghfcfiwrxgk")
-            .withExistingResourceGroup("bcxf")
-            .withTags(mapOf("zqodfvpgshox", "vyi", "zflbqvg", "sgbpfgzdjtx", "sdtutnwlduyc", "qvlgafcqusrdvetn",
-                "kuqgsjjxundxgket", "uzhyrmewipmvekdx"))
-            .withSku(new ClusterSku().withName(ClusterSkuName.DEFAULT).withCapacity(761396625))
-            .withProperties(new ClusterProperties())
-            .withIfMatch("ms")
-            .withIfNoneMatch("ynsqyrpfoobr")
+            .define("z")
+            .withRegion("ntps")
+            .withExistingResourceGroup("fbshrnsvbuswd")
+            .withTags(mapOf("ieoxorggufhyaomt", "ioilqukrydxtq", "jzhpjbibgjmfx", "ghhavgrvkffo"))
+            .withSku(new ClusterSku().withName(ClusterSkuName.DEFAULT).withCapacity(449257280))
+            .withIfMatch("zbomvzzbtdcqvpni")
+            .withIfNoneMatch("ujviylwdshfs")
             .create();
 
-        Assertions.assertEquals("vk", response.location());
-        Assertions.assertEquals("zunbixx", response.tags().get("ti"));
+        Assertions.assertEquals("a", response.location());
+        Assertions.assertEquals("jlihhyus", response.tags().get("skasdvlmfwdgzxu"));
         Assertions.assertEquals(ClusterSkuName.DEFAULT, response.sku().name());
-        Assertions.assertEquals(2105592893, response.sku().capacity());
+        Assertions.assertEquals(515426509, response.sku().capacity());
     }
 
     // Use "Map.of" if available

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.securityinsights.fluent.models.ThreatIntelligenceInformationInner;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceInformation;
-import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceResourceKindEnum;
+import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceResourceInnerKind;
 
 public final class ThreatIntelligenceInformationImpl implements ThreatIntelligenceInformation {
     private ThreatIntelligenceInformationInner innerObject;
@@ -40,7 +40,7 @@ public final class ThreatIntelligenceInformationImpl implements ThreatIntelligen
         return this.innerModel().systemData();
     }
 
-    public ThreatIntelligenceResourceKindEnum kind() {
+    public ThreatIntelligenceResourceInnerKind kind() {
         return this.innerModel().kind();
     }
 

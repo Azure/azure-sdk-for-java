@@ -191,8 +191,8 @@ public final class FirewallResourceImpl
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.firewallName = Utils.getValueFromIdByName(innerObject.id(), "firewalls");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.firewallName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firewalls");
     }
 
     public FirewallResource refresh() {

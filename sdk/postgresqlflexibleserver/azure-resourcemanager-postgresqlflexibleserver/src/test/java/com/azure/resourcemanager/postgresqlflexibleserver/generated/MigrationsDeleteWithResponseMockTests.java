@@ -27,9 +27,7 @@ public final class MigrationsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.migrations()
-            .deleteWithResponse("inwjizcilngh", "shejjtbxqm", "luxlxqzvnersby", "ucrwnami",
-                com.azure.core.util.Context.NONE);
+        manager.migrations().deleteWithResponse("czurtlei", "q", "bkwvzg", "zvd", com.azure.core.util.Context.NONE);
 
     }
 }

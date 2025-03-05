@@ -49,7 +49,7 @@ public final class JavaScriptFunctionRetrieveDefaultDefinitionParameters
      * 
      * @return the innerBindingRetrievalProperties value.
      */
-    private JavaScriptFunctionBindingRetrievalProperties innerBindingRetrievalProperties() {
+    JavaScriptFunctionBindingRetrievalProperties innerBindingRetrievalProperties() {
         return this.innerBindingRetrievalProperties;
     }
 

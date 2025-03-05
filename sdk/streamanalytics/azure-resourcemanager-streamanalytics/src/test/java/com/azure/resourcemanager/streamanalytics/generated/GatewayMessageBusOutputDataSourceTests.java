@@ -12,15 +12,15 @@ public final class GatewayMessageBusOutputDataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayMessageBusOutputDataSource model
-            = BinaryData.fromString("{\"type\":\"GatewayMessageBus\",\"properties\":{\"topic\":\"vtldgmfpgvmpip\"}}")
+            = BinaryData.fromString("{\"type\":\"GatewayMessageBus\",\"properties\":{\"topic\":\"kpw\"}}")
                 .toObject(GatewayMessageBusOutputDataSource.class);
-        Assertions.assertEquals("vtldgmfpgvmpip", model.topic());
+        Assertions.assertEquals("kpw", model.topic());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayMessageBusOutputDataSource model = new GatewayMessageBusOutputDataSource().withTopic("vtldgmfpgvmpip");
+        GatewayMessageBusOutputDataSource model = new GatewayMessageBusOutputDataSource().withTopic("kpw");
         model = BinaryData.fromObject(model).toObject(GatewayMessageBusOutputDataSource.class);
-        Assertions.assertEquals("vtldgmfpgvmpip", model.topic());
+        Assertions.assertEquals("kpw", model.topic());
     }
 }

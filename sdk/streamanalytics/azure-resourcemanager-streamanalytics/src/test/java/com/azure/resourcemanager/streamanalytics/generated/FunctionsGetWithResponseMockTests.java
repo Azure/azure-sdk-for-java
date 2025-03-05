@@ -21,7 +21,7 @@ public final class FunctionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"gzpfrla\",\"properties\":{\"inputs\":[{\"dataType\":\"woiindf\",\"isConfigurationParameter\":false},{\"dataType\":\"ylwbtlhflsjcdhsz\",\"isConfigurationParameter\":true},{\"dataType\":\"bgofeljag\",\"isConfigurationParameter\":true}],\"output\":{\"dataType\":\"ldvriiiojnalghfk\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"sexso\",\"type\":\"el\",\"id\":\"hhahhxvrhmzkwpjg\"}";
+            = "{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"o\",\"properties\":{\"inputs\":[{\"dataType\":\"klff\",\"isConfigurationParameter\":false},{\"dataType\":\"wqlgzrf\",\"isConfigurationParameter\":true}],\"output\":{\"dataType\":\"bizikayuhq\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"bs\",\"type\":\"bqwrvtldgm\",\"id\":\"gvmpipaslthaqfx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,13 +30,14 @@ public final class FunctionsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Function response
-            = manager.functions().getWithResponse("av", "mbzonokix", "jq", com.azure.core.util.Context.NONE).getValue();
+        Function response = manager.functions()
+            .getWithResponse("stawfsdjpvkv", "bjxbkzbzk", "vncjabudurgk", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("hhahhxvrhmzkwpjg", response.id());
-        Assertions.assertEquals("woiindf", response.properties().inputs().get(0).dataType());
+        Assertions.assertEquals("gvmpipaslthaqfx", response.id());
+        Assertions.assertEquals("klff", response.properties().inputs().get(0).dataType());
         Assertions.assertEquals(false, response.properties().inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("ldvriiiojnalghfk", response.properties().output().dataType());
-        Assertions.assertEquals("sexso", response.name());
+        Assertions.assertEquals("bizikayuhq", response.properties().output().dataType());
+        Assertions.assertEquals("bs", response.name());
     }
 }

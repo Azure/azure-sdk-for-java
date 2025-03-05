@@ -6,10 +6,7 @@ package com.azure.resourcemanager.securityinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.securityinsights.fluent.models.BookmarkInner;
-import com.azure.resourcemanager.securityinsights.models.AttackTactic;
-import com.azure.resourcemanager.securityinsights.models.BookmarkEntityMappings;
 import com.azure.resourcemanager.securityinsights.models.BookmarkList;
-import com.azure.resourcemanager.securityinsights.models.EntityFieldMapping;
 import com.azure.resourcemanager.securityinsights.models.IncidentInfo;
 import com.azure.resourcemanager.securityinsights.models.IncidentSeverity;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
@@ -22,125 +19,67 @@ public final class BookmarkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BookmarkList model = BinaryData.fromString(
-            "{\"nextLink\":\"zafb\",\"value\":[{\"properties\":{\"created\":\"2021-06-11T17:23:12Z\",\"createdBy\":{\"email\":\"oq\",\"name\":\"mkljavb\",\"objectId\":\"8258593d-a657-4adc-80f1-934847bb8090\"},\"displayName\":\"dtqajzyulpkudj\",\"labels\":[\"khbzhfepgzg\",\"e\"],\"notes\":\"locx\",\"query\":\"c\",\"queryResult\":\"ierhhbcsglummaj\",\"updated\":\"2021-08-25T02:16:19Z\",\"updatedBy\":{\"email\":\"xobnbdxkqpxok\",\"name\":\"ionpimexg\",\"objectId\":\"9d100bb4-bd6a-47e9-aa93-17f18556d3a2\"},\"eventTime\":\"2021-02-04T19:39:31Z\",\"queryStartTime\":\"2021-01-04T01:10:44Z\",\"queryEndTime\":\"2021-06-26T04:01:22Z\",\"incidentInfo\":{\"incidentId\":\"aajrm\",\"severity\":\"Medium\",\"title\":\"zrlovmclwhijcoej\",\"relationName\":\"bzaqsqsycbkbfk\"},\"entityMappings\":[{\"entityType\":\"kexxppof\",\"fieldMappings\":[{},{},{},{}]},{\"entityType\":\"c\",\"fieldMappings\":[{}]}],\"tactics\":[\"InhibitResponseFunction\",\"PreAttack\",\"Discovery\"],\"techniques\":[\"j\",\"hvpmoue\"]},\"etag\":\"dzxibqeojnxqbzvd\",\"id\":\"t\",\"name\":\"ndei\",\"type\":\"btwnpzaoqvuhrhcf\"},{\"properties\":{\"created\":\"2021-03-03T09:24:54Z\",\"createdBy\":{\"email\":\"lmjthjq\",\"name\":\"pyeicxm\",\"objectId\":\"3e74bc30-ddd6-4dd0-be47-d92fea257554\"},\"displayName\":\"iwqvhkh\",\"labels\":[\"igdtopbob\",\"og\",\"m\",\"w\"],\"notes\":\"m\",\"query\":\"uhrzayvvt\",\"queryResult\":\"vdfgiotk\",\"updated\":\"2021-02-26T17:36:33Z\",\"updatedBy\":{\"email\":\"xlngx\",\"name\":\"fgugnxkrxdqmid\",\"objectId\":\"974dae6e-e473-45ea-9f35-a84ecc21e800\"},\"eventTime\":\"2021-07-18T22:53:57Z\",\"queryStartTime\":\"2021-10-23T16:11:35Z\",\"queryEndTime\":\"2021-04-11T14:25:50Z\",\"incidentInfo\":{\"incidentId\":\"bhj\",\"severity\":\"Medium\",\"title\":\"ehoqfbowskan\",\"relationName\":\"tzlcuiywgqywgn\"},\"entityMappings\":[{\"entityType\":\"nhzgpphrcgyn\",\"fieldMappings\":[{},{},{},{}]},{\"entityType\":\"ecfvmm\",\"fieldMappings\":[{}]},{\"entityType\":\"sxlzevgbmqj\",\"fieldMappings\":[{},{}]}],\"tactics\":[\"CommandAndControl\"],\"techniques\":[\"vkwlzuvccfwnf\",\"bacfionlebxetq\",\"tzxdpnqbqqwx\",\"jfeallnwsub\"]},\"etag\":\"njampm\",\"id\":\"nzscxa\",\"name\":\"wooc\",\"type\":\"cbonqvpk\"}]}")
+            "{\"nextLink\":\"zidnsezcxtbzsgfy\",\"value\":[{\"properties\":{\"created\":\"2021-04-28T14:26:37Z\",\"createdBy\":{\"email\":\"dwzjeiach\",\"name\":\"osfln\",\"objectId\":\"0296629a-3485-4e09-9e99-92d0788328ba\"},\"displayName\":\"sfqpteehz\",\"labels\":[\"pyqr\",\"mzinpvswjdk\",\"rsoodqxhcrmnoh\"],\"notes\":\"ckwhds\",\"query\":\"ifiyipjxsqwpgrj\",\"queryResult\":\"norcjxvsnbyxqab\",\"updated\":\"2021-01-31T04:10:32Z\",\"updatedBy\":{\"email\":\"cyshurzafbljjgp\",\"name\":\"oq\",\"objectId\":\"40d76acc-6403-4303-9e1c-377f943dd4e0\"},\"eventTime\":\"2021-08-23T17:30:32Z\",\"queryStartTime\":\"2021-06-12T13:13:31Z\",\"queryEndTime\":\"2021-09-28T22:54:32Z\",\"incidentInfo\":{\"incidentId\":\"idtqajzyu\",\"severity\":\"Low\",\"title\":\"dj\",\"relationName\":\"lkhbz\"}},\"etag\":\"epgzgqexz\",\"id\":\"c\",\"name\":\"scpai\",\"type\":\"rhhbcs\"}]}")
             .toObject(BookmarkList.class);
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.value().get(0).etag());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T17:23:12Z"), model.value().get(0).created());
-        Assertions.assertEquals(UUID.fromString("8258593d-a657-4adc-80f1-934847bb8090"),
+        Assertions.assertEquals("epgzgqexz", model.value().get(0).etag());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T14:26:37Z"), model.value().get(0).created());
+        Assertions.assertEquals(UUID.fromString("0296629a-3485-4e09-9e99-92d0788328ba"),
             model.value().get(0).createdBy().objectId());
-        Assertions.assertEquals("dtqajzyulpkudj", model.value().get(0).displayName());
-        Assertions.assertEquals("khbzhfepgzg", model.value().get(0).labels().get(0));
-        Assertions.assertEquals("locx", model.value().get(0).notes());
-        Assertions.assertEquals("c", model.value().get(0).query());
-        Assertions.assertEquals("ierhhbcsglummaj", model.value().get(0).queryResult());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T02:16:19Z"), model.value().get(0).updated());
-        Assertions.assertEquals(UUID.fromString("9d100bb4-bd6a-47e9-aa93-17f18556d3a2"),
+        Assertions.assertEquals("sfqpteehz", model.value().get(0).displayName());
+        Assertions.assertEquals("pyqr", model.value().get(0).labels().get(0));
+        Assertions.assertEquals("ckwhds", model.value().get(0).notes());
+        Assertions.assertEquals("ifiyipjxsqwpgrj", model.value().get(0).query());
+        Assertions.assertEquals("norcjxvsnbyxqab", model.value().get(0).queryResult());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T04:10:32Z"), model.value().get(0).updated());
+        Assertions.assertEquals(UUID.fromString("40d76acc-6403-4303-9e1c-377f943dd4e0"),
             model.value().get(0).updatedBy().objectId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T19:39:31Z"), model.value().get(0).eventTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T01:10:44Z"), model.value().get(0).queryStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-26T04:01:22Z"), model.value().get(0).queryEndTime());
-        Assertions.assertEquals("aajrm", model.value().get(0).incidentInfo().incidentId());
-        Assertions.assertEquals(IncidentSeverity.MEDIUM, model.value().get(0).incidentInfo().severity());
-        Assertions.assertEquals("zrlovmclwhijcoej", model.value().get(0).incidentInfo().title());
-        Assertions.assertEquals("bzaqsqsycbkbfk", model.value().get(0).incidentInfo().relationName());
-        Assertions.assertEquals("kexxppof", model.value().get(0).entityMappings().get(0).entityType());
-        Assertions.assertEquals(AttackTactic.INHIBIT_RESPONSE_FUNCTION, model.value().get(0).tactics().get(0));
-        Assertions.assertEquals("j", model.value().get(0).techniques().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T17:30:32Z"), model.value().get(0).eventTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-12T13:13:31Z"), model.value().get(0).queryStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T22:54:32Z"), model.value().get(0).queryEndTime());
+        Assertions.assertEquals("idtqajzyu", model.value().get(0).incidentInfo().incidentId());
+        Assertions.assertEquals(IncidentSeverity.LOW, model.value().get(0).incidentInfo().severity());
+        Assertions.assertEquals("dj", model.value().get(0).incidentInfo().title());
+        Assertions.assertEquals("lkhbz", model.value().get(0).incidentInfo().relationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BookmarkList model
-            = new BookmarkList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new BookmarkInner().withEtag("dzxibqeojnxqbzvd")
-                                .withCreated(OffsetDateTime.parse("2021-06-11T17:23:12Z"))
-                                .withCreatedBy(new UserInfo()
-                                    .withObjectId(UUID.fromString("8258593d-a657-4adc-80f1-934847bb8090")))
-                                .withDisplayName("dtqajzyulpkudj")
-                                .withLabels(Arrays.asList("khbzhfepgzg", "e"))
-                                .withNotes("locx")
-                                .withQuery("c")
-                                .withQueryResult("ierhhbcsglummaj")
-                                .withUpdated(OffsetDateTime.parse("2021-08-25T02:16:19Z"))
-                                .withUpdatedBy(new UserInfo()
-                                    .withObjectId(UUID.fromString("9d100bb4-bd6a-47e9-aa93-17f18556d3a2")))
-                                .withEventTime(OffsetDateTime.parse("2021-02-04T19:39:31Z"))
-                                .withQueryStartTime(OffsetDateTime.parse("2021-01-04T01:10:44Z"))
-                                .withQueryEndTime(OffsetDateTime.parse("2021-06-26T04:01:22Z"))
-                                .withIncidentInfo(new IncidentInfo()
-                                    .withIncidentId("aajrm")
-                                    .withSeverity(IncidentSeverity.MEDIUM)
-                                    .withTitle("zrlovmclwhijcoej")
-                                    .withRelationName("bzaqsqsycbkbfk"))
-                                .withEntityMappings(Arrays.asList(new BookmarkEntityMappings()
-                                    .withEntityType("kexxppof")
-                                    .withFieldMappings(Arrays.asList(new EntityFieldMapping(), new EntityFieldMapping(),
-                                        new EntityFieldMapping(), new EntityFieldMapping())),
-                                    new BookmarkEntityMappings()
-                                        .withEntityType("c")
-                                        .withFieldMappings(Arrays.asList(new EntityFieldMapping()))))
-                                .withTactics(
-                                    Arrays.asList(
-                                        AttackTactic.INHIBIT_RESPONSE_FUNCTION, AttackTactic.PRE_ATTACK,
-                                        AttackTactic.DISCOVERY))
-                                .withTechniques(Arrays.asList("j", "hvpmoue")),
-                            new BookmarkInner().withEtag("njampm")
-                                .withCreated(OffsetDateTime.parse("2021-03-03T09:24:54Z"))
-                                .withCreatedBy(new UserInfo()
-                                    .withObjectId(UUID.fromString("3e74bc30-ddd6-4dd0-be47-d92fea257554")))
-                                .withDisplayName("iwqvhkh")
-                                .withLabels(Arrays.asList("igdtopbob", "og", "m", "w"))
-                                .withNotes("m")
-                                .withQuery("uhrzayvvt")
-                                .withQueryResult("vdfgiotk")
-                                .withUpdated(OffsetDateTime.parse("2021-02-26T17:36:33Z"))
-                                .withUpdatedBy(new UserInfo()
-                                    .withObjectId(UUID.fromString("974dae6e-e473-45ea-9f35-a84ecc21e800")))
-                                .withEventTime(OffsetDateTime.parse("2021-07-18T22:53:57Z"))
-                                .withQueryStartTime(OffsetDateTime.parse("2021-10-23T16:11:35Z"))
-                                .withQueryEndTime(OffsetDateTime.parse("2021-04-11T14:25:50Z"))
-                                .withIncidentInfo(new IncidentInfo()
-                                    .withIncidentId("bhj")
-                                    .withSeverity(IncidentSeverity.MEDIUM)
-                                    .withTitle("ehoqfbowskan")
-                                    .withRelationName("tzlcuiywgqywgn"))
-                                .withEntityMappings(Arrays.asList(new BookmarkEntityMappings()
-                                    .withEntityType("nhzgpphrcgyn")
-                                    .withFieldMappings(Arrays.asList(new EntityFieldMapping(), new EntityFieldMapping(),
-                                        new EntityFieldMapping(), new EntityFieldMapping())),
-                                    new BookmarkEntityMappings().withEntityType("ecfvmm")
-                                        .withFieldMappings(Arrays.asList(new EntityFieldMapping())),
-                                    new BookmarkEntityMappings().withEntityType("sxlzevgbmqj")
-                                        .withFieldMappings(
-                                            Arrays.asList(new EntityFieldMapping(), new EntityFieldMapping()))))
-                                .withTactics(Arrays.asList(AttackTactic.COMMAND_AND_CONTROL))
-                                .withTechniques(
-                                    Arrays.asList("vkwlzuvccfwnf", "bacfionlebxetq", "tzxdpnqbqqwx", "jfeallnwsub"))));
+        BookmarkList model = new BookmarkList().withValue(Arrays.asList(new BookmarkInner().withEtag("epgzgqexz")
+            .withCreated(OffsetDateTime.parse("2021-04-28T14:26:37Z"))
+            .withCreatedBy(new UserInfo().withObjectId(UUID.fromString("0296629a-3485-4e09-9e99-92d0788328ba")))
+            .withDisplayName("sfqpteehz")
+            .withLabels(Arrays.asList("pyqr", "mzinpvswjdk", "rsoodqxhcrmnoh"))
+            .withNotes("ckwhds")
+            .withQuery("ifiyipjxsqwpgrj")
+            .withQueryResult("norcjxvsnbyxqab")
+            .withUpdated(OffsetDateTime.parse("2021-01-31T04:10:32Z"))
+            .withUpdatedBy(new UserInfo().withObjectId(UUID.fromString("40d76acc-6403-4303-9e1c-377f943dd4e0")))
+            .withEventTime(OffsetDateTime.parse("2021-08-23T17:30:32Z"))
+            .withQueryStartTime(OffsetDateTime.parse("2021-06-12T13:13:31Z"))
+            .withQueryEndTime(OffsetDateTime.parse("2021-09-28T22:54:32Z"))
+            .withIncidentInfo(new IncidentInfo().withIncidentId("idtqajzyu")
+                .withSeverity(IncidentSeverity.LOW)
+                .withTitle("dj")
+                .withRelationName("lkhbz"))));
         model = BinaryData.fromObject(model).toObject(BookmarkList.class);
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.value().get(0).etag());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T17:23:12Z"), model.value().get(0).created());
-        Assertions.assertEquals(UUID.fromString("8258593d-a657-4adc-80f1-934847bb8090"),
+        Assertions.assertEquals("epgzgqexz", model.value().get(0).etag());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T14:26:37Z"), model.value().get(0).created());
+        Assertions.assertEquals(UUID.fromString("0296629a-3485-4e09-9e99-92d0788328ba"),
             model.value().get(0).createdBy().objectId());
-        Assertions.assertEquals("dtqajzyulpkudj", model.value().get(0).displayName());
-        Assertions.assertEquals("khbzhfepgzg", model.value().get(0).labels().get(0));
-        Assertions.assertEquals("locx", model.value().get(0).notes());
-        Assertions.assertEquals("c", model.value().get(0).query());
-        Assertions.assertEquals("ierhhbcsglummaj", model.value().get(0).queryResult());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T02:16:19Z"), model.value().get(0).updated());
-        Assertions.assertEquals(UUID.fromString("9d100bb4-bd6a-47e9-aa93-17f18556d3a2"),
+        Assertions.assertEquals("sfqpteehz", model.value().get(0).displayName());
+        Assertions.assertEquals("pyqr", model.value().get(0).labels().get(0));
+        Assertions.assertEquals("ckwhds", model.value().get(0).notes());
+        Assertions.assertEquals("ifiyipjxsqwpgrj", model.value().get(0).query());
+        Assertions.assertEquals("norcjxvsnbyxqab", model.value().get(0).queryResult());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T04:10:32Z"), model.value().get(0).updated());
+        Assertions.assertEquals(UUID.fromString("40d76acc-6403-4303-9e1c-377f943dd4e0"),
             model.value().get(0).updatedBy().objectId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T19:39:31Z"), model.value().get(0).eventTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T01:10:44Z"), model.value().get(0).queryStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-26T04:01:22Z"), model.value().get(0).queryEndTime());
-        Assertions.assertEquals("aajrm", model.value().get(0).incidentInfo().incidentId());
-        Assertions.assertEquals(IncidentSeverity.MEDIUM, model.value().get(0).incidentInfo().severity());
-        Assertions.assertEquals("zrlovmclwhijcoej", model.value().get(0).incidentInfo().title());
-        Assertions.assertEquals("bzaqsqsycbkbfk", model.value().get(0).incidentInfo().relationName());
-        Assertions.assertEquals("kexxppof", model.value().get(0).entityMappings().get(0).entityType());
-        Assertions.assertEquals(AttackTactic.INHIBIT_RESPONSE_FUNCTION, model.value().get(0).tactics().get(0));
-        Assertions.assertEquals("j", model.value().get(0).techniques().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T17:30:32Z"), model.value().get(0).eventTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-12T13:13:31Z"), model.value().get(0).queryStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T22:54:32Z"), model.value().get(0).queryEndTime());
+        Assertions.assertEquals("idtqajzyu", model.value().get(0).incidentInfo().incidentId());
+        Assertions.assertEquals(IncidentSeverity.LOW, model.value().get(0).incidentInfo().severity());
+        Assertions.assertEquals("dj", model.value().get(0).incidentInfo().title());
+        Assertions.assertEquals("lkhbz", model.value().get(0).incidentInfo().relationName());
     }
 }

@@ -10,8 +10,8 @@ package com.azure.resourcemanager.securityinsights.generated;
 public final class WatchlistsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
-     * watchlists/GetWatchlistByAlias.json
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/watchlists/
+     * GetWatchlistByAlias.json
      */
     /**
      * Sample code: Get a watchlist.

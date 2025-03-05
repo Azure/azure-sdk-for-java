@@ -14,28 +14,11 @@ import java.util.Map;
 public final class AzureBareMetalInstancesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-
-     * preview/examples/AzureBareMetalInstances_PatchTags_Delete.json
+     * specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/
+     * examples/AzureBareMetalInstances_PatchTags.json
      */
     /**
-     * Sample code: Delete Tags field of an Azure Bare Metal Instance.
-     * 
-     * @param manager Entry point to BareMetalInfrastructureManager.
-     */
-    public static void deleteTagsFieldOfAnAzureBareMetalInstance(
-        com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
-        manager.azureBareMetalInstances()
-            .updateWithResponse("myResourceGroup", "myABMInstance", new Tags().withTags(mapOf()),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-
-     * preview/examples/AzureBareMetalInstances_PatchTags.json
-     */
-    /**
-     * Sample code: Update Tags field of an Azure Bare Metal Instance.
+     * Sample code: Update Tags field of an AzureBareMetal instance.
      * 
      * @param manager Entry point to BareMetalInfrastructureManager.
      */
@@ -44,6 +27,23 @@ public final class AzureBareMetalInstancesUpdateSamples {
         manager.azureBareMetalInstances()
             .updateWithResponse("myResourceGroup", "myABMInstance",
                 new Tags().withTags(mapOf("testkey", "fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/
+     * examples/AzureBareMetalInstances_PatchTags_Delete.json
+     */
+    /**
+     * Sample code: Delete Tags field of an AzureBareMetal instance.
+     * 
+     * @param manager Entry point to BareMetalInfrastructureManager.
+     */
+    public static void deleteTagsFieldOfAnAzureBareMetalInstance(
+        com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
+        manager.azureBareMetalInstances()
+            .updateWithResponse("myResourceGroup", "myABMInstance", new Tags().withTags(mapOf()),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

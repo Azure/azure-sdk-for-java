@@ -37,7 +37,7 @@ public class BotChannelInner extends Resource {
     private Kind kind;
 
     /*
-     * Entity Tag.
+     * Entity Tag
      */
     private String etag;
 

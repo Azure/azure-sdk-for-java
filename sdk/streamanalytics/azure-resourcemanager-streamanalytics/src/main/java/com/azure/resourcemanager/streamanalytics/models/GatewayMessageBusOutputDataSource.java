@@ -49,7 +49,7 @@ public final class GatewayMessageBusOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private GatewayMessageBusOutputDataSourceProperties innerProperties() {
+    GatewayMessageBusOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

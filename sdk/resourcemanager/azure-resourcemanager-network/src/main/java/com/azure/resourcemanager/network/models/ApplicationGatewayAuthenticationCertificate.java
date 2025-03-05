@@ -16,7 +16,11 @@ import java.io.IOException;
 public interface ApplicationGatewayAuthenticationCertificate
     extends HasInnerModel<ApplicationGatewayAuthenticationCertificateInner>, ChildResource<ApplicationGateway> {
 
-    /** @return base-64 encoded bytes of the X.509 certificate */
+    /**
+     * Gets base-64 encoded bytes of the X.509 certificate.
+     *
+     * @return base-64 encoded bytes of the X.509 certificate
+     */
     String data();
 
     /** Grouping of application gateway authentication certificate stages. */

@@ -175,6 +175,15 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
      * {@inheritDoc}
      */
     @Override
+    public ManagedClusterAgentPoolProfile withMessageOfTheDay(String messageOfTheDay) {
+        super.withMessageOfTheDay(messageOfTheDay);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ManagedClusterAgentPoolProfile withVnetSubnetId(String vnetSubnetId) {
         super.withVnetSubnetId(vnetSubnetId);
         return this;
@@ -547,6 +556,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeStringField("osDiskType", osDiskType() == null ? null : osDiskType().toString());
         jsonWriter.writeStringField("kubeletDiskType", kubeletDiskType() == null ? null : kubeletDiskType().toString());
         jsonWriter.writeStringField("workloadRuntime", workloadRuntime() == null ? null : workloadRuntime().toString());
+        jsonWriter.writeStringField("messageOfTheDay", messageOfTheDay());
         jsonWriter.writeStringField("vnetSubnetID", vnetSubnetId());
         jsonWriter.writeStringField("podSubnetID", podSubnetId());
         jsonWriter.writeNumberField("maxPods", maxPods());
@@ -625,6 +635,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                 } else if ("workloadRuntime".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
                         .withWorkloadRuntime(WorkloadRuntime.fromString(reader.getString()));
+                } else if ("messageOfTheDay".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withMessageOfTheDay(reader.getString());
                 } else if ("vnetSubnetID".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.withVnetSubnetId(reader.getString());
                 } else if ("podSubnetID".equals(fieldName)) {

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.securityinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentInner;
-import com.azure.resourcemanager.securityinsights.fluent.models.TeamInformationInner;
 import com.azure.resourcemanager.securityinsights.models.IncidentClassification;
 import com.azure.resourcemanager.securityinsights.models.IncidentClassificationReason;
 import com.azure.resourcemanager.securityinsights.models.IncidentLabel;
@@ -23,69 +22,60 @@ public final class IncidentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncidentInner model = BinaryData.fromString(
-            "{\"properties\":{\"additionalData\":{\"alertsCount\":79492990,\"bookmarksCount\":1119660278,\"commentsCount\":785056478,\"alertProductNames\":[\"sgeivsiy\",\"zkdnc\",\"dxonbzoggculap\"],\"providerIncidentUrl\":\"y\",\"tactics\":[\"PreAttack\",\"LateralMovement\",\"InhibitResponseFunction\",\"Persistence\"],\"techniques\":[\"pnylb\",\"uajlyj\"]},\"classification\":\"BenignPositive\",\"classificationComment\":\"fqzhv\",\"classificationReason\":\"SuspiciousButExpected\",\"createdTimeUtc\":\"2021-08-18T06:30:53Z\",\"description\":\"mowuxrk\",\"firstActivityTimeUtc\":\"2021-08-28T09:36:55Z\",\"incidentUrl\":\"w\",\"incidentNumber\":1115124750,\"labels\":[{\"labelName\":\"ivwzjbhyzs\",\"labelType\":\"User\"},{\"labelName\":\"kambtrnegvmnvuqe\",\"labelType\":\"User\"},{\"labelName\":\"dspastjbkkdmfl\",\"labelType\":\"AutoAssigned\"},{\"labelName\":\"tmjlx\",\"labelType\":\"AutoAssigned\"}],\"providerName\":\"ozapeew\",\"providerIncidentId\":\"pxlktwkuziycsl\",\"lastActivityTimeUtc\":\"2021-06-28T05:31:47Z\",\"lastModifiedTimeUtc\":\"2021-08-14T04:43:23Z\",\"owner\":{\"email\":\"cktyh\",\"assignedTo\":\"qedcgzulwm\",\"objectId\":\"fcb6be16-db16-45de-a6c5-64cd3457e237\",\"userPrincipalName\":\"z\",\"ownerType\":\"Group\"},\"relatedAnalyticRuleIds\":[\"pglydz\",\"krvq\"],\"severity\":\"High\",\"status\":\"Closed\",\"teamInformation\":{\"teamId\":\"epr\",\"primaryChannelUrl\":\"t\",\"teamCreationTimeUtc\":\"2021-06-16T07:29:40Z\",\"name\":\"pzdm\",\"description\":\"zvfvaawz\"},\"title\":\"adflgzu\"},\"etag\":\"glae\",\"id\":\"ndtic\",\"name\":\"kpvzmlq\",\"type\":\"mldgxobfirc\"}")
+            "{\"properties\":{\"additionalData\":{\"alertsCount\":1288949880,\"bookmarksCount\":38028181,\"commentsCount\":1859867828,\"alertProductNames\":[\"agalpbuxwgipwhon\",\"wkgshwa\",\"kix\",\"bin\"],\"tactics\":[\"PreAttack\"]},\"classification\":\"TruePositive\",\"classificationComment\":\"rywn\",\"classificationReason\":\"InaccurateData\",\"createdTimeUtc\":\"2021-04-28T10:57:32Z\",\"description\":\"iyqzrnk\",\"firstActivityTimeUtc\":\"2021-04-18T03:15:34Z\",\"incidentUrl\":\"xlwhzlsicoh\",\"incidentNumber\":1969001145,\"labels\":[{\"labelName\":\"vlryavwhheunmmq\",\"labelType\":\"User\"}],\"lastActivityTimeUtc\":\"2021-05-31T23:19:13Z\",\"lastModifiedTimeUtc\":\"2021-09-15T07:07:36Z\",\"owner\":{\"email\":\"cukoklyaxuconu\",\"assignedTo\":\"zf\",\"objectId\":\"7669d900-4798-41a9-8c99-3dc89eac8fa5\",\"userPrincipalName\":\"ypewrmjmwvvjekt\",\"ownerType\":\"User\"},\"relatedAnalyticRuleIds\":[\"hwlrsf\",\"rzpwvlqdqgbiq\",\"lihkaetcktvfc\",\"vf\"],\"severity\":\"Informational\",\"status\":\"Closed\",\"title\":\"ymuctqhjfbebrj\"},\"etag\":\"erfuwuttt\",\"id\":\"vjrbirphxepcyvah\",\"name\":\"nljky\",\"type\":\"xjvuujqgidokg\"}")
             .toObject(IncidentInner.class);
-        Assertions.assertEquals("glae", model.etag());
-        Assertions.assertEquals(IncidentClassification.BENIGN_POSITIVE, model.classification());
-        Assertions.assertEquals("fqzhv", model.classificationComment());
-        Assertions.assertEquals(IncidentClassificationReason.SUSPICIOUS_BUT_EXPECTED, model.classificationReason());
-        Assertions.assertEquals("mowuxrk", model.description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T09:36:55Z"), model.firstActivityTimeUtc());
-        Assertions.assertEquals("ivwzjbhyzs", model.labels().get(0).labelName());
-        Assertions.assertEquals("ozapeew", model.providerName());
-        Assertions.assertEquals("pxlktwkuziycsl", model.providerIncidentId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T05:31:47Z"), model.lastActivityTimeUtc());
-        Assertions.assertEquals("cktyh", model.owner().email());
-        Assertions.assertEquals("qedcgzulwm", model.owner().assignedTo());
-        Assertions.assertEquals(UUID.fromString("fcb6be16-db16-45de-a6c5-64cd3457e237"), model.owner().objectId());
-        Assertions.assertEquals("z", model.owner().userPrincipalName());
-        Assertions.assertEquals(OwnerType.GROUP, model.owner().ownerType());
-        Assertions.assertEquals(IncidentSeverity.HIGH, model.severity());
+        Assertions.assertEquals("erfuwuttt", model.etag());
+        Assertions.assertEquals(IncidentClassification.TRUE_POSITIVE, model.classification());
+        Assertions.assertEquals("rywn", model.classificationComment());
+        Assertions.assertEquals(IncidentClassificationReason.INACCURATE_DATA, model.classificationReason());
+        Assertions.assertEquals("iyqzrnk", model.description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-18T03:15:34Z"), model.firstActivityTimeUtc());
+        Assertions.assertEquals("vlryavwhheunmmq", model.labels().get(0).labelName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-31T23:19:13Z"), model.lastActivityTimeUtc());
+        Assertions.assertEquals("cukoklyaxuconu", model.owner().email());
+        Assertions.assertEquals("zf", model.owner().assignedTo());
+        Assertions.assertEquals(UUID.fromString("7669d900-4798-41a9-8c99-3dc89eac8fa5"), model.owner().objectId());
+        Assertions.assertEquals("ypewrmjmwvvjekt", model.owner().userPrincipalName());
+        Assertions.assertEquals(OwnerType.USER, model.owner().ownerType());
+        Assertions.assertEquals(IncidentSeverity.INFORMATIONAL, model.severity());
         Assertions.assertEquals(IncidentStatus.CLOSED, model.status());
-        Assertions.assertEquals("adflgzu", model.title());
+        Assertions.assertEquals("ymuctqhjfbebrj", model.title());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncidentInner model = new IncidentInner().withEtag("glae")
-            .withClassification(IncidentClassification.BENIGN_POSITIVE)
-            .withClassificationComment("fqzhv")
-            .withClassificationReason(IncidentClassificationReason.SUSPICIOUS_BUT_EXPECTED)
-            .withDescription("mowuxrk")
-            .withFirstActivityTimeUtc(OffsetDateTime.parse("2021-08-28T09:36:55Z"))
-            .withLabels(Arrays.asList(new IncidentLabel().withLabelName("ivwzjbhyzs"),
-                new IncidentLabel().withLabelName("kambtrnegvmnvuqe"),
-                new IncidentLabel().withLabelName("dspastjbkkdmfl"), new IncidentLabel().withLabelName("tmjlx")))
-            .withProviderName("ozapeew")
-            .withProviderIncidentId("pxlktwkuziycsl")
-            .withLastActivityTimeUtc(OffsetDateTime.parse("2021-06-28T05:31:47Z"))
-            .withOwner(new IncidentOwnerInfo().withEmail("cktyh")
-                .withAssignedTo("qedcgzulwm")
-                .withObjectId(UUID.fromString("fcb6be16-db16-45de-a6c5-64cd3457e237"))
-                .withUserPrincipalName("z")
-                .withOwnerType(OwnerType.GROUP))
-            .withSeverity(IncidentSeverity.HIGH)
+        IncidentInner model = new IncidentInner().withEtag("erfuwuttt")
+            .withClassification(IncidentClassification.TRUE_POSITIVE)
+            .withClassificationComment("rywn")
+            .withClassificationReason(IncidentClassificationReason.INACCURATE_DATA)
+            .withDescription("iyqzrnk")
+            .withFirstActivityTimeUtc(OffsetDateTime.parse("2021-04-18T03:15:34Z"))
+            .withLabels(Arrays.asList(new IncidentLabel().withLabelName("vlryavwhheunmmq")))
+            .withLastActivityTimeUtc(OffsetDateTime.parse("2021-05-31T23:19:13Z"))
+            .withOwner(new IncidentOwnerInfo().withEmail("cukoklyaxuconu")
+                .withAssignedTo("zf")
+                .withObjectId(UUID.fromString("7669d900-4798-41a9-8c99-3dc89eac8fa5"))
+                .withUserPrincipalName("ypewrmjmwvvjekt")
+                .withOwnerType(OwnerType.USER))
+            .withSeverity(IncidentSeverity.INFORMATIONAL)
             .withStatus(IncidentStatus.CLOSED)
-            .withTeamInformation(new TeamInformationInner())
-            .withTitle("adflgzu");
+            .withTitle("ymuctqhjfbebrj");
         model = BinaryData.fromObject(model).toObject(IncidentInner.class);
-        Assertions.assertEquals("glae", model.etag());
-        Assertions.assertEquals(IncidentClassification.BENIGN_POSITIVE, model.classification());
-        Assertions.assertEquals("fqzhv", model.classificationComment());
-        Assertions.assertEquals(IncidentClassificationReason.SUSPICIOUS_BUT_EXPECTED, model.classificationReason());
-        Assertions.assertEquals("mowuxrk", model.description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T09:36:55Z"), model.firstActivityTimeUtc());
-        Assertions.assertEquals("ivwzjbhyzs", model.labels().get(0).labelName());
-        Assertions.assertEquals("ozapeew", model.providerName());
-        Assertions.assertEquals("pxlktwkuziycsl", model.providerIncidentId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T05:31:47Z"), model.lastActivityTimeUtc());
-        Assertions.assertEquals("cktyh", model.owner().email());
-        Assertions.assertEquals("qedcgzulwm", model.owner().assignedTo());
-        Assertions.assertEquals(UUID.fromString("fcb6be16-db16-45de-a6c5-64cd3457e237"), model.owner().objectId());
-        Assertions.assertEquals("z", model.owner().userPrincipalName());
-        Assertions.assertEquals(OwnerType.GROUP, model.owner().ownerType());
-        Assertions.assertEquals(IncidentSeverity.HIGH, model.severity());
+        Assertions.assertEquals("erfuwuttt", model.etag());
+        Assertions.assertEquals(IncidentClassification.TRUE_POSITIVE, model.classification());
+        Assertions.assertEquals("rywn", model.classificationComment());
+        Assertions.assertEquals(IncidentClassificationReason.INACCURATE_DATA, model.classificationReason());
+        Assertions.assertEquals("iyqzrnk", model.description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-18T03:15:34Z"), model.firstActivityTimeUtc());
+        Assertions.assertEquals("vlryavwhheunmmq", model.labels().get(0).labelName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-31T23:19:13Z"), model.lastActivityTimeUtc());
+        Assertions.assertEquals("cukoklyaxuconu", model.owner().email());
+        Assertions.assertEquals("zf", model.owner().assignedTo());
+        Assertions.assertEquals(UUID.fromString("7669d900-4798-41a9-8c99-3dc89eac8fa5"), model.owner().objectId());
+        Assertions.assertEquals("ypewrmjmwvvjekt", model.owner().userPrincipalName());
+        Assertions.assertEquals(OwnerType.USER, model.owner().ownerType());
+        Assertions.assertEquals(IncidentSeverity.INFORMATIONAL, model.severity());
         Assertions.assertEquals(IncidentStatus.CLOSED, model.status());
-        Assertions.assertEquals("adflgzu", model.title());
+        Assertions.assertEquals("ymuctqhjfbebrj", model.title());
     }
 }

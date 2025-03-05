@@ -249,6 +249,18 @@ public class AnnotatedQueryIT {
     }
 
     @Test
+    public void testAnnotatedQueryWithSum() {
+        Address.TEST_ADDRESS1_PARTITION1.setLongId(1L);
+        Address.TEST_ADDRESS2_PARTITION1.setLongId(2L);
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
+        addressRepository.saveAll(addresses);
+
+        final Long sumResult = addressRepository.annotatedSumLongIdValuesByCity(TestConstants.CITY);
+
+        assertThat(sumResult).isEqualTo(3);
+    }
+
+    @Test
     public void testAnnotatedQueryWithJsonNodeAsPage() {
         final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
         addressRepository.saveAll(addresses);

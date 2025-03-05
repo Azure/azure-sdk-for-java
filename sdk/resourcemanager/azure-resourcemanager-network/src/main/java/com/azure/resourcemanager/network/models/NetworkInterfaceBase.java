@@ -14,16 +14,32 @@ import java.util.List;
 @Fluent
 public interface NetworkInterfaceBase extends HasManager<NetworkManager>, HasInnerModel<NetworkInterfaceInner> {
 
-    /** @return true if accelerated networking is enabled for this network interface */
+    /**
+     * Checks whether accelerated networking is enabled for this network interface.
+     *
+     * @return true if accelerated networking is enabled for this network interface
+     */
     boolean isAcceleratedNetworkingEnabled();
 
-    /** @return true if IP forwarding is enabled in this network interface */
+    /**
+     * Checks whether IP forwarding is enabled in this network interface.
+     *
+     * @return true if IP forwarding is enabled in this network interface
+     */
     boolean isIPForwardingEnabled();
 
-    /** @return the MAC Address of the network interface */
+    /**
+     * Gets the MAC Address of the network interface.
+     *
+     * @return the MAC Address of the network interface
+     */
     String macAddress();
 
-    /** @return the Internal DNS name assigned to this network interface */
+    /**
+     * Gets the Internal DNS name assigned to this network interface.
+     *
+     * @return the Internal DNS name assigned to this network interface
+     */
     String internalDnsNameLabel();
 
     /**
@@ -35,16 +51,32 @@ public interface NetworkInterfaceBase extends HasManager<NetworkManager>, HasInn
      */
     String internalFqdn();
 
-    /** @return the internal domain name suffix */
+    /**
+     * Gets the internal domain name suffix.
+     *
+     * @return the internal domain name suffix
+     */
     String internalDomainNameSuffix();
 
-    /** @return IP addresses of this network interface's DNS servers */
+    /**
+     * Gets IP addresses of this network interface's DNS servers.
+     *
+     * @return IP addresses of this network interface's DNS servers
+     */
     List<String> dnsServers();
 
-    /** @return applied DNS servers */
+    /**
+     * Gets applied DNS servers.
+     *
+     * @return applied DNS servers
+     */
     List<String> appliedDnsServers();
 
-    /** @return the network security group resource id associated with this network interface */
+    /**
+     * Gets the network security group resource id associated with this network interface.
+     *
+     * @return the network security group resource id associated with this network interface
+     */
     String networkSecurityGroupId();
 
     /**
@@ -56,7 +88,11 @@ public interface NetworkInterfaceBase extends HasManager<NetworkManager>, HasInn
      */
     NetworkSecurityGroup getNetworkSecurityGroup();
 
-    /** @return the resource ID of the associated virtual machine, or null if none. */
+    /**
+     * Gets the resource ID of the associated virtual machine.
+     *
+     * @return the resource ID of the associated virtual machine, or null if none.
+     */
     String virtualMachineId();
 
     /**
@@ -69,6 +105,8 @@ public interface NetworkInterfaceBase extends HasManager<NetworkManager>, HasInn
     String primaryPrivateIP();
 
     /**
+     * Gets the private IP allocation method (Dynamic, Static) of this network interface's primary IP configuration.
+     *
      * @return the private IP allocation method (Dynamic, Static) of this network interface's primary IP configuration.
      */
     IpAllocationMethod primaryPrivateIpAllocationMethod();

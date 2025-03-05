@@ -11,7 +11,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.securityinsights.SecurityInsightsManager;
-import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.Bookmark;
 import com.azure.resourcemanager.securityinsights.models.IncidentSeverity;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +24,7 @@ public final class BookmarksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"created\":\"2021-05-31T21:24:09Z\",\"createdBy\":{\"email\":\"wxy\",\"name\":\"zzzevtzqwczoc\",\"objectId\":\"6253c9fc-ff52-4ba4-8e5d-554d8bfb99e6\"},\"displayName\":\"bek\",\"labels\":[\"nfpkyvnhiys\",\"horkslhraqk\",\"wlwkfflaqwmwqog\",\"flteatnegef\"],\"notes\":\"xnjtqbgysib\",\"query\":\"hnvxwtd\",\"queryResult\":\"cbjdbtqy\",\"updated\":\"2021-03-01T11:06:18Z\",\"updatedBy\":{\"email\":\"saujqg\",\"name\":\"jvovoawhgjsmbc\",\"objectId\":\"69570323-8622-4203-9995-2351162bb328\"},\"eventTime\":\"2021-11-07T19:32Z\",\"queryStartTime\":\"2021-07-18T04:00:24Z\",\"queryEndTime\":\"2021-06-19T19:43:16Z\",\"incidentInfo\":{\"incidentId\":\"d\",\"severity\":\"Medium\",\"title\":\"nsdunrkzvzua\",\"relationName\":\"hgzuyxtrvf\"},\"entityMappings\":[{\"entityType\":\"kgqjbvitptpvsf\",\"fieldMappings\":[{},{},{},{}]}],\"tactics\":[\"Exfiltration\",\"PrivilegeEscalation\"],\"techniques\":[\"muwkgjwbyfdw\",\"bwxyldqtmggcpd\",\"megaj\",\"zctwymzsk\"]},\"etag\":\"kkgeseiphgliupq\",\"id\":\"oobkjlca\",\"name\":\"sqcomjiqiincevx\",\"type\":\"kdevpximzii\"}]}";
+            = "{\"value\":[{\"properties\":{\"created\":\"2021-11-16T18:34:33Z\",\"createdBy\":{\"email\":\"wjjstliuhqa\",\"name\":\"oaiancznvodrrs\",\"objectId\":\"dc6948c0-897f-4ea2-b171-d197ed89bc8b\"},\"displayName\":\"lxydkxrxv\",\"labels\":[\"iwkgfbqljnq\",\"hychocokuleh\",\"rqlrqffawe\"],\"notes\":\"rkphyjdxr\",\"query\":\"vjuqdbrxmrgchb\",\"queryResult\":\"xk\",\"updated\":\"2021-01-07T08:52:04Z\",\"updatedBy\":{\"email\":\"kbajbu\",\"name\":\"gd\",\"objectId\":\"e0d696a9-4ac3-4e52-a75f-0a4c35f7e486\"},\"eventTime\":\"2021-07-19T21:01:06Z\",\"queryStartTime\":\"2021-03-11T15:48:32Z\",\"queryEndTime\":\"2021-08-21T01:03:20Z\",\"incidentInfo\":{\"incidentId\":\"vpmclujyxkyxlz\",\"severity\":\"High\",\"title\":\"kzzltafhbzf\",\"relationName\":\"vwmbjlzqsczpg\"}},\"etag\":\"wnapfdq\",\"id\":\"wf\",\"name\":\"ptnuwjtkschgc\",\"type\":\"qyhleseyq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,32 +33,28 @@ public final class BookmarksListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Bookmark> response
-            = manager.bookmarks().list("uzkeutuip", "clzjwaqdz", com.azure.core.util.Context.NONE);
+        PagedIterable<Bookmark> response = manager.bookmarks().list("ejdtxptl", "h", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kkgeseiphgliupq", response.iterator().next().etag());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-31T21:24:09Z"), response.iterator().next().created());
-        Assertions.assertEquals(UUID.fromString("6253c9fc-ff52-4ba4-8e5d-554d8bfb99e6"),
+        Assertions.assertEquals("wnapfdq", response.iterator().next().etag());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T18:34:33Z"), response.iterator().next().created());
+        Assertions.assertEquals(UUID.fromString("dc6948c0-897f-4ea2-b171-d197ed89bc8b"),
             response.iterator().next().createdBy().objectId());
-        Assertions.assertEquals("bek", response.iterator().next().displayName());
-        Assertions.assertEquals("nfpkyvnhiys", response.iterator().next().labels().get(0));
-        Assertions.assertEquals("xnjtqbgysib", response.iterator().next().notes());
-        Assertions.assertEquals("hnvxwtd", response.iterator().next().query());
-        Assertions.assertEquals("cbjdbtqy", response.iterator().next().queryResult());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-01T11:06:18Z"), response.iterator().next().updated());
-        Assertions.assertEquals(UUID.fromString("69570323-8622-4203-9995-2351162bb328"),
+        Assertions.assertEquals("lxydkxrxv", response.iterator().next().displayName());
+        Assertions.assertEquals("iwkgfbqljnq", response.iterator().next().labels().get(0));
+        Assertions.assertEquals("rkphyjdxr", response.iterator().next().notes());
+        Assertions.assertEquals("vjuqdbrxmrgchb", response.iterator().next().query());
+        Assertions.assertEquals("xk", response.iterator().next().queryResult());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-07T08:52:04Z"), response.iterator().next().updated());
+        Assertions.assertEquals(UUID.fromString("e0d696a9-4ac3-4e52-a75f-0a4c35f7e486"),
             response.iterator().next().updatedBy().objectId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T19:32Z"), response.iterator().next().eventTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-18T04:00:24Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T21:01:06Z"), response.iterator().next().eventTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-11T15:48:32Z"),
             response.iterator().next().queryStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T19:43:16Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T01:03:20Z"),
             response.iterator().next().queryEndTime());
-        Assertions.assertEquals("d", response.iterator().next().incidentInfo().incidentId());
-        Assertions.assertEquals(IncidentSeverity.MEDIUM, response.iterator().next().incidentInfo().severity());
-        Assertions.assertEquals("nsdunrkzvzua", response.iterator().next().incidentInfo().title());
-        Assertions.assertEquals("hgzuyxtrvf", response.iterator().next().incidentInfo().relationName());
-        Assertions.assertEquals("kgqjbvitptpvsf", response.iterator().next().entityMappings().get(0).entityType());
-        Assertions.assertEquals(AttackTactic.EXFILTRATION, response.iterator().next().tactics().get(0));
-        Assertions.assertEquals("muwkgjwbyfdw", response.iterator().next().techniques().get(0));
+        Assertions.assertEquals("vpmclujyxkyxlz", response.iterator().next().incidentInfo().incidentId());
+        Assertions.assertEquals(IncidentSeverity.HIGH, response.iterator().next().incidentInfo().severity());
+        Assertions.assertEquals("kzzltafhbzf", response.iterator().next().incidentInfo().title());
+        Assertions.assertEquals("vwmbjlzqsczpg", response.iterator().next().incidentInfo().relationName());
     }
 }

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.securityinsights.models.Entity;
 import com.azure.resourcemanager.securityinsights.models.IncidentEntitiesResultsMetadata;
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +22,7 @@ public final class IncidentEntitiesResponseInner implements JsonSerializable<Inc
     /*
      * Array of the incident related entities.
      */
-    private List<EntityInner> entities;
+    private List<Entity> entities;
 
     /*
      * The metadata from the incident related entities results.
@@ -39,7 +40,7 @@ public final class IncidentEntitiesResponseInner implements JsonSerializable<Inc
      * 
      * @return the entities value.
      */
-    public List<EntityInner> entities() {
+    public List<Entity> entities() {
         return this.entities;
     }
 
@@ -49,7 +50,7 @@ public final class IncidentEntitiesResponseInner implements JsonSerializable<Inc
      * @param entities the entities value to set.
      * @return the IncidentEntitiesResponseInner object itself.
      */
-    public IncidentEntitiesResponseInner withEntities(List<EntityInner> entities) {
+    public IncidentEntitiesResponseInner withEntities(List<Entity> entities) {
         this.entities = entities;
         return this;
     }
@@ -116,7 +117,7 @@ public final class IncidentEntitiesResponseInner implements JsonSerializable<Inc
                 reader.nextToken();
 
                 if ("entities".equals(fieldName)) {
-                    List<EntityInner> entities = reader.readArray(reader1 -> EntityInner.fromJson(reader1));
+                    List<Entity> entities = reader.readArray(reader1 -> Entity.fromJson(reader1));
                     deserializedIncidentEntitiesResponseInner.entities = entities;
                 } else if ("metaData".equals(fieldName)) {
                     List<IncidentEntitiesResultsMetadata> metadata

@@ -14,21 +14,18 @@ public final class RelationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelationList model = BinaryData.fromString(
-            "{\"nextLink\":\"xnehmpvec\",\"value\":[{\"properties\":{\"relatedResourceId\":\"debfqkkrbmpukgri\",\"relatedResourceName\":\"lzlfbxzpuz\",\"relatedResourceType\":\"ispnqzahmgkbrp\",\"relatedResourceKind\":\"dhibnuq\"},\"etag\":\"pikad\",\"id\":\"vtq\",\"name\":\"gnbuy\",\"type\":\"hijggme\"},{\"properties\":{\"relatedResourceId\":\"siarbutrcvpn\",\"relatedResourceName\":\"zmhjrunmp\",\"relatedResourceType\":\"tdbhrbnla\",\"relatedResourceKind\":\"xmyskp\"},\"etag\":\"enbtkcxywny\",\"id\":\"rsyn\",\"name\":\"qidybyx\",\"type\":\"zfcl\"},{\"properties\":{\"relatedResourceId\":\"axdbabph\",\"relatedResourceName\":\"rqlfktsthsucocmn\",\"relatedResourceType\":\"azt\",\"relatedResourceKind\":\"twwrqp\"},\"etag\":\"dckzywbiexz\",\"id\":\"yueaxibxujwb\",\"name\":\"qwalmuzyoxaepd\",\"type\":\"zjancuxr\"},{\"properties\":{\"relatedResourceId\":\"wbavxbniwdj\",\"relatedResourceName\":\"zt\",\"relatedResourceType\":\"bpg\",\"relatedResourceKind\":\"ytxhp\"},\"etag\":\"bzpfzab\",\"id\":\"cuh\",\"name\":\"wtctyqi\",\"type\":\"lbbovplw\"}]}")
+            "{\"nextLink\":\"tx\",\"value\":[{\"properties\":{\"relatedResourceId\":\"skfc\",\"relatedResourceName\":\"qumiek\",\"relatedResourceType\":\"zzikhlyfjhdg\",\"relatedResourceKind\":\"gebdunygaeq\"},\"etag\":\"bqfatpxllrxcyjmo\",\"id\":\"su\",\"name\":\"arm\",\"type\":\"wdmjsjqbjhhyx\"}]}")
             .toObject(RelationList.class);
-        Assertions.assertEquals("pikad", model.value().get(0).etag());
-        Assertions.assertEquals("debfqkkrbmpukgri", model.value().get(0).relatedResourceId());
+        Assertions.assertEquals("bqfatpxllrxcyjmo", model.value().get(0).etag());
+        Assertions.assertEquals("skfc", model.value().get(0).relatedResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RelationList model = new RelationList()
-            .withValue(Arrays.asList(new RelationInner().withEtag("pikad").withRelatedResourceId("debfqkkrbmpukgri"),
-                new RelationInner().withEtag("enbtkcxywny").withRelatedResourceId("siarbutrcvpn"),
-                new RelationInner().withEtag("dckzywbiexz").withRelatedResourceId("axdbabph"),
-                new RelationInner().withEtag("bzpfzab").withRelatedResourceId("wbavxbniwdj")));
+            .withValue(Arrays.asList(new RelationInner().withEtag("bqfatpxllrxcyjmo").withRelatedResourceId("skfc")));
         model = BinaryData.fromObject(model).toObject(RelationList.class);
-        Assertions.assertEquals("pikad", model.value().get(0).etag());
-        Assertions.assertEquals("debfqkkrbmpukgri", model.value().get(0).relatedResourceId());
+        Assertions.assertEquals("bqfatpxllrxcyjmo", model.value().get(0).etag());
+        Assertions.assertEquals("skfc", model.value().get(0).relatedResourceId());
     }
 }

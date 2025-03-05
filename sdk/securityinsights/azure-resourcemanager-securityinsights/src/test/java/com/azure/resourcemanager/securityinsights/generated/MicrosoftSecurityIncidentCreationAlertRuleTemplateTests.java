@@ -17,47 +17,51 @@ public final class MicrosoftSecurityIncidentCreationAlertRuleTemplateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftSecurityIncidentCreationAlertRuleTemplate model = BinaryData.fromString(
-            "{\"kind\":\"MicrosoftSecurityIncidentCreation\",\"properties\":{\"displayNamesFilter\":[\"ttepdjxqe\",\"koynuiylpckae\",\"sedveskwxegqphrg\"],\"displayNamesExcludeFilter\":[\"hctmjtsgh\",\"bcbcpz\"],\"productFilter\":\"Microsoft Defender Advanced Threat Protection\",\"severitiesFilter\":[\"Low\",\"Low\"],\"alertRulesCreatedByTemplateCount\":218584685,\"lastUpdatedDateUTC\":\"2021-08-29T02:40:03Z\",\"createdDateUTC\":\"2021-10-05T06:11:19Z\",\"description\":\"pypefcpczshnuq\",\"displayName\":\"aizu\",\"requiredDataConnectors\":[{\"connectorId\":\"uytuszxhmtvtv\",\"dataTypes\":[\"qiukvzwyd\"]}],\"status\":\"NotAvailable\"},\"id\":\"aokgkskjivbsshaj\",\"name\":\"fukpeexpgeu\",\"type\":\"i\"}")
+            "{\"kind\":\"MicrosoftSecurityIncidentCreation\",\"properties\":{\"alertRulesCreatedByTemplateCount\":2015749730,\"createdDateUTC\":\"2021-11-14T05:13:38Z\",\"lastUpdatedDateUTC\":\"2021-07-01T17:47:57Z\",\"description\":\"agst\",\"displayName\":\"ohpfkyrkdbdgiog\",\"requiredDataConnectors\":[{\"connectorId\":\"nwqjnoba\",\"dataTypes\":[\"ddviacegfnmntfpm\"]},{\"connectorId\":\"emfnczdwvvbal\",\"dataTypes\":[\"lchpodbzevwrdn\"]},{\"connectorId\":\"ukuv\",\"dataTypes\":[\"swsmys\",\"uluqypfc\",\"lerchpq\"]},{\"connectorId\":\"f\",\"dataTypes\":[\"abwidfcxsspuun\",\"oxyhkxgqddrihpf\",\"oqcaaewdaomdj\"]}],\"status\":\"Installed\",\"displayNamesFilter\":[\"xkzb\"],\"displayNamesExcludeFilter\":[\"geivsiykzkdncj\",\"xonbzoggculapz\"],\"productFilter\":\"Azure Advanced Threat Protection\",\"severitiesFilter\":[\"Informational\",\"Low\",\"Medium\"]},\"id\":\"qxepnylbfuaj\",\"name\":\"yjt\",\"type\":\"vofqzhvfc\"}")
             .toObject(MicrosoftSecurityIncidentCreationAlertRuleTemplate.class);
-        Assertions.assertEquals("ttepdjxqe", model.displayNamesFilter().get(0));
-        Assertions.assertEquals("hctmjtsgh", model.displayNamesExcludeFilter().get(0));
-        Assertions.assertEquals(MicrosoftSecurityProductName.MICROSOFT_DEFENDER_ADVANCED_THREAT_PROTECTION,
-            model.productFilter());
-        Assertions.assertEquals(AlertSeverity.LOW, model.severitiesFilter().get(0));
-        Assertions.assertEquals(218584685, model.alertRulesCreatedByTemplateCount());
-        Assertions.assertEquals("pypefcpczshnuq", model.description());
-        Assertions.assertEquals("aizu", model.displayName());
-        Assertions.assertEquals("uytuszxhmtvtv", model.requiredDataConnectors().get(0).connectorId());
-        Assertions.assertEquals("qiukvzwyd", model.requiredDataConnectors().get(0).dataTypes().get(0));
-        Assertions.assertEquals(TemplateStatus.NOT_AVAILABLE, model.status());
+        Assertions.assertEquals(2015749730, model.alertRulesCreatedByTemplateCount());
+        Assertions.assertEquals("agst", model.description());
+        Assertions.assertEquals("ohpfkyrkdbdgiog", model.displayName());
+        Assertions.assertEquals("nwqjnoba", model.requiredDataConnectors().get(0).connectorId());
+        Assertions.assertEquals("ddviacegfnmntfpm", model.requiredDataConnectors().get(0).dataTypes().get(0));
+        Assertions.assertEquals(TemplateStatus.INSTALLED, model.status());
+        Assertions.assertEquals("xkzb", model.displayNamesFilter().get(0));
+        Assertions.assertEquals("geivsiykzkdncj", model.displayNamesExcludeFilter().get(0));
+        Assertions.assertEquals(MicrosoftSecurityProductName.AZURE_ADVANCED_THREAT_PROTECTION, model.productFilter());
+        Assertions.assertEquals(AlertSeverity.INFORMATIONAL, model.severitiesFilter().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MicrosoftSecurityIncidentCreationAlertRuleTemplate model
-            = new MicrosoftSecurityIncidentCreationAlertRuleTemplate()
-                .withDisplayNamesFilter(Arrays.asList("ttepdjxqe", "koynuiylpckae", "sedveskwxegqphrg"))
-                .withDisplayNamesExcludeFilter(Arrays.asList("hctmjtsgh", "bcbcpz"))
-                .withProductFilter(MicrosoftSecurityProductName.MICROSOFT_DEFENDER_ADVANCED_THREAT_PROTECTION)
-                .withSeveritiesFilter(Arrays.asList(AlertSeverity.LOW, AlertSeverity.LOW))
-                .withAlertRulesCreatedByTemplateCount(218584685)
-                .withDescription("pypefcpczshnuq")
-                .withDisplayName("aizu")
-                .withRequiredDataConnectors(
-                    Arrays.asList(new AlertRuleTemplateDataSource().withConnectorId("uytuszxhmtvtv")
-                        .withDataTypes(Arrays.asList("qiukvzwyd"))))
-                .withStatus(TemplateStatus.NOT_AVAILABLE);
+            = new MicrosoftSecurityIncidentCreationAlertRuleTemplate().withAlertRulesCreatedByTemplateCount(2015749730)
+                .withDescription("agst")
+                .withDisplayName("ohpfkyrkdbdgiog")
+                .withRequiredDataConnectors(Arrays.asList(
+                    new AlertRuleTemplateDataSource().withConnectorId("nwqjnoba")
+                        .withDataTypes(Arrays.asList("ddviacegfnmntfpm")),
+                    new AlertRuleTemplateDataSource().withConnectorId("emfnczdwvvbal")
+                        .withDataTypes(Arrays.asList("lchpodbzevwrdn")),
+                    new AlertRuleTemplateDataSource().withConnectorId("ukuv")
+                        .withDataTypes(Arrays.asList("swsmys", "uluqypfc", "lerchpq")),
+                    new AlertRuleTemplateDataSource().withConnectorId("f")
+                        .withDataTypes(Arrays.asList("abwidfcxsspuun", "oxyhkxgqddrihpf", "oqcaaewdaomdj"))))
+                .withStatus(TemplateStatus.INSTALLED)
+                .withDisplayNamesFilter(Arrays.asList("xkzb"))
+                .withDisplayNamesExcludeFilter(Arrays.asList("geivsiykzkdncj", "xonbzoggculapz"))
+                .withProductFilter(MicrosoftSecurityProductName.AZURE_ADVANCED_THREAT_PROTECTION)
+                .withSeveritiesFilter(
+                    Arrays.asList(AlertSeverity.INFORMATIONAL, AlertSeverity.LOW, AlertSeverity.MEDIUM));
         model = BinaryData.fromObject(model).toObject(MicrosoftSecurityIncidentCreationAlertRuleTemplate.class);
-        Assertions.assertEquals("ttepdjxqe", model.displayNamesFilter().get(0));
-        Assertions.assertEquals("hctmjtsgh", model.displayNamesExcludeFilter().get(0));
-        Assertions.assertEquals(MicrosoftSecurityProductName.MICROSOFT_DEFENDER_ADVANCED_THREAT_PROTECTION,
-            model.productFilter());
-        Assertions.assertEquals(AlertSeverity.LOW, model.severitiesFilter().get(0));
-        Assertions.assertEquals(218584685, model.alertRulesCreatedByTemplateCount());
-        Assertions.assertEquals("pypefcpczshnuq", model.description());
-        Assertions.assertEquals("aizu", model.displayName());
-        Assertions.assertEquals("uytuszxhmtvtv", model.requiredDataConnectors().get(0).connectorId());
-        Assertions.assertEquals("qiukvzwyd", model.requiredDataConnectors().get(0).dataTypes().get(0));
-        Assertions.assertEquals(TemplateStatus.NOT_AVAILABLE, model.status());
+        Assertions.assertEquals(2015749730, model.alertRulesCreatedByTemplateCount());
+        Assertions.assertEquals("agst", model.description());
+        Assertions.assertEquals("ohpfkyrkdbdgiog", model.displayName());
+        Assertions.assertEquals("nwqjnoba", model.requiredDataConnectors().get(0).connectorId());
+        Assertions.assertEquals("ddviacegfnmntfpm", model.requiredDataConnectors().get(0).dataTypes().get(0));
+        Assertions.assertEquals(TemplateStatus.INSTALLED, model.status());
+        Assertions.assertEquals("xkzb", model.displayNamesFilter().get(0));
+        Assertions.assertEquals("geivsiykzkdncj", model.displayNamesExcludeFilter().get(0));
+        Assertions.assertEquals(MicrosoftSecurityProductName.AZURE_ADVANCED_THREAT_PROTECTION, model.productFilter());
+        Assertions.assertEquals(AlertSeverity.INFORMATIONAL, model.severitiesFilter().get(0));
     }
 }

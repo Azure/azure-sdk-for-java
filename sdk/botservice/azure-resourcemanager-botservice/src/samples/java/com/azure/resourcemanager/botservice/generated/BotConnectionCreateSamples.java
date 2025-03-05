@@ -14,8 +14,7 @@ import java.util.Arrays;
 public final class BotConnectionCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutConnection.
-     * json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutConnection.json
      */
     /**
      * Sample code: Create Connection Setting.

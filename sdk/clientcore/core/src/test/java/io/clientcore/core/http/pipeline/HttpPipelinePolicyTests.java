@@ -8,7 +8,7 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import org.junit.jupiter.api.Test;
 
@@ -24,9 +24,9 @@ public class HttpPipelinePolicyTests {
         SyncPolicy policy2 = new SyncPolicy();
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).policies(policy1, policy2).build();
+            = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).addPolicy(policy1).addPolicy(policy2).build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
 
         assertEquals(1, policy1.syncCalls.get());
         assertEquals(1, policy2.syncCalls.get());
@@ -37,10 +37,10 @@ public class HttpPipelinePolicyTests {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .policies(policyWithDefaultSyncImplementation)
+            .addPolicy(policyWithDefaultSyncImplementation)
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
 
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
@@ -52,7 +52,7 @@ public class HttpPipelinePolicyTests {
     @Test
     public void doesNotThrowThatThreadIsNonBlocking() throws IOException {
         SyncPolicy policy1 = new SyncPolicy();
-        HttpPipelinePolicy badPolicy1 = (httpRequest, next) -> {
+        HttpPipelinePolicy badPolicy1 = (ignored, next) -> {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -62,7 +62,7 @@ public class HttpPipelinePolicyTests {
             return next.process();
         };
 
-        HttpPipelinePolicy badPolicy2 = (httpRequest, next) -> {
+        HttpPipelinePolicy badPolicy2 = (ignored, next) -> {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -81,10 +81,13 @@ public class HttpPipelinePolicyTests {
             return new HttpResponse<>(request, 200, new HttpHeaders(), null);
         };
 
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(badClient).policies(policy1, badPolicy1, badPolicy2).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(badClient)
+            .addPolicy(policy1)
+            .addPolicy(badPolicy1)
+            .addPolicy(badPolicy2)
+            .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
     }
 
     private static class SyncPolicy implements HttpPipelinePolicy {

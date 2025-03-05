@@ -33,12 +33,12 @@ public final class PostRulesImpl implements PostRules {
 
     public PagedIterable<PostRulesResource> list(String globalRulestackName) {
         PagedIterable<PostRulesResourceInner> inner = this.serviceClient().list(globalRulestackName);
-        return Utils.mapPage(inner, inner1 -> new PostRulesResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PostRulesResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PostRulesResource> list(String globalRulestackName, Context context) {
         PagedIterable<PostRulesResourceInner> inner = this.serviceClient().list(globalRulestackName, context);
-        return Utils.mapPage(inner, inner1 -> new PostRulesResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PostRulesResourceImpl(inner1, this.manager()));
     }
 
     public Response<PostRulesResource> getWithResponse(String globalRulestackName, String priority, Context context) {

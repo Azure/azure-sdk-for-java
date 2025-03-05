@@ -6,69 +6,26 @@ package com.azure.resourcemanager.securityinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.securityinsights.models.FusionAlertRule;
-import com.azure.resourcemanager.securityinsights.models.FusionScenarioExclusionPattern;
-import com.azure.resourcemanager.securityinsights.models.FusionSourceSettings;
-import com.azure.resourcemanager.securityinsights.models.FusionSourceSubTypeSetting;
-import com.azure.resourcemanager.securityinsights.models.FusionSubTypeSeverityFilter;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class FusionAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FusionAlertRule model = BinaryData.fromString(
-            "{\"kind\":\"Fusion\",\"properties\":{\"alertRuleTemplateName\":\"oqodkadpp\",\"description\":\"bngqladywrx\",\"displayName\":\"yd\",\"enabled\":false,\"sourceSettings\":[{\"enabled\":false,\"sourceName\":\"adswz\",\"sourceSubTypes\":[{\"enabled\":true,\"sourceSubTypeName\":\"emlowuowhl\",\"sourceSubTypeDisplayName\":\"nwyrmouv\",\"severityFilters\":{}}]},{\"enabled\":false,\"sourceName\":\"gmokzkltrfowt\",\"sourceSubTypes\":[{\"enabled\":true,\"sourceSubTypeName\":\"mvlihcvjdrqcrjid\",\"sourceSubTypeDisplayName\":\"tuk\",\"severityFilters\":{}},{\"enabled\":false,\"sourceSubTypeName\":\"dxlwyojbfqz\",\"sourceSubTypeDisplayName\":\"fnjyix\",\"severityFilters\":{}},{\"enabled\":false,\"sourceSubTypeName\":\"fratqxmbjroumzz\",\"sourceSubTypeDisplayName\":\"al\",\"severityFilters\":{}},{\"enabled\":false,\"sourceSubTypeName\":\"rhuzgfxonjtpu\",\"sourceSubTypeDisplayName\":\"l\",\"severityFilters\":{}}]}],\"scenarioExclusionPatterns\":[{\"exclusionPattern\":\"vtio\",\"dateAddedInUTC\":\"zbpdbo\"}],\"lastModifiedUtc\":\"2021-09-15T19:53:03Z\",\"severity\":\"Low\",\"tactics\":[\"InhibitResponseFunction\",\"CommandAndControl\",\"Reconnaissance\"],\"techniques\":[\"growsoc\"]},\"etag\":\"quygdjboqgrmtq\",\"id\":\"qevadrmmw\",\"name\":\"uawvcmjzk\",\"type\":\"iidisczskoswoqiq\"}")
+            "{\"kind\":\"Fusion\",\"properties\":{\"alertRuleTemplateName\":\"btx\",\"description\":\"gfwsrtaw\",\"displayName\":\"ezbrhubskh\",\"enabled\":false,\"lastModifiedUtc\":\"2021-09-21T02:12:50Z\",\"severity\":\"High\",\"tactics\":[\"CredentialAccess\",\"Exfiltration\",\"CredentialAccess\"],\"techniques\":[\"bvleorfmluiqtqzf\"]},\"etag\":\"yvnqqybaryeuay\",\"id\":\"qabqgzslesjcb\",\"name\":\"ernntiewdjcvbquw\",\"type\":\"behwagohb\"}")
             .toObject(FusionAlertRule.class);
-        Assertions.assertEquals("quygdjboqgrmtq", model.etag());
-        Assertions.assertEquals("oqodkadpp", model.alertRuleTemplateName());
+        Assertions.assertEquals("yvnqqybaryeuay", model.etag());
+        Assertions.assertEquals("btx", model.alertRuleTemplateName());
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(false, model.sourceSettings().get(0).enabled());
-        Assertions.assertEquals("adswz", model.sourceSettings().get(0).sourceName());
-        Assertions.assertEquals(true, model.sourceSettings().get(0).sourceSubTypes().get(0).enabled());
-        Assertions.assertEquals("emlowuowhl",
-            model.sourceSettings().get(0).sourceSubTypes().get(0).sourceSubTypeName());
-        Assertions.assertEquals("vtio", model.scenarioExclusionPatterns().get(0).exclusionPattern());
-        Assertions.assertEquals("zbpdbo", model.scenarioExclusionPatterns().get(0).dateAddedInUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FusionAlertRule model = new FusionAlertRule().withEtag("quygdjboqgrmtq")
-            .withAlertRuleTemplateName("oqodkadpp")
-            .withEnabled(false)
-            .withSourceSettings(Arrays.asList(
-                new FusionSourceSettings().withEnabled(false)
-                    .withSourceName("adswz")
-                    .withSourceSubTypes(Arrays.asList(new FusionSourceSubTypeSetting().withEnabled(true)
-                        .withSourceSubTypeName("emlowuowhl")
-                        .withSeverityFilters(new FusionSubTypeSeverityFilter()))),
-                new FusionSourceSettings().withEnabled(false)
-                    .withSourceName("gmokzkltrfowt")
-                    .withSourceSubTypes(Arrays.asList(
-                        new FusionSourceSubTypeSetting().withEnabled(true)
-                            .withSourceSubTypeName("mvlihcvjdrqcrjid")
-                            .withSeverityFilters(new FusionSubTypeSeverityFilter()),
-                        new FusionSourceSubTypeSetting().withEnabled(false)
-                            .withSourceSubTypeName("dxlwyojbfqz")
-                            .withSeverityFilters(new FusionSubTypeSeverityFilter()),
-                        new FusionSourceSubTypeSetting().withEnabled(false)
-                            .withSourceSubTypeName("fratqxmbjroumzz")
-                            .withSeverityFilters(new FusionSubTypeSeverityFilter()),
-                        new FusionSourceSubTypeSetting().withEnabled(false)
-                            .withSourceSubTypeName("rhuzgfxonjtpu")
-                            .withSeverityFilters(new FusionSubTypeSeverityFilter())))))
-            .withScenarioExclusionPatterns(Arrays.asList(
-                new FusionScenarioExclusionPattern().withExclusionPattern("vtio").withDateAddedInUtc("zbpdbo")));
+        FusionAlertRule model
+            = new FusionAlertRule().withEtag("yvnqqybaryeuay").withAlertRuleTemplateName("btx").withEnabled(false);
         model = BinaryData.fromObject(model).toObject(FusionAlertRule.class);
-        Assertions.assertEquals("quygdjboqgrmtq", model.etag());
-        Assertions.assertEquals("oqodkadpp", model.alertRuleTemplateName());
+        Assertions.assertEquals("yvnqqybaryeuay", model.etag());
+        Assertions.assertEquals("btx", model.alertRuleTemplateName());
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(false, model.sourceSettings().get(0).enabled());
-        Assertions.assertEquals("adswz", model.sourceSettings().get(0).sourceName());
-        Assertions.assertEquals(true, model.sourceSettings().get(0).sourceSubTypes().get(0).enabled());
-        Assertions.assertEquals("emlowuowhl",
-            model.sourceSettings().get(0).sourceSubTypes().get(0).sourceSubTypeName());
-        Assertions.assertEquals("vtio", model.scenarioExclusionPatterns().get(0).exclusionPattern());
-        Assertions.assertEquals("zbpdbo", model.scenarioExclusionPatterns().get(0).dateAddedInUtc());
     }
 }

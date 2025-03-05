@@ -50,7 +50,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
      * 
      * @return the innerProperties value.
      */
-    private AzureSqlReferenceInputDataSourceProperties innerProperties() {
+    AzureSqlReferenceInputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -155,6 +155,31 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     }
 
     /**
+     * Get the table property: This element is associated with the datasource element. The name of the table in the
+     * Azure SQL database..
+     * 
+     * @return the table value.
+     */
+    public String table() {
+        return this.innerProperties() == null ? null : this.innerProperties().table();
+    }
+
+    /**
+     * Set the table property: This element is associated with the datasource element. The name of the table in the
+     * Azure SQL database..
+     * 
+     * @param table the table value to set.
+     * @return the AzureSqlReferenceInputDataSource object itself.
+     */
+    public AzureSqlReferenceInputDataSource withTable(String table) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
+        }
+        this.innerProperties().withTable(table);
+        return this;
+    }
+
+    /**
      * Get the refreshType property: Indicates the type of data refresh option.
      * 
      * @return the refreshType value.
@@ -251,29 +276,6 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
             this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
         }
         this.innerProperties().withDeltaSnapshotQuery(deltaSnapshotQuery);
-        return this;
-    }
-
-    /**
-     * Get the authenticationMode property: Authentication Mode.
-     * 
-     * @return the authenticationMode value.
-     */
-    public AuthenticationMode authenticationMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().authenticationMode();
-    }
-
-    /**
-     * Set the authenticationMode property: Authentication Mode.
-     * 
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the AzureSqlReferenceInputDataSource object itself.
-     */
-    public AzureSqlReferenceInputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
-        }
-        this.innerProperties().withAuthenticationMode(authenticationMode);
         return this;
     }
 

@@ -27,7 +27,7 @@ public final class WatchlistsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.watchlists().deleteWithResponse("rotpyabensjflw", "ftvvqtmvif", "cv", com.azure.core.util.Context.NONE);
+        manager.watchlists().deleteWithResponse("csklhsidsjt", "lpbnin", "gazlsvbz", com.azure.core.util.Context.NONE);
 
     }
 }
