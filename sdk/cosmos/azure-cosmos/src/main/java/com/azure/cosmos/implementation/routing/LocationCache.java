@@ -68,8 +68,8 @@ public class LocationCache {
             Collections.emptyList()
         );
 
-        this.locationInfo = new DatabaseAccountLocationsInfo(preferredLocations, defaultEndpoint);
         this.defaultRoutingContext = new RegionalRoutingContext(defaultEndpoint);
+        this.locationInfo = new DatabaseAccountLocationsInfo(preferredLocations, this.defaultRoutingContext);
         this.enableEndpointDiscovery = connectionPolicy.isEndpointDiscoveryEnabled();
         this.useMultipleWriteLocations = connectionPolicy.isMultipleWriteRegionsEnabled();
 
@@ -1069,7 +1069,7 @@ public class LocationCache {
         private RegionalRoutingContext hubRoutingContext;
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
-                                            URI defaultEndpoint) {
+                                            RegionalRoutingContext defaultRoutingContext) {
             this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
             this.effectivePreferredLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteRegionalRoutingContextsByRegionName
@@ -1082,10 +1082,10 @@ public class LocationCache {
                 = (UnmodifiableMap<RegionalRoutingContext, String>) UnmodifiableMap.<RegionalRoutingContext, String>unmodifiableMap(new CaseInsensitiveMap<>());
             this.availableReadLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteLocations = new UnmodifiableList<>(Collections.emptyList());
-            this.readRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(new RegionalRoutingContext(defaultEndpoint)));
-            this.writeRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(new RegionalRoutingContext(defaultEndpoint)));
-            this.availableReadRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(new RegionalRoutingContext(defaultEndpoint)));
-            this.availableWriteRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(new RegionalRoutingContext(defaultEndpoint)));
+            this.readRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(defaultRoutingContext));
+            this.writeRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(defaultRoutingContext));
+            this.availableReadRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(defaultRoutingContext));
+            this.availableWriteRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(defaultRoutingContext));
         }
 
         public DatabaseAccountLocationsInfo(DatabaseAccountLocationsInfo other) {
