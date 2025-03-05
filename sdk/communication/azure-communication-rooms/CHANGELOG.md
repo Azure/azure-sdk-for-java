@@ -16,6 +16,16 @@
 - Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.9`.
 - Upgraded `azure-core-test` from `1.27.0-beta.4` to version `1.27.0-beta.6`.
 
+## 1.1.9 (2025-03-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.8` to version `1.3.9`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+
 ## 1.1.8 (2024-12-04)
 
 ### Other Changes

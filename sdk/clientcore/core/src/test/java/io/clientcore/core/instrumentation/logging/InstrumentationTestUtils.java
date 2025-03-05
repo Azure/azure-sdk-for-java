@@ -5,10 +5,10 @@ package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
-import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.utils.CoreUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -49,7 +49,7 @@ public final class InstrumentationTestUtils {
         // String is empty where as String.split("\\R") will have an empty string in the array.
         // Filter out any empty lines.
         return Arrays.stream(fullLog.split("\\R"))
-            .filter(line -> !ImplUtils.isNullOrEmpty(line)) // Filter out empty lines
+            .filter(line -> !CoreUtils.isNullOrEmpty(line)) // Filter out empty lines
             .map(InstrumentationTestUtils::parseLogLine)
             .collect(Collectors.toList());
     }
