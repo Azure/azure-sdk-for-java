@@ -33,7 +33,7 @@
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
       <Class name="io.clientcore.core.implementation.utils.AuthenticateChallengeParser" />
       <Class name="io.clientcore.core.implementation.utils.InternalContext" />
-      <Class name="io.clientcore.core.serialization.JsonSerializer" />
+      <Class name="io.clientcore.core.serialization.json.JsonSerializer" />
       <Class name="io.clientcore.core.implementation.utils.Providers" />
       <Class name="io.clientcore.core.implementation.utils.SliceInputStream" />
       <Class name="io.clientcore.core.implementation.utils.StreamUtil" />
@@ -298,7 +298,7 @@
   <Match>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
     <Or>
-      <Class name="io.clientcore.core.serialization.JsonSerializer" />
+      <Class name="io.clientcore.core.serialization.json.JsonSerializer" />
       <Class name="io.clientcore.core.implementation.utils.XmlSerializer" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet$MyJsonSerializer" />
       <Class name="io.clientcore.core.serialization.json.JsonReader" />

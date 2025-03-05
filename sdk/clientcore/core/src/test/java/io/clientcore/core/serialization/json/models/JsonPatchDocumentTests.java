@@ -3,7 +3,7 @@
 
 package io.clientcore.core.serialization.json.models;
 
-import io.clientcore.core.serialization.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

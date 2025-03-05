@@ -3,7 +3,7 @@
 
 package io.clientcore.core.models.binarydata;
 
-import io.clientcore.core.serialization.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
 

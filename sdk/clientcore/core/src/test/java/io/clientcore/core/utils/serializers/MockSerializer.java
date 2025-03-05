@@ -3,7 +3,7 @@
 
 package io.clientcore.core.utils.serializers;
 
-import io.clientcore.core.serialization.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 
 import java.io.InputStream;
 import java.io.OutputStream;

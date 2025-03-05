@@ -23,7 +23,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.serializer.Foo;
-import io.clientcore.core.serialization.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Context;
 import org.junit.jupiter.api.Disabled;
@@ -122,9 +122,9 @@ public class RestProxyTests {
             .build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
-
+    
         streamResponse.close();
-
+    
         // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/

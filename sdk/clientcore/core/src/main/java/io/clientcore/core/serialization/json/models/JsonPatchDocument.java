@@ -3,7 +3,7 @@
 
 package io.clientcore.core.serialization.json.models;
 
-import io.clientcore.core.serialization.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.implementation.utils.Option;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;

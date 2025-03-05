@@ -21,7 +21,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
-import io.clientcore.core.serialization.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Base64Uri;
