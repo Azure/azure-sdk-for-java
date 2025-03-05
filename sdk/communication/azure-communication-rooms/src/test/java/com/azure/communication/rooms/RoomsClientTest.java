@@ -356,8 +356,6 @@ public class RoomsClientTest extends RoomsTestBase {
         List<RoomParticipant> participantsToUpdateToCollaborator
             = Arrays.asList(firstParticipantToUpdateToCollaborator, secondParticipantToUpdateToCollaborator);
 
-        System.out.println(roomId);
-
         // Update 2 participants, to collaborator
         AddOrUpdateParticipantsResult addParticipantsAsNonPresentersResponse
             = roomsClient.addOrUpdateParticipants(roomId, participantsToUpdateToCollaborator);
