@@ -3,7 +3,6 @@ extends:
   parameters:
     ServiceDirectory: openai
     DisableAzureResourceCreation: true
-    UseFederatedAuth: false
     PreSteps:
       - template: ./../../../../../sdk/openai/openai-build.yml
     Artifacts:
