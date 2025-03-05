@@ -3,9 +3,15 @@
 
 package com.azure.openai.tests;
 
-import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.AuthenticationUtil;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import com.openai.azure.AzureOpenAIServiceVersion;
 import com.openai.core.JsonValue;
 import com.openai.errors.BadRequestException;
@@ -58,7 +64,31 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     static Supplier<String> getBearerTokenCredentialProvider() {
-        return AuthenticationUtil.getBearerTokenSupplier(new DefaultAzureCredentialBuilder().build(),
+        Configuration config = Configuration.getGlobalConfiguration();
+        ChainedTokenCredentialBuilder chainedTokenCredentialBuilder
+            = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+            .addLast(new AzureCliCredentialBuilder().build())
+            .addLast(new AzureDeveloperCliCredentialBuilder().build())
+            .addLast(new AzurePowerShellCredentialBuilder().build());
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+            && !CoreUtils.isNullOrEmpty(clientId)
+            && !CoreUtils.isNullOrEmpty(tenantId)
+            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+            chainedTokenCredentialBuilder
+                .addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build());
+        }
+        return AuthenticationUtil.getBearerTokenSupplier(chainedTokenCredentialBuilder.build(),
             "https://cognitiveservices.azure.com/.default");
     }
 
