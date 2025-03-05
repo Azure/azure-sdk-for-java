@@ -5,11 +5,11 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpRedirectOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -37,13 +37,14 @@ import static io.clientcore.core.implementation.instrumentation.LoggingEventName
 public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpRedirectPolicy.class);
     private final int maxAttempts;
-    private final Predicate<HttpRequestRedirectCondition> shouldRedirectCondition;
+    private final Predicate<HttpRedirectCondition> shouldRedirectCondition;
     private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 3;
 
     private static final EnumSet<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS
         = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
+
     private final EnumSet<HttpMethod> allowedRedirectHttpMethods;
     private final HttpHeaderName locationHeader;
 
@@ -90,6 +91,11 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         return attemptRedirect(logger, next, 0, new LinkedHashSet<>(), instrumentationContext);
     }
 
+    @Override
+    public HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.REDIRECT;
+    }
+
     /**
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URI.
@@ -99,10 +105,10 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         InstrumentationContext instrumentationContext) {
 
         // Make sure the context is not modified during redirect, except for the URI
-        Response<?> response = next.clone().process();
+        Response<?> response = next.copy().process();
 
-        HttpRequestRedirectCondition requestRedirectCondition
-            = new HttpRequestRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
+        HttpRedirectCondition requestRedirectCondition
+            = new HttpRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
 
         if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
             || (shouldRedirectCondition == null
@@ -114,8 +120,8 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         return response;
     }
 
-    private boolean defaultShouldAttemptRedirect(ClientLogger logger,
-        HttpRequestRedirectCondition requestRedirectCondition, InstrumentationContext context) {
+    private boolean defaultShouldAttemptRedirect(ClientLogger logger, HttpRedirectCondition requestRedirectCondition,
+        InstrumentationContext context) {
         Response<?> response = requestRedirectCondition.getResponse();
         int tryCount = requestRedirectCondition.getTryCount();
         Set<String> attemptedRedirectUris = requestRedirectCondition.getRedirectedUris();
@@ -180,7 +186,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
 
     private void logRedirect(ClientLogger logger, boolean lastAttempt, String redirectUri, int tryCount,
         HttpMethod method, String message, InstrumentationContext context) {
-        ClientLogger.LoggingEvent log = lastAttempt ? logger.atWarning() : logger.atVerbose();
+        LoggingEvent log = lastAttempt ? logger.atWarning() : logger.atVerbose();
         if (log.isEnabled()) {
             log.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
                 .addKeyValue(RETRY_MAX_ATTEMPT_COUNT_KEY, maxAttempts)

@@ -13,6 +13,7 @@ import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 
+import java.util.List;
 import java.util.Objects;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
@@ -30,6 +31,7 @@ final class OTelDoubleHistogram implements DoubleHistogram {
     private static final FallbackInvoker SET_DESCRIPTION_INVOKER;
     private static final FallbackInvoker SET_UNIT_INVOKER;
     private static final FallbackInvoker BUILD_INVOKER;
+    private static final FallbackInvoker SET_EXPLICIT_BUCKET_BOUNDARIES_INVOKER;
 
     private final Object otelHistogram;
 
@@ -39,6 +41,7 @@ final class OTelDoubleHistogram implements DoubleHistogram {
         ReflectiveInvoker setDescriptionInvoker = null;
         ReflectiveInvoker setUnitInvoker = null;
         ReflectiveInvoker buildInvoker = null;
+        ReflectiveInvoker setExplicitBucketBoundariesInvoker = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
@@ -56,6 +59,9 @@ final class OTelDoubleHistogram implements DoubleHistogram {
 
                 recordInvoker = getMethodInvoker(DOUBLE_HISTOGRAM_CLASS,
                     DOUBLE_HISTOGRAM_CLASS.getMethod("record", double.class, ATTRIBUTES_CLASS, CONTEXT_CLASS));
+
+                setExplicitBucketBoundariesInvoker = getMethodInvoker(DOUBLE_HISTOGRAM_BUILDER_CLASS,
+                    DOUBLE_HISTOGRAM_BUILDER_CLASS.getMethod("setExplicitBucketBoundariesAdvice", List.class));
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
@@ -66,24 +72,25 @@ final class OTelDoubleHistogram implements DoubleHistogram {
         SET_UNIT_INVOKER = new FallbackInvoker(setUnitInvoker, LOGGER);
         BUILD_INVOKER = new FallbackInvoker(buildInvoker, LOGGER);
         RECORD_INVOKER = new FallbackInvoker(recordInvoker, LOGGER);
+        SET_EXPLICIT_BUCKET_BOUNDARIES_INVOKER = new FallbackInvoker(setExplicitBucketBoundariesInvoker, LOGGER);
     }
 
     private OTelDoubleHistogram(Object otelHistogram) {
         this.otelHistogram = otelHistogram;
     }
 
-    public static DoubleHistogram create(Object otelMeter, String name, String description, String unit) {
+    public static DoubleHistogram create(Object otelMeter, String name, String description, String unit,
+        List<Double> bucketBoundaries) {
         if (otelMeter == null || !OTelInitializer.isInitialized()) {
             return NOOP;
         }
 
         Object histogramBuilder = HISTOGRAM_BUILDER_INVOKER.invoke(otelMeter, name);
         SET_DESCRIPTION_INVOKER.invoke(histogramBuilder, description);
-
-        if (!Objects.isNull(unit)) {
-            SET_UNIT_INVOKER.invoke(histogramBuilder, unit);
+        SET_UNIT_INVOKER.invoke(histogramBuilder, unit);
+        if (bucketBoundaries != null) {
+            SET_EXPLICIT_BUCKET_BOUNDARIES_INVOKER.invoke(histogramBuilder, bucketBoundaries);
         }
-
         return new OTelDoubleHistogram(BUILD_INVOKER.invoke(histogramBuilder));
     }
 

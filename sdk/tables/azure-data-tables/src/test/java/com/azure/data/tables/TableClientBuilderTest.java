@@ -17,6 +17,8 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.tables.implementation.TableUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -267,6 +269,15 @@ public class TableClientBuilderTest {
                 .tableName("myTable")
                 .endpoint("https://myAccount.table.core.windows.net")
                 .buildAsyncClient());
+    }
+
+    @Test
+    void nonRuntimeExceptionsDontGetCasted() {
+        assertThrows(Error.class, () -> {
+            TableUtils.callWithOptionalTimeout(() -> {
+                throw new NoClassDefFoundError("This is an error");
+            }, null, new ClientLogger(TableClientTest.class));
+        });
     }
 
     @Test

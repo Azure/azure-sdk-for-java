@@ -3,40 +3,35 @@
 
 package io.clientcore.annotation.processor.templating;
 
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.Substitution;
 import io.clientcore.annotation.processor.models.TemplateInput;
-import com.squareup.javapoet.MethodSpec;
 import io.clientcore.core.http.models.HttpMethod;
-import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 
 /*
  * This class tests the methods generated from the provided ServiceInterface Template.
  */
 public class APIGenerationTest {
 
-    private JavaPoetTemplateProcessor processor;
+    private JavaParserTemplateProcessor processor;
     private TemplateInput templateInput;
 
     @BeforeEach
     public void setUp() {
-        processor = new JavaPoetTemplateProcessor();
-        templateInput = mock(TemplateInput.class);
+        processor = new JavaParserTemplateProcessor();
+        templateInput = new TemplateInput();
     }
 
     @Test
     public void testPublicAPIUserMethodGeneration() {
-        //@HttpRequestInformation(
-        //        method = HttpMethod.GET,
-        //        path = "/users/{userId}",
-        //        expectedStatusCodes = {200}
-        //    )
-        //    User getUser(@PathParam("userId") String userId);
         HttpRequestContext getUserMethodContext = new HttpRequestContext();
 
         getUserMethodContext.setHttpMethod(HttpMethod.GET);
@@ -49,10 +44,16 @@ public class APIGenerationTest {
             .setBody(new HttpRequestContext.Body("multipart/form-data", "BinaryData", "audioTranscriptionOptions"));
         templateInput.setHttpRequestContexts(Collections.singletonList(getUserMethodContext));
 
-        MethodSpec getUserMethodGenerationSpec = processor.generatePublicMethod(getUserMethodContext);
-        assertEquals("getUser", getUserMethodGenerationSpec.name);
-        assertEquals("User", getUserMethodGenerationSpec.returnType.toString());
+        MethodDeclaration getUserMethodGenerationSpec = new MethodDeclaration();
+        processor.configurePublicMethod(getUserMethodGenerationSpec, getUserMethodContext);
+        assertEquals("getUser", getUserMethodGenerationSpec.getNameAsString());
+        assertEquals("User", getUserMethodGenerationSpec.getTypeAsString());
         // assert code block contains the expected method body
-        assertEquals("return getUser();\n", getUserMethodGenerationSpec.code.toString());
+        StringBuilder actual = new StringBuilder();
+        for (Statement statement : getUserMethodGenerationSpec.getBody().get().getStatements()) {
+            actual.append(statement.toString());
+        }
+
+        assertEquals("return getUserResponse().getValue();", actual.toString());
     }
 }

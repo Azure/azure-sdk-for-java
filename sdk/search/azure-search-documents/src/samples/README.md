@@ -61,7 +61,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.8.0-beta.4</version>
+    <version>11.8.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -117,4 +117,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [azsearch_docs]: https://learn.microsoft.com/azure/search
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/search/azure-search/samples/README.png)
+

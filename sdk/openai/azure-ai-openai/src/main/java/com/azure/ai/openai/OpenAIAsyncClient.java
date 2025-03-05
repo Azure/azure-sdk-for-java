@@ -967,8 +967,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'getAudioTranscriptionAsResponseObject' is 'multipart/form-data'
+        // Operation 'getAudioTranscriptionAsResponseObject' is of content-type 'multipart/form-data'. Protocol API is
+        // not usable and hence not generated.
         return this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
             audioTranscriptionOptions, requestOptions);
     }
@@ -1331,8 +1331,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'getAudioTranscriptionAsPlainText' is 'multipart/form-data'
+        // Operation 'getAudioTranscriptionAsPlainText' is of content-type 'multipart/form-data'. Protocol API is not
+        // usable and hence not generated.
         return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName,
             audioTranscriptionOptions, requestOptions);
     }
@@ -1383,8 +1383,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'getAudioTranslationAsResponseObject' is 'multipart/form-data'
+        // Operation 'getAudioTranslationAsResponseObject' is of content-type 'multipart/form-data'. Protocol API is not
+        // usable and hence not generated.
         return this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName,
             audioTranslationOptions, requestOptions);
     }
@@ -1414,8 +1414,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'getAudioTranslationAsPlainText' is 'multipart/form-data'
+        // Operation 'getAudioTranslationAsPlainText' is of content-type 'multipart/form-data'. Protocol API is not
+        // usable and hence not generated.
         return this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName,
             audioTranslationOptions, requestOptions);
     }

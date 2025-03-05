@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -64,8 +63,8 @@ public final class SpatialSpec {
     public SpatialSpec setPath(String path) {
         this.jsonSerializable.set(
             Constants.Properties.PATH,
-            path,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            path
+        );
         return this;
     }
 
@@ -100,8 +99,8 @@ public final class SpatialSpec {
         }
         this.jsonSerializable.set(
             Constants.Properties.TYPES,
-            spatialTypeNames,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            spatialTypeNames
+        );
         return this;
     }
 

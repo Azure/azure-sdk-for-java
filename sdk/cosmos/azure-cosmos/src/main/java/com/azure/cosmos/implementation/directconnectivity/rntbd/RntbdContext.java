@@ -136,13 +136,13 @@ public final class RntbdContext {
     public void encode(final ByteBuf out) {
 
         final Headers headers = new Headers(this);
-        final int length = RntbdResponseStatus.LENGTH + headers.computeLength();
+        final int length = RntbdResponseStatus.LENGTH + headers.computeLength(false);
         final RntbdResponseStatus responseStatus = new RntbdResponseStatus(length, this.status(), this.activityId());
 
         final int start = out.writerIndex();
 
         responseStatus.encode(out);
-        headers.encode(out);
+        headers.encode(out, false);
         headers.release();
 
         final int end = out.writerIndex();
@@ -166,7 +166,7 @@ public final class RntbdContext {
         headers.serverVersion.setValue(properties.getVersion());
         headers.unauthenticatedTimeoutInSeconds.setValue(0);
 
-        final int length = RntbdResponseStatus.LENGTH + headers.computeLength();
+        final int length = RntbdResponseStatus.LENGTH + headers.computeLength(false);
         final UUID activityId = request.getActivityId();
 
         final RntbdResponseStatus responseStatus = new RntbdResponseStatus(length, status, activityId);

@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -31,12 +32,16 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
     private String description;
 
     /*
-     * The start date and time of the alert in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00. If the alert crosses multiple time zones the returned time in the response is the local time to the requested coordinate location.
+     * The start date and time of the alert in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00. If the alert
+     * crosses multiple time zones the returned time in the response is the local time to the requested coordinate
+     * location.
      */
     private OffsetDateTime startTime;
 
     /*
-     * The end date and time of the alert in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00. If the alert crosses multiple time zones the returned time in the response is the local time to the requested coordinate location.
+     * The end date and time of the alert in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00. If the alert
+     * crosses multiple time zones the returned time in the response is the local time to the requested coordinate
+     * location.
      */
     private OffsetDateTime endTime;
 
@@ -46,12 +51,17 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
     private LatestStatus latestStatus;
 
     /*
-     * Full details associated with the alert. Returned if `details`=True. This field is always returned in the language(s) of choice by the issuing provider and Azure Maps only returns what is created by the provider. Please note, some countries/regions may offer their native language and English. Language parameter won’t apply to this field.
+     * Full details associated with the alert. Returned if `details`=True. This field is always returned in the
+     * language(s) of choice by the issuing provider and Azure Maps only returns what is created by the provider. Please
+     * note, some countries/regions may offer their native language and English. Language parameter won’t apply to this
+     * field.
      */
     private String details;
 
     /*
-     * Language of the `alertDetails`. This field  helps to point out that the language of the `alertDetails` may differ from the requested language parameter. Returned if `details`=True. Language code has been derived from the ISO 639-1 Alpha-2 codes.
+     * Language of the `alertDetails`. This field helps to point out that the language of the `alertDetails` may differ
+     * from the requested language parameter. Returned if `details`=True. Language code has been derived from the ISO
+     * 639-1 Alpha-2 codes.
      */
     private String language;
 
@@ -171,11 +181,11 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
                 } else if ("summary".equals(fieldName)) {
                     deserializedAlertDetails.description = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    deserializedAlertDetails.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAlertDetails.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedAlertDetails.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAlertDetails.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("latestStatus".equals(fieldName)) {
                     deserializedAlertDetails.latestStatus = LatestStatus.fromJson(reader);
                 } else if ("alertDetails".equals(fieldName)) {

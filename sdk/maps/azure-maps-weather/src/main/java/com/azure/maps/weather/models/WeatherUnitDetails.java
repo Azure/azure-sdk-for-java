@@ -27,7 +27,8 @@ public final class WeatherUnitDetails implements JsonSerializable<WeatherUnitDet
     private String unitLabel;
 
     /*
-     * Numeric ID value associated with the type of unit being displayed. Can be used for unit translation. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#unittype) for details.
+     * Numeric ID value associated with the type of unit being displayed. Can be used for unit translation. Please refer
+     * to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#unit-types) for details.
      */
     private UnitType unitType;
 
@@ -58,7 +59,7 @@ public final class WeatherUnitDetails implements JsonSerializable<WeatherUnitDet
     /**
      * Get the unitType property: Numeric ID value associated with the type of unit being displayed. Can be used for
      * unit translation. Please refer to [Weather services in Azure
-     * Maps](/azure/azure-maps/weather-services-concepts#unittype) for details.
+     * Maps](/azure/azure-maps/weather-services-concepts#unit-types) for details.
      *
      * @return the unitType value.
      */
@@ -74,7 +75,7 @@ public final class WeatherUnitDetails implements JsonSerializable<WeatherUnitDet
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("value", this.value);
         jsonWriter.writeStringField("unit", this.unitLabel);
-        jsonWriter.writeNumberField("unitType", this.unitType == null ? null : this.unitType.toInt());
+        jsonWriter.writeNumberField("unitType", this.unitType == null ? null : this.unitType.getValue());
         return jsonWriter.writeEndObject();
     }
 
@@ -97,7 +98,7 @@ public final class WeatherUnitDetails implements JsonSerializable<WeatherUnitDet
                 } else if ("unit".equals(fieldName)) {
                     deserializedWeatherValue.unitLabel = reader.getString();
                 } else if ("unitType".equals(fieldName)) {
-                    deserializedWeatherValue.unitType = UnitType.fromInt(reader.getInt());
+                    deserializedWeatherValue.unitType = UnitType.fromValue(reader.getInt());
                 } else {
                     reader.skipChildren();
                 }

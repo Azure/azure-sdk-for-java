@@ -3500,7 +3500,7 @@ public final class BatchAsyncClient {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -4202,7 +4202,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -7616,7 +7616,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7748,7 +7748,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -11733,7 +11733,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -12657,7 +12657,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -13591,7 +13591,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -18219,7 +18219,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -19491,7 +19491,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -22236,7 +22236,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -22253,7 +22253,7 @@ public final class BatchAsyncClient {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -23351,7 +23351,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -24419,7 +24419,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -24434,7 +24434,7 @@ public final class BatchAsyncClient {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -28011,7 +28011,7 @@ public final class BatchAsyncClient {
      * before the current time. If not specified this defaults to the end time of the
      * last aggregation interval currently available.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -28060,7 +28060,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28118,7 +28118,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -28162,7 +28162,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -28204,7 +28204,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28263,7 +28263,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28330,7 +28330,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -28382,7 +28382,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28445,7 +28445,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28505,7 +28505,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.
      * @param recursive Whether to list children of the Task directory. This parameter can be used in
      * combination with the filter parameter to list specific type of files.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28554,7 +28554,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -28654,7 +28654,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
      * @param recursive Whether to list children of a directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

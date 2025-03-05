@@ -608,7 +608,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[default_cred_ref]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-identity/1.0.1/com/azure/identity/DefaultAzureCredential.html
+[default_cred_ref]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-identity/latest/com/azure/identity/DefaultAzureCredential.html
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [package]: https://central.sonatype.com/artifact/com.azure/azure-data-appconfiguration
@@ -619,4 +619,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src
 [spring_quickstart]: https://learn.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/TROUBLESHOOTING.md
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2FREADME.png)
+
+

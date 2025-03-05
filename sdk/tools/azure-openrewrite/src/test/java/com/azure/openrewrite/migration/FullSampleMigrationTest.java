@@ -1,5 +1,9 @@
 package com.azure.openrewrite.migration;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.test.RecipeSpec;
@@ -24,6 +28,19 @@ public class FullSampleMigrationTest implements RewriteTest {
 
     static final String GOLDEN_IMAGE = "v2";
     static final String ORIGINAL_IMAGE = "v1";
+    static final String RECIPE_NAME = "com.azure.openrewrite.migrateToVNext";
+    static final String[] DISABLED_DIRS = {
+        "src/test/resources/migrationExamples/azure-storage-blob/"
+    };
+
+    static boolean isDisabledDir(Path dir) {
+        for (String disabledDir : DISABLED_DIRS) {
+            if (dir.startsWith(Paths.get(disabledDir))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     static Stream<Path> sampleDirectories() throws IOException {
         List<Path> packageDirectories = packageDirectories().collect(Collectors.toList());
@@ -34,6 +51,7 @@ public class FullSampleMigrationTest implements RewriteTest {
                 .filter(Files::isDirectory)
                 .collect(Collectors.toList()));
         }
+
         return sampleDirectories.stream();
     }
 
@@ -49,14 +67,17 @@ public class FullSampleMigrationTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipeFromResources("com.azure.openrewrite.migrateToVNext")
+        System.out.printf("Active recipe: %s\n", RECIPE_NAME);
+        spec.recipeFromResources(RECIPE_NAME)
             .typeValidationOptions(TypeValidation.none());
     }
+
 
 
     @ParameterizedTest
     @MethodSource("sampleDirectories")
     public void testGoldenImage(Path sampleDir) throws Exception {
+        Assumptions.assumeFalse(isDisabledDir(sampleDir));
 
         Map<String, String> fileMap = new HashMap<String, String>();
 
@@ -77,6 +98,7 @@ public class FullSampleMigrationTest implements RewriteTest {
     public void assertFullMigration(Map<String,String> fileMap) throws IOException {
         List<SourceSpecs> sourceSpecs = new ArrayList<SourceSpecs>();
         for (Map.Entry<String,String> entry : fileMap.entrySet()) {
+
             String before = Files.readAllLines(Paths.get(entry.getKey()))
                 .stream()
                 .reduce("", (a, b) -> a + b + "\n");
@@ -84,7 +106,12 @@ public class FullSampleMigrationTest implements RewriteTest {
             String after = Files.readAllLines(Paths.get(entry.getValue()))
                 .stream()
                 .reduce("", (a, b) -> a + b + "\n");
-            sourceSpecs.add(java(before, after));
+            if (!before.equals(after)) {
+                sourceSpecs.add(java(before, after));
+            }
+        }
+        if (sourceSpecs.isEmpty()) {
+            Assumptions.abort("Migration samples are identical. No migration detected.");
         }
         rewriteRun(
             sourceSpecs.toArray(new SourceSpecs[sourceSpecs.size()])

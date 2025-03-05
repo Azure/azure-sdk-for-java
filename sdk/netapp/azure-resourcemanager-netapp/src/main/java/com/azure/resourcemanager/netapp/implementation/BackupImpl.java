@@ -77,10 +77,6 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
         return this.innerModel().backupPolicyResourceId();
     }
 
-    public Boolean isLargeVolume() {
-        return this.innerModel().isLargeVolume();
-    }
-
     public String resourceGroupName() {
         return resourceGroupName;
     }

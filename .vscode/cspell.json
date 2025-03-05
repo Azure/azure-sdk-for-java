@@ -1353,6 +1353,15 @@
         "submitadocumenttranslationrequesttothedocumenttranslationservice",
         "translateasingledocument"
       ]
+    },
+    {
+      "filename": "sdk/eventgrid/**",
+      "words": [
+        "mqtt",
+        "rservice", // appears in the name SignalRService
+        "gcch",
+        "updation" // current typo in a swagger
+      ]
     }
   ],
   "allowCompoundWords": true

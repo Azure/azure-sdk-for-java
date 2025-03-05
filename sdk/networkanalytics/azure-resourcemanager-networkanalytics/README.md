@@ -1,5 +1,7 @@
 # Azure Resource Manager Network Analytics client library for Java
 
+Please note, this package has been deprecated and will no longer be maintained after 03/14/2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 Azure Resource Manager Network Analytics client library for Java.
 
 This package contains Microsoft Azure SDK for Network Analytics Management SDK.  Package tag package-2023-11-15. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
@@ -104,4 +106,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fnetworkanalytics%2Fazure-resourcemanager-networkanalytics%2FREADME.png)
+

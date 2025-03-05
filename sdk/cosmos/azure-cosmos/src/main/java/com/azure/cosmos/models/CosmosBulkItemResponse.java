@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
@@ -105,7 +106,8 @@ public final class CosmosBulkItemResponse {
         T item = null;
 
         if (this.getResourceObject() != null) {
-            if (effectiveItemSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+            if (effectiveItemSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER
+                || effectiveItemSerializer == DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER) {
                 item = new JsonSerializable(this.getResourceObject()).toObject(type);
             } else {
                 item = Utils.parse(this.getResourceObject(), type, effectiveItemSerializer);

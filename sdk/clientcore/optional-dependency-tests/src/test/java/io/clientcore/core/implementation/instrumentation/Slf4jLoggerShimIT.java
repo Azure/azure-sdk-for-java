@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.core.implementation.instrumentation;
 
-import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,17 +67,17 @@ public class Slf4jLoggerShimIT {
         Slf4jLoggerShim shim = new Slf4jLoggerShim(Slf4jLoggerShimIT.class.getName());
 
         // All logging levels should be enabled for Slf4jLoggerShimIT based on the simplelogger.properties in resources.
-        assertTrue(shim.canLogAtLevel(ClientLogger.LogLevel.VERBOSE));
-        assertTrue(shim.canLogAtLevel(ClientLogger.LogLevel.INFORMATIONAL));
-        assertTrue(shim.canLogAtLevel(ClientLogger.LogLevel.WARNING));
-        assertTrue(shim.canLogAtLevel(ClientLogger.LogLevel.ERROR));
+        assertTrue(shim.canLogAtLevel(LogLevel.VERBOSE));
+        assertTrue(shim.canLogAtLevel(LogLevel.INFORMATIONAL));
+        assertTrue(shim.canLogAtLevel(LogLevel.WARNING));
+        assertTrue(shim.canLogAtLevel(LogLevel.ERROR));
 
         shim = new Slf4jLoggerShim(Slf4jLoggerShim.class);
 
         // But the default log level should be INFO for everything else.
-        assertFalse(shim.canLogAtLevel(ClientLogger.LogLevel.VERBOSE));
-        assertTrue(shim.canLogAtLevel(ClientLogger.LogLevel.INFORMATIONAL));
-        assertTrue(shim.canLogAtLevel(ClientLogger.LogLevel.WARNING));
-        assertTrue(shim.canLogAtLevel(ClientLogger.LogLevel.ERROR));
+        assertFalse(shim.canLogAtLevel(LogLevel.VERBOSE));
+        assertTrue(shim.canLogAtLevel(LogLevel.INFORMATIONAL));
+        assertTrue(shim.canLogAtLevel(LogLevel.WARNING));
+        assertTrue(shim.canLogAtLevel(LogLevel.ERROR));
     }
 }

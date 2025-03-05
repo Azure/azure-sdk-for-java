@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -194,8 +193,8 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
         if (this.partitionKey != null) {
             serializable.set(
                 Constants.Properties.FEED_RANGE_PARTITION_KEY,
-                this.partitionKey,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.partitionKey
+            );
         }
     }
 }

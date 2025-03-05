@@ -11,6 +11,7 @@ import com.azure.security.keyvault.keys.implementation.KeyVaultKeyHelper;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
@@ -18,8 +19,10 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for KeyVault Keys models.
@@ -48,29 +51,16 @@ public final class KeyVaultKeysModelsUtils {
     }
 
     private static void populateKeyProperties(KeyItem keyItem, KeyProperties properties) {
-        if (keyItem == null) {
-            return;
+        if (keyItem != null) {
+            populateKeyProperties(null, keyItem.getTags(), keyItem.isManaged(), keyItem.getKid(), properties,
+                keyItem.getAttributes());
         }
+    }
 
-        properties.setTags(keyItem.getTags());
-        KeyPropertiesHelper.setManaged(properties, keyItem.isManaged());
-        KeyPropertiesHelper.setId(properties, keyItem.getKid());
-
-        unpackId(keyItem.getKid(), name -> KeyPropertiesHelper.setName(properties, name),
-            version -> KeyPropertiesHelper.setVersion(properties, version));
-
-        KeyAttributes attributes = keyItem.getAttributes();
-        if (attributes != null) {
-            properties.setEnabled(attributes.isEnabled())
-                .setExpiresOn(attributes.getExpires())
-                .setExportable(attributes.isExportable())
-                .setNotBefore(attributes.getNotBefore());
-
-            KeyPropertiesHelper.setCreatedOn(properties, attributes.getCreated());
-            KeyPropertiesHelper.setUpdatedOn(properties, attributes.getUpdated());
-            KeyPropertiesHelper.setRecoveryLevel(properties, Objects.toString(attributes.getRecoveryLevel(), null));
-            KeyPropertiesHelper.setRecoverableDays(properties, attributes.getRecoverableDays());
-            KeyPropertiesHelper.setHsmPlatform(properties, attributes.getHsmPlatform());
+    private static void populateKeyProperties(DeletedKeyItem item, KeyProperties properties) {
+        if (item != null) {
+            populateKeyProperties(null, item.getTags(), item.isManaged(), item.getKid(), properties,
+                item.getAttributes());
         }
     }
 
@@ -112,7 +102,7 @@ public final class KeyVaultKeysModelsUtils {
 
         return new JsonWebKey().setId(impl.getKid())
             .setKeyType(impl.getKty())
-            .setKeyOps(impl.getKeyOps())
+            .setKeyOps(impl.getKeyOps().stream().map(KeyOperation::fromString).collect(Collectors.toList()))
             .setN(impl.getN())
             .setE(impl.getE())
             .setD(impl.getD())
@@ -135,7 +125,7 @@ public final class KeyVaultKeysModelsUtils {
 
         return new com.azure.security.keyvault.keys.implementation.models.JsonWebKey().setKid(key.getId())
             .setKty(key.getKeyType())
-            .setKeyOps(key.getKeyOps())
+            .setKeyOps(key.getKeyOps().stream().map(KeyOperation::toString).collect(Collectors.toList()))
             .setN(key.getN())
             .setE(key.getE())
             .setD(key.getD())
@@ -174,21 +164,32 @@ public final class KeyVaultKeysModelsUtils {
     }
 
     private static void populateKeyProperties(KeyBundle bundle, KeyProperties properties) {
-        if (bundle == null) {
-            return;
+        if (bundle != null) {
+            populateKeyProperties(mapKeyReleasePolicyImpl(bundle.getReleasePolicy()), bundle.getTags(),
+                bundle.isManaged(), bundle.getKey().getKid(), properties, bundle.getAttributes());
         }
+    }
 
-        properties.setReleasePolicy(mapKeyReleasePolicyImpl(bundle.getReleasePolicy())).setTags(bundle.getTags());
+    private static void populateKeyProperties(DeletedKeyBundle bundle, KeyProperties properties) {
+        if (bundle != null) {
+            populateKeyProperties(mapKeyReleasePolicyImpl(bundle.getReleasePolicy()), bundle.getTags(),
+                bundle.isManaged(), bundle.getKey().getKid(), properties, bundle.getAttributes());
+        }
+    }
 
-        KeyPropertiesHelper.setManaged(properties, bundle.isManaged());
-        KeyPropertiesHelper.setId(properties, bundle.getKey().getKid());
-        unpackId(bundle.getKey().getKid(), name -> KeyPropertiesHelper.setName(properties, name),
+    private static void populateKeyProperties(KeyReleasePolicy keyReleasePolicy, Map<String, String> tags,
+        Boolean isManaged, String kid, KeyProperties properties, KeyAttributes attributes) {
+
+        properties.setReleasePolicy(keyReleasePolicy).setTags(tags);
+
+        KeyPropertiesHelper.setManaged(properties, isManaged);
+        KeyPropertiesHelper.setId(properties, kid);
+
+        unpackId(kid, name -> KeyPropertiesHelper.setName(properties, name),
             version -> KeyPropertiesHelper.setVersion(properties, version));
 
-        KeyAttributes attributes = bundle.getAttributes();
         if (attributes != null) {
             properties.setEnabled(attributes.isEnabled())
-                .setEnabled(attributes.isEnabled())
                 .setExportable(attributes.isExportable())
                 .setNotBefore(attributes.getNotBefore())
                 .setExpiresOn(attributes.getExpires());
