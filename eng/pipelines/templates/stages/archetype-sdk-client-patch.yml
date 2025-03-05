@@ -201,6 +201,7 @@ extends:
                 Paths:
                   - '**/*.xml'
                   - '**/*.md'
+                  - '**/*.yml' # needed for package properties when setting the test pipeline version
                   - '.vscode/cspell.json'
                   - '!sdk/**/test-recordings/*'
                   - '!sdk/**/session-records/*'
