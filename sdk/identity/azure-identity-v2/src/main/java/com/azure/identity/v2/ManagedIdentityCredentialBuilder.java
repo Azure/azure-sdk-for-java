@@ -54,7 +54,7 @@ import java.util.concurrent.ExecutorService;
  *
  * @see ManagedIdentityCredential
  */
-public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<ManagedIdentityCredentialBuilder> {
+public class ManagedIdentityCredentialBuilder extends EntraIdCredentialBuilderBase<ManagedIdentityCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(ManagedIdentityCredentialBuilder.class);
 
     private final ManagedIdentityClientOptions miClientOptions;

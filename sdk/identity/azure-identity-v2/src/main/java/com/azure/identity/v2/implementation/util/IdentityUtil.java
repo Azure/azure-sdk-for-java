@@ -3,6 +3,7 @@
 
 package com.azure.identity.v2.implementation.util;
 
+import com.azure.identity.v2.BrowserCustomizationOptions;
 import com.azure.identity.v2.implementation.models.MsalCommonOptions;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.utils.CoreUtils;
@@ -108,5 +109,10 @@ public final class IdentityUtil {
 
     public static boolean isMacPlatform() {
         return System.getProperty("os.name").contains("Mac");
+    }
+
+    public static boolean browserCustomizationOptionsPresent(BrowserCustomizationOptions browserCustomizationOptions) {
+        return !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getErrorMessage())
+            || !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getSuccessMessage());
     }
 }
