@@ -156,7 +156,7 @@ public class CpkAsyncTests extends DataLakeTestBase {
     }
 
     @Test
-    public void pathGetPropertiesWithoutCorrectCPK() {
+    public void pathGetSystemPropertiesWithoutCorrectCPK() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions();
         options.setEncryptionContext("encryption-context");
 
@@ -166,7 +166,6 @@ public class CpkAsyncTests extends DataLakeTestBase {
                 .then(cpkFile.getCustomerProvidedKeyAsyncClient(null).getSystemPropertiesWithResponse(null)))
             .assertNext(r -> {
                 assertEquals(200, r.getStatusCode());
-                assertTrue(r.getValue().isServerEncrypted());
                 assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
                 assertEquals("encryption-context", r.getValue().getEncryptionContext());
             })

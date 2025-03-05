@@ -98,7 +98,7 @@ public class PathSystemProperties {
      *
      * @return A flag indicating if the path is a directory.
      */
-    public Boolean getResourceType() {
+    public Boolean isDirectory() {
         return isDirectory;
     }
 

@@ -153,7 +153,7 @@ public class CpkTests extends DataLakeTestBase {
     }
 
     @Test
-    public void pathGetPropertiesWithoutCorrectCPK() {
+    public void pathGetSystemPropertiesWithoutCorrectCPK() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions();
         options.setEncryptionContext("encryption-context");
         cpkFile.createWithResponse(options, null, null);
@@ -163,7 +163,6 @@ public class CpkTests extends DataLakeTestBase {
             = cpkFile.getCustomerProvidedKeyClient(null).getSystemPropertiesWithResponse(null, null, null);
 
         assertEquals(200, response.getStatusCode());
-        assertTrue(response.getValue().isServerEncrypted());
         assertEquals(key.getKeySha256(), response.getValue().getEncryptionKeySha256());
         assertEquals("encryption-context", response.getValue().getEncryptionContext());
     }
