@@ -63,5 +63,4 @@ public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
                 System.out.println("Response: " + event.getClass().getSimpleName())
         );
     }
-
 }
