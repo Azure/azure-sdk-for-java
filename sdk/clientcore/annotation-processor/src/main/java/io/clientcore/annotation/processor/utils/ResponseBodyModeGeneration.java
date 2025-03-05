@@ -20,6 +20,8 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.CoreUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -84,7 +86,7 @@ public final class ResponseBodyModeGeneration {
 
             if (returnType instanceof ClassOrInterfaceType) {
                 ClassOrInterfaceType classType = (ClassOrInterfaceType) returnType;
-                body.tryAddImportToParentCompilationUnit(TypeUtil.class);
+                body.tryAddImportToParentCompilationUnit(CoreUtils.class);
 
                 // Ensure type arguments exist before accessing them
                 if (classType.getTypeArguments().isPresent()) {
@@ -101,12 +103,12 @@ public final class ResponseBodyModeGeneration {
                                 && genericClassType.getTypeArguments().isPresent()) {
                                 String innerType = genericClassType.getTypeArguments().get().get(0).toString(); // Extract Foo
 
-                                body.addStatement("ParameterizedType returnType = TypeUtil.createParameterizedType("
+                                body.addStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
                                     + genericClassType.getNameAsString() + ".class, " + innerType + ".class);");
                             } else {
                                 String genericType = classType.getTypeArguments().get().get(0).toString(); // Extracts Foo
                                 body.addStatement(
-                                    "ParameterizedType returnType = " + "TypeUtil.createParameterizedType("
+                                    "ParameterizedType returnType = " + "CoreUtils.createParameterizedType("
                                         + classType.getNameAsString() + ".class, " + genericType + ".class);");
                             }
                         }
@@ -132,7 +134,6 @@ public final class ResponseBodyModeGeneration {
         java.lang.reflect.Type bodyType = null;
         if (returnType.isVoidType()) {
             closeResponse(body);
-            body.addStatement(new ReturnStmt());
         } else if (returnType.toString().equals("Void")) {
             closeResponse(body);
             body.addStatement(new ReturnStmt("null"));

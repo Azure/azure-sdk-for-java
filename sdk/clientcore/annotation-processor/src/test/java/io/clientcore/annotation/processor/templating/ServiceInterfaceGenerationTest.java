@@ -8,24 +8,24 @@ import io.clientcore.annotation.processor.mocks.MockJavaFileObject;
 import io.clientcore.annotation.processor.mocks.MockProcessingEnvironment;
 import io.clientcore.annotation.processor.mocks.MockTemplateInput;
 import io.clientcore.annotation.processor.models.TemplateInput;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.JavaFileObject;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ServiceInterfaceGenerationTest {
 
     private JavaParserTemplateProcessor processor;
-    private TemplateInput templateInput;
+    private TemplateInput templateInput = new MockTemplateInput();
     private ProcessingEnvironment processingEnv;
 
     @BeforeEach
     public void setUp() {
         processor = new JavaParserTemplateProcessor();
-        templateInput = new MockTemplateInput();
         JavaFileObject filerSourceFile = new MockJavaFileObject();
         Filer filer = new MockFiler(filerSourceFile);
         processingEnv = new MockProcessingEnvironment(filer);
@@ -42,14 +42,8 @@ public class ServiceInterfaceGenerationTest {
     public void testProcessServiceInterfaceFQN() {
         processor.process(templateInput, processingEnv);
         assertEquals(templateInput.getServiceInterfaceFQN(),
-            processor.getCompilationUnit().getImports().get(0).getNameAsString());
-    }
-
-    @Test
-    public void testProcessServiceInterfaceAddedImport() {
-        processor.process(templateInput, processingEnv);
-        assertEquals(templateInput.getServiceInterfaceFQN(),
-            processor.getCompilationUnit().getImports().get(0).getNameAsString());
+            processor.getCompilationUnit().getPackageDeclaration().get().getNameAsString() + ".DummyClientImpl."
+                + templateInput.getServiceInterfaceShortName());
     }
 
     @Test

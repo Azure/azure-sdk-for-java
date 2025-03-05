@@ -47,6 +47,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -209,6 +210,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(ParameterizedType.class);
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(Type.class);
+        deserializeHelperMethod.tryAddImportToParentCompilationUnit(List.class);
         deserializeHelperMethod
             .setJavadocComment("Decodes the body of an {@link Response} into the type returned by the called API.\n"
                 + "@param bytes The bytes to decode.\n" + "@param serializer The serializer to use.\n"
@@ -216,7 +218,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 + "@throws IOException If the deserialization fails.");
 
         deserializeHelperMethod.setBody(new BlockStmt().addStatement(StaticJavaParser
-            .parseStatement("try { " + "if (List.class.isAssignableFrom(TypeUtil.getRawClass(returnType))) { "
+            .parseStatement("try { " + "if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) { "
                 + "    return serializer.deserializeFromBytes(bytes, returnType); " + "} "
                 + "Type token = returnType.getRawType(); " + "if (Response.class.isAssignableFrom((Class<?>) token)) { "
                 + "    token = returnType.getActualTypeArguments()[0]; " + "} "
@@ -316,7 +318,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .setType(method.getMethodReturnType());
 
         for (HttpRequestContext.MethodParameter parameter : method.getParameters()) {
-            internalMethod.addParameter(parameter.getShortTypeName(), parameter.getName());
+            internalMethod.addParameter(new com.github.javaparser.ast.body.Parameter(
+                StaticJavaParser.parseType(parameter.getShortTypeName()), parameter.getName()));
         }
 
         BlockStmt body = internalMethod.getBody().get();
