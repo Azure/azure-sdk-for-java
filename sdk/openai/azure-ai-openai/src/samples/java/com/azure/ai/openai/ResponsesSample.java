@@ -31,13 +31,11 @@ public class ResponsesSample {
         // Create a request
         CreateResponsesRequest request = new CreateResponsesRequest(
             CreateResponsesRequestModel.fromString("computer-use-preview"),
-            Arrays.asList(new ResponsesUserMessage("id", Arrays.asList(new ResponsesInputTextContentPart("Hello, world!"))))
+            Arrays.asList(new ResponsesUserMessage("msg_id", Arrays.asList(new ResponsesInputTextContentPart("Hello, world!"))))
         );
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-preview"), "true");
-        // don't understand why this is necessary
-        requestOptions.addQueryParam("api-version", AzureResponsesServiceVersion.V2024_12_01_PREVIEW.getVersion());
 
         // Send the request and get the response
         ResponsesResponse response = client.createResponse(request, requestOptions);

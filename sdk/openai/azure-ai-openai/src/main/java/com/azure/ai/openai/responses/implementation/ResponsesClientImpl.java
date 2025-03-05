@@ -153,7 +153,7 @@ public final class ResponsesClientImpl {
     @Host("{endpoint}/openai")
     @ServiceInterface(name = "ResponsesClient")
     public interface ResponsesClientService {
-        @Post("/")
+        @Post("/responses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -163,7 +163,7 @@ public final class ResponsesClientImpl {
             @HeaderParam("accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
 
-        @Post("/")
+        @Post("/responses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -173,7 +173,7 @@ public final class ResponsesClientImpl {
             @HeaderParam("accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
 
-        @Get("/{response_id}")
+        @Get("/responses/{response_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -183,7 +183,7 @@ public final class ResponsesClientImpl {
             @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/{response_id}")
+        @Get("/responses/{response_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -193,7 +193,7 @@ public final class ResponsesClientImpl {
             @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/{response_id}/input_items")
+        @Get("/responses/{response_id}/input_items")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -204,7 +204,7 @@ public final class ResponsesClientImpl {
             @QueryParam("order") String order, @QueryParam("after") String after, @QueryParam("before") String before,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/{response_id}/input_items")
+        @Get("/responses/{response_id}/input_items")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
