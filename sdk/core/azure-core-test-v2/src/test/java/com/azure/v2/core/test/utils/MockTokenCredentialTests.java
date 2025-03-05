@@ -3,8 +3,8 @@
 
 package com.azure.v2.core.test.utils;
 
-import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.credentials.oauth.AccessToken;
+import io.clientcore.core.credentials.oauth.OAuthTokenRequestContext;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +17,7 @@ public class MockTokenCredentialTests {
     @Test
     public void basicRetrieveToken() {
         MockTokenCredential credential = new MockTokenCredential();
-        AccessToken credentialToken = credential.getToken(new TokenRequestContext());
+        AccessToken credentialToken = credential.getToken(new OAuthTokenRequestContext());
         assertEquals("mockToken", credentialToken.getToken());
     }
 }

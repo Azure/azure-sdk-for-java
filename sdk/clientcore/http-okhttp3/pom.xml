@@ -55,7 +55,7 @@
     <javadoc.excludePackageNames>
       io.clientcore.core.annotation,io.clientcore.core.credential,io.clientcore.core.http,io.clientcore.core.http.annotation,io.clientcore.core.http.client,
       io.clientcore.core.http.exception,io.clientcore.core.http.models,io.clientcore.core.http.pipeline,io.clientcore.core.implementation,
-      io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.util,io.clientcore.core.util*
+      io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.utils,io.clientcore.core.util*
     </javadoc.excludePackageNames>
   </properties>
 

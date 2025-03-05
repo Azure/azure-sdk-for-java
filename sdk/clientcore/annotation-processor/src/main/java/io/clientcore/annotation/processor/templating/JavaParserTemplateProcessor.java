@@ -32,7 +32,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.ContentType;
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;

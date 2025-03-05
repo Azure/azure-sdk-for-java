@@ -235,8 +235,7 @@ public class ClientLogger {
      *
      * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atLevel -->
      * <pre>
-     * ClientLogger.LogLevel level = response.getStatusCode&#40;&#41; == 200
-     *     ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
+     * LogLevel level = response.getStatusCode&#40;&#41; == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
      * logger.atLevel&#40;level&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .log&#40;&quot;message&quot;&#41;;

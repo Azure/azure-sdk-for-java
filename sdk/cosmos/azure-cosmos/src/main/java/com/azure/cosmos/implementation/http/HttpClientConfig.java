@@ -16,6 +16,8 @@ public class HttpClientConfig {
     private final Configs configs;
     private Duration connectionAcquireTimeout = Configs.getConnectionAcquireTimeout();
     private int maxPoolSize = Configs.getDefaultHttpPoolSize();
+
+    private Integer pendingAcquireMaxCount = Configs.getPendingAcquireMaxCount();
     private Duration maxIdleConnectionTimeout = Configs.getMaxIdleConnectionTimeout();
     private Duration networkRequestTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
     private String connectionPoolName = Configs.getReactorNettyConnectionPoolName();
@@ -110,6 +112,10 @@ public class HttpClientConfig {
 
     public int getMaxPoolSize() {
         return maxPoolSize;
+    }
+
+    public Integer getPendingAcquireMaxCount() {
+        return pendingAcquireMaxCount;
     }
 
     public Duration getMaxIdleConnectionTimeout() {

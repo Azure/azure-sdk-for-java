@@ -129,6 +129,8 @@ service
 <details>
 <summary> applicationinsights </summary>
 
+* [package-2024-08-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager#tag-package-2024-08-01)
+    * [1.2.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-applicationinsights/1.2.0-beta.1)
 * [package-2022-06-15-java](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/readme.java.md#tag-package-2022-06-15-java)
     * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-applicationinsights/1.1.0)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-applicationinsights/1.0.0)
@@ -339,12 +341,12 @@ service
 <details>
 <summary> chaos </summary>
 
-* [package-2024-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager#tag-package-2024-01)
+* package-2024-01
     * [1.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-chaos/1.2.0)
     * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-chaos/1.1.0)
-* [package-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager#tag-package-2023-11)
+* package-2023-11
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-chaos/1.0.0)
-* [package-2023-04-15-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager#tag-package-2023-04-15-preview)
+* package-2023-04-15-preview
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-chaos/1.0.0-beta.1)
 </details>
 
@@ -1461,6 +1463,14 @@ service
 
 <br/>
 <details>
+<summary> migration-assessment </summary>
+
+* [package-2023-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/migrate/resource-manager/Microsoft.Migrate/AssessmentProjects#tag-package-2023-03)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-migration-assessment/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
 <summary> migrationdiscoverysap </summary>
 
 * [package-preview-2023-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites#tag-package-preview-2023-10)
@@ -1535,6 +1545,8 @@ service
 <details>
 <summary> netapp </summary>
 
+* [package-2024-09-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-2024-09-01)
+    * [1.6.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.6.0)
 * [package-preview-2024-07-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-preview-2024-07-01-preview)
     * [1.6.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.6.0-beta.1)
 * [package-2024-07](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-2024-07)
@@ -1582,6 +1594,8 @@ service
 <details>
 <summary> networkcloud </summary>
 
+* [package-2024-07-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkcloud/resource-manager#tag-package-2024-07-01)
+    * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-networkcloud/1.1.0)
 * [package-2024-06-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkcloud/resource-manager#tag-package-2024-06-01-preview)
     * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-networkcloud/1.1.0-beta.1)
 * [package-2023-07-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkcloud/resource-manager#tag-package-2023-07-01)
@@ -1621,6 +1635,8 @@ service
 <details>
 <summary> nginx </summary>
 
+* [package-2024-11-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/nginx/resource-manager#tag-package-2024-11-01-preview)
+    * [1.1.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-nginx/1.1.0-beta.3)
 * [package-2024-01-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/nginx/resource-manager#tag-package-2024-01-01-preview)
     * [1.1.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-nginx/1.1.0-beta.2)
     * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-nginx/1.1.0-beta.1)
@@ -1832,6 +1848,8 @@ service
 <details>
 <summary> quota </summary>
 
+* [package-2025-03-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/quota/resource-manager#tag-package-2025-03-01)
+    * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-quota/1.1.0)
 * [package-2024-12-18-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/quota/resource-manager#tag-package-2024-12-18-preview)
     * [1.1.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-quota/1.1.0-beta.3)
 * [package-2023-06-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/quota/resource-manager#tag-package-2023-06-01-preview)
