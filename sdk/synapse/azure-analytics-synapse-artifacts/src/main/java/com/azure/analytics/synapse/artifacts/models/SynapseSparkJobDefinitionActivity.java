@@ -116,6 +116,11 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      */
     private Map<String, Object> sparkConfig;
 
+    /*
+     * Authentication method used for executing the Spark job definition.
+     */
+    private SynapseActivityAuthentication authentication;
+
     /**
      * Creates an instance of SynapseSparkJobDefinitionActivity class.
      */
@@ -485,6 +490,26 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the authentication property: Authentication method used for executing the Spark job definition.
+     * 
+     * @return the authentication value.
+     */
+    public SynapseActivityAuthentication getAuthentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Authentication method used for executing the Spark job definition.
+     * 
+     * @param authentication the authentication value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity setAuthentication(SynapseActivityAuthentication authentication) {
+        this.authentication = authentication;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -588,7 +613,8 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
             || numExecutors != null
             || configurationType != null
             || targetSparkConfiguration != null
-            || sparkConfig != null) {
+            || sparkConfig != null
+            || authentication != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("sparkJob", this.sparkJob);
             jsonWriter.writeArrayField("args", this.arguments, (writer, element) -> writer.writeUntyped(element));
@@ -609,6 +635,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
             jsonWriter.writeJsonField("targetSparkConfiguration", this.targetSparkConfiguration);
             jsonWriter.writeMapField("sparkConfig", this.sparkConfig,
                 (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeJsonField("authentication", this.authentication);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -707,6 +734,9 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
                         } else if ("sparkConfig".equals(fieldName)) {
                             Map<String, Object> sparkConfig = reader.readMap(reader1 -> reader1.readUntyped());
                             deserializedSynapseSparkJobDefinitionActivity.sparkConfig = sparkConfig;
+                        } else if ("authentication".equals(fieldName)) {
+                            deserializedSynapseSparkJobDefinitionActivity.authentication
+                                = SynapseActivityAuthentication.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
