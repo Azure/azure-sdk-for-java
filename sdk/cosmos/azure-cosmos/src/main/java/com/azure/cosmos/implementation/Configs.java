@@ -66,6 +66,9 @@ public class Configs {
     public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE = "COSMOS.DEFAULT_HTTP_CONNECTION_POOL_SIZE";
     public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_DEFAULT_HTTP_CONNECTION_POOL_SIZE";
 
+    public static final String HTTP_PENDING_ACQUIRE_MAX_COUNT = "COSMOS.HTTP_PENDING_ACQUIRE_MAX_COUNT";
+    public static final String HTTP_PENDING_ACQUIRE_MAX_COUNT_VARIABLE = "COSMOS_HTTP_PENDING_ACQUIRE_MAX_COUNT";
+
     public static final String ITEM_SERIALIZATION_INCLUSION_MODE = "COSMOS.ITEM_SERIALIZATION_INCLUSION_MODE";
     public static final String ITEM_SERIALIZATION_INCLUSION_MODE_VARIABLE = "COSMOS_ITEM_SERIALIZATION_INCLUSION_MODE";
 
@@ -521,6 +524,20 @@ public class Configs {
         }
 
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
+    }
+
+    public static Integer getPendingAcquireMaxCount() {
+        String valueFromSystemProperty = System.getProperty(HTTP_PENDING_ACQUIRE_MAX_COUNT);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(HTTP_PENDING_ACQUIRE_MAX_COUNT_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return null;
     }
 
     private static String validateSerializationInclusionMode(String serializationInclusionMode) {
