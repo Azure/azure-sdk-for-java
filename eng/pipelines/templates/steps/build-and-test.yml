@@ -136,11 +136,25 @@ steps:
         options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '8'
+        jdkVersionOption: $(JavaTestVersion)
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
         goals: ${{ parameters.TestGoals }}
       env: ${{ parameters.TestEnvVars }}
+
+  - task: Maven@4
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+    displayName: 'Run tests in Java 8'
+    inputs:
+      mavenPomFile: pom.xml
+      options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: ${{ parameters.TestGoals }}
+    env: ${{ parameters.TestEnvVars }}
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
