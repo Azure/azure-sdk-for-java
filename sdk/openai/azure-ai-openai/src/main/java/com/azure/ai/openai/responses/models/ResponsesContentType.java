@@ -14,9 +14,19 @@ public enum ResponsesContentType {
     INPUT_TEXT("input_text"),
 
     /**
+     * Enum value input_audio.
+     */
+    INPUT_AUDIO("input_audio"),
+
+    /**
      * Enum value input_image.
      */
     INPUT_IMAGE("input_image"),
+
+    /**
+     * Enum value input_file.
+     */
+    INPUT_FILE("input_file"),
 
     /**
      * Enum value output_text.
@@ -24,14 +34,24 @@ public enum ResponsesContentType {
     OUTPUT_TEXT("output_text"),
 
     /**
-     * Enum value refusal.
+     * Enum value reasoning.
      */
-    REFUSAL("refusal"),
+    REASONING("reasoning"),
 
     /**
-     * Enum value input_file.
+     * Enum value reasoning_summary.
      */
-    INPUT_FILE("input_file");
+    REASONING_SUMMARY("reasoning_summary"),
+
+    /**
+     * Enum value output_audio.
+     */
+    OUTPUT_AUDIO("output_audio"),
+
+    /**
+     * Enum value output_image.
+     */
+    OUTPUT_IMAGE("output_image");
 
     /**
      * The actual serialized value for a ResponsesContentType instance.

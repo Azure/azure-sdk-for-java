@@ -2,7 +2,7 @@ package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
-import com.azure.ai.openai.responses.models.ResponsesInputTextContentPart;
+import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
@@ -27,7 +27,7 @@ public class OpenAIClientTest extends AzureOpenAIClientTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
-                new ResponsesUserMessage("id", Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
 
         ResponsesResponse response = client.createResponse(request);
 
@@ -54,7 +54,7 @@ public class OpenAIClientTest extends AzureOpenAIClientTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
-                new ResponsesUserMessage("id", Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
         request.setStream(true);
 
         IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request);

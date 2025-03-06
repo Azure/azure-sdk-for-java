@@ -6,6 +6,7 @@ package com.azure.ai.openai.responses.implementation;
 
 import com.azure.ai.openai.responses.AzureResponsesServiceVersion;
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -214,6 +215,26 @@ public final class ResponsesClientImpl {
             @PathParam("response_id") String responseId, @QueryParam("limit") int limit,
             @QueryParam("order") String order, @QueryParam("after") String after, @QueryParam("before") String before,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/responses/{response_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteResponse(@HostParam("endpoint") String endpoint,
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/responses/{response_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteResponseSync(@HostParam("endpoint") String endpoint,
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -224,30 +245,51 @@ public final class ResponsesClientImpl {
      * {@code
      * {
      *     model: String(o1/o1-2024-12-17/o1-preview/o1-preview-2024-09-12/o1-mini/o1-mini-2024-09-12/gpt-4o/gpt-4o-2024-11-20/gpt-4o-2024-08-06/gpt-4o-2024-05-13/gpt-4o-audio-preview/gpt-4o-audio-preview-2024-10-01/gpt-4o-audio-preview-2024-12-17/gpt-4o-mini-audio-preview/gpt-4o-mini-audio-preview-2024-12-17/chatgpt-4o-latest/gpt-4o-mini/gpt-4o-mini-2024-07-18/gpt-4-turbo/gpt-4-turbo-2024-04-09/gpt-4-0125-preview/gpt-4-turbo-preview/gpt-4-1106-preview/gpt-4-vision-preview/gpt-4/gpt-4-0314/gpt-4-0613/gpt-4-32k/gpt-4-32k-0314/gpt-4-32k-0613/gpt-3.5-turbo/gpt-3.5-turbo-16k/gpt-3.5-turbo-0301/gpt-3.5-turbo-0613/gpt-3.5-turbo-1106/gpt-3.5-turbo-0125/gpt-3.5-turbo-16k-0613) (Required)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     reasoning_effort: String(low/medium/high) (Optional)
-     *     stream: Boolean (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     input (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
      *         }
      *     ]
      *     previous_response_id: String (Optional)
+     *     include (Optional): [
+     *         String(message.output_text.logprobs/file_search_call.results) (Optional)
+     *     ]
      *     tools (Optional): [
      *          (Optional){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     include (Optional): [
-     *         String(output[*].file_search_call.search_results) (Optional)
+     *     instructions: String (Optional)
+     *     reasoning_effort: String(low/medium/high) (Optional)
+     *     modalities (Optional): [
+     *         String(text/audio) (Optional)
      *     ]
+     *     text (Optional): {
+     *         format (Optional): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *         stop: BinaryData (Optional)
+     *     }
+     *     audio (Optional): {
+     *         voice: String(alloy/ash/ballad/coral/echo/sage/shimmer/verse) (Required)
+     *         format: String(wav/mp3/flac/opus/pcm16) (Required)
+     *     }
+     *     tool_choice: BinaryData (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     top_logprobs: Integer (Optional)
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     max_completion_tokens: Integer (Optional)
      *     truncation: String(auto/disabled) (Optional)
+     *     user: String (Optional)
+     *     service_tier: String(auto/default) (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      *     parallel_tool_calls: Boolean (Optional)
+     *     stream: Boolean (Optional)
+     *     store: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -260,30 +302,49 @@ public final class ResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(queued/in_progress/completed) (Required)
-     *     model: String (Required)
-     *     previous_response_id: String (Required)
-     *     output (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     status: String(completed/in_progress/failed/incomplete) (Required)
      *     error (Required): {
      *         message: String (Required)
      *         type: String (Required)
      *         param: String (Required)
      *         code: String (Required)
      *     }
+     *     incomplete_details (Required): {
+     *         reason: String(max_output_tokens/content_filter) (Required)
+     *     }
+     *     input (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     instructions: String (Required)
+     *     max_output_tokens: Integer (Required)
+     *     model: String (Required)
+     *     output (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *         }
+     *     ]
+     *     parallel_tool_calls: boolean (Required)
+     *     previous_response_id: String (Required)
+     *     reasoning_effort: String(low/medium/high) (Required)
+     *     store: boolean (Required)
+     *     temperature: double (Required)
+     *     text (Required): {
+     *         stop (Optional): [
+     *             String (Optional)
+     *         ]
+     *         format (Required): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
+     *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     truncation: String(auto/disabled) (Required)
-     *     temperature: double (Required)
      *     top_p: double (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     truncation: String(auto/disabled) (Required)
      *     usage (Required): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
@@ -292,6 +353,7 @@ public final class ResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
+     *     user: String (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -324,30 +386,51 @@ public final class ResponsesClientImpl {
      * {@code
      * {
      *     model: String(o1/o1-2024-12-17/o1-preview/o1-preview-2024-09-12/o1-mini/o1-mini-2024-09-12/gpt-4o/gpt-4o-2024-11-20/gpt-4o-2024-08-06/gpt-4o-2024-05-13/gpt-4o-audio-preview/gpt-4o-audio-preview-2024-10-01/gpt-4o-audio-preview-2024-12-17/gpt-4o-mini-audio-preview/gpt-4o-mini-audio-preview-2024-12-17/chatgpt-4o-latest/gpt-4o-mini/gpt-4o-mini-2024-07-18/gpt-4-turbo/gpt-4-turbo-2024-04-09/gpt-4-0125-preview/gpt-4-turbo-preview/gpt-4-1106-preview/gpt-4-vision-preview/gpt-4/gpt-4-0314/gpt-4-0613/gpt-4-32k/gpt-4-32k-0314/gpt-4-32k-0613/gpt-3.5-turbo/gpt-3.5-turbo-16k/gpt-3.5-turbo-0301/gpt-3.5-turbo-0613/gpt-3.5-turbo-1106/gpt-3.5-turbo-0125/gpt-3.5-turbo-16k-0613) (Required)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     reasoning_effort: String(low/medium/high) (Optional)
-     *     stream: Boolean (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     input (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
      *         }
      *     ]
      *     previous_response_id: String (Optional)
+     *     include (Optional): [
+     *         String(message.output_text.logprobs/file_search_call.results) (Optional)
+     *     ]
      *     tools (Optional): [
      *          (Optional){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     include (Optional): [
-     *         String(output[*].file_search_call.search_results) (Optional)
+     *     instructions: String (Optional)
+     *     reasoning_effort: String(low/medium/high) (Optional)
+     *     modalities (Optional): [
+     *         String(text/audio) (Optional)
      *     ]
+     *     text (Optional): {
+     *         format (Optional): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *         stop: BinaryData (Optional)
+     *     }
+     *     audio (Optional): {
+     *         voice: String(alloy/ash/ballad/coral/echo/sage/shimmer/verse) (Required)
+     *         format: String(wav/mp3/flac/opus/pcm16) (Required)
+     *     }
+     *     tool_choice: BinaryData (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     top_logprobs: Integer (Optional)
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     max_completion_tokens: Integer (Optional)
      *     truncation: String(auto/disabled) (Optional)
+     *     user: String (Optional)
+     *     service_tier: String(auto/default) (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      *     parallel_tool_calls: Boolean (Optional)
+     *     stream: Boolean (Optional)
+     *     store: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -360,30 +443,49 @@ public final class ResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(queued/in_progress/completed) (Required)
-     *     model: String (Required)
-     *     previous_response_id: String (Required)
-     *     output (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     status: String(completed/in_progress/failed/incomplete) (Required)
      *     error (Required): {
      *         message: String (Required)
      *         type: String (Required)
      *         param: String (Required)
      *         code: String (Required)
      *     }
+     *     incomplete_details (Required): {
+     *         reason: String(max_output_tokens/content_filter) (Required)
+     *     }
+     *     input (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     instructions: String (Required)
+     *     max_output_tokens: Integer (Required)
+     *     model: String (Required)
+     *     output (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *         }
+     *     ]
+     *     parallel_tool_calls: boolean (Required)
+     *     previous_response_id: String (Required)
+     *     reasoning_effort: String(low/medium/high) (Required)
+     *     store: boolean (Required)
+     *     temperature: double (Required)
+     *     text (Required): {
+     *         stop (Optional): [
+     *             String (Optional)
+     *         ]
+     *         format (Required): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
+     *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     truncation: String(auto/disabled) (Required)
-     *     temperature: double (Required)
      *     top_p: double (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     truncation: String(auto/disabled) (Required)
      *     usage (Required): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
@@ -392,6 +494,7 @@ public final class ResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
+     *     user: String (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -434,30 +537,49 @@ public final class ResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(queued/in_progress/completed) (Required)
-     *     model: String (Required)
-     *     previous_response_id: String (Required)
-     *     output (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     status: String(completed/in_progress/failed/incomplete) (Required)
      *     error (Required): {
      *         message: String (Required)
      *         type: String (Required)
      *         param: String (Required)
      *         code: String (Required)
      *     }
+     *     incomplete_details (Required): {
+     *         reason: String(max_output_tokens/content_filter) (Required)
+     *     }
+     *     input (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     instructions: String (Required)
+     *     max_output_tokens: Integer (Required)
+     *     model: String (Required)
+     *     output (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *         }
+     *     ]
+     *     parallel_tool_calls: boolean (Required)
+     *     previous_response_id: String (Required)
+     *     reasoning_effort: String(low/medium/high) (Required)
+     *     store: boolean (Required)
+     *     temperature: double (Required)
+     *     text (Required): {
+     *         stop (Optional): [
+     *             String (Optional)
+     *         ]
+     *         format (Required): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
+     *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     truncation: String(auto/disabled) (Required)
-     *     temperature: double (Required)
      *     top_p: double (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     truncation: String(auto/disabled) (Required)
      *     usage (Required): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
@@ -466,6 +588,7 @@ public final class ResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
+     *     user: String (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -506,30 +629,49 @@ public final class ResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(queued/in_progress/completed) (Required)
-     *     model: String (Required)
-     *     previous_response_id: String (Required)
-     *     output (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     status: String(completed/in_progress/failed/incomplete) (Required)
      *     error (Required): {
      *         message: String (Required)
      *         type: String (Required)
      *         param: String (Required)
      *         code: String (Required)
      *     }
+     *     incomplete_details (Required): {
+     *         reason: String(max_output_tokens/content_filter) (Required)
+     *     }
+     *     input (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     instructions: String (Required)
+     *     max_output_tokens: Integer (Required)
+     *     model: String (Required)
+     *     output (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *         }
+     *     ]
+     *     parallel_tool_calls: boolean (Required)
+     *     previous_response_id: String (Required)
+     *     reasoning_effort: String(low/medium/high) (Required)
+     *     store: boolean (Required)
+     *     temperature: double (Required)
+     *     text (Required): {
+     *         stop (Optional): [
+     *             String (Optional)
+     *         ]
+     *         format (Required): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
+     *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     truncation: String(auto/disabled) (Required)
-     *     temperature: double (Required)
      *     top_p: double (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     truncation: String(auto/disabled) (Required)
      *     usage (Required): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
@@ -538,6 +680,7 @@ public final class ResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
+     *     user: String (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -569,8 +712,7 @@ public final class ResponsesClientImpl {
      *     object: String (Required)
      *     data (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
      *         }
      *     ]
      *     first_id: String (Required)
@@ -610,8 +752,7 @@ public final class ResponsesClientImpl {
      *     object: String (Required)
      *     data (Required): [
      *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
      *         }
      *     ]
      *     first_id: String (Required)
@@ -639,5 +780,63 @@ public final class ResponsesClientImpl {
         final String accept = "application/json";
         return service.listInputItemsSync(this.getEndpoint(), responseId, limit, order, after, before, accept,
             requestOptions, Context.NONE);
+    }
+
+    /**
+     * Deletes a response by ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param responseId The responseId parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteResponseWithResponseAsync(String responseId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.deleteResponse(this.getEndpoint(), responseId, accept, requestOptions, context));
+    }
+
+    /**
+     * Deletes a response by ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param responseId The responseId parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteResponseSync(this.getEndpoint(), responseId, accept, requestOptions, Context.NONE);
     }
 }

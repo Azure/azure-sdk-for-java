@@ -11,6 +11,7 @@ import com.azure.ai.openai.responses.implementation.streaming.OpenAIServerSentEv
 import com.azure.ai.openai.responses.models.CreateResponseRequestAccept;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
+import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
@@ -49,7 +50,6 @@ public final class ResponsesClient {
      *
      * @param serviceClient the service client implementation.
      */
-    @Generated
     ResponsesClient(ResponsesClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.nonAzureServiceClient = null;
@@ -163,7 +163,8 @@ public final class ResponsesClient {
         if (nonAzureServiceClient != null) {
             return nonAzureServiceClient.createResponseWithResponse(accept, requestBody, requestOptions);
         } else {
-            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
             return this.serviceClient.createResponseWithResponse(accept, requestBody, requestOptions);
         }
     }
@@ -238,7 +239,8 @@ public final class ResponsesClient {
         if (nonAzureServiceClient != null) {
             return nonAzureServiceClient.getResponseWithResponse(responseId, requestOptions);
         } else {
-            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
             return this.serviceClient.getResponseWithResponse(responseId, requestOptions);
         }
     }
@@ -280,10 +282,13 @@ public final class ResponsesClient {
     public Response<BinaryData> listInputItemsWithResponse(String responseId, int limit, String order, String after,
         String before, RequestOptions requestOptions) {
         if (nonAzureServiceClient != null) {
-            return nonAzureServiceClient.listInputItemsWithResponse(responseId, limit, order, after, before, requestOptions);
+            return nonAzureServiceClient.listInputItemsWithResponse(responseId, limit, order, after, before,
+                requestOptions);
         } else {
-            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-            return this.serviceClient.listInputItemsWithResponse(responseId, limit, order, after, before, requestOptions);
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            return this.serviceClient.listInputItemsWithResponse(responseId, limit, order, after, before,
+                requestOptions);
         }
     }
 
@@ -464,5 +469,53 @@ public final class ResponsesClient {
             BinaryData.fromObject(requestBody), requestOptions).getValue().toFluxByteBuffer();
         OpenAIServerSentEvents eventsProcessor = new OpenAIServerSentEvents(events);
         return new IterableStream<>(eventsProcessor.getEvents());
+    }
+
+    /**
+     * Deletes a response by ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param responseId The responseId parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteResponseWithResponse(responseId, requestOptions);
+    }
+
+    /**
+     * Deletes a response by ID.
+     *
+     * @param responseId The responseId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeleteResponseResponse deleteResponse(String responseId) {
+        // Generated convenience method for deleteResponseWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteResponseWithResponse(responseId, requestOptions).getValue().toObject(DeleteResponseResponse.class);
     }
 }

@@ -14,6 +14,16 @@ public enum ResponsesItemType {
     MESSAGE("message"),
 
     /**
+     * Enum value file_search_call.
+     */
+    FILE_SEARCH_CALL("file_search_call"),
+
+    /**
+     * Enum value code_interpreter_call.
+     */
+    CODE_INTERPRETER_CALL("code_interpreter_call"),
+
+    /**
      * Enum value function_call.
      */
     FUNCTION_CALL("function_call"),
@@ -31,22 +41,7 @@ public enum ResponsesItemType {
     /**
      * Enum value computer_call_output.
      */
-    COMPUTER_CALL_OUTPUT("computer_call_output"),
-
-    /**
-     * Enum value file_search_call.
-     */
-    FILE_SEARCH_CALL("file_search_call"),
-
-    /**
-     * Enum value web_search_call.
-     */
-    WEB_SEARCH_CALL("web_search_call"),
-
-    /**
-     * Enum value code_interpreter_call.
-     */
-    CODE_INTERPRETER_CALL("code_interpreter_call");
+    COMPUTER_CALL_OUTPUT("computer_call_output");
 
     /**
      * The actual serialized value for a ResponsesItemType instance.

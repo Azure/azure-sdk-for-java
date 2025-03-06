@@ -14,14 +14,34 @@ public enum ResponsesResponseStreamEventType {
     RESPONSE_CREATED("response.created"),
 
     /**
+     * Enum value response.in_progress.
+     */
+    RESPONSE_IN_PROGRESS("response.in_progress"),
+
+    /**
+     * Enum value response.completed.
+     */
+    RESPONSE_COMPLETED("response.completed"),
+
+    /**
      * Enum value response.output_item.added.
      */
     RESPONSE_OUTPUT_ITEM_ADDED("response.output_item.added"),
 
     /**
+     * Enum value response.output_item.done.
+     */
+    RESPONSE_OUTPUT_ITEM_DONE("response.output_item.done"),
+
+    /**
      * Enum value response.content_part.added.
      */
     RESPONSE_CONTENT_PART_ADDED("response.content_part.added"),
+
+    /**
+     * Enum value response.content_part.done.
+     */
+    RESPONSE_CONTENT_PART_DONE("response.content_part.done"),
 
     /**
      * Enum value response.output_text.delta.
@@ -32,6 +52,26 @@ public enum ResponsesResponseStreamEventType {
      * Enum value response.output_text.done.
      */
     RESPONSE_OUTPUT_TEXT_DONE("response.output_text.done"),
+
+    /**
+     * Enum value response.output_text.annotation.added.
+     */
+    RESPONSE_TEXT_ANNOTATION_DELTA("response.output_text.annotation.added"),
+
+    /**
+     * Enum value response.output_text.done.
+     */
+    RESPONSE_TEXT_DONE("response.output_text.done"),
+
+    /**
+     * Enum value response.refusal.delta.
+     */
+    RESPONSE_REFUSAL_DELTA("response.refusal.delta"),
+
+    /**
+     * Enum value response.refusal.done.
+     */
+    RESPONSE_REFUSAL_DONE("response.refusal.done"),
 
     /**
      * Enum value response.function_call_arguments.delta.
@@ -81,37 +121,7 @@ public enum ResponsesResponseStreamEventType {
     /**
      * Enum value response.code_interpreter_call.completed.
      */
-    RESPONSE_CODE_INTERPRETER_CALL_COMPLETED("response.code_interpreter_call.completed"),
-
-    /**
-     * Enum value response.refusal.delta.
-     */
-    RESPONSE_REFUSAL_DELTA("response.refusal.delta"),
-
-    /**
-     * Enum value response.refusal.done.
-     */
-    RESPONSE_REFUSAL_DONE("response.refusal.done"),
-
-    /**
-     * Enum value response.output_text.annotation.added.
-     */
-    RESPONSE_TEXT_ANNOTATION_DELTA("response.output_text.annotation.added"),
-
-    /**
-     * Enum value response.content_part.done.
-     */
-    RESPONSE_CONTENT_PART_DONE("response.content_part.done"),
-
-    /**
-     * Enum value response.output_item.done.
-     */
-    RESPONSE_OUTPUT_ITEM_DONE("response.output_item.done"),
-
-    /**
-     * Enum value response.completed.
-     */
-    RESPONSE_COMPLETED("response.completed");
+    RESPONSE_CODE_INTERPRETER_CALL_COMPLETED("response.code_interpreter_call.completed");
 
     /**
      * The actual serialized value for a ResponsesResponseStreamEventType instance.

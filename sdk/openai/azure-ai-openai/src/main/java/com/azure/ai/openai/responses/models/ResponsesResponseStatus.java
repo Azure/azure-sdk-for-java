@@ -9,9 +9,9 @@ package com.azure.ai.openai.responses.models;
  */
 public enum ResponsesResponseStatus {
     /**
-     * Enum value queued.
+     * Enum value completed.
      */
-    QUEUED("queued"),
+    COMPLETED("completed"),
 
     /**
      * Enum value in_progress.
@@ -19,9 +19,14 @@ public enum ResponsesResponseStatus {
     IN_PROGRESS("in_progress"),
 
     /**
-     * Enum value completed.
+     * Enum value failed.
      */
-    COMPLETED("completed");
+    FAILED("failed"),
+
+    /**
+     * Enum value incomplete.
+     */
+    INCOMPLETE("incomplete");
 
     /**
      * The actual serialized value for a ResponsesResponseStatus instance.

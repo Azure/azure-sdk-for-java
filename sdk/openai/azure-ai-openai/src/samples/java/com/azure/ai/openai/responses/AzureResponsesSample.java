@@ -2,11 +2,11 @@ package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
-import com.azure.ai.openai.responses.models.ResponsesInputTextContentPart;
+import com.azure.ai.openai.responses.models.ResponsesInputContent;
+import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -14,6 +14,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class AzureResponsesSample {
 
@@ -27,9 +28,10 @@ public class AzureResponsesSample {
             .buildClient();
 
         // Create a request
+        List<ResponsesInputContent> messages = Arrays.asList(new ResponsesInputContentText("Hello, world!"));
         CreateResponsesRequest request = new CreateResponsesRequest(
             CreateResponsesRequestModel.fromString("computer-use-preview"),
-            Arrays.asList(new ResponsesUserMessage("msg_id", Arrays.asList(new ResponsesInputTextContentPart("Hello, world!"))))
+            Arrays.asList(new ResponsesUserMessage(messages))
         );
 
         RequestOptions requestOptions = new RequestOptions();

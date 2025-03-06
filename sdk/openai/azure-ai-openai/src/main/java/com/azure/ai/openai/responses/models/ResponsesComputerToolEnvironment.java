@@ -19,9 +19,9 @@ public enum ResponsesComputerToolEnvironment {
     MAC("mac"),
 
     /**
-     * Enum value linux.
+     * Enum value ubuntu.
      */
-    LINUX("linux"),
+    UBUNTU("ubuntu"),
 
     /**
      * Enum value browser.

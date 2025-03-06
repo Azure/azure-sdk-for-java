@@ -2,7 +2,8 @@ package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
-import com.azure.ai.openai.responses.models.ResponsesInputTextContentPart;
+import com.azure.ai.openai.responses.models.ResponsesInputContentText;
+import com.azure.ai.openai.responses.models.ResponsesItem;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
@@ -12,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.azure.ai.openai.responses.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,8 +28,9 @@ public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
     public void createResponseBlocking(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
         ResponsesClient client = getAzureResponseClient(httpClient, AzureResponsesServiceVersion.V2024_12_01_PREVIEW);
 
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
-                new ResponsesUserMessage("id", Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
+        List<ResponsesItem> input = Arrays.asList(
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!"))));
+        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), input);
 
         ResponsesResponse response = client.createResponse(request);
 
@@ -54,7 +57,7 @@ public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
         ResponsesClient client = getAzureResponseClient(httpClient, AzureResponsesServiceVersion.V2024_12_01_PREVIEW);
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
-                new ResponsesUserMessage("id", Arrays.asList(new ResponsesInputTextContentPart("Hello, world!")))));
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
         request.setStream(true);
 
         IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request);

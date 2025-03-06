@@ -2,7 +2,8 @@ package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
-import com.azure.ai.openai.responses.models.ResponsesInputTextContentPart;
+import com.azure.ai.openai.responses.models.CreateResponsesRequestTruncation;
+import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.credential.KeyCredential;
@@ -26,8 +27,8 @@ public class ResponsesSample {
         // Create a request
         CreateResponsesRequest request = new CreateResponsesRequest(
             CreateResponsesRequestModel.fromString("computer-use-preview"),
-            Arrays.asList(new ResponsesUserMessage("msg_id", Arrays.asList(new ResponsesInputTextContentPart("Hello, world!"))))
-        );
+            Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!"))))
+        ).setTruncation(CreateResponsesRequestTruncation.AUTO);
 
         RequestOptions requestOptions = new RequestOptions();
 //        requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-preview"), "true");

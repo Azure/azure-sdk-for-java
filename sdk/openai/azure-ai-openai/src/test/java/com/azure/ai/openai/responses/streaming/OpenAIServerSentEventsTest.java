@@ -200,15 +200,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseContentPartAddedEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.content_part.added\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.content_part.added\",\"response_id\":\"resp_3\",\"item_id\":\"item_1\",\"output_index\":0,\"content_index\":0,\"part\":{\"text\":\"part_text\"}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.content_part.added\",\"item_id\":\"item_1\",\"output_index\":0,\"content_index\":0,\"part\":{\"text\":\"part_text\"}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseContentPartAdded &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CONTENT_PART_ADDED &&
-                        ((ResponsesResponseStreamEventResponseContentPartAdded) event).getResponseId().equals("resp_3"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CONTENT_PART_ADDED)
                 .verifyComplete();
     }
 
@@ -216,15 +215,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseContentPartDoneEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.content_part.done\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.content_part.done\",\"response_id\":\"resp_4\",\"item_id\":\"item_2\",\"output_index\":1,\"content_index\":1,\"part\":{\"text\":\"done_text\"}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.content_part.done\",\"item_id\":\"item_2\",\"output_index\":1,\"content_index\":1,\"part\":{\"text\":\"done_text\"}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseContentPartDone &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CONTENT_PART_DONE &&
-                        ((ResponsesResponseStreamEventResponseContentPartDone) event).getResponseId().equals("resp_4"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CONTENT_PART_DONE)
                 .verifyComplete();
     }
 
@@ -232,15 +230,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseCodeInterpreterCallCompletedEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.code_interpreter_call.completed\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.completed\",\"response_id\":\"resp_5\",\"output_index\":2,\"code_interpreter_call\":{\"id\":\"call_1\",\"status\":\"completed\"}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.completed\",\"output_index\":2,\"code_interpreter_call\":{\"id\":\"call_1\",\"status\":\"completed\"}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_COMPLETED &&
-                        ((ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted) event).getResponseId().equals("resp_5"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_COMPLETED)
                 .verifyComplete();
     }
 
@@ -248,15 +245,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseFileSearchCallCompletedEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.file_search_call.completed\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.file_search_call.completed\",\"response_id\":\"resp_6\",\"file_search_call\":{\"id\":\"search_1\",\"status\":\"completed\"}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.file_search_call.completed\",\"file_search_call\":{\"id\":\"search_1\",\"status\":\"completed\"}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseFileSearchCallCompleted &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_COMPLETED &&
-                        ((ResponsesResponseStreamEventResponseFileSearchCallCompleted) event).getResponseId().equals("resp_6"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_COMPLETED)
                 .verifyComplete();
     }
 
@@ -264,15 +260,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseFunctionCallArgumentsDeltaEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.function_call_arguments.delta\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.function_call_arguments.delta\",\"response_id\":\"resp_7\",\"item_id\":\"item_3\",\"output_index\":3,\"call_id\":\"call_2\",\"delta\":\"{\\\"arg\\\":\\\"value\\\"}\"}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.function_call_arguments.delta\",\"item_id\":\"item_3\",\"output_index\":3,\"call_id\":\"call_2\",\"delta\":\"{\\\"arg\\\":\\\"value\\\"}\"}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseFunctionCallArgumentsDelta &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA &&
-                        ((ResponsesResponseStreamEventResponseFunctionCallArgumentsDelta) event).getResponseId().equals("resp_7"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA)
                 .verifyComplete();
     }
 
@@ -280,15 +275,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseFunctionCallArgumentsDoneEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.function_call_arguments.done\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.function_call_arguments.done\",\"response_id\":\"resp_8\",\"item_id\":\"item_4\",\"output_index\":4,\"call_id\":\"call_3\",\"arguments\":\"{\\\"arg\\\":\\\"final_value\\\"}\"}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.function_call_arguments.done\",\"item_id\":\"item_4\",\"output_index\":4,\"call_id\":\"call_3\",\"arguments\":\"{\\\"arg\\\":\\\"final_value\\\"}\"}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseFunctionCallArgumentsDone &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE &&
-                        ((ResponsesResponseStreamEventResponseFunctionCallArgumentsDone) event).getResponseId().equals("resp_8"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE)
                 .verifyComplete();
     }
 
@@ -296,15 +290,14 @@ public class OpenAIServerSentEventsTest {
     public void testCodeInterpreterCallInProgressEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.code_interpreter_call.in_progress\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.in_progress\",\"response_id\":\"resp_1\",\"output_index\":1,\"code_interpreter_call\":{}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.in_progress\",\"output_index\":1,\"code_interpreter_call\":{}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventCodeInterpreterCallInProgress &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_IN_PROGRESS &&
-                        ((ResponsesResponseStreamEventCodeInterpreterCallInProgress) event).getResponseId().equals("resp_1"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_IN_PROGRESS)
                 .verifyComplete();
     }
 
@@ -312,15 +305,14 @@ public class OpenAIServerSentEventsTest {
     public void testCodeInterpreterCallInterpretingEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.code_interpreter_call.interpreting\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.interpreting\",\"response_id\":\"resp_2\",\"output_index\":2,\"code_interpreter_call\":{}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.interpreting\",\"output_index\":2,\"code_interpreter_call\":{}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventCodeInterpreterCallInterpreting &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING &&
-                        ((ResponsesResponseStreamEventCodeInterpreterCallInterpreting) event).getResponseId().equals("resp_2"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING)
                 .verifyComplete();
     }
 
@@ -328,15 +320,14 @@ public class OpenAIServerSentEventsTest {
     public void testFileSearchCallInProgressEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.file_search_call.in_progress\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.file_search_call.in_progress\",\"response_id\":\"resp_3\",\"output_index\":3,\"file_search_call\":{}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.file_search_call.in_progress\",\"output_index\":3,\"file_search_call\":{}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventFileSearchCallInProgress &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_IN_PROGRESS &&
-                        ((ResponsesResponseStreamEventFileSearchCallInProgress) event).getResponseId().equals("resp_3"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_IN_PROGRESS)
                 .verifyComplete();
     }
 
@@ -344,15 +335,14 @@ public class OpenAIServerSentEventsTest {
     public void testFileSearchCallSearchingEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.file_search_call.searching\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.file_search_call.searching\",\"response_id\":\"resp_4\",\"output_index\":4,\"file_search_call\":{}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.file_search_call.searching\",\"output_index\":4,\"file_search_call\":{}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventFileSearchCallSearching &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_SEARCHING &&
-                        ((ResponsesResponseStreamEventFileSearchCallSearching) event).getResponseId().equals("resp_4"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_SEARCHING)
                 .verifyComplete();
     }
 
@@ -360,15 +350,14 @@ public class OpenAIServerSentEventsTest {
     public void testCodeInterpreterCallCodeDeltaEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.code_interpreter_call.code.delta\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.code.delta\",\"response_id\":\"resp_5\",\"output_index\":5,\"delta\":\"code_delta\"}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.code.delta\",\"output_index\":5,\"delta\":\"code_delta\"}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_CODE_DELTA &&
-                        ((ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta) event).getResponseId().equals("resp_5"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_CODE_DELTA)
                 .verifyComplete();
     }
 
@@ -376,15 +365,14 @@ public class OpenAIServerSentEventsTest {
     public void testCodeInterpreterCallCodeDoneEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.code_interpreter_call.code.done\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.code.done\",\"response_id\":\"resp_6\",\"output_index\":6,\"code\":\"final_code\"}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.code.done\",\"output_index\":6,\"code\":\"final_code\"}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_CODE_DONE &&
-                        ((ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone) event).getResponseId().equals("resp_6"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_CODE_DONE)
                 .verifyComplete();
     }
 
@@ -392,15 +380,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseOutputItemAddedEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.output_item.added\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.output_item.added\",\"response_id\":\"resp_1\",\"output_index\":0,\"item\":{\"id\":\"msg_1\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[]}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.output_item.added\",\"output_index\":0,\"item\":{\"id\":\"msg_1\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[]}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseOutputItemAdded &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_OUTPUT_ITEM_ADDED &&
-                        ((ResponsesResponseStreamEventResponseOutputItemAdded) event).getResponseId().equals("resp_1"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_OUTPUT_ITEM_ADDED)
                 .verifyComplete();
     }
 
@@ -408,7 +395,7 @@ public class OpenAIServerSentEventsTest {
     public void testResponseOutputTextDeltaEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.output_text.delta\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.output_text.delta\",\"response_id\":\"resp_1\",\"item_id\":\"msg_1\",\"output_index\":0,\"content_index\":0,\"delta\":\"Hi\"}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.output_text.delta\",\"item_id\":\"msg_1\",\"output_index\":0,\"content_index\":0,\"delta\":\"Hi\"}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
@@ -416,8 +403,7 @@ public class OpenAIServerSentEventsTest {
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseOutputTextDelta &&
                         event.getType() == ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_DELTA &&
-                        ((ResponsesResponseStreamEventResponseOutputTextDelta) event).getDelta() != null &&
-                        ((ResponsesResponseStreamEventResponseOutputTextDelta) event).getResponseId().equals("resp_1"))
+                        ((ResponsesResponseStreamEventResponseOutputTextDelta) event).getDelta() != null)
                 .verifyComplete();
     }
 
@@ -425,15 +411,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseOutputTextDoneEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.output_text.done\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.output_text.done\",\"response_id\":\"resp_1\",\"item_id\":\"msg_1\",\"output_index\":0,\"content_index\":0,\"text\":\"Hi there!\"}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.output_text.done\",\"item_id\":\"msg_1\",\"output_index\":0,\"content_index\":0,\"text\":\"Hi there!\"}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseOutputTextDone &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_DONE &&
-                        ((ResponsesResponseStreamEventResponseOutputTextDone) event).getResponseId().equals("resp_1"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_DONE)
                 .verifyComplete();
     }
 
@@ -441,15 +426,14 @@ public class OpenAIServerSentEventsTest {
     public void testFileSearchCallCompletedEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.file_search_call.completed\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.file_search_call.completed\",\"response_id\":\"resp_1\",\"output_index\":0,\"file_search_call\":{}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.file_search_call.completed\",\"output_index\":0,\"file_search_call\":{}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseFileSearchCallCompleted &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_COMPLETED &&
-                        ((ResponsesResponseStreamEventResponseFileSearchCallCompleted) event).getResponseId().equals("resp_1"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_COMPLETED)
                 .verifyComplete();
     }
 
@@ -457,15 +441,14 @@ public class OpenAIServerSentEventsTest {
     public void testCodeInterpreterCallCompletedEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.code_interpreter_call.completed\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.completed\",\"response_id\":\"resp_1\",\"output_index\":0,\"code_interpreter_call\":{}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.code_interpreter_call.completed\",\"output_index\":0,\"code_interpreter_call\":{}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_COMPLETED &&
-                        ((ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted) event).getResponseId().equals("resp_1"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_COMPLETED)
                 .verifyComplete();
     }
 
@@ -473,15 +456,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseRefusalDeltaEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.refusal.delta\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.refusal.delta\",\"response_id\":\"resp_1\",\"output_index\":0,\"delta\":\"Not allowed\"}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.refusal.delta\",\"output_index\":0,\"delta\":\"Not allowed\"}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseRefusalDelta &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_REFUSAL_DELTA &&
-                        ((ResponsesResponseStreamEventResponseRefusalDelta) event).getResponseId().equals("resp_1"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_REFUSAL_DELTA)
                 .verifyComplete();
     }
 
@@ -489,15 +471,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseRefusalDoneEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.refusal.done\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.refusal.done\",\"response_id\":\"resp_1\",\"output_index\":0,\"text\":\"Not allowed\"}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.refusal.done\",\"output_index\":0,\"text\":\"Not allowed\"}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseRefusalDone &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_REFUSAL_DONE &&
-                        ((ResponsesResponseStreamEventResponseRefusalDone) event).getResponseId().equals("resp_1"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_REFUSAL_DONE)
                 .verifyComplete();
     }
 
@@ -505,15 +486,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseTextAnnotationDeltaEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.output_text.annotation.added\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.output_text.annotation.added\",\"response_id\":\"resp_1\",\"output_index\":0,\"content_index\":0,\"annotation\":{\"type\":\"file_path\",\"file_id\":\"file1\",\"index\":1}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.output_text.annotation.added\",\"output_index\":0,\"content_index\":0,\"annotation\":{\"type\":\"file_path\",\"file_id\":\"file1\",\"index\":1}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseTextAnnotationAdded &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_TEXT_ANNOTATION_DELTA &&
-                        ((ResponsesResponseStreamEventResponseTextAnnotationAdded) event).getResponseId().equals("resp_1"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_TEXT_ANNOTATION_DELTA)
                 .verifyComplete();
     }
 
@@ -521,15 +501,14 @@ public class OpenAIServerSentEventsTest {
     public void testResponseOutputItemDoneEvent() {
         Flux<ByteBuffer> testInput = Flux.just(
                 ByteBuffer.wrap("event: response.output_item.done\n".getBytes()),
-                ByteBuffer.wrap("data: {\"type\":\"response.output_item.done\",\"response_id\":\"resp_1\",\"output_index\":0,\"item\":{\"id\":\"msg_1\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[]}}\n\n".getBytes())
+                ByteBuffer.wrap("data: {\"type\":\"response.output_item.done\",\"output_index\":0,\"item\":{\"id\":\"msg_1\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[]}}\n\n".getBytes())
         );
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
                 .expectNextMatches(event -> event instanceof ResponsesResponseStreamEventResponseOutputItemDone &&
-                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_OUTPUT_ITEM_DONE &&
-                        ((ResponsesResponseStreamEventResponseOutputItemDone) event).getResponseId().equals("resp_1"))
+                        event.getType() == ResponsesResponseStreamEventType.RESPONSE_OUTPUT_ITEM_DONE)
                 .verifyComplete();
     }
 }
