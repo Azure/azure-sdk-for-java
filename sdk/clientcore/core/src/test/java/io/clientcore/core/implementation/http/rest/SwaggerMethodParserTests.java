@@ -525,7 +525,7 @@ public class SwaggerMethodParserTests {
         Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestOptions", RequestOptions.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        RequestOptions bodyOptions = new RequestOptions().setBody(BinaryData.fromString("{\"id\":\"123\"}"));
+        RequestOptions emptyOptions = new RequestOptions();
 
         RequestOptions headerQueryOptions
             = new RequestOptions().addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
@@ -538,7 +538,7 @@ public class SwaggerMethodParserTests {
         // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
 
         return Stream.of(Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
-            Arguments.of(swaggerMethodParser, toObjectArray(bodyOptions), bodyOptions),
+            Arguments.of(swaggerMethodParser, toObjectArray(emptyOptions), emptyOptions),
             Arguments.of(swaggerMethodParser, toObjectArray(headerQueryOptions), headerQueryOptions),
             Arguments.of(swaggerMethodParser, toObjectArray(uriOptions), uriOptions)
         // Arguments.of(swaggerMethodParser, toObjectArray(statusOptionOptions), statusOptionOptions)

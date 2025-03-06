@@ -8,7 +8,6 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.rest.UriEscapers;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.ProgressReporter;
 
@@ -33,7 +32,6 @@ import java.util.function.Consumer;
  * <!-- src_embed io.clientcore.core.http.rest.requestoptions.instantiation -->
  * <pre>
  * RequestOptions options = new RequestOptions&#40;&#41;
- *     .setBody&#40;BinaryData.fromString&#40;&quot;&#123;&#92;&quot;name&#92;&quot;:&#92;&quot;Fluffy&#92;&quot;&#125;&quot;&#41;&#41;
  *     .addHeader&#40;new HttpHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.instantiation -->
@@ -260,22 +258,6 @@ public final class RequestOptions {
     }
 
     /**
-     * Sets the body to send as part of the {@link HttpRequest}.
-     *
-     * @param requestBody the request body data
-     * @return The updated {@link RequestOptions} object.
-     * @throws NullPointerException If {@code requestBody} is {@code null}.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setBody(BinaryData requestBody) {
-        checkLocked("Cannot set body.");
-        Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
-        this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
-
-        return this;
-    }
-
-    /**
      * Sets the additional context on the request that is passed during the service call.
      *
      * @param context Additional context that is passed during the service call.
@@ -285,22 +267,6 @@ public final class RequestOptions {
     public RequestOptions setContext(Context context) {
         checkLocked("Cannot set context.");
         this.context = context;
-
-        return this;
-    }
-
-    /**
-     * Adds a key-value pair to the request context associated with this request.
-     *
-     * @param key The key to add to the context.
-     * @param value The value to add to the context.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     * @see #setContext(Context)
-     */
-    public RequestOptions putContext(Object key, Object value) {
-        checkLocked("Cannot modify context.");
-        this.context = this.context.put(key, value);
 
         return this;
     }
