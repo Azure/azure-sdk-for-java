@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.ssl.SslBundle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
  *  @since 5.21.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(KeyVaultJcaProvider.class)
+@ConditionalOnClass({ KeyVaultJcaProvider.class, SslBundle.class })
 @EnableConfigurationProperties({AzureKeyVaultJcaProperties.class, AzureKeyVaultSslBundleProperties.class})
 @ConditionalOnProperty(value = "spring.cloud.azure.keyvault.jca.enabled", havingValue = "true", matchIfMissing = true)
 public class AzureKeyVaultJcaAutoConfiguration {

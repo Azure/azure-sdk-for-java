@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properti
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundleProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.ssl.SslBundle;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
@@ -23,6 +24,13 @@ class AzureKeyVaultJcaAutoConfigurationTests {
     void noJcaProviderClass() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(KeyVaultJcaProvider.class))
+            .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultJcaAutoConfiguration.class));
+    }
+
+    @Test
+    void noSslBundleClass() {
+        this.contextRunner
+            .withClassLoader(new FilteredClassLoader(SslBundle.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultJcaAutoConfiguration.class));
     }
 
