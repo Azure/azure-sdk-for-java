@@ -5,10 +5,6 @@
 ### Features Added
 - General Availability version of Collaborator role.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 #### Dependency Updates
 - Upgraded `azure-identity` from `1.14.2` to version `1.15.2`
