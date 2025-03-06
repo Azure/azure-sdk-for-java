@@ -142,19 +142,38 @@ steps:
         goals: ${{ parameters.TestGoals }}
       env: ${{ parameters.TestEnvVars }}
 
-  - task: Maven@4
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-    displayName: 'Run tests in Java 8'
-    inputs:
-      mavenPomFile: pom.xml
-      options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-      goals: ${{ parameters.TestGoals }}
-    env: ${{ parameters.TestEnvVars }}
+
+  - ${{ if eq('true', parameters.UseFederatedAuth) }}:
+      - pwsh: |
+          $javaTestVersion = "8"
+          $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_$javaTestVersion`_X64")
+          Write-Host "Setting PowerShellJavaHome to '$javaHomeValue'"
+          Write-Host "##vso[task.setvariable variable=PowerShellJavaHome;]$javaHomeValue"
+        displayName: 'Set PowerShellJavaHome to 8'
+
+      - task: AzurePowerShell@5
+        condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+        ${{ if eq(parameters.TestVersionSupport, 'true') }}:
+          displayName: '${{ parameters.VersionOverride }} - Run tests (Federated Auth) in Java 8'
+        ${{ else }}:
+          displayName: 'Run tests (Federated Auth) in Java 8'
+        inputs:
+          azureSubscription: ${{ parameters.ServiceConnection }}
+          azurePowerShellVersion: LatestVersion
+          pwsh: true
+          ScriptType: InlineScript
+          Inline: |
+            $account = (Get-AzContext).Account
+            $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
+            $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
+            
+            mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
+            exit $LASTEXITCODE
+        env:
+          JAVA_HOME: $(PowerShellJavaHome)
+          MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+          ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
