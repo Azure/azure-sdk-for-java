@@ -36,7 +36,7 @@ public final class ImpactCategoryProperties implements JsonSerializable<ImpactCa
     /*
      * Description of the category
      */
-    private String description;
+    private String descriptions;
 
     /*
      * The workloadImpact properties which are required when reporting with the impact category
@@ -77,12 +77,12 @@ public final class ImpactCategoryProperties implements JsonSerializable<ImpactCa
     }
 
     /**
-     * Get the description property: Description of the category.
+     * Get the descriptions property: Description of the category.
      * 
-     * @return the description value.
+     * @return the descriptions value.
      */
-    public String description() {
-        return this.description;
+    public String descriptions() {
+        return this.descriptions;
     }
 
     /**
@@ -121,7 +121,7 @@ public final class ImpactCategoryProperties implements JsonSerializable<ImpactCa
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("categoryId", this.categoryId);
         jsonWriter.writeStringField("parentCategoryId", this.parentCategoryId);
-        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("descriptions", this.descriptions);
         jsonWriter.writeArrayField("requiredImpactProperties", this.requiredImpactProperties,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -150,8 +150,8 @@ public final class ImpactCategoryProperties implements JsonSerializable<ImpactCa
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("parentCategoryId".equals(fieldName)) {
                     deserializedImpactCategoryProperties.parentCategoryId = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedImpactCategoryProperties.description = reader.getString();
+                } else if ("descriptions".equals(fieldName)) {
+                    deserializedImpactCategoryProperties.descriptions = reader.getString();
                 } else if ("requiredImpactProperties".equals(fieldName)) {
                     List<RequiredImpactProperties> requiredImpactProperties
                         = reader.readArray(reader1 -> RequiredImpactProperties.fromJson(reader1));
