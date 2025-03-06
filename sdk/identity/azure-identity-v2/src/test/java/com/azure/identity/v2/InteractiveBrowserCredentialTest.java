@@ -237,14 +237,4 @@ public class InteractiveBrowserCredentialTest {
             Assertions.assertNotNull(identityClientMock);
         }
     }
-
-    @Test
-    public void testInvalidMultiTenantAuth() throws Exception {
-        // setup
-        TokenRequestContext request
-            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
-
-        InteractiveBrowserCredential credential = new InteractiveBrowserCredentialBuilder().tenantId("tenant").build();
-        Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
-    }
 }

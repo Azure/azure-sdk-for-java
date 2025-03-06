@@ -48,7 +48,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  */
 public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<ClientSecretCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(ClientSecretCredentialBuilder.class);
-    private ConfidentialClientOptions confidentialClientOptions;
+    private final ConfidentialClientOptions confidentialClientOptions;
 
     /**
      * Constructs an instance of ClientSecretCredentialBuilder.

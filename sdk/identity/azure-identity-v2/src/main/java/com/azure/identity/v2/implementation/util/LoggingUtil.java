@@ -43,8 +43,7 @@ public final class LoggingUtil {
 
     public static CredentialUnavailableException logCredentialUnavailableException(ClientLogger logger,
         CredentialUnavailableException exception) {
-        logger.logThrowableAsError(exception);
-        return exception;
+        throw logger.logThrowableAsError(exception);
     }
 
     public static void logError(ClientLogger logger, String message) {

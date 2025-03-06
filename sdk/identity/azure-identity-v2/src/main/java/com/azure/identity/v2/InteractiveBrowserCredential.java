@@ -72,7 +72,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
     private boolean isCaeEnabledRequestCached;
     private boolean isCaeDisabledRequestCached;
     private boolean isCachePopulated;
-    private PublicClientOptions publicClientOptions;
+    private final PublicClientOptions publicClientOptions;
 
     /**
      * Creates a InteractiveBrowserCredential with the given identity client options and a listening port, for which
@@ -130,7 +130,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
             return accessToken;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
-            throw e;
+            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 
@@ -163,7 +163,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
     public AuthenticationRecord authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            throw LoggingUtil.logCredentialUnavailableException(LOGGER, new CredentialUnavailableException(
+            LoggingUtil.logCredentialUnavailableException(LOGGER, new CredentialUnavailableException(
                 "Authenticating in this " + "environment requires specifying a TokenRequestContext."));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));

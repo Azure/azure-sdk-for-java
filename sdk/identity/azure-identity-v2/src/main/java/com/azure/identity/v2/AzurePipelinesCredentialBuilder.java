@@ -35,18 +35,19 @@ public class AzurePipelinesCredentialBuilder extends EntraIdCredentialBuilderBas
     private String serviceConnectionId;
     private String systemAccessToken;
 
-    private ConfidentialClientOptions confidentialClientOptions;
+    private final ConfidentialClientOptions confidentialClientOptions;
 
     /**
      * Creates an instance of the {@link AzurePipelinesCredentialBuilder}.
      */
     public AzurePipelinesCredentialBuilder() {
         super();
+        confidentialClientOptions = new ConfidentialClientOptions();
     }
 
     @Override
     ClientOptions getClientOptions() {
-        return null;
+        return this.confidentialClientOptions;
     }
 
     /**

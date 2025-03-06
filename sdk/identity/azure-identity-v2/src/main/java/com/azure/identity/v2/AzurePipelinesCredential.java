@@ -11,7 +11,11 @@ import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.credentials.oauth.AccessToken;
-import io.clientcore.core.http.models.*;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 
@@ -101,7 +105,6 @@ public class AzurePipelinesCredential implements TokenCredential {
             return token;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
-            // wrap the exception in a RuntimeException to avoid checked exception problems.
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }

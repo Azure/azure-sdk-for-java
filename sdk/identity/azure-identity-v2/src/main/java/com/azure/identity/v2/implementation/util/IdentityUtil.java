@@ -5,7 +5,6 @@ package com.azure.identity.v2.implementation.util;
 
 import com.azure.identity.v2.BrowserCustomizationOptions;
 import com.azure.identity.v2.implementation.models.ClientOptions;
-import com.azure.identity.v2.implementation.models.MsalCommonOptions;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.instrumentation.logging.ClientLogger;

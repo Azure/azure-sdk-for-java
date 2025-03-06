@@ -5,7 +5,6 @@ package com.azure.identity.v2;
 
 import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.HttpPipelineOptions;
-import com.azure.identity.v2.implementation.models.MsalCommonOptions;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.configuration.Configuration;

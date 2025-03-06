@@ -7,8 +7,8 @@ import com.azure.v2.core.credentials.TokenCredential;
 import io.clientcore.core.credentials.oauth.AccessToken;
 
 /**
- * The exception thrown when a {@link TokenCredential} did not attempt to authenticate and retrieve {@link AccessToken},
- * as its prerequisite information or state was not available.
+ * The exception thrown when a {@link TokenCredential} attempted to authenticate and retrieve {@link AccessToken},
+ * but failed to do so.
  *
  * <p>
  *     This exception breaks the chained authentication flow of chained credentials.

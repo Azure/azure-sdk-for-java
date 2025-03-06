@@ -24,7 +24,8 @@ import io.clientcore.core.utils.SharedExecutorService;
 import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 

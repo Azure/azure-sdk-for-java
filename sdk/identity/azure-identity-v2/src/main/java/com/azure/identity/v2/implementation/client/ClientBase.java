@@ -11,14 +11,12 @@ import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public abstract class ClientBase {
 
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
-
-    private final Map<String, String> properties = new HashMap<>();
     final ClientOptions clientOptions;
     final String tenantId;
     final String clientId;
@@ -57,7 +55,7 @@ public abstract class ClientBase {
     }
 
     HttpPipeline setupPipeline() {
-        //TODO g2vinay: Wire the HttpPipelineOptions in Pipeline construction.
+        //TODO (g2vinay): Wire the HttpPipelineOptions in Pipeline construction.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new HttpRetryPolicy());
         HttpPipeline httpPipeline = new HttpPipelineBuilder().addPolicy(policies.get(0))
