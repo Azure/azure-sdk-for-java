@@ -20,8 +20,8 @@ import java.util.stream.Stream;
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
 
-class TestHelper {
-    static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+public class TestHelper {
+    public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_APPCONFIG_TEST_SERVICE_VERSIONS = "AZURE_APPCONFIG_TEST_SERVICE_VERSIONS";
     private static final String SERVICE_VERSION_FROM_ENV
         = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_TEST_SERVICE_VERSIONS);
@@ -70,7 +70,7 @@ class TestHelper {
             .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 
-    static TokenCredential getTokenCredential(InterceptorManager interceptorManager) {
+    public static TokenCredential getTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isPlaybackMode()) {
             return new MockTokenCredential();
         } else if (interceptorManager.isRecordMode()) {

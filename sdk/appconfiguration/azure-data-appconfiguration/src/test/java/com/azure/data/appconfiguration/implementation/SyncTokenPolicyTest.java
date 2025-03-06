@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -18,9 +19,6 @@ import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,12 +32,12 @@ public class SyncTokenPolicyTest {
     private static final String ID = "jtqGc1I4";
     private static final String SEMICOLON = ";";
     private static final String SN_NAME = "sn";
-    private static final String SYNC_TOKEN = "Sync-Token";
+    private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
     private static final String VALUE = "MDoyOA==";
     private static final String SYNC_TOKEN_VALUE = "syncToken1=val1";
     private static final String FIRST = "first";
     private static final String SECOND = "second";
-    private static final String REQUEST_ID = "requestId";
+    private static final HttpHeaderName REQUEST_ID = HttpHeaderName.fromString("requestId");
     private static final String LOCAL_HOST = "http://localhost";
 
     /**
@@ -49,7 +47,7 @@ public class SyncTokenPolicyTest {
     public void parseSyncTokenString() {
         final SyncToken syncToken
             = SyncToken.createSyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER));
-        syncTokenEquals(syncToken, ID, VALUE, SEQUENCE_NUMBER);
+        syncTokenEquals(syncToken);
     }
 
     /**
@@ -123,7 +121,7 @@ public class SyncTokenPolicyTest {
     }
 
     @SyncAsyncTest
-    public void setSyncTokenPolicyProcessTest() throws MalformedURLException {
+    public void setSyncTokenPolicyProcessTest() {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
@@ -150,7 +148,7 @@ public class SyncTokenPolicyTest {
             }
         }).policies(syncTokenPolicy, auditorPolicy).build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, LOCAL_HOST);
         request.getHeaders().set(REQUEST_ID, FIRST);
 
         SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
@@ -159,7 +157,7 @@ public class SyncTokenPolicyTest {
     }
 
     @SyncAsyncTest
-    public void externalSyncTokenIsSentWithRequestText() throws MalformedURLException {
+    public void externalSyncTokenIsSentWithRequestText() {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
         syncTokenPolicy.updateSyncToken(SYNC_TOKEN_VALUE + ";sn=1");
@@ -175,12 +173,12 @@ public class SyncTokenPolicyTest {
             .policies(syncTokenPolicy, auditorPolicy)
             .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, LOCAL_HOST);
         SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
     }
 
     @SyncAsyncTest
-    public void externalSyncTokensFollowRulesWhenAddedTest() throws MalformedURLException {
+    public void externalSyncTokensFollowRulesWhenAddedTest() {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
         syncTokenPolicy.updateSyncToken("syncToken1=val1;sn=1");
@@ -199,17 +197,17 @@ public class SyncTokenPolicyTest {
             .policies(syncTokenPolicy, auditorPolicy)
             .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, LOCAL_HOST);
         SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
     }
 
-    private void syncTokenEquals(SyncToken syncToken, String id, String value, long sn) {
-        assertEquals(id, syncToken.getId());
-        assertEquals(value, syncToken.getValue());
-        assertEquals(sn, syncToken.getSequenceNumber());
+    private void syncTokenEquals(SyncToken syncToken) {
+        assertEquals(ID, syncToken.getId());
+        assertEquals(VALUE, syncToken.getValue());
+        assertEquals(SEQUENCE_NUMBER, syncToken.getSequenceNumber());
     }
 
-    // This helper function construct an sync token string by
+    // This helper function construct a sync token string by
     private String constructSyncTokenString(String id, String value, String snName, Long sn) {
         final StringBuilder sb = new StringBuilder();
         // identifier name
