@@ -132,7 +132,7 @@ public final class BatchError implements JsonSerializable<BatchError> {
 
     /**
      * 
-     * @param err The HttpResponseException based execption returned from an api call.
+     * @param err The HttpResponseException based exception returned from an api call.
      * @return An instance of BatchError if the HttpResponseException containted an instance of it, or null if it was pointing
      * to an HttpResponseException with no BatchError.
      */
