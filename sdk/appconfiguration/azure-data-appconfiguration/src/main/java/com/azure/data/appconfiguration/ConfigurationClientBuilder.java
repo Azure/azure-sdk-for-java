@@ -543,7 +543,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     }
 
     /**
-     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft Entra ID. The audience is not
+     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft Entra. The audience is not
      * considered when using a shared key.
      *
      * @param audience {@link ConfigurationAudience} of the service to be used when making requests.

@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added support for specifying the token credential's Microsoft EntraID audience when creating a client.
+- Added support for specifying the token credential's Microsoft Entra audience when creating a client.
 
 ### Breaking Changes
 

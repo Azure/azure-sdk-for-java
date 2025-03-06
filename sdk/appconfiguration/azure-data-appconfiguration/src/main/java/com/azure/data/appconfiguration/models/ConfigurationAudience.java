@@ -9,7 +9,7 @@ import java.util.Collection;
 
 /**
  * Configuration Audience is used to specify the target audience for the Azure App Configuration service.
- * Microsoft Entra ID audience is configurable via the {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#audience(ConfigurationAudience)} method.
+ * Microsoft Entra audience is configurable via the {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#audience(ConfigurationAudience)} method.
  */
 public final class ConfigurationAudience extends ExpandableStringEnum<ConfigurationAudience> {
     /**

@@ -45,7 +45,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 ### Authentication
 
-Microsoft Entra ID token authentication relies on the [credential class][azure_identity_credentials] from [Azure Identity][azure_identity] package.
+Microsoft Entra token authentication relies on the [credential class][azure_identity_credentials] from [Azure Identity][azure_identity] package.
 
 Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
 

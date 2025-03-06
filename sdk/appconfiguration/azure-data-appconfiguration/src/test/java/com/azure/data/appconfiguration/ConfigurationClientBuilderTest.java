@@ -361,10 +361,10 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     @DoNotRecord
     public void testUserDefinedScope() throws Exception {
         String fakeEndpoint = "https://example1.azconfig.azure.com";
-        ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
-            .endpoint("https://example1.azconfig.azure.com")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .audience(ConfigurationAudience.AZURE_CLOUD_CHINA);
+        ConfigurationClientBuilder builder
+            = new ConfigurationClientBuilder().endpoint("https://example1.azconfig.azure.com")
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .audience(ConfigurationAudience.AZURE_CLOUD_CHINA);
         builder.buildClient();
         Method method = ConfigurationClientBuilder.class.getDeclaredMethod("getDefaultScope", String.class);
         method.setAccessible(true);
