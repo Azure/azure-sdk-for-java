@@ -1,16 +1,5 @@
 # Release History
 
-## 5.21.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixes issue where `EventHubBufferedProducerClient` and `EventHubBufferedProducerAsyncClient` are unable to enqueue events when `SendOptions.getPartitionId()` is set. ([#44392](https://github.com/Azure/azure-sdk-for-java/pull/44392))
-- Fixes issue where `EventHubBufferedProducerClient` and `EventHubBufferedProducerAsyncClient` returns 0 after enqueueing events or calling `getBufferedEventCount()`. ([#44392](https://github.com/Azure/azure-sdk-for-java/pull/44392))
-
 ## 5.20.1 (2025-02-25)
 
 ### Other Changes
