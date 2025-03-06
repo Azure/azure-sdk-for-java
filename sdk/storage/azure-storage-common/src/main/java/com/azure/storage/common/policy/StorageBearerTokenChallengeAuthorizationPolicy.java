@@ -28,7 +28,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     private static final ClientLogger LOGGER = new ClientLogger(StorageBearerTokenChallengeAuthorizationPolicy.class);
 
     private static final String DEFAULT_SCOPE = "/.default";
-    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
+    static final String BEARER_TOKEN_PREFIX = "Bearer ";
 
     private String[] scopes;
 
@@ -69,8 +69,8 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
 
-        String scope = challenges.get("resource_id");
-        String authorization = challenges.get("authorization_uri");
+        String scope = getScopeFromChallenges(challenges);
+        String authorization = getAuthorizationFromChallenges(challenges);
 
         if (scope != null) {
             scope += DEFAULT_SCOPE;
@@ -110,14 +110,28 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
 
-        String scope = challenges.get("resource_id");
+        String scope = getScopeFromChallenges(challenges);
+        String authorization = getAuthorizationFromChallenges(challenges);
+
         if (scope != null) {
             scope += DEFAULT_SCOPE;
             scopes = new String[] { scope };
             scopes = getScopes(context, scopes);
-            setAuthorizationHeaderSync(context, new TokenRequestContext().addScopes(scopes));
+        }
+
+        if (authorization != null) {
+            String tenantId = extractTenantIdFromUri(authorization);
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
+            setAuthorizationHeaderSync(context, tokenRequestContext);
             return true;
         }
+
+        if (scope != null) {
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes);
+            setAuthorizationHeaderSync(context, tokenRequestContext);
+            return true;
+        }
+
         return false;
     }
 
@@ -147,5 +161,13 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
         return (!CoreUtils.isNullOrEmpty(authenticateHeader)
             && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
+    }
+
+    String getScopeFromChallenges(Map<String, String> challenges) {
+        return challenges.get("resource_id");
+    }
+
+    String getAuthorizationFromChallenges(Map<String, String> challenges) {
+        return challenges.get("authorization_uri");
     }
 }
