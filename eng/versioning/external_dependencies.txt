@@ -171,6 +171,7 @@ io.reactivex.rxjava2:rxjava;2.2.21
 net.java.dev.jna:jna-platform;5.13.0
 net.oneandone.reflections8:reflections8;0.11.7
 net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.6
+net.bytebuddy:byte-buddy;1.14.10
 org.apache.commons:commons-collections4;4.4
 org.apache.commons:commons-text;1.10.0
 org.apache.maven:maven-plugin-api;3.9.9
