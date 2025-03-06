@@ -67,6 +67,8 @@ import reactor.util.function.Tuple4;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
@@ -111,7 +113,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         shareName = generateShareName();
         filePath = generatePathName();
         shareAsyncClient = shareBuilderHelper(shareName).buildAsyncClient();
-        shareAsyncClient.create().block();
+        //shareAsyncClient.create().block();
         primaryFileAsyncClient = fileBuilderHelper(shareName, filePath).buildFileAsyncClient();
         testMetadata = Collections.singletonMap("testmetadata", "value");
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en").setContentType("application/octet-stream");
@@ -2071,7 +2073,12 @@ public class FileAsyncApiTests extends FileShareTestBase {
             }).flatMap(getSymLinkResponse -> {
                 assertNotEquals(null, getSymLinkResponse.getValue().getETag());
                 assertNotEquals(null, getSymLinkResponse.getValue().getLastModified());
-                assertEquals(source.getFileUrl(), getSymLinkResponse.getValue().getLinkText());
+                try {
+                    assertEquals(source.getFileUrl(), URLDecoder.decode(getSymLinkResponse.getValue().getLinkText(),
+                        StandardCharsets.UTF_8.toString()));
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
                 return Mono.empty();
             });
         });
@@ -2084,23 +2091,21 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void createGetSymbolicLinkError() {
         // Arrange
         String shareName = generateShareName();
-        Mono<ShareFileSymbolicLinkInfo> testMono = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
+        Mono<Void> testMono = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
             ShareDirectoryAsyncClient directory = premiumShareClient.getDirectoryClient(generatePathName());
             ShareFileAsyncClient source = directory.getFileClient(generatePathName());
             ShareFileAsyncClient symlink = directory.getFileClient(generatePathName());
 
-            return source.create(1024).then(
-                symlink.createSymbolicLink(source.getFileUrl())
-                    .onErrorResume(ShareStorageException.class, e -> {
-                        assertEquals("ParentNotFound", e.getErrorCode());
-                        return Mono.empty();
-                    })
-                    .then(symlink.getSymbolicLink())
-                    .onErrorResume(ShareStorageException.class, e -> {
-                        assertEquals("ParentNotFound", e.getErrorCode());
-                        return Mono.empty();
-                    })
-            );
+            return directory.create()
+                .then(source.create(1024))
+                .then(symlink.createSymbolicLink(source.getFileUrl()).onErrorResume(ShareStorageException.class, e -> {
+                    assertEquals("ParentNotFound", e.getErrorCode());
+                    return Mono.empty();
+                }))
+                .then(symlink.getSymbolicLink().onErrorResume(ShareStorageException.class, e -> {
+                    assertEquals("ParentNotFound", e.getErrorCode());
+                    return Mono.empty();
+                }).then());
         });
 
         StepVerifier.create(testMono).verifyComplete();
@@ -2110,18 +2115,25 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void createGetSymbolicLinkOAuth() {
         // Arrange
-        ShareServiceAsyncClient oauthServiceClient
-            = getOAuthPremiumServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryAsyncClient directory = oauthServiceClient.getShareAsyncClient(shareName).getRootDirectoryClient();
+        ShareServiceAsyncClient oauthServiceClient = getOAuthPremiumServiceAsyncClient(
+            new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryAsyncClient directory
+            = oauthServiceClient.getShareAsyncClient(shareName).getRootDirectoryClient();
 
         ShareFileAsyncClient source = directory.getFileClient(generatePathName());
         ShareFileAsyncClient symlink = directory.getFileClient(generatePathName());
 
+        // Ensure the share exists
+        StepVerifier.create(oauthServiceClient.getShareAsyncClient(shareName).create()).assertNext(shareInfo -> {
+            assertNotNull(shareInfo);
+        }).verifyComplete();
+
         // Act & Assert
         StepVerifier.create(
-            source.create(1024)
-                .then(symlink.createSymbolicLink(source.getFileUrl()))
-                .then(symlink.getSymbolicLink())
-        ).verifyComplete();
+            source.create(1024).then(symlink.createSymbolicLink(source.getFileUrl())).then(symlink.getSymbolicLink()))
+            .assertNext(symbolicLinkInfo -> {
+                assertNotNull(symbolicLinkInfo);
+            })
+            .verifyComplete();
     }
 }
