@@ -68,10 +68,7 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
     @SuppressWarnings("try")
     public void producerTest() throws InterruptedException {
         String ehNamespace = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME");
-        System.out.println("ehNamespace = " + ehNamespace);
         String ehName = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_EVENT_HUB_NAME");
-        System.out.println("ehName = " + ehName);
-
 
         CountDownLatch exporterCountDown = new CountDownLatch(2);
         String spanName = "event-hubs-producer-testing";
@@ -89,8 +86,9 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             }
 
             private void checkTelemetry(HttpPipelineCallContext context) {
-                byte[] asyncBytes = LocalStorageTelemetryPipelineListener.ungzip(context.getHttpRequest().getBodyAsBinaryData().toBytes());
-                List<TelemetryItem> telemetryItems =  TestUtils.deserialize(asyncBytes);
+                byte[] asyncBytes = LocalStorageTelemetryPipelineListener
+                    .ungzip(context.getHttpRequest().getBodyAsBinaryData().toBytes());
+                List<TelemetryItem> telemetryItems = TestUtils.deserialize(asyncBytes);
 
                 for (TelemetryItem telemetryItem : telemetryItems) {
                     MonitorDomain monitorDomain = telemetryItem.getData().getBaseData();
@@ -99,19 +97,15 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
                     if (remoteDependencyName.contains(spanName)) {
                         exporterCountDown.countDown();
                         LOGGER.info("Count down " + spanName);
-                        System.out.println("Count down " + spanName);
                     } else if (("send " + ehName).equals(remoteDependencyName)) {
                         exporterCountDown.countDown();
                         LOGGER.info("Count down eventHubs send");
-                        System.out.println("Count down EventHubs.send");
                     } else {
                         LOGGER.info("remoteDependencyName = " + remoteDependencyName);
-                        System.out.println("remoteDependencyName = " + remoteDependencyName);
                     }
                 }
             }
         };
-
 
         OpenTelemetry otel = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
         Tracer tracer = otel.getTracer("Sample");
@@ -120,8 +114,7 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             .fullyQualifiedNamespace(ehNamespace)
             .eventHubName(ehName)
             .clientOptions(
-                new ClientOptions()
-                    .setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel)))
+                new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel)))
             .buildAsyncProducerClient()) {
 
             Span span = tracer.spanBuilder(spanName).startSpan();

@@ -22,7 +22,6 @@ class TokenCredentialUtil {
      */
     static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isLiveMode()) {
-            // return new AzurePowerShellCredentialBuilder().build();
             return getPipelineCredential();
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
@@ -50,8 +49,7 @@ class TokenCredentialUtil {
             .serviceConnectionId(serviceConnectionId)
             .build();
 
-        return request -> Mono.defer(() -> cred.getToken(request))
-            .subscribeOn(Schedulers.boundedElastic());
+        return request -> Mono.defer(() -> cred.getToken(request)).subscribeOn(Schedulers.boundedElastic());
     }
 
     private static String getPropertyValue(String propertyName) {
