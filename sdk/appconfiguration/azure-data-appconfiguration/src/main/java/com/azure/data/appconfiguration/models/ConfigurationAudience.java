@@ -9,11 +9,23 @@ import java.util.Collection;
 
 /**
  * Configuration Audience is used to specify the target audience for the Azure App Configuration service.
+ * Microsoft Entra ID audience is configurable via the {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#audience(ConfigurationAudience)} method.
  */
 public final class ConfigurationAudience extends ExpandableStringEnum<ConfigurationAudience> {
-    public static final ConfigurationAudience AzureChina = fromString("https://appconfig.azure.cn");
-    public static final ConfigurationAudience AzureGovernment = fromString("https://appconfig.azure.us");
-    public static final ConfigurationAudience AzurePublicCloud = fromString("https://appconfig.azure.com");
+    /**
+     * The Azure App Configuration service audience for China Cloud.
+     */
+    public static final ConfigurationAudience AZURE_CLOUD_CHINA = fromString("https://appconfig.azure.cn");
+
+    /**
+     * The Azure App Configuration service audience for US Government Cloud.
+     */
+    public static final ConfigurationAudience AZURE_CLOUD_US_GOVERNMENT = fromString("https://appconfig.azure.us");
+
+    /**
+     * The Azure App Configuration service audience for Public Cloud.
+     */
+    public static final ConfigurationAudience AZURE_CLOUD_PUBLIC = fromString("https://appconfig.azure.com");
 
     /**
      * Creates a new instance of ConfigurationAudience value.

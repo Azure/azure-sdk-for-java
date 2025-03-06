@@ -543,7 +543,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     }
 
     /**
-     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft EntraId. The audience is not
+     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft Entra ID. The audience is not
      * considered when using a shared key.
      *
      * @param audience {@link ConfigurationAudience} of the service to be used when making requests.
@@ -554,23 +554,23 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         return this;
     }
 
-    private static final String AZ_CONFIG_US_GOV_HOST_NAME = "azconfig.azure.us";
-    private static final String AZ_CONFIG_CHINA_HOST_NAME = "azconfig.azure.cn";
-    private static final String APP_CONFIG_US_GOV_HOST_NAME = "appconfig.azure.us";
-    private static final String APP_CONFIG_CHINA_HOST_NAME = "appconfig.azure.cn";
-
-
+    /**
+     * Gets the default scope for the given endpoint.
+     *
+     * @param endpoint The endpoint to get the default scope for.
+     * @return The default scope for the given endpoint.
+     */
     private String getDefaultScope(String endpoint) {
+        String defaultValue = "/.default";
         if (audience == null || audience.toString().isEmpty()) {
-            if (endpoint.endsWith(AZ_CONFIG_US_GOV_HOST_NAME) || endpoint.endsWith(APP_CONFIG_US_GOV_HOST_NAME)) {
-                return ConfigurationAudience.AzureGovernment + "/.default";
-            } else if (endpoint.endsWith(AZ_CONFIG_CHINA_HOST_NAME) || endpoint.endsWith(APP_CONFIG_CHINA_HOST_NAME)) {
-                return ConfigurationAudience.AzureChina + "/.default";
+            if (endpoint.endsWith("azconfig.azure.us") || endpoint.endsWith("appconfig.azure.us")) {
+                return ConfigurationAudience.AZURE_CLOUD_US_GOVERNMENT + defaultValue;
+            } else if (endpoint.endsWith("azconfig.azure.cn") || endpoint.endsWith("appconfig.azure.cn")) {
+                return ConfigurationAudience.AZURE_CLOUD_CHINA + defaultValue;
             } else {
-                return ConfigurationAudience.AzurePublicCloud + "/.default";
+                return ConfigurationAudience.AZURE_CLOUD_PUBLIC + defaultValue;
             }
         }
-        return audience + "/.default";
+        return audience + defaultValue;
     }
-
 }
