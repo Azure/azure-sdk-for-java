@@ -11,23 +11,10 @@ import com.azure.v2.core.credentials.TokenRequestContext;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentityId;
 import io.clientcore.core.credentials.oauth.AccessToken;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.SharedExecutorService;
 
-import java.time.Duration;
-import java.util.*;
-import java.util.regex.Pattern;
-
 public class ManagedIdentityClient extends ClientBase {
-
-    static final ClientLogger LOGGER = new ClientLogger(ManagedIdentityClient.class);
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
-    static final Pattern TRAILING_FORWARD_SLASHES = Pattern.compile("/+$");
-    static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
-
-    private final Map<String, String> properties = new HashMap<>();
     final ManagedIdentityClientOptions managedIdentityClientOptions;
     final String resourceId;
     final String objectId;
@@ -81,8 +68,8 @@ public class ManagedIdentityClient extends ClientBase {
         initializeHttpPipelineAdapter();
         miBuilder.httpClient(httpPipelineAdapter);
 
-        if (getMsalOptions().getExecutorService() != null) {
-            miBuilder.executorService(getMsalOptions().getExecutorService());
+        if (clientOptions.getExecutorService() != null) {
+            miBuilder.executorService(clientOptions.getExecutorService());
         } else {
             miBuilder.executorService(SharedExecutorService.getInstance());
         }

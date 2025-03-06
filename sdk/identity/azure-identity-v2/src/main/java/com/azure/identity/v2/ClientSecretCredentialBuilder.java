@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.models.ClientOptionsBase;
+import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -48,8 +48,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  */
 public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<ClientSecretCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(ClientSecretCredentialBuilder.class);
-    private static final String CLASS_NAME = ClientSecretCredentialBuilder.class.getSimpleName();
-
     private ConfidentialClientOptions confidentialClientOptions;
 
     /**
@@ -61,7 +59,7 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
     }
 
     @Override
-    ClientOptionsBase getClientOptions() {
+    ClientOptions getClientOptions() {
         return confidentialClientOptions;
     }
 
@@ -85,7 +83,7 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
      */
     public ClientSecretCredentialBuilder
         tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
-        getMsalCommonOptions().setTokenCacheOptions(tokenCachePersistenceOptions);
+        getClientOptions().setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
 
@@ -95,9 +93,8 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
      * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
      */
     public ClientSecretCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", getClientOptions().getMsalCommonOptions().getClientId(),
-            "tenantId", getClientOptions().getMsalCommonOptions().getTenantId(), "clientSecret",
-            confidentialClientOptions.getClientSecret());
+        ValidationUtil.validate(LOGGER, "clientId", getClientOptions().getClientId(), "tenantId",
+            getClientOptions().getTenantId(), "clientSecret", confidentialClientOptions.getClientSecret());
 
         return new ClientSecretCredential(confidentialClientOptions);
     }

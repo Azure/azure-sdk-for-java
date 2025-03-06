@@ -117,7 +117,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
     }
 
     String fetchManagedIdentityId(ManagedIdentityClientOptions miClientOptions) {
-        String clientId = miClientOptions.getMsalCommonOptions().getClientId();
+        String clientId = miClientOptions.getClientId();
         String resourceId = miClientOptions.getResourceId();
         String objectId = miClientOptions.getObjectId();
         if (clientId != null) {

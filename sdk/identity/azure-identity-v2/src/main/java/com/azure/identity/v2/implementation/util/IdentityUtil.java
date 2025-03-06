@@ -4,8 +4,10 @@
 package com.azure.identity.v2.implementation.util;
 
 import com.azure.identity.v2.BrowserCustomizationOptions;
+import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.MsalCommonOptions;
 import com.azure.v2.core.credentials.TokenRequestContext;
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -22,6 +24,9 @@ public final class IdentityUtil {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);
     public static final String ALL_TENANTS = "*";
     public static final String DEFAULT_TENANT = "organizations";
+    public static final HttpHeaderName X_TFS_FED_AUTH_REDIRECT = HttpHeaderName.fromString("X-TFS-FedAuthRedirect");
+    public static final HttpHeaderName X_VSS_E2EID = HttpHeaderName.fromString("x-vss-e2eid");
+    public static final HttpHeaderName X_MSEDGE_REF = HttpHeaderName.fromString("x-msedge-ref");
 
     private IdentityUtil() {
     }
@@ -34,7 +39,7 @@ public final class IdentityUtil {
      * on the credential or not.
      */
     public static String resolveTenantId(String currentTenantId, TokenRequestContext requestContext,
-        MsalCommonOptions options) {
+        ClientOptions options) {
 
         String contextTenantId = requestContext.getTenantId();
 

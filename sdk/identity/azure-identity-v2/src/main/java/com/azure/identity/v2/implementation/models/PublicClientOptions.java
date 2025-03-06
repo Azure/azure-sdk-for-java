@@ -9,7 +9,7 @@ import com.azure.identity.v2.BrowserCustomizationOptions;
 /**
  * Options to configure the IdentityClient.
  */
-public class PublicClientOptions extends ClientOptionsBase {
+public class PublicClientOptions extends ClientOptions {
     private BrowserCustomizationOptions browserCustomizationOptions;
     private AuthenticationRecord authenticationRecord;
 
@@ -65,8 +65,13 @@ public class PublicClientOptions extends ClientOptionsBase {
     public PublicClientOptions clone() {
         PublicClientOptions clone = (PublicClientOptions) new PublicClientOptions()
             .setBrowserCustomizationOptions(browserCustomizationOptions)
+            .setClientId(this.getClientId())
+            .setTenantId(this.getTenantId())
             .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
-            .setMsalCommonOptions(this.getMsalCommonOptions().clone());
+            .setExecutorService(this.getExecutorService())
+            .setAuthorityHost(this.getAuthorityHost())
+            .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())
+            .setTokenCacheOptions(this.getTokenCacheOptions());
         return clone;
     }
 }

@@ -62,19 +62,17 @@ public class ConfidentialClient extends ClientBase {
         ConfidentialClientApplication confidentialClient = getConfidentialClientInstance(request).getValue();
         ClientCredentialParameters.ClientCredentialParametersBuilder builder
             = ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                .tenant(IdentityUtil.resolveTenantId(tenantId, request, getMsalOptions()));
+                .tenant(IdentityUtil.resolveTenantId(tenantId, request, clientOptions));
+
+        if (confidentialClientOptions.getClientAssertionFunction() != null) {
+            builder.clientCredential(ClientCredentialFactory.createFromClientAssertion(
+                confidentialClientOptions.getClientAssertionFunction().apply(getPipeline())));
+        }
         try {
             return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
-    }
-
-    private SynchronousAccessor<ConfidentialClientApplication>
-        getConfidentialClientInstance(TokenRequestContext request) {
-        return request.isCaeEnabled()
-            ? confidentialClientApplicationAccessorWithCae
-            : confidentialClientApplicationAccessor;
     }
 
     /**
@@ -88,7 +86,7 @@ public class ConfidentialClient extends ClientBase {
         ConfidentialClientApplication confidentialClientApplication = getConfidentialClientInstance(request).getValue();
         SilentParameters.SilentParametersBuilder parametersBuilder
             = SilentParameters.builder(new HashSet<>(request.getScopes()))
-                .tenant(IdentityUtil.resolveTenantId(tenantId, request, getMsalOptions()));
+                .tenant(IdentityUtil.resolveTenantId(tenantId, request, clientOptions));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
@@ -106,7 +104,7 @@ public class ConfidentialClient extends ClientBase {
                 throw new IllegalStateException("Received token is close to expiry.");
             }
         } catch (MalformedURLException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e.getMessage(), e));
+            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         } catch (ExecutionException | InterruptedException e) {
             // Cache misses should not throw an exception, but should log.
             if (e.getMessage().contains("Token not found in the cache")) {
@@ -124,7 +122,7 @@ public class ConfidentialClient extends ClientBase {
                 "A non-null value for client ID must be provided for user authentication."));
         }
         String authorityUrl
-            = TRAILING_FORWARD_SLASHES.matcher(getMsalOptions().getAuthorityHost()).replaceAll("") + "/" + tenantId;
+            = TRAILING_FORWARD_SLASHES.matcher(clientOptions.getAuthorityHost()).replaceAll("") + "/" + tenantId;
         IClientCredential credential;
 
         if (confidentialClientOptions.getClientSecret() != null) {
@@ -140,9 +138,9 @@ public class ConfidentialClient extends ClientBase {
             = ConfidentialClientApplication.builder(clientId, credential);
         try {
             applicationBuilder = applicationBuilder.authority(authorityUrl)
-                .instanceDiscovery(getMsalOptions().isInstanceDiscoveryEnabled());
+                .instanceDiscovery(clientOptions.isInstanceDiscoveryEnabled());
 
-            if (!getMsalOptions().isInstanceDiscoveryEnabled()) {
+            if (!clientOptions.isInstanceDiscoveryEnabled()) {
                 LOGGER.atLevel(LogLevel.VERBOSE)
                     .log("Instance discovery and authority validation is disabled. In this"
                         + " state, the library will not fetch metadata to validate the specified authority host. As a"
@@ -164,13 +162,13 @@ public class ConfidentialClient extends ClientBase {
             applicationBuilder.httpClient(httpPipelineAdapter);
         }
 
-        if (getMsalOptions().getExecutorService() != null) {
-            applicationBuilder.executorService(getMsalOptions().getExecutorService());
+        if (clientOptions.getExecutorService() != null) {
+            applicationBuilder.executorService(clientOptions.getExecutorService());
         } else {
             applicationBuilder.executorService(SharedExecutorService.getInstance());
         }
 
-        TokenCachePersistenceOptions tokenCachePersistenceOptions = getMsalOptions().getTokenCacheOptions();
+        TokenCachePersistenceOptions tokenCachePersistenceOptions = clientOptions.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
             try {
@@ -190,5 +188,12 @@ public class ConfidentialClient extends ClientBase {
             tokenCache.registerCache();
         }
         return confidentialClientApplication;
+    }
+
+    private SynchronousAccessor<ConfidentialClientApplication>
+        getConfidentialClientInstance(TokenRequestContext request) {
+        return request.isCaeEnabled()
+            ? confidentialClientApplicationAccessorWithCae
+            : confidentialClientApplicationAccessor;
     }
 }

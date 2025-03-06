@@ -43,7 +43,7 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
     @SuppressWarnings("unchecked")
     public T authorityHost(String authorityHost) {
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
-        getMsalCommonOptions().setAuthorityHost(authorityHost);
+        getClientOptions().setAuthorityHost(authorityHost);
         return (T) this;
     }
 
@@ -59,7 +59,7 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
      */
     @SuppressWarnings("unchecked")
     public T executorService(ExecutorService executorService) {
-        this.getMsalCommonOptions().setExecutorService(executorService);
+        getClientOptions().setExecutorService(executorService);
         return (T) this;
     }
 
@@ -75,7 +75,7 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
      */
     @SuppressWarnings("unchecked")
     public T disableInstanceDiscovery() {
-        this.getMsalCommonOptions().disableInstanceDiscovery();
+        getClientOptions().disableInstanceDiscovery();
         return (T) this;
     }
 
@@ -143,7 +143,7 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
      */
     @SuppressWarnings("unchecked")
     public T additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        getMsalCommonOptions().setAdditionallyAllowedTenants(
+        getClientOptions().setAdditionallyAllowedTenants(
             IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return (T) this;
     }
@@ -157,7 +157,7 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
      */
     @SuppressWarnings("unchecked")
     public T additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        getMsalCommonOptions()
+        getClientOptions()
             .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return (T) this;
     }

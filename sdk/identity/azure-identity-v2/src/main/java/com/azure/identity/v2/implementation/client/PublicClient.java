@@ -97,7 +97,7 @@ public class PublicClient extends ClientBase {
         if (account != null) {
             parametersBuilder = parametersBuilder.account(account);
         }
-        parametersBuilder.tenant(IdentityUtil.resolveTenantId(tenantId, request, options.getMsalCommonOptions()));
+        parametersBuilder.tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
         try {
             return new MsalToken(pc.acquireTokenSilently(parametersBuilder.build()).get());
         } catch (MalformedURLException e) {
@@ -119,14 +119,12 @@ public class PublicClient extends ClientBase {
                 "A non-null value for client ID must be provided for user authentication."));
         }
         String authorityUrl
-            = TRAILING_FORWARD_SLASHES.matcher(options.getMsalCommonOptions().getAuthorityHost()).replaceAll("") + "/"
-                + tenantId;
+            = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/" + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl)
-                .instanceDiscovery(options.getMsalCommonOptions().isInstanceDiscoveryEnabled());
+            builder = builder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
-            if (!options.getMsalCommonOptions().isInstanceDiscoveryEnabled()) {
+            if (!options.isInstanceDiscoveryEnabled()) {
                 LOGGER.atLevel(LogLevel.VERBOSE)
                     .log("Instance discovery and authority validation is disabled. In this"
                         + " state, the library will not fetch metadata to validate the specified authority host. As a"
@@ -139,8 +137,8 @@ public class PublicClient extends ClientBase {
         initializeHttpPipelineAdapter();
         builder.httpClient(httpPipelineAdapter);
 
-        if (options.getMsalCommonOptions().getExecutorService() != null) {
-            builder.executorService(options.getMsalCommonOptions().getExecutorService());
+        if (options.getExecutorService() != null) {
+            builder.executorService(options.getExecutorService());
         } else {
             builder.executorService(SharedExecutorService.getInstance());
         }
@@ -151,8 +149,7 @@ public class PublicClient extends ClientBase {
             builder.clientCapabilities(set);
         }
 
-        TokenCachePersistenceOptions tokenCachePersistenceOptions
-            = options.getMsalCommonOptions().getTokenCacheOptions();
+        TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
             try {
@@ -227,7 +224,7 @@ public class PublicClient extends ClientBase {
             = InteractiveRequestParameters.builder(redirectUri)
                 .scopes(new HashSet<>(request.getScopes()))
                 .prompt(Prompt.SELECT_ACCOUNT)
-                .tenant(IdentityUtil.resolveTenantId(tenantId, request, options.getMsalCommonOptions()));
+                .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());

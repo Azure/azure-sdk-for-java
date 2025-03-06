@@ -3,11 +3,16 @@
 
 package com.azure.identity.v2.implementation.models;
 
+import io.clientcore.core.http.pipeline.HttpPipeline;
+
+import java.util.function.Function;
+
 /**
  * Represents Confidential Client Options used in Confidential Client OAuth Flow .
  */
-public class ConfidentialClientOptions extends ClientOptionsBase {
+public class ConfidentialClientOptions extends ClientOptions {
     private String clientSecret;
+    private Function<HttpPipeline, String> clientAssertionFunction;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -34,11 +39,28 @@ public class ConfidentialClientOptions extends ClientOptionsBase {
         return this;
     }
 
+    public ConfidentialClientOptions
+        setClientAssertionFunction(Function<HttpPipeline, String> clientAssertionFunction) {
+        this.clientAssertionFunction = clientAssertionFunction;
+        return this;
+    }
+
+    public Function<HttpPipeline, String> getClientAssertionFunction() {
+        return this.clientAssertionFunction;
+    }
+
+    @Override
     public ConfidentialClientOptions clone() {
         ConfidentialClientOptions clone
-            = (ConfidentialClientOptions) new ConfidentialClientOptions().setClientSecret(clientSecret)
+            = (ConfidentialClientOptions) new ConfidentialClientOptions().setClientSecret(this.clientSecret)
+                .setClientAssertionFunction(this.clientAssertionFunction)
+                .setClientId(this.getClientId())
+                .setTenantId(this.getTenantId())
                 .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
-                .setMsalCommonOptions(this.getMsalCommonOptions().clone());
+                .setExecutorService(this.getExecutorService())
+                .setAuthorityHost(this.getAuthorityHost())
+                .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())
+                .setTokenCacheOptions(this.getTokenCacheOptions());
         return clone;
     }
 }

@@ -6,7 +6,7 @@ package com.azure.identity.v2.implementation.models;
 /**
  * Represents Managed Identity Client Options used in Managed Identity OAuth Flow .
  */
-public class ManagedIdentityClientOptions extends ClientOptionsBase {
+public class ManagedIdentityClientOptions extends ClientOptions {
     private String resourceId;
     private String objectId;
 
@@ -53,12 +53,18 @@ public class ManagedIdentityClientOptions extends ClientOptionsBase {
         return this;
     }
 
+    @Override
     public ManagedIdentityClientOptions clone() {
         ManagedIdentityClientOptions clone
             = (ManagedIdentityClientOptions) new ManagedIdentityClientOptions().setResourceId(resourceId)
                 .setObjectId(objectId)
+                .setClientId(this.getClientId())
+                .setTenantId(this.getTenantId())
                 .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
-                .setMsalCommonOptions(this.getMsalCommonOptions().clone());
+                .setExecutorService(this.getExecutorService())
+                .setAuthorityHost(this.getAuthorityHost())
+                .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())
+                .setTokenCacheOptions(this.getTokenCacheOptions());
         return clone;
     }
 }

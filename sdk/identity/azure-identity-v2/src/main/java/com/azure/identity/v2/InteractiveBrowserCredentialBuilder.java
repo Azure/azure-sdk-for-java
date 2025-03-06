@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.models.ClientOptionsBase;
+import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.PublicClientOptions;
 import com.azure.identity.v2.implementation.util.IdentityConstants;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
@@ -113,7 +113,7 @@ public class InteractiveBrowserCredentialBuilder
      */
     public InteractiveBrowserCredentialBuilder
         tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
-        this.publicClientOptions.getMsalCommonOptions().setTokenCacheOptions(tokenCachePersistenceOptions);
+        this.publicClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
 
@@ -170,9 +170,8 @@ public class InteractiveBrowserCredentialBuilder
      */
     @Override
     public InteractiveBrowserCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        publicClientOptions.getMsalCommonOptions()
-            .setAdditionallyAllowedTenants(
-                IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        publicClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -187,7 +186,7 @@ public class InteractiveBrowserCredentialBuilder
      */
     @Override
     public InteractiveBrowserCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        publicClientOptions.getMsalCommonOptions()
+        publicClientOptions
             .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
@@ -211,16 +210,15 @@ public class InteractiveBrowserCredentialBuilder
     public InteractiveBrowserCredential build() {
         ValidationUtil.validateInteractiveBrowserRedirectUrlSetup(port, redirectUrl, LOGGER);
 
-        String clientId = this.publicClientOptions.getMsalCommonOptions().getClientId();
+        String clientId = this.publicClientOptions.getClientId();
 
-        publicClientOptions.getMsalCommonOptions()
-            .setClientId(clientId != null ? clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID);
+        publicClientOptions.setClientId(clientId != null ? clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID);
         return new InteractiveBrowserCredential(port, redirectUrl, automaticAuthentication, loginHint,
             publicClientOptions);
     }
 
     @Override
-    ClientOptionsBase getClientOptions() {
+    ClientOptions getClientOptions() {
         return publicClientOptions;
     }
 }

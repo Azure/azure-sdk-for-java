@@ -91,7 +91,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
         this.publicClientOptions = publicClientOptions;
 
         cachedToken = new AtomicReference<>();
-        this.authorityHost = publicClientOptions.getMsalCommonOptions().getAuthorityHost();
+        this.authorityHost = publicClientOptions.getAuthorityHost();
         this.automaticAuthentication = automaticAuthentication;
         this.loginHint = loginHint;
         if (publicClientOptions.getAuthenticationRecord() != null) {
@@ -171,8 +171,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
 
     private AccessToken updateCache(MsalToken msalToken) {
         cachedToken.set(new MsalAuthenticationAccount(new AuthenticationRecord(msalToken.getAuthenticationResult(),
-            publicClientOptions.getMsalCommonOptions().getTenantId(),
-            publicClientOptions.getMsalCommonOptions().getClientId()), msalToken.getAccount().getTenantProfiles()));
+            publicClientOptions.getTenantId(), publicClientOptions.getClientId()),
+            msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
 

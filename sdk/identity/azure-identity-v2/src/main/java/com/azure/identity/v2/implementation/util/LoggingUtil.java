@@ -22,7 +22,7 @@ public final class LoggingUtil {
      */
     public static void logTokenSuccess(ClientLogger logger, TokenRequestContext context) {
         logger.atLevel(LogLevel.VERBOSE)
-            .log(String.format("Azure Identity => getToken() result for scopes [%s]: SUCCESS",
+            .log(String.format("Azure Identity => SUCCESS getToken() result for scopes [%s]",
                 CoreUtils.stringJoin(", ", context.getScopes())));
     }
 

@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.models.ClientOptionsBase;
+import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.ManagedIdentityClientOptions;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -76,7 +76,7 @@ public class ManagedIdentityCredentialBuilder extends EntraIdCredentialBuilderBa
      * @return the ManagedIdentityCredentialBuilder itself
      */
     public ManagedIdentityCredentialBuilder clientId(String clientId) {
-        getMsalCommonOptions().setClientId(clientId);
+        getClientOptions().setClientId(clientId);
         return this;
     }
 
@@ -123,7 +123,7 @@ public class ManagedIdentityCredentialBuilder extends EntraIdCredentialBuilderBa
      * @return the ManagedIdentityCredentialBuilder itself
      */
     public ManagedIdentityCredentialBuilder executorService(ExecutorService executorService) {
-        getMsalCommonOptions().setExecutorService(executorService);
+        getClientOptions().setExecutorService(executorService);
         return this;
     }
 
@@ -140,7 +140,7 @@ public class ManagedIdentityCredentialBuilder extends EntraIdCredentialBuilderBa
     }
 
     @Override
-    ClientOptionsBase getClientOptions() {
+    ClientOptions getClientOptions() {
         return miClientOptions;
     }
 }

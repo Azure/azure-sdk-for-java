@@ -42,9 +42,9 @@ public class ClientSecretCredentialTest {
             = mockConstruction(ConfidentialClient.class, (identitySyncClient, context) -> {
                 when(identitySyncClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
                 when(identitySyncClient.authenticate(request1))
-                    .thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
                 when(identitySyncClient.authenticate(request2))
-                    .thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
+                    .thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
             })) {
             // test
             ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(TENANT_ID)
@@ -83,7 +83,7 @@ public class ClientSecretCredentialTest {
                 when(identitySyncClient.authenticate(request1)).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                     if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
-                        return TestUtils.getMockMsalTokenSync(token1, expiresAt);
+                        return TestUtils.getMockMsalToken(token1, expiresAt);
                     } else {
                         throw new InvalidUseOfMatchersException(
                             String.format("Argument %s does not match", (Object) argument));
@@ -92,7 +92,7 @@ public class ClientSecretCredentialTest {
                 when(identitySyncClient.authenticate(request2)).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                     if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
-                        return TestUtils.getMockMsalTokenSync(token2, expiresAt);
+                        return TestUtils.getMockMsalToken(token2, expiresAt);
                     } else {
                         throw new InvalidUseOfMatchersException(
                             String.format("Argument %s does not match", (Object) argument));

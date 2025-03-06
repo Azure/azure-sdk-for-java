@@ -3,19 +3,15 @@
 
 package com.azure.identity.v2.implementation.client;
 
-import com.azure.identity.v2.implementation.models.ClientOptionsBase;
+import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.HttpPipelineOptions;
-import com.azure.identity.v2.implementation.models.MsalCommonOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class ClientBase {
 
@@ -23,7 +19,7 @@ public abstract class ClientBase {
     private static final String SDK_VERSION = "version";
 
     private final Map<String, String> properties = new HashMap<>();
-    final ClientOptionsBase optionsBase;
+    final ClientOptions clientOptions;
     final String tenantId;
     final String clientId;
     HttpPipelineAdapter httpPipelineAdapter;
@@ -34,11 +30,11 @@ public abstract class ClientBase {
      *
      * @param options the options configuring the client.
      */
-    public ClientBase(ClientOptionsBase options) {
-        this.optionsBase = options;
-        this.tenantId
-            = getMsalOptions().getTenantId() == null ? IdentityUtil.DEFAULT_TENANT : getMsalOptions().getTenantId();
-        this.clientId = getMsalOptions().getClientId();
+    public ClientBase(ClientOptions options) {
+        Objects.requireNonNull(options, "The Client options cannot be null.");
+        this.clientOptions = options;
+        this.tenantId = clientOptions.getTenantId() == null ? IdentityUtil.DEFAULT_TENANT : clientOptions.getTenantId();
+        this.clientId = clientOptions.getClientId();
     }
 
     HttpPipeline getPipeline() {
@@ -74,11 +70,7 @@ public abstract class ClientBase {
         httpPipelineAdapter = new HttpPipelineAdapter(getPipeline(), getHttpPipelineOptions());
     }
 
-    MsalCommonOptions getMsalOptions() {
-        return optionsBase.getMsalCommonOptions();
-    }
-
     HttpPipelineOptions getHttpPipelineOptions() {
-        return optionsBase.getHttpPipelineOptions();
+        return clientOptions.getHttpPipelineOptions();
     }
 }

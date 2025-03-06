@@ -90,7 +90,7 @@ public final class TestUtils {
      * @param expiresOn the expiration time
      * @return a Mono publisher of the result
      */
-    public static MsalToken getMockMsalTokenSync(String accessToken, OffsetDateTime expiresOn) {
+    public static MsalToken getMockMsalToken(String accessToken, OffsetDateTime expiresOn) {
         return new MsalToken(getMockIAuthenticationResult(accessToken, expiresOn));
 
     }
@@ -118,16 +118,6 @@ public final class TestUtils {
      * @return a Mono publisher of the result
      */
     public static AccessToken getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
-        return new AccessToken(accessToken, expiresOn.plusMinutes(2));
-    }
-
-    /**
-     * Creates a mock {@link AccessToken} instance.
-     * @param accessToken the access token to return
-     * @param expiresOn the expiration time
-     * @return a Mono publisher of the result
-     */
-    public static AccessToken getMockAccessTokenSync(String accessToken, OffsetDateTime expiresOn) {
         return new AccessToken(accessToken, expiresOn.plusMinutes(2));
     }
 

@@ -22,17 +22,18 @@ public final class MsalToken extends AccessToken {
     /**
      * Creates an access token instance.
      *
-     * @param msalResult the raw authentication result returned by MSAL
+     * @param authenticationResult the raw authentication result returned by MSAL
      */
-    public MsalToken(IAuthenticationResult msalResult) {
-        super(msalResult.accessToken(),
-            OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC),
-            msalResult.metadata() != null
-                ? msalResult.metadata().refreshOn() == null
+    public MsalToken(IAuthenticationResult authenticationResult) {
+        super(authenticationResult.accessToken(),
+            OffsetDateTime.ofInstant(authenticationResult.expiresOnDate().toInstant(), ZoneOffset.UTC),
+            authenticationResult.metadata() != null
+                ? authenticationResult.metadata().refreshOn() == null
                     ? null
-                    : OffsetDateTime.ofInstant(Instant.ofEpochSecond(msalResult.metadata().refreshOn()), ZoneOffset.UTC)
+                    : OffsetDateTime.ofInstant(Instant.ofEpochSecond(authenticationResult.metadata().refreshOn()),
+                        ZoneOffset.UTC)
                 : null);
-        authenticationResult = msalResult;
+        this.authenticationResult = authenticationResult;
     }
 
     public MsalToken(IAuthenticationResult msalResult, String tokenType) {

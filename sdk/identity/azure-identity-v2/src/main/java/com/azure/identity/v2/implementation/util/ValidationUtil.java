@@ -30,8 +30,8 @@ public final class ValidationUtil {
         }
     }
 
-    public static void validate(String className, ClientLogger logger, String param1Name, Object param1,
-        String param2Name, Object param2) {
+    public static void validate(ClientLogger logger, String param1Name, Object param1, String param2Name,
+        Object param2) {
         String missing = "";
 
         if (param1 == null) {
@@ -43,13 +43,13 @@ public final class ValidationUtil {
         }
 
         if (!missing.isEmpty()) {
-            throw logger.logThrowableAsWarning(new IllegalArgumentException(
-                "Must provide non-null values for " + missing + " properties in " + className));
+            throw logger.logThrowableAsWarning(
+                new IllegalArgumentException("Must provide non-null values for " + missing + " properties."));
         }
     }
 
-    public static void validate(String className, ClientLogger logger, String param1Name, Object param1,
-        String param2Name, Object param2, String param3Name, Object param3) {
+    public static void validate(ClientLogger logger, String param1Name, Object param1, String param2Name, Object param2,
+        String param3Name, Object param3) {
         String missing = "";
 
         if (param1 == null) {
@@ -65,8 +65,8 @@ public final class ValidationUtil {
         }
 
         if (!missing.isEmpty()) {
-            throw logger.logThrowableAsWarning(new IllegalArgumentException(
-                "Must provide non-null values for " + missing + " properties in " + className));
+            throw logger.logThrowableAsWarning(
+                new IllegalArgumentException("Must provide non-null values for " + missing + " properties."));
         }
     }
 
@@ -111,7 +111,7 @@ public final class ValidationUtil {
     public static void validateManagedIdentityIdParams(ManagedIdentityClientOptions miClientOptions,
         ClientLogger logger) {
 
-        String clientId = miClientOptions.getMsalCommonOptions().getClientId();
+        String clientId = miClientOptions.getClientId();
         String objectId = miClientOptions.getObjectId();
         String resourceId = miClientOptions.getResourceId();
 
