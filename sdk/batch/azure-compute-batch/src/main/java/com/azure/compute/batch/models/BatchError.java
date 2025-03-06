@@ -23,19 +23,22 @@ import java.util.List;
 public final class BatchError implements JsonSerializable<BatchError> {
 
     /*
-     * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+     * An identifier for the error. Codes are invariant and are intended to be
+     * consumed programmatically.
      */
     @Generated
     private final String code;
 
     /*
-     * A message describing the error, intended to be suitable for display in a user interface.
+     * A message describing the error, intended to be suitable for display in a user
+     * interface.
      */
     @Generated
     private BatchErrorMessage message;
 
     /*
-     * A collection of key-value pairs containing additional details about the error.
+     * A collection of key-value pairs containing additional details about the
+     * error.
      */
     @Generated
     private List<BatchErrorDetail> values;
@@ -51,7 +54,8 @@ public final class BatchError implements JsonSerializable<BatchError> {
     }
 
     /**
-     * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed
+     * Get the code property: An identifier for the error. Codes are invariant and
+     * are intended to be consumed
      * programmatically.
      *
      * @return the code value.
@@ -62,7 +66,8 @@ public final class BatchError implements JsonSerializable<BatchError> {
     }
 
     /**
-     * Get the message property: A message describing the error, intended to be suitable for display in a user
+     * Get the message property: A message describing the error, intended to be
+     * suitable for display in a user
      * interface.
      *
      * @return the message value.
@@ -73,7 +78,8 @@ public final class BatchError implements JsonSerializable<BatchError> {
     }
 
     /**
-     * Get the values property: A collection of key-value pairs containing additional details about the error.
+     * Get the values property: A collection of key-value pairs containing
+     * additional details about the error.
      *
      * @return the values value.
      */
@@ -99,10 +105,13 @@ public final class BatchError implements JsonSerializable<BatchError> {
      * Reads an instance of BatchError from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchError if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchError.
+     * @return An instance of BatchError if the JsonReader was pointing to an
+     *         instance of it, or null if it was pointing
+     *         to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any
+     *                               required properties.
+     * @throws IOException           If an error occurs while reading the
+     *                               BatchError.
      */
     @Generated
     public static BatchError fromJson(JsonReader jsonReader) throws IOException {
@@ -131,30 +140,29 @@ public final class BatchError implements JsonSerializable<BatchError> {
     }
 
     /**
+     * Reads an instance of BatchError from an HttpResponseException.
      * 
-     * @param err The HttpResponseException based exception returned from an api call.
-     * @return An instance of BatchError if the HttpResponseException containted an instance of it, or null if it was pointing
-     * to an HttpResponseException with no BatchError.
+     * @param err The HttpResponseException based exception returned from an api
+     *            call.
+     * @return An instance of BatchError if the HttpResponseException containted an
+     *         instance of it, or null if it was pointing
+     *         to an HttpResponseException with no BatchError.
      */
-    public static BatchError fromException(HttpResponseException err)
-    {
-        if(err == null)
-        {
+    public static BatchError fromException(HttpResponseException err) {
+        if (err == null) {
             return null;
         }
-        HttpResponse response = err.getResponse();           
-        
-        if(response == null)
-        {
-            return null;
-        }
-        String bodyastring  = response.getBodyAsString().block();
+        HttpResponse response = err.getResponse();
 
-        if(bodyastring == null)
-        {
+        if (response == null) {
             return null;
         }
-        
+        String bodyastring = response.getBodyAsString().block();
+
+        if (bodyastring == null) {
+            return null;
+        }
+
         JsonReader jsonReader;
         try {
             jsonReader = JsonProviders.createReader(new StringReader(bodyastring));
@@ -162,6 +170,6 @@ public final class BatchError implements JsonSerializable<BatchError> {
         } catch (IOException e) {
             // If the body of the response is not a valid json, return null
             return null;
-        } 
+        }
     }
 }
