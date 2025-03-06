@@ -154,8 +154,7 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
                 azureKeyVaultKeyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
             }
             azureKeyVaultKeyStore.load(null);
-        } catch (CertificateException | KeyStoreException | IOException | NoSuchAlgorithmException |
-                 NoSuchProviderException e) {
+        } catch (CertificateException | KeyStoreException | IOException | NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new RuntimeException("Failed to load Key Vault " + storeName + " for SSL bundle '" + bundleName + "'", e);
         }
         return azureKeyVaultKeyStore;

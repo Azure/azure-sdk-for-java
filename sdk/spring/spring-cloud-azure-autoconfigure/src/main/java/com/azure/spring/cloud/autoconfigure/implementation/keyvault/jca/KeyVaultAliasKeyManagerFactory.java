@@ -22,9 +22,9 @@ import java.util.Arrays;
 
 final class KeyVaultAliasKeyManagerFactory extends KeyManagerFactory {
 
-	KeyVaultAliasKeyManagerFactory(KeyManagerFactory delegate, String alias, String algorithm) {
-		super(new KeyVaultAliasKeyManagerFactorySpi(delegate, alias), delegate.getProvider(), algorithm);
-	}
+    KeyVaultAliasKeyManagerFactory(KeyManagerFactory delegate, String alias, String algorithm) {
+        super(new KeyVaultAliasKeyManagerFactorySpi(delegate, alias), delegate.getProvider(), algorithm);
+    }
 
     private static final class KeyVaultAliasKeyManagerFactorySpi extends KeyManagerFactorySpi {
 
@@ -64,60 +64,60 @@ final class KeyVaultAliasKeyManagerFactory extends KeyManagerFactory {
 
     }
 
-	/**
-	 * {@link X509ExtendedKeyManager} that allows a configurable key alias to be used.
-	 */
-	static final class AliasKeyVaultClientKeyManager extends X509ExtendedKeyManager {
+    /**
+     * {@link X509ExtendedKeyManager} that allows a configurable key alias to be used.
+     */
+    static final class AliasKeyVaultClientKeyManager extends X509ExtendedKeyManager {
 
-		private final X509ExtendedKeyManager delegate;
+        private final X509ExtendedKeyManager delegate;
 
-		private final String alias;
+        private final String alias;
 
-		private AliasKeyVaultClientKeyManager(X509ExtendedKeyManager keyManager, String alias) {
-			this.delegate = keyManager;
-			this.alias = alias;
-		}
+        private AliasKeyVaultClientKeyManager(X509ExtendedKeyManager keyManager, String alias) {
+            this.delegate = keyManager;
+            this.alias = alias;
+        }
 
-		@Override
-		public String chooseEngineClientAlias(String[] strings, Principal[] principals, SSLEngine sslEngine) {
-			return this.alias;
-		}
+        @Override
+        public String chooseEngineClientAlias(String[] strings, Principal[] principals, SSLEngine sslEngine) {
+            return this.alias;
+        }
 
-		@Override
-		public String chooseEngineServerAlias(String s, Principal[] principals, SSLEngine sslEngine) {
-			return this.delegate.chooseEngineServerAlias(s, principals, sslEngine);
-		}
+        @Override
+        public String chooseEngineServerAlias(String s, Principal[] principals, SSLEngine sslEngine) {
+            return this.delegate.chooseEngineServerAlias(s, principals, sslEngine);
+        }
 
-		@Override
-		public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) {
-			return this.delegate.chooseClientAlias(keyType, issuers, socket);
-		}
+        @Override
+        public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) {
+            return this.delegate.chooseClientAlias(keyType, issuers, socket);
+        }
 
-		@Override
-		public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
-			return this.delegate.chooseServerAlias(keyType, issuers, socket);
-		}
+        @Override
+        public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
+            return this.delegate.chooseServerAlias(keyType, issuers, socket);
+        }
 
-		@Override
-		public X509Certificate[] getCertificateChain(String alias) {
-			return this.delegate.getCertificateChain(alias);
-		}
+        @Override
+        public X509Certificate[] getCertificateChain(String alias) {
+            return this.delegate.getCertificateChain(alias);
+        }
 
-		@Override
-		public String[] getClientAliases(String keyType, Principal[] issuers) {
-			return this.delegate.getClientAliases(keyType, issuers);
-		}
+        @Override
+        public String[] getClientAliases(String keyType, Principal[] issuers) {
+            return this.delegate.getClientAliases(keyType, issuers);
+        }
 
-		@Override
-		public PrivateKey getPrivateKey(String alias) {
-			return this.delegate.getPrivateKey(alias);
-		}
+        @Override
+        public PrivateKey getPrivateKey(String alias) {
+            return this.delegate.getPrivateKey(alias);
+        }
 
-		@Override
-		public String[] getServerAliases(String keyType, Principal[] issuers) {
-			return this.delegate.getServerAliases(keyType, issuers);
-		}
+        @Override
+        public String[] getServerAliases(String keyType, Principal[] issuers) {
+            return this.delegate.getServerAliases(keyType, issuers);
+        }
 
-	}
+    }
 
 }
