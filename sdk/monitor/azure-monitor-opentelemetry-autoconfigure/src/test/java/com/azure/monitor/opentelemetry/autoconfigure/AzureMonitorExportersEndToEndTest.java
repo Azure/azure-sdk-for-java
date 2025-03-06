@@ -19,7 +19,6 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.net.URL;
@@ -31,7 +30,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
-@Disabled
 public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTestBase {
 
     private static final String CONNECTION_STRING_ENV = "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;"
