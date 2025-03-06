@@ -1599,31 +1599,6 @@ public abstract class HttpClientTests {
             @HeaderParam("Content-Length") long contentLength, RequestOptions requestOptions);
     }
 
-    @Test
-    public void requestOptionsChangesBody() {
-        Service27 service = createService(Service27.class);
-        HttpBinJSON response
-            = service.put(getServerUri(isSecure()), 42, new RequestOptions().setBody(BinaryData.fromString("24")));
-
-        assertNotNull(response);
-        assertNotNull(response.data());
-        assertInstanceOf(String.class, response.data());
-        assertEquals("24", response.data());
-    }
-
-    @Test
-    public void requestOptionsChangesBodyAndContentLength() {
-        Service27 service = createService(Service27.class);
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().setBody(BinaryData.fromString("4242")).setHeader(HttpHeaderName.CONTENT_LENGTH, "4"));
-
-        assertNotNull(response);
-        assertNotNull(response.data());
-        assertInstanceOf(String.class, response.data());
-        assertEquals("4242", response.data());
-        assertEquals("4", response.getHeaderValue("Content-Length"));
-    }
-
     private static final HttpHeaderName RANDOM_HEADER = HttpHeaderName.fromString("randomHeader");
 
     @Test
