@@ -7,6 +7,7 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpPipelineCallState;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.util.Collections;
 import java.util.List;
@@ -66,7 +67,7 @@ public final class HttpPipeline {
      *
      * @return An {@link Response}.
      */
-    public Response<?> send(HttpRequest request) {
+    public Response<BinaryData> send(HttpRequest request) {
         HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
 
         return next.process();

@@ -6,6 +6,7 @@ package io.clientcore.core.http.pipeline;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpPipelineCallState;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -33,7 +34,7 @@ public class HttpPipelineNextPolicy {
      * @return The response.
      * @throws UncheckedIOException If an error occurs when sending the request or receiving the response.
      */
-    public Response<?> process() {
+    public Response<BinaryData> process() {
         HttpPipelinePolicy nextPolicy = state.getNextPolicy();
 
         if (nextPolicy == null) {

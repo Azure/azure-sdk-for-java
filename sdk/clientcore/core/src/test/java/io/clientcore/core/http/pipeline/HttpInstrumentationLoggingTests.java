@@ -992,7 +992,7 @@ public class HttpInstrumentationLoggingTests {
     }
 
     private HttpPipeline createPipeline(HttpInstrumentationOptions instrumentationOptions,
-        Function<HttpRequest, Response<?>> httpClient) {
+        Function<HttpRequest, Response<BinaryData>> httpClient) {
         return new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
             .httpClient(httpClient::apply)
             .build();

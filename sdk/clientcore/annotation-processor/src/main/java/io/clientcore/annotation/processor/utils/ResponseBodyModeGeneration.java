@@ -63,7 +63,7 @@ public final class ResponseBodyModeGeneration {
             body.addStatement(
                 "Object result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;");
         } else if (returnTypeName.contains("InputStream")) {
-            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = response.getBody();"));
+            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getBody();"));
             body.addStatement("Object result = responseBody.toStream();");
         } else if (returnTypeName.contains("BinaryData")) {
             // BinaryData
@@ -72,11 +72,11 @@ public final class ResponseBodyModeGeneration {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            body.addStatement("Object result = response.getBody();");
+            body.addStatement("Object result = networkResponse.getBody();");
         } else {
             body.addStatement(StaticJavaParser.parseStatement("String returnTypeName = \"" + returnTypeName + "\";"));
             body.addStatement(
-                "Object result = decodeByteArray(response.getBody().toBytes(), serializer, returnTypeName);");
+                "Object result = decodeByteArray(networkResponse.getBody().toBytes(), serializer, returnTypeName);");
         }
         body.addStatement(StaticJavaParser.parseStatement("if (responseBodyMode == ResponseBodyMode.DESERIALIZE)"
             + "{ HttpResponseAccessHelper.setValue((HttpResponse<?>) response, result); } else {"
@@ -101,7 +101,8 @@ public final class ResponseBodyModeGeneration {
         } else if (returnTypeName.contains("Response")) {
             if (returnTypeName.contains("Void")) {
                 closeResponse(body);
-                createResponseIfNecessary(body);
+                body.addStatement(StaticJavaParser.parseStatement("return new Response<>("
+                    + "responseCode, networkResponse.getHeaders(), networkResponse.getRequest(), null);"));
             } else {
                 generateResponseBodyMode(body);
                 handleResponseBody(body, returnTypeName, method);
@@ -124,7 +125,7 @@ public final class ResponseBodyModeGeneration {
         body.tryAddImportToParentCompilationUnit(IOException.class);
         body.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
 
-        body.addStatement(StaticJavaParser.parseStatement("try { response.close(); }"
+        body.addStatement(StaticJavaParser.parseStatement("try { networkResponse.close(); }"
             + "catch (IOException e) { throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }"));
     }
 
@@ -151,17 +152,17 @@ public final class ResponseBodyModeGeneration {
             closeResponse(body);
             body.addStatement(new ReturnStmt("expectedResponse"));
         } else if (returnTypeName.contains("byte[]")) {
-            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = response.getBody();"));
+            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getBody();"));
             body.addStatement(StaticJavaParser
                 .parseStatement("byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;"));
             closeResponse(body);
             body.addStatement(StaticJavaParser.parseStatement(
                 "return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;"));
         } else if (returnTypeName.contains("InputStream")) {
-            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = response.getBody();"));
+            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getBody();"));
             body.addStatement(StaticJavaParser.parseStatement("return responseBody.toStream();"));
         } else if (returnTypeName.contains("BinaryData")) {
-            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = response.getBody();"));
+            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getBody();"));
             closeResponse(body);
         } else {
             handleResponseBody(body, returnTypeName, method);

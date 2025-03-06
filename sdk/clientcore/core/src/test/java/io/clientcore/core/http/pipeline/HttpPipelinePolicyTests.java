@@ -3,13 +3,13 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.NoOpHttpClient;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.implementation.http.HttpResponse;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -24,7 +24,10 @@ public class HttpPipelinePolicyTests {
         SyncPolicy policy2 = new SyncPolicy();
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).addPolicy(policy1).addPolicy(policy2).build();
+            = new HttpPipelineBuilder().httpClient(request -> new HttpResponse<>(request, 200, new HttpHeaders(), null))
+                .addPolicy(policy1)
+                .addPolicy(policy2)
+                .build();
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
 
@@ -36,9 +39,10 @@ public class HttpPipelinePolicyTests {
     public void defaultImplementationShouldCallRightStack() throws IOException {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .addPolicy(policyWithDefaultSyncImplementation)
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(request -> new HttpResponse<>(request, 200, new HttpHeaders(), null))
+                .addPolicy(policyWithDefaultSyncImplementation)
+                .build();
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
 
@@ -94,7 +98,7 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();
@@ -105,7 +109,7 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();

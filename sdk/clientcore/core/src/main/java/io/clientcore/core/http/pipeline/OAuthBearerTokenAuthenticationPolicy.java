@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -68,7 +69,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         if (!"https".equals(httpRequest.getUri().getScheme())) {
             throw LOGGER.logThrowableAsError(
                 new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme"));
@@ -77,7 +78,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
         HttpPipelineNextPolicy nextPolicy = next.copy();
 
         authorizeRequest(httpRequest);
-        Response<?> httpResponse = next.process();
+        Response<BinaryData> httpResponse = next.process();
         String authHeader = httpResponse.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
             if (authorizeRequestOnChallenge(httpRequest, httpResponse)) {

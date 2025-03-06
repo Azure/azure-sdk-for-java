@@ -116,7 +116,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  *
  * HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy&#40;&#41; &#123;
  *     &#64;Override
- *     public Response&lt;?&gt; process&#40;HttpRequest request, HttpPipelineNextPolicy next&#41; &#123;
+ *     public Response&lt;BinaryData&gt; process&#40;HttpRequest request, HttpPipelineNextPolicy next&#41; &#123;
  *         Span span = request.getRequestOptions&#40;&#41; == null
  *             ? Span.noop&#40;&#41;
  *             : request.getRequestOptions&#40;&#41;.getInstrumentationContext&#40;&#41;.getSpan&#40;&#41;;
@@ -232,7 +232,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      */
     @SuppressWarnings("try")
     @Override
-    public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
         if (!isTracingEnabled && !isLoggingEnabled && !isMetricsEnabled) {
             return next.process();
         }
@@ -267,7 +267,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, context);
 
         try (TracingScope scope = span.makeCurrent()) {
-            Response<?> response = next.process();
+            Response<BinaryData> response = next.process();
 
             if (response == null) {
                 LOGGER.atError()
@@ -434,7 +434,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         logBuilder.log();
     }
 
-    private Response<?> logResponse(ClientLogger logger, Response<?> response, long startNanoTime,
+    private Response<BinaryData> logResponse(ClientLogger logger, Response<BinaryData> response, long startNanoTime,
         long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
         LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
         if (!isLoggingEnabled) {

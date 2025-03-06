@@ -11,6 +11,7 @@ import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -129,7 +130,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         return attempt(httpRequest, next, 0, null);
     }
 
@@ -152,8 +153,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         return calculateRetryDelay(tryCount);
     }
 
-    private Response<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
-        final List<Exception> suppressed) {
+    private Response<BinaryData> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+        final int tryCount, final List<Exception> suppressed) {
 
         // the tryCount is updated by the caller and represents the number of attempts made so far.
         // It can be used by the policies during the process call.
@@ -163,7 +164,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
             ? null
             : httpRequest.getRequestOptions().getInstrumentationContext();
 
-        Response<?> response;
+        Response<BinaryData> response;
         ClientLogger logger = getLogger(httpRequest);
 
         try {

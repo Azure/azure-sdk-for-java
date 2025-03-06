@@ -59,7 +59,7 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<?> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) throws IOException {
         Request okHttpRequest = toOkHttpRequest(request);
         okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
 
@@ -144,7 +144,7 @@ class OkHttpHttpClient implements HttpClient {
         return contentLength;
     }
 
-    private Response<?> toResponse(HttpRequest request, okhttp3.Response response) throws IOException {
+    private Response<BinaryData> toResponse(HttpRequest request, okhttp3.Response response) throws IOException {
         okhttp3.Headers responseHeaders = response.headers();
         ServerSentResult serverSentResult = null;
         if (isTextEventStream(responseHeaders) && response.body() != null) {
@@ -170,7 +170,7 @@ class OkHttpHttpClient implements HttpClient {
         return processResponse(request, response, serverSentResult);
     }
 
-    private Response<?> processResponse(HttpRequest request, okhttp3.Response response,
+    private Response<BinaryData> processResponse(HttpRequest request, okhttp3.Response response,
         ServerSentResult serverSentResult) throws IOException {
         RequestOptions options = request.getRequestOptions();
         ResponseBodyMode responseBodyMode = null;

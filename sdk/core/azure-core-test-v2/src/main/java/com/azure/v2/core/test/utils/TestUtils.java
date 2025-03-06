@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.UriBuilder;
 import org.junit.jupiter.api.Assertions;
 
@@ -238,14 +239,14 @@ public final class TestUtils {
         }
 
         @Override
-        public Response<?> send(HttpRequest request) throws IOException {
+        public Response<BinaryData> send(HttpRequest request) throws IOException {
             URI originalUri = request.getUri();
             request.getHeaders().set(UPSTREAM_URI_HEADER, originalUri.toString());
             request.setUri(rewriteUri(originalUri));
             String faultType = faultInjectorHandling();
             request.getHeaders().set(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
 
-            Response<?> response = wrappedHttpClient.send(request);
+            Response<BinaryData> response = wrappedHttpClient.send(request);
             response.getRequest().setUri(originalUri);
             response.getRequest().getHeaders().remove(UPSTREAM_URI_HEADER);
 

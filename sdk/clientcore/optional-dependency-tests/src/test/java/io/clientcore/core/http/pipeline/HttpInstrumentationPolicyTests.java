@@ -12,6 +12,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -427,7 +428,7 @@ public class HttpInstrumentationPolicyTests {
 
         HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy() {
             @Override
-            public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
+            public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
                 io.clientcore.core.instrumentation.tracing.Span span
                     = request.getRequestOptions().getInstrumentationContext().getSpan();
                 if (span.isRecording()) {

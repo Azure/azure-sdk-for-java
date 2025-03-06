@@ -4,7 +4,6 @@
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.MockHttpResponse;
-import io.clientcore.core.http.NoOpHttpClient;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -18,13 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class HttpPipelineTests {
     @Test
     public void constructorWithNoArguments() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
-            @Override
-            public Response<?> send(HttpRequest request) {
-                // do nothing
-                return null;
-            }
-        }).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> null).build();
 
         assertEquals(0, pipeline.getPolicies().size());
         assertNotNull(pipeline.getHttpClient());
@@ -33,13 +26,7 @@ public class HttpPipelineTests {
     @Test
     public void withRequestPolicy() {
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
-                @Override
-                public Response<?> send(HttpRequest request) {
-                    // do nothing
-                    return null;
-                }
-            }).build();
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(request -> null).build();
 
         assertEquals(1, pipeline.getPolicies().size());
         assertEquals(HttpRetryPolicy.class, pipeline.getPolicies().get(0).getClass());
@@ -49,13 +36,7 @@ public class HttpPipelineTests {
     @Test
     public void withRequestOptions() {
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
-                @Override
-                public Response<?> send(HttpRequest request) {
-                    // do nothing
-                    return null;
-                }
-            }).build();
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(request -> null).build();
 
         assertNotNull(pipeline.getHttpClient());
     }
@@ -64,15 +45,12 @@ public class HttpPipelineTests {
     public void withNoRequestPolicies() {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final URI expectedUri = URI.create("http://my.site.com");
-        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
-            @Override
-            public Response<?> send(HttpRequest request) {
-                assertEquals(0, request.getHeaders().getSize());
-                assertEquals(expectedHttpMethod, request.getHttpMethod());
-                assertEquals(expectedUri, request.getUri());
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals(0, request.getHeaders().getSize());
+            assertEquals(expectedHttpMethod, request.getHttpMethod());
+            assertEquals(expectedUri, request.getUri());
 
-                return new MockHttpResponse(request, 200);
-            }
+            return new MockHttpResponse(request, 200);
         }).build();
         final Response<?> response
             = httpPipeline.send(new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri));
@@ -85,15 +63,12 @@ public class HttpPipelineTests {
     public void sendWithPolicies() {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final URI expectedUri = URI.create("http://my.site.com");
-        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
-            @Override
-            public Response<?> send(HttpRequest request) {
-                assertEquals(0, request.getHeaders().getSize());
-                assertEquals(expectedHttpMethod, request.getHttpMethod());
-                assertEquals(expectedUri, request.getUri());
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals(0, request.getHeaders().getSize());
+            assertEquals(expectedHttpMethod, request.getHttpMethod());
+            assertEquals(expectedUri, request.getUri());
 
-                return new MockHttpResponse(request, 200);
-            }
+            return new MockHttpResponse(request, 200);
         }).build();
         final Response<?> response
             = httpPipeline.send(new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri));

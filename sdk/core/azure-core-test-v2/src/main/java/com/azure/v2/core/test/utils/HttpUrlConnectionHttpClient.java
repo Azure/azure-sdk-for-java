@@ -32,7 +32,7 @@ public class HttpUrlConnectionHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<?> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) throws IOException {
         HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) request.getUri().toURL().openConnection();
@@ -56,7 +56,7 @@ public class HttpUrlConnectionHttpClient implements HttpClient {
         connection.connect();
     }
 
-    private Response<?> createHttpResponse(HttpURLConnection connection, HttpRequest request) {
+    private Response<BinaryData> createHttpResponse(HttpURLConnection connection, HttpRequest request) {
 
         if (connection == null) {
             return null;

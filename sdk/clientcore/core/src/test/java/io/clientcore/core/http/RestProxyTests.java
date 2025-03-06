@@ -209,7 +209,7 @@ public class RestProxyTests {
         private volatile boolean closeCalledOnResponse;
 
         @Override
-        public Response<?> send(HttpRequest request) {
+        public Response<BinaryData> send(HttpRequest request) {
             lastHttpRequest = request;
             boolean success = request.getUri().getPath().equals("/my/uri/path");
 

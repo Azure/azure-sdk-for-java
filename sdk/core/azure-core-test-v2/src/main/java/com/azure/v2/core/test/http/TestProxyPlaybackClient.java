@@ -190,7 +190,7 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @param response The response received.
      * @return The transformed response.
      */
-    private Response<?> afterReceivedResponse(Response<?> response) {
+    private Response<BinaryData> afterReceivedResponse(Response<BinaryData> response) {
         TestProxyUtils.checkForTestProxyErrors(response);
         return TestProxyUtils.resetTestProxyData(response);
     }
@@ -202,9 +202,9 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @throws IOException If an error occurs while sending the request.
      */
     @Override
-    public Response<?> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) throws IOException {
         beforeSendingRequest(request);
-        Response<?> response = client.send(request);
+        Response<BinaryData> response = client.send(request);
         return afterReceivedResponse(response);
     }
 

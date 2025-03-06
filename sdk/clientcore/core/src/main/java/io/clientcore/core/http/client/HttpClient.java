@@ -6,6 +6,7 @@ package io.clientcore.core.http.client;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.client.DefaultHttpClientProvider;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 
@@ -20,7 +21,7 @@ public interface HttpClient {
      * @return The response.
      * @throws IOException If an I/O error occurs during sending the request or receiving the response.
      */
-    Response<?> send(HttpRequest request) throws IOException;
+    Response<BinaryData> send(HttpRequest request) throws IOException;
 
     /**
      * Get a new instance of the {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is

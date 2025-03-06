@@ -171,13 +171,13 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @param response The response received.
      * @return The transformed response.
      */
-    private Response<?> afterReceivedResponse(Response<?> response) {
+    private Response<BinaryData> afterReceivedResponse(Response<BinaryData> response) {
         TestProxyUtils.checkForTestProxyErrors(response);
         return TestProxyUtils.resetTestProxyData(response);
     }
 
     @Override
-    public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
         beforeSendingRequest(request);
         return afterReceivedResponse(next.process());
     }

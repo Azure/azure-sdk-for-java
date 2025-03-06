@@ -4,13 +4,13 @@
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.MockHttpResponse;
-import io.clientcore.core.http.NoOpHttpClient;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -30,16 +30,13 @@ public class RedirectPolicyTest {
 
     @Test
     public void noRedirectPolicyTest() throws Exception {
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
-            @Override
-            public Response<?> send(HttpRequest request) {
-                if (request.getUri().toString().equals("http://localhost/")) {
-                    HttpHeaders httpHeader
-                        = new HttpHeaders().set(HttpHeaderName.fromString("Location"), "http://redirecthost/");
-                    return new MockHttpResponse(request, 308, httpHeader);
-                } else {
-                    return new MockHttpResponse(request, 200);
-                }
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            if (request.getUri().toString().equals("http://localhost/")) {
+                HttpHeaders httpHeader
+                    = new HttpHeaders().set(HttpHeaderName.fromString("Location"), "http://redirecthost/");
+                return new MockHttpResponse(request, 308, httpHeader);
+            } else {
+                return new MockHttpResponse(request, 200);
             }
         }).build();
 
@@ -276,14 +273,11 @@ public class RedirectPolicyTest {
 
     @Test
     public void nonRedirectRequest() throws Exception {
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
-            @Override
-            public Response<?> send(HttpRequest request) {
-                if (request.getUri().toString().equals("http://localhost/")) {
-                    return new MockHttpResponse(request, 401);
-                } else {
-                    return new MockHttpResponse(request, 200);
-                }
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            if (request.getUri().toString().equals("http://localhost/")) {
+                return new MockHttpResponse(request, 401);
+            } else {
+                return new MockHttpResponse(request, 200);
             }
         }).addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY)).build();
 
@@ -348,14 +342,14 @@ public class RedirectPolicyTest {
 
     static class RecordingHttpClient implements HttpClient {
         private final AtomicInteger count = new AtomicInteger();
-        private final Function<HttpRequest, Response<?>> handler;
+        private final Function<HttpRequest, Response<BinaryData>> handler;
 
-        RecordingHttpClient(Function<HttpRequest, Response<?>> handler) {
+        RecordingHttpClient(Function<HttpRequest, Response<BinaryData>> handler) {
             this.handler = handler;
         }
 
         @Override
-        public Response<?> send(HttpRequest httpRequest) {
+        public Response<BinaryData> send(HttpRequest httpRequest) {
             count.getAndIncrement();
 
             return handler.apply(httpRequest);

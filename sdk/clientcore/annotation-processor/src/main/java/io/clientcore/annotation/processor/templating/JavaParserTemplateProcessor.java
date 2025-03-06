@@ -13,7 +13,6 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
-import com.github.javaparser.ast.expr.CastExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NameExpr;
@@ -23,7 +22,6 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -32,11 +30,13 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.ContentType;
-import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.utils.CodegenUtil;
+
+import javax.annotation.processing.ProcessingEnvironment;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.Writer;
@@ -47,7 +47,6 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.processing.ProcessingEnvironment;
 
 import static io.clientcore.annotation.processor.utils.ResponseBodyModeGeneration.generateResponseHandling;
 
@@ -392,29 +391,30 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     private void finalizeHttpRequest(BlockStmt body, String returnTypeName, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
-        Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
-        if (!isVoidReturnType(returnTypeName)) {
-            if (!isPrimitiveOrWrapper(returnTypeName)
-                && returnTypeName.startsWith("io.clientcore.core.http.models.Response<")) {
-                // Extract the variable declaration
-                if (statement.isExpressionStmt()) {
-                    statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
-                        variableDeclarationExpr.getVariables().forEach(variable -> {
-                            // Parse the full response type with generics from returnTypeName
-                            ClassOrInterfaceType responseType
-                                = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
-
-                            // Set the new type for the variable
-                            variable.setType(responseType);
-
-                            CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
-                            variable.setInitializer(castExpression);
-
-                        });
-                    });
-                }
-            }
-        }
+        Statement statement
+            = StaticJavaParser.parseStatement("Response<BinaryData> networkResponse = pipeline.send(httpRequest);");
+        //        if (!isVoidReturnType(returnTypeName)) {
+        //            if (!isPrimitiveOrWrapper(returnTypeName)
+        //                && returnTypeName.startsWith("io.clientcore.core.http.models.Response<")) {
+        //                // Extract the variable declaration
+        //                if (statement.isExpressionStmt()) {
+        //                    statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
+        //                        variableDeclarationExpr.getVariables().forEach(variable -> {
+        //                            // Parse the full response type with generics from returnTypeName
+        //                            ClassOrInterfaceType responseType
+        //                                = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
+        //
+        //                            // Set the new type for the variable
+        //                            variable.setType(responseType);
+        //
+        //                            CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
+        //                            variable.setInitializer(castExpression);
+        //
+        //                        });
+        //                    });
+        //                }
+        //            }
+        //        }
         statement.setLineComment("Send the request through the pipeline");
         body.addStatement(statement);
 
@@ -456,7 +456,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             return;
         }
 
-        body.addStatement(StaticJavaParser.parseStatement("int responseCode = response.getStatusCode();"));
+        body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
         String expectedResponseCheck;
         if (method.getExpectedStatusCodes().size() == 1) {
             expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0) + ";";
