@@ -8,6 +8,8 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathStatus;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -79,6 +81,23 @@ public class CpkTests extends DataLakeTestBase {
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
         assertEquals(key.getKeySha256(),
             response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
+    }
+
+    @Test
+    public void pathSetEncryptionContext() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions();
+        options.setEncryptionContext("encryption-context");
+        cpkFile.createWithResponse(options, null, null);
+
+        // The getStatus API returns the System defined properties of the Path. The encryption key is not required for
+        // this API.
+        Response<PathStatus> response
+            = cpkFile.getCustomerProvidedKeyClient(null).getStatusWithResponse(null, null, null);
+
+        assertEquals(200, response.getStatusCode());
+        assertTrue(response.getValue().isServerEncrypted());
+        assertEquals(key.getKeySha256(), response.getValue().getEncryptionKeySha256());
+        assertEquals("encryption-context", response.getValue().getEncryptionContext());
     }
 
     @Test

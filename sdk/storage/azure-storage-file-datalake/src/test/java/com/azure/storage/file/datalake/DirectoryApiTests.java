@@ -2192,6 +2192,42 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void getStatusWithResponse() {
+        assertEquals(200, dc.getStatusWithResponse(null, null, null).getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
+    public void getStatusAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertEquals(200, dc.getStatusWithResponse(drc, null, null).getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void getStatusACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        if (GARBAGE_LEASE_ID.equals(leaseID)) {
+            return; // known bug in DFS endpoint
+        }
+
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertThrows(DataLakeStorageException.class, () -> dc.getStatusWithResponse(drc, null, null));
+    }
+
+    @Test
     public void renameMin() {
         assertEquals(201, dc.renameWithResponse(null, generatePathName(), null, null, null, null).getStatusCode());
     }
