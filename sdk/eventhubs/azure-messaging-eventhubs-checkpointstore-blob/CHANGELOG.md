@@ -2,6 +2,10 @@
 
 ## 1.20.5 (2025-03-05)
 
+### Bugs Fixed
+
+- Fixed dependency conflict between `azure-storage-blob` and `azure-messaging-eventhubs`.
+
 ### Other Changes
 
 #### Dependency Updates
