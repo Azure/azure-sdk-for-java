@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils;
+package io.clientcore.core.models;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -16,7 +16,15 @@ public final class ServerSentResult {
     private final IOException ioException;
     private final List<String> data;
 
-    ServerSentResult(IOException exception, String lastEventId, Duration retryAfter, List<String> data) {
+    /**
+     * Creates a new instance of the {@link ServerSentResult} class.
+     *
+     * @param exception The exception that occurred during the request.
+     * @param lastEventId The last event id from the text event stream.
+     * @param retryAfter The retry time duration.
+     * @param data The accumulated event data from the text event stream.
+     */
+    public ServerSentResult(IOException exception, String lastEventId, Duration retryAfter, List<String> data) {
         this.ioException = exception;
         this.lastEventId = lastEventId;
         this.retryAfter = retryAfter;
@@ -25,6 +33,7 @@ public final class ServerSentResult {
 
     /**
      * Get the accumulated event data from the text event stream.
+     *
      * @return The accumulated event data from the text event stream.
      */
     public List<String> getData() {
@@ -33,6 +42,7 @@ public final class ServerSentResult {
 
     /**
      * Get the exception that occurred during the request.
+     *
      * @return The exception that occurred during the request.
      */
     public IOException getException() {
@@ -41,6 +51,7 @@ public final class ServerSentResult {
 
     /**
      * Get the last event id from the text event stream.
+     *
      * @return The last event id from the text event stream.
      */
     public String getLastEventId() {
@@ -49,6 +60,7 @@ public final class ServerSentResult {
 
     /**
      * Get the retry time duration.
+     *
      * @return The retry time duration.
      */
     public Duration getRetryAfter() {

@@ -29,7 +29,7 @@ import io.clientcore.core.utils.configuration.Configuration;
  *
  * <!-- src_embed io.clientcore.core.http.pipeline.SetUserAgentPolicy.constructor -->
  * <pre>
- * SetUserAgentPolicy policy = new SetUserAgentPolicy&#40;&quot;MyApp&#47;1.0&quot;&#41;;
+ * UserAgentPolicy policy = new UserAgentPolicy&#40;&quot;MyApp&#47;1.0&quot;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.pipeline.SetUserAgentPolicy.constructor -->
  *

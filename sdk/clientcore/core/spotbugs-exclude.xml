@@ -33,11 +33,10 @@
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
       <Class name="io.clientcore.core.implementation.utils.AuthenticateChallengeParser" />
       <Class name="io.clientcore.core.implementation.utils.InternalContext" />
-      <Class name="io.clientcore.core.serialization.json.JsonSerializer" />
       <Class name="io.clientcore.core.implementation.utils.Providers" />
       <Class name="io.clientcore.core.implementation.utils.SliceInputStream" />
       <Class name="io.clientcore.core.implementation.utils.StreamUtil" />
-      <Class name="io.clientcore.core.implementation.utils.XmlSerializer" />
+      <Class name="io.clientcore.core.models.CloudEvent" />
       <Class name="io.clientcore.core.models.binarydata.FileBinaryData" />
       <Class name="io.clientcore.core.models.binarydata.InputStreamBinaryData" />
       <Class name="io.clientcore.core.models.binarydata.ListByteBufferBinaryData" />
@@ -45,7 +44,9 @@
       <Class name="io.clientcore.core.models.geo.GeoBoundingBox" />
       <Class name="io.clientcore.core.models.geo.GeoLinearRing" />
       <Class name="io.clientcore.core.models.geo.GeoPosition" />
+      <Class name="io.clientcore.core.serialization.json.JsonSerializer" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
+      <Class name="io.clientcore.core.serialization.xml.XmlSerializer" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.utils.AuthenticateChallenge" />
       <Class name="io.clientcore.core.utils.DateTimeRfc1123" />
@@ -89,6 +90,7 @@
       <Class name="io.clientcore.core.http.pipeline.SetUserAgentPolicyJavadocCodeSnippets" />
       <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData" />
       <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
+      <Class name="io.clientcore.core.models.CloudEventJavaDocCodeSnippet" />
       <Class name="io.clientcore.core.models.ContextJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderScanner" />
       <Class name="io.clientcore.core.utils.AuthorizationChallengeHandlerTests" />
@@ -115,7 +117,7 @@
     <Or>
       <Class name="io.clientcore.core.http.RestProxyTests" />
       <Class name="io.clientcore.core.http.client.SimpleBasicAuthHttpProxyServer" />
-      <Class name="io.clientcore.core.implementation.http.client.DefaultHttpClientIT" />
+      <Class name="io.clientcore.core.implementation.http.client.JdkHttpClientIT" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImplTests" />
       <Class name="io.clientcore.core.implementation.serializer.AdditionalPropertiesSerializerTests" />
       <Class name="io.clientcore.core.implementation.serializer.BinaryDataSerializationTests" />
@@ -125,6 +127,7 @@
       <Class name="io.clientcore.core.implementation.serializer.JsonSerializableEndToEndTests" />
       <Class name="io.clientcore.core.instrumentation.logging.ClientLoggerTests" />
       <Class name="io.clientcore.core.instrumentation.logging.InstrumentationTestUtils" />
+      <Class name="io.clientcore.core.models.CloudEventTests" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataTest" />
       <Class name="io.clientcore.core.serialization.json.JsonReader" />
@@ -271,7 +274,6 @@
       <Class name="io.clientcore.core.models.geo.GeoPolygonTests" />
       <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
       <Class name="io.clientcore.core.serialization.json.models.JsonPatchDocument" />
-      <Class name="io.clientcore.core.utils.IterableStreamTests" />
     </Or>
   </Match>
   <Match>
@@ -298,10 +300,10 @@
   <Match>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
     <Or>
-      <Class name="io.clientcore.core.serialization.json.JsonSerializer" />
-      <Class name="io.clientcore.core.implementation.utils.XmlSerializer" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet$MyJsonSerializer" />
       <Class name="io.clientcore.core.serialization.json.JsonReader" />
+      <Class name="io.clientcore.core.serialization.json.JsonSerializer" />
+      <Class name="io.clientcore.core.serialization.xml.XmlSerializer" />
       <Class name="io.clientcore.core.utils.Base64Uri" />
       <Class name="io.clientcore.core.utils.CoreUtils" />
       <Class name="io.clientcore.core.utils.serializers.MockSerializer" />
@@ -319,6 +321,7 @@
     <Bug pattern="RR_NOT_CHECKED" />
     <Or>
       <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStreamTests" />
+      <Class name="io.clientcore.core.models.CloudEventTests" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
     </Or>
   </Match>

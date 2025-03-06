@@ -27,8 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SetUserAgentPolicyTests {
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
-    public void validateUserAgentPolicyHandling(UserAgentPolicy userAgentPolicy, String expected)
-        throws IOException {
+    public void validateUserAgentPolicyHandling(UserAgentPolicy userAgentPolicy, String expected) throws IOException {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
@@ -47,8 +46,7 @@ public class SetUserAgentPolicyTests {
      */
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
-    public void userAgentPolicyAfterRetryPolicy(UserAgentPolicy userAgentPolicy, String expected)
-        throws IOException {
+    public void userAgentPolicyAfterRetryPolicy(UserAgentPolicy userAgentPolicy, String expected) throws IOException {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new RetryValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))

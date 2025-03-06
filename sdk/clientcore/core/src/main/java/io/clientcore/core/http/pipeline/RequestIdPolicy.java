@@ -30,7 +30,7 @@ import java.util.Objects;
  *
  * <!-- src_embed io.clientcore.core.http.pipeline.SetRequestIdPolicy.constructor -->
  * <pre>
- * SetRequestIdPolicy policy = new SetRequestIdPolicy&#40;HttpHeaderName.fromString&#40;&quot;my-request-id&quot;&#41;&#41;;
+ * RequestIdPolicy policy = new RequestIdPolicy&#40;HttpHeaderName.fromString&#40;&quot;my-request-id&quot;&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.pipeline.SetRequestIdPolicy.constructor -->
  *

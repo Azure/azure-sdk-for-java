@@ -17,6 +17,11 @@ public enum GlobalJdkHttpClient {
         this.httpClient = httpClient;
     }
 
+    /**
+     * Get the global {@link JdkHttpClient} instance.
+     *
+     * @return The global {@link JdkHttpClient} instance.
+     */
     public HttpClient getHttpClient() {
         return httpClient;
     }

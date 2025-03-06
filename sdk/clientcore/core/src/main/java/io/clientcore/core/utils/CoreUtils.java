@@ -86,7 +86,7 @@ public final class CoreUtils {
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
-    public static byte[] clone(byte[] source) {
+    public static byte[] arrayCopy(byte[] source) {
         if (source == null) {
             return null;
         }
@@ -100,7 +100,7 @@ public final class CoreUtils {
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
-    public static int[] clone(int[] source) {
+    public static int[] arrayCopy(int[] source) {
         if (source == null) {
             return null;
         }
@@ -115,7 +115,7 @@ public final class CoreUtils {
      * @param <T> Generic representing the type of the source array.
      * @return A copy of the array or null if source was null.
      */
-    public static <T> T[] clone(T[] source) {
+    public static <T> T[] arrayCopy(T[] source) {
         if (source == null) {
             return null;
         }

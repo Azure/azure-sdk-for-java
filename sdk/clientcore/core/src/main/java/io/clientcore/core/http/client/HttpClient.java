@@ -49,6 +49,6 @@ public interface HttpClient {
      */
     static HttpClient getSharedInstance() {
         return HttpClientProvider.getProviders()
-            .create(HttpClientProvider::getSharedInstance, GlobalJdkHttpClient.HTTP_CLIENT.getHttpClient(), null);
+            .create(HttpClientProvider::getSharedInstance, GlobalJdkHttpClient.HTTP_CLIENT::getHttpClient, null);
     }
 }
