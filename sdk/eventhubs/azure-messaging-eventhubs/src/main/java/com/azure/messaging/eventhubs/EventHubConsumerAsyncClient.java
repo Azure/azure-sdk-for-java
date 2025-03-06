@@ -3,11 +3,13 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.CreditFlowMode;
 import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -15,13 +17,14 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentedMessageFlux;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,6 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
@@ -238,7 +242,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final ReceiveOptions defaultReceiveOptions = new ReceiveOptions();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final ConnectionCacheWrapper connectionProcessor;
+    private final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache;
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
     private final int prefetchCount;
@@ -255,12 +259,12 @@ public class EventHubConsumerAsyncClient implements Closeable {
         = new ConcurrentHashMap<>();
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-        ConnectionCacheWrapper connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed, String identifier,
+        ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache, MessageSerializer messageSerializer,
+        String consumerGroup, int prefetchCount, boolean isSharedConnection, Runnable onClientClosed, String identifier,
         EventHubsConsumerInstrumentation instrumentation) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
-        this.connectionProcessor = connectionProcessor;
+        this.connectionCache = connectionCache;
         this.messageSerializer = messageSerializer;
         this.consumerGroup = consumerGroup;
         this.prefetchCount = prefetchCount;
@@ -298,10 +302,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
         return consumerGroup;
     }
 
-    boolean isV2() {
-        return connectionProcessor.isV2();
-    }
-
     /**
      * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
      *
@@ -310,7 +310,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
         return instrumentation.instrumentMono(
-            connectionProcessor.getManagementNodeWithRetries().flatMap(EventHubManagementNode::getEventHubProperties),
+            getManagementNodeWithRetries().flatMap(EventHubManagementNode::getEventHubProperties),
             GET_EVENT_HUB_PROPERTIES, null);
     }
 
@@ -342,8 +342,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
             return monoError(LOGGER, new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
-        return instrumentation.instrumentMono(connectionProcessor.getManagementNodeWithRetries()
-            .flatMap(node -> node.getPartitionProperties(partitionId)), GET_PARTITION_PROPERTIES, partitionId);
+        return instrumentation.instrumentMono(
+            getManagementNodeWithRetries().flatMap(node -> node.getPartitionProperties(partitionId)),
+            GET_PARTITION_PROPERTIES, partitionId);
     }
 
     /**
@@ -504,7 +505,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         if (isSharedConnection) {
             onClientClosed.run();
         } else {
-            connectionProcessor.dispose();
+            connectionCache.dispose();
         }
     }
 
@@ -540,7 +541,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
         // The Mono, when subscribed, creates a AmqpReceiveLink in the AmqpConnection emitted by the connectionProcessor
         //
-        final Mono<AmqpReceiveLink> receiveLinkMono = connectionProcessor.getConnection().flatMap(connection -> {
+        final Mono<AmqpReceiveLink> receiveLinkMono = connectionCache.get().flatMap(connection -> {
             LOGGER.atInfo()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(PARTITION_ID_KEY, partitionId)
@@ -565,7 +566,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
                 // In this context, treat RequestResponseChannelClosedException from the RequestResponseChannel scoped
                 // to the current connection being disposed as retry-able so that retry can obtain new connection.
                 return new AmqpException(true, e.getMessage(), e, null);
-            }), connectionProcessor.getRetryOptions(), "Failed to create receive link " + linkName, true);
+            }), connectionCache.getRetryOptions(), "Failed to create receive link " + linkName, true);
 
         // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below
         // 'AmqpReceiveLinkProcessor'. Obviously, the processor requests a link when there is a downstream subscriber.
@@ -581,26 +582,17 @@ public class EventHubConsumerAsyncClient implements Closeable {
             // See the PR description (https://github.com/Azure/azure-sdk-for-java/pull/33204) for more details.
             .filter(link -> !link.isDisposed());
 
-        final MessageFluxWrapper linkMessageProcessor;
-        if (connectionProcessor.isV2()) {
-            MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, prefetchCount, CreditFlowMode.EmissionDriven,
-                MessageFlux.NULL_RETRY_POLICY);
-            linkMessageProcessor
-                = new MessageFluxWrapper(InstrumentedMessageFlux.instrument(messageFlux, partitionId, instrumentation));
-        } else {
-            final AmqpReceiveLinkProcessor receiveLinkProcessor
-                = receiveLinkFlux.subscribeWith(new AmqpReceiveLinkProcessor(entityPath, prefetchCount, partitionId,
-                    connectionProcessor, instrumentation));
-            linkMessageProcessor = new MessageFluxWrapper(receiveLinkProcessor);
-        }
-
-        return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
+        final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, prefetchCount, CreditFlowMode.EmissionDriven,
+            MessageFlux.NULL_RETRY_POLICY);
+        final Flux<Message> instrumentedFlux
+            = InstrumentedMessageFlux.instrument(messageFlux, partitionId, instrumentation);
+        return new EventHubPartitionAsyncConsumer(instrumentedFlux, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,
             receiveOptions.getTrackLastEnqueuedEventProperties());
     }
 
     boolean isConnectionClosed() {
-        return this.connectionProcessor.isChannelClosed();
+        return this.connectionCache.isCurrentConnectionClosed();
     }
 
     EventHubsConsumerInstrumentation getInstrumentation() {
@@ -614,5 +606,11 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     public String getIdentifier() {
         return identifier;
+    }
+
+    private Mono<EventHubManagementNode> getManagementNodeWithRetries() {
+        final AmqpRetryOptions retryOptions = connectionCache.getRetryOptions();
+        return withRetry(connectionCache.get().flatMap(EventHubReactorAmqpConnection::getManagementNode), retryOptions,
+            "Time out creating management node.");
     }
 }

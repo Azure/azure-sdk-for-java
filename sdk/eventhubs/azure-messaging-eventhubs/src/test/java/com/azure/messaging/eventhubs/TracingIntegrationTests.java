@@ -6,8 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
@@ -33,9 +31,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -102,12 +97,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .build());
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "true", "false" })
-    @NullSource
-    public void sendAndReceiveFromPartition(String v2) throws InterruptedException {
-        EventHubProducerAsyncClient producer = createProducer(v2);
-        EventHubConsumerAsyncClient consumer = createConsumer(v2);
+    @Test
+    public void sendAndReceiveFromPartition() throws InterruptedException {
+        EventHubProducerAsyncClient producer = createProducer();
+        EventHubConsumerAsyncClient consumer = createConsumer();
 
         AtomicReference<PartitionEvent> receivedMessage = new AtomicReference<>();
         AtomicReference<Span> receivedSpan = new AtomicReference<>();
@@ -145,8 +138,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void sendAndReceive() throws InterruptedException {
-        EventHubProducerAsyncClient producer = createProducer(null);
-        EventHubConsumerAsyncClient consumer = createConsumer(null);
+        EventHubProducerAsyncClient producer = createProducer();
+        EventHubConsumerAsyncClient consumer = createConsumer();
 
         AtomicReference<PartitionEvent> receivedMessage = new AtomicReference<>();
         AtomicReference<Span> receivedSpan = new AtomicReference<>();
@@ -178,7 +171,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void sendAndReceiveCustomProvider() throws InterruptedException {
-
         AtomicReference<PartitionEvent> receivedMessage = new AtomicReference<>();
         AtomicReference<Span> receivedSpan = new AtomicReference<>();
 
@@ -187,8 +179,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         otel = toClose(OpenTelemetrySdk.builder()
             .setTracerProvider(SdkTracerProvider.builder().addSpanProcessor(customSpanProcessor).build())
             .build());
-        EventHubProducerAsyncClient producer = createProducer(null);
-        EventHubConsumerAsyncClient consumer = createConsumer(null);
+        EventHubProducerAsyncClient producer = createProducer();
+        EventHubConsumerAsyncClient consumer = createConsumer();
 
         CountDownLatch latch = new CountDownLatch(2);
         customSpanProcessor.notifyIfCondition(latch,
@@ -219,8 +211,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void sendAndReceiveParallel() throws InterruptedException {
-        EventHubProducerAsyncClient producer = createProducer(null);
-        EventHubConsumerAsyncClient consumer = createConsumer(null);
+        EventHubProducerAsyncClient producer = createProducer();
+        EventHubConsumerAsyncClient consumer = createConsumer();
 
         int messageCount = 5;
         CountDownLatch latch = new CountDownLatch(messageCount);
@@ -251,7 +243,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void sendBuffered() throws InterruptedException {
-        EventHubConsumerAsyncClient consumer = createConsumer(null);
+        EventHubConsumerAsyncClient consumer = createConsumer();
 
         CountDownLatch latch = new CountDownLatch(3);
         spanProcessor.notifyIfCondition(latch, span -> hasOperationName(span, PROCESS) || hasOperationName(span, SEND));
@@ -318,11 +310,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(2, received.size());
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "true", "false" })
-    public void syncReceive(String v2) {
-        EventHubProducerAsyncClient producer = createProducer(v2);
-        EventHubConsumerClient consumerSync = createSyncConsumer(v2);
+    @Test
+    public void syncReceive() {
+        EventHubProducerAsyncClient producer = createProducer();
+        EventHubConsumerClient consumerSync = createSyncConsumer();
 
         StepVerifier.create(producer.createBatch(new CreateBatchOptions().setPartitionId(PARTITION_ID)).map(b -> {
             b.tryAdd(new EventData(CONTENTS_BYTES));
@@ -347,8 +338,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void syncReceiveWithOptions() {
-        EventHubProducerAsyncClient producer = createProducer(null);
-        EventHubConsumerClient consumerSync = createSyncConsumer(null);
+        EventHubProducerAsyncClient producer = createProducer();
+        EventHubConsumerClient consumerSync = createSyncConsumer();
 
         StepVerifier.create(producer.createBatch(new CreateBatchOptions().setPartitionId(PARTITION_ID)).map(b -> {
             b.tryAdd(new EventData(CONTENTS_BYTES));
@@ -373,7 +364,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void syncReceiveTimeout() {
-        EventHubConsumerClient consumerSync = createSyncConsumer(null);
+        EventHubConsumerClient consumerSync = createSyncConsumer();
         List<PartitionEvent> receivedMessages
             = consumerSync
                 .receiveFromPartition(PARTITION_ID, 2, EventPosition.fromEnqueuedTime(testStartTime),
@@ -388,10 +379,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertSyncReceiveSpan(received.get(0), receivedMessages);
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "true", "false" })
-    public void sendAndProcess(String v2) throws InterruptedException {
-        EventHubProducerAsyncClient producer = createProducer(v2);
+    @Test
+    public void sendAndProcess() throws InterruptedException {
+        EventHubProducerAsyncClient producer = createProducer();
 
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<EventContext> receivedMessage = new AtomicReference<>();
@@ -407,7 +397,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         EventProcessorClient processor = new EventProcessorClientBuilder()
             .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
             .clientOptions(getClientOptions())
-            .configuration(getConfiguration(v2))
             .initialPartitionEventPosition(p -> EventPosition.fromEnqueuedTime(testStartTime))
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())
@@ -517,10 +506,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         }
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "true", "false" })
-    public void sendAndProcessBatch(String v2) throws InterruptedException {
-        EventHubProducerAsyncClient producer = createProducer(v2);
+    @Test
+    public void sendAndProcessBatch() throws InterruptedException {
+        EventHubProducerAsyncClient producer = createProducer();
 
         EventData message1 = new EventData(CONTENTS_BYTES);
         EventData message2 = new EventData(CONTENTS_BYTES);
@@ -539,7 +527,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         EventProcessorClient processor = new EventProcessorClientBuilder()
             .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
             .clientOptions(getClientOptions())
-            .configuration(getConfiguration(v2))
             .initialPartitionEventPosition(p -> EventPosition.fromEnqueuedTime(testStartTime))
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())
@@ -587,7 +574,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void sendProcessAndFail() throws InterruptedException {
-        EventHubProducerAsyncClient producer = createProducer(null);
+        EventHubProducerAsyncClient producer = createProducer();
 
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<List<EventData>> received = new AtomicReference<>();
@@ -764,40 +751,22 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         return operationName.toString().equals(span.getAttribute(OPERATION_NAME_ATTRIBUTE));
     }
 
-    private Configuration getConfiguration(String v2Stack) {
-        ConfigurationBuilder configBuilder = new ConfigurationBuilder();
-
-        if (v2Stack == null) {
-            return configBuilder.build();
-        }
-
-        return configBuilder.putProperty("com.azure.messaging.eventhubs.v2", v2Stack)
-            .putProperty("com.azure.core.amqp.cache", v2Stack)
-            .build();
-    }
-
     private ClientOptions getClientOptions() {
         return new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel));
     }
 
-    private EventHubProducerAsyncClient createProducer(String v2) {
-        return toClose(createBuilder().clientOptions(getClientOptions())
-            .configuration(getConfiguration(v2))
-            .buildAsyncProducerClient());
+    private EventHubProducerAsyncClient createProducer() {
+        return toClose(createBuilder().clientOptions(getClientOptions()).buildAsyncProducerClient());
     }
 
-    private EventHubConsumerAsyncClient createConsumer(String v2) {
-        return toClose(createBuilder().clientOptions(getClientOptions())
-            .configuration(getConfiguration(v2))
-            .consumerGroup("$Default")
-            .buildAsyncConsumerClient());
+    private EventHubConsumerAsyncClient createConsumer() {
+        return toClose(
+            createBuilder().clientOptions(getClientOptions()).consumerGroup("$Default").buildAsyncConsumerClient());
     }
 
-    private EventHubConsumerClient createSyncConsumer(String v2) {
-        return toClose(createBuilder().clientOptions(getClientOptions())
-            .configuration(getConfiguration(v2))
-            .consumerGroup("$Default")
-            .buildConsumerClient());
+    private EventHubConsumerClient createSyncConsumer() {
+        return toClose(
+            createBuilder().clientOptions(getClientOptions()).consumerGroup("$Default").buildConsumerClient());
     }
 
     private ReceiveOptions getReceiveOptions() {

@@ -8,7 +8,6 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Flux;
@@ -23,30 +22,15 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 class ServiceBusAsyncConsumer implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
-    private final boolean isV2;
     private final String linkName;
-    private final ServiceBusReceiveLinkProcessor linkProcessor;
     private final MessageSerializer messageSerializer;
     private final Flux<ServiceBusReceivedMessage> processor;
     private final MessageFlux messageFlux;
 
-    ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
-        this.isV2 = false;
-        this.linkName = linkName;
-        this.linkProcessor = linkProcessor;
-        this.messageFlux = null;
-        this.messageSerializer = messageSerializer;
-        this.processor = linkProcessor
-            .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
-    }
-
     ServiceBusAsyncConsumer(String linkName, MessageFlux messageFlux, MessageSerializer messageSerializer,
-        ReceiverOptions receiverOptions, ServiceBusReceiverInstrumentation instrumentation) {
-        this.isV2 = true;
+        ServiceBusReceiverInstrumentation instrumentation) {
         this.linkName = linkName;
         this.messageFlux = messageFlux;
-        this.linkProcessor = null;
         this.messageSerializer = messageSerializer;
 
         // This ServiceBusAsyncConsumer is backing ServiceBusReceiverAsyncClient instance (client has instrumentation is enabled).
@@ -84,11 +68,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             return monoError(LOGGER,
                 new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
         }
-        if (isV2) {
-            return messageFlux.updateDisposition(lockToken, deliveryState);
-        } else {
-            return linkProcessor.updateDisposition(lockToken, deliveryState);
-        }
+        return messageFlux.updateDisposition(lockToken, deliveryState);
     }
 
     /**
@@ -96,9 +76,5 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
      */
     @Override
     public void close() {
-        if (isV2) {
-            return;
-        }
-        linkProcessor.dispose();
     }
 }

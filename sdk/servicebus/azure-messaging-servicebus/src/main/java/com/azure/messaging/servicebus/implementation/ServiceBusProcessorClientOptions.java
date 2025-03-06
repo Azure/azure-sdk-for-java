@@ -14,7 +14,6 @@ public final class ServiceBusProcessorClientOptions {
 
     private int maxConcurrentCalls = 1;
     private boolean disableAutoComplete;
-    private boolean isV2;
 
     /**
      * Returns true if the auto-complete and auto-abandon feature is disabled.
@@ -50,14 +49,5 @@ public final class ServiceBusProcessorClientOptions {
     public ServiceBusProcessorClientOptions setMaxConcurrentCalls(int maxConcurrentCalls) {
         this.maxConcurrentCalls = maxConcurrentCalls;
         return this;
-    }
-
-    public ServiceBusProcessorClientOptions setV2(boolean isV2) {
-        this.isV2 = isV2;
-        return this;
-    }
-
-    public boolean isV2() {
-        return isV2;
     }
 }

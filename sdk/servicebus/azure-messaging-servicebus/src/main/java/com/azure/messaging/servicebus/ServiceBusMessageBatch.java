@@ -28,21 +28,17 @@ public final class ServiceBusMessageBatch {
     private final ErrorContextProvider contextProvider;
     private final MessageSerializer serializer;
     private final List<ServiceBusMessage> serviceBusMessageList;
-    private final byte[] eventBytes;
     private int sizeInBytes;
     private final ServiceBusTracer tracer;
-    private final boolean isV2;
 
-    ServiceBusMessageBatch(boolean isV2, int maxMessageSize, ErrorContextProvider contextProvider,
-        ServiceBusTracer tracer, MessageSerializer serializer) {
+    ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider, ServiceBusTracer tracer,
+        MessageSerializer serializer) {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
         this.serviceBusMessageList = new ArrayList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
-        this.eventBytes = isV2 ? new byte[0] : new byte[maxMessageSize];
         this.tracer = tracer;
-        this.isV2 = isV2;
     }
 
     /**
@@ -143,16 +139,12 @@ public final class ServiceBusMessageBatch {
     }
 
     private int encodedSize(Message amqpMessage) {
-        if (isV2) {
-            final int size = amqpMessage.encode(new DroppingWritableBuffer());
-            if (size > maxMessageSize) {
-                final IndexOutOfBoundsException cause = new IndexOutOfBoundsException(
-                    String.format("Requested size (%d) exceeds the maximum allowed size (%d)", size, maxMessageSize));
-                throw (BufferOverflowException) new BufferOverflowException().initCause(cause);
-            }
-            return size;
-        } else {
-            return amqpMessage.encode(this.eventBytes, 0, maxMessageSize);
+        final int size = amqpMessage.encode(new DroppingWritableBuffer());
+        if (size > maxMessageSize) {
+            final IndexOutOfBoundsException cause = new IndexOutOfBoundsException(
+                String.format("Requested size (%d) exceeds the maximum allowed size (%d)", size, maxMessageSize));
+            throw (BufferOverflowException) new BufferOverflowException().initCause(cause);
         }
+        return size;
     }
 }

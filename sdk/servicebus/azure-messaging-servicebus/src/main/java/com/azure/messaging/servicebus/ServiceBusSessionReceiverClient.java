@@ -138,14 +138,11 @@ import java.util.concurrent.TimeoutException;
 public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     private static final String TIMEOUT_MESSAGE_PREFIX = "Timeout on blocking read for ";
     private final ServiceBusSessionReceiverAsyncClient sessionAsyncClient;
-    private final boolean isPrefetchDisabled;
     private final Duration operationTimeout;
 
-    ServiceBusSessionReceiverClient(ServiceBusSessionReceiverAsyncClient asyncClient, boolean isPrefetchDisabled,
-        Duration operationTimeout) {
+    ServiceBusSessionReceiverClient(ServiceBusSessionReceiverAsyncClient asyncClient, Duration operationTimeout) {
         this.sessionAsyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = operationTimeout;
-        this.isPrefetchDisabled = isPrefetchDisabled;
     }
 
     /**
@@ -162,7 +159,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptNextSession() {
         return sessionAsyncClient.acceptNextSession()
-            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
+            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, operationTimeout))
             .timeout(operationTimeout, Mono.error(() -> {
                 final String message = TIMEOUT_MESSAGE_PREFIX + operationTimeout.toNanos() + " " + TimeUnit.NANOSECONDS
                     + " (client-timeout)";
@@ -191,7 +188,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptSession(String sessionId) {
         return sessionAsyncClient.acceptSession(sessionId)
-            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
+            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, operationTimeout))
             .timeout(operationTimeout, Mono.error(() -> {
                 final String message = TIMEOUT_MESSAGE_PREFIX + operationTimeout.toNanos() + " " + TimeUnit.NANOSECONDS
                     + " (client-timeout)";

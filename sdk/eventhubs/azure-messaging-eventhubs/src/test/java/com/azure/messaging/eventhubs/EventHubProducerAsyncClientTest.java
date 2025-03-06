@@ -24,15 +24,12 @@ import com.azure.core.test.utils.metrics.TestHistogram;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
@@ -62,6 +59,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -73,8 +72,10 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,12 +128,14 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 class EventHubProducerAsyncClientTest {
+    private static final AmqpException UNAUTHORIZED_ERROR = new AmqpException(false,
+        AmqpErrorCondition.UNAUTHORIZED_ACCESS, "unauthorized access", new AmqpErrorContext("contoso"));
+    private static final AmqpException SERVER_BUSY_ERROR = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR,
+        "service busy, retry later", new AmqpErrorContext("contoso"));
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
-    private static final String ENTITY_PATH = HOSTNAME
-        + Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
     private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
     private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION
         = new EventHubsProducerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME);
@@ -143,13 +146,10 @@ class EventHubProducerAsyncClientTest {
     private AmqpSendLink sendLink2;
     @Mock
     private AmqpSendLink sendLink3;
-
     @Mock
     private EventHubReactorAmqpConnection connection;
     @Mock
     private EventHubReactorAmqpConnection connection2;
-    @Mock
-    private EventHubReactorAmqpConnection connection3;
     @Mock
     private TokenCredential tokenCredential;
     @Mock
@@ -166,7 +166,7 @@ class EventHubProducerAsyncClientTest {
         .setTryTimeout(Duration.ofSeconds(10));
     private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
     private EventHubProducerAsyncClient producer;
-    private ConnectionCacheWrapper connectionProcessor;
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache;
     private ConnectionOptions connectionOptions;
     private final Scheduler testScheduler = Schedulers.newBoundedElastic(10, 10, "test");
 
@@ -180,12 +180,13 @@ class EventHubProducerAsyncClientTest {
             CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME, "client-product", "client-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
         endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
-        connectionProcessor = createConnectionProcessor(connection, retryOptions, false);
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+        connectionCache = createConnectionProcessor(connection, retryOptions);
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
             messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -276,7 +277,7 @@ class EventHubProducerAsyncClientTest {
         final Semaphore semaphore = new Semaphore(1);
         // In our actual client builder, we allow this.
         final EventHubProducerAsyncClient flexibleProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
@@ -353,7 +354,7 @@ class EventHubProducerAsyncClientTest {
         final EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_IDENTIFIER)))
@@ -409,7 +410,7 @@ class EventHubProducerAsyncClientTest {
         final EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_IDENTIFIER)))
@@ -456,7 +457,7 @@ class EventHubProducerAsyncClientTest {
         final EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         final String partitionId = "0";
@@ -513,7 +514,7 @@ class EventHubProducerAsyncClientTest {
             .setTryTimeout(Duration.ofMillis(100));
 
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, lowDelayOptions, messageSerializer, Schedulers.parallel(), false, onClientClosed,
+            connectionCache, lowDelayOptions, messageSerializer, Schedulers.parallel(), false, onClientClosed,
             CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         final EventHubProperties ehProperties
@@ -568,7 +569,7 @@ class EventHubProducerAsyncClientTest {
         when(tracer1.isEnabled()).thenReturn(true);
         final EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         final String failureKey = "fail";
@@ -697,7 +698,7 @@ class EventHubProducerAsyncClientTest {
         final EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
         final AmqpSendLink link = mock(AmqpSendLink.class);
         final String entityPath
@@ -970,15 +971,13 @@ class EventHubProducerAsyncClientTest {
         TestMeter meter = new TestMeter();
         EventHubsProducerInstrumentation instrumentation1
             = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, eventHub1);
-        EventHubProducerAsyncClient producer1
-            = new EventHubProducerAsyncClient(HOSTNAME, eventHub1, connectionProcessor, retryOptions, messageSerializer,
-                testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation1);
+        EventHubProducerAsyncClient producer1 = new EventHubProducerAsyncClient(HOSTNAME, eventHub1, connectionCache,
+            retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation1);
 
         EventHubsProducerInstrumentation instrumentation2
             = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, eventHub2);
-        EventHubProducerAsyncClient producer2
-            = new EventHubProducerAsyncClient(HOSTNAME, eventHub2, connectionProcessor, retryOptions, messageSerializer,
-                testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation2);
+        EventHubProducerAsyncClient producer2 = new EventHubProducerAsyncClient(HOSTNAME, eventHub2, connectionCache,
+            retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation2);
 
         StepVerifier.create(producer1.createBatch().flatMap(batch -> {
             batch.tryAdd(new EventData("1"));
@@ -1025,7 +1024,7 @@ class EventHubProducerAsyncClientTest {
             = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
 
         EventHubProducerAsyncClient producer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         StepVerifier.create(producer.send(new EventData("1")))
@@ -1051,7 +1050,7 @@ class EventHubProducerAsyncClientTest {
         EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
         EventHubProducerAsyncClient producer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         SendOptions options = new SendOptions().setPartitionId(partitionId);
@@ -1086,7 +1085,7 @@ class EventHubProducerAsyncClientTest {
         EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
         EventHubProducerAsyncClient producer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         StepVerifier.create(producer.getPartitionProperties(partitionId))
@@ -1121,7 +1120,7 @@ class EventHubProducerAsyncClientTest {
         EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(tracer, meter, HOSTNAME, EVENT_HUB_NAME);
         EventHubProducerAsyncClient producer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         final AtomicReference<Integer> eventInd = new AtomicReference<>(0);
@@ -1164,7 +1163,7 @@ class EventHubProducerAsyncClientTest {
         EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
         EventHubProducerAsyncClient producer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         StepVerifier.create(producer.send(new EventData("1"))).expectComplete().verify(DEFAULT_TIMEOUT);
@@ -1184,7 +1183,7 @@ class EventHubProducerAsyncClientTest {
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         EventHubProducerAsyncClient producer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         StepVerifier.create(producer.send(new EventData("1"))).expectComplete().verify(DEFAULT_TIMEOUT);
@@ -1252,18 +1251,19 @@ class EventHubProducerAsyncClientTest {
      * Verifies that when we have a shared connection, the producer does not close that connection.
      */
     @Test
+    @SuppressWarnings("unchecked")
     void doesNotCloseSharedConnection() {
         // Arrange
-        ConnectionCacheWrapper hubConnection = mock(ConnectionCacheWrapper.class);
+        final ReactorConnectionCache<EventHubReactorAmqpConnection> cache = mock(ReactorConnectionCache.class);
         EventHubProducerAsyncClient sharedProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, hubConnection, retryOptions, messageSerializer,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, cache, retryOptions, messageSerializer,
                 Schedulers.parallel(), true, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         // Act
         sharedProducer.close();
 
         // Verify
-        verify(hubConnection, never()).dispose();
+        verify(cache, never()).dispose();
         verify(onClientClosed).run();
     }
 
@@ -1271,18 +1271,19 @@ class EventHubProducerAsyncClientTest {
      * Verifies that when we have a non-shared connection, the producer closes that connection.
      */
     @Test
+    @SuppressWarnings("unchecked")
     void closesDedicatedConnection() {
         // Arrange
-        ConnectionCacheWrapper hubConnection = mock(ConnectionCacheWrapper.class);
+        final ReactorConnectionCache<EventHubReactorAmqpConnection> cache = mock(ReactorConnectionCache.class);
         EventHubProducerAsyncClient dedicatedProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, hubConnection, retryOptions, messageSerializer,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, cache, retryOptions, messageSerializer,
                 Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         // Act
         dedicatedProducer.close();
 
         // Verify
-        verify(hubConnection, times(1)).dispose();
+        verify(cache, times(1)).dispose();
         verifyNoInteractions(onClientClosed);
     }
 
@@ -1290,11 +1291,12 @@ class EventHubProducerAsyncClientTest {
      * Verifies that when we have a non-shared connection, the producer closes that connection. Only once.
      */
     @Test
+    @SuppressWarnings("unchecked")
     void closesDedicatedConnectionOnlyOnce() {
         // Arrange
-        ConnectionCacheWrapper hubConnection = mock(ConnectionCacheWrapper.class);
+        final ReactorConnectionCache<EventHubReactorAmqpConnection> cache = mock(ReactorConnectionCache.class);
         EventHubProducerAsyncClient dedicatedProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, hubConnection, retryOptions, messageSerializer,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, cache, retryOptions, messageSerializer,
                 Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         // Act
@@ -1302,87 +1304,67 @@ class EventHubProducerAsyncClientTest {
         dedicatedProducer.close();
 
         // Verify
-        verify(hubConnection, times(1)).dispose();
+        verify(cache, times(1)).dispose();
         verifyNoInteractions(onClientClosed);
     }
 
     /**
-     * Verifies that another link is received and we can continue publishing events on a transient failure.
+     * Verifies that another link is obtained, when current link encounter a transient error.
      */
     @Test
-    void reopensOnFailure() {
+    void retriesOnTransientLinkError() {
         // Arrange
         when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
         endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        EventHubReactorAmqpConnection[] connections
-            = new EventHubReactorAmqpConnection[] { connection, connection2, connection3 };
-        connectionProcessor = createConnectionProcessor(connections, connectionOptions.getRetry(), false);
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+        connectionCache = createConnectionProcessor(connection, connectionOptions.getRetry());
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);
 
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
-            final EventData data = new EventData(contents);
-            return Flux.just(data);
-        });
-        final EventData testData2 = new EventData("test");
 
-        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+        when(sendLink2.send(anyList())).thenReturn(Mono.empty());
+        final CreateSendLinkAnswer sendLinkAnswer = new CreateSendLinkAnswer(sendLink, sendLink2, sendLink3);
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(anyList())).thenReturn(Mono.empty());
-
-        final Sinks.Many<AmqpEndpointState> connectionState2 = Sinks.many().multicast().onBackpressureBuffer();
-        when(connection2.getEndpointStates()).thenReturn(connectionState2.asFlux());
-        when(
-            connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-                .thenReturn(Mono.just(sendLink2));
-        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
-
-        final Sinks.Many<AmqpEndpointState> connectionState3 = Sinks.many().multicast().onBackpressureBuffer();
-        when(connection3.getEndpointStates()).thenReturn(connectionState3.asFlux());
-        when(
-            connection3.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-                .thenReturn(Mono.just(sendLink3));
-        when(sendLink3.send(anyList())).thenReturn(Mono.empty());
+            .thenAnswer(sendLinkAnswer);
 
         // Act
-        StepVerifier.create(producer.send(testData)).expectComplete().verify(DEFAULT_TIMEOUT);
-
-        // Send in an error signal like a server busy condition.
-        endpointStates.emitError(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
-            new AmqpErrorContext("test-namespace")), Sinks.EmitFailureHandler.FAIL_FAST);
-
-        StepVerifier.create(producer.send(testData2)).expectComplete().verify(DEFAULT_TIMEOUT);
+        // Send a message using 'sendLink'.
+        StepVerifier.create(producer.send(new EventData("test"))).expectComplete().verify(DEFAULT_TIMEOUT);
+        final EventDataBatch batch = producer.createBatch().block();
+        assert batch != null;
+        for (int i = 0; i < count; i++) {
+            final boolean success = batch.tryAdd(new EventData(contents));
+            Assertions.assertTrue(success);
+        }
+        // Mark 'sendLink' as error-ed, with a retry-able 'server-busy', hence retry should obtain 'sendLink2'.
+        sendLinkAnswer.setServerBusyOnCurrentLink();
+        StepVerifier.create(producer.send(batch)).expectComplete().verify(DEFAULT_TIMEOUT);
 
         // Assert
-        verify(sendLink).send(messagesCaptor.capture());
+        verify(sendLink, times(1)).send(any(Message.class));
+        verify(sendLink2).send(messagesCaptor.capture());
         final List<Message> messagesSent = messagesCaptor.getValue();
         Assertions.assertEquals(count, messagesSent.size());
 
-        verify(sendLink2, times(1)).send(any(Message.class));
         verifyNoInteractions(sendLink3);
-
         verifyNoInteractions(onClientClosed);
     }
 
     /**
-     * Verifies that on a non-transient failure, no more event hub connections are recreated and we can not send events.
-     * An error should be propagated back to us.
+     * Verifies that a non-transient failure on link gets propagated.
      */
     @Test
-    void closesOnNonTransientFailure() {
+    void propagatesNonTransientLinkError() {
         // Arrange
         when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
         endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        EventHubReactorAmqpConnection[] connections
-            = new EventHubReactorAmqpConnection[] { connection, connection2, connection3 };
-        connectionProcessor = createConnectionProcessor(connections, connectionOptions.getRetry(), false);
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+        connectionCache = createConnectionProcessor(connection, connectionOptions.getRetry());
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);
 
@@ -1394,35 +1376,25 @@ class EventHubProducerAsyncClientTest {
         });
         final EventData testData2 = new EventData("test");
 
-        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        final CreateSendLinkAnswer createSendLinkAnswer = new CreateSendLinkAnswer(sendLink);
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink));
+            .thenAnswer(createSendLinkAnswer);
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
-
-        final Sinks.Many<AmqpEndpointState> connectionState2 = Sinks.many().multicast().onBackpressureBuffer();
-        when(connection2.getEndpointStates()).thenReturn(connectionState2.asFlux());
-        when(
-            connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-                .thenReturn(Mono.just(sendLink2));
-        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
-
-        final AmqpException nonTransientError = new AmqpException(false, AmqpErrorCondition.UNAUTHORIZED_ACCESS,
-            "Test unauthorized access", new AmqpErrorContext("test-namespace"));
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         // Act
+        // Send a message using 'sendLink'.
         StepVerifier.create(producer.send(testData)).expectComplete().verify(DEFAULT_TIMEOUT);
-
-        // Send in an error signal like authorization failure.
-        endpointStates.emitError(nonTransientError, Sinks.EmitFailureHandler.FAIL_FAST);
-
+        // Mark 'sendLink' as error-ed, with a non-transient 'authorization-error'.
+        createSendLinkAnswer.setUnauthorizedOnCurrentLink();
         StepVerifier.create(producer.send(testData2)).expectErrorSatisfies(error -> {
-            Assertions.assertTrue(error instanceof AmqpException);
-
+            Assertions.assertInstanceOf(AmqpException.class, error);
+            final AmqpException expected = UNAUTHORIZED_ERROR;
             final AmqpException actual = (AmqpException) error;
-            Assertions.assertEquals(nonTransientError.isTransient(), actual.isTransient());
-            Assertions.assertEquals(nonTransientError.getContext(), actual.getContext());
-            Assertions.assertEquals(nonTransientError.getErrorCondition(), actual.getErrorCondition());
-            Assertions.assertEquals(nonTransientError.getMessage(), actual.getMessage());
+            Assertions.assertEquals(expected.isTransient(), actual.isTransient());
+            Assertions.assertEquals(expected.getContext(), actual.getContext());
+            Assertions.assertEquals(expected.getErrorCondition(), actual.getErrorCondition());
+            Assertions.assertEquals(expected.getMessage(), actual.getMessage());
         }).verify(Duration.ofSeconds(10));
 
         // Assert
@@ -1430,75 +1402,75 @@ class EventHubProducerAsyncClientTest {
         final List<Message> messagesSent = messagesCaptor.getValue();
         Assertions.assertEquals(count, messagesSent.size());
 
-        verifyNoInteractions(sendLink2);
-        verifyNoInteractions(sendLink3);
         verifyNoInteractions(onClientClosed);
     }
 
-    /**
-     * Verifies that we can resend a message when a transient error occurs.
-     */
     @Test
-    void resendMessageOnTransientLinkFailure() {
+    void propagatesNonTransientConnectionError() {
         // Arrange
+        final AwaitConnectionActiveAnswer connectionAnswer
+            = new AwaitConnectionActiveAnswer(connection, UNAUTHORIZED_ERROR);
         when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        when(connection.connectAndAwaitToActive()).thenAnswer(connectionAnswer);
         endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
-        EventHubReactorAmqpConnection[] connections = new EventHubReactorAmqpConnection[] { connection, connection2 };
-        connectionProcessor = createConnectionProcessor(connections, connectionOptions.getRetry(), false);
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+        connectionCache = createConnectionProcessor(connection, connectionOptions.getRetry());
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);
 
-        final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
-            final EventData data = new EventData(contents);
-            return Flux.just(data);
-        });
+        // Act and assert
+        //
+        StepVerifier.create(producer.send(new EventData("test"))).expectErrorSatisfies(error -> {
+            Assertions.assertInstanceOf(AmqpException.class, error);
+            final AmqpException expected = UNAUTHORIZED_ERROR;
+            final AmqpException actual = (AmqpException) error;
+            Assertions.assertEquals(expected.isTransient(), actual.isTransient());
+            Assertions.assertEquals(expected.getContext(), actual.getContext());
+            Assertions.assertEquals(expected.getErrorCondition(), actual.getErrorCondition());
+            Assertions.assertEquals(expected.getMessage(), actual.getMessage());
+        }).verify(Duration.ofSeconds(10));
 
-        final String failureKey = "fail";
-        final EventData testData2 = new EventData("test");
-        testData2.getProperties().put(failureKey, "true");
+        verifyNoInteractions(sendLink);
+    }
 
-        // EC is the prefix they use when creating a link that sends to the service round-robin.
+    @Test
+    void retriesOnTransientConnectionError() {
+        // Arrange
+        final AwaitConnectionActiveAnswer connectionAnswer
+            = new AwaitConnectionActiveAnswer(connection, SERVER_BUSY_ERROR);
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        when(connection.connectAndAwaitToActive()).thenAnswer(connectionAnswer);
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(anyList())).thenReturn(Mono.empty());
-
-        // Send a transient error, and close the original link, if we get a message that contains the "failureKey".
-        // This simulates when a link is closed.
-        when(sendLink
-            .send(argThat((Message message) -> message.getApplicationProperties().getValue().containsKey(failureKey))))
-                .thenAnswer(mock -> {
-                    final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR,
-                        "Test-message", new AmqpErrorContext("test-namespace"));
-
-                    endpointStates.emitError(error, Sinks.EmitFailureHandler.FAIL_FAST);
-                    return Mono.error(error);
-                });
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         final Sinks.Many<AmqpEndpointState> connectionState2 = Sinks.many().multicast().onBackpressureBuffer();
         when(connection2.getEndpointStates()).thenReturn(connectionState2.asFlux());
+        when(connection2.connectAndAwaitToActive()).thenReturn(Mono.just(connection2));
         when(
             connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
                 .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
 
-        // Act
-        StepVerifier.create(producer.send(testData)).expectComplete().verify(DEFAULT_TIMEOUT);
+        final EventHubReactorAmqpConnection[] connections
+            = new EventHubReactorAmqpConnection[] { connection, connection2 };
 
-        StepVerifier.create(producer.send(testData2)).expectComplete().verify(DEFAULT_TIMEOUT);
+        connectionCache = createConnectionProcessor(connections, connectionOptions.getRetry());
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
+            messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER,
+            DEFAULT_INSTRUMENTATION);
+
+        // Act
+        StepVerifier.create(producer.send(new EventData("test"))).expectComplete().verify(DEFAULT_TIMEOUT);
 
         // Assert
-        verify(sendLink).send(messagesCaptor.capture());
-        final List<Message> messagesSent = messagesCaptor.getValue();
-        Assertions.assertEquals(count, messagesSent.size());
-
+        // verify that the second connection was obtained via retry thus sendLink2 was used.
         verify(sendLink2, times(1)).send(any(Message.class));
-        verifyNoInteractions(sendLink3);
-
-        verifyNoInteractions(onClientClosed);
     }
 
     private EventData fakeReceivedMessage() {
@@ -1532,55 +1504,32 @@ class EventHubProducerAsyncClientTest {
         }
     }
 
-    private ConnectionCacheWrapper createConnectionProcessor(EventHubReactorAmqpConnection connection,
-        AmqpRetryOptions retryOptions, boolean isV2) {
-        if (isV2) {
-            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-            int[] calls = new int[1];
-            final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
-                calls[0] = calls[0] + 1;
-                if (calls[0] == 10) {
-                    throw new UnsupportedOperationException("connection requests is limited to 10");
-                }
-                return connection;
-            };
-            final ReactorConnectionCache<EventHubReactorAmqpConnection> cache
-                = new ReactorConnectionCache<>(null, HOSTNAME, EVENT_HUB_NAME, retryPolicy, new HashMap<>(0));
-            return new ConnectionCacheWrapper(cache);
-        } else {
-            final EventHubConnectionProcessor processor = Mono.fromCallable(() -> connection)
-                .repeat(10)
-                .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, "event-hub-name", retryOptions));
-            return new ConnectionCacheWrapper(processor);
-        }
+    private ReactorConnectionCache<EventHubReactorAmqpConnection>
+        createConnectionProcessor(EventHubReactorAmqpConnection connection, AmqpRetryOptions retryOptions) {
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+        int[] calls = new int[1];
+        final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
+            calls[0] = calls[0] + 1;
+            if (calls[0] == 10) {
+                throw new UnsupportedOperationException("connection requests is limited to 10");
+            }
+            return connection;
+        };
+        return new ReactorConnectionCache<>(connectionSupplier, HOSTNAME, EVENT_HUB_NAME, retryPolicy,
+            new HashMap<>(0));
     }
 
-    private ConnectionCacheWrapper createConnectionProcessor(EventHubReactorAmqpConnection[] connections,
-        AmqpRetryOptions retryOptions, boolean isV2) {
-        if (isV2) {
-            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-            final AtomicInteger count = new AtomicInteger();
-            final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
-                final int current = count.getAndIncrement();
-                final int index = current % connections.length;
-                return connections[index];
-            };
-            final ReactorConnectionCache<EventHubReactorAmqpConnection> cache
-                = new ReactorConnectionCache<>(null, HOSTNAME, EVENT_HUB_NAME, retryPolicy, new HashMap<>(0));
-            return new ConnectionCacheWrapper(cache);
-        } else {
-            final EventHubConnectionProcessor processor = Flux.<EventHubAmqpConnection>create(sink -> {
-                final AtomicInteger count = new AtomicInteger();
-                sink.onRequest(request -> {
-                    for (int i = 0; i < request; i++) {
-                        final int current = count.getAndIncrement();
-                        final int index = current % connections.length;
-                        sink.next(connections[index]);
-                    }
-                });
-            }).subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
-            return new ConnectionCacheWrapper(processor);
-        }
+    private ReactorConnectionCache<EventHubReactorAmqpConnection>
+        createConnectionProcessor(EventHubReactorAmqpConnection[] connections, AmqpRetryOptions retryOptions) {
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+        final AtomicInteger count = new AtomicInteger();
+        final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
+            final int current = count.getAndIncrement();
+            final int index = current % connections.length;
+            return connections[index];
+        };
+        return new ReactorConnectionCache<>(connectionSupplier, HOSTNAME, EVENT_HUB_NAME, retryPolicy,
+            new HashMap<>(0));
     }
 
     private void assertSendCount(TestMeter meter, String partitionId, int expectedValue, String expectedErrorType,
@@ -1643,4 +1592,102 @@ class EventHubProducerAsyncClientTest {
         + "dolor, vitae cursus nunc pulvinar vel. Donec accumsan sapien in malesuada tempor. Maecenas in condimentum "
         + "eros. Sed vestibulum facilisis massa a iaculis. Etiam et nibh felis. Donec maximus, sem quis vestibulum "
         + "gravida, turpis risus congue dolor, pharetra tincidunt lectus nisi at velit.";
+
+    private static final class AwaitConnectionActiveAnswer implements Answer<Mono<EventHubReactorAmqpConnection>> {
+        private final EventHubReactorAmqpConnection connection;
+        private final AtomicReference<AmqpException> error = new AtomicReference<>(null);
+
+        AwaitConnectionActiveAnswer(EventHubReactorAmqpConnection connection, AmqpException e) {
+            this.connection = connection;
+            this.error.set(e);
+        }
+
+        @Override
+        public Mono<EventHubReactorAmqpConnection> answer(InvocationOnMock invocation) {
+            return Mono.defer(() -> {
+                final AmqpException e = error.get();
+                if (e != null) {
+                    return Mono.error(e);
+                }
+                return Mono.just(connection);
+            });
+        }
+    }
+
+    private static final class CreateSendLinkAnswer implements Answer<Mono<AmqpSendLink>> {
+        private final Deque<CachedLink> cachedLinks = new ArrayDeque<>();
+
+        private CreateSendLinkAnswer(AmqpSendLink... links) {
+            for (AmqpSendLink link : links) {
+                this.cachedLinks.add(new CachedLink(link));
+            }
+        }
+
+        @Override
+        public Mono<AmqpSendLink> answer(InvocationOnMock invocation) {
+            return Mono.defer(() -> {
+                final CachedLink cachedLink = cachedLinks.peek();
+                if (cachedLink == null) {
+                    return Mono.error(new IllegalStateException("No more links to return."));
+                }
+                final CachedLink.State state = cachedLink.getState();
+                if (state == CachedLink.State.GOOD) {
+                    return Mono.just(cachedLink.getLink());
+                }
+                cachedLinks.pop(); // removes the current link in error state.
+                if (state == CachedLink.State.UNAUTHORIZED) {
+                    return Mono.error(UNAUTHORIZED_ERROR);
+                } else if (state == CachedLink.State.SERVER_BUSY) {
+                    return Mono.error(SERVER_BUSY_ERROR);
+                }
+                return Mono.error(new IllegalStateException("Unknown state: " + state));
+            });
+        }
+
+        void setUnauthorizedOnCurrentLink() {
+            final CachedLink cachedLink = cachedLinks.peek();
+            if (cachedLink == null) {
+                throw new IllegalStateException("No current link to set the state.");
+            }
+            cachedLink.setUnauthorized();
+        }
+
+        void setServerBusyOnCurrentLink() {
+            final CachedLink cachedLink = cachedLinks.peek();
+            if (cachedLink == null) {
+                throw new IllegalStateException("No current link to set the state.");
+            }
+            cachedLink.setServerBusy();
+        }
+
+        private static final class CachedLink {
+            private final AmqpSendLink link;
+            private final AtomicReference<State> state = new AtomicReference<>(null);
+
+            CachedLink(AmqpSendLink link) {
+                this.link = link;
+                this.state.set(State.GOOD);
+            }
+
+            AmqpSendLink getLink() {
+                return link;
+            }
+
+            State getState() {
+                return state.get();
+            }
+
+            void setUnauthorized() {
+                state.set(State.UNAUTHORIZED);
+            }
+
+            void setServerBusy() {
+                state.set(State.SERVER_BUSY);
+            }
+
+            private enum State {
+                GOOD, UNAUTHORIZED, SERVER_BUSY
+            }
+        }
+    }
 }

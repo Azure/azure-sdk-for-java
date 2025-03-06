@@ -20,8 +20,8 @@
   <Loggers>
     <Logger name="com.azure.messaging.servicebus" level="DEBUG" />
 
-    <!-- Log everything from ReceiveLinkHandler except the 'onDelivery' messages. -->
-    <Logger name="com.azure.core.amqp.implementation.handler.ReceiveLinkHandler" level="DEBUG">
+    <!-- Log everything from ReceiveLinkHandler2 except the 'onDelivery' messages. -->
+    <Logger name="com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2" level="DEBUG">
       <ScriptFilter onMatch="ACCEPT" onMismatch="DENY">
         <Script name="ReceiveLinkHandlerFilter" language="groovy"><![CDATA[
         import org.apache.logging.log4j.Level;

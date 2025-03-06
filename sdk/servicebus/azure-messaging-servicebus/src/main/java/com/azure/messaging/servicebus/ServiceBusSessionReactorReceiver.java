@@ -122,20 +122,21 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public Mono<Void> addCredits(int credits) {
-        return monoError(logger,
-            new UnsupportedOperationException("addCredits(int) should not be called in V2 route."));
+        return monoError(logger, deprecatedError("addCredits"));
     }
 
     @Override
     public int getCredits() {
-        throw logger
-            .logExceptionAsError(new UnsupportedOperationException("getCredits() should not be called in V2 route."));
+        throw logger.logExceptionAsError(deprecatedError("getCredits"));
     }
 
     @Override
     public void setEmptyCreditListener(Supplier<Integer> creditSupplier) {
-        throw logger.logExceptionAsError(
-            new UnsupportedOperationException("setEmptyCreditListener should not be called in V2 route."));
+        throw logger.logExceptionAsError(deprecatedError("setEmptyCreditListener"));
+    }
+
+    private static RuntimeException deprecatedError(String api) {
+        return new UnsupportedOperationException(api + " is deprecated.");
     }
 
     private LoggingEventBuilder withLinkInfo(LoggingEventBuilder builder) {

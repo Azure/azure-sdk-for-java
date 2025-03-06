@@ -45,7 +45,7 @@ class ServiceBusSessionReceiverClientTest {
     void acceptSession() {
         when(sessionAsyncClient.acceptSession(anyString())).thenReturn(Mono.just(asyncClient));
         ServiceBusSessionReceiverClient sessionClient
-            = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofMillis(100));
+            = new ServiceBusSessionReceiverClient(sessionAsyncClient, Duration.ofMillis(100));
 
         assertNotNull(sessionClient.acceptSession("sessionId"));
     }
@@ -55,7 +55,7 @@ class ServiceBusSessionReceiverClientTest {
         when(sessionAsyncClient.acceptSession(anyString()))
             .thenReturn(Mono.just(asyncClient).delayElement(Duration.ofMillis(500)));
         ServiceBusSessionReceiverClient sessionClient
-            = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofMillis(50));
+            = new ServiceBusSessionReceiverClient(sessionAsyncClient, Duration.ofMillis(50));
 
         assertThrows(IllegalStateException.class, () -> sessionClient.acceptSession("sessionId"));
     }
@@ -64,7 +64,7 @@ class ServiceBusSessionReceiverClientTest {
     void acceptNextSession() {
         when(sessionAsyncClient.acceptNextSession()).thenReturn(Mono.just(asyncClient));
         ServiceBusSessionReceiverClient sessionClient
-            = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofMillis(100));
+            = new ServiceBusSessionReceiverClient(sessionAsyncClient, Duration.ofMillis(100));
 
         assertNotNull(sessionClient.acceptNextSession());
     }
@@ -74,7 +74,7 @@ class ServiceBusSessionReceiverClientTest {
         when(sessionAsyncClient.acceptNextSession())
             .thenReturn(Mono.just(asyncClient).delayElement(Duration.ofMillis(500)));
         ServiceBusSessionReceiverClient sessionClient
-            = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofMillis(50));
+            = new ServiceBusSessionReceiverClient(sessionAsyncClient, Duration.ofMillis(50));
 
         assertThrows(IllegalStateException.class, () -> sessionClient.acceptNextSession());
     }

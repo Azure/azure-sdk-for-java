@@ -12,11 +12,9 @@ import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -55,6 +53,7 @@ import static com.azure.messaging.servicebus.TestUtils.getSessionQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -211,8 +210,7 @@ public abstract class IntegrationTestBase extends TestProxyTestBase {
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(optionsWithTracing)
             .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler)
-            .configuration(v1OrV2(true));
+            .scheduler(scheduler);
     }
 
     protected ServiceBusClientBuilder getBuilder(boolean sharedConnection) {
@@ -444,24 +442,14 @@ public abstract class IntegrationTestBase extends TestProxyTestBase {
         }
     }
 
-    protected final Configuration v1OrV2(boolean isV2) {
-        final TestConfigurationSource configSource = new TestConfigurationSource();
-        if (isV2) {
-            configSource.put("com.azure.messaging.servicebus.nonSession.asyncReceive.v2", "true");
-            configSource.put("com.azure.messaging.servicebus.nonSession.syncReceive.v2", "true");
-            configSource.put("com.azure.messaging.servicebus.session.processor.asyncReceive.v2", "true");
-            configSource.put("com.azure.messaging.servicebus.session.reactor.asyncReceive.v2", "true");
-            configSource.put("com.azure.messaging.servicebus.session.syncReceive.v2", "true");
-            configSource.put("com.azure.messaging.servicebus.sendAndManageRules.v2", "true");
-        } else {
-            configSource.put("com.azure.messaging.servicebus.nonSession.asyncReceive.v2", "false");
-            configSource.put("com.azure.messaging.servicebus.nonSession.syncReceive.v2", "false");
-            configSource.put("com.azure.messaging.servicebus.session.processor.asyncReceive.v2", "false");
-            configSource.put("com.azure.messaging.servicebus.session.reactor.asyncReceive.v2", "false");
-            configSource.put("com.azure.messaging.servicebus.session.syncReceive.v2", "false");
-            configSource.put("com.azure.messaging.servicebus.sendAndManageRules.v2", "false");
+    protected void assertMessageEquals(String sessionId, String messageId, String contents,
+        ServiceBusReceivedMessage message) {
+        assertNotNull(message, "'message' should not be null.");
+        if (!CoreUtils.isNullOrEmpty(sessionId)) {
+            assertEquals(sessionId, message.getSessionId());
         }
-        return new ConfigurationBuilder(configSource).build();
+        assertEquals(messageId, message.getMessageId());
+        assertEquals(contents, message.getBody().toString());
     }
 
     /**

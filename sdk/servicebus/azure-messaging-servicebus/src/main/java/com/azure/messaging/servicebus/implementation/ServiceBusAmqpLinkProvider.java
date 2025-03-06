@@ -11,9 +11,7 @@ import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.implementation.ReceiveLinkHandlerWrapper;
 import com.azure.core.amqp.implementation.TokenManager;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import org.apache.qpid.proton.engine.Receiver;
 
@@ -30,19 +28,9 @@ import org.apache.qpid.proton.engine.Receiver;
 public final class ServiceBusAmqpLinkProvider extends AmqpLinkProvider {
     @Override
     public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
-        AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
-        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver,
-            new ReceiveLinkHandlerWrapper(handler), tokenManager, dispatcher, retryOptions);
-    }
-
-    // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
-    // is removed. At that point "ReceiveLinkHandlerWrapper" and this createReceiveLink method will also be removed.
-    @Override
-    public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
         ReceiveLinkHandler2 handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
         AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
-        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver,
-            new ReceiveLinkHandlerWrapper(handler), tokenManager, dispatcher, retryOptions);
+        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher,
+            retryOptions);
     }
 }

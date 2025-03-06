@@ -3,6 +3,9 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
+import com.azure.core.amqp.implementation.ReactorDispatcher;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.Source;
 import org.apache.qpid.proton.engine.Delivery;
@@ -18,8 +21,10 @@ import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
@@ -32,6 +37,10 @@ public class ReceiveLinkHandlerTest {
     private static final String HOSTNAME = "test-hostname";
     private static final String LINK_NAME = "test-link-name";
     private static final String ENTITY_PATH = "test-entity-path";
+    private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions();
+    private static final byte[] GUID_ENCODED_DELIVERY_TAG
+        = { -67, 35, 17, -88, -27, -60, 74, -111, -107, 46, -76, -78, 29, 19, -37, -115 };
+    private static final UUID UUID_DECODED_FROM_ENCODED_GUID = UUID.fromString("a81123bd-c4e5-914a-952e-b4b21d13db8d");
 
     @Mock
     private Delivery delivery;
@@ -41,9 +50,11 @@ public class ReceiveLinkHandlerTest {
     private Receiver receiver;
     @Mock
     private Source source;
+    @Mock
+    private ReactorDispatcher dispatcher;
 
-    private final ReceiveLinkHandler handler
-        = new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH, null);
+    private final ReceiveLinkHandler2 handler = new ReceiveLinkHandler2(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH,
+        DeliverySettleMode.SETTLE_ON_DELIVERY, dispatcher, new AmqpRetryOptions(), true, AmqpMetricsProvider.noop());
 
     private AutoCloseable mocksCloseable;
 
@@ -90,7 +101,7 @@ public class ReceiveLinkHandlerTest {
     public void onRemoteClose() {
         when(receiver.getLocalState()).thenReturn(EndpointState.CLOSED);
 
-        StepVerifier.create(handler.getDeliveredMessages())
+        StepVerifier.create(handler.getMessages())
             .then(() -> handler.onLinkRemoteClose(event))
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -113,7 +124,7 @@ public class ReceiveLinkHandlerTest {
         when(delivery.getLink()).thenReturn(receiver);
         when(delivery.isPartial()).thenReturn(true);
 
-        StepVerifier.create(handler.getDeliveredMessages())
+        StepVerifier.create(handler.getEndpointStates())
             .then(() -> handler.onDelivery(event))
             .expectNoEvent(Duration.ofSeconds(1))
             .thenCancel()
@@ -138,15 +149,15 @@ public class ReceiveLinkHandlerTest {
         when(delivery.getLink()).thenReturn(receiver);
         when(delivery.isPartial()).thenReturn(false);
         when(delivery.isSettled()).thenReturn(false);
+        when(delivery.getTag()).thenReturn(GUID_ENCODED_DELIVERY_TAG);
 
         when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
-        StepVerifier.create(handler.getDeliveredMessages())
-            .then(() -> handler.onDelivery(event))
-            .expectNext(delivery)
-            .then(() -> handler.onLinkRemoteClose(closeEvent))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(event)).assertNext(message -> {
+            assertInstanceOf(MessageWithDeliveryTag.class, message);
+            final MessageWithDeliveryTag messageWithDeliveryTag = (MessageWithDeliveryTag) message;
+            assertEquals(UUID_DECODED_FROM_ENCODED_GUID, messageWithDeliveryTag.getDeliveryTag());
+        }).then(() -> handler.onLinkRemoteClose(closeEvent)).expectComplete().verify(VERIFY_TIMEOUT);
 
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.CLOSED)
@@ -170,7 +181,7 @@ public class ReceiveLinkHandlerTest {
 
         when(receiver.getLocalState()).thenReturn(EndpointState.CLOSED);
 
-        StepVerifier.create(handler.getDeliveredMessages())
+        StepVerifier.create(handler.getMessages())
             .then(() -> handler.onDelivery(event))
             .expectNoEvent(Duration.ofSeconds(1))
             .thenCancel()
@@ -186,14 +197,16 @@ public class ReceiveLinkHandlerTest {
     @Test
     public void constructor() {
         // Act
+        assertThrows(NullPointerException.class, () -> new ReceiveLinkHandler2(null, HOSTNAME, LINK_NAME, ENTITY_PATH,
+            DeliverySettleMode.SETTLE_ON_DELIVERY, dispatcher, RETRY_OPTIONS, true, AmqpMetricsProvider.noop()));
         assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(null, HOSTNAME, LINK_NAME, ENTITY_PATH, null));
+            () -> new ReceiveLinkHandler2(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH,
+                DeliverySettleMode.SETTLE_ON_DELIVERY, dispatcher, RETRY_OPTIONS, true, AmqpMetricsProvider.noop()));
         assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH, null));
-        assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH, null));
-        assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, null, null));
+            () -> new ReceiveLinkHandler2(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH,
+                DeliverySettleMode.SETTLE_ON_DELIVERY, dispatcher, RETRY_OPTIONS, true, AmqpMetricsProvider.noop()));
+        assertThrows(NullPointerException.class, () -> new ReceiveLinkHandler2(CONNECTION_ID, HOSTNAME, LINK_NAME, null,
+            DeliverySettleMode.SETTLE_ON_DELIVERY, dispatcher, RETRY_OPTIONS, true, AmqpMetricsProvider.noop()));
     }
 
     /**
@@ -202,10 +215,7 @@ public class ReceiveLinkHandlerTest {
     @Test
     public void close() {
         // Act & Assert
-        StepVerifier.create(handler.getDeliveredMessages())
-            .then(() -> handler.close())
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(handler.getMessages()).then(() -> handler.close()).expectComplete().verify(VERIFY_TIMEOUT);
 
         // The only thing we should be doing here is emitting a close state. We are waiting for
         // the remote close event.

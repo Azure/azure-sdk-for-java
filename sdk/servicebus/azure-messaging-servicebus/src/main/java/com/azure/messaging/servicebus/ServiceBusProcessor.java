@@ -331,7 +331,7 @@ final class ServiceBusProcessor {
     /**
      * The {@link ServiceBusProcessor} kind.
      */
-    enum Kind {
+    private enum Kind {
         NON_SESSION, SESSION
     }
 }

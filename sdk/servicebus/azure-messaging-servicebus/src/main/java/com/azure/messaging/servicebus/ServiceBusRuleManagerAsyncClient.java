@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
@@ -14,6 +15,7 @@ import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -106,16 +108,16 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      *
      * @param entityPath The name of the topic and subscription.
      * @param entityType The type of the Service Bus resource.
-     * @param connectionCacheWrapper The AMQP connection to the Service Bus resource.
+     * @param connectionCache The AMQP connection to the Service Bus resource.
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusRuleManagerAsyncClient(String entityPath, MessagingEntityType entityType,
-        ConnectionCacheWrapper connectionCacheWrapper, Runnable onClientClose) {
+        ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache, Runnable onClientClose) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
-        Objects.requireNonNull(connectionCacheWrapper, "'connectionSupport' cannot be null.");
-        this.connectionProcessor = connectionCacheWrapper.getConnection();
-        this.fullyQualifiedNamespace = connectionCacheWrapper.getFullyQualifiedNamespace();
+        Objects.requireNonNull(connectionCache, "'connectionSupport' cannot be null.");
+        this.connectionProcessor = connectionCache.get().cast(ServiceBusAmqpConnection.class);
+        this.fullyQualifiedNamespace = connectionCache.getFullyQualifiedNamespace();
         this.onClientClose = onClientClose;
     }
 

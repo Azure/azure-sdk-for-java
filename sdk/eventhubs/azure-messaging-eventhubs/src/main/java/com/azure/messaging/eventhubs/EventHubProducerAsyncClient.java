@@ -9,12 +9,14 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.message.Message;
@@ -238,7 +240,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final ConnectionCacheWrapper connectionProcessor;
+    private final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache;
     private final AmqpRetryOptions retryOptions;
     private final EventHubsProducerInstrumentation instrumentation;
     private final MessageSerializer messageSerializer;
@@ -253,13 +255,13 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-        ConnectionCacheWrapper connectionProcessor, AmqpRetryOptions retryOptions, MessageSerializer messageSerializer,
-        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier,
-        EventHubsProducerInstrumentation instrumentation) {
+        ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache, AmqpRetryOptions retryOptions,
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
+        String identifier, EventHubsProducerInstrumentation instrumentation) {
         this.fullyQualifiedNamespace
             = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
+        this.connectionCache = Objects.requireNonNull(connectionCache, "'connectionCache' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -297,7 +299,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
         return instrumentation.instrumentMono(
-            connectionProcessor.getManagementNodeWithRetries().flatMap(EventHubManagementNode::getEventHubProperties),
+            getManagementNodeWithRetries().flatMap(EventHubManagementNode::getEventHubProperties),
             GET_EVENT_HUB_PROPERTIES, null);
     }
 
@@ -321,8 +323,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return instrumentation.instrumentMono(connectionProcessor.getManagementNodeWithRetries()
-            .flatMap(node -> node.getPartitionProperties(partitionId)), GET_PARTITION_PROPERTIES, partitionId);
+        return instrumentation.instrumentMono(
+            getManagementNodeWithRetries().flatMap(node -> node.getPartitionProperties(partitionId)),
+            GET_PARTITION_PROPERTIES, partitionId);
     }
 
     /**
@@ -630,7 +633,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String entityPath = getEntityPath(partitionId);
         final String linkName = entityPath;
 
-        return connectionProcessor.getConnection()
+        return connectionCache.get()
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions, identifier));
     }
 
@@ -647,7 +650,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (isSharedConnection) {
             onClientClose.run();
         } else {
-            connectionProcessor.dispose();
+            connectionCache.dispose();
         }
     }
 
@@ -658,6 +661,12 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public String getIdentifier() {
         return identifier;
+    }
+
+    private Mono<EventHubManagementNode> getManagementNodeWithRetries() {
+        final AmqpRetryOptions retryOptions = connectionCache.getRetryOptions();
+        return withRetry(connectionCache.get().flatMap(EventHubReactorAmqpConnection::getManagementNode), retryOptions,
+            "Time out creating management node.");
     }
 
     /**

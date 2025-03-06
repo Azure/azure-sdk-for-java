@@ -109,7 +109,6 @@ final class SynchronousPartitionReceiver {
         @Override
         public Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition,
             ReceiveOptions receiveOptions) {
-            assert client.isV2();
             return client.receiveFromPartition(partitionId, startingPosition, receiveOptions);
         }
     }

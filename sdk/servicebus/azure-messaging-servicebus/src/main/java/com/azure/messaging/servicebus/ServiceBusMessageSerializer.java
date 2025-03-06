@@ -18,7 +18,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DurationDescribedType;
 import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
-import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.Messages;
 import com.azure.messaging.servicebus.implementation.OffsetDateTimeDescribedType;
 import com.azure.messaging.servicebus.implementation.ServiceBusDescribedType;
@@ -521,13 +520,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
 
         if (amqpMessage instanceof MessageWithDeliveryTag) {
-            // In the V2-stack, a new amqp-core type, 'MessageWithDeliveryTag,' represents a tagged message.
-            // The equivalent SB-specific type 'MessageWithLockToken' will be deleted as part of V1-stack removal.
             brokeredMessage.setLockToken(((MessageWithDeliveryTag) amqpMessage).getDeliveryTag());
-        } else if (amqpMessage instanceof MessageWithLockToken) {
-            brokeredMessage.setLockToken(((MessageWithLockToken) amqpMessage).getLockToken());
         }
-
         return brokeredMessage;
     }
 
