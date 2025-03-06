@@ -15,17 +15,17 @@ public final class ConfigurationAudience extends ExpandableStringEnum<Configurat
     /**
      * The Azure App Configuration service audience for China Cloud.
      */
-    public static final ConfigurationAudience AZURE_CLOUD_CHINA = fromString("https://appconfig.azure.cn");
+    public static final ConfigurationAudience AZURE_CHINA = fromString("https://appconfig.azure.cn");
 
     /**
      * The Azure App Configuration service audience for US Government Cloud.
      */
-    public static final ConfigurationAudience AZURE_CLOUD_US_GOVERNMENT = fromString("https://appconfig.azure.us");
+    public static final ConfigurationAudience AZURE_US_GOVERNMENT = fromString("https://appconfig.azure.us");
 
     /**
      * The Azure App Configuration service audience for Public Cloud.
      */
-    public static final ConfigurationAudience AZURE_CLOUD_PUBLIC = fromString("https://appconfig.azure.com");
+    public static final ConfigurationAudience AZURE_PUBLIC_CLOUD = fromString("https://appconfig.azure.com");
 
     /**
      * Creates a new instance of ConfigurationAudience value.

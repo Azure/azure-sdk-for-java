@@ -364,12 +364,12 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
         ConfigurationClientBuilder builder
             = new ConfigurationClientBuilder().endpoint("https://example1.azconfig.azure.com")
                 .credential(new DefaultAzureCredentialBuilder().build())
-                .audience(ConfigurationAudience.AZURE_CLOUD_CHINA);
+                .audience(ConfigurationAudience.AZURE_CHINA);
         builder.buildClient();
         Method method = ConfigurationClientBuilder.class.getDeclaredMethod("getDefaultScope", String.class);
         method.setAccessible(true);
 
         String actualScope = (String) method.invoke(builder, fakeEndpoint);
-        assertEquals(ConfigurationAudience.AZURE_CLOUD_CHINA + "/.default", actualScope);
+        assertEquals(ConfigurationAudience.AZURE_CHINA + "/.default", actualScope);
     }
 }
