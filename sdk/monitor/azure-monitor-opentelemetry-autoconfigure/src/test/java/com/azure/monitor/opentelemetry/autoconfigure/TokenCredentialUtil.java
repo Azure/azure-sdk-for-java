@@ -9,8 +9,9 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 class TokenCredentialUtil {
 
@@ -43,11 +44,14 @@ class TokenCredentialUtil {
             return null;
         }
 
-        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+        TokenCredential cred = new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
             .clientId(clientId)
             .tenantId(tenantId)
             .serviceConnectionId(serviceConnectionId)
             .build();
+
+        return request -> Mono.defer(() -> cred.getToken(request))
+            .subscribeOn(Schedulers.boundedElastic());
     }
 
     private static String getPropertyValue(String propertyName) {
