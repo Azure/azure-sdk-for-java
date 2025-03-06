@@ -5,6 +5,7 @@ package com.azure.ai.openai.responses;
 
 import static com.azure.ai.openai.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
 
+import com.azure.ai.openai.responses.implementation.NonAzureResponsesClientImpl;
 import com.azure.ai.openai.responses.implementation.ResponsesClientImpl;
 import com.azure.ai.openai.responses.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.responses.models.CreateResponseRequestAccept;
@@ -41,6 +42,8 @@ public final class ResponsesClient {
     @Generated
     private final ResponsesClientImpl serviceClient;
 
+    private final NonAzureResponsesClientImpl nonAzureServiceClient;
+
     /**
      * Initializes an instance of ResponsesClient class.
      *
@@ -49,6 +52,17 @@ public final class ResponsesClient {
     @Generated
     ResponsesClient(ResponsesClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+        this.nonAzureServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of ResponsesClient class for NonAzure Implementation.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    ResponsesClient(NonAzureResponsesClientImpl serviceClient) {
+        this.serviceClient = null;
+        this.nonAzureServiceClient = serviceClient;
     }
 
     /**
@@ -146,8 +160,12 @@ public final class ResponsesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createResponseWithResponse(String accept, BinaryData requestBody,
         RequestOptions requestOptions) {
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.createResponseWithResponse(accept, requestBody, requestOptions);
+        if (nonAzureServiceClient != null) {
+            return nonAzureServiceClient.createResponseWithResponse(accept, requestBody, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
+            return this.serviceClient.createResponseWithResponse(accept, requestBody, requestOptions);
+        }
     }
 
     /**
@@ -217,8 +235,12 @@ public final class ResponsesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.getResponseWithResponse(responseId, requestOptions);
+        if (nonAzureServiceClient != null) {
+            return nonAzureServiceClient.getResponseWithResponse(responseId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
+            return this.serviceClient.getResponseWithResponse(responseId, requestOptions);
+        }
     }
 
     /**
@@ -257,8 +279,12 @@ public final class ResponsesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listInputItemsWithResponse(String responseId, int limit, String order, String after,
         String before, RequestOptions requestOptions) {
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.listInputItemsWithResponse(responseId, limit, order, after, before, requestOptions);
+        if (nonAzureServiceClient != null) {
+            return nonAzureServiceClient.listInputItemsWithResponse(responseId, limit, order, after, before, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
+            return this.serviceClient.listInputItemsWithResponse(responseId, limit, order, after, before, requestOptions);
+        }
     }
 
     /**
