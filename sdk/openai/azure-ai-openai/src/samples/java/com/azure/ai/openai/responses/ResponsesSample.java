@@ -27,7 +27,7 @@ public class ResponsesSample {
         // Create a request
         CreateResponsesRequest request = new CreateResponsesRequest(
             CreateResponsesRequestModel.fromString("computer-use-preview"),
-            Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!"))))
+            Arrays.asList(new ResponsesUserMessage(null, Arrays.asList(new ResponsesInputContentText("Hello, world!"))))
         ).setTruncation(CreateResponsesRequestTruncation.AUTO);
 
         RequestOptions requestOptions = new RequestOptions();

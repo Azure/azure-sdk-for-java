@@ -31,7 +31,7 @@ public class AzureResponsesSample {
         List<ResponsesInputContent> messages = Arrays.asList(new ResponsesInputContentText("Hello, world!"));
         CreateResponsesRequest request = new CreateResponsesRequest(
             CreateResponsesRequestModel.fromString("computer-use-preview"),
-            Arrays.asList(new ResponsesUserMessage(messages))
+            Arrays.asList(new ResponsesUserMessage(null, messages))
         );
 
         RequestOptions requestOptions = new RequestOptions();

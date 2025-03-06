@@ -13,10 +13,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The DeleteResponseResponse model.
+ * The ResponsesDeleted model.
  */
 @Immutable
-public final class DeleteResponseResponse implements JsonSerializable<DeleteResponseResponse> {
+public final class ResponsesDeleted implements JsonSerializable<ResponsesDeleted> {
     /*
      * The object property.
      */
@@ -36,12 +36,12 @@ public final class DeleteResponseResponse implements JsonSerializable<DeleteResp
     private final boolean deleted = true;
 
     /**
-     * Creates an instance of DeleteResponseResponse class.
+     * Creates an instance of ResponsesDeleted class.
      * 
      * @param id the id value to set.
      */
     @Generated
-    private DeleteResponseResponse(String id) {
+    private ResponsesDeleted(String id) {
         this.id = id;
     }
 
@@ -89,16 +89,16 @@ public final class DeleteResponseResponse implements JsonSerializable<DeleteResp
     }
 
     /**
-     * Reads an instance of DeleteResponseResponse from the JsonReader.
+     * Reads an instance of ResponsesDeleted from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DeleteResponseResponse if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of ResponsesDeleted if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DeleteResponseResponse.
+     * @throws IOException If an error occurs while reading the ResponsesDeleted.
      */
     @Generated
-    public static DeleteResponseResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesDeleted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -111,7 +111,7 @@ public final class DeleteResponseResponse implements JsonSerializable<DeleteResp
                     reader.skipChildren();
                 }
             }
-            return new DeleteResponseResponse(id);
+            return new ResponsesDeleted(id);
         });
     }
 }

@@ -248,6 +248,7 @@ public final class ResponsesClientImpl {
      *     input (Required): [
      *          (Required){
      *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     previous_response_id: String (Optional)
@@ -322,6 +323,7 @@ public final class ResponsesClientImpl {
      *     output (Required): [
      *          (Required){
      *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
@@ -389,6 +391,7 @@ public final class ResponsesClientImpl {
      *     input (Required): [
      *          (Required){
      *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     previous_response_id: String (Optional)
@@ -463,6 +466,7 @@ public final class ResponsesClientImpl {
      *     output (Required): [
      *          (Required){
      *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
@@ -557,6 +561,7 @@ public final class ResponsesClientImpl {
      *     output (Required): [
      *          (Required){
      *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
@@ -649,6 +654,7 @@ public final class ResponsesClientImpl {
      *     output (Required): [
      *          (Required){
      *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
@@ -713,6 +719,7 @@ public final class ResponsesClientImpl {
      *     data (Required): [
      *          (Required){
      *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     first_id: String (Required)
@@ -753,6 +760,7 @@ public final class ResponsesClientImpl {
      *     data (Required): [
      *          (Required){
      *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
+     *             id: String (Required)
      *         }
      *     ]
      *     first_id: String (Required)

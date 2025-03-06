@@ -27,7 +27,7 @@ public class OpenAIClientTest extends AzureOpenAIClientTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
-                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
+                new ResponsesUserMessage(null, Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
 
         ResponsesResponse response = client.createResponse(request);
 
@@ -54,7 +54,7 @@ public class OpenAIClientTest extends AzureOpenAIClientTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
-                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
+                new ResponsesUserMessage(null, Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
         request.setStream(true);
 
         IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request);
