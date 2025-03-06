@@ -3,7 +3,6 @@
 
 package com.azure.identity.v2;
 
-
 import com.azure.v2.core.credentials.TokenCredential;
 import io.clientcore.core.credentials.oauth.AccessToken;
 

@@ -79,7 +79,6 @@ public class MsalCommonOptions implements Cloneable {
         return executorService;
     }
 
-
     /**
      * Specifies the {@link TokenCachePersistenceOptions} to be used for token cache persistence.
      *
@@ -144,6 +143,17 @@ public class MsalCommonOptions implements Cloneable {
     }
 
     /**
+     * Internal helper method for clone.
+     *
+     * @param additionallyAllowedTenants the additionally allowed Tenants.
+     * @return An updated instance of this builder with the tenant id set as specified.
+     */
+    MsalCommonOptions setAdditionallyAllowedTenants(Set<String> additionallyAllowedTenants) {
+        this.additionallyAllowedTenants = additionallyAllowedTenants;
+        return this;
+    }
+
+    /**
      * Get the Additionally Allowed Tenants.
      * @return the List containing additionally allowed tenants.
      */
@@ -188,10 +198,9 @@ public class MsalCommonOptions implements Cloneable {
     }
 
     public MsalCommonOptions clone() {
-        MsalCommonOptions clone = new MsalCommonOptions(this.configuration)
-            .setExecutorService(this.executorService)
+        MsalCommonOptions clone = new MsalCommonOptions(this.configuration).setExecutorService(this.executorService)
             .setAuthorityHost(this.authorityHost)
-            .setAdditionallyAllowedTenants(this.additionallyAllowedTenants.stream().toList())
+            .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
             .setTokenCacheOptions(this.tokenCachePersistenceOptions);
         return clone;
     }

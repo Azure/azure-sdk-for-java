@@ -24,7 +24,8 @@ import java.util.concurrent.ExecutorService;
  *
  * @param <T> the type of the credential builder
  */
-public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBuilderBase<T>> extends CredentialBuilderBase<T> implements HttpTrait<T> {
+public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBuilderBase<T>>
+    extends CredentialBuilderBase<T> implements HttpTrait<T> {
     private static final ClientLogger LOGGER = new ClientLogger(EntraIdCredentialBuilderBase.class);
 
     /**
@@ -73,7 +74,6 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
      * @return An updated instance of this builder with instance discovery disabled.
      */
     @SuppressWarnings("unchecked")
-
     public T disableInstanceDiscovery() {
         this.getMsalCommonOptions().disableInstanceDiscovery();
         return (T) this;
@@ -92,36 +92,42 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return An updated instance of this builder with the http pipeline set as specified.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public T httpPipeline(HttpPipeline pipeline) {
         getHttpPipelineOptions().setHttpPipeline(pipeline);
         return (T) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
         getHttpPipelineOptions().addHttpPipelinePolicy(pipelinePolicy);
         return (T) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T httpRetryOptions(HttpRetryOptions retryOptions) {
         getHttpPipelineOptions().setHttpRetryOptions(retryOptions);
         return (T) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T httpInstrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
         getHttpPipelineOptions().setHttpInstrumentationOptions(instrumentationOptions);
         return (T) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T httpRedirectOptions(HttpRedirectOptions redirectOptions) {
         getHttpPipelineOptions().setHttpRedirectOptions(redirectOptions);
         return (T) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T httpClient(HttpClient client) {
         getHttpPipelineOptions().setHttpClient(client);

@@ -22,7 +22,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
-
 public class ClientSecretCredentialTest {
 
     private static final String TENANT_ID = "contoso.com";
@@ -38,12 +37,10 @@ public class ClientSecretCredentialTest {
         TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
-
         // mock
         try (MockedConstruction<ConfidentialClient> identityClientMock
             = mockConstruction(ConfidentialClient.class, (identitySyncClient, context) -> {
-                when(identitySyncClient.authenticateWithCache(any()))
-                    .thenThrow(new IllegalStateException("Test"));
+                when(identitySyncClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
                 when(identitySyncClient.authenticate(request1))
                     .thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
                 when(identitySyncClient.authenticate(request2))
@@ -82,8 +79,7 @@ public class ClientSecretCredentialTest {
         // mock
         try (MockedConstruction<ConfidentialClient> identityClientMock
             = mockConstruction(ConfidentialClient.class, (identitySyncClient, context) -> {
-                when(identitySyncClient.authenticateWithCache(any()))
-                    .thenThrow(new IllegalStateException("Test"));
+                when(identitySyncClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
                 when(identitySyncClient.authenticate(request1)).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                     if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
@@ -131,8 +127,7 @@ public class ClientSecretCredentialTest {
 
         try (MockedConstruction<ConfidentialClient> identityClientMock
             = mockConstruction(ConfidentialClient.class, (identitySyncClient, context) -> {
-                when(identitySyncClient.authenticateWithCache(any()))
-                    .thenThrow(new IllegalStateException("Test"));
+                when(identitySyncClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
                 when(identitySyncClient.authenticate(request))
                     .thenThrow(new MsalServiceException("bad secret", "BadSecret"));
             })) {
@@ -163,8 +158,7 @@ public class ClientSecretCredentialTest {
         try (MockedConstruction<ConfidentialClient> identityClientMock
             = mockConstruction(ConfidentialClient.class, (identityClient, context) -> {
                 when(identityClient.authenticateWithCache(any())).thenReturn(null);
-                when(identityClient.authenticate(request))
-                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+                when(identityClient.authenticate(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
             })) {
             // test
             try {

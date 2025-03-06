@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.identity.v2;
 
-
 /**
  * Represents the Persistence Token Cache options used to setup the persistent access token cache.
  * It allows users to enable the persistent token cache and optionally configure its name. The

@@ -3,7 +3,6 @@
 
 package com.azure.identity.v2.implementation.util;
 
-
 import com.azure.identity.v2.implementation.models.ManagedIdentityClientOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
@@ -75,7 +74,8 @@ public final class ValidationUtil {
         try {
             new URI(authHost);
         } catch (URISyntaxException e) {
-            throw logger.logThrowableAsError(new IllegalArgumentException("Must provide a valid URI for authority host.", e));
+            throw logger
+                .logThrowableAsError(new IllegalArgumentException("Must provide a valid URI for authority host.", e));
         }
         if (!authHost.startsWith("https")) {
             throw logger.logThrowableAsError(new IllegalArgumentException("Authority host must use https scheme."));
@@ -107,7 +107,6 @@ public final class ValidationUtil {
     private static boolean isValidTenantCharacter(char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '.') || (c == '-');
     }
-
 
     public static void validateManagedIdentityIdParams(ManagedIdentityClientOptions miClientOptions,
         ClientLogger logger) {

@@ -8,11 +8,11 @@ import com.azure.identity.v2.implementation.models.ManagedIdentityClientOptions;
 import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.azure.v2.core.utils.CoreUtils;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.CoreUtils;
 
 /**
  * <p><a href="https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/">Azure
@@ -101,7 +101,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 throw LoggingUtil.logCredentialUnavailableException(LOGGER,
                     new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
                         + "User-assigned managed identity is not supported in " + managedIdentitySourceType
-                        + ". To use system-assigned managed identity, remove the configured client ID on " + "the ManagedIdentityCredentialBuilder."));
+                        + ". To use system-assigned managed identity, remove the configured client ID on "
+                        + "the ManagedIdentityCredentialBuilder."));
             }
         }
 

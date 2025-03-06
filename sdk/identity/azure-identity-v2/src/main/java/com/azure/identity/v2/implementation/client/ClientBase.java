@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public abstract class ClientBase {
 
     private static final String SDK_NAME = "name";
@@ -37,8 +36,8 @@ public abstract class ClientBase {
      */
     public ClientBase(ClientOptionsBase options) {
         this.optionsBase = options;
-        this.tenantId = getMsalOptions().getTenantId() == null ? IdentityUtil.DEFAULT_TENANT
-            : getMsalOptions().getTenantId();
+        this.tenantId
+            = getMsalOptions().getTenantId() == null ? IdentityUtil.DEFAULT_TENANT : getMsalOptions().getTenantId();
         this.clientId = getMsalOptions().getClientId();
     }
 

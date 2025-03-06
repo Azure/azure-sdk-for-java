@@ -63,8 +63,7 @@ public class PublicClientOptions extends ClientOptionsBase {
     }
 
     public PublicClientOptions clone() {
-        PublicClientOptions clone
-            = (PublicClientOptions) new PublicClientOptions()
+        PublicClientOptions clone = (PublicClientOptions) new PublicClientOptions()
             .setBrowserCustomizationOptions(browserCustomizationOptions)
             .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
             .setMsalCommonOptions(this.getMsalCommonOptions().clone());

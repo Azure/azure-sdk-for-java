@@ -5,7 +5,6 @@ package com.azure.identity.v2.implementation.models;
 
 import io.clientcore.core.utils.configuration.Configuration;
 
-
 /**
  * Represents abstract base for Client Options used in Managed Identity OAuth Flow .
  */
@@ -22,7 +21,6 @@ public abstract class ClientOptionsBase implements Cloneable {
         configuration = Configuration.getGlobalConfiguration();
     }
 
-
     /**
      * Gets the configured configuration store.
      *
@@ -31,7 +29,6 @@ public abstract class ClientOptionsBase implements Cloneable {
     public Configuration getConfiguration() {
         return this.configuration;
     }
-
 
     /**
      * Sets the configuration store.

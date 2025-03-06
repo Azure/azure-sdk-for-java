@@ -10,10 +10,16 @@ import com.azure.identity.v2.implementation.models.MsalToken;
 import com.azure.identity.v2.implementation.models.PublicClientOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.azure.v2.core.utils.CoreUtils;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.SilentParameters;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.SystemBrowserOptions;
+import com.microsoft.aad.msal4j.Prompt;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.SharedExecutorService;
 
 import java.net.MalformedURLException;
@@ -49,16 +55,11 @@ public class PublicClient extends ClientBase {
 
         this.clientAccessor = new SynchronousAccessor<>(() -> this.getClient(false));
 
-        this.clientAccessorWithCae
-            = new SynchronousAccessor<>(() -> this.getClient(true));
+        this.clientAccessorWithCae = new SynchronousAccessor<>(() -> this.getClient(true));
     }
 
-
-    private SynchronousAccessor<PublicClientApplication>
-    getClientInstance(TokenRequestContext request) {
-        return request.isCaeEnabled()
-            ? clientAccessorWithCae
-            : clientAccessor;
+    private SynchronousAccessor<PublicClientApplication> getClientInstance(TokenRequestContext request) {
+        return request.isCaeEnabled() ? clientAccessorWithCae : clientAccessor;
     }
 
     /**
@@ -79,7 +80,7 @@ public class PublicClient extends ClientBase {
     }
 
     private MsalToken acquireTokenFromPublicClientSilently(TokenRequestContext request, PublicClientApplication pc,
-                                                           IAccount account, boolean forceRefresh) {
+        IAccount account, boolean forceRefresh) {
         SilentParameters.SilentParametersBuilder parametersBuilder
             = SilentParameters.builder(new HashSet<>(request.getScopes()));
 
@@ -118,18 +119,18 @@ public class PublicClient extends ClientBase {
                 "A non-null value for client ID must be provided for user authentication."));
         }
         String authorityUrl
-            = TRAILING_FORWARD_SLASHES.matcher(options.getMsalCommonOptions().getAuthorityHost())
-            .replaceAll("") + "/" + tenantId;
+            = TRAILING_FORWARD_SLASHES.matcher(options.getMsalCommonOptions().getAuthorityHost()).replaceAll("") + "/"
+                + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder
-                .authority(authorityUrl)
+            builder = builder.authority(authorityUrl)
                 .instanceDiscovery(options.getMsalCommonOptions().isInstanceDiscoveryEnabled());
 
             if (!options.getMsalCommonOptions().isInstanceDiscoveryEnabled()) {
-                LOGGER.atLevel(LogLevel.VERBOSE).log("Instance discovery and authority validation is disabled. In this"
-                    + " state, the library will not fetch metadata to validate the specified authority host. As a"
-                    + " result, it is crucial to ensure that the configured authority host is valid and trustworthy.");
+                LOGGER.atLevel(LogLevel.VERBOSE)
+                    .log("Instance discovery and authority validation is disabled. In this"
+                        + " state, the library will not fetch metadata to validate the specified authority host. As a"
+                        + " result, it is crucial to ensure that the configured authority host is valid and trustworthy.");
             }
         } catch (MalformedURLException e) {
             throw LOGGER.logThrowableAsWarning(new IllegalStateException(e));
@@ -137,7 +138,6 @@ public class PublicClient extends ClientBase {
 
         initializeHttpPipelineAdapter();
         builder.httpClient(httpPipelineAdapter);
-
 
         if (options.getMsalCommonOptions().getExecutorService() != null) {
             builder.executorService(options.getMsalCommonOptions().getExecutorService());
@@ -151,7 +151,8 @@ public class PublicClient extends ClientBase {
             builder.clientCapabilities(set);
         }
 
-        TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getMsalCommonOptions().getTokenCacheOptions();
+        TokenCachePersistenceOptions tokenCachePersistenceOptions
+            = options.getMsalCommonOptions().getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
             try {
@@ -160,8 +161,8 @@ public class PublicClient extends ClientBase {
                     .setName(tokenCachePersistenceOptions.getName());
                 builder.setTokenCacheAccessAspect(tokenCache);
             } catch (Throwable t) {
-                throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(
-                    "Shared token cache is unavailable in this environment.", t));
+                throw LOGGER.logThrowableAsError(
+                    new CredentialAuthenticationException("Shared token cache is unavailable in this environment.", t));
             }
         }
         PublicClientApplication publicClientApplication = builder.build();
@@ -184,7 +185,7 @@ public class PublicClient extends ClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public MsalToken authenticateWithBrowserInteraction(TokenRequestContext request, Integer port, String redirectUrl,
-                                                        String loginHint) {
+        String loginHint) {
         URI redirectUri;
         String redirect;
 
@@ -221,12 +222,12 @@ public class PublicClient extends ClientBase {
     }
 
     InteractiveRequestParameters.InteractiveRequestParametersBuilder
-    buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri) {
+        buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri) {
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder
             = InteractiveRequestParameters.builder(redirectUri)
-            .scopes(new HashSet<>(request.getScopes()))
-            .prompt(Prompt.SELECT_ACCOUNT)
-            .tenant(IdentityUtil.resolveTenantId(tenantId, request, options.getMsalCommonOptions()));
+                .scopes(new HashSet<>(request.getScopes()))
+                .prompt(Prompt.SELECT_ACCOUNT)
+                .tenant(IdentityUtil.resolveTenantId(tenantId, request, options.getMsalCommonOptions()));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());

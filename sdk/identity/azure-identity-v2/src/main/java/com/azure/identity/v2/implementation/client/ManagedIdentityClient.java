@@ -8,11 +8,11 @@ import com.azure.identity.v2.implementation.models.MsalToken;
 import com.azure.identity.v2.implementation.models.ManagedIdentityClientOptions;
 import com.azure.identity.v2.implementation.util.ScopeUtil;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.azure.v2.core.utils.CoreUtils;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentityId;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.SharedExecutorService;
 
 import java.time.Duration;
@@ -48,7 +48,6 @@ public class ManagedIdentityClient extends ClientBase {
         this.miClientApplicationAccessor = new SynchronousAccessor<>(() -> this.getManagedIdentityClient());
     }
 
-
     public AccessToken authenticate(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
 
@@ -77,9 +76,7 @@ public class ManagedIdentityClient extends ClientBase {
             managedIdentityId = ManagedIdentityId.systemAssigned();
         }
 
-        ManagedIdentityApplication.Builder miBuilder
-            = ManagedIdentityApplication.builder(managedIdentityId);
-
+        ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication.builder(managedIdentityId);
 
         initializeHttpPipelineAdapter();
         miBuilder.httpClient(httpPipelineAdapter);

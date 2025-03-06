@@ -95,9 +95,9 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
      * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
      */
     public ClientSecretCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", getClientOptions()
-                .getMsalCommonOptions().getClientId(), "tenantId", getClientOptions().getMsalCommonOptions().getTenantId(),
-            "clientSecret", confidentialClientOptions.getClientSecret());
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", getClientOptions().getMsalCommonOptions().getClientId(),
+            "tenantId", getClientOptions().getMsalCommonOptions().getTenantId(), "clientSecret",
+            confidentialClientOptions.getClientSecret());
 
         return new ClientSecretCredential(confidentialClientOptions);
     }

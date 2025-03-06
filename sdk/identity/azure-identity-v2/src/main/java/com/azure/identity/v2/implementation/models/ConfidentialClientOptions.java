@@ -12,7 +12,9 @@ public class ConfidentialClientOptions extends ClientOptionsBase {
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
-    public ConfidentialClientOptions() { super(); }
+    public ConfidentialClientOptions() {
+        super();
+    }
 
     /**
      * Gets the configured client secret.
@@ -32,13 +34,11 @@ public class ConfidentialClientOptions extends ClientOptionsBase {
         return this;
     }
 
-
     public ConfidentialClientOptions clone() {
         ConfidentialClientOptions clone
-            = (ConfidentialClientOptions) new ConfidentialClientOptions()
-            .setClientSecret(clientSecret)
-            .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
-            .setMsalCommonOptions(this.getMsalCommonOptions().clone());
+            = (ConfidentialClientOptions) new ConfidentialClientOptions().setClientSecret(clientSecret)
+                .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
+                .setMsalCommonOptions(this.getMsalCommonOptions().clone());
         return clone;
     }
 }

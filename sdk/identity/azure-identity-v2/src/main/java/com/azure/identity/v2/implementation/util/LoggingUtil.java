@@ -5,9 +5,9 @@ package com.azure.identity.v2.implementation.util;
 
 import com.azure.identity.v2.CredentialUnavailableException;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.utils.CoreUtils;
 
 import java.util.function.Supplier;
 
@@ -21,8 +21,9 @@ public final class LoggingUtil {
      * @param context the context of the getToken() request
      */
     public static void logTokenSuccess(ClientLogger logger, TokenRequestContext context) {
-        logger.atLevel(LogLevel.VERBOSE).log(String.format("Azure Identity => getToken() result for scopes [%s]: SUCCESS",
-            CoreUtils.stringJoin(", ", context.getScopes())));
+        logger.atLevel(LogLevel.VERBOSE)
+            .log(String.format("Azure Identity => getToken() result for scopes [%s]: SUCCESS",
+                CoreUtils.stringJoin(", ", context.getScopes())));
     }
 
     /**
@@ -31,17 +32,17 @@ public final class LoggingUtil {
      * @param context the context of the getToken() request
      * @param error the error thrown during getToken()
      */
-    public static void logTokenError(ClientLogger logger, TokenRequestContext context,
-                                     Throwable error) {
-        logger.atLevel(LogLevel.ERROR).log(String.format("Azure Identity => ERROR in getToken() call for scopes [%s]: %s",
-            CoreUtils.stringJoin(", ", context.getScopes()), error == null ? "" : error.getMessage()));
+    public static void logTokenError(ClientLogger logger, TokenRequestContext context, Throwable error) {
+        logger.atLevel(LogLevel.ERROR)
+            .log(String.format("Azure Identity => ERROR in getToken() call for scopes [%s]: %s",
+                CoreUtils.stringJoin(", ", context.getScopes()), error == null ? "" : error.getMessage()));
     }
-
 
     private LoggingUtil() {
     }
 
-    public static CredentialUnavailableException logCredentialUnavailableException(ClientLogger logger, CredentialUnavailableException exception) {
+    public static CredentialUnavailableException logCredentialUnavailableException(ClientLogger logger,
+        CredentialUnavailableException exception) {
         logger.logThrowableAsError(exception);
         return exception;
     }

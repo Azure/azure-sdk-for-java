@@ -10,7 +10,6 @@ import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.configuration.Configuration;
 
-
 /**
  * The base class for all the credential builders.
  * @param <T> the type of the credential builder
@@ -18,8 +17,8 @@ import io.clientcore.core.utils.configuration.Configuration;
 public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> {
     private static final ClientLogger LOGGER = new ClientLogger(CredentialBuilderBase.class);
 
-    CredentialBuilderBase() { }
-
+    CredentialBuilderBase() {
+    }
 
     /**
      * Sets the configuration store that is used during construction of the credential.

@@ -3,7 +3,6 @@
 
 package com.azure.identity.v2;
 
-
 import com.azure.identity.v2.implementation.client.PublicClient;
 import com.azure.identity.v2.implementation.models.MsalAuthenticationAccount;
 import com.azure.identity.v2.implementation.models.MsalToken;
@@ -57,13 +56,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
  * parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.interactivebrowsercredential.construct -->
- * <pre>
- * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;.redirectUrl&#40;
- *     &quot;http:&#47;&#47;localhost:8765&quot;&#41;.build&#40;&#41;;
- * </pre>
- * <!-- end com.azure.identity.credential.interactivebrowsercredential.construct -->
- *
  * @see com.azure.identity
  * @see InteractiveBrowserCredentialBuilder
  */
@@ -91,8 +83,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * @param automaticAuthentication indicates whether automatic authentication should be attempted or not.
      * @param publicClientOptions the options for configuring the public client
      */
-    InteractiveBrowserCredential(Integer port, String redirectUrl,
-        boolean automaticAuthentication, String loginHint, PublicClientOptions publicClientOptions) {
+    InteractiveBrowserCredential(Integer port, String redirectUrl, boolean automaticAuthentication, String loginHint,
+        PublicClientOptions publicClientOptions) {
         this.port = port;
         this.redirectUrl = redirectUrl;
         this.publicClient = new PublicClient(publicClientOptions);
@@ -172,7 +164,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
             throw LoggingUtil.logCredentialUnavailableException(LOGGER, new CredentialUnavailableException(
-                    "Authenticating in this " + "environment requires specifying a TokenRequestContext."));
+                "Authenticating in this " + "environment requires specifying a TokenRequestContext."));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
@@ -180,8 +172,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
     private AccessToken updateCache(MsalToken msalToken) {
         cachedToken.set(new MsalAuthenticationAccount(new AuthenticationRecord(msalToken.getAuthenticationResult(),
             publicClientOptions.getMsalCommonOptions().getTenantId(),
-            publicClientOptions.getMsalCommonOptions().getClientId()),
-            msalToken.getAccount().getTenantProfiles()));
+            publicClientOptions.getMsalCommonOptions().getClientId()), msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
 

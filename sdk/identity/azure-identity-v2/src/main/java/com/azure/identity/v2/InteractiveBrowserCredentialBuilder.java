@@ -40,17 +40,11 @@ import java.util.List;
  * {@link InteractiveBrowserCredentialBuilder#redirectUrl(String)} can be optionally specified. Once this credential is
  * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
  * parameter.</p>
- *
- * <!-- src_embed com.azure.identity.credential.interactivebrowsercredential.construct -->
- * <pre>
- * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;.redirectUrl&#40;
- *     &quot;http:&#47;&#47;localhost:8765&quot;&#41;.build&#40;&#41;;
- * </pre>
- * <!-- end com.azure.identity.credential.interactivebrowsercredential.construct -->
- *
+
  * @see InteractiveBrowserCredential
  */
-public class InteractiveBrowserCredentialBuilder extends EntraIdCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
+public class InteractiveBrowserCredentialBuilder
+    extends EntraIdCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(InteractiveBrowserCredentialBuilder.class);
     private Integer port;
     private boolean automaticAuthentication = true;
@@ -176,8 +170,9 @@ public class InteractiveBrowserCredentialBuilder extends EntraIdCredentialBuilde
      */
     @Override
     public InteractiveBrowserCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        publicClientOptions.getMsalCommonOptions().setAdditionallyAllowedTenants(
-            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        publicClientOptions.getMsalCommonOptions()
+            .setAdditionallyAllowedTenants(
+                IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -218,10 +213,10 @@ public class InteractiveBrowserCredentialBuilder extends EntraIdCredentialBuilde
 
         String clientId = this.publicClientOptions.getMsalCommonOptions().getClientId();
 
-        publicClientOptions.getMsalCommonOptions().
-            setClientId(clientId != null ? clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID);
-        return new InteractiveBrowserCredential(port, redirectUrl, automaticAuthentication,
-            loginHint, publicClientOptions);
+        publicClientOptions.getMsalCommonOptions()
+            .setClientId(clientId != null ? clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID);
+        return new InteractiveBrowserCredential(port, redirectUrl, automaticAuthentication, loginHint,
+            publicClientOptions);
     }
 
     @Override

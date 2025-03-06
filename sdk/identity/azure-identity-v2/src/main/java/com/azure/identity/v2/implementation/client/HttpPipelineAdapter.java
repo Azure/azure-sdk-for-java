@@ -5,7 +5,6 @@ package com.azure.identity.v2.implementation.client;
 
 import com.azure.identity.v2.implementation.models.HttpPipelineOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
-import com.azure.v2.core.utils.CoreUtils;
 import com.microsoft.aad.msal4j.IHttpClient;
 import com.microsoft.aad.msal4j.IHttpResponse;
 import com.microsoft.aad.msal4j.HttpRequest;
@@ -18,6 +17,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.CoreUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -58,7 +58,7 @@ class HttpPipelineAdapter implements IHttpClient {
 
         if (httpRequest.headers() != null) {
             HttpHeaders httpHeaders = new HttpHeaders(httpRequest.headers().size());
-            httpRequest.headers().forEach((k,v) -> httpHeaders.add(HttpHeaderName.fromString(k), v));
+            httpRequest.headers().forEach((k, v) -> httpHeaders.add(HttpHeaderName.fromString(k), v));
             request.setHeaders(httpHeaders);
         }
 
@@ -78,8 +78,9 @@ class HttpPipelineAdapter implements IHttpClient {
         if (!CoreUtils.isNullOrEmpty(body)) {
             httpResponse.body(body);
         }
-        httpResponse.addHeaders(
-            response.getHeaders().stream().collect(Collectors.toMap(header -> header.getName().toString(), HttpHeader::getValues)));
+        httpResponse.addHeaders(response.getHeaders()
+            .stream()
+            .collect(Collectors.toMap(header -> header.getName().toString(), HttpHeader::getValues)));
         return httpResponse;
     }
 
@@ -102,7 +103,8 @@ class HttpPipelineAdapter implements IHttpClient {
                         ? jsonMap.get(USER_PRINCIPAL_NAME_JSON_KEY)
                         : null;
 
-                    CLIENT_LOGGER.atLevel(LogLevel.INFORMATIONAL).log(MessageFormat.format(ACCOUNT_IDENTIFIER_LOG_MESSAGE,
+                    CLIENT_LOGGER.atLevel(LogLevel.INFORMATIONAL)
+                        .log(MessageFormat.format(ACCOUNT_IDENTIFIER_LOG_MESSAGE,
                             getAccountIdentifierMessage(APPLICATION_IDENTIFIER, appId),
                             getAccountIdentifierMessage(TENANT_ID, tenantId),
                             getAccountIdentifierMessage(USER_PRINCIPAL_NAME, userPrincipalName),

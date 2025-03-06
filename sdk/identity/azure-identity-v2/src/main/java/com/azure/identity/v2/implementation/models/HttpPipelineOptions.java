@@ -27,7 +27,8 @@ public class HttpPipelineOptions implements Cloneable {
     /**
      * Creates an instance of HttpOptions with default settings.
      */
-    public HttpPipelineOptions() { }
+    public HttpPipelineOptions() {
+    }
 
     /**
      * @return the HttpPipeline to send all requests
@@ -52,7 +53,6 @@ public class HttpPipelineOptions implements Cloneable {
         this.httpPipeline = httpPipeline;
         return this;
     }
-
 
     /**
      * Specifies the HttpClient to send use for requests.
@@ -142,8 +142,7 @@ public class HttpPipelineOptions implements Cloneable {
     }
 
     public HttpPipelineOptions clone() {
-        HttpPipelineOptions clone = new HttpPipelineOptions()
-            .setHttpClient(this.httpClient)
+        HttpPipelineOptions clone = new HttpPipelineOptions().setHttpClient(this.httpClient)
             .setHttpPipeline(this.httpPipeline)
             .setHttpInstrumentationOptions(this.httpInstrumentationOptions)
             .setHttpRetryOptions(this.httpRetryOptions)

@@ -13,7 +13,9 @@ public class ManagedIdentityClientOptions extends ClientOptionsBase {
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
-    public ManagedIdentityClientOptions() { super(); }
+    public ManagedIdentityClientOptions() {
+        super();
+    }
 
     /**
      * Gets the configured resource ID.
@@ -51,14 +53,12 @@ public class ManagedIdentityClientOptions extends ClientOptionsBase {
         return this;
     }
 
-
     public ManagedIdentityClientOptions clone() {
         ManagedIdentityClientOptions clone
-            = (ManagedIdentityClientOptions) new ManagedIdentityClientOptions()
-            .setResourceId(resourceId)
-            .setObjectId(objectId)
-            .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
-            .setMsalCommonOptions(this.getMsalCommonOptions().clone());
+            = (ManagedIdentityClientOptions) new ManagedIdentityClientOptions().setResourceId(resourceId)
+                .setObjectId(objectId)
+                .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
+                .setMsalCommonOptions(this.getMsalCommonOptions().clone());
         return clone;
     }
 }

@@ -49,8 +49,7 @@ public class ConfidentialClient extends ClientBase {
 
         this.confidentialClientApplicationAccessor = new SynchronousAccessor<>(() -> this.getClient(false));
 
-        this.confidentialClientApplicationAccessorWithCae
-            = new SynchronousAccessor<>(() -> this.getClient(true));
+        this.confidentialClientApplicationAccessorWithCae = new SynchronousAccessor<>(() -> this.getClient(true));
     }
 
     /**
@@ -63,7 +62,7 @@ public class ConfidentialClient extends ClientBase {
         ConfidentialClientApplication confidentialClient = getConfidentialClientInstance(request).getValue();
         ClientCredentialParameters.ClientCredentialParametersBuilder builder
             = ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-            .tenant(IdentityUtil.resolveTenantId(tenantId, request, getMsalOptions()));
+                .tenant(IdentityUtil.resolveTenantId(tenantId, request, getMsalOptions()));
         try {
             return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
@@ -72,7 +71,7 @@ public class ConfidentialClient extends ClientBase {
     }
 
     private SynchronousAccessor<ConfidentialClientApplication>
-    getConfidentialClientInstance(TokenRequestContext request) {
+        getConfidentialClientInstance(TokenRequestContext request) {
         return request.isCaeEnabled()
             ? confidentialClientApplicationAccessorWithCae
             : confidentialClientApplicationAccessor;
@@ -89,7 +88,7 @@ public class ConfidentialClient extends ClientBase {
         ConfidentialClientApplication confidentialClientApplication = getConfidentialClientInstance(request).getValue();
         SilentParameters.SilentParametersBuilder parametersBuilder
             = SilentParameters.builder(new HashSet<>(request.getScopes()))
-            .tenant(IdentityUtil.resolveTenantId(tenantId, request, getMsalOptions()));
+                .tenant(IdentityUtil.resolveTenantId(tenantId, request, getMsalOptions()));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
@@ -140,8 +139,7 @@ public class ConfidentialClient extends ClientBase {
         ConfidentialClientApplication.Builder applicationBuilder
             = ConfidentialClientApplication.builder(clientId, credential);
         try {
-            applicationBuilder = applicationBuilder
-                .authority(authorityUrl)
+            applicationBuilder = applicationBuilder.authority(authorityUrl)
                 .instanceDiscovery(getMsalOptions().isInstanceDiscoveryEnabled());
 
             if (!getMsalOptions().isInstanceDiscoveryEnabled()) {
@@ -181,8 +179,8 @@ public class ConfidentialClient extends ClientBase {
                     .setName(tokenCachePersistenceOptions.getName());
                 applicationBuilder.setTokenCacheAccessAspect(tokenCache);
             } catch (Throwable t) {
-                throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(
-                    "Shared token cache is unavailable in this environment.", t));
+                throw LOGGER.logThrowableAsError(
+                    new CredentialAuthenticationException("Shared token cache is unavailable in this environment.", t));
             }
         }
 

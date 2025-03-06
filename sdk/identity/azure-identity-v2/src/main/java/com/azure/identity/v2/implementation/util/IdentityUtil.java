@@ -6,10 +6,10 @@ package com.azure.identity.v2.implementation.util;
 import com.azure.identity.v2.BrowserCustomizationOptions;
 import com.azure.identity.v2.implementation.models.MsalCommonOptions;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
+import io.clientcore.core.utils.CoreUtils;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -22,6 +22,7 @@ public final class IdentityUtil {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);
     public static final String ALL_TENANTS = "*";
     public static final String DEFAULT_TENANT = "organizations";
+
     private IdentityUtil() {
     }
 

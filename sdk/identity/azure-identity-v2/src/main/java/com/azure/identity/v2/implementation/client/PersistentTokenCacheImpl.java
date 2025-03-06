@@ -12,7 +12,6 @@ import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
