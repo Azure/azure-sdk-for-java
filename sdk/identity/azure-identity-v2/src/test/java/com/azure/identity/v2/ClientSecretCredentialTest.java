@@ -126,9 +126,9 @@ public class ClientSecretCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
         try (MockedConstruction<ConfidentialClient> identityClientMock
-            = mockConstruction(ConfidentialClient.class, (identitySyncClient, context) -> {
-                when(identitySyncClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
-                when(identitySyncClient.authenticate(request))
+            = mockConstruction(ConfidentialClient.class, (confidentialClient, context) -> {
+                when(confidentialClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
+                when(confidentialClient.authenticate(request))
                     .thenThrow(new MsalServiceException("bad secret", "BadSecret"));
             })) {
             // test
@@ -140,7 +140,8 @@ public class ClientSecretCredentialTest {
             try {
                 credential.getToken(request);
             } catch (Exception e) {
-                Assertions.assertTrue(e instanceof MsalServiceException && "bad secret".equals(e.getMessage()));
+                Assertions
+                    .assertTrue(e instanceof CredentialAuthenticationException && "bad secret".equals(e.getMessage()));
             }
             Assertions.assertNotNull(identityClientMock);
         }
