@@ -4,20 +4,16 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
-
 public class BatchErrorUnitTest {
 
     @Test
-    public void testFromException_withValidJson() throws IOException {
+    public void testFromExceptionWithValidJson() throws IOException {
         // Arrange
         String json = "{\"code\":\"InvalidRequest\",\"message\":{\"value\":\"Invalid request\"},\"values\":[]}";
         HttpResponse response = mock(HttpResponse.class);
@@ -36,9 +32,10 @@ public class BatchErrorUnitTest {
     }
 
     @Test
-    public void testFromException_withValidJson_multi_values() throws IOException {
+    public void testFromExceptionWithValidJsonMultiValues() throws IOException {
         // Arrange
-        String json = "{\"code\":\"InvalidRequest\",\"message\":{\"value\":\"Error message\"},\"values\":[{\"key\": \"key1\",\"value\":\"value1\"},{\"key\": \"key2\",\"value\":\"value2\"}]}";
+        String json
+            = "{\"code\":\"InvalidRequest\",\"message\":{\"value\":\"Error message\"},\"values\":[{\"key\": \"key1\",\"value\":\"value1\"},{\"key\": \"key2\",\"value\":\"value2\"}]}";
         HttpResponse response = mock(HttpResponse.class);
         when(response.getBodyAsString()).thenReturn(Mono.just(json));
         HttpResponseException exception = new HttpResponseException("Error", response);
@@ -59,7 +56,7 @@ public class BatchErrorUnitTest {
     }
 
     @Test
-    public void testFromException_withInvalidJson() {
+    public void testFromExceptionWithInvalidJson() {
         // Arrange
         String invalidJson = "Invalid JSON";
         HttpResponse response = mock(HttpResponse.class);
@@ -74,7 +71,7 @@ public class BatchErrorUnitTest {
     }
 
     @Test
-    public void testFromException_withNullResponse() {
+    public void testFromExceptionWithNullResponse() {
         // Arrange
         HttpResponse response = mock(HttpResponse.class);
         when(response.getBodyAsString()).thenReturn(Mono.empty());
