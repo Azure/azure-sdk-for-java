@@ -10,7 +10,6 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.ProgressReporter;
 
@@ -35,7 +34,6 @@ import java.util.function.Consumer;
  * <!-- src_embed io.clientcore.core.http.rest.requestoptions.instantiation -->
  * <pre>
  * RequestOptions options = new RequestOptions&#40;&#41;
- *     .setBody&#40;BinaryData.fromString&#40;&quot;&#123;&#92;&quot;name&#92;&quot;:&#92;&quot;Fluffy&#92;&quot;&#125;&quot;&#41;&#41;
  *     .addHeader&#40;new HttpHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.instantiation -->
@@ -246,22 +244,6 @@ public final class RequestOptions {
         checkLocked("Cannot add request callback.");
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(requestCallback);
-
-        return this;
-    }
-
-    /**
-     * Sets the body to send as part of the {@link HttpRequest}.
-     *
-     * @param requestBody the request body data
-     * @return The updated {@link RequestOptions} object.
-     * @throws NullPointerException If {@code requestBody} is {@code null}.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setBody(BinaryData requestBody) {
-        checkLocked("Cannot set body.");
-        Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
-        this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
 
         return this;
     }

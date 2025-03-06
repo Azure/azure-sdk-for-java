@@ -19,7 +19,6 @@ public class RequestOptionsJavaDocCodeSnippets {
     public RequestOptions createInstance() {
         // BEGIN: io.clientcore.core.http.rest.requestoptions.instantiation
         RequestOptions options = new RequestOptions()
-            .setBody(BinaryData.fromString("{\"name\":\"Fluffy\"}"))
             .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"));
         // END: io.clientcore.core.http.rest.requestoptions.instantiation
         return options;
