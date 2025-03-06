@@ -9,13 +9,11 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RequestOptionsTests {
@@ -45,22 +43,6 @@ public class RequestOptionsTests {
         HttpHeaders headers = request.getHeaders();
         assertEquals("bar", headers.getValue(X_MS_FOO));
         assertEquals("application/json", headers.getValue(HttpHeaderName.CONTENT_TYPE));
-    }
-
-    @Test
-    public void setBody() {
-        final HttpRequest request
-            = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
-
-        String expected = "{\"id\":\"123\"}";
-
-        BinaryData requestBody = BinaryData.fromString(expected);
-        RequestOptions options = new RequestOptions().setBody(requestBody);
-        options.getRequestCallback().accept(request);
-        BinaryData actual = request.getBody();
-
-        assertSame(requestBody, actual);
-        assertEquals(expected, actual.toString());
     }
 
     @Test
