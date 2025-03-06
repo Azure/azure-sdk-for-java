@@ -244,7 +244,6 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
 
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
 
-    # TODO(xiaofei) support changelog, etc
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     spec_root = os.path.abspath(config["specFolder"])
@@ -272,6 +271,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         # compile
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
+            logging.info("[Changelog] Start breaking change detection for SDK automation.")
             breaking, changelog, breaking_change_items = compare_with_maven_package(
                 sdk_root,
                 GROUP_ID,
@@ -279,7 +279,20 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 get_latest_ga_version(GROUP_ID, module, stable_version),
                 current_version,
                 module,
+                False
             )
+            logging.info("[Changelog] Complete breaking change detection for SDK automation.")
+            logging.info("[Changelog] Start generating changelog.")
+            compare_with_maven_package(
+                sdk_root,
+                GROUP_ID,
+                service,
+                get_latest_release_version(stable_version, current_version),
+                current_version,
+                module
+            )
+            update_changelog_version(sdk_root, output_folder, current_version)
+            logging.info("[Changelog] Complete generating changelog.")
 
     # output
     if sdk_folder and module and service:
