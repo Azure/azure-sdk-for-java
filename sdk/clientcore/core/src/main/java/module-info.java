@@ -34,7 +34,6 @@ module io.clientcore.core {
     exports io.clientcore.core.traits;
     exports io.clientcore.core.utils;
     exports io.clientcore.core.utils.configuration;
-    exports io.clientcore.core.implementation.http.client;
     exports io.clientcore.core.implementation.http;
 
     uses io.clientcore.core.http.client.HttpClientProvider;

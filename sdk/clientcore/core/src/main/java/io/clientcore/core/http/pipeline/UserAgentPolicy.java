@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -10,7 +12,7 @@ import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 
 /**
- * The {@link SetUserAgentPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
+ * The {@link UserAgentPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
  * used to add a "User-Agent" header to each {@code HttpRequest}.
  * <p>
  * If the {@code User-Agent} header is already present in the request, it will not be overwritten.
@@ -38,13 +40,14 @@ import io.clientcore.core.utils.configuration.Configuration;
  * @see Response
  * @see HttpHeaderName
  */
-public class SetUserAgentPolicy implements HttpPipelinePolicy {
+@Metadata(properties = MetadataProperties.IMMUTABLE)
+public class UserAgentPolicy implements HttpPipelinePolicy {
     private final String userAgent;
 
     /**
-     * Creates a {@link SetUserAgentPolicy} with a default user agent string.
+     * Creates a {@link UserAgentPolicy} with a default user agent string.
      */
-    public SetUserAgentPolicy() {
+    public UserAgentPolicy() {
         this(null);
     }
 
@@ -54,7 +57,7 @@ public class SetUserAgentPolicy implements HttpPipelinePolicy {
      *
      * @param userAgent The user agent string to add to request headers.
      */
-    public SetUserAgentPolicy(String userAgent) {
+    public UserAgentPolicy(String userAgent) {
         if (userAgent != null) {
             this.userAgent = userAgent;
         } else {
@@ -69,7 +72,7 @@ public class SetUserAgentPolicy implements HttpPipelinePolicy {
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
      */
-    public SetUserAgentPolicy(String applicationId, String sdkName, String sdkVersion) {
+    public UserAgentPolicy(String applicationId, String sdkName, String sdkVersion) {
         this.userAgent = toUserAgentString(applicationId, sdkName, sdkVersion);
     }
 

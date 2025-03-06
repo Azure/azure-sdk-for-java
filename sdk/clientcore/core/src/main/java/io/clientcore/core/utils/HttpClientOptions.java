@@ -4,7 +4,7 @@
 package io.clientcore.core.utils;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.HttpClientProvider;
 import io.clientcore.core.http.models.ProxyOptions;
@@ -25,7 +25,7 @@ import static io.clientcore.core.implementation.utils.ImplUtils.getTimeout;
  * <p>
  * {@link HttpClient} implementations may not support all configuration options in this class.
  */
-@Metadata(conditions = TypeConditions.FLUENT)
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class HttpClientOptions extends ClientOptions {
     private static final Duration DEFAULT_CONNECTION_IDLE_TIMEOUT = Duration.ofSeconds(60);
 

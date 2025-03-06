@@ -3,6 +3,8 @@
 
 package io.clientcore.core.models.binarydata;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.serialization.ObjectSerializer;
 
@@ -17,6 +19,7 @@ import java.util.Objects;
 /**
  * A {@link BinaryData} implementation backed by a byte array.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class ByteArrayBinaryData extends BinaryData {
     private final byte[] content;
 

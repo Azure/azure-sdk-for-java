@@ -13,13 +13,13 @@ import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
 
 /**
- * Tests for the {@link io.clientcore.core.implementation.http.client.DefaultHttpClient} class.
+ * Tests for the {@link JdkHttpClient} class.
  * <p>
  * Now that the default HttpClient, and related code, are using multi-release JARs this must be an integration test as
  * the full JAR must be available to use the multi-release code.
  */
 @DisabledForJreRange(max = JRE.JAVA_11)
-public class DefaultHttpClientTestsIT extends HttpClientTests {
+public class JdkHttpClientTestsIT extends HttpClientTests {
     private static LocalTestServer server;
 
     @BeforeAll
@@ -37,7 +37,7 @@ public class DefaultHttpClientTestsIT extends HttpClientTests {
 
     @Override
     protected HttpClient getHttpClient() {
-        return new DefaultHttpClientProvider().getSharedInstance();
+        return GlobalJdkHttpClient.HTTP_CLIENT.getHttpClient();
     }
 
     @Override

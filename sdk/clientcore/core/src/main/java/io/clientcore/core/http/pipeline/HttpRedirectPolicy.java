@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
@@ -34,6 +36,7 @@ import static io.clientcore.core.implementation.instrumentation.LoggingEventName
  * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as a
  * {@link Response response}.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpRedirectPolicy.class);
     private final int maxAttempts;

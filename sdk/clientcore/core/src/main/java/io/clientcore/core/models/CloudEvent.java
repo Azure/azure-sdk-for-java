@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.core.models;
+package io.clientcore.core.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -116,7 +116,7 @@ import java.util.Set;
  * </pre>
  * <!-- end com.azure.core.model.CloudEvent.fromString -->
  */
-@Metadata(conditions = TypeConditions.FLUENT)
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class CloudEvent implements JsonSerializable<CloudEvent> {
     private static final String SPEC_VERSION = "1.0";
 

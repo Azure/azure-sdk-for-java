@@ -38,9 +38,8 @@ import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStre
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
-public final class DefaultHttpClient implements HttpClient {
-    private static final ClientLogger LOGGER = new ClientLogger(
-        io.clientcore.core.implementation.http.client.DefaultHttpClient.class);
+public final class JdkHttpClient implements HttpClient {
+    private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
 
     /**
      * Error message for when no {@link ServerSentEventListener} is attached to the {@link HttpRequest}.
@@ -56,7 +55,7 @@ public final class DefaultHttpClient implements HttpClient {
 
     final java.net.http.HttpClient jdkHttpClient;
 
-    public DefaultHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
+    public JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
         Duration responseTimeout, Duration readTimeout) {
         this.jdkHttpClient = httpClient;
 

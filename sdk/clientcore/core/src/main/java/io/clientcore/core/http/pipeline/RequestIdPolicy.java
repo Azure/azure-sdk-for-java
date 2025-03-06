@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
@@ -12,7 +14,7 @@ import io.clientcore.core.utils.CoreUtils;
 import java.util.Objects;
 
 /**
- * The {@link SetRequestIdPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
+ * The {@link RequestIdPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
  * used to add a unique identifier to each {@link HttpRequest} in the form of a UUID in the request header.
  * <p>
  * The request id is set in the request header specified by {@code requestIdHeaderName}. If the request already
@@ -23,8 +25,8 @@ import java.util.Objects;
  *
  * <p><strong>Code sample:</strong></p>
  *
- * <p>In this example, a {@link SetRequestIdPolicy} is created with a custom header name. Once added to the pipeline
- * requests will have their request id set in the 'request-id' header by the {@link SetRequestIdPolicy}.</p>
+ * <p>In this example, a {@link RequestIdPolicy} is created with a custom header name. Once added to the pipeline
+ * requests will have their request id set in the 'request-id' header by the {@link RequestIdPolicy}.</p>
  *
  * <!-- src_embed io.clientcore.core.http.pipeline.SetRequestIdPolicy.constructor -->
  * <pre>
@@ -39,16 +41,17 @@ import java.util.Objects;
  * @see Response
  * @see HttpHeaders
  */
-public class SetRequestIdPolicy implements HttpPipelinePolicy {
+@Metadata(properties = MetadataProperties.IMMUTABLE)
+public class RequestIdPolicy implements HttpPipelinePolicy {
     private final HttpHeaderName requestIdHeaderName;
 
     /**
-     * Creates {@link SetRequestIdPolicy} with provided {@code requestIdHeaderName}.
+     * Creates {@link RequestIdPolicy} with provided {@code requestIdHeaderName}.
      *
      * @param requestIdHeaderName to be used to set in {@link HttpRequest}.
      * @throws NullPointerException if {@code requestIdHeaderName} is null.
      */
-    public SetRequestIdPolicy(HttpHeaderName requestIdHeaderName) {
+    public RequestIdPolicy(HttpHeaderName requestIdHeaderName) {
         this.requestIdHeaderName = Objects.requireNonNull(requestIdHeaderName, "requestIdHeaderName can not be null.");
     }
 

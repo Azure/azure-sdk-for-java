@@ -48,14 +48,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for {@link DefaultHttpClient}.
+ * Tests for {@link JdkHttpClient}.
  * <p>
  * Now that the default HttpClient, and related code, are using multi-release JARs this must be an integration test as
  * the full JAR must be available to use the multi-release code.
  */
 @DisabledForJreRange(max = JRE.JAVA_11)
 @Execution(ExecutionMode.SAME_THREAD)
-public class DefaultHttpClientIT {
+public class JdkHttpClientIT {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();

@@ -15,14 +15,14 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SetRequestIdPolicyTests {
+public class RequestIdPolicyTests {
     private static final HttpHeaderName REQUEST_ID_HEADER = HttpHeaderName.fromString("request-id");
 
     @Test
     public void newRequestIdForEachCall() throws IOException {
         AtomicReference<String> previousRequestId = new AtomicReference<>();
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().addPolicy(new SetRequestIdPolicy(REQUEST_ID_HEADER)).httpClient(request -> {
+            = new HttpPipelineBuilder().addPolicy(new RequestIdPolicy(REQUEST_ID_HEADER)).httpClient(request -> {
                 String lastRequestId = previousRequestId.get();
                 if (lastRequestId != null) {
                     String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
@@ -55,7 +55,7 @@ public class SetRequestIdPolicyTests {
         AtomicReference<String> previousRequestId = new AtomicReference<>();
         HttpPipeline pipeline
             = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(new HttpRetryOptions(3, Duration.ofSeconds(0))))
-                .addPolicy(new SetRequestIdPolicy(REQUEST_ID_HEADER))
+                .addPolicy(new RequestIdPolicy(REQUEST_ID_HEADER))
                 .httpClient(request -> {
                     String lastRequestId = previousRequestId.get();
                     if (lastRequestId != null) {
