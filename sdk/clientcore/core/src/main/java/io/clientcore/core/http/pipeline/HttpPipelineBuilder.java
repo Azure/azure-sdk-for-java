@@ -107,7 +107,7 @@ public class HttpPipelineBuilder {
         if (httpClient != null) {
             client = httpClient;
         } else {
-            if (Configuration.getGlobalConfiguration().get("ENABLE_HTTP_CLIENT_SHARING", Boolean.TRUE)) {
+            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_HTTP_CLIENT_SHARING"))) {
                 client = HttpClient.getSharedInstance();
             } else {
                 client = HttpClient.getNewInstance();
