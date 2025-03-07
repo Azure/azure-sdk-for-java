@@ -81,9 +81,9 @@ public class PartitionLevelFailoverInfo implements Serializable {
                 sb.deleteCharAt(sb.length() - 1);
                 sb.append("]");
 
-                gen.writePOJOField("failedLocations", sb.toString());
+                gen.writePOJOField("failedRegions", sb.toString());
             } else {
-                gen.writePOJOField("failedLocations", "[]");
+                gen.writePOJOField("failedRegions", "[]");
             }
 
             if (value.current != null) {
