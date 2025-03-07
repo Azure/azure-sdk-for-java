@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.rest.UriEscapers;
@@ -104,12 +106,13 @@ import java.util.function.Consumer;
  *     .addRequestCallback&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
- *         .setHttpMethod&#40;HttpMethod.POST&#41;
+ *         .setMethod&#40;HttpMethod.POST&#41;
  *         .setBody&#40;requestBodyData&#41;
  *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class RequestOptions {
     // RequestOptions is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
@@ -285,22 +288,6 @@ public final class RequestOptions {
     public RequestOptions setContext(Context context) {
         checkLocked("Cannot set context.");
         this.context = context;
-
-        return this;
-    }
-
-    /**
-     * Adds a key-value pair to the request context associated with this request.
-     *
-     * @param key The key to add to the context.
-     * @param value The value to add to the context.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     * @see #setContext(Context)
-     */
-    public RequestOptions putContext(Object key, Object value) {
-        checkLocked("Cannot modify context.");
-        this.context = this.context.put(key, value);
 
         return this;
     }

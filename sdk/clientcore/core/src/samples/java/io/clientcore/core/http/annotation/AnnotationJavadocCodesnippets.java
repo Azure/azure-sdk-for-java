@@ -3,7 +3,15 @@
 
 package io.clientcore.core.http.annotation;
 
-import io.clientcore.core.annotation.ServiceInterface;
+import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.FormParam;
+import io.clientcore.core.http.annotations.HeaderParam;
+import io.clientcore.core.http.annotations.HostParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.annotations.PathParam;
+import io.clientcore.core.http.annotations.QueryParam;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.Response;
 

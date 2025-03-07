@@ -5,6 +5,7 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
 
 import java.io.File;
 import java.io.IOException;
@@ -127,8 +128,7 @@ public class ClientLoggerJavaDocCodeSnippets {
 
         Response<Void> response = getResponse();
         // BEGIN: io.clientcore.core.util.logging.clientlogger.atLevel
-        ClientLogger.LogLevel level = response.getStatusCode() == 200
-            ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
+        LogLevel level = response.getStatusCode() == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
         logger.atLevel(level)
             .addKeyValue("key", "value")
             .log("message");

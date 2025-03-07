@@ -10,7 +10,7 @@ import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;

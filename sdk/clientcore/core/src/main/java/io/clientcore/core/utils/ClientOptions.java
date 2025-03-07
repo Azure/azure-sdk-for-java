@@ -4,15 +4,15 @@
 package io.clientcore.core.utils;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
-import io.clientcore.core.http.pipeline.SetUserAgentPolicy;
+import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.http.pipeline.UserAgentPolicy;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 /**
  * General configuration options for clients.
  */
-@Metadata(conditions = TypeConditions.FLUENT)
+@Metadata(properties = MetadataProperties.FLUENT)
 public class ClientOptions {
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
 
@@ -31,7 +31,7 @@ public class ClientOptions {
     /**
      * Gets the application ID.
      * <p>
-     * The {@code applicationId} is used to configure {@link SetUserAgentPolicy} for telemetry/monitoring purposes.
+     * The {@code applicationId} is used to configure {@link UserAgentPolicy} for telemetry/monitoring purposes.
      *
      * @return The application ID.
      */
@@ -42,7 +42,7 @@ public class ClientOptions {
     /**
      * Sets the application ID.
      * <p>
-     * The {@code applicationId} is used to configure {@link SetUserAgentPolicy} for telemetry/monitoring purposes.
+     * The {@code applicationId} is used to configure {@link UserAgentPolicy} for telemetry/monitoring purposes.
      *
      * <p><strong>Code Samples</strong></p>
      *

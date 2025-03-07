@@ -4,6 +4,7 @@
 package io.clientcore.core.http.client;
 
 import io.clientcore.core.http.models.ProxyOptions;
+import io.clientcore.core.implementation.http.client.JdkHttpClient;
 import io.clientcore.core.implementation.http.client.JdkHttpClientProxySelector;
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -275,7 +276,7 @@ public class JdkHttpClientBuilder {
             }
         }
 
-        return new io.clientcore.core.implementation.http.client.DefaultHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
+        return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
             writeTimeout, responseTimeout, readTimeout);
     }
 

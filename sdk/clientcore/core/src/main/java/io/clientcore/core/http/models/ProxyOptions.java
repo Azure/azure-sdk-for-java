@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.BasicChallengeHandler;
 import io.clientcore.core.utils.ChallengeHandler;
@@ -28,6 +30,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 /**
  * This represents proxy configuration to be used in http clients.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
     private static final String INVALID_PROXY_URI = "URI is invalid and is being ignored.";

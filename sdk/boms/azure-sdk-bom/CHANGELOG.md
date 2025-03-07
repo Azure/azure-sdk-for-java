@@ -1,5 +1,11 @@
 # Release History
 
+## 1.2.32 (2025-03-06)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.2.31 (2025-01-28)
 
 ### Dependency Updates
@@ -33,7 +39,7 @@
 
 - Added new library entries to the BOM:
   - `azure-data-schemaregistry-jsonschema`
-  - `azure-health-deidentification`
+  - `azure-health-insights-radiologyinsights`
 
 - Updated Azure SDK dependency versions to the latest releases.
 
