@@ -1,14 +1,10 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.4 (2025-03-14)
 
 ### Bugs Fixed
 
-### Other Changes
+- #44517: Use ModelServiceVersion (api-version) of 2024-05-01-preview as default 
 
 ## 1.0.0-beta.3 (2025-02-20)
 
