@@ -127,11 +127,11 @@ public class SessionTokenTest {
     }
 
     @Test(groups = "unit", dataProvider = "isSessionTokenFalseProgressMergeDisabled")
-    public void invalidRegionsInSessionTokenTests(boolean isSessionTokenFalseProgressMergeDisabled) {
+    public void invalidRegionsInSessionTokenTests(boolean isSessionTokenFalseProgressMergeEnabled) {
 
         try {
 
-            System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED", isSessionTokenFalseProgressMergeDisabled ? "true" : "false");
+            System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED", isSessionTokenFalseProgressMergeEnabled ? "true" : "false");
 
             // same version but different number of regions
             String sessionToken1 = "1#100#1=20#2=5#3=30";

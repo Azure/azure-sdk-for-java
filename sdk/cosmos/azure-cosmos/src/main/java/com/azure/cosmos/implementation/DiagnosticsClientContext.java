@@ -63,7 +63,8 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientConfig));
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
-                generator.writeStringField("isPpafEnabled", Configs.isPerPartitionAutomaticFailoverEnabled() ? "true" : "false");
+                generator.writeStringField("isPpafEnabled", Configs.isPerPartitionAutomaticFailoverEnabled());
+                generator.writeStringField("isFalseProgSessionTokenMergeEnabled", Configs.isSessionTokenFalseProgressMergeEnabled() ? "true" : "false");
                 generator.writeStringField("excrgns", clientConfig.excludedRegionsRelatedConfig());
                 generator.writeObjectFieldStart("clientEndpoints");
                 for (Map.Entry<String, Integer> entry: clientConfig.clientMap.entrySet()) {

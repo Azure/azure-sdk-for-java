@@ -24,7 +24,6 @@ public class PartitionLevelFailoverInfo implements Serializable {
     private final Set<RegionalRoutingContext> failedRegionalRoutingContexts = ConcurrentHashMap.newKeySet();
 
     // The current URI corresponds to the regional endpoint to use as an override
-    // todo (abhmohanty): evaluate how to handle such an override for document reads
     private RegionalRoutingContext current;
     private final GlobalEndpointManager globalEndpointManager;
 

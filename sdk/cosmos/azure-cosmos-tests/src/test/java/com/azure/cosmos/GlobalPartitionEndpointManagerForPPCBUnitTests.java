@@ -43,9 +43,9 @@ import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientCon
 import static com.azure.cosmos.implementation.directconnectivity.ReflectionUtils.getClassBySimpleName;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
+public class GlobalPartitionEndpointManagerForPPCBUnitTests {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPPCBUnitTests.class);
     private final static Pair<URI, String> LocationEastUsEndpointToLocationPair = Pair.of(createUrl("https://contoso-east-us.documents.azure.com"), "eastus");
     private final static Pair<URI, String> LocationEastUs2EndpointToLocationPair = Pair.of(createUrl("https://contoso-east-us-2.documents.azure.com"), "eastus2");
     private final static Pair<URI, String> LocationCentralUsEndpointToLocationPair = Pair.of(createUrl("https://contoso-central-us.documents.azure.com"), "centralus");

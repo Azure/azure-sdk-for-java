@@ -83,7 +83,7 @@ import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
+public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
     private CosmosAsyncDatabase sharedDatabase;
     private CosmosAsyncContainer sharedSinglePartitionContainer;
@@ -149,7 +149,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
     };
 
     @Factory(dataProvider = "clientBuildersWithDirectSession")
-    public PerPartitionAutomaticFailoverTests(CosmosClientBuilder clientBuilder) {
+    public PerPartitionAutomaticFailoverE2ETests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
