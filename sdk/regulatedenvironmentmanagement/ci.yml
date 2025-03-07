@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/regulatedenvironmentmanagement/ci.yml
+      - sdk/regulatedenvironmentmanagement/azure-resourcemanager-regulatedenvironmentmanagement/
+    exclude:
+      - sdk/regulatedenvironmentmanagement/pom.xml
+      - sdk/regulatedenvironmentmanagement/azure-resourcemanager-regulatedenvironmentmanagement/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/regulatedenvironmentmanagement/ci.yml
+      - sdk/regulatedenvironmentmanagement/azure-resourcemanager-regulatedenvironmentmanagement/
+    exclude:
+      - sdk/regulatedenvironmentmanagement/pom.xml
+      - sdk/regulatedenvironmentmanagement/azure-resourcemanager-regulatedenvironmentmanagement/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerregulatedenvironmentmanagement
+    displayName: azure-resourcemanager-regulatedenvironmentmanagement
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: regulatedenvironmentmanagement
+    Artifacts:
+      - name: azure-resourcemanager-regulatedenvironmentmanagement
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerregulatedenvironmentmanagement
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerregulatedenvironmentmanagement }}
