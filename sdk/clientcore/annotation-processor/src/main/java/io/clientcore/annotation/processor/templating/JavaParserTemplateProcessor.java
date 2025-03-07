@@ -26,6 +26,7 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
+import io.clientcore.annotation.processor.utils.TypeConverter;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
@@ -39,6 +40,9 @@ import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.Writer;
@@ -315,7 +319,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 new ArrayInitializerExpr(
                     new NodeList<>(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
             .addMarkerAnnotation(Override.class)
-            .setType(method.getMethodReturnType());
+            .setType(TypeConverter.getAstType(method.getMethodReturnType()));
 
         for (HttpRequestContext.MethodParameter parameter : method.getParameters()) {
             internalMethod.addParameter(new com.github.javaparser.ast.body.Parameter(
@@ -421,26 +425,56 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.getStatements().get(index).setLineComment("\n Set the request body");
     }
 
-    private void finalizeHttpRequest(BlockStmt body, com.github.javaparser.ast.type.Type returnTypeName,
-        HttpRequestContext method) {
+    private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
         Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
 
         // Check if the return type is Response
-        if (returnTypeName instanceof ClassOrInterfaceType
-            && returnTypeName.asClassOrInterfaceType().getNameAsString().equals("Response")) {
+        if (TypeConverter.isResponseType(returnTypeName)) {
+            DeclaredType declaredType = (DeclaredType) returnTypeName;
+            TypeElement typeElement = (TypeElement) declaredType.asElement();
 
             // Extract the variable declaration
             if (statement.isExpressionStmt()) {
                 statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
                     variableDeclarationExpr.getVariables().forEach(variable -> {
-                        // Parse the full response type
-                        ClassOrInterfaceType responseType = returnTypeName.asClassOrInterfaceType();
+                        // Set the new type for the variable with generic type
+                        ClassOrInterfaceType responseType
+                            = new ClassOrInterfaceType(null, typeElement.getSimpleName().toString());
+                        NodeList<com.github.javaparser.ast.type.Type> typeArguments = new NodeList<>();
+                        for (TypeMirror typeArg : declaredType.getTypeArguments()) {
+                            if (typeArg instanceof DeclaredType) {
+                                DeclaredType declaredTypeArg = (DeclaredType) typeArg;
+                                TypeElement typeArgElement = (TypeElement) declaredTypeArg.asElement();
+                                ClassOrInterfaceType argumentType
+                                    = new ClassOrInterfaceType(null, typeArgElement.getSimpleName().toString());
 
-                        // Set the new type for the variable
+                                // Add import for the type argument element
+                                compilationUnit.addImport(typeArgElement.getQualifiedName().toString());
+
+                                // Handle nested type arguments
+                                if (!declaredTypeArg.getTypeArguments().isEmpty()) {
+                                    NodeList<com.github.javaparser.ast.type.Type> nestedTypeArguments
+                                        = new NodeList<>();
+                                    for (TypeMirror nestedTypeArg : declaredTypeArg.getTypeArguments()) {
+                                        TypeElement nestedTypeArgElement
+                                            = (TypeElement) ((DeclaredType) nestedTypeArg).asElement();
+                                        nestedTypeArguments.add(StaticJavaParser.parseClassOrInterfaceType(
+                                            nestedTypeArgElement.getSimpleName().toString()));
+                                    }
+                                    argumentType.setTypeArguments(
+                                        nestedTypeArguments.toArray(new com.github.javaparser.ast.type.Type[0]));
+                                }
+
+                                typeArguments.add(argumentType);
+                            } else {
+                                typeArguments.add(StaticJavaParser.parseType(typeArg.toString()));
+                            }
+                        }
+                        responseType
+                            .setTypeArguments(typeArguments.toArray(new com.github.javaparser.ast.type.Type[0]));
                         variable.setType(responseType);
-
                         // Ensure the initializer is correctly casted
                         variable.getInitializer().ifPresent(initializer -> {
                             CastExpr castExpression = new CastExpr(responseType, initializer);

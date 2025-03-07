@@ -3,8 +3,6 @@
 
 package io.clientcore.annotation.processor;
 
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.type.Type;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.Substitution;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -34,10 +32,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -202,75 +196,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     private void setReturnTypeForMethod(HttpRequestContext method, ExecutableElement requestMethod,
         TemplateInput templateInput) {
-        TypeMirror returnType = requestMethod.getReturnType();
-        TypeKind returnTypeKind = returnType.getKind();
-
-        // Handle primitive and void types explicitly
-        if (returnTypeKind.isPrimitive() || returnTypeKind == TypeKind.VOID) {
-            method.setMethodReturnType(StaticJavaParser.parseType(returnType.toString()));
-            return;
-        }
-
-        // Handle declared types (e.g., Response<T>, List<String>)
-        if (returnTypeKind == TypeKind.DECLARED) {
-            DeclaredType declaredType = (DeclaredType) returnType;
-            TypeElement typeElement = (TypeElement) declaredType.asElement();
-
-            if (typeElement.getQualifiedName().contentEquals("java.lang.Void")) {
-                method.setMethodReturnType(StaticJavaParser.parseType("Void"));
-                return;
-            }
-
-            // Add import for the base type
-            String fullTypeName = templateInput.addImport(typeElement.getQualifiedName().toString());
-
-            List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
-            if (!typeArguments.isEmpty()) {
-                List<Type> parsedArguments = typeArguments.stream()
-                    .map(typeArg -> StaticJavaParser.parseType(resolveTypeArgument(typeArg, templateInput)))
-                    .collect(Collectors.toList());
-
-                // Create a parameterized type using JavaParser's Type API
-                Type baseType = StaticJavaParser.parseType(fullTypeName);
-                method.setMethodReturnType(StaticJavaParser.parseType(baseType + "<"
-                    + parsedArguments.stream().map(Type::toString).collect(Collectors.joining(", ")) + ">"));
-            } else {
-                method.setMethodReturnType(StaticJavaParser.parseType(fullTypeName));
-            }
-            return;
-        }
-
-        // Handle array types
-        if (returnTypeKind == TypeKind.ARRAY) {
-            ArrayType arrayType = (ArrayType) returnType;
-            TypeMirror componentType = arrayType.getComponentType();
-            String componentTypeName = resolveTypeArgument(componentType, templateInput);
-            method.setMethodReturnType(StaticJavaParser.parseType(componentTypeName + "[]"));
-            return;
-        }
-
-        // Fallback to default parsing
-        method.setMethodReturnType(StaticJavaParser.parseType(returnType.toString()));
-    }
-
-    private String resolveTypeArgument(TypeMirror typeArg, TemplateInput templateInput) {
-        if (typeArg.getKind() == TypeKind.DECLARED) {
-            DeclaredType declaredTypeArg = (DeclaredType) typeArg;
-            TypeElement typeElementArg = (TypeElement) declaredTypeArg.asElement();
-            String genericType = templateInput.addImport(typeElementArg.getQualifiedName().toString());
-
-            if (!declaredTypeArg.getTypeArguments().isEmpty()) {
-                StringBuilder nestedGeneric = new StringBuilder(genericType + "<");
-                for (TypeMirror nestedTypeArg : declaredTypeArg.getTypeArguments()) {
-                    nestedGeneric.append(resolveTypeArgument(nestedTypeArg, templateInput)).append(", ");
-                }
-                nestedGeneric.setLength(nestedGeneric.length() - 2);
-                nestedGeneric.append(">");
-                return nestedGeneric.toString();
-            }
-            return genericType;
-        }
-        return typeArg.toString();
+        method.setMethodReturnType(requestMethod.getReturnType());
     }
 
     private static String getHost(TemplateInput templateInput, HttpRequestContext method, boolean isEncoded) {

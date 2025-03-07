@@ -4,14 +4,10 @@
 package io.clientcore.annotation.processor.utils;
 
 import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.CastExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
-import com.github.javaparser.ast.type.PrimitiveType;
-import com.github.javaparser.ast.type.Type;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
@@ -22,9 +18,16 @@ import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.SimpleTypeVisitor8;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.util.List;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -51,7 +54,7 @@ public final class ResponseBodyModeGeneration {
      * @param entityType the entity type of the method.
      * @param method The Http method request context
      */
-    public static void handleResponseBody(BlockStmt body, Type returnType, java.lang.reflect.Type entityType,
+    public static void handleResponseBody(BlockStmt body, TypeMirror returnType, java.lang.reflect.Type entityType,
         HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
         body.tryAddImportToParentCompilationUnit(HttpResponse.class);
@@ -84,38 +87,39 @@ public final class ResponseBodyModeGeneration {
             body.addStatement("Object result = response.getBody();");
         } else {
 
-            if (returnType instanceof ClassOrInterfaceType) {
-                ClassOrInterfaceType classType = (ClassOrInterfaceType) returnType;
-                body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+            if (returnType.getKind() == TypeKind.DECLARED) {
+                if (returnType instanceof DeclaredType) {
+                    DeclaredType declaredType = (DeclaredType) returnType;
+                    TypeElement typeElement = (TypeElement) declaredType.asElement();
+                    body.tryAddImportToParentCompilationUnit(CoreUtils.class);
 
-                // Ensure type arguments exist before accessing them
-                if (classType.getTypeArguments().isPresent()) {
-                    NodeList<Type> typeArguments = classType.getTypeArguments().get();
+                    // Ensure type arguments exist before accessing them
+                    if (!declaredType.getTypeArguments().isEmpty()) {
+                        TypeMirror firstGenericType = declaredType.getTypeArguments().get(0);
 
-                    if (!typeArguments.isEmpty()) {
-                        Type firstGenericType = typeArguments.get(0);
-
-                        if (firstGenericType instanceof ClassOrInterfaceType) {
-                            ClassOrInterfaceType genericClassType = (ClassOrInterfaceType) firstGenericType;
+                        if (firstGenericType.getKind() == TypeKind.DECLARED) {
+                            DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
+                            TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
 
                             // Check if it's specifically a List<T>
-                            if ("List".equals(genericClassType.getNameAsString())
-                                && genericClassType.getTypeArguments().isPresent()) {
-                                String innerType = genericClassType.getTypeArguments().get().get(0).toString(); // Extract Foo
-
-                                body.addStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
-                                    + genericClassType.getNameAsString() + ".class, " + innerType + ".class);");
+                            if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
+                                if (!genericDeclaredType.getTypeArguments().isEmpty()) {
+                                    TypeMirror innerType = genericDeclaredType.getTypeArguments().get(0);
+                                    body.addStatement(
+                                        "ParameterizedType returnType = CoreUtils.createParameterizedType("
+                                            + genericTypeElement.getSimpleName() + ".class, " + innerType.toString()
+                                            + ".class);");
+                                }
                             } else {
-                                String genericType = classType.getTypeArguments().get().get(0).toString(); // Extracts Foo
-                                body.addStatement(
-                                    "ParameterizedType returnType = " + "CoreUtils.createParameterizedType("
-                                        + classType.getNameAsString() + ".class, " + genericType + ".class);");
+                                String genericType = declaredType.getTypeArguments().get(0).toString();
+                                body.addStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
+                                    + typeElement.getSimpleName() + ".class, " + genericType + ".class);");
                             }
                         }
                     }
+                    body.addStatement(
+                        "Object result = decodeByteArray(response.getBody().toBytes(), serializer, returnType);");
                 }
-                body.addStatement(
-                    "Object result = decodeByteArray(response.getBody().toBytes(), serializer, returnType);");
             }
         }
         body.addStatement(StaticJavaParser.parseStatement("if (responseBodyMode == ResponseBodyMode.DESERIALIZE)"
@@ -130,16 +134,17 @@ public final class ResponseBodyModeGeneration {
      * @param returnType the return type of the method.
      * @param method whether request options are used.
      */
-    public static void generateResponseHandling(BlockStmt body, Type returnType, HttpRequestContext method) {
+    public static void generateResponseHandling(BlockStmt body, TypeMirror returnType, HttpRequestContext method) {
         java.lang.reflect.Type bodyType = null;
-        if (returnType.isVoidType()) {
+
+        if (returnType.getKind() == TypeKind.VOID) {
             closeResponse(body);
-        } else if (returnType.toString().equals("Void")) {
+        } else if (returnType.toString().equals("java.lang.Void")) {
             closeResponse(body);
             body.addStatement(new ReturnStmt("null"));
-        } else if (returnType.asString().contains("Response")) {
-            bodyType = getBodyType(returnType);
-            if (returnType.asString().contains("Void")) {
+        } else if (TypeConverter.isResponseType(returnType)) {
+            bodyType = TypeConverter.getEntityType(returnType);
+            if (returnType.toString().contains("Void")) {
                 closeResponse(body);
                 createResponseIfNecessary(body);
             } else {
@@ -149,43 +154,26 @@ public final class ResponseBodyModeGeneration {
                 createResponseIfNecessary(body);
             }
         } else {
-            if (returnType.isPrimitiveType()) {
-                if (returnType instanceof PrimitiveType) {
-                    bodyType = TypeConverter.getPrimitiveClass((PrimitiveType) returnType);
-                }
-            } else if (returnType.isArrayType()) {
+            if (returnType.getKind().isPrimitive()) {
+                bodyType = returnType.accept(new SimpleTypeVisitor8<java.lang.reflect.Type, Void>() {
+                    @Override
+                    public java.lang.reflect.Type visitPrimitive(PrimitiveType t, Void p) {
+                        return TypeConverter.getPrimitiveClass(t);
+                    }
+                }, null);
+            } else if (returnType.getKind() == TypeKind.ARRAY) {
                 bodyType = TypeConverter.getEntityType(returnType);
             }
             handleRestResponseReturnType(body, returnType, bodyType, method);
-            if (!(returnType.isPrimitiveType()) && !returnType.isArrayType()) {
+            if (!returnType.getKind().isPrimitive() && returnType.getKind() != TypeKind.ARRAY) {
                 closeResponse(body);
-                CastExpr castExpr = new CastExpr(returnType, new NameExpr("result"));
+                CastExpr castExpr
+                    = new CastExpr(StaticJavaParser.parseType(returnType.toString()), new NameExpr("result"));
 
                 // Add the cast statement to the method body
                 body.addStatement(new ReturnStmt(castExpr));
             }
         }
-    }
-
-    private static java.lang.reflect.Type getBodyType(Type returnType) {
-        if (returnType instanceof ClassOrInterfaceType) {
-            ClassOrInterfaceType classType = (ClassOrInterfaceType) returnType;
-
-            // Ensure type arguments exist before accessing them
-            if (classType.getTypeArguments().isPresent()) {
-                NodeList<Type> typeArguments = classType.getTypeArguments().get();
-
-                if (!typeArguments.isEmpty()) {
-                    Type innerType = typeArguments.get(0); // First generic type (e.g., List<Foo> or Foo<String>)
-                    return TypeUtil.createParameterizedType(innerType.toString().getClass());
-                } else {
-                    // No generic type on this RestResponse subtype, so we go up to parent
-                    return TypeConverter.toReflectType(returnType);
-                }
-
-            }
-        }
-        return Object.class; // Fallback
     }
 
     private static void closeResponse(BlockStmt body) {
@@ -213,7 +201,7 @@ public final class ResponseBodyModeGeneration {
      * @param entityType the entity type of the method.
      * @param method the HttpMethod context
      */
-    public static void handleRestResponseReturnType(BlockStmt body, Type returnTypeName,
+    public static void handleRestResponseReturnType(BlockStmt body, TypeMirror returnTypeName,
         java.lang.reflect.Type entityType, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(BinaryData.class);
         if (method.getHttpMethod() == HttpMethod.HEAD

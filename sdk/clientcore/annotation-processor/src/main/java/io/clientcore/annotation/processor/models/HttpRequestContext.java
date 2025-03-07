@@ -3,7 +3,6 @@
 
 package io.clientcore.annotation.processor.models;
 
-import com.github.javaparser.ast.type.Type;
 import io.clientcore.core.http.models.HttpMethod;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +19,7 @@ public final class HttpRequestContext {
 
     // Request Configuration
     private String methodName;
-    private Type methodReturnType;
+    private TypeMirror methodReturnType;
     private final List<MethodParameter> parameters;
     private HttpMethod httpMethod;
     private boolean isConvenience;
@@ -76,7 +75,7 @@ public final class HttpRequestContext {
      *
      * @return the method return type.
      */
-    public Type getMethodReturnType() {
+    public TypeMirror getMethodReturnType() {
         return methodReturnType;
     }
 
@@ -85,7 +84,7 @@ public final class HttpRequestContext {
      *
      * @param methodReturnType the method return type to set.
      */
-    public void setMethodReturnType(Type methodReturnType) {
+    public void setMethodReturnType(TypeMirror methodReturnType) {
         this.methodReturnType = methodReturnType;
     }
 

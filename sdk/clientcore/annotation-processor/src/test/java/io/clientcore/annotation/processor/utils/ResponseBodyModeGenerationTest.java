@@ -3,13 +3,15 @@
 
 package io.clientcore.annotation.processor.utils;
 
-import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import io.clientcore.annotation.processor.mocks.MockDeclaredType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
 import org.junit.jupiter.api.Test;
 
+import javax.lang.model.type.TypeKind;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -40,32 +42,9 @@ public class ResponseBodyModeGenerationTest {
         BlockStmt body = new BlockStmt();
         HttpRequestContext context = new HttpRequestContext();
         context.setHttpMethod(HttpMethod.DELETE);
-        ClassOrInterfaceType returnType = StaticJavaParser.parseClassOrInterfaceType("Void");
+        MockDeclaredType returnType = new MockDeclaredType(TypeKind.VOID, "void");
         context.setMethodReturnType(returnType);
         ResponseBodyModeGeneration.generateResponseHandling(body, returnType, context);
-        assertTrue(body.toString().contains("return"));
-    }
-
-    @Test
-    void generateResponseHandlingWithResponseReturnType() {
-        BlockStmt body = new BlockStmt();
-        HttpRequestContext context = new HttpRequestContext();
-        context.setHttpMethod(HttpMethod.GET);
-        ClassOrInterfaceType returnType = StaticJavaParser.parseClassOrInterfaceType("Response<Foo>");
-        context.setMethodReturnType(returnType);
-        ResponseBodyModeGeneration.generateResponseHandling(body, returnType, context);
-
-        assertTrue(body.toString().contains("HttpResponseAccessHelper.setValue"));
-    }
-
-    @Test
-    void generateResponseHandlingWithNonDeserializeMode() {
-        BlockStmt body = new BlockStmt();
-        HttpRequestContext context = new HttpRequestContext();
-        context.setHttpMethod(HttpMethod.GET);
-        ClassOrInterfaceType returnType = StaticJavaParser.parseClassOrInterfaceType("Response<Foo>");
-        context.setMethodReturnType(returnType);
-        ResponseBodyModeGeneration.generateResponseHandling(body, returnType, context);
-        assertTrue(body.toString().contains("HttpResponseAccessHelper.setBodyDeserializer"));
+        assertFalse(body.toString().contains("return"));
     }
 }

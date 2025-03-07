@@ -67,7 +67,7 @@ public class MockDeclaredType extends MockTypeMirror implements DeclaredType {
 
             @Override
             public NestingKind getNestingKind() {
-                return null;
+                return NestingKind.TOP_LEVEL;
             }
 
             @Override
@@ -102,22 +102,47 @@ public class MockDeclaredType extends MockTypeMirror implements DeclaredType {
 
             @Override
             public TypeMirror asType() {
-                return null;
+                return MockDeclaredType.this;
             }
 
             @Override
             public ElementKind getKind() {
-                return null;
+                return ElementKind.CLASS;
             }
 
             @Override
             public Set<Modifier> getModifiers() {
-                return Collections.emptySet();
+                return Collections.singleton(Modifier.PUBLIC);
             }
 
             @Override
             public Name getSimpleName() {
-                return null;
+                return new Name() {
+                    @Override
+                    public boolean contentEquals(CharSequence cs) {
+                        return qualifiedName.contentEquals(cs);
+                    }
+
+                    @Override
+                    public int length() {
+                        return qualifiedName.length();
+                    }
+
+                    @Override
+                    public char charAt(int index) {
+                        return qualifiedName.charAt(index);
+                    }
+
+                    @Override
+                    public CharSequence subSequence(int start, int end) {
+                        return qualifiedName.subSequence(start, end);
+                    }
+
+                    @Override
+                    public String toString() {
+                        return qualifiedName;
+                    }
+                };
             }
 
             @Override
@@ -151,4 +176,5 @@ public class MockDeclaredType extends MockTypeMirror implements DeclaredType {
     public List<? extends TypeMirror> getTypeArguments() {
         return Collections.emptyList();
     }
+
 }
