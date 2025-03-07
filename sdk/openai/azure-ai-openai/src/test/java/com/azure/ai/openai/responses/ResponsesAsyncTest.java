@@ -10,7 +10,6 @@ import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseCompleted;
-import com.azure.ai.openai.responses.models.ResponsesResponseTruncation;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
@@ -24,7 +23,6 @@ import static com.azure.ai.openai.responses.TestUtils.DISPLAY_NAME_WITH_ARGUMENT
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ResponsesAsyncTest extends AzureResponsesTestBase {
@@ -35,22 +33,9 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
         ResponsesAsyncClient client = getResponseAsyncClient(httpClient);
 
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            StepVerifier.create(client.createResponse(request)).assertNext(response -> {
-                assertNotNull(response);
-                assertNotNull(response.getId());
-                assertNotNull(response.getObject());
-                assertNotNull(response.getCreatedAt());
-                assertNotNull(response.getStatus());
-                assertNotNull(response.getModel());
-                assertNotNull(response.getOutput());
-                assertNull(response.getError());
-                assertNotNull(response.getTools());
-                assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-                assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-                assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-                assertNotNull(response.getUsage());
-                assertNotNull(response.getMetadata());
-            }).verifyComplete();
+            StepVerifier.create(client.createResponse(request))
+                .assertNext(response -> assertResponsesResponse(response))
+                .verifyComplete();
         });
     }
 
@@ -60,22 +45,9 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
         ResponsesAsyncClient client = getResponseAsyncClient(httpClient);
 
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            StepVerifier.create(client.createResponse(request, new RequestOptions())).assertNext(response -> {
-                assertNotNull(response);
-                assertNotNull(response.getId());
-                assertNotNull(response.getObject());
-                assertNotNull(response.getCreatedAt());
-                assertNotNull(response.getStatus());
-                assertNotNull(response.getModel());
-                assertNotNull(response.getOutput());
-                assertNull(response.getError());
-                assertNotNull(response.getTools());
-                assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-                assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-                assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-                assertNotNull(response.getUsage());
-                assertNotNull(response.getMetadata());
-            }).verifyComplete();
+            StepVerifier.create(client.createResponse(request, new RequestOptions()))
+                .assertNext(response -> assertResponsesResponse(response))
+                .verifyComplete();
         });
     }
 
@@ -88,22 +60,8 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
             StepVerifier.create(client.createResponseStream(request)).thenConsumeWhile(_unused -> true, event -> {
                 assertNotNull(event);
                 if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                    ResponsesResponseStreamEventResponseCompleted completedEvent
-                        = (ResponsesResponseStreamEventResponseCompleted) event;
-                    ResponsesResponse response = completedEvent.getResponse();
-                    assertNotNull(response.getId());
-                    assertNotNull(response.getObject());
-                    assertNotNull(response.getCreatedAt());
-                    assertNotNull(response.getStatus());
-                    assertNotNull(response.getModel());
-                    assertNotNull(response.getOutput());
-                    assertNull(response.getError());
-                    assertNotNull(response.getTools());
-                    assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-                    assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-                    assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-                    assertNotNull(response.getUsage());
-                    assertNotNull(response.getMetadata());
+                    ResponsesResponseStreamEventResponseCompleted completedEvent = (ResponsesResponseStreamEventResponseCompleted) event;
+                    assertResponsesResponse(completedEvent.getResponse());
                 }
             }).verifyComplete();
         });
@@ -119,22 +77,8 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
                 .thenConsumeWhile(_unused -> true, event -> {
                     assertNotNull(event);
                     if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                        ResponsesResponseStreamEventResponseCompleted completedEvent
-                            = (ResponsesResponseStreamEventResponseCompleted) event;
-                        ResponsesResponse response = completedEvent.getResponse();
-                        assertNotNull(response.getId());
-                        assertNotNull(response.getObject());
-                        assertNotNull(response.getCreatedAt());
-                        assertNotNull(response.getStatus());
-                        assertNotNull(response.getModel());
-                        assertNotNull(response.getOutput());
-                        assertNull(response.getError());
-                        assertNotNull(response.getTools());
-                        assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-                        assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-                        assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-                        assertNotNull(response.getUsage());
-                        assertNotNull(response.getMetadata());
+                        ResponsesResponseStreamEventResponseCompleted completedEvent = (ResponsesResponseStreamEventResponseCompleted) event;
+                        assertResponsesResponse(completedEvent.getResponse());
                     }
                 })
                 .verifyComplete();
@@ -153,35 +97,9 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
 
             // Now get the response
             StepVerifier.create(client.getResponse(responseId)).assertNext(response -> {
-                assertNotNull(response);
-                assertEquals(responseId, response.getId());
-                assertNotNull(response.getObject());
-                assertNotNull(response.getCreatedAt());
-                assertNotNull(response.getStatus());
-                assertNotNull(response.getModel());
-                assertNotNull(response.getOutput());
-                assertNull(response.getError());
-                assertNotNull(response.getTools());
-                assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-                assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-                assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-                assertNotNull(response.getUsage());
-                assertNotNull(response.getMetadata());
-
-                assertEquals(createdResponse.getId(), response.getId());
-                assertEquals(createdResponse.getObject(), response.getObject());
-                assertEquals(createdResponse.getCreatedAt(), response.getCreatedAt());
-                assertEquals(createdResponse.getStatus(), response.getStatus());
-                assertEquals(createdResponse.getModel(), response.getModel());
-                assertEquals(createdResponse.getTools(), response.getTools());
-                assertEquals(createdResponse.getTruncation(), response.getTruncation());
-                assertEquals(createdResponse.getTemperature(), response.getTemperature());
-                assertEquals(createdResponse.getTopP(), response.getTopP());
-                assertEquals(createdResponse.getUsage().getInputTokens(), response.getUsage().getInputTokens());
-                assertEquals(createdResponse.getUsage().getOutputTokens(), response.getUsage().getOutputTokens());
-                assertEquals(createdResponse.getUsage().getTotalTokens(), response.getUsage().getTotalTokens());
-                assertEquals(createdResponse.getMetadata(), response.getMetadata());
-            }).verifyComplete();
+                    assertResponsesResponse(response);
+                    assertResponsesResponseEquals(createdResponse, response);
+                }).verifyComplete();
         });
     }
 
@@ -198,34 +116,8 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
             // Now get the response with includables
             StepVerifier.create(client.getResponse(responseId,
                 Arrays.asList(CreateResponsesRequestIncludable.FILE_SEARCH_CALL_RESULTS))).assertNext(response -> {
-                    assertNotNull(response);
-                    assertEquals(responseId, response.getId());
-                    assertNotNull(response.getObject());
-                    assertNotNull(response.getCreatedAt());
-                    assertNotNull(response.getStatus());
-                    assertNotNull(response.getModel());
-                    assertNotNull(response.getOutput());
-                    assertNull(response.getError());
-                    assertNotNull(response.getTools());
-                    assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-                    assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-                    assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-                    assertNotNull(response.getUsage());
-                    assertNotNull(response.getMetadata());
-
-                    assertEquals(createdResponse.getId(), response.getId());
-                    assertEquals(createdResponse.getObject(), response.getObject());
-                    assertEquals(createdResponse.getCreatedAt(), response.getCreatedAt());
-                    assertEquals(createdResponse.getStatus(), response.getStatus());
-                    assertEquals(createdResponse.getModel(), response.getModel());
-                    assertEquals(createdResponse.getTools(), response.getTools());
-                    assertEquals(createdResponse.getTruncation(), response.getTruncation());
-                    assertEquals(createdResponse.getTemperature(), response.getTemperature());
-                    assertEquals(createdResponse.getTopP(), response.getTopP());
-                    assertEquals(createdResponse.getUsage().getInputTokens(), response.getUsage().getInputTokens());
-                    assertEquals(createdResponse.getUsage().getOutputTokens(), response.getUsage().getOutputTokens());
-                    assertEquals(createdResponse.getUsage().getTotalTokens(), response.getUsage().getTotalTokens());
-                    assertEquals(createdResponse.getMetadata(), response.getMetadata());
+                    assertResponsesResponse(response);
+                    assertResponsesResponseEquals(createdResponse, response);
                 }).verifyComplete();
         });
     }
