@@ -145,7 +145,6 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     private Configuration configuration;
     private ConfigurationServiceVersion version;
 
-    // Default to Azure Public Cloud
     private ConfigurationAudience audience;
 
     /**
