@@ -12,11 +12,11 @@ public final class ImpactCategoryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImpactCategoryInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"categoryId\":\"sqrglssainq\",\"parentCategoryId\":\"wnzlljfmppeeb\",\"description\":\"gxsabkyq\",\"requiredImpactProperties\":[{\"name\":\"jitcjczdzevn\",\"allowedValues\":[\"rwpdappdsbdkvwrw\",\"feusnhut\"]},{\"name\":\"eltmrldhugjzzdat\",\"allowedValues\":[\"oc\",\"geablgphuticndvk\"]}]},\"id\":\"zwyiftyhxhur\",\"name\":\"k\",\"type\":\"tyxolniwpwc\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"categoryId\":\"sqrglssainq\",\"parentCategoryId\":\"wnzlljfmppeeb\",\"descriptions\":\"gxsabkyq\",\"requiredImpactProperties\":[{\"name\":\"jitcjczdzevn\",\"allowedValues\":[\"rwpdappdsbdkvwrw\",\"feusnhut\"]},{\"name\":\"eltmrldhugjzzdat\",\"allowedValues\":[\"oc\",\"geablgphuticndvk\"]}]},\"id\":\"zwyiftyhxhur\",\"name\":\"k\",\"type\":\"tyxolniwpwc\"}")
             .toObject(ImpactCategoryInner.class);
         Assertions.assertEquals("sqrglssainq", model.properties().categoryId());
         Assertions.assertEquals("wnzlljfmppeeb", model.properties().parentCategoryId());
-        Assertions.assertEquals("gxsabkyq", model.properties().description());
+        Assertions.assertEquals("gxsabkyq", model.properties().descriptions());
         Assertions.assertEquals("jitcjczdzevn", model.properties().requiredImpactProperties().get(0).name());
         Assertions.assertEquals("rwpdappdsbdkvwrw",
             model.properties().requiredImpactProperties().get(0).allowedValues().get(0));

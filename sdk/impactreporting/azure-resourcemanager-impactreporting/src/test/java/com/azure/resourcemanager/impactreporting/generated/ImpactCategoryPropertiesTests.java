@@ -12,11 +12,11 @@ public final class ImpactCategoryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImpactCategoryProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"categoryId\":\"fkgiawxk\",\"parentCategoryId\":\"ypl\",\"description\":\"kbasyypn\",\"requiredImpactProperties\":[{\"name\":\"sgcbac\",\"allowedValues\":[\"jkot\"]},{\"name\":\"nqgoulzndli\",\"allowedValues\":[\"qkgfgibma\",\"gakeqsr\"]},{\"name\":\"yb\",\"allowedValues\":[\"e\",\"qytbciq\",\"ouf\",\"mmnkzsmodmgl\"]},{\"name\":\"ugpbkw\",\"allowedValues\":[\"tduqktapspwgcuer\",\"umkdosvqwhbmd\",\"bbjfddgmbmbexp\",\"bhtqqrolfpfpsa\"]}]}")
+            "{\"provisioningState\":\"Failed\",\"categoryId\":\"fkgiawxk\",\"parentCategoryId\":\"ypl\",\"descriptions\":\"kbasyypn\",\"requiredImpactProperties\":[{\"name\":\"sgcbac\",\"allowedValues\":[\"jkot\"]},{\"name\":\"nqgoulzndli\",\"allowedValues\":[\"qkgfgibma\",\"gakeqsr\"]},{\"name\":\"yb\",\"allowedValues\":[\"e\",\"qytbciq\",\"ouf\",\"mmnkzsmodmgl\"]},{\"name\":\"ugpbkw\",\"allowedValues\":[\"tduqktapspwgcuer\",\"umkdosvqwhbmd\",\"bbjfddgmbmbexp\",\"bhtqqrolfpfpsa\"]}]}")
             .toObject(ImpactCategoryProperties.class);
         Assertions.assertEquals("fkgiawxk", model.categoryId());
         Assertions.assertEquals("ypl", model.parentCategoryId());
-        Assertions.assertEquals("kbasyypn", model.description());
+        Assertions.assertEquals("kbasyypn", model.descriptions());
         Assertions.assertEquals("sgcbac", model.requiredImpactProperties().get(0).name());
         Assertions.assertEquals("jkot", model.requiredImpactProperties().get(0).allowedValues().get(0));
     }
