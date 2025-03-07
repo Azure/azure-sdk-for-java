@@ -173,7 +173,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         MethodDeclaration deserializeHelperMethod
             = classBuilder.addMethod("decodeByteArray", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
                 .setType("Object")
-                .addParameter("byte[]", "bytes")
+                .addParameter(BinaryData.class, "data")
                 .addParameter(ObjectSerializer.class, "serializer")
                 .addParameter("String", "returnType");
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(IOException.class);
@@ -181,12 +181,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(CodegenUtil.class);
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(ParameterizedType.class);
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(Type.class);
-        deserializeHelperMethod.setBody(new BlockStmt().addStatement(StaticJavaParser
-            .parseStatement("try {" + " ParameterizedType type = CodegenUtil.inferTypeNameFromReturnType(returnType);"
-                + " Type token = type.getRawType();" + " if (Response.class.isAssignableFrom((Class<?>) token)) {"
-                + "     token = type.getActualTypeArguments()[0];" + " }"
-                + " return serializer.deserializeFromBytes(bytes, token);" + " } catch (IOException e) {"
-                + " throw LOGGER.logThrowableAsError(new UncheckedIOException(e));" + " }")));
+        deserializeHelperMethod
+            .setBody(new BlockStmt().addStatement(StaticJavaParser.parseStatement("if (data == null) { return null; }"))
+                .addStatement(StaticJavaParser.parseStatement(
+                    "try { ParameterizedType type = CodegenUtil.inferTypeNameFromReturnType(returnType);"
+                        + "Type token = type.getRawType();  if (Response.class.isAssignableFrom((Class<?>) token)) {"
+                        + "token = type.getActualTypeArguments()[0];}"
+                        + " return serializer.deserializeFromBytes(data.toBytes(), token);} catch (IOException e) {"
+                        + " throw LOGGER.logThrowableAsError(new UncheckedIOException(e));}")));
     }
 
     void getGeneratedServiceMethods(TemplateInput templateInput) {

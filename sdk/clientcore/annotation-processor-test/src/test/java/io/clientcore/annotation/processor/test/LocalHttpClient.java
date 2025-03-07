@@ -32,7 +32,7 @@ public final class LocalHttpClient implements HttpClient {
                 || request.getHttpMethod().equals(HttpMethod.HEAD);
         }
 
-        return new Response<>(request, success ? 200 : 400, new HttpHeaders(), BinaryData.empty()) {
+        return new Response<BinaryData>(request, success ? 200 : 400, new HttpHeaders(), BinaryData.empty()) {
             @Override
             public void close() throws IOException {
                 closeCalledOnResponse = true;
