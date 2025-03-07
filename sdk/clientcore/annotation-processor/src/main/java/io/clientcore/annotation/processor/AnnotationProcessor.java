@@ -8,23 +8,20 @@ import io.clientcore.annotation.processor.models.Substitution;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.annotation.processor.templating.TemplateProcessor;
 import io.clientcore.annotation.processor.utils.PathBuilder;
-import io.clientcore.core.annotation.ServiceInterface;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.HeaderParam;
-import io.clientcore.core.http.annotation.HostParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
-import io.clientcore.core.http.annotation.PathParam;
-import io.clientcore.core.http.annotation.QueryParam;
-import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.HeaderParam;
+import io.clientcore.core.http.annotations.HostParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.annotations.PathParam;
+import io.clientcore.core.http.annotations.QueryParam;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.util.Context;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
@@ -36,13 +33,11 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,7 +45,7 @@ import java.util.stream.Collectors;
 /**
  * Annotation processor that generates client code based on annotated interfaces.
  */
-@SupportedAnnotationTypes("io.clientcore.core.annotation.*")
+@SupportedAnnotationTypes("io.clientcore.core.annotations.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AnnotationProcessor extends AbstractProcessor {
 
@@ -146,26 +141,20 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void addImports(TemplateInput templateInput) {
-        templateInput.addImport(Context.class.getName());
         templateInput.addImport(BinaryData.class.getName());
-        templateInput.addImport(HttpHeaders.class.getName());
         templateInput.addImport(HttpPipeline.class.getName());
         templateInput.addImport(HttpHeaderName.class.getName());
         templateInput.addImport(HttpMethod.class.getName());
-        templateInput.addImport(HttpResponse.class.getName());
         templateInput.addImport(HttpRequest.class.getName());
         templateInput.addImport(Response.class.getName());
-        templateInput.addImport(Map.class.getName());
-        templateInput.addImport(HashMap.class.getName());
-        templateInput.addImport(Arrays.class.getName());
         templateInput.addImport(Void.class.getName());
-        templateInput.addImport(List.class.getName());
     }
 
     private HttpRequestContext createHttpRequestContext(ExecutableElement requestMethod, TemplateInput templateInput) {
         HttpRequestContext method = new HttpRequestContext();
         method.setHost(templateInput.getHost());
         method.setMethodName(requestMethod.getSimpleName().toString());
+        method.setIsConvenience(requestMethod.isDefault());
 
         // Extract @HttpRequestInformation annotation details
         final HttpRequestInformation httpRequestInfo = requestMethod.getAnnotation(HttpRequestInformation.class);
@@ -249,6 +238,20 @@ public class AnnotationProcessor extends AbstractProcessor {
                 // If no generic arguments, set the return type to the base type
                 method.setMethodReturnType(fullTypeName);
             }
+        } else if (returnType.getKind() == TypeKind.ARRAY) {
+            ArrayType arrayType = (ArrayType) returnType;
+            TypeMirror componentType = arrayType.getComponentType();
+
+            String componentTypeName;
+            if (componentType.getKind().isPrimitive()) {
+                // Use primitive type name directly (no import needed)
+                componentTypeName = componentType.toString();
+            } else {
+                // Add import for non-primitive types
+                componentTypeName = templateInput.addImport(componentType);
+            }
+
+            method.setMethodReturnType(componentTypeName + "[]");
         } else {
             // For non-declared types (simple types like String, int, etc.)
             String returnTypeShortName = templateInput.addImport(requestMethod.getReturnType());

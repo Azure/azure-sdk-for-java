@@ -277,7 +277,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @LiveOnly
     public void testGetSocketIOAuthenticationToken() throws ParseException {
         GetClientAccessTokenOptions options
-            = new GetClientAccessTokenOptions().setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
+            = new GetClientAccessTokenOptions().setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKET_IO);
         WebPubSubClientAccessToken token = client.getClientAccessToken(options);
 
         Assertions.assertNotNull(token);
@@ -308,7 +308,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
                 .hub(TestUtils.HUB_NAME);
         WebPubSubServiceClient aadClient = aadClientBuilder.buildClient();
         GetClientAccessTokenOptions options
-            = new GetClientAccessTokenOptions().setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
+            = new GetClientAccessTokenOptions().setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKET_IO);
         WebPubSubClientAccessToken token = aadClient.getClientAccessToken(options);
 
         Assertions.assertNotNull(token);

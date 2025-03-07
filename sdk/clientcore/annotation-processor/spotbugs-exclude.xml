@@ -30,4 +30,8 @@
       <Class name="io.clientcore.annotation.processor.templating.JavaParserTemplateProcessor" />
     </Or>
   </Match>
+  <Match>
+    <Bug pattern="BC_UNCONFIRMED_CAST" />
+    <Class name="io.clientcore.annotation.processor.models.TemplateInput" />
+  </Match>
 </FindBugsFilter>

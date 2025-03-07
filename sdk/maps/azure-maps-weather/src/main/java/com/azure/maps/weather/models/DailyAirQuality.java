@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,12 +25,14 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
     private OffsetDateTime timestamp;
 
     /*
-     * Air quality rating on a scale set by local regulating bodies. Scales can vary widely based on location. See [Wikipedia](https://en.wikipedia.org/wiki/Air_quality_index) for more information.
+     * Air quality rating on a scale set by local regulating bodies. Scales can vary widely based on location. See
+     * [Wikipedia](https://en.wikipedia.org/wiki/Air_quality_index) for more information.
      */
     private Float index;
 
     /*
-     * Internationally normalized air quality rating on a scale from 0 to 300 and up, with higher numbers representing worse air quality.
+     * Internationally normalized air quality rating on a scale from 0 to 300 and up, with higher numbers representing
+     * worse air quality.
      */
     private Float globalIndex;
 
@@ -159,8 +162,8 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("dateTime".equals(fieldName)) {
-                    deserializedDailyAirQuality.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDailyAirQuality.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("index".equals(fieldName)) {
                     deserializedDailyAirQuality.index = reader.getNullable(JsonReader::getFloat);
                 } else if ("globalIndex".equals(fieldName)) {

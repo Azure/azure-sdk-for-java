@@ -6,10 +6,13 @@ package com.azure.resourcemanager.storage.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.FileServiceItemsInner;
 import com.azure.resourcemanager.storage.fluent.models.FileServicePropertiesInner;
+import com.azure.resourcemanager.storage.fluent.models.FileServiceUsageInner;
 import reactor.core.publisher.Mono;
 
 /**
@@ -217,4 +220,143 @@ public interface FileServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FileServicePropertiesInner getServiceProperties(String resourceGroupName, String accountName);
+
+    /**
+     * Gets the usages of file service in storage account.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     * insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, specifies the maximum number of file service usages to be included in the list
+     * response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the usages of file service in storage account as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<FileServiceUsageInner> listServiceUsagesAsync(String resourceGroupName, String accountName,
+        Integer maxpagesize);
+
+    /**
+     * Gets the usages of file service in storage account.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     * insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the usages of file service in storage account as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<FileServiceUsageInner> listServiceUsagesAsync(String resourceGroupName, String accountName);
+
+    /**
+     * Gets the usages of file service in storage account.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     * insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the usages of file service in storage account as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<FileServiceUsageInner> listServiceUsages(String resourceGroupName, String accountName);
+
+    /**
+     * Gets the usages of file service in storage account.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     * insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, specifies the maximum number of file service usages to be included in the list
+     * response.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the usages of file service in storage account as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<FileServiceUsageInner> listServiceUsages(String resourceGroupName, String accountName,
+        Integer maxpagesize, Context context);
+
+    /**
+     * Gets the usage of file service in storage account including account limits, file share limits and constants used
+     * in recommendations and bursting formula.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     * insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the usage of file service in storage account including account limits, file share limits and constants
+     * used in recommendations and bursting formula along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<FileServiceUsageInner>> getServiceUsageWithResponseAsync(String resourceGroupName,
+        String accountName);
+
+    /**
+     * Gets the usage of file service in storage account including account limits, file share limits and constants used
+     * in recommendations and bursting formula.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     * insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the usage of file service in storage account including account limits, file share limits and constants
+     * used in recommendations and bursting formula on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<FileServiceUsageInner> getServiceUsageAsync(String resourceGroupName, String accountName);
+
+    /**
+     * Gets the usage of file service in storage account including account limits, file share limits and constants used
+     * in recommendations and bursting formula.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     * insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the usage of file service in storage account including account limits, file share limits and constants
+     * used in recommendations and bursting formula along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<FileServiceUsageInner> getServiceUsageWithResponse(String resourceGroupName, String accountName,
+        Context context);
+
+    /**
+     * Gets the usage of file service in storage account including account limits, file share limits and constants used
+     * in recommendations and bursting formula.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     * insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the usage of file service in storage account including account limits, file share limits and constants
+     * used in recommendations and bursting formula.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FileServiceUsageInner getServiceUsage(String resourceGroupName, String accountName);
 }

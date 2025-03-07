@@ -43,6 +43,7 @@
     "com.azure.messaging.eventgrid.systemevents.AcsMessageInteractiveContent": "Microsoft.EventGrid.SystemEvents.AcsMessageInteractiveContent",
     "com.azure.messaging.eventgrid.systemevents.AcsMessageInteractiveListReplyContent": "Microsoft.EventGrid.SystemEvents.AcsMessageInteractiveListReplyContent",
     "com.azure.messaging.eventgrid.systemevents.AcsMessageMediaContent": "Microsoft.EventGrid.SystemEvents.AcsMessageMediaContent",
+    "com.azure.messaging.eventgrid.systemevents.AcsMessageReactionContent": "Microsoft.EventGrid.SystemEvents.AcsMessageReactionContent",
     "com.azure.messaging.eventgrid.systemevents.AcsMessageReceivedEventData": "Microsoft.EventGrid.SystemEvents.AcsMessageReceivedEventData",
     "com.azure.messaging.eventgrid.systemevents.AcsRecordingChunkInfoProperties": "Microsoft.EventGrid.SystemEvents.AcsRecordingChunkInfoProperties",
     "com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData": "Microsoft.EventGrid.SystemEvents.AcsRecordingFileStatusUpdatedEventData",

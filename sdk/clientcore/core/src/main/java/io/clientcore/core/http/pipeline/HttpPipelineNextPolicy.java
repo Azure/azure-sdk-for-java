@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpPipelineCallState;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -13,6 +15,7 @@ import java.io.UncheckedIOException;
 /**
  * A type that invokes next policy in the pipeline.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class HttpPipelineNextPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineNextPolicy.class);
 
@@ -50,13 +53,13 @@ public class HttpPipelineNextPolicy {
     }
 
     /**
-     * Creates a new instance of this instance.
+     * Copies the current state of the {@link HttpPipelineNextPolicy}.
+     * <p>
+     * This method must be used when a re-request is made in the pipeline.
      *
      * @return A new instance of this next pipeline policy.
      */
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
-    @Override
-    public HttpPipelineNextPolicy clone() {
-        return new HttpPipelineNextPolicy(this.state.clone());
+    public HttpPipelineNextPolicy copy() {
+        return new HttpPipelineNextPolicy(this.state.copy());
     }
 }

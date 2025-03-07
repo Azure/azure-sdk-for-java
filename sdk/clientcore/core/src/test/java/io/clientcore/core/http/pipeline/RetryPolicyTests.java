@@ -10,9 +10,8 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.util.DateTimeRfc1123;
+import io.clientcore.core.utils.DateTimeRfc1123;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -293,7 +292,8 @@ public class RetryPolicyTests {
                 }
             }).build();
 
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
             assertEquals(200, response.getStatusCode());
             assertEquals(2, attemptCount.get());
         }
@@ -316,7 +316,8 @@ public class RetryPolicyTests {
                 }
             }).build();
 
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
             assertEquals(503, response.getStatusCode());
             assertEquals(1, attemptCount.get());
         }
@@ -340,7 +341,7 @@ public class RetryPolicyTests {
             }).build();
 
         assertThrows(UncheckedIOException.class,
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close());
+            () -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close());
     }
 
     @Test
@@ -362,7 +363,8 @@ public class RetryPolicyTests {
                 }
             }).build();
 
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
             assertEquals(200, response.getStatusCode());
             assertEquals(2, attemptCount.get());
         }
@@ -386,7 +388,7 @@ public class RetryPolicyTests {
     }
 
     static Response<?> sendRequest(HttpPipeline pipeline) {
-        return pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+        return pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"));
     }
 
     static HttpRetryOptions createStatusCodeRetryStrategy(int... retriableErrorCodes) {

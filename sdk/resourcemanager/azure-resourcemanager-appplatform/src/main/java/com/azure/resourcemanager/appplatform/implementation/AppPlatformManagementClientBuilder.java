@@ -28,7 +28,7 @@ public final class AppPlatformManagementClientBuilder {
     /**
      * Sets Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -44,7 +44,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param endpoint the endpoint value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -60,7 +60,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -76,7 +76,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -92,7 +92,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     * 
+     *
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -108,7 +108,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -119,7 +119,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Builds an instance of AppPlatformManagementClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of AppPlatformManagementClientImpl.
      */
     public AppPlatformManagementClientImpl buildClient() {

@@ -1,14 +1,19 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
-
-### Features Added
+## 1.5.0 (2025-03-07)
 
 ### Breaking Changes
 
+- `JsonNumber` previously would use `float` when the floating point number was small enough to fit in `float` but it
+  now aligns behavior with `JsonReader.readUntyped()` where `double` will be the smallest floating point type used.
+  This aligns with floating point number behavior in Java where `double` is the default if no type is specified.
+- Support for special numeric `INF`, `-INF`, and `+INF` values have been removed to align with behaviors of `Float`
+  and `Double` in Java where only the `Infinity` variants are supported.
+
 ### Bugs Fixed
 
-### Other Changes
+- `JsonReader.readUntyped()` had incomplete support for untyped numerics. Numerics too large for `double` and `long` are
+  now supported and a bug where exponents were not being parsed correctly is fixed.
 
 ## 1.4.0 (2025-01-27)
 

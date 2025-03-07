@@ -1,14 +1,21 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.4 (2025-03-14)
 
 ### Bugs Fixed
 
-### Other Changes
+- #44517: Use ModelServiceVersion (api-version) of 2024-05-01-preview as default 
+
+## 1.0.0-beta.3 (2025-02-20)
+
+### Breaking Changes
+- Change ChatCompletionsResponseFormatJSON class name to ChatCompletionsResponseFormatJsonObject.
+
+### Features Added
+- Add samples and tests for image embeddings.
+- Add ChatCompletionsResponseFormatJsonSchema class for structured output in completions response.
+- Add sample and test for Chat Completions with structured output
+- Add "developer" chat role and ChatRequestDeveloperMessage to support new GPT models
 
 ## 1.0.0-beta.2 (2024-10-03)
 

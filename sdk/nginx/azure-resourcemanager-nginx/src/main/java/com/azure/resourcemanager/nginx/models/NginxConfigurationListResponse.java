@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationInner;
+import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationResponseInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public final class NginxConfigurationListResponse implements JsonSerializable<Ng
     /*
      * Results of a list operation.
      */
-    private List<NginxConfigurationInner> value;
+    private List<NginxConfigurationResponseInner> value;
 
     /*
      * Link to the next set of results, if any.
@@ -39,7 +39,7 @@ public final class NginxConfigurationListResponse implements JsonSerializable<Ng
      * 
      * @return the value value.
      */
-    public List<NginxConfigurationInner> value() {
+    public List<NginxConfigurationResponseInner> value() {
         return this.value;
     }
 
@@ -49,7 +49,7 @@ public final class NginxConfigurationListResponse implements JsonSerializable<Ng
      * @param value the value value to set.
      * @return the NginxConfigurationListResponse object itself.
      */
-    public NginxConfigurationListResponse withValue(List<NginxConfigurationInner> value) {
+    public NginxConfigurationListResponse withValue(List<NginxConfigurationResponseInner> value) {
         this.value = value;
         return this;
     }
@@ -113,8 +113,8 @@ public final class NginxConfigurationListResponse implements JsonSerializable<Ng
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<NginxConfigurationInner> value
-                        = reader.readArray(reader1 -> NginxConfigurationInner.fromJson(reader1));
+                    List<NginxConfigurationResponseInner> value
+                        = reader.readArray(reader1 -> NginxConfigurationResponseInner.fromJson(reader1));
                     deserializedNginxConfigurationListResponse.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedNginxConfigurationListResponse.nextLink = reader.getString();

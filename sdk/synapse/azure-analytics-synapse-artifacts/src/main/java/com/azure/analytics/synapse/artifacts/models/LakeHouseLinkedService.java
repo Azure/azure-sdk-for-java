@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Microsoft Fabric LakeHouse linked service.
+ * Microsoft Fabric Lakehouse linked service.
  */
 @Fluent
 public class LakeHouseLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
-    private String type = "LakeHouse";
+    private String type = "Lakehouse";
 
     /*
      * The ID of Microsoft Fabric workspace. Type: string (or Expression with resultType string).
@@ -29,18 +29,18 @@ public class LakeHouseLinkedService extends LinkedService {
     private Object workspaceId;
 
     /*
-     * The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with resultType string).
+     * The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with resultType string).
      */
     private Object artifactId;
 
     /*
-     * The ID of the application used to authenticate against Microsoft Fabric LakeHouse. Type: string (or Expression
+     * The ID of the application used to authenticate against Microsoft Fabric Lakehouse. Type: string (or Expression
      * with resultType string).
      */
     private Object servicePrincipalId;
 
     /*
-     * The Key of the application used to authenticate against Microsoft Fabric LakeHouse.
+     * The Key of the application used to authenticate against Microsoft Fabric Lakehouse.
      */
     private SecretBase servicePrincipalKey;
 
@@ -109,7 +109,7 @@ public class LakeHouseLinkedService extends LinkedService {
     }
 
     /**
-     * Get the artifactId property: The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with
+     * Get the artifactId property: The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with
      * resultType string).
      * 
      * @return the artifactId value.
@@ -119,7 +119,7 @@ public class LakeHouseLinkedService extends LinkedService {
     }
 
     /**
-     * Set the artifactId property: The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with
+     * Set the artifactId property: The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with
      * resultType string).
      * 
      * @param artifactId the artifactId value to set.
@@ -132,7 +132,7 @@ public class LakeHouseLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalId property: The ID of the application used to authenticate against Microsoft Fabric
-     * LakeHouse. Type: string (or Expression with resultType string).
+     * Lakehouse. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalId value.
      */
@@ -142,7 +142,7 @@ public class LakeHouseLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalId property: The ID of the application used to authenticate against Microsoft Fabric
-     * LakeHouse. Type: string (or Expression with resultType string).
+     * Lakehouse. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the LakeHouseLinkedService object itself.
@@ -154,7 +154,7 @@ public class LakeHouseLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalKey property: The Key of the application used to authenticate against Microsoft Fabric
-     * LakeHouse.
+     * Lakehouse.
      * 
      * @return the servicePrincipalKey value.
      */
@@ -164,7 +164,7 @@ public class LakeHouseLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalKey property: The Key of the application used to authenticate against Microsoft Fabric
-     * LakeHouse.
+     * Lakehouse.
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the LakeHouseLinkedService object itself.
@@ -272,6 +272,15 @@ public class LakeHouseLinkedService extends LinkedService {
      * {@inheritDoc}
      */
     @Override
+    public LakeHouseLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public LakeHouseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
@@ -310,6 +319,7 @@ public class LakeHouseLinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -358,7 +368,9 @@ public class LakeHouseLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedLakeHouseLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedLakeHouseLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedLakeHouseLinkedService.setDescription(reader.getString());
