@@ -34,25 +34,24 @@ public class ResponsesTest extends AzureResponsesTestBase {
     public void createResponseBlocking(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
         ResponsesClient client = getResponseClient(httpClient);
 
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
-                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
+        getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
+            ResponsesResponse response = client.createResponse(request);
 
-        ResponsesResponse response = client.createResponse(request);
-
-        assertNotNull(response);
-        assertNotNull(response.getId());
-        assertNotNull(response.getObject());
-        assertNotNull(response.getCreatedAt());
-        assertNotNull(response.getStatus());
-        assertNotNull(response.getModel());
-        assertNotNull(response.getOutput());
-        assertNull(response.getError());
-        assertNotNull(response.getTools());
-        assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-        assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-        assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-        assertNotNull(response.getUsage());
-        assertNotNull(response.getMetadata());
+            assertNotNull(response);
+            assertNotNull(response.getId());
+            assertNotNull(response.getObject());
+            assertNotNull(response.getCreatedAt());
+            assertNotNull(response.getStatus());
+            assertNotNull(response.getModel());
+            assertNotNull(response.getOutput());
+            assertNull(response.getError());
+            assertNotNull(response.getTools());
+            assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
+            assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
+            assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
+            assertNotNull(response.getUsage());
+            assertNotNull(response.getMetadata());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -60,25 +59,24 @@ public class ResponsesTest extends AzureResponsesTestBase {
     public void createResponseWithOptions(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
         ResponsesClient client = getResponseClient(httpClient);
 
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
-                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
+        getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
+            ResponsesResponse response = client.createResponse(request, new RequestOptions());
 
-        ResponsesResponse response = client.createResponse(request, new RequestOptions());
-
-        assertNotNull(response);
-        assertNotNull(response.getId());
-        assertNotNull(response.getObject());
-        assertNotNull(response.getCreatedAt());
-        assertNotNull(response.getStatus());
-        assertNotNull(response.getModel());
-        assertNotNull(response.getOutput());
-        assertNull(response.getError());
-        assertNotNull(response.getTools());
-        assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-        assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-        assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-        assertNotNull(response.getUsage());
-        assertNotNull(response.getMetadata());
+            assertNotNull(response);
+            assertNotNull(response.getId());
+            assertNotNull(response.getObject());
+            assertNotNull(response.getCreatedAt());
+            assertNotNull(response.getStatus());
+            assertNotNull(response.getModel());
+            assertNotNull(response.getOutput());
+            assertNull(response.getError());
+            assertNotNull(response.getTools());
+            assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
+            assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
+            assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
+            assertNotNull(response.getUsage());
+            assertNotNull(response.getMetadata());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -86,30 +84,29 @@ public class ResponsesTest extends AzureResponsesTestBase {
     public void createResponseStreaming(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
         ResponsesClient client = getResponseClient(httpClient);
 
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
-                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
+        getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
+            IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request);
 
-        IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request);
-
-        events.forEach(event -> {
-            assertNotNull(event);
-            if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                ResponsesResponseStreamEventResponseCompleted completedEvent = (ResponsesResponseStreamEventResponseCompleted) event;
-                ResponsesResponse response = completedEvent.getResponse();
-                assertNotNull(response.getId());
-                assertNotNull(response.getObject());
-                assertNotNull(response.getCreatedAt());
-                assertNotNull(response.getStatus());
-                assertNotNull(response.getModel());
-                assertNotNull(response.getOutput());
-                assertNull(response.getError());
-                assertNotNull(response.getTools());
-                assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-                assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-                assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-                assertNotNull(response.getUsage());
-                assertNotNull(response.getMetadata());
-            }
+            events.forEach(event -> {
+                assertNotNull(event);
+                if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
+                    ResponsesResponseStreamEventResponseCompleted completedEvent = (ResponsesResponseStreamEventResponseCompleted) event;
+                    ResponsesResponse response = completedEvent.getResponse();
+                    assertNotNull(response.getId());
+                    assertNotNull(response.getObject());
+                    assertNotNull(response.getCreatedAt());
+                    assertNotNull(response.getStatus());
+                    assertNotNull(response.getModel());
+                    assertNotNull(response.getOutput());
+                    assertNull(response.getError());
+                    assertNotNull(response.getTools());
+                    assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
+                    assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
+                    assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
+                    assertNotNull(response.getUsage());
+                    assertNotNull(response.getMetadata());
+                }
+            });
         });
     }
 
@@ -118,30 +115,29 @@ public class ResponsesTest extends AzureResponsesTestBase {
     public void createResponseStreamingWithOptions(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
         ResponsesClient client = getResponseClient(httpClient);
 
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
-                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
+        getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
+            IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request, new RequestOptions());
 
-        IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request, new RequestOptions());
-
-        events.forEach(event -> {
-            assertNotNull(event);
-            if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                ResponsesResponseStreamEventResponseCompleted completedEvent = (ResponsesResponseStreamEventResponseCompleted) event;
-                ResponsesResponse response = completedEvent.getResponse();
-                assertNotNull(response.getId());
-                assertNotNull(response.getObject());
-                assertNotNull(response.getCreatedAt());
-                assertNotNull(response.getStatus());
-                assertNotNull(response.getModel());
-                assertNotNull(response.getOutput());
-                assertNull(response.getError());
-                assertNotNull(response.getTools());
-                assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-                assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-                assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-                assertNotNull(response.getUsage());
-                assertNotNull(response.getMetadata());
-            }
+            events.forEach(event -> {
+                assertNotNull(event);
+                if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
+                    ResponsesResponseStreamEventResponseCompleted completedEvent = (ResponsesResponseStreamEventResponseCompleted) event;
+                    ResponsesResponse response = completedEvent.getResponse();
+                    assertNotNull(response.getId());
+                    assertNotNull(response.getObject());
+                    assertNotNull(response.getCreatedAt());
+                    assertNotNull(response.getStatus());
+                    assertNotNull(response.getModel());
+                    assertNotNull(response.getOutput());
+                    assertNull(response.getError());
+                    assertNotNull(response.getTools());
+                    assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
+                    assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
+                    assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
+                    assertNotNull(response.getUsage());
+                    assertNotNull(response.getMetadata());
+                }
+            });
         });
     }
 
@@ -151,28 +147,42 @@ public class ResponsesTest extends AzureResponsesTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         // First create a response to get its ID
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
-                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
-        ResponsesResponse createdResponse = client.createResponse(request);
-        String responseId = createdResponse.getId();
+        getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
+            ResponsesResponse createdResponse = client.createResponse(request);
+            String responseId = createdResponse.getId();
 
-        // Now get the response
-        ResponsesResponse response = client.getResponse(responseId);
+            // Now get the response
+            ResponsesResponse response = client.getResponse(responseId);
 
-        assertNotNull(response);
-        assertEquals(responseId, response.getId());
-        assertNotNull(response.getObject());
-        assertNotNull(response.getCreatedAt());
-        assertNotNull(response.getStatus());
-        assertNotNull(response.getModel());
-        assertNotNull(response.getOutput());
-        assertNull(response.getError());
-        assertNotNull(response.getTools());
-        assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-        assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-        assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-        assertNotNull(response.getUsage());
-        assertNotNull(response.getMetadata());
+            assertNotNull(response);
+            assertEquals(responseId, response.getId());
+            assertNotNull(response.getObject());
+            assertNotNull(response.getCreatedAt());
+            assertNotNull(response.getStatus());
+            assertNotNull(response.getModel());
+            assertNotNull(response.getOutput());
+            assertNull(response.getError());
+            assertNotNull(response.getTools());
+            assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
+            assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
+            assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
+            assertNotNull(response.getUsage());
+            assertNotNull(response.getMetadata());
+
+            assertEquals(createdResponse.getId(), response.getId());
+            assertEquals(createdResponse.getObject(), response.getObject());
+            assertEquals(createdResponse.getCreatedAt(), response.getCreatedAt());
+            assertEquals(createdResponse.getStatus(), response.getStatus());
+            assertEquals(createdResponse.getModel(), response.getModel());
+            assertEquals(createdResponse.getTools(), response.getTools());
+            assertEquals(createdResponse.getTruncation(), response.getTruncation());
+            assertEquals(createdResponse.getTemperature(), response.getTemperature());
+            assertEquals(createdResponse.getTopP(), response.getTopP());
+            assertEquals(createdResponse.getUsage().getInputTokens(), response.getUsage().getInputTokens());
+            assertEquals(createdResponse.getUsage().getOutputTokens(), response.getUsage().getOutputTokens());
+            assertEquals(createdResponse.getUsage().getTotalTokens(), response.getUsage().getTotalTokens());
+            assertEquals(createdResponse.getMetadata(), response.getMetadata());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -181,28 +191,42 @@ public class ResponsesTest extends AzureResponsesTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         // First create a response to get its ID
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
-                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
-        ResponsesResponse createdResponse = client.createResponse(request);
-        String responseId = createdResponse.getId();
+        getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
+            ResponsesResponse createdResponse = client.createResponse(request);
+            String responseId = createdResponse.getId();
 
-        // Now get the response with includables
-        ResponsesResponse response = client.getResponse(responseId, Arrays.asList(CreateResponsesRequestIncludable.FILE_SEARCH_CALL_RESULTS));
+            // Now get the response with includables
+            ResponsesResponse response = client.getResponse(responseId, Arrays.asList(CreateResponsesRequestIncludable.FILE_SEARCH_CALL_RESULTS));
 
-        assertNotNull(response);
-        assertEquals(responseId, response.getId());
-        assertNotNull(response.getObject());
-        assertNotNull(response.getCreatedAt());
-        assertNotNull(response.getStatus());
-        assertNotNull(response.getModel());
-        assertNotNull(response.getOutput());
-        assertNull(response.getError());
-        assertNotNull(response.getTools());
-        assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
-        assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
-        assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-        assertNotNull(response.getUsage());
-        assertNotNull(response.getMetadata());
+            assertNotNull(response);
+            assertEquals(responseId, response.getId());
+            assertNotNull(response.getObject());
+            assertNotNull(response.getCreatedAt());
+            assertNotNull(response.getStatus());
+            assertNotNull(response.getModel());
+            assertNotNull(response.getOutput());
+            assertNull(response.getError());
+            assertNotNull(response.getTools());
+            assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
+            assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
+            assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
+            assertNotNull(response.getUsage());
+            assertNotNull(response.getMetadata());
+
+            assertEquals(createdResponse.getId(), response.getId());
+            assertEquals(createdResponse.getObject(), response.getObject());
+            assertEquals(createdResponse.getCreatedAt(), response.getCreatedAt());
+            assertEquals(createdResponse.getStatus(), response.getStatus());
+            assertEquals(createdResponse.getModel(), response.getModel());
+            assertEquals(createdResponse.getTools(), response.getTools());
+            assertEquals(createdResponse.getTruncation(), response.getTruncation());
+            assertEquals(createdResponse.getTemperature(), response.getTemperature());
+            assertEquals(createdResponse.getTopP(), response.getTopP());
+            assertEquals(createdResponse.getUsage().getInputTokens(), response.getUsage().getInputTokens());
+            assertEquals(createdResponse.getUsage().getOutputTokens(), response.getUsage().getOutputTokens());
+            assertEquals(createdResponse.getUsage().getTotalTokens(), response.getUsage().getTotalTokens());
+            assertEquals(createdResponse.getMetadata(), response.getMetadata());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -233,17 +257,37 @@ public class ResponsesTest extends AzureResponsesTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         // First create a response to get its ID
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
-                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
-        ResponsesResponse createdResponse = client.createResponse(request);
-        String responseId = createdResponse.getId();
+        getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
+            ResponsesResponse createdResponse = client.createResponse(request);
+            String responseId = createdResponse.getId();
 
-        // Now delete the response
-        DeleteResponseResponse deleteResponse = client.deleteResponse(responseId, new RequestOptions());
+            // Now delete the response
+            DeleteResponseResponse deleteResponse = client.deleteResponse(responseId);
 
-        assertNotNull(deleteResponse);
-        assertEquals(responseId, deleteResponse.getId());
-        assertNotNull(deleteResponse.getObject());
-        assertTrue(deleteResponse.isDeleted());
+            assertNotNull(deleteResponse);
+            assertEquals(responseId, deleteResponse.getId());
+            assertNotNull(deleteResponse.getObject());
+            assertTrue(deleteResponse.isDeleted());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void deleteResponseWithOptions(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClient client = getResponseClient(httpClient);
+
+        // First create a response to get its ID
+        getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
+            ResponsesResponse createdResponse = client.createResponse(request);
+            String responseId = createdResponse.getId();
+
+            // Now delete the response
+            DeleteResponseResponse deleteResponse = client.deleteResponse(responseId, new RequestOptions());
+
+            assertNotNull(deleteResponse);
+            assertEquals(responseId, deleteResponse.getId());
+            assertNotNull(deleteResponse.getObject());
+            assertTrue(deleteResponse.isDeleted());
+        });
     }
 }
