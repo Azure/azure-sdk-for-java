@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class OpenAIClientTest extends AzureOpenAIClientTestBase {
+public class ResponsesTest extends AzureResponsesTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")

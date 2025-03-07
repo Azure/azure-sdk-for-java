@@ -4,7 +4,7 @@
 package com.azure.ai.openai.responses.streaming;
 
 import com.azure.ai.openai.OpenAIClientTestBase;
-import com.azure.ai.openai.responses.AzureOpenAIClientTestBase;
+import com.azure.ai.openai.responses.AzureResponsesTestBase;
 import com.azure.ai.openai.responses.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventCodeInterpreterCallInProgress;
@@ -45,7 +45,7 @@ public class OpenAIServerSentEventsTest {
         BinaryData testFile = BinaryData.fromFile(OpenAIClientTestBase.openResourceFile("create_response_stream.dump"));
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testFile.toFluxByteBuffer());
 
-        StepVerifier.create(openAIServerSentEvents.getEvents().doOnNext(AzureOpenAIClientTestBase::assertStreamUpdate))
+        StepVerifier.create(openAIServerSentEvents.getEvents().doOnNext(AzureResponsesTestBase::assertStreamUpdate))
                 .expectNextCount(1)
                 .verifyComplete();
     }

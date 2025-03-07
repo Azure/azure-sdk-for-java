@@ -15,7 +15,7 @@ import com.azure.core.util.CoreUtils;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class AzureOpenAIClientTestBase extends TestProxyTestBase {
+public class AzureResponsesTestBase extends TestProxyTestBase {
 
     ResponsesClient getAzureResponseClient(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
         ResponsesClientBuilder builder = new ResponsesClientBuilder()
