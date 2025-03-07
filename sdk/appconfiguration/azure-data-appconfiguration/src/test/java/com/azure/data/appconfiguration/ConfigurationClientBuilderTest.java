@@ -149,7 +149,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     @DoNotRecord
-    public void nullAADCredential() {
+    public void nullEntraCredential() {
         assertThrows(NullPointerException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
             builder.endpoint(ENDPOINT).credential(null).buildAsyncClient();
