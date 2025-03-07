@@ -123,7 +123,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
 
     private boolean defaultShouldAttemptRedirect(ClientLogger logger, HttpRedirectCondition requestRedirectCondition,
         InstrumentationContext context) {
-        Response<?> response = requestRedirectCondition.getResponse();
+        Response<BinaryData> response = requestRedirectCondition.getResponse();
         int tryCount = requestRedirectCondition.getTryCount();
         Set<String> attemptedRedirectUris = requestRedirectCondition.getRedirectedUris();
         String redirectUri = response.getHeaders().getValue(this.locationHeader);

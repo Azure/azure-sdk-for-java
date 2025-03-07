@@ -3,10 +3,11 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -50,7 +51,7 @@ public class HttpPipelineTests {
             assertEquals(expectedHttpMethod, request.getHttpMethod());
             assertEquals(expectedUri, request.getUri());
 
-            return new MockHttpResponse(request, 200);
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
         }).build();
         final Response<?> response
             = httpPipeline.send(new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri));
@@ -68,7 +69,7 @@ public class HttpPipelineTests {
             assertEquals(expectedHttpMethod, request.getHttpMethod());
             assertEquals(expectedUri, request.getUri());
 
-            return new MockHttpResponse(request, 200);
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
         }).build();
         final Response<?> response
             = httpPipeline.send(new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri));

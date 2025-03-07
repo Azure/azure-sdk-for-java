@@ -7,7 +7,6 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.paging.PagedResponse;
-import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -100,9 +99,8 @@ public final class IterableStreamJavadocCodeSnippets {
     }
 
     private PagedResponse<Integer> createPagedResponse(HttpRequest httpRequest, HttpHeaders httpHeaders) {
-        List<Integer> items = getItems();
-        return new PagedResponse<>(httpRequest, HttpURLConnection.HTTP_OK, httpHeaders, BinaryData.fromObject(items),
-            getItems(), String.valueOf(1 + 1), null, null, null, null);
+        return new PagedResponse<>(httpRequest, HttpURLConnection.HTTP_OK, httpHeaders, getItems(),
+            String.valueOf(1 + 1), null, null, null, null);
     }
 
     private List<Integer> getItems() {

@@ -12,9 +12,8 @@ import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.ResponseBodyMode;
-import io.clientcore.core.implementation.http.HttpResponse;
-import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.models.binarydata.BinaryData;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
@@ -47,8 +46,6 @@ public final class ResponseBodyModeGeneration {
      */
     public static void handleResponseBody(BlockStmt body, String returnTypeName, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
-        body.tryAddImportToParentCompilationUnit(HttpResponse.class);
-        body.tryAddImportToParentCompilationUnit(HttpResponseAccessHelper.class);
 
         if (method.getHttpMethod() == HttpMethod.HEAD && returnTypeName.contains("Boolean")
             || returnTypeName.contains("boolean")) {

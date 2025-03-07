@@ -218,7 +218,7 @@ public final class TestProxyUtils {
      * Checks the return from a request through the test proxy for special error headers.
      * @param response The {@link Response} from the test proxy.
      */
-    public static void checkForTestProxyErrors(Response<?> response) {
+    public static void checkForTestProxyErrors(Response<BinaryData> response) {
         String error = response.getHeaders().getValue(X_REQUEST_MISMATCH_ERROR);
         if (error == null) {
             error = response.getHeaders().getValue(X_REQUEST_KNOWN_EXCEPTION_ERROR);

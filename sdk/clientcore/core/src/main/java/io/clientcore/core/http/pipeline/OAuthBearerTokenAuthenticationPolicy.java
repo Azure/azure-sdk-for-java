@@ -109,7 +109,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param response The Http Response containing the authentication challenge header.
      * @return A boolean indicating if the request was authorized again via re-authentication
      */
-    public boolean authorizeRequestOnChallenge(HttpRequest httpRequest, Response<?> response) {
+    public boolean authorizeRequestOnChallenge(HttpRequest httpRequest, Response<BinaryData> response) {
         return false;
     }
 }

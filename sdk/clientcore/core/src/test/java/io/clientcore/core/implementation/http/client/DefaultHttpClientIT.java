@@ -5,7 +5,6 @@ package io.clientcore.core.implementation.http.client;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.JdkHttpClientBuilder;
-import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -13,11 +12,12 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.implementation.http.ContentType;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.TestUtils;
-import io.clientcore.core.models.binarydata.BinaryData;
 import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,7 +32,6 @@ import javax.net.ssl.TrustManager;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -156,10 +155,10 @@ public class DefaultHttpClientIT {
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<?> response = doRequest(client, "/error")) {
+        try (Response<BinaryData> response = doRequest(client, "/error")) {
             assertEquals(500, response.getStatusCode());
 
-            String responseBodyAsString = response.getBody().toString();
+            String responseBodyAsString = response.getValue().toString();
 
             assertTrue(responseBodyAsString.contains("error"));
         }
@@ -175,8 +174,8 @@ public class DefaultHttpClientIT {
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (Response<?> response = doRequest(client, "/long")) {
-                    byte[] body = response.getBody().toBytes();
+                try (Response<BinaryData> response = doRequest(client, "/long")) {
+                    byte[] body = response.getValue().toBytes();
                     assertArraysEqual(LONG_BODY, body);
                     return null;
                 }
@@ -224,8 +223,8 @@ public class DefaultHttpClientIT {
     public void testBufferedResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<?> response = getResponse(client, "/short", Context.none())) {
-            assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
+        try (Response<BinaryData> response = getResponse(client, "/short", Context.none())) {
+            assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
 
@@ -233,8 +232,8 @@ public class DefaultHttpClientIT {
     public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<?> response = getResponse(client, "/empty", Context.none())) {
-            assertEquals(0L, response.getBody().toBytes().length);
+        try (Response<BinaryData> response = getResponse(client, "/empty", Context.none())) {
+            assertEquals(0L, response.getValue().toBytes().length);
         }
     }
 
@@ -248,8 +247,8 @@ public class DefaultHttpClientIT {
             .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)));
         request.setBody(BinaryData.fromString(contentChunk));
 
-        try (Response<?> response = client.send(request)) {
-            assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
+        try (Response<BinaryData> response = client.send(request)) {
+            assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
 
@@ -262,13 +261,14 @@ public class DefaultHttpClientIT {
 
         HttpClient httpClient = new JdkHttpClientBuilder().sslContext(sslContext).build();
 
-        try (Response<?> response
+        try (Response<BinaryData> response
             = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(httpsUri(server, "/short")))) {
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
+            TestUtils.assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
 
-    private static Response<?> getResponse(HttpClient client, String path, Context context) throws IOException {
+    private static Response<BinaryData> getResponse(HttpClient client, String path, Context context)
+        throws IOException {
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
             .setUri(uri(server, path))
             .setRequestOptions(new RequestOptions().setContext(context));
@@ -277,19 +277,11 @@ public class DefaultHttpClientIT {
     }
 
     static URI uri(LocalTestServer server, String path) {
-        try {
-            return new URI(server.getHttpUri() + path);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        return URI.create(server.getHttpUri() + path);
     }
 
     static URI httpsUri(LocalTestServer server, String path) {
-        try {
-            return new URI(server.getHttpsUri() + path);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        return URI.create(server.getHttpsUri() + path);
     }
 
     private static byte[] createLongBody() {
@@ -303,7 +295,7 @@ public class DefaultHttpClientIT {
         return longBody;
     }
 
-    private static Response<?> doRequest(HttpClient client, String path) throws IOException {
+    private static Response<BinaryData> doRequest(HttpClient client, String path) throws IOException {
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path));
 
         return client.send(request);

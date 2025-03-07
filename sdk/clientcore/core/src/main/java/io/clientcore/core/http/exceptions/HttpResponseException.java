@@ -4,6 +4,7 @@
 package io.clientcore.core.http.exceptions;
 
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 /**
  * The exception thrown when an unsuccessful response is received with http status code (e.g. {@code 3XX}, {@code 4XX},
@@ -18,7 +19,7 @@ public class HttpResponseException extends RuntimeException {
     /**
      * Information about the associated HTTP response.
      */
-    private final Response<?> response;
+    private final Response<BinaryData> response;
 
     /**
      * Initializes a new instance of the HttpResponseException class.
@@ -27,7 +28,7 @@ public class HttpResponseException extends RuntimeException {
      * @param response The {@link Response} received that is associated to the exception.
      * @param value The deserialized response value.
      */
-    public HttpResponseException(final String message, final Response<?> response, final Object value) {
+    public HttpResponseException(final String message, final Response<BinaryData> response, final Object value) {
         super(message);
 
         this.value = value;
@@ -41,7 +42,7 @@ public class HttpResponseException extends RuntimeException {
      * @param response The {@link Response} received that is associated to the exception.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
-    public HttpResponseException(final String message, final Response<?> response, final Throwable cause) {
+    public HttpResponseException(final String message, final Response<BinaryData> response, final Throwable cause) {
         super(message, cause);
 
         this.value = null;
@@ -53,7 +54,7 @@ public class HttpResponseException extends RuntimeException {
      *
      * @return The {@link Response} received that is associated to the exception.
      */
-    public Response<?> getResponse() {
+    public Response<BinaryData> getResponse() {
         return response;
     }
 

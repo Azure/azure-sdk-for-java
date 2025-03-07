@@ -14,7 +14,6 @@ import io.clientcore.core.http.pipeline.HttpCredentialPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.models.binarydata.BinaryData;

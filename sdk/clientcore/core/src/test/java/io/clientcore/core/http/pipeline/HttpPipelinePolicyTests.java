@@ -8,7 +8,6 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +23,7 @@ public class HttpPipelinePolicyTests {
         SyncPolicy policy2 = new SyncPolicy();
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(request -> new HttpResponse<>(request, 200, new HttpHeaders(), null))
+            = new HttpPipelineBuilder().httpClient(request -> new Response<>(request, 200, new HttpHeaders(), null))
                 .addPolicy(policy1)
                 .addPolicy(policy2)
                 .build();
@@ -40,7 +39,7 @@ public class HttpPipelinePolicyTests {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(request -> new HttpResponse<>(request, 200, new HttpHeaders(), null))
+            = new HttpPipelineBuilder().httpClient(request -> new Response<>(request, 200, new HttpHeaders(), null))
                 .addPolicy(policyWithDefaultSyncImplementation)
                 .build();
 
@@ -82,7 +81,7 @@ public class HttpPipelinePolicyTests {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            return new HttpResponse<>(request, 200, new HttpHeaders(), null);
+            return new Response<>(request, 200, new HttpHeaders(), null);
         };
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(badClient)

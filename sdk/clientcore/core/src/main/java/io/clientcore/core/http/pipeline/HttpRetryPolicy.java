@@ -241,7 +241,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying.
      */
-    private Duration determineDelayDuration(Response<?> response, int tryCount,
+    private Duration determineDelayDuration(Response<BinaryData> response, int tryCount,
         Function<HttpHeaders, Duration> delayFromHeaders) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (delayFromHeaders == null) {
@@ -257,7 +257,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         return calculateRetryDelay(tryCount);
     }
 
-    private boolean shouldRetryResponse(Response<?> response, int tryCount, List<Exception> retriedExceptions) {
+    private boolean shouldRetryResponse(Response<BinaryData> response, int tryCount,
+        List<Exception> retriedExceptions) {
         if (shouldRetryCondition != null) {
             return tryCount < maxRetries
                 && shouldRetryCondition.test(new HttpRetryCondition(response, null, tryCount, retriedExceptions));

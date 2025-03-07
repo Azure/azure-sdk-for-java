@@ -96,39 +96,47 @@ public class HttpUrlConnectionHttpClient implements HttpClient {
         }
     }
 
-    private static class HttpURLResponse implements Response<BinaryData> {
-        private final HttpRequest request;
+    private static class HttpURLResponse extends Response<BinaryData> {
         private final HttpURLConnection connection;
-        private final BinaryData body;
-
-        /**
-         * Creates an instance of {@link Response}.
-         *
-         * @param request The {@link HttpRequest} that resulted in this {@link Response}.
-         */
-        protected HttpURLResponse(HttpRequest request) {
-            this.request = request;
-            this.connection = null;
-            this.body = null;
-        }
 
         /**
          * Constructor for HttpURLResponse
          *
          * @param connection The {@link HttpURLConnection} to create a {@link Response} from.
          * @param request The {@link HttpRequest} that resulted in this {@link Response}.
-         * @throws UncheckedIOException if a failure occurs.
          */
         HttpURLResponse(HttpURLConnection connection, HttpRequest request) {
-            this.request = request;
+            super(request, getResponseCode(connection), createHttpHeaders(connection), getResponseBody(connection));
             this.connection = connection;
+        }
+
+        private static int getResponseCode(HttpURLConnection connection) {
+            try {
+                return connection.getResponseCode();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+
+        private static HttpHeaders createHttpHeaders(HttpURLConnection connection) {
+            HttpHeaders headers = new HttpHeaders();
+            connection.getHeaderFields().forEach((key, value) -> {
+                if (key == null) {
+                    return;
+                }
+                headers.add(new HttpHeader(HttpHeaderName.fromString(key), value));
+            });
+            return headers;
+        }
+
+        private static BinaryData getResponseBody(HttpURLConnection connection) {
             try {
                 if (connection.getResponseCode() >= 100 && connection.getResponseCode() < 400) {
                     InputStream inputStream = connection.getInputStream();
-                    body = new ByteArrayBinaryData(readResponseBytes(inputStream));
+                    return new ByteArrayBinaryData(readResponseBytes(inputStream));
                 } else {
                     InputStream inputStream = connection.getErrorStream();
-                    body = new ByteArrayBinaryData(readResponseBytes(inputStream));
+                    return new ByteArrayBinaryData(readResponseBytes(inputStream));
                 }
             } catch (IOException e) {
                 // Handle connection exception and retrieve error information
@@ -157,42 +165,6 @@ public class HttpUrlConnectionHttpClient implements HttpClient {
             bufferedInputStream.close();
             byteArrayOutputStream.close();
             return byteArrayOutputStream.toByteArray();
-        }
-
-        @Override
-        public int getStatusCode() {
-            try {
-                return connection.getResponseCode();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            HttpHeaders headers = new HttpHeaders();
-            connection.getHeaderFields().forEach((key, value) -> {
-                if (key == null) {
-                    return;
-                }
-                headers.add(new HttpHeader(HttpHeaderName.fromString(key), value));
-            });
-            return headers;
-        }
-
-        @Override
-        public HttpRequest getRequest() {
-            return request;
-        }
-
-        @Override
-        public BinaryData getValue() {
-            return body;
-        }
-
-        @Override
-        public BinaryData getBody() {
-            return body;
         }
 
         @Override

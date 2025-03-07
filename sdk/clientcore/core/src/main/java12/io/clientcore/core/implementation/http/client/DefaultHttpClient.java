@@ -201,8 +201,7 @@ public final class DefaultHttpClient implements HttpClient {
 
         }
 
-        return new JdkHttpResponse(request, response.statusCode(), coreHeaders,
-            body == null ? BinaryData.empty() : body);
+        return new Response<>(request, response.statusCode(), coreHeaders, body == null ? BinaryData.empty() : body);
     }
 
     private static ResponseBodyMode getResponseBodyMode(HttpRequest request, String contentType,

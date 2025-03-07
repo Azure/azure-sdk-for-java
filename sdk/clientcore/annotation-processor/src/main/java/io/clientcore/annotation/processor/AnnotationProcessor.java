@@ -21,7 +21,6 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.models.binarydata.BinaryData;
 import java.util.List;
 import java.util.Objects;
@@ -145,7 +144,6 @@ public class AnnotationProcessor extends AbstractProcessor {
         templateInput.addImport(HttpPipeline.class.getName());
         templateInput.addImport(HttpHeaderName.class.getName());
         templateInput.addImport(HttpMethod.class.getName());
-        templateInput.addImport(HttpResponse.class.getName());
         templateInput.addImport(HttpRequest.class.getName());
         templateInput.addImport(Response.class.getName());
         templateInput.addImport(Void.class.getName());

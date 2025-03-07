@@ -4,13 +4,13 @@
 package io.clientcore.core.implementation.http.rest;
 
 import io.clientcore.core.annotations.ServiceInterface;
-import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -95,7 +95,7 @@ public class RestProxyImplTests {
                 success &= request.getHttpMethod().equals(HttpMethod.GET);
             }
 
-            return new MockHttpResponse(request, success ? 200 : 400) {
+            return new Response<BinaryData>(request, success ? 200 : 400, new HttpHeaders(), BinaryData.empty()) {
                 @Override
                 public void close() throws IOException {
                     lastResponseClosed = true;

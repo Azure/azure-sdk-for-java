@@ -6,7 +6,6 @@ package com.azure.v2.core.http.policy;
 import com.azure.v2.core.credentials.TokenCredential;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.http.client.HttpClient;
-
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -14,7 +13,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.http.HttpResponse;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -42,7 +41,7 @@ public class AzureBearerTokenAuthenticationPolicyTests {
         HttpClient client = getCaeHttpClient(challenge, callCount);
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(policy).httpClient(client).build();
 
-        try (Response<?> response
+        try (Response<BinaryData> response
             = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"))) {
             assertEquals(expectedStatusCode, response.getStatusCode());
         } catch (IOException e) {
@@ -52,7 +51,7 @@ public class AzureBearerTokenAuthenticationPolicyTests {
 
         if (expectedClaims != null) {
             String actualEncodedClaims = AzureBearerTokenAuthenticationPolicy.getChallengeParameterFromResponse(
-                new HttpResponse<>(null, 401, new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge), null),
+                new Response<>(null, 401, new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge), null),
                 "Bearer", "claims");
             assertEquals(encodedClaims, actualEncodedClaims);
         }
@@ -75,12 +74,12 @@ public class AzureBearerTokenAuthenticationPolicyTests {
         return request -> {
             if (callCount.get() <= 1) {
                 if (challenge == null) {
-                    return new HttpResponse<>(request, 200, new HttpHeaders(), null);
+                    return new Response<>(request, 200, new HttpHeaders(), null);
                 }
-                return new HttpResponse<>(request, 401,
+                return new Response<>(request, 401,
                     new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge), null);
             }
-            return new HttpResponse<>(request, 200, new HttpHeaders(), null);
+            return new Response<>(request, 200, new HttpHeaders(), null);
         };
     }
 

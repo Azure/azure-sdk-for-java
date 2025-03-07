@@ -4,6 +4,7 @@
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * Information about the request that failed, used to determine whether a retry should be attempted.
  */
 public final class HttpRetryCondition {
-    private final Response<?> response;
+    private final Response<BinaryData> response;
     private final Exception exception;
     private final int tryCount;
     private final List<Exception> retriedExceptions;
@@ -25,7 +26,8 @@ public final class HttpRetryCondition {
      * @param tryCount The number of tries that have been already attempted.
      * @param retriedExceptions The list of exceptions that have been encountered during retries.
      */
-    HttpRetryCondition(Response<?> response, Exception exception, int tryCount, List<Exception> retriedExceptions) {
+    HttpRetryCondition(Response<BinaryData> response, Exception exception, int tryCount,
+        List<Exception> retriedExceptions) {
         this.response = response;
         this.exception = exception;
         this.tryCount = tryCount;
@@ -40,7 +42,7 @@ public final class HttpRetryCondition {
      *
      * @return The HTTP response of the request that failed.
      */
-    public Response<?> getResponse() {
+    public Response<BinaryData> getResponse() {
         return response;
     }
 

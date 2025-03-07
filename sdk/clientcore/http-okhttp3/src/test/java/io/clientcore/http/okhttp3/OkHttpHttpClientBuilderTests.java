@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.SharedExecutorService;
@@ -129,7 +130,7 @@ public class OkHttpHttpClientBuilderTests {
             .build();
         HttpClient client = new OkHttpHttpClientBuilder(existingClient).build();
 
-        try (Response<?> response
+        try (Response<BinaryData> response
             = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(cookieValidatorUri))) {
             assertEquals(200, response.getStatusCode());
         }
@@ -153,7 +154,7 @@ public class OkHttpHttpClientBuilderTests {
             = chain -> chain.proceed(chain.request().newBuilder().addHeader("Cookie", "test=success").build());
         HttpClient client = new OkHttpHttpClientBuilder().addNetworkInterceptor(testInterceptor).build();
 
-        try (Response<?> response
+        try (Response<BinaryData> response
             = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(cookieValidatorUri))) {
             assertEquals(200, response.getStatusCode());
         }
@@ -181,7 +182,7 @@ public class OkHttpHttpClientBuilderTests {
             .networkInterceptors(Collections.singletonList(goodCookieSetter))
             .build();
 
-        try (Response<?> response
+        try (Response<BinaryData> response
             = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(cookieValidatorUri))) {
             assertEquals(200, response.getStatusCode());
         }
@@ -211,7 +212,8 @@ public class OkHttpHttpClientBuilderTests {
             .connectionTimeout(Duration.ofSeconds(3600))
             .build();
 
-        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -220,7 +222,8 @@ public class OkHttpHttpClientBuilderTests {
     public void buildWithFollowRedirectSetToTrue() throws IOException {
         HttpClient client = new OkHttpHttpClientBuilder().followRedirects(true).build();
 
-        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(redirectUri))) {
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(redirectUri))) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -229,7 +232,8 @@ public class OkHttpHttpClientBuilderTests {
     public void buildWithFollowRedirectSetToFalse() throws IOException {
         HttpClient client = new OkHttpHttpClientBuilder().followRedirects(false).build();
 
-        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(redirectUri))) {
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(redirectUri))) {
             assertEquals(307, response.getStatusCode());
         }
     }
@@ -238,7 +242,8 @@ public class OkHttpHttpClientBuilderTests {
     public void buildWithFollowRedirectDefault() throws IOException {
         HttpClient client = new OkHttpHttpClientBuilder().build();
 
-        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(redirectUri))) {
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(redirectUri))) {
             assertEquals(307, response.getStatusCode());
         }
     }
@@ -258,7 +263,8 @@ public class OkHttpHttpClientBuilderTests {
             .readTimeout(Duration.ofSeconds(3600))
             .build();
 
-        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -277,7 +283,8 @@ public class OkHttpHttpClientBuilderTests {
             .callTimeout(Duration.ofSeconds(3600))
             .build();
 
-        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -305,7 +312,8 @@ public class OkHttpHttpClientBuilderTests {
         };
         HttpClient client = new OkHttpHttpClientBuilder().addNetworkInterceptor(validatorInterceptor).build();
 
-        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -318,7 +326,8 @@ public class OkHttpHttpClientBuilderTests {
         ConnectionPool connectionPool = new ConnectionPool();
         HttpClient client = new OkHttpHttpClientBuilder().connectionPool(connectionPool).build();
 
-        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
             assertEquals(200, response.getStatusCode());
             assertEquals(1, connectionPool.connectionCount());
         }

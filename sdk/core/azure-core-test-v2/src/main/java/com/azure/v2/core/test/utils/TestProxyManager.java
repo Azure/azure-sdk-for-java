@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 
@@ -112,7 +113,7 @@ public final class TestProxyManager {
             }
 
             try {
-                Response<?> response = client.send(request);
+                Response<BinaryData> response = client.send(request);
                 if (response != null && response.getStatusCode() == 200) {
                     return true;
                 }

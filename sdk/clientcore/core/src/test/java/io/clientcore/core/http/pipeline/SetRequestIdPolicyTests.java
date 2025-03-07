@@ -3,11 +3,12 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,7 @@ public class SetRequestIdPolicyTests {
                     Assertions.fail();
                 }
 
-                return new MockHttpResponse(request, 500);
+                return new Response<>(request, 500, new HttpHeaders(), BinaryData.empty());
             }).build();
 
         try (Response<?> response
@@ -70,7 +71,7 @@ public class SetRequestIdPolicyTests {
                         Assertions.fail();
                     }
 
-                    return new MockHttpResponse(request, 500);
+                    return new Response<>(request, 500, new HttpHeaders(), BinaryData.empty());
                 })
                 .build();
 
