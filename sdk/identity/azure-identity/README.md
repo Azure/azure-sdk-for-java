@@ -307,7 +307,6 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 |[DeviceCodeCredential][cred_dcc]| Interactively authenticates a user on devices with limited UI                                             |[example][cred_dcc_example]|[device code authentication][cred_dcc_ref]|
 |[InteractiveBrowserCredential][cred_ibc]| Interactively authenticates a user with the default system browser                                        |[example][cred_ibc_example]|[OAuth 2.0 auth code][cred_acc_ref]|
 |[OnBehalfOfCredential][cred_obo]| Propagates the delegated user identity and permissions through the request chain                          ||[On-behalf-of authentication][cred_obo_ref]|
-|[UsernamePasswordCredential][cred_upc]| **Deprecated** Authenticates a user with a username and password without multi-factor auth                |[example][cred_upc_example]|[Username + password authentication][cred_upc_ref]|
 
 ### Authenticate via development tools
 
@@ -343,17 +342,6 @@ Credentials can be chained together to be tried in turn until one succeeds using
 |`AZURE_TENANT_ID`|ID of the application's Microsoft Entra tenant|
 |`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PFX or PEM-encoded certificate file including private key|
 |`AZURE_CLIENT_CERTIFICATE_PASSWORD`|(optional) password for certificate. The certificate can't be password-protected unless this value is specified.|
-
-### Username and password
-
-> **Warning**: Username and password authentication doesn't support multifactor authentication (MFA) and is **deprecated**. For more details, see [Planning for mandatory MFA](https://aka.ms/azsdk/identity/mfa).
-
-|Variable name|Value|
-|-|-|
-|`AZURE_CLIENT_ID`|ID of a Microsoft Entra application|
-|`AZURE_TENANT_ID`|(optional) ID of the application's Microsoft Entra tenant|
-|`AZURE_USERNAME`|a username (usually an email address)|
-|`AZURE_PASSWORD`|that user's password|
 
 ### Managed identity (`DefaultAzureCredential`)
 
@@ -443,9 +431,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_mic_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity
 [cred_obo]: https://learn.microsoft.com/java/api/com.azure.identity.onbehalfofcredential?view=azure-java-stable
 [cred_obo_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth2-on-behalf-of-flow
-[cred_upc]: https://learn.microsoft.com/java/api/com.azure.identity.usernamepasswordcredential?view=azure-java-stable
-[cred_upc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-username-and-password
-[cred_upc_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth-ropc
 [cred_vsc]: https://learn.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable
 [cred_vsc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code
 [cred_vsc_ref]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account
