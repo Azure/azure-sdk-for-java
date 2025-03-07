@@ -84,7 +84,7 @@ jobs:
 
     steps:
       - pwsh: |
-          gci -r /mnt/vss/__work/1/.m2/repository/org/apache/logging/log4j -ErrorAction SilentlyContinue
+          gci -r /mnt/vss/__work/1/.m2/repository -ErrorAction SilentlyContinue
         displayName: 'Show the current log4j versions in the cache'
         
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
@@ -258,6 +258,10 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
+
+      - pwsh: |
+          gci -r /mnt/vss/__work/1/.m2/repository -ErrorAction SilentlyContinue
+        displayName: 'Show the current log4j versions in the cache'
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
