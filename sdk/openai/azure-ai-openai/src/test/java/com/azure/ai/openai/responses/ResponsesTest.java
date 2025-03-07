@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
@@ -90,7 +93,8 @@ public class ResponsesTest extends AzureResponsesTestBase {
             events.forEach(event -> {
                 assertNotNull(event);
                 if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                    ResponsesResponseStreamEventResponseCompleted completedEvent = (ResponsesResponseStreamEventResponseCompleted) event;
+                    ResponsesResponseStreamEventResponseCompleted completedEvent
+                        = (ResponsesResponseStreamEventResponseCompleted) event;
                     ResponsesResponse response = completedEvent.getResponse();
                     assertNotNull(response.getId());
                     assertNotNull(response.getObject());
@@ -116,12 +120,14 @@ public class ResponsesTest extends AzureResponsesTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request, new RequestOptions());
+            IterableStream<ResponsesResponseStreamEvent> events
+                = client.createResponseStreaming(request, new RequestOptions());
 
             events.forEach(event -> {
                 assertNotNull(event);
                 if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                    ResponsesResponseStreamEventResponseCompleted completedEvent = (ResponsesResponseStreamEventResponseCompleted) event;
+                    ResponsesResponseStreamEventResponseCompleted completedEvent
+                        = (ResponsesResponseStreamEventResponseCompleted) event;
                     ResponsesResponse response = completedEvent.getResponse();
                     assertNotNull(response.getId());
                     assertNotNull(response.getObject());
@@ -196,7 +202,8 @@ public class ResponsesTest extends AzureResponsesTestBase {
             String responseId = createdResponse.getId();
 
             // Now get the response with includables
-            ResponsesResponse response = client.getResponse(responseId, Arrays.asList(CreateResponsesRequestIncludable.FILE_SEARCH_CALL_RESULTS));
+            ResponsesResponse response = client.getResponse(responseId,
+                Arrays.asList(CreateResponsesRequestIncludable.FILE_SEARCH_CALL_RESULTS));
 
             assertNotNull(response);
             assertEquals(responseId, response.getId());
@@ -236,12 +243,13 @@ public class ResponsesTest extends AzureResponsesTestBase {
 
         // First create a response to get its ID
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
-                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
+            Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
         ResponsesResponse createdResponse = client.createResponse(request);
         String responseId = createdResponse.getId();
 
         // Now list input items
-        ResponsesInputItemList items = client.listInputItems(responseId, 10, ListInputItemsRequestOrder.ASC, null, null);
+        ResponsesInputItemList items
+            = client.listInputItems(responseId, 10, ListInputItemsRequestOrder.ASC, null, null);
 
         assertNotNull(items);
         assertNotNull(items.getObject());

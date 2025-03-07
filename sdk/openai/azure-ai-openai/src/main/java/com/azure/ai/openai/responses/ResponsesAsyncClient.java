@@ -7,7 +7,7 @@ import static com.azure.ai.openai.implementation.OpenAIUtils.addAzureVersionToRe
 
 import com.azure.ai.openai.responses.implementation.NonAzureResponsesClientImpl;
 import com.azure.ai.openai.responses.implementation.ResponsesClientImpl;
-import com.azure.ai.openai.responses.implementation.streaming.OpenAIServerSentEvents;
+import com.azure.ai.openai.responses.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.responses.models.CreateResponseRequestAccept;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
@@ -332,8 +332,8 @@ public final class ResponsesAsyncClient {
      * @param responseId The ID of the response to retrieve.
      * @param limit The maximum number of input items to return.
      * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after
-     * @param before
+     * @param after The cursor ID for positioning the returned list starting point.
+     * @param before The cursor ID for positioning the returned list end point.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -411,8 +411,8 @@ public final class ResponsesAsyncClient {
      * @param responseId The ID of the response to retrieve.
      * @param limit The maximum number of input items to return.
      * @param order The order in which to return the input items.
-     * @param after
-     * @param before
+     * @param after The cursor ID for positioning the returned list starting point.
+     * @param before The cursor ID for positioning the returned list end point.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -475,6 +475,7 @@ public final class ResponsesAsyncClient {
             BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ResponsesResponse.class));
     }
+
     /**
      * Creates a model response.
      *
@@ -492,7 +493,7 @@ public final class ResponsesAsyncClient {
     public Mono<ResponsesResponse> createResponse(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
         requestBody.setStream(false);
         return createResponseWithResponse(CreateResponseRequestAccept.APPLICATION_JSON.toString(),
-                BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono)
+            BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ResponsesResponse.class));
     }
 
@@ -513,7 +514,7 @@ public final class ResponsesAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         requestBody.setStream(true);
         Flux<ByteBuffer> response = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
-                BinaryData.fromObject(requestBody), requestOptions).flatMapMany(it -> it.getValue().toFluxByteBuffer());
+            BinaryData.fromObject(requestBody), requestOptions).flatMapMany(it -> it.getValue().toFluxByteBuffer());
         return new OpenAIServerSentEvents(response).getEvents();
     }
 
@@ -599,6 +600,6 @@ public final class ResponsesAsyncClient {
     public Mono<DeleteResponseResponse> deleteResponse(String responseId) {
         RequestOptions requestOptions = new RequestOptions();
         return deleteResponseWithResponse(responseId, requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(DeleteResponseResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DeleteResponseResponse.class));
     }
 }

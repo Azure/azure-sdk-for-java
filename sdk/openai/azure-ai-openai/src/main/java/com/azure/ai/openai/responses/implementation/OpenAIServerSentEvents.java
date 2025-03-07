@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.ai.openai.responses.implementation.streaming;
+package com.azure.ai.openai.responses.implementation;
 
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
-import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -11,10 +10,12 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * A class that handles the deserialization of server sent events.
  */
@@ -32,7 +33,8 @@ public final class OpenAIServerSentEvents {
      * The output stream accumulating the server sent events.
      */
     private ByteArrayOutputStream outStream;
-    private final ClientLogger LOGGER = new ClientLogger(OpenAIServerSentEvents.class);
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIServerSentEvents.class);
 
     /**
      * Creates a new instance of OpenAIServerSentEvents.
@@ -58,38 +60,41 @@ public final class OpenAIServerSentEvents {
      *
      * @return A stream of server sent events deserialized into ResponsesResponseStreamEvents.
      */
-private Flux<ResponsesResponseStreamEvent> mapEventStream() {
-    return source.publishOn(Schedulers.boundedElastic()).concatMap(byteBuffer -> {
-        List<ResponsesResponseStreamEvent> values = new ArrayList<>();
-        byte[] byteArray = byteBuffer.array();
-        int lineBreakCharsEncountered = 0;
-
-        for (byte currentByte : byteArray) {
-            outStream.write(currentByte);
-            if (isByteLineFeed(currentByte)) {
-                lineBreakCharsEncountered++;
-                if (lineBreakCharsEncountered == SSE_CHUNK_LINE_BREAK_COUNT_MARKER) {
-                    processCurrentEvent(values);
-                    outStream = new ByteArrayOutputStream();
-                    lineBreakCharsEncountered = 0;
+    private Flux<ResponsesResponseStreamEvent> mapEventStream() {
+        return source.publishOn(Schedulers.boundedElastic()).concatMap(byteBuffer -> {
+            List<ResponsesResponseStreamEvent> values = new ArrayList<>();
+            byte[] byteArray = byteBuffer.array();
+            int lineBreakCharsEncountered = 0;
+            try {
+                for (byte currentByte : byteArray) {
+                    outStream.write(currentByte);
+                    if (isByteLineFeed(currentByte)) {
+                        lineBreakCharsEncountered++;
+                        if (lineBreakCharsEncountered == SSE_CHUNK_LINE_BREAK_COUNT_MARKER) {
+                            processCurrentEvent(values);
+                            outStream = new ByteArrayOutputStream();
+                            lineBreakCharsEncountered = 0;
+                        }
+                    } else if (!isByteCarriageReturn(currentByte)) {
+                        lineBreakCharsEncountered = 0;
+                    }
                 }
-            } else if (!isByteCarriageReturn(currentByte)) {
-                lineBreakCharsEncountered = 0;
+
+                processRemainingBytes(values);
+            } catch (IOException e) {
+                return Flux.error(LOGGER.atError().log(e));
             }
-        }
+            return Flux.fromIterable(values);
+        }).cache();
+    }
 
-        processRemainingBytes(values);
-        return Flux.fromIterable(values);
-    }).cache();
-}
-
-    private void processCurrentEvent(List<ResponsesResponseStreamEvent> values) {
-        String currentLine = outStream.toString(StandardCharsets.UTF_8);
+    private void processCurrentEvent(List<ResponsesResponseStreamEvent> values) throws UnsupportedEncodingException {
+        String currentLine = outStream.toString(StandardCharsets.UTF_8.name());
         handleCurrentEvent(currentLine, values);
     }
 
-    private void processRemainingBytes(List<ResponsesResponseStreamEvent> values) {
-        String remainingBytes = outStream.toString(StandardCharsets.UTF_8);
+    private void processRemainingBytes(List<ResponsesResponseStreamEvent> values) throws UnsupportedEncodingException {
+        String remainingBytes = outStream.toString(StandardCharsets.UTF_8.name());
         if (remainingBytes.endsWith("\n\n") || remainingBytes.endsWith("\r\n\r\n")) {
             handleCurrentEvent(remainingBytes, values);
         }
@@ -131,16 +136,9 @@ private Flux<ResponsesResponseStreamEvent> mapEventStream() {
             return;
         }
 
-        String eventName = lines[0].substring(6).trim();
+        // We don't need the event name, leaving this here for clarity.
+        //        String eventName = lines[0].substring(6).trim();
         String eventJson = lines[1].substring(5).trim();
-
-//        if (ResponsesResponseStreamEventType.RESPONSE_DONE.equals(ResponsesResponseStreamEventType.fromString(eventName))) {
-//            return;
-//        }
-//        if (AssistantStreamEvent.ERROR.equals(AssistantStreamEvent.fromString(eventName))) {
-//            LOGGER.atError().log("Error event received: {}", eventJson);
-//            return;
-//        }
 
         outputValues.add(BinaryData.fromString(eventJson).toObject(ResponsesResponseStreamEvent.class));
     }

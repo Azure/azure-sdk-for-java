@@ -188,7 +188,6 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
         this.input = BinaryData.fromObject(input);
     }
 
-
     /**
      * Get the model property: Model ID used to generate the response, like `gpt-4o` or `o1`.
      * Refer to the [model guide](/docs/models) for more information and supported features for each model.

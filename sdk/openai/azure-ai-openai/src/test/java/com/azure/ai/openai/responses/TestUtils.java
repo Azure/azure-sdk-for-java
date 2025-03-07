@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.responses;
 
 import com.azure.core.util.Configuration;
@@ -16,21 +19,19 @@ public class TestUtils {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_RESPONSES_TEST_SERVICE_VERSIONS = "AZURE_RESPONSES_TEST_SERVICE_VERSIONS";
     private static final String SERVICE_VERSION_FROM_ENV
-            = Configuration.getGlobalConfiguration().get(AZURE_RESPONSES_TEST_SERVICE_VERSIONS);
+        = Configuration.getGlobalConfiguration().get(AZURE_RESPONSES_TEST_SERVICE_VERSIONS);
 
     static Stream<Arguments> getTestParametersResponses() {
         List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients().forEach(httpClient ->
-                Arrays.stream(AzureResponsesServiceVersion.values())
-                        .filter(TestUtils::supportsResponses)
-                        .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
+        getHttpClients().forEach(httpClient -> Arrays.stream(AzureResponsesServiceVersion.values())
+            .filter(TestUtils::supportsResponses)
+            .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
     }
 
     private static boolean supportsResponses(AzureResponsesServiceVersion serviceVersion) {
         return AzureResponsesServiceVersion.V2024_12_01_PREVIEW.equals(serviceVersion);
     }
-
 
     /**
      * Returns whether the given service version match the rules of test framework.
@@ -57,6 +58,6 @@ public class TestUtils {
         }
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList)
-                .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 }
