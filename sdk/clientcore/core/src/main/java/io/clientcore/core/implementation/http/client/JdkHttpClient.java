@@ -16,8 +16,8 @@ import java.util.Set;
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
-public final class DefaultHttpClient implements HttpClient {
-    private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
+public final class JdkHttpClient implements HttpClient {
+    private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
 
     private static final String ERROR_MESSAGE = "It is recommended that libraries be deployed on the latest LTS "
         + "version of Java, however the Java client will support down to Java 8. In the case where the client is to "
@@ -35,7 +35,7 @@ public final class DefaultHttpClient implements HttpClient {
      * @param readTimeout The read timeout.
      * @throws UnsupportedOperationException if the client is not running on Java 12 or higher.
      */
-    public DefaultHttpClient(Object httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
+    public JdkHttpClient(Object httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
         Duration responseTimeout, Duration readTimeout) {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }

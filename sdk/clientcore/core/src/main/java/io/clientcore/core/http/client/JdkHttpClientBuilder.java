@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.client;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
@@ -23,6 +25,7 @@ import java.util.concurrent.Executor;
  * using this functionality is running Java 12 or later but doesn't have {@code Multi-Release: true} in its
  * {@code META-INF/MANIFEST.MF} file.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class JdkHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
 

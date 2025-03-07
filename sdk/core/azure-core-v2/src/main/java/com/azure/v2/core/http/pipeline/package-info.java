@@ -34,6 +34,6 @@
  * @see io.clientcore.core.http.pipeline.HttpInstrumentationPolicy
  * @see io.clientcore.core.http.pipeline.HttpPipelinePolicy
  * @see io.clientcore.core.http.pipeline.HttpRetryPolicy
- * @see io.clientcore.core.http.pipeline.SetUserAgentPolicy
+ * @see io.clientcore.core.http.pipeline.UserAgentPolicy
  */
-package com.azure.v2.core.http.policy;
+package com.azure.v2.core.http.pipeline;

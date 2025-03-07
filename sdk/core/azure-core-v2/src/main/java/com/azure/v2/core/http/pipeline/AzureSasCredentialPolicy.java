@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.core.http.policy;
+package com.azure.v2.core.http.pipeline;
 
 import com.azure.v2.core.credentials.AzureSasCredential;
 import io.clientcore.core.http.pipeline.HttpCredentialPolicy;
@@ -28,7 +28,7 @@ import java.util.Objects;
  * <!-- src_embed com.azure.core.http.policy.AzureSasCredentialPolicy.constructor -->
  * <!-- end com.azure.core.http.policy.AzureSasCredentialPolicy.constructor -->
  *
- * @see com.azure.v2.core.http.policy
+ * @see com.azure.v2.core.http.pipeline
  * @see HttpPipelinePolicy
  * @see AzureSasCredential
  * @see HttpPipeline

@@ -1,20 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.core.http.policy;
+package com.azure.v2.core.http.pipeline;
 
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.implementation.AccessTokenCache;
 import io.clientcore.core.credentials.oauth.AccessToken;
-import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpCredentialPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.utils.AuthUtils;
@@ -172,8 +171,8 @@ public class AzureBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     }
 
     /**
-     * Examines a {@link HttpResponse} to see if it is a CAE challenge.
-     * @param response The {@link HttpResponse} to examine.
+     * Examines a {@link Response} to see if it is a CAE challenge.
+     * @param response The {@link Response} to examine.
      * @return True if the response is a CAE challenge, false otherwise.
      */
     static boolean isCaeClaimsChallenge(Response<?> response) {

@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.rest.UriEscapers;
@@ -110,6 +112,7 @@ import java.util.function.Consumer;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class RequestOptions {
     // RequestOptions is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
@@ -285,22 +288,6 @@ public final class RequestOptions {
     public RequestOptions setContext(Context context) {
         checkLocked("Cannot set context.");
         this.context = context;
-
-        return this;
-    }
-
-    /**
-     * Adds a key-value pair to the request context associated with this request.
-     *
-     * @param key The key to add to the context.
-     * @param value The value to add to the context.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     * @see #setContext(Context)
-     */
-    public RequestOptions putContext(Object key, Object value) {
-        checkLocked("Cannot modify context.");
-        this.context = this.context.put(key, value);
 
         return this;
     }

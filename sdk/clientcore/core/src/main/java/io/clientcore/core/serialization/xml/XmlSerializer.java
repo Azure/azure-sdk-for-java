@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.utils;
+package io.clientcore.core.serialization.xml;
 
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.serialization.xml.XmlReader;
-import io.clientcore.core.serialization.xml.XmlSerializable;
-import io.clientcore.core.serialization.xml.XmlWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;

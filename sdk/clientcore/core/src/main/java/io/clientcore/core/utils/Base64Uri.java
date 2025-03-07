@@ -5,6 +5,7 @@ package io.clientcore.core.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
@@ -77,8 +78,17 @@ public final class Base64Uri {
         if (bytes == null) {
             return new Base64Uri((String) null);
         } else {
-            return new Base64Uri(Base64Util.encodeURIWithoutPadding(bytes));
+            return new Base64Uri(encodeURIWithoutPadding(bytes));
         }
+    }
+
+    /**
+     * Encodes a byte array to base64 URI format.
+     * @param src the byte array to encode
+     * @return the base64 URI encoded bytes
+     */
+    private static byte[] encodeURIWithoutPadding(byte[] src) {
+        return src == null ? null : Base64.getUrlEncoder().withoutPadding().encode(src);
     }
 
     /**
@@ -91,11 +101,7 @@ public final class Base64Uri {
             return null;
         }
 
-        byte[] copy = new byte[bytes.length];
-
-        System.arraycopy(bytes, 0, copy, 0, bytes.length);
-
-        return copy;
+        return CoreUtils.arrayCopy(bytes);
     }
 
     /**
@@ -108,7 +114,7 @@ public final class Base64Uri {
             return null;
         }
 
-        return Base64Util.decodeURI(bytes);
+        return Base64.getUrlDecoder().decode(bytes);
     }
 
     @Override

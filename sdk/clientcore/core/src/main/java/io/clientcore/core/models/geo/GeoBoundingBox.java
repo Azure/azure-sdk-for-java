@@ -4,7 +4,7 @@
 package io.clientcore.core.models.geo;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
@@ -24,7 +24,7 @@ import java.util.Objects;
  * <p>This class is useful when you want to work with a bounding box in a geographic context. For example, you can use
  * it to define the area of interest for a map view, or to specify the spatial extent of a geographic dataset.</p>
  */
-@Metadata(conditions = TypeConditions.IMMUTABLE)
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
     // GeoBoundingBox is a commonly used model, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(GeoBoundingBox.class);

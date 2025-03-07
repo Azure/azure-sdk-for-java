@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.core.models;
+package io.clientcore.core.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -36,11 +36,6 @@ import java.util.Set;
  * CloudEvents is a specification for describing event data in common formats to provide interoperability across
  * services, platforms and systems.
  * </p>
- *
- * <p>
- * Some Azure services, for instance, EventGrid, are compatible with this specification. You can use this class to
- * communicate with these Azure services.
- * </p>
  * <p>
  * Depending on your scenario, you can either use the constructor
  * {@link #CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)} to create a CloudEvent, or use the
@@ -57,7 +52,7 @@ import java.util.Set;
  * <p>
  * <strong>Create CloudEvent Samples</strong>
  * </p>
- * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
+ * <!-- src_embed io.clientcore.core.models.CloudEvent#constructor -->
  * <pre>
  * &#47;&#47; Use BinaryData.fromBytes&#40;&#41; to create data in format CloudEventDataFormat.BYTES
  * byte[] exampleBytes = &quot;Hello World&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -91,7 +86,7 @@ import java.util.Set;
  * CloudEvent cloudEventDataJsonStr = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
  *     BinaryData.fromString&#40;jsonStringForData&#41;, CloudEventDataFormat.JSON, &quot;text&#47;plain&quot;&#41;;
  * </pre>
- * <!-- end com.azure.core.model.CloudEvent#constructor -->
+ * <!-- end io.clientcore.core.models.CloudEvent#constructor -->
  *
  * <p>
  * On the contrary, if you receive CloudEvents and have the Json string representation of one or more of
@@ -101,7 +96,7 @@ import java.util.Set;
  * <p>
  * <strong>Deserialize CloudEvent Samples</strong>
  * </p>
- * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
+ * <!-- src_embed io.clientcore.core.models.CloudEvent.fromString -->
  * <pre>
  * List&lt;CloudEvent&gt; cloudEventList = CloudEvent.fromString&#40;cloudEventJsonString&#41;;
  * CloudEvent cloudEvent = cloudEventList.get&#40;0&#41;;
@@ -114,9 +109,9 @@ import java.util.Set;
  * String stringValue = cloudEventData.toObject&#40;String.class&#41;;  &#47;&#47; If data payload is String.
  * String jsonStringValue = cloudEventData.toString&#40;&#41;;  &#47;&#47; The data payload represented in Json String.
  * </pre>
- * <!-- end com.azure.core.model.CloudEvent.fromString -->
+ * <!-- end io.clientcore.core.models.CloudEvent.fromString -->
  */
-@Metadata(conditions = TypeConditions.FLUENT)
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class CloudEvent implements JsonSerializable<CloudEvent> {
     private static final String SPEC_VERSION = "1.0";
 
@@ -209,7 +204,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * Json representation.</p>
      *
      * <p><strong>Create CloudEvent Samples</strong></p>
-     * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
+     * <!-- src_embed io.clientcore.core.models.CloudEvent#constructor -->
      * <pre>
      * &#47;&#47; Use BinaryData.fromBytes&#40;&#41; to create data in format CloudEventDataFormat.BYTES
      * byte[] exampleBytes = &quot;Hello World&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -243,7 +238,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * CloudEvent cloudEventDataJsonStr = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
      *     BinaryData.fromString&#40;jsonStringForData&#41;, CloudEventDataFormat.JSON, &quot;text&#47;plain&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.model.CloudEvent#constructor -->
+     * <!-- end io.clientcore.core.models.CloudEvent#constructor -->
      *
      * @param source Identifies the context in which an event happened. The combination of id and source must be unique
      * for each distinct event.
@@ -301,7 +296,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * {@code source}, or {@code type}. If you want to skip this validation, use {@link #fromString(String, boolean)}.
      *
      * <p><strong>Deserialize CloudEvent Samples</strong></p>
-     * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
+     * <!-- src_embed io.clientcore.core.models.CloudEvent.fromString -->
      * <pre>
      * List&lt;CloudEvent&gt; cloudEventList = CloudEvent.fromString&#40;cloudEventJsonString&#41;;
      * CloudEvent cloudEvent = cloudEventList.get&#40;0&#41;;
@@ -314,7 +309,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      * String stringValue = cloudEventData.toObject&#40;String.class&#41;;  &#47;&#47; If data payload is String.
      * String jsonStringValue = cloudEventData.toString&#40;&#41;;  &#47;&#47; The data payload represented in Json String.
      * </pre>
-     * <!-- end com.azure.core.model.CloudEvent.fromString -->
+     * <!-- end io.clientcore.core.models.CloudEvent.fromString -->
      *
      * @param cloudEventsJson the JSON payload containing one or more events.
      * @return all the events in the payload deserialized as {@link CloudEvent CloudEvents}.
