@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptionsBuilder;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.models.RequestOptions;
@@ -43,7 +44,7 @@ public class PagingOperationTests {
         String uri = "https://example.com";
         String firstPageUri = uri + "/foos";
         String nextLinkUri = uri + "/foos?page=2";
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+        RequestOptions requestOptions = RequestOptions.deserializeResponse();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(request -> {
                 String requestUri = request.getUri().toString();
@@ -87,7 +88,7 @@ public class PagingOperationTests {
         String uri = "https://example.com";
         String firstPageUri = uri + "/foos";
         String nextLinkUri = uri + "/foos?page=2";
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+        RequestOptions requestOptions = RequestOptions.deserializeResponse();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(request -> {
                 String requestUri = request.getUri().toString();

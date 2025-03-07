@@ -20,6 +20,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestOptionsBuilder;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEvent;
@@ -75,8 +76,6 @@ import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
-import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
-import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.implementation.utils.ImplUtils.bomAwareToString;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -279,7 +278,7 @@ public abstract class HttpClientTests {
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.PUT)
             .setUri(getRequestUri(ECHO_RESPONSE))
             .setBody(requestBody)
-            .setRequestOptions(new RequestOptions().setResponseBodyMode(DESERIALIZE));
+            .setRequestOptions(RequestOptions.deserializeResponse());
 
         try (Response<?> response = getHttpClient().send(request)) {
             // Read response twice using all accessors.
@@ -1622,8 +1621,8 @@ public abstract class HttpClientTests {
     @Test
     public void requestOptionsChangesBody() {
         Service27 service = createService(Service27.class);
-        HttpBinJSON response
-            = service.put(getServerUri(isSecure()), 42, new RequestOptions().setBody(BinaryData.fromString("24")));
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
+            new RequestOptionsBuilder().setBody(BinaryData.fromString("24")).build());
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1635,7 +1634,9 @@ public abstract class HttpClientTests {
     public void requestOptionsChangesBodyAndContentLength() {
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().setBody(BinaryData.fromString("4242")).setHeader(HttpHeaderName.CONTENT_LENGTH, "4"));
+            new RequestOptionsBuilder().setBody(BinaryData.fromString("4242"))
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, "4")
+                .build());
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1650,7 +1651,7 @@ public abstract class HttpClientTests {
     public void requestOptionsAddAHeader() {
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue")));
+            new RequestOptionsBuilder().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue")).build());
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1663,8 +1664,9 @@ public abstract class HttpClientTests {
     public void requestOptionsSetsAHeader() {
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"))
-                .setHeader(RANDOM_HEADER, "randomValue2"));
+            new RequestOptionsBuilder().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"))
+                .setHeader(RANDOM_HEADER, "randomValue2")
+                .build());
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1828,7 +1830,7 @@ public abstract class HttpClientTests {
     public void bodyIsDeserializedForServerSentEventType(String responseMode) throws IOException {
         ServerSentEventService service = createService(ServerSentEventService.class);
         RequestOptions requestOptions
-            = new RequestOptions().setResponseBodyMode(ResponseBodyMode.valueOf(responseMode));
+            = new RequestOptionsBuilder().setResponseBodyMode(ResponseBodyMode.valueOf(responseMode)).build();
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
 
         try (Response<BinaryData> response = service.post(getServerUri(isSecure()), BinaryData.empty(),
@@ -1897,7 +1899,7 @@ public abstract class HttpClientTests {
     @Test
     public void bodyIsEmptyWhenIgnoreBodyIsSet() throws IOException {
         Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(IGNORE);
+        RequestOptions requestOptions = RequestOptions.ignoreResponse();
         HttpBinJSON httpBinJSON = service.put(getServerUri(isSecure()), 42, requestOptions);
 
         assertNull(httpBinJSON);
@@ -1912,7 +1914,7 @@ public abstract class HttpClientTests {
     @Test
     public void bodyIsEmptyWhenIgnoreBodyIsSetForStreamResponse() throws IOException {
         Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(IGNORE);
+        RequestOptions requestOptions = RequestOptions.ignoreResponse();
         HttpBinJSON httpBinJSON = service.postStream(getServerUri(isSecure()), 42, requestOptions);
 
         assertNull(httpBinJSON);
@@ -1928,7 +1930,7 @@ public abstract class HttpClientTests {
     @Test
     public void bodyIsStreamedWhenResponseBodyModeIndicatesIt() throws IOException {
         Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(STREAM);
+        RequestOptions requestOptions = new RequestOptionsBuilder().setResponseBodyMode(STREAM).build();
 
         try (
             Response<HttpBinJSON> response = service.postStreamResponse(getServerUri(isSecure()), 42, requestOptions)) {
@@ -1941,7 +1943,7 @@ public abstract class HttpClientTests {
     @Test
     public void bodyIsBufferedWhenResponseBodyModeIndicatesIt() throws IOException {
         Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(BUFFER);
+        RequestOptions requestOptions = new RequestOptionsBuilder().setResponseBodyMode(BUFFER).build();
         HttpBinJSON httpBinJSON = service.postStream(getServerUri(isSecure()), 42, requestOptions);
 
         assertNotNull(httpBinJSON);
@@ -1958,7 +1960,7 @@ public abstract class HttpClientTests {
     @Test
     public void bodyIsDeserializedWhenResponseBodyModeIndicatesIt() throws IOException {
         Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(DESERIALIZE);
+        RequestOptions requestOptions = RequestOptions.deserializeResponse();
         HttpBinJSON httpBinJSON = service.postStream(getServerUri(isSecure()), 42, requestOptions);
 
         assertNotNull(httpBinJSON);

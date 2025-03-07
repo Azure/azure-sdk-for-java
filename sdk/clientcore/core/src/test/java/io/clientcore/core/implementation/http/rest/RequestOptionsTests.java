@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestOptionsBuilder;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,8 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
+        RequestOptions options
+            = new RequestOptionsBuilder().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1").build();
 
         options.getRequestCallback().accept(request);
 
@@ -38,8 +40,9 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions().addHeader(new HttpHeader(X_MS_FOO, "bar"))
-            .addHeader(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json"));
+        RequestOptions options = new RequestOptionsBuilder().addHeader(new HttpHeader(X_MS_FOO, "bar"))
+            .addHeader(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json"))
+            .build();
         options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
@@ -55,7 +58,7 @@ public class RequestOptionsTests {
         String expected = "{\"id\":\"123\"}";
 
         BinaryData requestBody = BinaryData.fromString(expected);
-        RequestOptions options = new RequestOptions().setBody(requestBody);
+        RequestOptions options = new RequestOptionsBuilder().setBody(requestBody).build();
         options.getRequestCallback().accept(request);
         BinaryData actual = request.getBody();
 
@@ -68,11 +71,12 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions().addHeader(new HttpHeader(X_MS_FOO, "bar"))
+        RequestOptions options = new RequestOptionsBuilder().addHeader(new HttpHeader(X_MS_FOO, "bar"))
             .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
             .addRequestCallback(r -> r.setUri("https://request.uri"))
             .addQueryParam("$skipToken", "1")
-            .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"));
+            .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"))
+            .build();
 
         options.getRequestCallback().accept(request);
 

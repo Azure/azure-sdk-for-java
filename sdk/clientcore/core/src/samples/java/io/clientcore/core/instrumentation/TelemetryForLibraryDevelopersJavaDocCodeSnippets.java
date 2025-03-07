@@ -207,9 +207,9 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         // Libraries that write async code should propagate context explicitly in addition to implicit propagation.
         if (tracer.isEnabled()) {
             if (requestOptions == null) {
-                requestOptions = new RequestOptions();
+                requestOptions = RequestOptions.none();
             }
-            requestOptions.setInstrumentationContext(span.getInstrumentationContext());
+            requestOptions = requestOptions.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
         }
 
         try (TracingScope scope = span.makeCurrent()) {
@@ -266,7 +266,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             }
 
             return clientCall(updatedOptions);
-        });
+        }).close();
 
         // END: io.clientcore.core.instrumentation.enrich
     }

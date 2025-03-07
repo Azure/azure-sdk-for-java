@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestOptionsBuilder;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
@@ -497,8 +498,9 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan));
+        RequestOptions requestOptions = new RequestOptionsBuilder()
+            .setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan))
+            .build();
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri("https://localhost:8080/path/to/resource?query=param")
@@ -537,11 +539,11 @@ public class HttpInstrumentationPolicyTests {
         io.clientcore.core.instrumentation.tracing.Tracer tracer
             = Instrumentation.create(otelOptions, new LibraryInstrumentationOptions("test-library")).getTracer();
 
-        RequestOptions requestOptions = new RequestOptions();
         io.clientcore.core.instrumentation.tracing.Span parent
             = tracer.spanBuilder("parent", INTERNAL, null).startSpan();
 
-        requestOptions.setInstrumentationContext(parent.getInstrumentationContext());
+        RequestOptions requestOptions
+            = new RequestOptionsBuilder().setInstrumentationContext(parent.getInstrumentationContext()).build();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(otelOptions))
             .httpClient(request -> new MockHttpResponse(request, 200))
