@@ -83,6 +83,10 @@ jobs:
       os: linux
 
     steps:
+      - pwsh: |
+          gci -r /mnt/vss/__work/1/.m2/repository/org/apache/logging/log4j
+        displayName: 'Show the current log4j versions in the cache'
+        
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:

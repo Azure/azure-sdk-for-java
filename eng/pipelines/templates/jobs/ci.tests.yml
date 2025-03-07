@@ -104,6 +104,12 @@ jobs:
           sbomEnabled: false
 
     steps:
+
+      - pwsh: |
+          gci -r /mnt/vss/__work/1/.m2/repository/org/apache/logging/log4j
+        displayName: 'Show the current log4j versions in the cache'
+        condition: succeededOrFailed()
+
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           CheckoutRecordings: true
@@ -173,4 +179,9 @@ jobs:
               Write-Host "##[endgroup]"
           }
         displayName: Dump Test-Proxy Error Logs
+        condition: succeededOrFailed()
+
+      - pwsh: |
+          gci -r /mnt/vss/__work/1/.m2/repository/org/apache/logging/log4j
+        displayName: 'Show the current log4j versions in the cache'
         condition: succeededOrFailed()
