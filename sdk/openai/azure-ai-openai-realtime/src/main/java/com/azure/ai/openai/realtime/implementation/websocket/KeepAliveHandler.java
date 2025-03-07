@@ -37,7 +37,7 @@ public final class KeepAliveHandler extends ChannelDuplexHandler {
             // Ping, reply Pong
             LOGGER.atVerbose().log(() -> "Received PingWebSocketFrame");
             LOGGER.atVerbose().log(() -> "Sending PongWebSocketFrame");
-            ch.writeAndFlush(new PongWebSocketFrame());
+            ch.writeAndFlush(new PongWebSocketFrame(frame.copy().content()));
         } else if (frame instanceof PongWebSocketFrame) {
             // Pong
             LOGGER.atVerbose().log(() -> "Received PongWebSocketFrame");
