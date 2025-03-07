@@ -69,8 +69,8 @@ class HttpPipelineAdapter implements IHttpClient {
             request.setBody(BinaryData.fromString(httpRequest.body()));
         }
 
-        Response<?> response = httpPipeline.send(request);
-        String body = response.getBody().toString();
+        Response<BinaryData> response = httpPipeline.send(request);
+        String body = response.getValue().toString();
 
         logAccountIdentifiersIfConfigured(body);
         com.microsoft.aad.msal4j.HttpResponse httpResponse
