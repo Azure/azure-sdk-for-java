@@ -167,6 +167,29 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
     }
 
     /**
+     * Creates an instance of CreateResponsesRequest class.
+     *
+     * @param model the model value to set.
+     * @param input the input value to set.
+     */
+    public CreateResponsesRequest(CreateResponsesRequestModel model, String input) {
+        this.model = model;
+        this.input = BinaryData.fromString(input);
+    }
+
+    /**
+     * Creates an instance of CreateResponsesRequest class.
+     *
+     * @param model the model value to set.
+     * @param input the input value to set.
+     */
+    public CreateResponsesRequest(CreateResponsesRequestModel model, List<ResponsesMessage> input) {
+        this.model = model;
+        this.input = BinaryData.fromObject(input);
+    }
+
+
+    /**
      * Get the model property: Model ID used to generate the response, like `gpt-4o` or `o1`.
      * Refer to the [model guide](/docs/models) for more information and supported features for each model.
      * 

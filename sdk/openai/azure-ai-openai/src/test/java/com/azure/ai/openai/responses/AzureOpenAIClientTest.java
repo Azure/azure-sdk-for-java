@@ -3,7 +3,7 @@ package com.azure.ai.openai.responses;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
-import com.azure.ai.openai.responses.models.ResponsesItem;
+import com.azure.ai.openai.responses.models.ResponsesMessage;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
@@ -28,9 +28,8 @@ public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
     public void createResponseBlocking(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
         ResponsesClient client = getAzureResponseClient(httpClient, AzureResponsesServiceVersion.V2024_12_01_PREVIEW);
 
-        List<ResponsesItem> input = Arrays.asList(
-                new ResponsesUserMessage(null, Arrays.asList(new ResponsesInputContentText("Hello, world!"))));
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), input);
+        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.COMPUTER_USE_PREVIEW,
+                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
 
         ResponsesResponse response = client.createResponse(request);
 
@@ -46,7 +45,6 @@ public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
         assertNull(response.getTruncation());
         assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
         assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
-        assertNull(response.getReasoningEffort());
         assertNotNull(response.getUsage());
         assertNotNull(response.getMetadata());
     }
@@ -56,9 +54,8 @@ public class AzureOpenAIClientTest extends AzureOpenAIClientTestBase {
     public void createResponseStreaming(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
         ResponsesClient client = getAzureResponseClient(httpClient, AzureResponsesServiceVersion.V2024_12_01_PREVIEW);
 
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.fromString("computer-use-preview"), Arrays.asList(
-                new ResponsesUserMessage(null, Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
-        request.setStream(true);
+        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.COMPUTER_USE_PREVIEW,
+                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
 
         IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request);
 
