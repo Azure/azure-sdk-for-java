@@ -11,8 +11,10 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.ProgressReporter;
+import io.clientcore.core.utils.SharedExecutorService;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 /**
@@ -43,7 +45,7 @@ import java.util.function.Consumer;
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, an HTTP POST call should be
  * made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
- *
+ * <p>
  * The JSON structure for the request is defined as follows:
  *
  * <pre>{@code
@@ -122,6 +124,7 @@ public final class RequestOptions {
     private boolean locked;
     private ClientLogger logger;
     private InstrumentationContext instrumentationContext;
+    private ExecutorService asyncExecutor;
     private ProgressReporter progressReporter;
 
     /**
@@ -184,7 +187,6 @@ public final class RequestOptions {
         checkLocked("Cannot add header.");
         Objects.requireNonNull(header, "'header' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
-
         return this;
     }
 
@@ -201,7 +203,6 @@ public final class RequestOptions {
     public RequestOptions setHeader(HttpHeaderName header, String value) {
         checkLocked("Cannot set header.");
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
-
         return this;
     }
 
@@ -255,7 +256,6 @@ public final class RequestOptions {
         checkLocked("Cannot add request callback.");
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(requestCallback);
-
         return this;
     }
 
@@ -271,7 +271,6 @@ public final class RequestOptions {
         checkLocked("Cannot set body.");
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
-
         return this;
     }
 
@@ -285,7 +284,6 @@ public final class RequestOptions {
     public RequestOptions setContext(Context context) {
         checkLocked("Cannot set context.");
         this.context = context;
-
         return this;
     }
 
@@ -301,7 +299,6 @@ public final class RequestOptions {
     public RequestOptions putContext(Object key, Object value) {
         checkLocked("Cannot modify context.");
         this.context = this.context.put(key, value);
-
         return this;
     }
 
@@ -319,7 +316,6 @@ public final class RequestOptions {
     public RequestOptions setResponseBodyMode(ResponseBodyMode responseBodyMode) {
         checkLocked("Cannot set response body mode.");
         this.responseBodyMode = responseBodyMode;
-
         return this;
     }
 
@@ -333,7 +329,36 @@ public final class RequestOptions {
     public RequestOptions setLogger(ClientLogger logger) {
         checkLocked("Cannot set logger.");
         this.logger = logger;
+        return this;
+    }
 
+    /**
+     * Gets the {@link ExecutorService} used to execute async operations.
+     * <p>
+     * If null, the default {@link SharedExecutorService} will be used.
+     *
+     * @return The {@link ExecutorService} used to execute async operations.
+     */
+    public ExecutorService getAsyncExecutor() {
+        return asyncExecutor;
+    }
+
+    /**
+     * Sets the {@link ExecutorService} used to execute async operations.
+     * <p>
+     * If null, the default {@link SharedExecutorService} will be used.
+     *
+     * @param asyncExecutor The {@link ExecutorService} used to execute async operations.
+     * @return The updated {@link RequestOptions} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
+     */
+    public RequestOptions setAsyncExecutor(ExecutorService asyncExecutor) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set async executor."));
+        }
+
+        this.asyncExecutor = asyncExecutor;
         return this;
     }
 
@@ -344,7 +369,6 @@ public final class RequestOptions {
      */
     private RequestOptions lock() {
         locked = true;
-
         return this;
     }
 
@@ -378,7 +402,6 @@ public final class RequestOptions {
     public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
         checkLocked("Cannot set instrumentation context.");
         this.instrumentationContext = instrumentationContext;
-
         return this;
     }
 
