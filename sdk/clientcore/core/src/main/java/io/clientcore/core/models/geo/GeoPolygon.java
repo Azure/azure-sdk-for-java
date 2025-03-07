@@ -4,7 +4,7 @@
 package io.clientcore.core.models.geo;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -33,7 +33,7 @@ import java.util.Objects;
  * @see GeoPosition
  * @see GeoObject
  */
-@Metadata(conditions = TypeConditions.IMMUTABLE)
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class GeoPolygon extends GeoObject {
     private final List<GeoLinearRing> rings;
 

@@ -3,6 +3,8 @@
 
 package io.clientcore.core.models.binarydata;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.implementation.utils.IterableOfByteBuffersInputStream;
@@ -27,6 +29,7 @@ import java.util.function.Supplier;
 /**
  * A {@link BinaryData} implementation backed by an {@link InputStream}.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class InputStreamBinaryData extends BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(InputStreamBinaryData.class);
     private static final int INITIAL_BUFFER_CHUNK_SIZE = 8 * 1024;

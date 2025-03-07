@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -21,6 +23,7 @@ import java.util.Objects;
  *
  * @see HttpPipelinePolicy
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpPipeline {
     private final HttpClient httpClient;
     private final List<HttpPipelinePolicy> pipelinePolicies;

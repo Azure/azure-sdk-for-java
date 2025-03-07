@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -24,6 +26,7 @@ import java.util.Locale;
  * @see HttpRequest
  * @see Response
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class SetDatePolicy implements HttpPipelinePolicy {
     private static final DateTimeFormatter FORMATTER
         = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneOffset.UTC).withLocale(Locale.US);

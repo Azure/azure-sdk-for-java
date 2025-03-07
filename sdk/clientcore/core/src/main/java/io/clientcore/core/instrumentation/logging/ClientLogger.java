@@ -3,6 +3,8 @@
 
 package io.clientcore.core.instrumentation.logging;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -28,6 +30,7 @@ import java.util.Objects;
  * Context can be provided in the constructor and populated on every message or added per each log record.</p>
  * @see Configuration
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class ClientLogger {
     private final Slf4jLoggerShim logger;
     private final Map<String, Object> globalContext;

@@ -4,7 +4,7 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Objects;
@@ -22,7 +22,7 @@ import java.util.Objects;
  *
  * @see HttpRequest
  */
-@Metadata(conditions = TypeConditions.IMMUTABLE)
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpRange {
     // HttpRange can be a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRange.class);

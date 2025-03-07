@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.credentials.oauth.OAuthTokenCredential;
 import io.clientcore.core.credentials.oauth.OAuthTokenRequestContext;
@@ -29,6 +31,7 @@ import java.util.Objects;
  * @see HttpRequest
  * @see Response
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(OAuthBearerTokenAuthenticationPolicy.class);
     private static final String BEARER = "Bearer";

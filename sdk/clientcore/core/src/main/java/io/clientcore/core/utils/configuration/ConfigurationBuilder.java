@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static io.clientcore.core.annotations.TypeConditions.FLUENT;
+import static io.clientcore.core.annotations.MetadataProperties.FLUENT;
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Builds {@link Configuration} with external source.
  */
-@Metadata(conditions = FLUENT)
+@Metadata(properties = FLUENT)
 public final class ConfigurationBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationBuilder.class);
     private final MutableConfigurationSource mutableSource;

@@ -5,7 +5,7 @@ package io.clientcore.core.http.client;
 
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.http.client.DefaultHttpClientProvider;
+import io.clientcore.core.implementation.http.client.GlobalJdkHttpClient;
 import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
@@ -50,6 +50,6 @@ public interface HttpClient {
      */
     static HttpClient getSharedInstance() {
         return HttpClientProvider.getProviders()
-            .create(HttpClientProvider::getSharedInstance, new DefaultHttpClientProvider()::getSharedInstance, null);
+            .create(HttpClientProvider::getSharedInstance, GlobalJdkHttpClient.HTTP_CLIENT::getHttpClient, null);
     }
 }

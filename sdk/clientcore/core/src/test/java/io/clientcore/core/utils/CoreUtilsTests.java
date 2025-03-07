@@ -85,12 +85,12 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @MethodSource("byteArrayCloneSupplier")
-    public void byteArrayClone(byte[] byteArray) {
-        assertArrayEquals(byteArray, CoreUtils.clone(byteArray));
+    @MethodSource("byteArrayArrayCopySupplier")
+    public void byteArrayArrayCopy(byte[] byteArray) {
+        assertArrayEquals(byteArray, CoreUtils.arrayCopy(byteArray));
     }
 
-    private static Stream<byte[]> byteArrayCloneSupplier() {
+    private static Stream<byte[]> byteArrayArrayCopySupplier() {
         return Stream.of(null, new byte[0], "1234567890".getBytes(StandardCharsets.UTF_8));
     }
 
@@ -110,23 +110,23 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @MethodSource("cloneIntArraySupplier")
-    public void cloneIntArray(int[] intArray, int[] expected) {
-        assertArrayEquals(expected, CoreUtils.clone(intArray));
+    @MethodSource("arrayCopyIntArraySupplier")
+    public void arrayCopyIntArray(int[] intArray, int[] expected) {
+        assertArrayEquals(expected, CoreUtils.arrayCopy(intArray));
     }
 
-    private static Stream<Arguments> cloneIntArraySupplier() {
+    private static Stream<Arguments> arrayCopyIntArraySupplier() {
         return Stream.of(Arguments.of(null, null), Arguments.of(new int[0], new int[0]),
             Arguments.of(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 }));
     }
 
     @ParameterizedTest
-    @MethodSource("cloneGenericArraySupplier")
-    public <T> void cloneGenericArray(T[] genericArray, T[] expected) {
-        assertArrayEquals(expected, CoreUtils.clone(genericArray));
+    @MethodSource("arrayCopyGenericArraySupplier")
+    public <T> void arrayCopyGenericArray(T[] genericArray, T[] expected) {
+        assertArrayEquals(expected, CoreUtils.arrayCopy(genericArray));
     }
 
-    private static Stream<Arguments> cloneGenericArraySupplier() {
+    private static Stream<Arguments> arrayCopyGenericArraySupplier() {
         return Stream.of(Arguments.of(null, null), Arguments.of(new String[0], new String[0]),
             Arguments.of(new String[] { "1", "2", "3" }, new String[] { "1", "2", "3" }));
     }

@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
@@ -41,6 +43,7 @@ import static io.clientcore.core.utils.configuration.Configuration.MAX_RETRY_ATT
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpRetryPolicy implements HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRetryPolicy.class);

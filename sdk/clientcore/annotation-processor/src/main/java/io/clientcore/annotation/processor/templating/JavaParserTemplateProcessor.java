@@ -29,7 +29,6 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -54,6 +53,9 @@ import static io.clientcore.annotation.processor.utils.ResponseBodyModeGeneratio
  * This class generates the implementation of the service interface.
  */
 public class JavaParserTemplateProcessor implements TemplateProcessor {
+    private static final String APPLICATION_JSON = "application/json";
+    private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
+
     private static final Map<String, String> LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT;
 
     static {
@@ -493,12 +495,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         } else {
 
             if (contentType == null || contentType.isEmpty()) {
+                // TODO (alzimmer): Why is String octet-stream?
                 if ("byte[]".equals(parameterType) || "String".equals(parameterType)) {
-
-                    contentType = ContentType.APPLICATION_OCTET_STREAM;
+                    contentType = APPLICATION_OCTET_STREAM;
                 } else {
-
-                    contentType = ContentType.APPLICATION_JSON;
+                    contentType = APPLICATION_JSON;
                 }
             }
             // Set the content type header if it is not already set in the headers
@@ -520,7 +521,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             final String[] contentTypeParts = contentType.split(";");
 
             for (final String contentTypePart : contentTypeParts) {
-                if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
+                if (contentTypePart.trim().equalsIgnoreCase(APPLICATION_JSON)) {
                     isJson = true;
 
                     break;

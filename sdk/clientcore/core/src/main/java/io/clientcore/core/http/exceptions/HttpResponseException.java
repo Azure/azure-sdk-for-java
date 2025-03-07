@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.exceptions;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
@@ -10,6 +12,7 @@ import io.clientcore.core.models.binarydata.BinaryData;
  * The exception thrown when an unsuccessful response is received with http status code (e.g. {@code 3XX}, {@code 4XX},
  * {@code 5XX}) from the service request.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class HttpResponseException extends RuntimeException {
     /**
      * The HTTP response value.

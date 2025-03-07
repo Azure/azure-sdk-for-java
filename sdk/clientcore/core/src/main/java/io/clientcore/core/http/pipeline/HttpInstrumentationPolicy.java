@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
@@ -142,6 +144,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * <!-- end io.clientcore.core.instrumentation.enrichhttpspans -->
  *
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpInstrumentationPolicy.class);
     private static final HttpInstrumentationOptions DEFAULT_OPTIONS = new HttpInstrumentationOptions();

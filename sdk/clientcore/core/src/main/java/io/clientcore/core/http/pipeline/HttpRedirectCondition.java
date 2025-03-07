@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
@@ -12,6 +14,7 @@ import java.util.Set;
 /**
  * Information about the request that failed, used to determine whether a redirect should be attempted.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpRedirectCondition {
     private final Response<BinaryData> response;
     private final Set<String> redirectedUris;

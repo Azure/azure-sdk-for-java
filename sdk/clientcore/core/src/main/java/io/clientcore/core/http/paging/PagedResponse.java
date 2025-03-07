@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.paging;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -15,6 +17,7 @@ import java.util.List;
  * @param <T> The type of items in the page.
  * @see Response
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class PagedResponse<T> extends Response<List<T>> {
     private final String continuationToken;
     private final String nextLink;
