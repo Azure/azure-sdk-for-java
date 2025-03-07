@@ -84,8 +84,10 @@ jobs:
 
     steps:
       - pwsh: |
+          gci /mnt/vss/__work/1 -ErrorAction SilentlyContinue | Write-Host
           gci -r /mnt/vss/__work/1/.m2/repository -ErrorAction SilentlyContinue
         displayName: 'Show the current log4j versions in the cache'
+        condition: succeededOrFailed()
         
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
@@ -260,8 +262,10 @@ jobs:
           Artifacts: ${{ parameters.Artifacts }}
 
       - pwsh: |
-          gci -r /mnt/vss/__work/1/.m2/repository -ErrorAction SilentlyContinue
+          gci /mnt/vss/__work/1 -ErrorAction SilentlyContinue | Write-Host
+          gci -r /mnt/vss/__work/1/.m2/repository -ErrorAction SilentlyContinue | Write-Host
         displayName: 'Show the current log4j versions in the cache'
+        condition: succeededOrFailed()
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
