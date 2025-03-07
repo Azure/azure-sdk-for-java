@@ -189,7 +189,7 @@ def update_changelog(changelog_file, changelog):
 
 
 def compare_with_maven_package(
-    sdk_root: str, group_id: str, service: str, previous_version: str, current_version: str, module: str, write_changelog: bool = True
+    sdk_root: str, group_id: str, service: str, previous_version: str, current_version: str, module: str
 ):
     breaking = False
     changelog = ""
@@ -221,7 +221,7 @@ def compare_with_maven_package(
             if not os.path.exists(new_jar):
                 raise Exception("Cannot found built jar in {0}".format(new_jar))
             breaking, changelog, breaking_changes = generate_changelog_and_breaking_change(sdk_root, old_jar, new_jar)
-            if changelog is not None and write_changelog:
+            if changelog is not None:
                 changelog_file = os.path.join(sdk_root, CHANGELOG_FORMAT.format(service=service, artifact_id=module))
                 update_changelog(changelog_file, changelog)
             else:

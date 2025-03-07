@@ -278,8 +278,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 service,
                 get_latest_ga_version(GROUP_ID, module, stable_version),
                 current_version,
-                module,
-                False
+                module
             )
             logging.info("[Changelog] Complete breaking change detection for SDK automation.")
             logging.info("[Changelog] Start generating changelog.")
