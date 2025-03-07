@@ -72,7 +72,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         createItem("/bar/", "test_key_4", "test_value_4", "test_label_4", EMPTY_CONTENT_TYPE);
 
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
-        "Alpha", FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
+        "Alpha", FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, "fake-etag");
 
     private static final ConfigurationSetting ITEM_NULL =
         createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, null);

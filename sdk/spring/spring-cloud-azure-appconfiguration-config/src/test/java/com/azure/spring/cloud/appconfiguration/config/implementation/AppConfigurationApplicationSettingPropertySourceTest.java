@@ -16,6 +16,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_VALUE_2;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_VALUE_3;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItem;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
@@ -38,6 +39,7 @@ import org.springframework.boot.context.properties.source.InvalidConfigurationPr
 
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -67,6 +69,8 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     private static final ConfigurationSetting ITEM_INVALID_JSON = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3,
         TEST_LABEL_3,
         JSON_CONTENT_TYPE);
+    
+    private static final FeatureFlagConfigurationSetting FEATURE_FLAG = createItemFeatureFlag("Beta",  "/0");
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -104,6 +108,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         testItems.add(ITEM_1);
         testItems.add(ITEM_2);
         testItems.add(ITEM_3);
+        testItems.add(FEATURE_FLAG);
 
         String[] labelFilter = { "\0" };
 
@@ -126,7 +131,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         propertySource.initProperties(null, contextMock);
 
         String[] keyNames = propertySource.getPropertyNames();
-        String[] expectedKeyNames = testItems.stream()
+        String[] expectedKeyNames = testItems.stream().filter(config -> !(config instanceof FeatureFlagConfigurationSetting))
             .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);

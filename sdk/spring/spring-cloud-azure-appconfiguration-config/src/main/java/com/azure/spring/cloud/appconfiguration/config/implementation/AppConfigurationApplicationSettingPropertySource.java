@@ -127,7 +127,8 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
         throws InvalidConfigurationPropertyValueException {
-        handleJson(setting, trimStrings);
+        // Feature Flags aren't loaded as configuration, but are loaded as feature flags when loading a snapshot.
+        return;
     }
 
     private void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
