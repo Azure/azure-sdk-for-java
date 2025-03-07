@@ -1,9 +1,9 @@
 package com.azure.openrewrite.migration;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.test.RecipeSpec;
@@ -12,6 +12,8 @@ import org.openrewrite.test.SourceSpecs;
 import org.openrewrite.test.TypeValidation;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +26,7 @@ import java.util.stream.Stream;
 
 import static org.openrewrite.java.Assertions.java;
 
+@DisplayNameGeneration(CustomDisplayNameGenerator.class)
 public class FullSampleMigrationTest implements RewriteTest {
 
     static final String GOLDEN_IMAGE = "v2";
@@ -42,13 +45,14 @@ public class FullSampleMigrationTest implements RewriteTest {
         return false;
     }
 
-    static Stream<Path> sampleDirectories() throws IOException {
+    static Stream<String> sampleDirectories() throws IOException {
         List<Path> packageDirectories = packageDirectories().collect(Collectors.toList());
-        List<Path> sampleDirectories = new ArrayList<>();
+        List<String> sampleDirectories = new ArrayList<>();
         for (Path packageDirectory : packageDirectories) {
             sampleDirectories.addAll(Files
                 .list(packageDirectory)
                 .filter(Files::isDirectory)
+                .map(path -> path.toString())
                 .collect(Collectors.toList()));
         }
 
@@ -74,11 +78,12 @@ public class FullSampleMigrationTest implements RewriteTest {
 
 
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "{0}")
+    @Execution(ExecutionMode.CONCURRENT)
     @MethodSource("sampleDirectories")
-    public void testGoldenImage(Path sampleDir) throws Exception {
+    public void testGoldenImage(String sampleDirString) throws Exception {
+        Path sampleDir = Paths.get(sampleDirString);
         Assumptions.assumeFalse(isDisabledDir(sampleDir));
-
         Map<String, String> fileMap = new HashMap<String, String>();
 
         Path unmigratedDir = sampleDir.resolve(ORIGINAL_IMAGE);
@@ -92,10 +97,10 @@ public class FullSampleMigrationTest implements RewriteTest {
             }
         });
 
-        assertFullMigration(fileMap);
+        assertFullMigration(fileMap, sampleDirString);
     }
 
-    public void assertFullMigration(Map<String,String> fileMap) throws IOException {
+    public void assertFullMigration(Map<String,String> fileMap, String name) throws IOException {
         List<SourceSpecs> sourceSpecs = new ArrayList<SourceSpecs>();
         for (Map.Entry<String,String> entry : fileMap.entrySet()) {
 
@@ -113,9 +118,21 @@ public class FullSampleMigrationTest implements RewriteTest {
         if (sourceSpecs.isEmpty()) {
             Assumptions.abort("Migration samples are identical. No migration detected.");
         }
-        rewriteRun(
-            sourceSpecs.toArray(new SourceSpecs[sourceSpecs.size()])
-        );
+
+        try  {
+            rewriteRun(
+                sourceSpecs.toArray(new SourceSpecs[sourceSpecs.size()])
+            );
+        } catch (AssertionError e) {
+            String message = e.getMessage();
+            String relevantPortion = message.substring(message.indexOf("diff") , message.indexOf("expected: "));
+            throw new AssertionError("Migration failed for sample directory: " + name + "\n" + relevantPortion);
+        }
+
     }
+
+
+
+
 
 }
