@@ -106,7 +106,7 @@ jobs:
     steps:
 
       - pwsh: |
-          gci -r /mnt/vss/__work/1/.m2/repository/org/apache/logging/log4j
+          gci -r /mnt/vss/__work/1/.m2/repository/org/apache/logging/log4j -ErrorAction SilentlyContinue
         displayName: 'Show the current log4j versions in the cache'
         condition: succeededOrFailed()
 
@@ -182,6 +182,6 @@ jobs:
         condition: succeededOrFailed()
 
       - pwsh: |
-          gci -r /mnt/vss/__work/1/.m2/repository/org/apache/logging/log4j
+          gci -r /mnt/vss/__work/1/.m2/repository/org/apache/logging/log4j -ErrorAction SilentlyContinue
         displayName: 'Show the current log4j versions in the cache'
         condition: succeededOrFailed()
