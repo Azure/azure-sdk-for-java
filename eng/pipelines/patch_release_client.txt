@@ -42,6 +42,7 @@ com.azure:azure-data-tables # Tests owner: jairmyree
 com.azure:azure-developer-devcenter # Tests owner: drielenr, leti367
 com.azure:azure-developer-loadtesting # Tests owner: Harshan01, prativen
 com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
+com.azure:azure-health-insights-radiologyinsights # Tests owner: tomsft, koen-mertens
 com.azure:azure-identity-broker # Tests owner: billwert, vigera
 com.azure:azure-identity-extensions # Tests owner: saragluna, backwind1233
 com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan
