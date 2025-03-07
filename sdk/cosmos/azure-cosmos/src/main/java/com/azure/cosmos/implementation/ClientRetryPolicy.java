@@ -391,7 +391,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 .handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.regionalRoutingContextToRoute);
         }
 
-        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
+        boolean isPPAFBasedFailoverApplied = this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
 
         // The request has failed with 503, SDK need to decide whether it is safe to retry for write operations
         // For server generated retries, it is safe to retry
@@ -428,10 +428,12 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        if (!this.canUseMultipleWriteLocations && !isReadRequest && !this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
+        if (!this.canUseMultipleWriteLocations && !isReadRequest) {
             // Write requests on single master cannot be retried, no other regions available
-            // but retry when PPAF is enabled
-            return Mono.just(ShouldRetryResult.noRetry());
+            // but retry when PPAF is triggered
+            if (!isPPAFBasedFailoverApplied) {
+                return Mono.just(ShouldRetryResult.noRetry());
+            }
         }
 
         int availablePreferredLocations = this.globalEndpointManager.getPreferredLocationCount();

@@ -289,9 +289,9 @@ public class Configs {
     private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
     private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE = "COSMOS_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
 
-    private static final boolean DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED = true;
-    private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED = "COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED";
-    private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED_VARIABLE = "COSMOS_IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED";
+    private static final boolean DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED = false;
+    private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED = "COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED";
+    private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED_VARIABLE = "COSMOS_IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED";
 
     private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
     private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
@@ -889,24 +889,21 @@ public class Configs {
         return Boolean.parseBoolean(shouldOptInDefaultPartitionLevelCircuitBreakerConfig);
     }
 
-    public static boolean isPerPartitionAutomaticFailoverEnabled() {
-        String isPerPartitionAutomaticFailoverEnabledAsString =
-            System.getProperty(
-                IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
-                firstNonNull(
-                    emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE)),
-                    String.valueOf(DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)));
-
-        return Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsString);
+    public static String isPerPartitionAutomaticFailoverEnabled() {
+        return System.getProperty(
+            IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)));
     }
 
-    public static boolean isSessionTokenFalseProgressMergeDisabled() {
+    public static boolean isSessionTokenFalseProgressMergeEnabled() {
         String isSessionTokenFalseProgressMergeDisabledAsString =
             System.getProperty(
-                IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED,
+                IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED,
                 firstNonNull(
-                    emptyToNull(System.getenv().get(IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED_VARIABLE)),
-                    String.valueOf(DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED)));
+                    emptyToNull(System.getenv().get(IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED_VARIABLE)),
+                    String.valueOf(DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED)));
 
         return Boolean.parseBoolean(isSessionTokenFalseProgressMergeDisabledAsString);
     }

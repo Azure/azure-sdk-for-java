@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
@@ -46,14 +47,14 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests extends TestSuiteBase {
+public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBase {
 
     private static final String IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY = "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
 
     private GlobalEndpointManager singleWriteAccountGlobalEndpointManagerMock;
     private GlobalEndpointManager multiWriteAccountGlobalEndpointManagerMock;
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPPAFUnitTests.class);
 
     private static final String EAST_US_CNST = "eastus";
     private static final String EAST_US_2_CNST = "eastus2";
@@ -142,7 +143,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             System.setProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY, "true");
 
             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(globalEndpointManager, Configs.isPerPartitionAutomaticFailoverEnabled());
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(globalEndpointManager, Objects.equals(Configs.isPerPartitionAutomaticFailoverEnabled(), "true"));
 
             String pkRangeId = "0";
             String minInclusive = "AA";
@@ -271,7 +272,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 LocationEastUs2EndpointToLocationPair.getKey());
 
             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.singleWriteAccountGlobalEndpointManagerMock, Configs.isPerPartitionAutomaticFailoverEnabled());
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.singleWriteAccountGlobalEndpointManagerMock, Objects.equals(Configs.isPerPartitionAutomaticFailoverEnabled(), "true"));
 
             for (int i = 1; i <= 100; i++) {
 

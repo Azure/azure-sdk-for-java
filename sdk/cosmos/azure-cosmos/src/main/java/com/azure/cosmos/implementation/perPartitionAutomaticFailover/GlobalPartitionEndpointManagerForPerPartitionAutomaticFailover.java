@@ -119,6 +119,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
         if (partitionLevelFailoverInfo.tryMoveToNextLocation(accountLevelReadRoutingContexts, failedRegionalRoutingContext)) {
 
+            if (logger.isWarnEnabled()) {
+                logger.warn("Marking region {} as failed for partition key range {} and collection rid {}",
+                    request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint(),
+                    partitionKeyRangeWrapper.getPartitionKeyRange(),
+                    partitionKeyRangeWrapper.getCollectionResourceId());
+            }
+
             request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(partitionLevelFailoverInfo);
             return true;
         }
