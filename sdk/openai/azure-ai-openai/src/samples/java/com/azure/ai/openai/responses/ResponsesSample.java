@@ -2,12 +2,10 @@ package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
-import com.azure.ai.openai.responses.models.CreateResponsesRequestTruncation;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.credential.KeyCredential;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
@@ -26,13 +24,11 @@ public class ResponsesSample {
 
         // Create a request
         CreateResponsesRequest request = new CreateResponsesRequest(
-            CreateResponsesRequestModel.fromString("computer-use-preview"),
+            CreateResponsesRequestModel.GPT_4O_MINI,
             Arrays.asList(new ResponsesUserMessage(null, Arrays.asList(new ResponsesInputContentText("Hello, world!"))))
-        ).setTruncation(CreateResponsesRequestTruncation.AUTO);
+        );
 
         RequestOptions requestOptions = new RequestOptions();
-//        requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-preview"), "true");
-        requestOptions.setHeader(HttpHeaderName.fromString("OpenAI-Beta"), "responses=v1");
 
         // Send the request and get the response
         ResponsesResponse response = client.createResponse(request, requestOptions);
