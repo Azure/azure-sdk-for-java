@@ -138,7 +138,7 @@ com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.25;1.1.0-beta.1
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-json;1.4.0;1.5.0-beta.1
+com.azure:azure-json;1.4.0;1.5.0
 com.azure:azure-maps-traffic;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-weather;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-maps-timezone;1.0.0-beta.2;1.0.0-beta.3
@@ -495,7 +495,7 @@ io.clientcore:annotation-processor-test;1.0.0-beta.1;1.0.0-beta.1
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
-unreleased_com.azure:azure-json;1.5.0-beta.1
+unreleased_com.azure:azure-json;1.5.0
 unreleased_io.clientcore:core;1.0.0-beta.6
 unreleased_com.azure:azure-core-v2;2.0.0-beta.1
 
