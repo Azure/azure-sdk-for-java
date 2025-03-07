@@ -50,6 +50,7 @@ public class Utils {
     public  static final Pattern COMMANDLINE_REGEX = Pattern.compile("-(.*)=(.*)");
     public static final List<String> EXCLUSION_LIST = Arrays.asList("azure-spring-data-cosmos", "azure-core-test", "azure-sdk-all", "azure-sdk-parent", "azure-client-sdk-parent");
     public static final Pattern SDK_DEPENDENCY_PATTERN = Pattern.compile("com.azure:(.+);(.+);(.+)");
+    // TODO (alzimmer): Handle creation of BOM for v2 libraries. https://github.com/Azure/azure-sdk-for-java/issues/44475
     public static final String BASE_AZURE_GROUPID = "com.azure";
     public static final String AZURE_TEST_LIBRARY_IDENTIFIER = "-test";
     public static final String AZURE_PERF_LIBRARY_IDENTIFIER = "-perf";

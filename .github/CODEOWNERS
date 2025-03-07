@@ -37,6 +37,12 @@
 # ServiceLabel: %Azure.Core
 # AzureSdkOwners:                                    @alzimmermsft
 
+# PRLabel: %Azure.Core.V2
+/sdk/corev2/                                         @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
+
+# ServiceLabel: %Azure.Core.V2
+# AzureSdkOwners:                                    @alzimmermsft
+
 # PRLabel: %Azure.Core.AMQP
 /sdk/core/azure-core-amqp/                           @anuchandy @conniey @lmolkova
 
