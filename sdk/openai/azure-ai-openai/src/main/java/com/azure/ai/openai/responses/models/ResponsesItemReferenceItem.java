@@ -12,21 +12,21 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesTextFormatJsonObject model.
+ * The ResponsesItemReferenceItem model.
  */
 @Immutable
-public final class ResponsesTextFormatJsonObject extends ResponsesTextFormat {
+public final class ResponsesItemReferenceItem extends ResponsesItem {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesTextFormatType type = ResponsesTextFormatType.JSON_OBJECT;
+    private ResponsesItemType type = ResponsesItemType.ITEM_REFERENCE;
 
     /**
-     * Creates an instance of ResponsesTextFormatJsonObject class.
+     * Creates an instance of ResponsesItemReferenceItem class.
      */
     @Generated
-    public ResponsesTextFormatJsonObject() {
+    public ResponsesItemReferenceItem() {
     }
 
     /**
@@ -36,7 +36,7 @@ public final class ResponsesTextFormatJsonObject extends ResponsesTextFormat {
      */
     @Generated
     @Override
-    public ResponsesTextFormatType getType() {
+    public ResponsesItemType getType() {
         return this.type;
     }
 
@@ -52,31 +52,34 @@ public final class ResponsesTextFormatJsonObject extends ResponsesTextFormat {
     }
 
     /**
-     * Reads an instance of ResponsesTextFormatJsonObject from the JsonReader.
+     * Reads an instance of ResponsesItemReferenceItem from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesTextFormatJsonObject if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResponsesTextFormatJsonObject.
+     * @return An instance of ResponsesItemReferenceItem if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResponsesItemReferenceItem.
      */
     @Generated
-    public static ResponsesTextFormatJsonObject fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesItemReferenceItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResponsesTextFormatJsonObject deserializedResponsesTextFormatJsonObject
-                = new ResponsesTextFormatJsonObject();
+            ResponsesItemReferenceItem deserializedResponsesItemReferenceItem = new ResponsesItemReferenceItem();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("type".equals(fieldName)) {
-                    deserializedResponsesTextFormatJsonObject.type
-                        = ResponsesTextFormatType.fromString(reader.getString());
+                if ("id".equals(fieldName)) {
+                    deserializedResponsesItemReferenceItem.setId(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedResponsesItemReferenceItem
+                        .setStatus(ResponsesItemStatus.fromString(reader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedResponsesItemReferenceItem.type = ResponsesItemType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedResponsesTextFormatJsonObject;
+            return deserializedResponsesItemReferenceItem;
         });
     }
 }

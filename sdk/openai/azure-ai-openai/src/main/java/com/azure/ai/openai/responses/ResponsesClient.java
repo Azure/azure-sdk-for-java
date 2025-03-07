@@ -11,8 +11,8 @@ import com.azure.ai.openai.responses.implementation.streaming.OpenAIServerSentEv
 import com.azure.ai.openai.responses.models.CreateResponseRequestAccept;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
+import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
-import com.azure.ai.openai.responses.models.ResponsesDeleted;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
@@ -30,8 +30,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import java.nio.ByteBuffer;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 
 /**
@@ -296,7 +294,7 @@ public final class ResponsesClient {
      * Retrieves a model response with the given ID.
      *
      * @param responseId The ID of the response to retrieve.
-     * @param include Specifies additional output data to include in the model response.
+     * @param includables The includables parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -307,15 +305,15 @@ public final class ResponsesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponsesResponse getResponse(String responseId, List<CreateResponsesRequestIncludable> include) {
+    public ResponsesResponse getResponse(String responseId, List<CreateResponsesRequestIncludable> includables) {
         // Generated convenience method for getResponseWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (include != null) {
-            requestOptions.addQueryParam("include",
-                include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+        if (includables != null) {
+            for (CreateResponsesRequestIncludable paramItemValue : includables) {
+                if (paramItemValue != null) {
+                    requestOptions.addQueryParam("include[]", paramItemValue.toString(), false);
+                }
+            }
         }
         return getResponseWithResponse(responseId, requestOptions).getValue().toObject(ResponsesResponse.class);
     }
@@ -508,26 +506,6 @@ public final class ResponsesClient {
      * Deletes a response by ID.
      *
      * @param responseId The responseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponsesDeleted deleteResponse(String responseId) {
-        // Generated convenience method for deleteResponseWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteResponseWithResponse(responseId, requestOptions).getValue().toObject(ResponsesDeleted.class);
-    }
-
-    /**
-     * Deletes a response by ID.
-     *
-     * @param responseId The responseId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -538,7 +516,7 @@ public final class ResponsesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponsesDeleted deleteResponse(String responseId, RequestOptions requestOptions) {
-        return deleteResponseWithResponse(responseId, requestOptions).getValue().toObject(ResponsesDeleted.class);
+    public DeleteResponseResponse deleteResponse(String responseId, RequestOptions requestOptions) {
+        return deleteResponseWithResponse(responseId, requestOptions).getValue().toObject(DeleteResponseResponse.class);
     }
 }

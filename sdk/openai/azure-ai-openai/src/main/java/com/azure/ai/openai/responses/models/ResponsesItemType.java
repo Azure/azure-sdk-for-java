@@ -41,7 +41,22 @@ public enum ResponsesItemType {
     /**
      * Enum value computer_call_output.
      */
-    COMPUTER_CALL_OUTPUT("computer_call_output");
+    COMPUTER_CALL_OUTPUT("computer_call_output"),
+
+    /**
+     * Enum value web_search_call.
+     */
+    WEB_SEARCH_CALL("web_search_call"),
+
+    /**
+     * Enum value item_reference.
+     */
+    ITEM_REFERENCE("item_reference"),
+
+    /**
+     * Enum value reasoning.
+     */
+    REASONING("reasoning");
 
     /**
      * The actual serialized value for a ResponsesItemType instance.

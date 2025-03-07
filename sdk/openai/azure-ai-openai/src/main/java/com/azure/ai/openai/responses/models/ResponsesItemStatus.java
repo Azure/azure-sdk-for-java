@@ -5,13 +5,23 @@
 package com.azure.ai.openai.responses.models;
 
 /**
- * Defines values for ResponsesAssistantMessageStatus.
+ * Defines values for ResponsesItemStatus.
  */
-public enum ResponsesAssistantMessageStatus {
+public enum ResponsesItemStatus {
     /**
      * Enum value in_progress.
      */
     IN_PROGRESS("in_progress"),
+
+    /**
+     * Enum value searching.
+     */
+    SEARCHING("searching"),
+
+    /**
+     * Enum value interpreting.
+     */
+    INTERPRETING("interpreting"),
 
     /**
      * Enum value completed.
@@ -19,31 +29,36 @@ public enum ResponsesAssistantMessageStatus {
     COMPLETED("completed"),
 
     /**
+     * Enum value failed.
+     */
+    FAILED("failed"),
+
+    /**
      * Enum value incomplete.
      */
     INCOMPLETE("incomplete");
 
     /**
-     * The actual serialized value for a ResponsesAssistantMessageStatus instance.
+     * The actual serialized value for a ResponsesItemStatus instance.
      */
     private final String value;
 
-    ResponsesAssistantMessageStatus(String value) {
+    ResponsesItemStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ResponsesAssistantMessageStatus instance.
+     * Parses a serialized value to a ResponsesItemStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ResponsesAssistantMessageStatus object, or null if unable to parse.
+     * @return the parsed ResponsesItemStatus object, or null if unable to parse.
      */
-    public static ResponsesAssistantMessageStatus fromString(String value) {
+    public static ResponsesItemStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        ResponsesAssistantMessageStatus[] items = ResponsesAssistantMessageStatus.values();
-        for (ResponsesAssistantMessageStatus item : items) {
+        ResponsesItemStatus[] items = ResponsesItemStatus.values();
+        for (ResponsesItemStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

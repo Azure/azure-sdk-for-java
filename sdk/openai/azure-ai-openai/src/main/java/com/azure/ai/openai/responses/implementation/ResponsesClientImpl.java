@@ -194,6 +194,26 @@ public final class ResponsesClientImpl {
             @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
+        @Delete("/responses/{response_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteResponse(@HostParam("endpoint") String endpoint,
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/responses/{response_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteResponseSync(@HostParam("endpoint") String endpoint,
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
         @Get("/responses/{response_id}/input_items")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -215,26 +235,6 @@ public final class ResponsesClientImpl {
             @PathParam("response_id") String responseId, @QueryParam("limit") int limit,
             @QueryParam("order") String order, @QueryParam("after") String after, @QueryParam("before") String before,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/responses/{response_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteResponse(@HostParam("endpoint") String endpoint,
-            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Delete("/responses/{response_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteResponseSync(@HostParam("endpoint") String endpoint,
-            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -244,53 +244,39 @@ public final class ResponsesClientImpl {
      * <pre>
      * {@code
      * {
-     *     model: String(o1/o1-2024-12-17/o1-preview/o1-preview-2024-09-12/o1-mini/o1-mini-2024-09-12/gpt-4o/gpt-4o-2024-11-20/gpt-4o-2024-08-06/gpt-4o-2024-05-13/gpt-4o-audio-preview/gpt-4o-audio-preview-2024-10-01/gpt-4o-audio-preview-2024-12-17/gpt-4o-mini-audio-preview/gpt-4o-mini-audio-preview-2024-12-17/chatgpt-4o-latest/gpt-4o-mini/gpt-4o-mini-2024-07-18/gpt-4-turbo/gpt-4-turbo-2024-04-09/gpt-4-0125-preview/gpt-4-turbo-preview/gpt-4-1106-preview/gpt-4-vision-preview/gpt-4/gpt-4-0314/gpt-4-0613/gpt-4-32k/gpt-4-32k-0314/gpt-4-32k-0613/gpt-3.5-turbo/gpt-3.5-turbo-16k/gpt-3.5-turbo-0301/gpt-3.5-turbo-0613/gpt-3.5-turbo-1106/gpt-3.5-turbo-0125/gpt-3.5-turbo-16k-0613) (Required)
-     *     input (Required): [
-     *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     model: String(o3-mini/o3-mini-2025-01-31/o1/o1-2024-12-17/o1-preview/o1-preview-2024-09-12/o1-mini/o1-mini-2024-09-12/computer-use-preview/computer-use-preview-2025-02-04/computer-use-preview-2025-03-11/gpt-4.5-preview/gpt-4.5-preview-2025-02-27/gpt-4o/gpt-4o-2024-11-20/gpt-4o-2024-08-06/gpt-4o-2024-05-13/gpt-4o-audio-preview/gpt-4o-audio-preview-2024-10-01/gpt-4o-audio-preview-2024-12-17/gpt-4o-mini-audio-preview/gpt-4o-mini-audio-preview-2024-12-17/chatgpt-4o-latest/gpt-4o-mini/gpt-4o-mini-2024-07-18/gpt-4-turbo/gpt-4-turbo-2024-04-09/gpt-4-0125-preview/gpt-4-turbo-preview/gpt-4-1106-preview/gpt-4-vision-preview/gpt-4/gpt-4-0314/gpt-4-0613/gpt-4-32k/gpt-4-32k-0314/gpt-4-32k-0613/gpt-3.5-turbo/gpt-3.5-turbo-16k/gpt-3.5-turbo-0301/gpt-3.5-turbo-0613/gpt-3.5-turbo-1106/gpt-3.5-turbo-0125/gpt-3.5-turbo-16k-0613) (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
      *     previous_response_id: String (Optional)
-     *     include (Optional): [
-     *         String(message.output_text.logprobs/file_search_call.results) (Optional)
-     *     ]
+     *     reasoning (Optional): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
+     *     max_output_tokens: Integer (Optional)
+     *     instructions: String (Optional)
+     *     text (Optional): {
+     *         format (Optional): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
      *     tools (Optional): [
      *          (Optional){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     instructions: String (Optional)
-     *     reasoning_effort: String(low/medium/high) (Optional)
-     *     modalities (Optional): [
-     *         String(text/audio) (Optional)
-     *     ]
-     *     text (Optional): {
-     *         format (Optional): {
-     *             type: String(text/json_object/json_schema) (Required)
-     *         }
-     *         stop: BinaryData (Optional)
-     *     }
-     *     audio (Optional): {
-     *         voice: String(alloy/ash/ballad/coral/echo/sage/shimmer/verse) (Required)
-     *         format: String(wav/mp3/flac/opus/pcm16) (Required)
-     *     }
      *     tool_choice: BinaryData (Optional)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     top_logprobs: Integer (Optional)
-     *     presence_penalty: Double (Optional)
-     *     frequency_penalty: Double (Optional)
-     *     max_completion_tokens: Integer (Optional)
      *     truncation: String(auto/disabled) (Optional)
      *     user: String (Optional)
-     *     service_tier: String(auto/default) (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
+     *     input: BinaryData (Required)
+     *     include (Optional): [
+     *         String(file_search_call.results/computer_call_output.output.image_url/message.input_image.image_url) (Optional)
+     *     ]
      *     parallel_tool_calls: Boolean (Optional)
-     *     stream: Boolean (Optional)
      *     store: Boolean (Optional)
+     *     stream: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -313,28 +299,25 @@ public final class ResponsesClientImpl {
      *     incomplete_details (Required): {
      *         reason: String(max_output_tokens/content_filter) (Required)
      *     }
-     *     input (Required): [
-     *          (Required){
-     *         }
-     *     ]
      *     instructions: String (Required)
      *     max_output_tokens: Integer (Required)
      *     model: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
-     *             id: String (Required)
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
      *     previous_response_id: String (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     reasoning (Required): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
      *     store: boolean (Required)
      *     temperature: double (Required)
      *     text (Required): {
-     *         stop (Optional): [
-     *             String (Optional)
-     *         ]
      *         format (Required): {
      *             type: String(text/json_object/json_schema) (Required)
      *         }
@@ -387,53 +370,39 @@ public final class ResponsesClientImpl {
      * <pre>
      * {@code
      * {
-     *     model: String(o1/o1-2024-12-17/o1-preview/o1-preview-2024-09-12/o1-mini/o1-mini-2024-09-12/gpt-4o/gpt-4o-2024-11-20/gpt-4o-2024-08-06/gpt-4o-2024-05-13/gpt-4o-audio-preview/gpt-4o-audio-preview-2024-10-01/gpt-4o-audio-preview-2024-12-17/gpt-4o-mini-audio-preview/gpt-4o-mini-audio-preview-2024-12-17/chatgpt-4o-latest/gpt-4o-mini/gpt-4o-mini-2024-07-18/gpt-4-turbo/gpt-4-turbo-2024-04-09/gpt-4-0125-preview/gpt-4-turbo-preview/gpt-4-1106-preview/gpt-4-vision-preview/gpt-4/gpt-4-0314/gpt-4-0613/gpt-4-32k/gpt-4-32k-0314/gpt-4-32k-0613/gpt-3.5-turbo/gpt-3.5-turbo-16k/gpt-3.5-turbo-0301/gpt-3.5-turbo-0613/gpt-3.5-turbo-1106/gpt-3.5-turbo-0125/gpt-3.5-turbo-16k-0613) (Required)
-     *     input (Required): [
-     *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     model: String(o3-mini/o3-mini-2025-01-31/o1/o1-2024-12-17/o1-preview/o1-preview-2024-09-12/o1-mini/o1-mini-2024-09-12/computer-use-preview/computer-use-preview-2025-02-04/computer-use-preview-2025-03-11/gpt-4.5-preview/gpt-4.5-preview-2025-02-27/gpt-4o/gpt-4o-2024-11-20/gpt-4o-2024-08-06/gpt-4o-2024-05-13/gpt-4o-audio-preview/gpt-4o-audio-preview-2024-10-01/gpt-4o-audio-preview-2024-12-17/gpt-4o-mini-audio-preview/gpt-4o-mini-audio-preview-2024-12-17/chatgpt-4o-latest/gpt-4o-mini/gpt-4o-mini-2024-07-18/gpt-4-turbo/gpt-4-turbo-2024-04-09/gpt-4-0125-preview/gpt-4-turbo-preview/gpt-4-1106-preview/gpt-4-vision-preview/gpt-4/gpt-4-0314/gpt-4-0613/gpt-4-32k/gpt-4-32k-0314/gpt-4-32k-0613/gpt-3.5-turbo/gpt-3.5-turbo-16k/gpt-3.5-turbo-0301/gpt-3.5-turbo-0613/gpt-3.5-turbo-1106/gpt-3.5-turbo-0125/gpt-3.5-turbo-16k-0613) (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
      *     previous_response_id: String (Optional)
-     *     include (Optional): [
-     *         String(message.output_text.logprobs/file_search_call.results) (Optional)
-     *     ]
+     *     reasoning (Optional): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
+     *     max_output_tokens: Integer (Optional)
+     *     instructions: String (Optional)
+     *     text (Optional): {
+     *         format (Optional): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
      *     tools (Optional): [
      *          (Optional){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     instructions: String (Optional)
-     *     reasoning_effort: String(low/medium/high) (Optional)
-     *     modalities (Optional): [
-     *         String(text/audio) (Optional)
-     *     ]
-     *     text (Optional): {
-     *         format (Optional): {
-     *             type: String(text/json_object/json_schema) (Required)
-     *         }
-     *         stop: BinaryData (Optional)
-     *     }
-     *     audio (Optional): {
-     *         voice: String(alloy/ash/ballad/coral/echo/sage/shimmer/verse) (Required)
-     *         format: String(wav/mp3/flac/opus/pcm16) (Required)
-     *     }
      *     tool_choice: BinaryData (Optional)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     top_logprobs: Integer (Optional)
-     *     presence_penalty: Double (Optional)
-     *     frequency_penalty: Double (Optional)
-     *     max_completion_tokens: Integer (Optional)
      *     truncation: String(auto/disabled) (Optional)
      *     user: String (Optional)
-     *     service_tier: String(auto/default) (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
+     *     input: BinaryData (Required)
+     *     include (Optional): [
+     *         String(file_search_call.results/computer_call_output.output.image_url/message.input_image.image_url) (Optional)
+     *     ]
      *     parallel_tool_calls: Boolean (Optional)
-     *     stream: Boolean (Optional)
      *     store: Boolean (Optional)
+     *     stream: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -456,28 +425,25 @@ public final class ResponsesClientImpl {
      *     incomplete_details (Required): {
      *         reason: String(max_output_tokens/content_filter) (Required)
      *     }
-     *     input (Required): [
-     *          (Required){
-     *         }
-     *     ]
      *     instructions: String (Required)
      *     max_output_tokens: Integer (Required)
      *     model: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
-     *             id: String (Required)
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
      *     previous_response_id: String (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     reasoning (Required): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
      *     store: boolean (Required)
      *     temperature: double (Required)
      *     text (Required): {
-     *         stop (Optional): [
-     *             String (Optional)
-     *         ]
      *         format (Required): {
      *             type: String(text/json_object/json_schema) (Required)
      *         }
@@ -529,8 +495,8 @@ public final class ResponsesClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>include</td><td>List&lt;String&gt;</td><td>No</td><td>Specifies additional output data to include in the
-     * model response. In the form of "," separated string.</td></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>The includables parameter. Call
+     * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -551,28 +517,25 @@ public final class ResponsesClientImpl {
      *     incomplete_details (Required): {
      *         reason: String(max_output_tokens/content_filter) (Required)
      *     }
-     *     input (Required): [
-     *          (Required){
-     *         }
-     *     ]
      *     instructions: String (Required)
      *     max_output_tokens: Integer (Required)
      *     model: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
-     *             id: String (Required)
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
      *     previous_response_id: String (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     reasoning (Required): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
      *     store: boolean (Required)
      *     temperature: double (Required)
      *     text (Required): {
-     *         stop (Optional): [
-     *             String (Optional)
-     *         ]
      *         format (Required): {
      *             type: String(text/json_object/json_schema) (Required)
      *         }
@@ -622,8 +585,8 @@ public final class ResponsesClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>include</td><td>List&lt;String&gt;</td><td>No</td><td>Specifies additional output data to include in the
-     * model response. In the form of "," separated string.</td></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>The includables parameter. Call
+     * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -644,28 +607,25 @@ public final class ResponsesClientImpl {
      *     incomplete_details (Required): {
      *         reason: String(max_output_tokens/content_filter) (Required)
      *     }
-     *     input (Required): [
-     *          (Required){
-     *         }
-     *     ]
      *     instructions: String (Required)
      *     max_output_tokens: Integer (Required)
      *     model: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
-     *             id: String (Required)
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
      *     previous_response_id: String (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     reasoning (Required): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
      *     store: boolean (Required)
      *     temperature: double (Required)
      *     text (Required): {
-     *         stop (Optional): [
-     *             String (Optional)
-     *         ]
      *         format (Required): {
      *             type: String(text/json_object/json_schema) (Required)
      *         }
@@ -706,88 +666,6 @@ public final class ResponsesClientImpl {
     public Response<BinaryData> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getResponseSync(this.getEndpoint(), responseId, accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Returns a list of input items for a given response.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param responseId The ID of the response to retrieve.
-     * @param limit The maximum number of input items to return.
-     * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after
-     * @param before
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listInputItemsWithResponseAsync(String responseId, int limit, String order,
-        String after, String before, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listInputItems(this.getEndpoint(), responseId, limit, order,
-            after, before, accept, requestOptions, context));
-    }
-
-    /**
-     * Returns a list of input items for a given response.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param responseId The ID of the response to retrieve.
-     * @param limit The maximum number of input items to return.
-     * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after
-     * @param before
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listInputItemsWithResponse(String responseId, int limit, String order, String after,
-        String before, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.listInputItemsSync(this.getEndpoint(), responseId, limit, order, after, before, accept,
-            requestOptions, Context.NONE);
     }
 
     /**
@@ -846,5 +724,89 @@ public final class ResponsesClientImpl {
     public Response<BinaryData> deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteResponseSync(this.getEndpoint(), responseId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Returns a list of input items for a given response.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param responseId The ID of the response to retrieve.
+     * @param limit The maximum number of input items to return.
+     * @param order The order in which to return the input items. Allowed values: "asc", "desc".
+     * @param after
+     * @param before
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listInputItemsWithResponseAsync(String responseId, int limit, String order,
+        String after, String before, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listInputItems(this.getEndpoint(), responseId, limit, order,
+            after, before, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns a list of input items for a given response.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param responseId The ID of the response to retrieve.
+     * @param limit The maximum number of input items to return.
+     * @param order The order in which to return the input items. Allowed values: "asc", "desc".
+     * @param after
+     * @param before
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listInputItemsWithResponse(String responseId, int limit, String order, String after,
+        String before, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listInputItemsSync(this.getEndpoint(), responseId, limit, order, after, before, accept,
+            requestOptions, Context.NONE);
     }
 }

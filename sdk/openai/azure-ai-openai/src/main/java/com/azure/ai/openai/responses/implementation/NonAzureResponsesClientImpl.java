@@ -35,10 +35,14 @@ import reactor.core.publisher.Mono;
  * Implementation for calling Non-Azure OpenAI Responses Service
  */
 public final class NonAzureResponsesClientImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NonAzureResponsesClientService service;
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
@@ -50,7 +54,9 @@ public final class NonAzureResponsesClientImpl {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
@@ -70,14 +76,14 @@ public final class NonAzureResponsesClientImpl {
     /**
      * Initializes an instance of NonAzureResponsesClientImpl client.
      *
-     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param httpPipeline      The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      */
     public NonAzureResponsesClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.service
-            = RestProxy.create(NonAzureResponsesClientService.class, this.httpPipeline, this.getSerializerAdapter());
+                = RestProxy.create(NonAzureResponsesClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -87,50 +93,70 @@ public final class NonAzureResponsesClientImpl {
     @ServiceInterface(name = "NonAzureResponsesClient")
     public interface NonAzureResponsesClientService {
         @Post("/responses")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = {401})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {404})
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createResponse(@HostParam("endpoint") String endpoint,
                                                   @HeaderParam("accept") String accept, @HeaderParam("Content-Type") String contentType,
                                                   @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
 
         @Post("/responses")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = {401})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {404})
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createResponseSync(@HostParam("endpoint") String endpoint,
                                                 @HeaderParam("accept") String accept, @HeaderParam("Content-Type") String contentType,
                                                 @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
 
         @Get("/responses/{response_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = {401})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {404})
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getResponse(@HostParam("endpoint") String endpoint,
                                                @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
                                                RequestOptions requestOptions, Context context);
 
         @Get("/responses/{response_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = {401})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {404})
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getResponseSync(@HostParam("endpoint") String endpoint,
                                              @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
                                              RequestOptions requestOptions, Context context);
 
+        @Delete("/responses/{response_id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = {401})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {404})
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteResponse(@HostParam("endpoint") String endpoint,
+                                                  @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+                                                  RequestOptions requestOptions, Context context);
+
+        @Delete("/responses/{response_id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = {401})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {404})
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteResponseSync(@HostParam("endpoint") String endpoint,
+                                                @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+                                                RequestOptions requestOptions, Context context);
+
         @Get("/responses/{response_id}/input_items")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = {401})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {404})
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listInputItems(@HostParam("endpoint") String endpoint,
                                                   @PathParam("response_id") String responseId, @QueryParam("limit") int limit,
@@ -138,37 +164,16 @@ public final class NonAzureResponsesClientImpl {
                                                   @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/responses/{response_id}/input_items")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = {401})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {404})
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listInputItemsSync(@HostParam("endpoint") String endpoint,
                                                 @PathParam("response_id") String responseId, @QueryParam("limit") int limit,
                                                 @QueryParam("order") String order, @QueryParam("after") String after, @QueryParam("before") String before,
                                                 @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/responses/{response_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteResponse(@HostParam("endpoint") String endpoint,
-                                                  @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
-                                                  RequestOptions requestOptions, Context context);
-
-        @Delete("/responses/{response_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteResponseSync(@HostParam("endpoint") String endpoint,
-                                                @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
-                                                RequestOptions requestOptions, Context context);
     }
-
 
     /**
      * Creates a model response.
@@ -177,31 +182,39 @@ public final class NonAzureResponsesClientImpl {
      * <pre>
      * {@code
      * {
-     *     model: String(o1/o1-2024-12-17/o1-preview/o1-preview-2024-09-12/o1-mini/o1-mini-2024-09-12/gpt-4o/gpt-4o-2024-11-20/gpt-4o-2024-08-06/gpt-4o-2024-05-13/gpt-4o-audio-preview/gpt-4o-audio-preview-2024-10-01/gpt-4o-audio-preview-2024-12-17/gpt-4o-mini-audio-preview/gpt-4o-mini-audio-preview-2024-12-17/chatgpt-4o-latest/gpt-4o-mini/gpt-4o-mini-2024-07-18/gpt-4-turbo/gpt-4-turbo-2024-04-09/gpt-4-0125-preview/gpt-4-turbo-preview/gpt-4-1106-preview/gpt-4-vision-preview/gpt-4/gpt-4-0314/gpt-4-0613/gpt-4-32k/gpt-4-32k-0314/gpt-4-32k-0613/gpt-3.5-turbo/gpt-3.5-turbo-16k/gpt-3.5-turbo-0301/gpt-3.5-turbo-0613/gpt-3.5-turbo-1106/gpt-3.5-turbo-0125/gpt-3.5-turbo-16k-0613) (Required)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     reasoning_effort: String(low/medium/high) (Optional)
-     *     stream: Boolean (Optional)
+     *     model: String(o3-mini/o3-mini-2025-01-31/o1/o1-2024-12-17/o1-preview/o1-preview-2024-09-12/o1-mini/o1-mini-2024-09-12/computer-use-preview/computer-use-preview-2025-02-04/computer-use-preview-2025-03-11/gpt-4.5-preview/gpt-4.5-preview-2025-02-27/gpt-4o/gpt-4o-2024-11-20/gpt-4o-2024-08-06/gpt-4o-2024-05-13/gpt-4o-audio-preview/gpt-4o-audio-preview-2024-10-01/gpt-4o-audio-preview-2024-12-17/gpt-4o-mini-audio-preview/gpt-4o-mini-audio-preview-2024-12-17/chatgpt-4o-latest/gpt-4o-mini/gpt-4o-mini-2024-07-18/gpt-4-turbo/gpt-4-turbo-2024-04-09/gpt-4-0125-preview/gpt-4-turbo-preview/gpt-4-1106-preview/gpt-4-vision-preview/gpt-4/gpt-4-0314/gpt-4-0613/gpt-4-32k/gpt-4-32k-0314/gpt-4-32k-0613/gpt-3.5-turbo/gpt-3.5-turbo-16k/gpt-3.5-turbo-0301/gpt-3.5-turbo-0613/gpt-3.5-turbo-1106/gpt-3.5-turbo-0125/gpt-3.5-turbo-16k-0613) (Required)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
-     *     input (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
      *     previous_response_id: String (Optional)
+     *     reasoning (Optional): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
+     *     max_output_tokens: Integer (Optional)
+     *     instructions: String (Optional)
+     *     text (Optional): {
+     *         format (Optional): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
      *     tools (Optional): [
      *          (Optional){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     include (Optional): [
-     *         String(output[*].file_search_call.search_results) (Optional)
-     *     ]
+     *     tool_choice: BinaryData (Optional)
      *     truncation: String(auto/disabled) (Optional)
+     *     user: String (Optional)
+     *     input: BinaryData (Required)
+     *     include (Optional): [
+     *         String(file_search_call.results/computer_call_output.output.image_url/message.input_image.image_url) (Optional)
+     *     ]
      *     parallel_tool_calls: Boolean (Optional)
+     *     store: Boolean (Optional)
+     *     stream: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -214,30 +227,47 @@ public final class NonAzureResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(queued/in_progress/completed) (Required)
-     *     model: String (Required)
-     *     previous_response_id: String (Required)
-     *     output (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     status: String(completed/in_progress/failed/incomplete) (Required)
      *     error (Required): {
      *         message: String (Required)
      *         type: String (Required)
      *         param: String (Required)
      *         code: String (Required)
      *     }
+     *     incomplete_details (Required): {
+     *         reason: String(max_output_tokens/content_filter) (Required)
+     *     }
+     *     instructions: String (Required)
+     *     max_output_tokens: Integer (Required)
+     *     model: String (Required)
+     *     output (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
+     *         }
+     *     ]
+     *     parallel_tool_calls: boolean (Required)
+     *     previous_response_id: String (Required)
+     *     reasoning (Required): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
+     *     store: boolean (Required)
+     *     temperature: double (Required)
+     *     text (Required): {
+     *         format (Required): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
+     *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     truncation: String(auto/disabled) (Required)
-     *     temperature: double (Required)
      *     top_p: double (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     truncation: String(auto/disabled) (Required)
      *     usage (Required): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
@@ -246,6 +276,7 @@ public final class NonAzureResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
+     *     user: String (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -253,14 +284,14 @@ public final class NonAzureResponsesClientImpl {
      * }
      * </pre>
      *
-     * @param accept The accept parameter. Allowed values: "application/json", "text/event-stream".
-     * @param requestBody The requestBody parameter.
+     * @param accept         The accept parameter. Allowed values: "application/json", "text/event-stream".
+     * @param requestBody    The requestBody parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createResponseWithResponseAsync(String accept, BinaryData requestBody,
@@ -277,31 +308,39 @@ public final class NonAzureResponsesClientImpl {
      * <pre>
      * {@code
      * {
-     *     model: String(o1/o1-2024-12-17/o1-preview/o1-preview-2024-09-12/o1-mini/o1-mini-2024-09-12/gpt-4o/gpt-4o-2024-11-20/gpt-4o-2024-08-06/gpt-4o-2024-05-13/gpt-4o-audio-preview/gpt-4o-audio-preview-2024-10-01/gpt-4o-audio-preview-2024-12-17/gpt-4o-mini-audio-preview/gpt-4o-mini-audio-preview-2024-12-17/chatgpt-4o-latest/gpt-4o-mini/gpt-4o-mini-2024-07-18/gpt-4-turbo/gpt-4-turbo-2024-04-09/gpt-4-0125-preview/gpt-4-turbo-preview/gpt-4-1106-preview/gpt-4-vision-preview/gpt-4/gpt-4-0314/gpt-4-0613/gpt-4-32k/gpt-4-32k-0314/gpt-4-32k-0613/gpt-3.5-turbo/gpt-3.5-turbo-16k/gpt-3.5-turbo-0301/gpt-3.5-turbo-0613/gpt-3.5-turbo-1106/gpt-3.5-turbo-0125/gpt-3.5-turbo-16k-0613) (Required)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     reasoning_effort: String(low/medium/high) (Optional)
-     *     stream: Boolean (Optional)
+     *     model: String(o3-mini/o3-mini-2025-01-31/o1/o1-2024-12-17/o1-preview/o1-preview-2024-09-12/o1-mini/o1-mini-2024-09-12/computer-use-preview/computer-use-preview-2025-02-04/computer-use-preview-2025-03-11/gpt-4.5-preview/gpt-4.5-preview-2025-02-27/gpt-4o/gpt-4o-2024-11-20/gpt-4o-2024-08-06/gpt-4o-2024-05-13/gpt-4o-audio-preview/gpt-4o-audio-preview-2024-10-01/gpt-4o-audio-preview-2024-12-17/gpt-4o-mini-audio-preview/gpt-4o-mini-audio-preview-2024-12-17/chatgpt-4o-latest/gpt-4o-mini/gpt-4o-mini-2024-07-18/gpt-4-turbo/gpt-4-turbo-2024-04-09/gpt-4-0125-preview/gpt-4-turbo-preview/gpt-4-1106-preview/gpt-4-vision-preview/gpt-4/gpt-4-0314/gpt-4-0613/gpt-4-32k/gpt-4-32k-0314/gpt-4-32k-0613/gpt-3.5-turbo/gpt-3.5-turbo-16k/gpt-3.5-turbo-0301/gpt-3.5-turbo-0613/gpt-3.5-turbo-1106/gpt-3.5-turbo-0125/gpt-3.5-turbo-16k-0613) (Required)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
-     *     input (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
      *     previous_response_id: String (Optional)
+     *     reasoning (Optional): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
+     *     max_output_tokens: Integer (Optional)
+     *     instructions: String (Optional)
+     *     text (Optional): {
+     *         format (Optional): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
      *     tools (Optional): [
      *          (Optional){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     include (Optional): [
-     *         String(output[*].file_search_call.search_results) (Optional)
-     *     ]
+     *     tool_choice: BinaryData (Optional)
      *     truncation: String(auto/disabled) (Optional)
+     *     user: String (Optional)
+     *     input: BinaryData (Required)
+     *     include (Optional): [
+     *         String(file_search_call.results/computer_call_output.output.image_url/message.input_image.image_url) (Optional)
+     *     ]
      *     parallel_tool_calls: Boolean (Optional)
+     *     store: Boolean (Optional)
+     *     stream: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -314,30 +353,47 @@ public final class NonAzureResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(queued/in_progress/completed) (Required)
-     *     model: String (Required)
-     *     previous_response_id: String (Required)
-     *     output (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     status: String(completed/in_progress/failed/incomplete) (Required)
      *     error (Required): {
      *         message: String (Required)
      *         type: String (Required)
      *         param: String (Required)
      *         code: String (Required)
      *     }
+     *     incomplete_details (Required): {
+     *         reason: String(max_output_tokens/content_filter) (Required)
+     *     }
+     *     instructions: String (Required)
+     *     max_output_tokens: Integer (Required)
+     *     model: String (Required)
+     *     output (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
+     *         }
+     *     ]
+     *     parallel_tool_calls: boolean (Required)
+     *     previous_response_id: String (Required)
+     *     reasoning (Required): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
+     *     store: boolean (Required)
+     *     temperature: double (Required)
+     *     text (Required): {
+     *         format (Required): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
+     *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     truncation: String(auto/disabled) (Required)
-     *     temperature: double (Required)
      *     top_p: double (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     truncation: String(auto/disabled) (Required)
      *     usage (Required): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
@@ -346,6 +402,7 @@ public final class NonAzureResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
+     *     user: String (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -353,14 +410,14 @@ public final class NonAzureResponsesClientImpl {
      * }
      * </pre>
      *
-     * @param accept The accept parameter. Allowed values: "application/json", "text/event-stream".
-     * @param requestBody The requestBody parameter.
+     * @param accept         The accept parameter. Allowed values: "application/json", "text/event-stream".
+     * @param requestBody    The requestBody parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createResponseWithResponse(String accept, BinaryData requestBody,
@@ -376,8 +433,8 @@ public final class NonAzureResponsesClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>include</td><td>List&lt;String&gt;</td><td>No</td><td>Specifies additional output data to include in the
-     * model response. In the form of "," separated string.</td></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>The includables parameter. Call
+     * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -388,30 +445,47 @@ public final class NonAzureResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(queued/in_progress/completed) (Required)
-     *     model: String (Required)
-     *     previous_response_id: String (Required)
-     *     output (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     status: String(completed/in_progress/failed/incomplete) (Required)
      *     error (Required): {
      *         message: String (Required)
      *         type: String (Required)
      *         param: String (Required)
      *         code: String (Required)
      *     }
+     *     incomplete_details (Required): {
+     *         reason: String(max_output_tokens/content_filter) (Required)
+     *     }
+     *     instructions: String (Required)
+     *     max_output_tokens: Integer (Required)
+     *     model: String (Required)
+     *     output (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
+     *         }
+     *     ]
+     *     parallel_tool_calls: boolean (Required)
+     *     previous_response_id: String (Required)
+     *     reasoning (Required): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
+     *     store: boolean (Required)
+     *     temperature: double (Required)
+     *     text (Required): {
+     *         format (Required): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
+     *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     truncation: String(auto/disabled) (Required)
-     *     temperature: double (Required)
      *     top_p: double (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     truncation: String(auto/disabled) (Required)
      *     usage (Required): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
@@ -420,6 +494,7 @@ public final class NonAzureResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
+     *     user: String (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -427,13 +502,13 @@ public final class NonAzureResponsesClientImpl {
      * }
      * </pre>
      *
-     * @param responseId The ID of the response to retrieve.
+     * @param responseId     The ID of the response to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getResponseWithResponseAsync(String responseId, RequestOptions requestOptions) {
@@ -448,8 +523,8 @@ public final class NonAzureResponsesClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>include</td><td>List&lt;String&gt;</td><td>No</td><td>Specifies additional output data to include in the
-     * model response. In the form of "," separated string.</td></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>The includables parameter. Call
+     * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -460,30 +535,47 @@ public final class NonAzureResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(queued/in_progress/completed) (Required)
-     *     model: String (Required)
-     *     previous_response_id: String (Required)
-     *     output (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
+     *     status: String(completed/in_progress/failed/incomplete) (Required)
      *     error (Required): {
      *         message: String (Required)
      *         type: String (Required)
      *         param: String (Required)
      *         code: String (Required)
      *     }
+     *     incomplete_details (Required): {
+     *         reason: String(max_output_tokens/content_filter) (Required)
+     *     }
+     *     instructions: String (Required)
+     *     max_output_tokens: Integer (Required)
+     *     model: String (Required)
+     *     output (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
+     *         }
+     *     ]
+     *     parallel_tool_calls: boolean (Required)
+     *     previous_response_id: String (Required)
+     *     reasoning (Required): {
+     *         effort: String(low/medium/high) (Required)
+     *         summary: String(concise/detailed) (Optional)
+     *     }
+     *     store: boolean (Required)
+     *     temperature: double (Required)
+     *     text (Required): {
+     *         format (Required): {
+     *             type: String(text/json_object/json_schema) (Required)
+     *         }
+     *     }
+     *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
      *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
      *         }
      *     ]
-     *     truncation: String(auto/disabled) (Required)
-     *     temperature: double (Required)
      *     top_p: double (Required)
-     *     reasoning_effort: String(low/medium/high) (Required)
+     *     truncation: String(auto/disabled) (Required)
      *     usage (Required): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
@@ -492,6 +584,7 @@ public final class NonAzureResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
+     *     user: String (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -499,100 +592,18 @@ public final class NonAzureResponsesClientImpl {
      * }
      * </pre>
      *
-     * @param responseId The ID of the response to retrieve.
+     * @param responseId     The ID of the response to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getResponseSync(OPEN_AI_ENDPOINT, responseId, accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Returns a list of input items for a given response.
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param responseId The ID of the response to retrieve.
-     * @param limit The maximum number of input items to return.
-     * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after
-     * @param before
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listInputItemsWithResponseAsync(String responseId, int limit, String order,
-                                                                      String after, String before, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listInputItems(OPEN_AI_ENDPOINT, responseId, limit, order,
-                after, before, accept, requestOptions, context));
-    }
-
-    /**
-     * Returns a list of input items for a given response.
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             type: String(message/function_call/function_call_output/computer_call/computer_call_output/file_search_call/web_search_call/code_interpreter_call) (Required)
-     *             id: String (Required)
-     *         }
-     *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param responseId The ID of the response to retrieve.
-     * @param limit The maximum number of input items to return.
-     * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after
-     * @param before
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listInputItemsWithResponse(String responseId, int limit, String order, String after,
-                                                           String before, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.listInputItemsSync(OPEN_AI_ENDPOINT, responseId, limit, order, after, before, accept,
-                requestOptions, Context.NONE);
     }
 
     /**
@@ -609,13 +620,13 @@ public final class NonAzureResponsesClientImpl {
      * }
      * </pre>
      *
-     * @param responseId The responseId parameter.
+     * @param responseId     The responseId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteResponseWithResponseAsync(String responseId,
@@ -639,17 +650,101 @@ public final class NonAzureResponsesClientImpl {
      * }
      * </pre>
      *
-     * @param responseId The responseId parameter.
+     * @param responseId     The responseId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteResponseSync(OPEN_AI_ENDPOINT, responseId, accept, requestOptions, Context.NONE);
     }
-} 
+
+    /**
+     * Returns a list of input items for a given response.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param responseId     The ID of the response to retrieve.
+     * @param limit          The maximum number of input items to return.
+     * @param order          The order in which to return the input items. Allowed values: "asc", "desc".
+     * @param after
+     * @param before
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listInputItemsWithResponseAsync(String responseId, int limit, String order,
+                                                                      String after, String before, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listInputItems(OPEN_AI_ENDPOINT, responseId, limit, order,
+                after, before, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns a list of input items for a given response.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             id: String (Optional)
+     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param responseId     The ID of the response to retrieve.
+     * @param limit          The maximum number of input items to return.
+     * @param order          The order in which to return the input items. Allowed values: "asc", "desc".
+     * @param after
+     * @param before
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response body along with {@link Response}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listInputItemsWithResponse(String responseId, int limit, String order, String after,
+                                                           String before, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listInputItemsSync(OPEN_AI_ENDPOINT, responseId, limit, order, after, before, accept,
+                requestOptions, Context.NONE);
+    }
+}
