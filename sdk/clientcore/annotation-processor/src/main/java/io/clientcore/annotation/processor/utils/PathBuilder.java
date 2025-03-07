@@ -76,7 +76,7 @@ public final class PathBuilder {
                 }
 
                 if (value != null && !value.isEmpty()) {
-                    buffer.append(key).append("=\" + ").append(Objects.toString(value, "null")).append(" + \"&");
+                    buffer.append(key).append("=\" + ").append(value).append(" + \"&");
                 }
             });
 
