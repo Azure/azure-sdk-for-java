@@ -183,6 +183,13 @@ jobs:
       - script: |
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
+      - pwsh: |
+          Write-Host 'show the current log4j versions'
+          gci /mnt/vss | Write-Host
+          gci /mnt/vss/_work -ErrorAction Continue | Write-Host
+          gci -r /mnt/vss/_work/1/.m2/repository -ErrorAction Continue | Write-Host
+        displayName: 'Show the current log4j versions in the cache'
+        continueOnError: true
 
       - task: Maven@4
         displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
@@ -195,6 +202,14 @@ jobs:
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
+
+      - pwsh: |
+          Write-Host 'show the current log4j versions'
+          gci /mnt/vss | Write-Host
+          gci /mnt/vss/_work -ErrorAction Continue | Write-Host
+          gci -r /mnt/vss/_work/1/.m2/repository -ErrorAction Continue | Write-Host
+        displayName: 'Show the current log4j versions in the cache'
+        continueOnError: true
 
       - task: PowerShell@2
         displayName: 'Verify Required Maven Artifacts'
