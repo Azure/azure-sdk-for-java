@@ -21,7 +21,7 @@ public final class ImpactCategoriesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"categoryId\":\"mnyyazt\",\"parentCategoryId\":\"twwrqp\",\"description\":\"dckzywbiexz\",\"requiredImpactProperties\":[{\"name\":\"ue\",\"allowedValues\":[\"bxu\"]},{\"name\":\"wbhqwal\",\"allowedValues\":[\"yoxa\",\"pdkzjancuxr\",\"d\",\"bavxbniwdjswzt\"]},{\"name\":\"dbpgnxytxhp\",\"allowedValues\":[\"zpfzabglc\",\"hxw\"]}]},\"id\":\"tyq\",\"name\":\"klbb\",\"type\":\"vplwzbhv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"categoryId\":\"mnyyazt\",\"parentCategoryId\":\"twwrqp\",\"descriptions\":\"dckzywbiexz\",\"requiredImpactProperties\":[{\"name\":\"ue\",\"allowedValues\":[\"bxu\"]},{\"name\":\"wbhqwal\",\"allowedValues\":[\"yoxa\",\"pdkzjancuxr\",\"d\",\"bavxbniwdjswzt\"]},{\"name\":\"dbpgnxytxhp\",\"allowedValues\":[\"zpfzabglc\",\"hxw\"]}]},\"id\":\"tyq\",\"name\":\"klbb\",\"type\":\"vplwzbhv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,7 +35,7 @@ public final class ImpactCategoriesGetWithResponseMockTests {
 
         Assertions.assertEquals("mnyyazt", response.properties().categoryId());
         Assertions.assertEquals("twwrqp", response.properties().parentCategoryId());
-        Assertions.assertEquals("dckzywbiexz", response.properties().description());
+        Assertions.assertEquals("dckzywbiexz", response.properties().descriptions());
         Assertions.assertEquals("ue", response.properties().requiredImpactProperties().get(0).name());
         Assertions.assertEquals("bxu", response.properties().requiredImpactProperties().get(0).allowedValues().get(0));
     }

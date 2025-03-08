@@ -22,7 +22,7 @@ public final class ImpactCategoriesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"categoryId\":\"zkd\",\"parentCategoryId\":\"lpvlopw\",\"description\":\"ighxpk\",\"requiredImpactProperties\":[{\"name\":\"baiuebbaumny\",\"allowedValues\":[\"edeojnabc\"]}]},\"id\":\"smtxpsieb\",\"name\":\"fhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"categoryId\":\"zkd\",\"parentCategoryId\":\"lpvlopw\",\"descriptions\":\"ighxpk\",\"requiredImpactProperties\":[{\"name\":\"baiuebbaumny\",\"allowedValues\":[\"edeojnabc\"]}]},\"id\":\"smtxpsieb\",\"name\":\"fhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,7 +36,7 @@ public final class ImpactCategoriesListMockTests {
 
         Assertions.assertEquals("zkd", response.iterator().next().properties().categoryId());
         Assertions.assertEquals("lpvlopw", response.iterator().next().properties().parentCategoryId());
-        Assertions.assertEquals("ighxpk", response.iterator().next().properties().description());
+        Assertions.assertEquals("ighxpk", response.iterator().next().properties().descriptions());
         Assertions.assertEquals("baiuebbaumny",
             response.iterator().next().properties().requiredImpactProperties().get(0).name());
         Assertions.assertEquals("edeojnabc",
