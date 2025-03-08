@@ -5,7 +5,13 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.implementation.GenericParameterizedType;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonToken;
+import io.clientcore.core.serialization.json.JsonWriter;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -20,7 +26,6 @@ import java.util.function.Consumer;
  * This class is used to represent a union of types in a type-safe manner.
  *
  * <p><strong>Create an instance</strong></p>
- *
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsBasic -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
@@ -28,7 +33,6 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsBasic -->
  *
  * <p><strong>Create an instance from primitives</strong></p>
- *
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsPrimitiveType -->
  * <pre>
  * Union unionPrimitives = Union.ofTypes&#40;int.class, double.class&#41;;
@@ -36,7 +40,6 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsPrimitiveType -->
  *
  * <p><strong>Create an instance from collections</strong></p>
- *
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsCollectionType -->
  * <pre>
  * &#47;&#47; GenericParameterizedType is a non-public helper class that allows us to specify a generic type with
@@ -48,7 +51,6 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsCollectionType -->
  *
  * <p><strong>Consume the value of the Union if it is of the expected type</strong></p>
- *
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
@@ -66,9 +68,7 @@ import java.util.function.Consumer;
  * &#125;
  * </pre>
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement -->
- *
  * or
- *
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsLambda -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
@@ -79,9 +79,8 @@ import java.util.function.Consumer;
  *     v -&gt; System.out.println&#40;&quot;Integer value: &quot; + v&#41;, Integer.class&#41;;
  * </pre>
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsLambda -->
- *
  */
-public final class Union {
+public final class Union implements JsonSerializable<Union> {
     private static final ClientLogger LOGGER = new ClientLogger(Union.class);
 
     private final List<Type> types;
@@ -117,7 +116,7 @@ public final class Union {
      * it represents a simple type. If the type is a {@link ParameterizedType}, it represents a generic type.
      * For example, {@code List<String>} would be represented as {@code new GenericParameterizedType(List.class, String.class)}.
      * </p>
-     *
+     * <p>
      * It throws {@link IllegalArgumentException} if:
      * <ul>
      *   <li>value is not of one of the types in the union,</li>
@@ -180,8 +179,8 @@ public final class Union {
     /**
      * Gets the value of the union.
      *
-     * @return The value of the union.
      * @param <T> The type of the value.
+     * @return The value of the union.
      */
     @SuppressWarnings("unchecked")
     public <T> T getValue() {
@@ -192,8 +191,8 @@ public final class Union {
      * Gets the value of the union if it is of the expected type.
      *
      * @param clazz The expected type of the value.
+     * @param <T>   The expected type of the value.
      * @return The value of the union.
-     * @param <T> The expected type of the value.
      */
     @SuppressWarnings("unchecked")
     public <T> T getValue(Class<T> clazz) {
@@ -213,11 +212,10 @@ public final class Union {
     /**
      * Gets the value of the union if it is of the expected type.
      *
-     * @param clazz The expected type of the value.
+     * @param clazz        The expected type of the value.
      * @param genericTypes The generic types of the expected type.
-     *
+     * @param <T>          The expected type of the value.
      * @return The value of the union.
-     * @param <T> The expected type of the value.
      */
     public <T> T getValue(Class<T> clazz, Class<?>... genericTypes) {
         return getValue(new GenericParameterizedType(clazz, genericTypes));
@@ -227,9 +225,8 @@ public final class Union {
      * Gets the value of the union if it is of the expected type.
      *
      * @param type The expected type of the value.
-     *
+     * @param <T>  The expected type of the value.
      * @return The value of the union.
-     * @param <T> The expected type of the value.
      */
     @SuppressWarnings("unchecked")
     public <T> T getValue(Type type) {
@@ -247,9 +244,9 @@ public final class Union {
      * This method is used to consume the value of the Union if it is of the expected type.
      *
      * @param consumer A consumer that will consume the value of the Union if it is of the expected type.
-     * @param clazz The expected type of the value.
+     * @param clazz    The expected type of the value.
+     * @param <T>      The value type expected by the consumer.
      * @return Returns true if the value was consumable by the consumer, and false if it was not.
-     * @param <T> The value type expected by the consumer.
      */
     @SuppressWarnings("unchecked")
     public <T> boolean tryConsume(Consumer<T> consumer, Class<T> clazz) {
@@ -273,12 +270,12 @@ public final class Union {
     /**
      * This method is used to consume the value of the Union if it is of the expected type.
      *
-     * @param consumer A consumer that will consume the value of the Union if it is of the expected type.
-     * @param clazz The expected type of the value.
+     * @param consumer     A consumer that will consume the value of the Union if it is of the expected type.
+     * @param clazz        The expected type of the value.
      * @param genericTypes A var-args representation of generic types that are expected by the consumer, for example,
      *                     <code>List&lt;String&gt;</code> would be represented as <pre>List.class, String.class</pre>.
+     * @param <T>          The value type expected by the consumer.
      * @return Returns true if the value was consumable by the consumer, and false if it was not.
-     * @param <T> The value type expected by the consumer.
      */
     public <T> boolean tryConsume(Consumer<T> consumer, Class<T> clazz, Class<?>... genericTypes) {
         return tryConsume(consumer, new GenericParameterizedType(clazz, genericTypes));
@@ -288,9 +285,9 @@ public final class Union {
      * This method is used to consume the value of the Union if it is of the expected type.
      *
      * @param consumer A consumer that will consume the value of the Union if it is of the expected type.
-     * @param type The expected type of the value.
+     * @param type     The expected type of the value.
+     * @param <T>      The value type expected by the consumer.
      * @return Returns true if the value was consumable by the consumer, and false if it was not.
-     * @param <T> The value type expected by the consumer.
      */
     @SuppressWarnings("unchecked")
     public <T> boolean tryConsume(Consumer<T> consumer, ParameterizedType type) {
@@ -353,5 +350,132 @@ public final class Union {
             }
         }
         return false;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        if (value == null) {
+            return jsonWriter;
+        }
+        writeValue(jsonWriter, value);
+        return jsonWriter;
+    }
+
+    private void writeValue(JsonWriter jsonWriter, Object value) throws IOException {
+        if (value instanceof JsonSerializable) {
+            ((JsonSerializable<?>) value).toJson(jsonWriter);
+        } else if (value instanceof String) {
+            jsonWriter.writeString((String) value);
+        } else if (value instanceof Integer) {
+            jsonWriter.writeInt((Integer) value);
+        } else if (value instanceof Long) {
+            jsonWriter.writeLong((Long) value);
+        } else if (value instanceof Float) {
+            jsonWriter.writeFloat((Float) value);
+        } else if (value instanceof Double) {
+            jsonWriter.writeDouble((Double) value);
+        } else if (value instanceof Boolean) {
+            jsonWriter.writeBoolean((Boolean) value);
+        } else if (value instanceof byte[]) {
+            jsonWriter.writeBinary((byte[]) value);
+        } else if (value instanceof List<?>) {
+            jsonWriter.writeStartArray();
+            for (Object item : (List<?>) value) {
+                if (item == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    writeValue(jsonWriter, item);
+                }
+            }
+            jsonWriter.writeEndArray();
+        } else {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("Invalid type: " + value.getClass().getName()));
+        }
+    }
+
+    /**
+     * Reads the value of the union from the provided {@link JsonReader}.
+     *
+     * @param reader The reader to read the union value from.
+     * @param types The supported union types for the provided JsonReader.
+     * @return The union value read from the reader.
+     * @throws IOException If an error occurs while reading the value.
+     */
+    public static Union fromJson(JsonReader reader, Type... types) throws IOException {
+        if (reader.currentToken() == null || reader.currentToken() == JsonToken.FIELD_NAME) {
+            reader.nextToken();
+        }
+
+        JsonReader unionReader = reader;
+        String jsonChildren = null;
+        if (reader.currentToken() == JsonToken.START_ARRAY || reader.currentToken() == JsonToken.START_OBJECT) {
+            jsonChildren = reader.readChildren();
+        }
+
+        Union retVal = Union.ofTypes(types);
+        Object value = null;
+        for (Type type : types) {
+            try {
+                if (jsonChildren != null) {
+                    unionReader = JsonReader.fromString(jsonChildren);
+                    unionReader.nextToken();
+                }
+                value = readValue(unionReader, type);
+                if (value != null) {
+                    break;
+                }
+            } catch (IOException e) {
+                // ignore exception and try next type
+            }
+        }
+        return retVal.setValue(value);
+    }
+
+    private static Object readValue(JsonReader reader, Type type) throws IOException {
+        // Handle parameterized types - only List<T> is currently supported.
+        // TODO (srnagar): support Map<K, V> and other parameterized types.
+        if (type instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) type;
+            if (parameterizedType.getRawType() instanceof Class<?>
+                && ((Class<?>) parameterizedType.getRawType()).isAssignableFrom(List.class)
+                && reader.currentToken() == JsonToken.START_ARRAY) {
+                return reader.readArray(r -> readValue(r, parameterizedType.getActualTypeArguments()[0]));
+            }
+        } else if (type instanceof Class<?>) {
+            Class<?> clazz = (Class<?>) type;
+            if (reader.currentToken() == JsonToken.START_OBJECT
+                && JsonSerializable.class.isAssignableFrom(((Class<?>) type))) {
+                // for Union types, only JsonSerializable objects are supported and they are expected to have
+                // a static fromJson method that takes a JsonReader and returns an instance of the class
+                try {
+                    Method method = clazz.getDeclaredMethod("fromJson", JsonReader.class);
+                    return method.invoke(null, reader);
+                } catch (ReflectiveOperationException e) {
+                    throw new IOException("Failed to create instance of " + clazz.getName(), e);
+                }
+            } else {
+                if (clazz == String.class && reader.currentToken() == JsonToken.STRING) {
+                    return reader.getString();
+                } else if ((clazz == Float.class || clazz == float.class)
+                    && reader.currentToken() == JsonToken.NUMBER) {
+                    return reader.getFloat();
+                } else if ((clazz == Double.class || clazz == double.class)
+                    && reader.currentToken() == JsonToken.NUMBER) {
+                    return reader.getDouble();
+                } else if ((clazz == Boolean.class || clazz == boolean.class)
+                    && reader.currentToken() == JsonToken.BOOLEAN) {
+                    return reader.getBoolean();
+                } else if ((clazz == Integer.class || clazz == int.class)
+                    && reader.currentToken() == JsonToken.NUMBER) {
+                    return reader.getInt();
+                } else if ((clazz == Long.class || clazz == long.class) && reader.currentToken() == JsonToken.NUMBER) {
+                    return reader.getLong();
+                } else if (clazz == byte[].class && reader.currentToken() == JsonToken.STRING) {
+                    return reader.getBinary();
+                }
+            }
+        }
+        throw new IOException("Failed to read value of type " + type.getTypeName());
     }
 }

@@ -4,15 +4,27 @@
 package io.clientcore.core.utils;
 
 import io.clientcore.core.implementation.GenericParameterizedType;
+import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonWriter;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.ByteArrayOutputStream;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -432,5 +444,216 @@ public class UnionTests {
         assertNotNull(unionValue);
         assertEquals(nestedUnion, unionValue);
         assertEquals(STRING_VALUE, unionValue.getValue());
+    }
+
+    @MethodSource("getDeserializationTestData")
+    @ParameterizedTest
+    void primitiveDeserializationTest(String inputJson, Object expectedValue) throws Exception {
+        JsonReader jsonReader = JsonReader.fromString(inputJson);
+        Union union = Union.fromJson(jsonReader, int.class, boolean.class, String.class, double.class, float.class,
+            long.class, TypeUtil.createParameterizedType(List.class, String.class),
+            TypeUtil.createParameterizedType(List.class, Boolean.class),
+            TypeUtil.createParameterizedType(List.class, Integer.class),
+            TypeUtil.createParameterizedType(List.class, Long.class),
+            TypeUtil.createParameterizedType(List.class, Float.class),
+            TypeUtil.createParameterizedType(List.class, Double.class),
+            TypeUtil.createParameterizedType(List.class, TypeUtil.createParameterizedType(List.class, Integer.class)));
+        assertEquals(expectedValue, union.getValue());
+    }
+
+    @MethodSource("getModelDeserializationTestData")
+    @ParameterizedTest
+    void modelDeserializationTest(String inputJson, FooModel expectedFooModel) throws Exception {
+        JsonReader jsonReader = JsonReader.fromString(inputJson);
+        FooModel fooModel = FooModel.fromJson(jsonReader);
+
+        assertNotNull(fooModel);
+        assertEquals(expectedFooModel.getName(), fooModel.getName());
+        assertEquals(expectedFooModel.getBarOrBaz().getCurrentType().getTypeName(),
+            fooModel.getBarOrBaz().getCurrentType().getTypeName());
+
+        if (expectedFooModel.getBarOrBaz().getCurrentType() == BarModel.class) {
+            BarModel expectedBar = expectedFooModel.getBarOrBaz().getValue(BarModel.class);
+            BarModel actualBar = fooModel.getBarOrBaz().getValue(BarModel.class);
+            assertEquals(expectedBar.getBarId(), actualBar.getBarId());
+            assertEquals(expectedBar.getBarName(), actualBar.getBarName());
+        } else if (expectedFooModel.getBarOrBaz().getCurrentType() == BazModel.class) {
+            BazModel expectedBaz = expectedFooModel.getBarOrBaz().getValue(BazModel.class);
+            BazModel actualBaz = fooModel.getBarOrBaz().getValue(BazModel.class);
+            assertEquals(expectedBaz.getBazId(), actualBaz.getBazId());
+            assertEquals(expectedBaz.getBazName(), actualBaz.getBazName());
+        } else {
+            fail("Unexpected type for barOrBaz: " + expectedFooModel.getBarOrBaz().getCurrentType());
+        }
+
+        assertEquals(expectedFooModel.getStringOrInt().getCurrentType().getTypeName(),
+            fooModel.getStringOrInt().getCurrentType().getTypeName());
+        if (expectedFooModel.getStringOrInt().getCurrentType() == String.class) {
+            assertEquals(expectedFooModel.getStringOrInt().getValue(String.class),
+                fooModel.getStringOrInt().getValue(String.class));
+        } else if (expectedFooModel.getStringOrInt().getCurrentType() == Integer.class) {
+            assertEquals(expectedFooModel.getStringOrInt().getValue(Integer.class),
+                fooModel.getStringOrInt().getValue(Integer.class));
+        } else {
+            fail("Unexpected type for stringOrInt: " + expectedFooModel.getStringOrInt().getCurrentType());
+        }
+
+        Type collectionType = expectedFooModel.getCollectionTypes().getCurrentType();
+        if (collectionType instanceof ParameterizedType
+            && (((ParameterizedType) collectionType).getRawType() == List.class)
+            && ((ParameterizedType) collectionType).getActualTypeArguments()[0] == String.class) {
+            List<String> expectedList = expectedFooModel.getCollectionTypes()
+                .getValue(TypeUtil.createParameterizedType(List.class, String.class));
+            List<String> actualList
+                = fooModel.getCollectionTypes().getValue(TypeUtil.createParameterizedType(List.class, String.class));
+            assertEquals(expectedList, actualList);
+        } else if (collectionType instanceof ParameterizedType
+            && (((ParameterizedType) collectionType).getRawType() == List.class)
+            && ((ParameterizedType) collectionType).getActualTypeArguments()[0] == Integer.class) {
+            List<Integer> expectedList = expectedFooModel.getCollectionTypes()
+                .getValue(TypeUtil.createParameterizedType(List.class, Integer.class));
+            List<Integer> actualList
+                = fooModel.getCollectionTypes().getValue(TypeUtil.createParameterizedType(List.class, Integer.class));
+            assertEquals(expectedList, actualList);
+        } else if (collectionType == byte[].class) {
+            byte[] expectedBytes = expectedFooModel.getCollectionTypes().getValue(byte[].class);
+            byte[] actualBytes = fooModel.getCollectionTypes().getValue(byte[].class);
+            assertArrayEquals(expectedBytes, actualBytes);
+        } else {
+            fail("Unexpected type for collectionTypes: " + collectionType);
+        }
+    }
+
+    @MethodSource("getModelSerializationTestData")
+    @ParameterizedTest
+    void modelSerializationTest(FooModel model, String expectedJson) throws Exception {
+        ByteArrayOutputStream byteArraOS = new ByteArrayOutputStream();
+        JsonWriter jsonWriter = JsonWriter.toStream(byteArraOS);
+        JsonWriter updatedJsonWriter = model.toJson(jsonWriter);
+        updatedJsonWriter.close();
+        String json = byteArraOS.toString();
+        assertEquals(expectedJson, json);
+    }
+
+    @MethodSource("getPrimitiveSerializationTestData")
+    @ParameterizedTest
+    void primitiveSerializationTest(Union union, String expectedJson) throws Exception {
+        ByteArrayOutputStream byteArraOS = new ByteArrayOutputStream();
+        JsonWriter jsonWriter = JsonWriter.toStream(byteArraOS);
+        JsonWriter updatedJsonWriter = union.toJson(jsonWriter);
+        updatedJsonWriter.close();
+        String json = byteArraOS.toString();
+        assertEquals(expectedJson, json);
+    }
+
+    public static Stream<Arguments> getPrimitiveSerializationTestData() {
+        return Stream.of(Arguments.of(Union.ofTypes(int.class, String.class).setValue(42), "42"),
+            Arguments.of(Union.ofTypes(double.class, String.class).setValue(3.14), "3.14"),
+            Arguments.of(Union.ofTypes(boolean.class, String.class).setValue(true), "true"),
+            Arguments.of(Union.ofTypes(boolean.class, String.class).setValue(false), "false"),
+            Arguments.of(Union.ofTypes(String.class, String.class).setValue("Hello, world!"), "\"Hello, world!\""),
+            Arguments.of(Union.ofTypes(float.class, String.class).setValue(3.14f), "3.14"),
+            Arguments.of(Union.ofTypes(long.class, String.class).setValue(42L), "42"),
+            Arguments.of(Union.ofTypes(TypeUtil.createParameterizedType(List.class, String.class), String.class)
+                .setValue(Arrays.asList("Hello", "world")), "[\"Hello\",\"world\"]"));
+    }
+
+    public static Stream<Arguments> getModelSerializationTestData() {
+        Union bar = Union.ofTypes(BarModel.class, BazModel.class)
+            .setValue(new BarModel().setBarId("barId").setBarName("barName"));
+        Union baz = Union.ofTypes(BarModel.class, BazModel.class)
+            .setValue(new BazModel().setBazId("bazId").setBazName("bazName"));
+
+        Union str = Union.ofTypes(String.class, Integer.class).setValue("hello world");
+        Union intValue = Union.ofTypes(String.class, Integer.class).setValue(42);
+
+        Union intList
+            = Union
+                .ofTypes(TypeUtil.createParameterizedType(List.class, String.class),
+                    TypeUtil.createParameterizedType(List.class, Integer.class))
+                .setValue(Arrays.asList(1, 2, 3));
+
+        Union strList
+            = Union
+                .ofTypes(TypeUtil.createParameterizedType(List.class, String.class),
+                    TypeUtil.createParameterizedType(List.class, Integer.class))
+                .setValue(Arrays.asList("hello", "world"));
+
+        Union bytes = Union
+            .ofTypes(TypeUtil.createParameterizedType(List.class, String.class, byte[].class),
+                TypeUtil.createParameterizedType(List.class, Integer.class), byte[].class)
+            .setValue("hello".getBytes(StandardCharsets.UTF_8));
+
+        FooModel foo1 = new FooModel().setName("foo1").setBarOrBaz(bar).setStringOrInt(str).setCollectionTypes(intList);
+
+        FooModel foo2
+            = new FooModel().setName("foo2").setBarOrBaz(baz).setStringOrInt(intValue).setCollectionTypes(strList);
+
+        FooModel foo3
+            = new FooModel().setName("foo3").setBarOrBaz(baz).setStringOrInt(intValue).setCollectionTypes(bytes);
+
+        return Stream.of(Arguments.of(foo1,
+            "{\"name\":\"foo1\",\"barOrBaz\":{\"barId\":\"barId\",\"barName\":\"barName\"},\"stringOrInt\":\"hello world\",\"collectionTypes\":[1,2,3]}"),
+            Arguments.of(foo2,
+                "{\"name\":\"foo2\",\"barOrBaz\":{\"bazId\":\"bazId\",\"bazName\":\"bazName\"},\"stringOrInt\":42,\"collectionTypes\":[\"hello\",\"world\"]}"),
+            Arguments.of(foo3,
+                "{\"name\":\"foo3\",\"barOrBaz\":{\"bazId\":\"bazId\",\"bazName\":\"bazName\"},\"stringOrInt\":42,\"collectionTypes\":\"aGVsbG8=\"}"));
+    }
+
+    public static Stream<Arguments> getDeserializationTestData() {
+        return Stream.of(Arguments.of("5", 5),          // Integer
+            Arguments.of("2.0", 2),       // Double
+            Arguments.of("true", true),       // Boolean true
+            Arguments.of("false", false),      // Boolean false
+            Arguments.of("\"string\"", "string"), // String
+            Arguments.of("null", null),       // Null
+            Arguments.of("[]", new ArrayList<>()),         // Empty array
+            Arguments.of("[1, 2, 3]", Arrays.asList(1, 2, 3)),  // Array of integers
+            Arguments.of("[1.0, 2.0, 3.0]", Arrays.asList(1, 2, 3)), // Array of doubles
+            Arguments.of("[true, false]", Arrays.asList(true, false)), // Array of booleans
+            Arguments.of("[\"string1\", \"string2\"]", Arrays.asList("string1", "string2")), // Array of strings
+            Arguments.of("[[1, 2], [3, 4]]", Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4))), // Array of arrays
+            Arguments.of("[[1, 2], [3.0, 4.0]]", Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4))), // Array of mixed arrays
+            Arguments.of("[[1, 2], [true, false]]", null), // Array of mixed arrays
+            Arguments.of("[[1, 2], [\"string1\", \"string2\"]]", null), // Array of mixed arrays
+            Arguments.of("[[1, 2], [null, null]]", null) // Array of mixed arrays
+        );
+    }
+
+    public static Stream<Arguments> getModelDeserializationTestData() {
+
+        Union bar = Union.ofTypes(BarModel.class, BazModel.class)
+            .setValue(new BarModel().setBarId("barId").setBarName("barName"));
+        Union baz = Union.ofTypes(BarModel.class, BazModel.class)
+            .setValue(new BazModel().setBazId("bazId").setBazName("bazName"));
+
+        Union str = Union.ofTypes(String.class, Integer.class).setValue("hello world");
+        Union intValue = Union.ofTypes(String.class, Integer.class).setValue(42);
+
+        Union intList
+            = Union
+                .ofTypes(TypeUtil.createParameterizedType(List.class, String.class),
+                    TypeUtil.createParameterizedType(List.class, Integer.class))
+                .setValue(Arrays.asList(1, 2, 3));
+        Union strList
+            = Union
+                .ofTypes(TypeUtil.createParameterizedType(List.class, String.class),
+                    TypeUtil.createParameterizedType(List.class, Integer.class))
+                .setValue(Arrays.asList("hello", "world"));
+
+        Union bytes = Union
+            .ofTypes(TypeUtil.createParameterizedType(List.class, String.class, byte[].class),
+                TypeUtil.createParameterizedType(List.class, Integer.class), byte[].class)
+            .setValue("hello".getBytes(StandardCharsets.UTF_8));
+
+        return Stream.of(Arguments.of(
+            "{\"name\": \"fooId1\", \"barOrBaz\": {\"barId\": \"barId\", \"barName\": \"barName\"}, \"stringOrInt\": \"hello world\", \"collectionTypes\": [1, 2, 3]}",
+            new FooModel().setName("fooId1").setBarOrBaz(bar).setStringOrInt(str).setCollectionTypes(intList)),
+            Arguments.of(
+                "{\"name\": \"fooId2\", \"barOrBaz\": {\"bazId\": \"bazId\", \"bazName\": \"bazName\"}, \"stringOrInt\": 42, \"collectionTypes\": [\"hello\", \"world\"]}",
+                new FooModel().setName("fooId2").setBarOrBaz(baz).setStringOrInt(intValue).setCollectionTypes(strList)),
+            Arguments.of(
+                "{\"name\": \"fooId3\", \"barOrBaz\": {\"bazId\": \"bazId\", \"bazName\": \"bazName\"}, \"stringOrInt\": 42, \"collectionTypes\": \"aGVsbG8=\"}",
+                new FooModel().setName("fooId3").setBarOrBaz(baz).setStringOrInt(intValue).setCollectionTypes(bytes)));
     }
 }
