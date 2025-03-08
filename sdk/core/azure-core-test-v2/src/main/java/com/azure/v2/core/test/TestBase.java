@@ -366,6 +366,11 @@ public abstract class TestBase {
     }
 
     static boolean shouldLogExecutionStatus() {
-        return Configuration.getGlobalConfiguration().get(AZURE_TEST_DEBUG, false);
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_DEBUG);
+        if (testMode == null) {
+            return false;
+        }
+
+        return Boolean.parseBoolean(testMode);
     }
 }

@@ -206,7 +206,6 @@
   <Match>
     <Bug pattern="MS_EXPOSE_REP" />
     <Or>
-      <Class name="io.clientcore.core.implementation.utils.EnvironmentConfiguration" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.CharTypes" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.ContentReference" />
       <Class name="io.clientcore.core.utils.SharedExecutorService" />

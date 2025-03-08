@@ -5,9 +5,9 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.utils.EnvironmentConfiguration;
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.time.Duration;
 import java.util.Collection;
@@ -80,8 +80,7 @@ public final class SharedExecutorService implements ScheduledExecutorService {
 
     private static <T> T getConfig(String systemProperty, String envVar, Function<String, T> converter,
         T defaultValue) {
-        String foundValue = ImplUtils.getFromEnvironment(EnvironmentConfiguration.getGlobalConfiguration(),
-            systemProperty, envVar, ImplUtils.DEFAULT_SANITIZER, LOGGER);
+        String foundValue = Configuration.getGlobalConfiguration().get(systemProperty, envVar);
 
         if (foundValue == null) {
             LOGGER.atVerbose()

@@ -12,7 +12,6 @@ import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.core.utils.configuration.Configuration;
-import io.clientcore.core.utils.configuration.ConfigurationBuilder;
 import io.clientcore.core.utils.configuration.ConfigurationSource;
 import okhttp3.Call;
 import okhttp3.ConnectionPool;
