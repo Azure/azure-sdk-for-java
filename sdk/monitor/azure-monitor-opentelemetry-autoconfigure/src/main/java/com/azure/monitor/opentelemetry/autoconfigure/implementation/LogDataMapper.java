@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.EventTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MessageTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
@@ -38,6 +39,8 @@ public class LogDataMapper {
 
     private static final AttributeKey<String> LOG4J_MARKER = stringKey("log4j.marker");
     private static final AttributeKey<List<String>> LOGBACK_MARKER = stringArrayKey("logback.marker");
+
+    private static final String CUSTOM_EVENT_NAME = "microsoft.custom_event.name";
 
     private static final Mappings MAPPINGS;
 
@@ -86,14 +89,44 @@ public class LogDataMapper {
         if (sampleRate == null) {
             sampleRate = getSampleRate(log);
         }
-        if (stack == null) {
-            return createMessageTelemetryItem(log, sampleRate);
-        } else {
+
+        if (stack != null) {
             return createExceptionTelemetryItem(log, stack, sampleRate);
         }
+
+        Attributes attributes = log.getAttributes();
+        String customEventName = attributes.get(AttributeKey.stringKey(CUSTOM_EVENT_NAME));
+        if (customEventName != null) {
+            return createEventTelemetryItem(log, attributes, customEventName, sampleRate);
+        }
+
+        return createMessageTelemetryItem(log, attributes, sampleRate);
     }
 
-    private TelemetryItem createMessageTelemetryItem(LogRecordData log, @Nullable Double sampleRate) {
+    public TelemetryItem createEventTelemetryItem(LogRecordData log, Attributes attributes, String eventName,
+        @Nullable Double sampleRate) {
+        EventTelemetryBuilder telemetryBuilder = EventTelemetryBuilder.create();
+        telemetryInitializer.accept(telemetryBuilder, log.getResource());
+
+        // set standard properties
+        setOperationTags(telemetryBuilder, log);
+        setTime(telemetryBuilder, log);
+        setSampleRate(telemetryBuilder, sampleRate);
+
+        // update tags
+        if (captureAzureFunctionsAttributes) {
+            setFunctionExtraTraceAttributes(telemetryBuilder, attributes);
+        }
+        MAPPINGS.map(attributes, telemetryBuilder);
+
+        // set event-specific properties
+        telemetryBuilder.setName(eventName);
+
+        return telemetryBuilder.build();
+    }
+
+    private TelemetryItem createMessageTelemetryItem(LogRecordData log, Attributes attributes,
+        @Nullable Double sampleRate) {
         MessageTelemetryBuilder telemetryBuilder = MessageTelemetryBuilder.create();
         telemetryInitializer.accept(telemetryBuilder, log.getResource());
 
@@ -103,7 +136,6 @@ public class LogDataMapper {
         setSampleRate(telemetryBuilder, sampleRate);
 
         // update tags
-        Attributes attributes = log.getAttributes();
         if (captureAzureFunctionsAttributes) {
             setFunctionExtraTraceAttributes(telemetryBuilder, attributes);
         }
