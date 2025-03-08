@@ -48,4 +48,13 @@ public final class ClassUtils {
             && !PRIMITIVE_DEFAULT_VALUE_CHECKER.get(type).apply(value);
     }
 
+    /**
+     * Check if it's a primitive type property
+     * @param type Type class to be checked.
+     * @return True if it's a primitive type property
+     */
+    public static boolean isPrimitive(Class<?> type) {
+        return PRIMITIVE_DEFAULT_VALUE_CHECKER.containsKey(type);
+    }
+
 }

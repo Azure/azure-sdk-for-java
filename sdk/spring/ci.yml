@@ -146,6 +146,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-keyvault-certificates'
   type: boolean
   default: true
+- name: release_springcloudazurestarterkeyvaultjca
+  displayName: 'spring-cloud-azure-starter-keyvault-jca'
+  type: boolean
+  default: true
 - name: release_springcloudazurestarterkeyvaultsecrets
   displayName: 'spring-cloud-azure-starter-keyvault-secrets'
   type: boolean
@@ -427,6 +431,13 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterkeyvaultcertificates }}
+      - name: spring-cloud-azure-starter-keyvault-jca
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterkeyvaultjca
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterkeyvaultjca }}
       - name: spring-cloud-azure-starter-keyvault-secrets
         groupId: com.azure.spring
         safeName: springcloudazurestarterkeyvaultsecrets
