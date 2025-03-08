@@ -15,6 +15,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
@@ -66,8 +67,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private void runInternal() {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
         HttpRequest request = createRequest();
-        try (Response<?> response = pipeline.send(request)) {
-            response.getBody().toBytes();
+        try (Response<BinaryData> response = pipeline.send(request)) {
+            response.getValue().toBytes();
         } catch (IOException e) {
             LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
@@ -95,7 +96,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     private Mono<Void> runInternalAsync() {
         return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())), response -> {
-            response.getBody().toBytes();
+            response.getValue().toBytes();
             return Mono.empty();
         }, response -> Mono.fromRunnable(() -> {
             try {
@@ -109,8 +110,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     // Method to run using CompletableFuture
     private CompletableFuture<Void> runAsyncWithCompletableFutureInternal() {
         return CompletableFuture.supplyAsync(() -> {
-            try (Response<?> response = pipeline.send(createRequest())) {
-                response.getBody().toBytes();
+            try (Response<BinaryData> response = pipeline.send(createRequest())) {
+                response.getValue().toBytes();
             } catch (Exception e) {
                 LOGGER.logThrowableAsError(e);
             }
@@ -121,8 +122,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     // Method to run using ExecutorService
     private Runnable runAsyncWithExecutorServiceInternal() {
         return () -> {
-            try (Response<?> response = pipeline.send(createRequest())) {
-                response.getBody().toBytes();
+            try (Response<BinaryData> response = pipeline.send(createRequest())) {
+                response.getValue().toBytes();
             } catch (Exception e) {
                 LOGGER.logThrowableAsError(e);
             }
@@ -132,8 +133,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     // Method to run using Virtual Threads
     private Runnable runAsyncWithVirtualThreadInternal() {
         return () -> {
-            try (Response<?> response = pipeline.send(createRequest())) {
-                response.getBody().toBytes();
+            try (Response<BinaryData> response = pipeline.send(createRequest())) {
+                response.getValue().toBytes();
             } catch (Exception e) {
                 LOGGER.logThrowableAsError(e);
             }

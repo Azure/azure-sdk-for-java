@@ -5,6 +5,7 @@ package io.clientcore.core.utils;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ final class CompositeChallengeHandler implements ChallengeHandler {
     }
 
     @Override
-    public boolean canHandle(Response<?> response, boolean isProxy) {
+    public boolean canHandle(Response<BinaryData> response, boolean isProxy) {
         for (ChallengeHandler handler : challengeHandlers) {
             if (handler.canHandle(response, isProxy)) {
                 return true;
@@ -28,7 +29,7 @@ final class CompositeChallengeHandler implements ChallengeHandler {
     }
 
     @Override
-    public void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy) {
+    public void handleChallenge(HttpRequest request, Response<BinaryData> response, boolean isProxy) {
         // First, try to handle with DigestChallengeHandler, giving it priority
         for (ChallengeHandler handler : challengeHandlers) {
             if (handler.canHandle(response, isProxy) && handler instanceof DigestChallengeHandler) {

@@ -5,6 +5,7 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.util.Arrays;
 
@@ -19,7 +20,7 @@ public interface ChallengeHandler {
      * @param response The HTTP response containing the authentication challenge.
      * @param isProxy Indicates if the challenge is for a proxy.
      */
-    void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy);
+    void handleChallenge(HttpRequest request, Response<BinaryData> response, boolean isProxy);
 
     /**
      * Validate if this ChallengeHandler can handle the provided challenge
@@ -29,7 +30,7 @@ public interface ChallengeHandler {
      * @param isProxy boolean indicating if it is a proxy challenge handler.
      * @return boolean indicating if the challenge can be handled.
      */
-    boolean canHandle(Response<?> response, boolean isProxy);
+    boolean canHandle(Response<BinaryData> response, boolean isProxy);
 
     /**
      * Factory method for creating composite handlers.

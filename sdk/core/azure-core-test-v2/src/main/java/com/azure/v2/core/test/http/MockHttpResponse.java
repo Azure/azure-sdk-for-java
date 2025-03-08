@@ -14,12 +14,7 @@ import java.io.IOException;
 /**
  * An HTTP response that is created to simulate an HTTP request.
  */
-public class MockHttpResponse implements Response<BinaryData> {
-    private final HttpRequest request;
-    private final int statusCode;
-    private final HttpHeaders headers;
-    private final BinaryData body;
-
+public class MockHttpResponse extends Response<BinaryData> {
     /**
      * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and has an empty
      * response body.
@@ -66,10 +61,7 @@ public class MockHttpResponse implements Response<BinaryData> {
      * @param body Contents of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, BinaryData body) {
-        this.request = request;
-        this.statusCode = statusCode;
-        this.headers = headers;
-        this.body = body;
+        super(request, statusCode, headers, body);
     }
 
     /**
@@ -90,32 +82,7 @@ public class MockHttpResponse implements Response<BinaryData> {
     }
 
     @Override
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    @Override
-    public HttpHeaders getHeaders() {
-        return headers;
-    }
-
-    @Override
-    public HttpRequest getRequest() {
-        return request;
-    }
-
-    @Override
-    public BinaryData getValue() {
-        return body;
-    }
-
-    @Override
-    public BinaryData getBody() {
-        return body;
-    }
-
-    @Override
     public void close() throws IOException {
-        // Do nothing
+        super.close();
     }
 }

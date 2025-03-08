@@ -13,7 +13,6 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
-import com.github.javaparser.ast.expr.CastExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NameExpr;
@@ -23,7 +22,6 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -177,7 +175,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         MethodDeclaration deserializeHelperMethod
             = classBuilder.addMethod("decodeByteArray", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
                 .setType("Object")
-                .addParameter("byte[]", "bytes")
+                .addParameter(BinaryData.class, "data")
                 .addParameter(ObjectSerializer.class, "serializer")
                 .addParameter("String", "returnType");
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(IOException.class);
@@ -185,12 +183,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(CodegenUtil.class);
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(ParameterizedType.class);
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(Type.class);
-        deserializeHelperMethod.setBody(new BlockStmt().addStatement(StaticJavaParser
-            .parseStatement("try {" + " ParameterizedType type = CodegenUtil.inferTypeNameFromReturnType(returnType);"
-                + " Type token = type.getRawType();" + " if (Response.class.isAssignableFrom((Class<?>) token)) {"
-                + "     token = type.getActualTypeArguments()[0];" + " }"
-                + " return serializer.deserializeFromBytes(bytes, token);" + " } catch (IOException e) {"
-                + " throw LOGGER.logThrowableAsError(new UncheckedIOException(e));" + " }")));
+        deserializeHelperMethod
+            .setBody(new BlockStmt().addStatement(StaticJavaParser.parseStatement("if (data == null) { return null; }"))
+                .addStatement(StaticJavaParser.parseStatement(
+                    "try { ParameterizedType type = CodegenUtil.inferTypeNameFromReturnType(returnType);"
+                        + "Type token = type.getRawType();  if (Response.class.isAssignableFrom((Class<?>) token)) {"
+                        + "token = type.getActualTypeArguments()[0];}"
+                        + " return serializer.deserializeFromBytes(data.toBytes(), token);} catch (IOException e) {"
+                        + " throw LOGGER.logThrowableAsError(new UncheckedIOException(e));}")));
     }
 
     void getGeneratedServiceMethods(TemplateInput templateInput) {
@@ -395,29 +395,30 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     private void finalizeHttpRequest(BlockStmt body, String returnTypeName, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
-        Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
-        if (!isVoidReturnType(returnTypeName)) {
-            if (!isPrimitiveOrWrapper(returnTypeName)
-                && returnTypeName.startsWith("io.clientcore.core.http.models.Response<")) {
-                // Extract the variable declaration
-                if (statement.isExpressionStmt()) {
-                    statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
-                        variableDeclarationExpr.getVariables().forEach(variable -> {
-                            // Parse the full response type with generics from returnTypeName
-                            ClassOrInterfaceType responseType
-                                = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
-
-                            // Set the new type for the variable
-                            variable.setType(responseType);
-
-                            CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
-                            variable.setInitializer(castExpression);
-
-                        });
-                    });
-                }
-            }
-        }
+        Statement statement
+            = StaticJavaParser.parseStatement("Response<BinaryData> networkResponse = pipeline.send(httpRequest);");
+        //        if (!isVoidReturnType(returnTypeName)) {
+        //            if (!isPrimitiveOrWrapper(returnTypeName)
+        //                && returnTypeName.startsWith("io.clientcore.core.http.models.Response<")) {
+        //                // Extract the variable declaration
+        //                if (statement.isExpressionStmt()) {
+        //                    statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
+        //                        variableDeclarationExpr.getVariables().forEach(variable -> {
+        //                            // Parse the full response type with generics from returnTypeName
+        //                            ClassOrInterfaceType responseType
+        //                                = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
+        //
+        //                            // Set the new type for the variable
+        //                            variable.setType(responseType);
+        //
+        //                            CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
+        //                            variable.setInitializer(castExpression);
+        //
+        //                        });
+        //                    });
+        //                }
+        //            }
+        //        }
         statement.setLineComment("Send the request through the pipeline");
         body.addStatement(statement);
 
@@ -459,7 +460,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             return;
         }
 
-        body.addStatement(StaticJavaParser.parseStatement("int responseCode = response.getStatusCode();"));
+        body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
         String expectedResponseCheck;
         if (method.getExpectedStatusCodes().size() == 1) {
             expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0) + ";";

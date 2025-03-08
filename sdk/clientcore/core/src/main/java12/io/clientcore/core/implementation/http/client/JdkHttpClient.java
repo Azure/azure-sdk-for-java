@@ -80,7 +80,7 @@ public final class JdkHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<?> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) throws IOException {
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request);
         try {
             // JDK HttpClient works differently than OkHttp and HttpUrlConnection where the response body handling has
@@ -128,7 +128,7 @@ public final class JdkHttpClient implements HttpClient {
         return hasReadTimeout ? responseInfo -> timeoutSubscriber.apply(readTimeout.toMillis()) : jdkBodyHandler.get();
     }
 
-    private Response<?> toResponse(HttpRequest request, java.net.http.HttpResponse<InputStream> response)
+    private Response<BinaryData> toResponse(HttpRequest request, java.net.http.HttpResponse<InputStream> response)
         throws IOException {
         HttpHeaders coreHeaders = fromJdkHttpHeaders(response.headers());
         ServerSentResult serverSentResult = null;
@@ -156,7 +156,7 @@ public final class JdkHttpClient implements HttpClient {
         return processResponse(request, response, serverSentResult, coreHeaders, contentType);
     }
 
-    private Response<?> processResponse(HttpRequest request, java.net.http.HttpResponse<InputStream> response,
+    private Response<BinaryData> processResponse(HttpRequest request, java.net.http.HttpResponse<InputStream> response,
         ServerSentResult serverSentResult, HttpHeaders coreHeaders, String contentType) throws IOException {
         RequestOptions options = request.getRequestOptions();
         ResponseBodyMode responseBodyMode = null;
@@ -200,8 +200,7 @@ public final class JdkHttpClient implements HttpClient {
 
         }
 
-        return new JdkHttpResponse(request, response.statusCode(), coreHeaders,
-            body == null ? BinaryData.empty() : body);
+        return new Response<>(request, response.statusCode(), coreHeaders, body == null ? BinaryData.empty() : body);
     }
 
     private static ResponseBodyMode getResponseBodyMode(HttpRequest request, String contentType,

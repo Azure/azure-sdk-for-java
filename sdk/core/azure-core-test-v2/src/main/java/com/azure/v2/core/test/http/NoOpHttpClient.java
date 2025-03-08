@@ -6,6 +6,7 @@ package com.azure.v2.core.test.http;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 
@@ -20,7 +21,7 @@ public class NoOpHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<?> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) throws IOException {
         return null;
     }
 }

@@ -3,12 +3,13 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -118,9 +119,9 @@ public class SetUserAgentPolicyTests {
         }
 
         @Override
-        public Response<?> send(HttpRequest request) {
+        public Response<BinaryData> send(HttpRequest request) {
             validator.accept(request);
-            return new MockHttpResponse(request, 200);
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
         }
     }
 
@@ -133,14 +134,14 @@ public class SetUserAgentPolicyTests {
         }
 
         @Override
-        public Response<?> send(HttpRequest request) throws IOException {
+        public Response<BinaryData> send(HttpRequest request) throws IOException {
             if (retryCount < 5) {
                 retryCount++;
                 throw new IOException("Activating retry policy");
             }
 
             validator.accept(request);
-            return new MockHttpResponse(request, 200);
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
         }
     }
 }
