@@ -4,7 +4,7 @@
 package io.clientcore.core.models.geo;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
@@ -29,7 +29,7 @@ import java.util.Objects;
  * @see GeoPosition
  * @see GeoPolygon
  */
-@Metadata(conditions = TypeConditions.IMMUTABLE)
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class GeoLinearRing implements JsonSerializable<GeoLinearRing> {
     // GeoLinearRing is a commonly used model class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(GeoLinearRing.class);

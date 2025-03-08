@@ -4,7 +4,7 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 
 /**
  * <p>Specifies HTTP options for conditional requests based on ETag matching.</p>
@@ -17,7 +17,7 @@ import io.clientcore.core.annotations.TypeConditions;
  *
  * @see HttpRequest
  */
-@Metadata(conditions = TypeConditions.FLUENT)
+@Metadata(properties = MetadataProperties.FLUENT)
 public class HttpMatchConditions {
     private String ifMatch;
     private String ifNoneMatch;

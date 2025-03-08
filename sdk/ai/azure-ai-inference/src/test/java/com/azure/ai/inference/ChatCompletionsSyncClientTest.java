@@ -83,6 +83,10 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         return getBuilder(httpClient).buildClient();
     }
 
+    private ChatCompletionsClient getChatCompletionsClientForStructuredJSON(HttpClient httpClient) {
+        return getBuilder(httpClient).serviceVersion(ModelServiceVersion.V2024_08_01_PREVIEW).buildClient();
+    }
+
     private ChatCompletionsClient getChatCompletionsClientWithTracing(HttpClient httpClient,
         SpanProcessor spanProcessor, boolean captureContent) {
         final OpenTelemetryTracingOptions tracingOptions
@@ -226,7 +230,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
                 put("additionalProperties", BinaryData.fromString("false"));
             }
         };
-        client = getChatCompletionsClient(httpClient);
+        client = getChatCompletionsClientForStructuredJSON(httpClient);
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));

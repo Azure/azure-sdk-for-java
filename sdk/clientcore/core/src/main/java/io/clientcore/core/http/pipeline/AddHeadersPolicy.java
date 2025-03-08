@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -37,6 +39,7 @@ import io.clientcore.core.http.models.Response;
  * @see Response
  * @see HttpHeaders
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class AddHeadersPolicy implements HttpPipelinePolicy {
     private final HttpHeaders headers;
 

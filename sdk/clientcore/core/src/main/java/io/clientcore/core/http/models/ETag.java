@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Objects;
@@ -11,6 +13,7 @@ import java.util.Objects;
  * This class represents an HTTP ETag. An ETag value could be strong or weak ETag.
  * For more information, check out <a href="https://en.wikipedia.org/wiki/HTTP_ETag">Wikipedia's HTTP ETag</a>.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class ETag {
     private static final ClientLogger LOGGER = new ClientLogger(ETag.class);
 

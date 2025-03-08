@@ -9,7 +9,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Map;
 
-import static io.clientcore.core.annotations.TypeConditions.IMMUTABLE;
+import static io.clientcore.core.annotations.MetadataProperties.IMMUTABLE;
 
 /**
  * {@code Context} offers a means of passing arbitrary data (key-value pairs).
@@ -19,7 +19,7 @@ import static io.clientcore.core.annotations.TypeConditions.IMMUTABLE;
  * The old value will still exist within the Context but if you don't have a reference to a previous state it won't be
  * accessible.
  */
-@Metadata(conditions = IMMUTABLE)
+@Metadata(properties = IMMUTABLE)
 public final class Context {
     // Context is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(Context.class);

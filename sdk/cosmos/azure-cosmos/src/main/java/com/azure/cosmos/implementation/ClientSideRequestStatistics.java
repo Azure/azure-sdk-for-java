@@ -1010,8 +1010,8 @@ public class ClientSideRequestStatistics {
                 }
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
-                this.writeNonNullObjectField(jsonGenerator, "perPartitionCircuitBreakerCtx", gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder());
-                this.writeNonNullObjectField(jsonGenerator, "perPartitionAutomaticFailoverCtx", gatewayStatistics.getPerPartitionFailoverInfoHolder());
+                this.writeNonNullObjectField(jsonGenerator, "perPartitionCircuitBreakerInfoHolder", gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder());
+                this.writeNonNullObjectField(jsonGenerator, "perPartitionFailoverInfoHolder", gatewayStatistics.getPerPartitionFailoverInfoHolder());
 
                 jsonGenerator.writeEndObject();
             }

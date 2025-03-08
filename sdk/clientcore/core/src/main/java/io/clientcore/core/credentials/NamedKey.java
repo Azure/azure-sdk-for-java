@@ -4,14 +4,14 @@
 package io.clientcore.core.credentials;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 
 /**
  * Represents a credential bag containing the key and the name of the key.
  *
  * @see NamedKeyCredential
  */
-@Metadata(conditions = TypeConditions.IMMUTABLE)
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class NamedKey {
     private final String name;
     private final String key;

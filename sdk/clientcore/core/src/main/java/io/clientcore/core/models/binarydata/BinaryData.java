@@ -3,7 +3,9 @@
 
 package io.clientcore.core.models.binarydata;
 
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
 
@@ -113,6 +115,7 @@ import java.util.List;
  * @see ObjectSerializer
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public abstract class BinaryData implements Closeable {
     private static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
 

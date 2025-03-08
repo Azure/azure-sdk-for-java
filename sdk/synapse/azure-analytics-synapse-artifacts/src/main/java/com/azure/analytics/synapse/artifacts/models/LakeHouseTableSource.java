@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A copy activity source for Microsoft Fabric LakeHouse Table.
+ * A copy activity source for Microsoft Fabric Lakehouse Table.
  */
 @Fluent
 public final class LakeHouseTableSource extends CopySource {
