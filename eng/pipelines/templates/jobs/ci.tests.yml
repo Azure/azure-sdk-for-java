@@ -107,10 +107,10 @@ jobs:
 
       - pwsh: |
           Write-Host 'show the current log4j versions'
-          gci /mnt/vss/__work/1 -ErrorAction SilentlyContinue | Write-Host
-          gci -r /mnt/vss/__work/1/.m2/repository -ErrorAction SilentlyContinue | Write-Host
+          gci /mnt/vss/__work/1 | Write-Host
+          gci -r /mnt/vss/__work/1/.m2/repository | Write-Host
         displayName: 'Show the current log4j versions in the cache'
-        condition: succeededOrFailed()
+        continueOnError: true
 
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
@@ -185,7 +185,7 @@ jobs:
 
       - pwsh: |
           Write-Host 'show the current log4j versions'
-          gci /mnt/vss/__work/1 -ErrorAction SilentlyContinue | Write-Host
-          gci -r /mnt/vss/__work/1/.m2/repository -ErrorAction SilentlyContinue | Write-Host
+          gci /mnt/vss/__work/1 | Write-Host
+          gci -r /mnt/vss/__work/1/.m2/repository | Write-Host
         displayName: 'Show the current log4j versions in the cache'
-        condition: succeededOrFailed()
+        continueOnError: true
