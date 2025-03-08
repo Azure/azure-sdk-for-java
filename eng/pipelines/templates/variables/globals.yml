@@ -19,7 +19,7 @@ variables:
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]
 
   # Sets the Maven log level to either the LogLevel passed in the manual pipeline run or the default 'warn'
-  MavenLogLevel: $[coalesce(variables['LogLevel'], 'info')]
+  MavenLogLevel: $[coalesce(variables['LogLevel'], 'verbose')]
 
   # Maven build/test options
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
