@@ -26,17 +26,12 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -46,7 +41,6 @@ import java.util.stream.Collectors;
  * Annotation processor that generates client code based on annotated interfaces.
  */
 @SupportedAnnotationTypes("io.clientcore.core.annotations.*")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AnnotationProcessor extends AbstractProcessor {
 
     /**
@@ -57,13 +51,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
-        // Reflective fallback if SourceVersion.RELEASE_8 isn't available at compile time
-        try {
-            return SourceVersion.valueOf("RELEASE_8");
-        } catch (IllegalArgumentException e) {
-            // Fallback to the latest supported version
-            return SourceVersion.latest();
-        }
+        return SourceVersion.latest();
     }
 
     @Override
@@ -163,7 +151,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
 
         // Add return type as an import
-        setReturnTypeFormMethod(method, requestMethod, templateInput);
+        setReturnTypeForMethod(method, requestMethod, templateInput);
         boolean isEncoded = false;
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
@@ -206,58 +194,9 @@ public class AnnotationProcessor extends AbstractProcessor {
         return method;
     }
 
-    private void setReturnTypeFormMethod(HttpRequestContext method, ExecutableElement requestMethod,
+    private void setReturnTypeForMethod(HttpRequestContext method, ExecutableElement requestMethod,
         TemplateInput templateInput) {
-        // Get the return type from the method
-        TypeMirror returnType = requestMethod.getReturnType();
-
-        // If the return type is a declared type (e.g., Response<InputStream>)
-        if (returnType.getKind() == TypeKind.DECLARED) {
-            DeclaredType declaredType = (DeclaredType) returnType;
-            TypeElement typeElement = (TypeElement) declaredType.asElement();
-            String fullTypeName = typeElement.getQualifiedName().toString();
-
-            // Handle generic arguments for declared types
-            List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
-            if (!typeArguments.isEmpty()) {
-                StringBuilder typeWithArguments = new StringBuilder(fullTypeName);
-                typeWithArguments.append("<");
-
-                for (int i = 0; i < typeArguments.size(); i++) {
-                    TypeMirror typeArgument = typeArguments.get(i);
-                    // Add the type argument to the final type string
-                    typeWithArguments.append(typeArgument.toString());
-                    if (i < typeArguments.size() - 1) {
-                        typeWithArguments.append(", ");
-                    }
-                }
-
-                typeWithArguments.append(">");
-                method.setMethodReturnType(typeWithArguments.toString());
-            } else {
-                // If no generic arguments, set the return type to the base type
-                method.setMethodReturnType(fullTypeName);
-            }
-        } else if (returnType.getKind() == TypeKind.ARRAY) {
-            ArrayType arrayType = (ArrayType) returnType;
-            TypeMirror componentType = arrayType.getComponentType();
-
-            String componentTypeName;
-            if (componentType.getKind().isPrimitive()) {
-                // Use primitive type name directly (no import needed)
-                componentTypeName = componentType.toString();
-            } else {
-                // Add import for non-primitive types
-                componentTypeName = templateInput.addImport(componentType);
-            }
-
-            method.setMethodReturnType(componentTypeName + "[]");
-        } else {
-            // For non-declared types (simple types like String, int, etc.)
-            String returnTypeShortName = templateInput.addImport(requestMethod.getReturnType());
-            method.setMethodReturnType(returnTypeShortName);
-        }
-
+        method.setMethodReturnType(requestMethod.getReturnType());
     }
 
     private static String getHost(TemplateInput templateInput, HttpRequestContext method, boolean isEncoded) {
