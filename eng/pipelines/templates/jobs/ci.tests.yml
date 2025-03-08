@@ -107,8 +107,8 @@ jobs:
 
       - pwsh: |
           Write-Host 'show the current log4j versions'
-          gci /mnt/vss/__work/1 | Write-Host
-          gci -r /mnt/vss/__work/1/.m2/repository | Write-Host
+          gci /mnt/vss/_work/1 -ErrorAction Continue | Write-Host
+          gci -r /mnt/vss/_work/1/.m2/repository -ErrorAction Continue| Write-Host
         displayName: 'Show the current log4j versions in the cache'
         continueOnError: true
 
@@ -185,7 +185,7 @@ jobs:
 
       - pwsh: |
           Write-Host 'show the current log4j versions'
-          gci /mnt/vss/__work/1 | Write-Host
-          gci -r /mnt/vss/__work/1/.m2/repository | Write-Host
+          gci /mnt/vss/_work/1 -ErrorAction Continue | Write-Host
+          gci -r /mnt/vss/_work/1/.m2/repository -ErrorAction Continue | Write-Host
         displayName: 'Show the current log4j versions in the cache'
         continueOnError: true
