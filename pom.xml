@@ -183,6 +183,7 @@
     <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redhatopenshift</module>
     <module>sdk/redisenterprise</module>
+    <module>sdk/regulatedenvironmentmanagement</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>
     <module>sdk/reservations</module>
