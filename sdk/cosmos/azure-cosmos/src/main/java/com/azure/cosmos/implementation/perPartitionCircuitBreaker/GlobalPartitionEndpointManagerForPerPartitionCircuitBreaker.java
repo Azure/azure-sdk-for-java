@@ -53,7 +53,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private final AtomicReference<GlobalAddressResolver> globalAddressResolverSnapshot;
     private final ConcurrentHashMap<RegionalRoutingContext, String> regionalRoutingContextToRegion;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
-    private final Scheduler partitionRecoveryScheduler = Schedulers.newSingle("partition-availability-staleness-check");
+    private final Scheduler partitionRecoveryScheduler = Schedulers.newSingle(
+        "partition-availability-staleness-check",
+        true);
 
     public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this.partitionKeyRangeToLocationSpecificUnavailabilityInfo = new ConcurrentHashMap<>();
