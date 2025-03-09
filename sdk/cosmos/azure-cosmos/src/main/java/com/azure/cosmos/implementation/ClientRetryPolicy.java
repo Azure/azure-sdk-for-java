@@ -270,6 +270,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
                             = request.requestContext.getCrossRegionAvailabilityContext();
 
+                        checkNotNull(request.requestContext, "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
                         crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
                     }
 
