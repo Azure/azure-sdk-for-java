@@ -893,7 +893,7 @@ public class CosmosClientBuilder implements
         String isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp
             = Configs.isPerPartitionAutomaticFailoverEnabled();
 
-        if (StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp)) {
+        if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp)) {
             this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp);
         }
     }
