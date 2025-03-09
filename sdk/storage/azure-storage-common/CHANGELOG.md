@@ -5,6 +5,9 @@
 ### Features Added
 - Added support for service version 2025-05-05.
 
+### Bugs Fixed
+- Fixed an issue where the tenant ID was not properly extracted from the authorization URI. 
+
 ## 12.28.1 (2025-03-03)
 
 ### Other Changes
