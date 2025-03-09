@@ -8,7 +8,7 @@
 ### Other Changes
 
 #### Dependency Updates
-- Upgraded `azure-storage-blob` from `12.29.0` to version `12.30.0`.
+- Upgraded `azure-storage-blob` from `12.29.1` to version `12.30.0`.
 
 ## 12.22.1 (2025-03-03)
 
