@@ -260,6 +260,19 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     return ShouldRetryResult.noRetry();
                 } else {
                     this.retryContext = new RetryContext(0, false);
+
+                    // if PPAF is enabled and reads see 404:1002 after all in-region retries
+                    // then force the cross-region retry for reads on partition-set level primary / write region as determined by PPAF
+                    if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
+                        checkNotNull(request, "Argument 'request' cannot be null!");
+                        checkNotNull(request.requestContext, "Argument 'request' cannot be null!");
+
+                        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
+                            = request.requestContext.getCrossRegionAvailabilityContext();
+
+                        crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
+                    }
+
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             }
