@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.circuitBreaker;
-
-import com.azure.cosmos.implementation.PartitionKeyRange;
+package com.azure.cosmos.implementation;
 
 import java.util.Objects;
 
