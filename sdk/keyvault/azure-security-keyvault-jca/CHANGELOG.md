@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Add logging for abnormal http status codes when processing HTTP responses. [#42859](https://github.com/Azure/azure-sdk-for-java/issues/42859).
+- Fixed bug: Missing logging for abnormal http status codes when processing HTTP responses. [#42859](https://github.com/Azure/azure-sdk-for-java/issues/42859).
 
 ### Other Changes
 
