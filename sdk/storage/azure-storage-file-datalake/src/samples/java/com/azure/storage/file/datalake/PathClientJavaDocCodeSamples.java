@@ -17,11 +17,13 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
+import com.azure.storage.file.datalake.options.PathGetSystemPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -547,6 +549,32 @@ public class PathClientJavaDocCodeSamples {
             PathAccessControlEntry.serializeList(pac.getAccessControlList()), pac.getGroup(), pac.getOwner(),
             pac.getPermissions());
         // END: com.azure.storage.file.datalake.DataLakePathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#getSystemProperties()}
+     */
+    public void getSystemProperties() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getSystemProperties
+        PathSystemProperties response = client.getSystemProperties();
+        System.out.printf("Is server encrypted: %s", response.isServerEncrypted());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getSystemProperties
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#getSystemPropertiesWithResponse(PathGetSystemPropertiesOptions, Duration, Context)}
+     */
+    public void getSystemPropertiesWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getSystemPropertiesWithResponse#PathGetSystemPropertiesOptions-Duration-Context
+        PathGetSystemPropertiesOptions options = new PathGetSystemPropertiesOptions().setRequestConditions(
+            new DataLakeRequestConditions().setLeaseId(leaseId));
+
+        Response<PathSystemProperties> response = client.getSystemPropertiesWithResponse(options, timeout,
+            new Context(key1, value1));
+        PathSystemProperties systemProperties = response.getValue();
+
+        System.out.printf("Is server encrypted: %s", systemProperties.isServerEncrypted());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getSystemPropertiesWithResponse#PathGetSystemPropertiesOptions-Duration-Context
     }
 
     /**

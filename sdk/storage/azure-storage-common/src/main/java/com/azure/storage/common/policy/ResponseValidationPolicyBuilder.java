@@ -9,19 +9,24 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 /**
  * Builder for a policy to do validation of general response behavior.
  */
 public class ResponseValidationPolicyBuilder {
 
-    private final List<BiConsumer<HttpResponse, ClientLogger>> assertions = new ArrayList<>();
+    @FunctionalInterface
+    private interface TriConsumer<T, U, V> {
+        void accept(T t, U u, V v);
+    }
+
+    private final List<TriConsumer<HttpResponse, ClientLogger, Context>> assertions = new ArrayList<>();
 
     /**
      * Creates a new instance of {@link ResponseValidationPolicyBuilder}.
@@ -48,11 +53,13 @@ public class ResponseValidationPolicyBuilder {
      */
     @Deprecated
     public ResponseValidationPolicyBuilder addOptionalEcho(String headerName) {
-        assertions.add((httpResponse, logger) -> {
+        assertions.add((httpResponse, logger, context) -> {
             HttpHeaderName httpHeaderName = HttpHeaderName.fromString(headerName);
             String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(httpHeaderName);
             String responseHeaderValue = httpResponse.getHeaders().getValue(httpHeaderName);
-            if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
+            if (responseHeaderValue != null
+                && !responseHeaderValue.equals(requestHeaderValue)
+                && !context.getValues().containsKey(headerName)) {
                 throw logger.logExceptionAsError(new RuntimeException(
                     String.format("Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
                         headerName, requestHeaderValue, responseHeaderValue)));
@@ -70,10 +77,12 @@ public class ResponseValidationPolicyBuilder {
      * @return This policy.
      */
     public ResponseValidationPolicyBuilder addOptionalEcho(HttpHeaderName headerName) {
-        assertions.add((httpResponse, logger) -> {
+        assertions.add((httpResponse, logger, context) -> {
             String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(headerName);
             String responseHeaderValue = httpResponse.getHeaders().getValue(headerName);
-            if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
+            if (responseHeaderValue != null
+                && !responseHeaderValue.equals(requestHeaderValue)
+                && !context.getValues().containsKey(headerName)) {
                 throw logger.logExceptionAsError(new RuntimeException(
                     String.format("Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
                         headerName, requestHeaderValue, responseHeaderValue)));
@@ -90,21 +99,21 @@ public class ResponseValidationPolicyBuilder {
 
         private static final ClientLogger LOGGER = new ClientLogger(ResponseValidationPolicy.class);
 
-        private final List<BiConsumer<HttpResponse, ClientLogger>> assertions;
+        private final List<TriConsumer<HttpResponse, ClientLogger, Context>> assertions;
 
         /**
          * Creates a policy that executes each provided assertion on responses.
          *
          * @param assertions The assertions to apply.
          */
-        ResponseValidationPolicy(List<BiConsumer<HttpResponse, ClientLogger>> assertions) {
+        ResponseValidationPolicy(List<TriConsumer<HttpResponse, ClientLogger, Context>> assertions) {
             this.assertions = new ArrayList<>(assertions);
         }
 
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             return next.process().map(response -> {
-                assertions.forEach(assertion -> assertion.accept(response, LOGGER));
+                assertions.forEach(assertion -> assertion.accept(response, LOGGER, context.getContext()));
 
                 return response;
             });
@@ -114,7 +123,7 @@ public class ResponseValidationPolicyBuilder {
         public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
             HttpResponse response = next.processSync();
 
-            assertions.forEach(assertion -> assertion.accept(response, LOGGER));
+            assertions.forEach(assertion -> assertion.accept(response, LOGGER, context.getContext()));
 
             return response;
         }
