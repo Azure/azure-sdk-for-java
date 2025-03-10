@@ -115,6 +115,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParser.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParserTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.LogDataMapperTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AttributeKeyTemplate.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.SamplingScoreGeneratorV2.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.HeartBeatPropertyPayload.java" checks="JavadocMethodCheck" />
