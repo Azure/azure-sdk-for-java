@@ -145,7 +145,7 @@ public final class HttpUtil {
                 HttpEntity entity = response.getEntity();
                 result = entity != null ? EntityUtils.toString(entity) : null;
             } else {
-                LOGGER.log(WARNING, "Can not get response successfully because return http status code is " + status
+                LOGGER.log(WARNING, "Fail to get response from Key Vault because return http status code is " + status
                     + ". "
                     + "It can be caused by missing permissions or roles. To know how to add permissions or roles, "
                     + "see https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca#prerequisites.");
