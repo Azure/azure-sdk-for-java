@@ -4,13 +4,14 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer;
-import com.azure.core.validation.http.models.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
+import com.azure.core.validation.http.models.TestConfigurationSource;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
@@ -39,6 +41,7 @@ import java.net.SocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -570,5 +573,34 @@ public class NettyAsyncHttpClientBuilderTests {
         // Header validation is explicitly set to false.
         assertFalse(spec.validateHeaders());
         assertEquals(64 * 1024, spec.maxChunkSize());
+    }
+
+    @Test
+    public void noHttpProtocolResultsInJustHttp11() {
+        NettyAsyncHttpClient client = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder().build();
+
+        HttpProtocol[] protocols = client.nettyClient.configuration().protocols();
+        assertEquals(1, protocols.length);
+        assertEquals(HttpProtocol.HTTP11, protocols[0]);
+    }
+
+    @Test
+    public void missingHttp11InHttpProtocolsThrows() {
+        assertThrows(IllegalArgumentException.class,
+            () -> new NettyAsyncHttpClientBuilder().setProtocolVersions(EnumSet.noneOf(HttpProtocolVersion.class)));
+        assertThrows(IllegalArgumentException.class,
+            () -> new NettyAsyncHttpClientBuilder().setProtocolVersions(EnumSet.of(HttpProtocolVersion.HTTP_2)));
+    }
+
+    @Test
+    public void settingHttp2InHttpProtocolsAllowsHttp2() {
+        NettyAsyncHttpClient client = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+            .setProtocolVersions(EnumSet.of(HttpProtocolVersion.HTTP_2, HttpProtocolVersion.HTTP_1_1))
+            .build();
+
+        List<HttpProtocol> protocols = Arrays.asList(client.nettyClient.configuration().protocols());
+        assertEquals(2, protocols.size());
+        assertTrue(protocols.contains(HttpProtocol.H2), "Expected HTTP/2 to be in the protocols");
+        assertTrue(protocols.contains(HttpProtocol.HTTP11), "Expected HTTP/1.1 to be in the protocols");
     }
 }
