@@ -39,12 +39,13 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     private List<JsonWebKeyOperation> keyOps;
 
     /*
-     * The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+     * The key size in bits. For example: 2048, 3072, or 4096 for RSA. Default for RSA and RSA-HSM keys is 2048.
+     * Exception made for bring your own key (BYOK), key exchange keys default to 4096.
      */
     private Integer keySize;
 
     /*
-     * The elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * The elliptic curve name. For valid values, see JsonWebKeyCurveName. Default for EC and EC-HSM keys is P-256
      */
     private JsonWebKeyCurveName curveName;
 
@@ -135,7 +136,8 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     }
 
     /**
-     * Get the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+     * Get the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA. Default for RSA and
+     * RSA-HSM keys is 2048. Exception made for bring your own key (BYOK), key exchange keys default to 4096.
      * 
      * @return the keySize value.
      */
@@ -144,7 +146,8 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     }
 
     /**
-     * Set the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+     * Set the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA. Default for RSA and
+     * RSA-HSM keys is 2048. Exception made for bring your own key (BYOK), key exchange keys default to 4096.
      * 
      * @param keySize the keySize value to set.
      * @return the KeyProperties object itself.
@@ -155,7 +158,8 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     }
 
     /**
-     * Get the curveName property: The elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * Get the curveName property: The elliptic curve name. For valid values, see JsonWebKeyCurveName. Default for EC
+     * and EC-HSM keys is P-256.
      * 
      * @return the curveName value.
      */
@@ -164,7 +168,8 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     }
 
     /**
-     * Set the curveName property: The elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * Set the curveName property: The elliptic curve name. For valid values, see JsonWebKeyCurveName. Default for EC
+     * and EC-HSM keys is P-256.
      * 
      * @param curveName the curveName value to set.
      * @return the KeyProperties object itself.

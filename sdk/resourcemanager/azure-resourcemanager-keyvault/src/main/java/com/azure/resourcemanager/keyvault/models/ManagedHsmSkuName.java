@@ -21,7 +21,17 @@ public enum ManagedHsmSkuName {
     /**
      * Enum value Custom_B6.
      */
-    CUSTOM_B6("Custom_B6");
+    CUSTOM_B6("Custom_B6"),
+
+    /**
+     * Enum value Custom_C42.
+     */
+    CUSTOM_C42("Custom_C42"),
+
+    /**
+     * Enum value Custom_C10.
+     */
+    CUSTOM_C10("Custom_C10");
 
     /**
      * The actual serialized value for a ManagedHsmSkuName instance.

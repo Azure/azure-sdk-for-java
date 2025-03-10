@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The elliptic curve name. For valid values, see JsonWebKeyCurveName.
+ * The elliptic curve name. For valid values, see JsonWebKeyCurveName. Default for EC and EC-HSM keys is P-256.
  */
 public final class JsonWebKeyCurveName extends ExpandableStringEnum<JsonWebKeyCurveName> {
     /**

@@ -19,32 +19,19 @@ import java.time.ZoneOffset;
 @Fluent
 public final class SecretAttributes extends Attributes {
     /*
-     * Creation time in seconds since 1970-01-01T00:00:00Z.
-     */
-    private Long created;
-
-    /*
      * Last updated time in seconds since 1970-01-01T00:00:00Z.
      */
     private Long updated;
+
+    /*
+     * Creation time in seconds since 1970-01-01T00:00:00Z.
+     */
+    private Long created;
 
     /**
      * Creates an instance of SecretAttributes class.
      */
     public SecretAttributes() {
-    }
-
-    /**
-     * Get the created property: Creation time in seconds since 1970-01-01T00:00:00Z.
-     * 
-     * @return the created value.
-     */
-    @Override
-    public OffsetDateTime created() {
-        if (this.created == null) {
-            return null;
-        }
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.created), ZoneOffset.UTC);
     }
 
     /**
@@ -58,6 +45,19 @@ public final class SecretAttributes extends Attributes {
             return null;
         }
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.updated), ZoneOffset.UTC);
+    }
+
+    /**
+     * Get the created property: Creation time in seconds since 1970-01-01T00:00:00Z.
+     * 
+     * @return the created value.
+     */
+    @Override
+    public OffsetDateTime created() {
+        if (this.created == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.created), ZoneOffset.UTC);
     }
 
     /**
@@ -94,7 +94,6 @@ public final class SecretAttributes extends Attributes {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
