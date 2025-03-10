@@ -6,8 +6,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.CoreUtilsTests;
 import io.clientcore.core.utils.configuration.Configuration;
-import io.clientcore.core.utils.configuration.ConfigurationBuilder;
-import io.clientcore.core.utils.configuration.ConfigurationSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -38,7 +36,6 @@ public class ImplUtilsTests {
     private static final byte[] UTF_32LE_BOM = { (byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00 };
 
     private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
-    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     @ParameterizedTest
     @MethodSource("bomAwareToStringSupplier")
@@ -81,33 +78,23 @@ public class ImplUtilsTests {
 
         return Stream.of(
             // Configuration has an empty string timeout property configured.
-            Arguments.of(
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "")).build(),
+            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "")),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has a value that isn't a valid number.
-            Arguments.of(
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "ten")).build(),
+            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "ten")),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has a negative value.
-            Arguments.of(
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "-10")).build(),
+            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "-10")),
                 Duration.ofMillis(10000), logger, Duration.ZERO),
 
             // Configuration has a zero value.
-            Arguments.of(
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "0")).build(),
+            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "0")),
                 Duration.ofMillis(10000), logger, Duration.ZERO),
 
             // Configuration has a positive value.
-            Arguments.of(
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "42")).build(),
+            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "42")),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(42)));
     }
 

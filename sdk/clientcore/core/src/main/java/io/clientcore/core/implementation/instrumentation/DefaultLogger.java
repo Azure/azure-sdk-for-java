@@ -3,7 +3,6 @@
 
 package io.clientcore.core.implementation.instrumentation;
 
-import io.clientcore.core.implementation.utils.EnvironmentConfiguration;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.utils.configuration.Configuration;
 
@@ -217,7 +216,6 @@ public final class DefaultLogger {
 
     private static LogLevel fromEnvironment() {
         // LogLevel is so basic, we can't use configuration to read it (since Configuration needs to log too)
-        String level = EnvironmentConfiguration.getGlobalConfiguration().get(Configuration.LOG_LEVEL);
-        return LogLevel.fromString(level);
+        return LogLevel.fromString(Configuration.getGlobalConfiguration().get(Configuration.LOG_LEVEL));
     }
 }
