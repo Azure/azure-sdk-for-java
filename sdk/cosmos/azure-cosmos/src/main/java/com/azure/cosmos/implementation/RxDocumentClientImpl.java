@@ -2335,6 +2335,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
+        Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
+            = (operationCancelledException) -> {
+
+            RxDocumentServiceRequest request = requestReference.get();
+            this.addCancelledGatewayModeDiagnosticsIntoCosmosException(operationCancelledException, request);
+        };
+
+        scopedDiagnosticsFactory.setGwModeE2ETimeoutDiagnosticsHandler(gwModeE2ETimeoutDiagnosticHandler);
+
         return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
             nonNullRequestOptions,
             endToEndPolicyConfig,
@@ -2577,6 +2586,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 actualCallback.run();
             }
 
+            Consumer<CosmosException> gatewayCancelledDiagnosticsHandler
+                = scopedDiagnosticsFactory.getGwModeE2ETimeoutDiagnosticsHandler();
+
+            if (gatewayCancelledDiagnosticsHandler != null) {
+                gatewayCancelledDiagnosticsHandler.accept(exception);
+            }
+
             // For point operations
             // availabilityStrategy sits on top of e2eTimeoutPolicy
             // e2eTimeoutPolicy sits on top of client retry policy
@@ -2642,6 +2658,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
+
+        Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
+            = (operationCancelledException) -> {
+
+            RxDocumentServiceRequest request = requestReference.get();
+            this.addCancelledGatewayModeDiagnosticsIntoCosmosException(operationCancelledException, request);
+        };
+
+        scopedDiagnosticsFactory.setGwModeE2ETimeoutDiagnosticsHandler(gwModeE2ETimeoutDiagnosticHandler);
 
         return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
@@ -2777,6 +2802,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
         DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
+
+        Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
+            = (operationCancelledException) -> {
+
+            RxDocumentServiceRequest request = requestReference.get();
+            this.addCancelledGatewayModeDiagnosticsIntoCosmosException(operationCancelledException, request);
+        };
+
+        scopedDiagnosticsFactory.setGwModeE2ETimeoutDiagnosticsHandler(gwModeE2ETimeoutDiagnosticHandler);
 
         return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
@@ -3094,6 +3128,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
+        Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
+            = (operationCancelledException) -> {
+
+            RxDocumentServiceRequest request = requestReference.get();
+            this.addCancelledGatewayModeDiagnosticsIntoCosmosException(operationCancelledException, request);
+        };
+
+        scopedDiagnosticsFactory.setGwModeE2ETimeoutDiagnosticsHandler(gwModeE2ETimeoutDiagnosticHandler);
+
         return handleCircuitBreakingFeedbackForPointOperation(
             getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
@@ -3294,6 +3337,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
+        Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
+            = (operationCancelledException) -> {
+
+            RxDocumentServiceRequest request = requestReference.get();
+            this.addCancelledGatewayModeDiagnosticsIntoCosmosException(operationCancelledException, request);
+        };
+
+        scopedDiagnosticsFactory.setGwModeE2ETimeoutDiagnosticsHandler(gwModeE2ETimeoutDiagnosticHandler);
+
         return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
                 endToEndPolicyConfig,
@@ -3471,6 +3523,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
+
+        Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
+            = (operationCancelledException) -> {
+
+            RxDocumentServiceRequest request = requestReference.get();
+            this.addCancelledGatewayModeDiagnosticsIntoCosmosException(operationCancelledException, request);
+        };
+
+        scopedDiagnosticsFactory.setGwModeE2ETimeoutDiagnosticsHandler(gwModeE2ETimeoutDiagnosticHandler);
 
         return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
             nonNullRequestOptions,
@@ -4647,10 +4708,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                          RequestOptions options,
                                                          boolean disableAutomaticIdGeneration) {
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
+
+        Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
+            = (operationCancelledException) -> {
+
+            RxDocumentServiceRequest request = requestReference.get();
+            this.addCancelledGatewayModeDiagnosticsIntoCosmosException(operationCancelledException, request);
+        };
+
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
             getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, ResourceType.Document, OperationType.Batch);
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
+        scopedDiagnosticsFactory.setGwModeE2ETimeoutDiagnosticsHandler(gwModeE2ETimeoutDiagnosticHandler);
+
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
         return handleCircuitBreakingFeedbackForPointOperation(
             getPointOperationResponseMonoWithE2ETimeout(
@@ -7193,6 +7264,57 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
+    private void addCancelledGatewayModeDiagnosticsIntoCosmosException(CosmosException cosmosException, RxDocumentServiceRequest request) {
+        if (request == null) {
+            return;
+        }
+
+        if (request.requestContext == null) {
+            return;
+        }
+
+        if (request.requestContext.cosmosDiagnostics == null) {
+            return;
+        }
+
+        if (cosmosException == null) {
+            return;
+        }
+
+        if (!(cosmosException instanceof OperationCancelledException)) {
+            return;
+        }
+
+        List<GatewayRequestTimelineContext> cancelledGatewayRequestTimelineContexts
+            = request.requestContext.cancelledGatewayRequestTimelineContexts;
+
+        for (GatewayRequestTimelineContext cancelledGatewayRequestTimelineContext : cancelledGatewayRequestTimelineContexts) {
+
+            RequestTimeline requestTimeline = cancelledGatewayRequestTimelineContext.getRequestTimeline();
+            long transportRequestId = cancelledGatewayRequestTimelineContext.getTransportRequestId();
+
+            BridgeInternal.setRequestTimeline(cosmosException, requestTimeline);
+
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .setFaultInjectionRuleId(
+                    cosmosException,
+                    request.faultInjectionRequestContext
+                        .getFaultInjectionRuleId(transportRequestId));
+
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .setFaultInjectionEvaluationResults(
+                    cosmosException,
+                    request.faultInjectionRequestContext
+                        .getFaultInjectionRuleEvaluationResults(transportRequestId));
+
+            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, cosmosException, globalEndpointManager);
+        }
+    }
+
     @FunctionalInterface
     private interface DocumentPointOperation {
         Mono<ResourceResponse<Document>> apply(
@@ -7267,6 +7389,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         private final ConcurrentLinkedQueue<CosmosDiagnostics> createdDiagnostics;
         private final boolean shouldCaptureAllFeedDiagnostics;
         private final AtomicReference<CosmosDiagnostics> mostRecentlyCreatedDiagnostics = new AtomicReference<>(null);
+        private final AtomicReference<Consumer<CosmosException>> gatewayCancelledDiagnosticsHandler
+            = new AtomicReference<>(null);
 
         public ScopedDiagnosticsFactory(DiagnosticsClientContext inner, boolean shouldCaptureAllFeedDiagnostics) {
             checkNotNull(inner, "Argument 'inner' must not be null.");
@@ -7352,6 +7476,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         public void reset() {
             this.createdDiagnostics.clear();
             this.isMerged.set(false);
+        }
+
+        public void setGwModeE2ETimeoutDiagnosticsHandler(Consumer<CosmosException> gwModeE2ETimeoutDiagnosticsHandler) {
+            this.gatewayCancelledDiagnosticsHandler.set(gwModeE2ETimeoutDiagnosticsHandler);
+        }
+
+        public Consumer<CosmosException> getGwModeE2ETimeoutDiagnosticsHandler() {
+            return this.gatewayCancelledDiagnosticsHandler.get();
         }
     }
 }

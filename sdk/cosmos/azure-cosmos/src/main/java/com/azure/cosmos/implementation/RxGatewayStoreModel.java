@@ -24,7 +24,6 @@ import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
-import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import io.netty.buffer.ByteBuf;
@@ -501,36 +500,17 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 return;
             }
 
-            RegionalRoutingContext regionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
+            if (httpRequest.reactorNettyRequestRecord() != null) {
 
-            OperationCancelledException operationCancelledException =
-                new OperationCancelledException(httpRequest.toString(), regionalRoutingContext.getGatewayRegionalEndpoint());
+                ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
 
-            if (request.requestContext.cosmosDiagnostics != null) {
-                if (httpRequest.reactorNettyRequestRecord() != null) {
-                    ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
-                    BridgeInternal.setRequestTimeline(operationCancelledException, reactorNettyRequestRecord.takeTimelineSnapshot());
+                RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
+                long transportRequestId = reactorNettyRequestRecord.getTransportRequestId();
 
-                    ImplementationBridgeHelpers
-                        .CosmosExceptionHelper
-                        .getCosmosExceptionAccessor()
-                        .setFaultInjectionRuleId(
-                            operationCancelledException,
-                            request.faultInjectionRequestContext
-                                .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+                GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
 
-                    ImplementationBridgeHelpers
-                        .CosmosExceptionHelper
-                        .getCosmosExceptionAccessor()
-                        .setFaultInjectionEvaluationResults(
-                            operationCancelledException,
-                            request.faultInjectionRequestContext
-                                .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
-                }
-
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, operationCancelledException, globalEndpointManager);
+                request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
             }
-
         });
     }
 
