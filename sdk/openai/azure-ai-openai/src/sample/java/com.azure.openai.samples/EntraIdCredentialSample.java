@@ -1,5 +1,6 @@
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.azure.credential.AzureApiKeyCredential;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
@@ -17,10 +18,12 @@ public class EntraIdCredentialSample {
         // or set same two env vars and use fromEnv() method instead
         clientBuilder
             .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"))
-            .credential(BearerTokenCredential
-                .create(
-                    AuthenticationUtil.getBearerTokenSupplier(new DefaultAzureCredentialBuilder().build(),
-                        "https://cognitiveservices.azure.com/.default")));
+            .credential(AzureApiKeyCredential.create(System.getenv("AZURE_OPENAI_KEY")));
+//
+//            .credential(BearerTokenCredential
+//                .create(
+//                    AuthenticationUtil.getBearerTokenSupplier(new DefaultAzureCredentialBuilder().build(),
+//                        "https://cognitiveservices.azure.com/.default")));
         /* Azure-specific code ends here */
 
         // All code from this line down is general-purpose OpenAI code
