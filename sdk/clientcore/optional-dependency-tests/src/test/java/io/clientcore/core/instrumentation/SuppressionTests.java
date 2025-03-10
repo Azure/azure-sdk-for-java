@@ -3,7 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -14,6 +14,7 @@ import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -84,8 +85,9 @@ public class SuppressionTests {
 
     @Test
     public void testNoSuppressionForSimpleMethod() {
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(request -> new MockHttpResponse(request, 200)).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
         client.protocolMethod(new RequestOptions());
@@ -98,8 +100,9 @@ public class SuppressionTests {
 
     @Test
     public void testNestedInternalSpanSuppression() {
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(request -> new MockHttpResponse(request, 200)).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
         client.convenienceMethod(new RequestOptions());
@@ -110,8 +113,9 @@ public class SuppressionTests {
 
     @Test
     public void testNestedInternalScopeSuppression() throws IOException {
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(request -> new MockHttpResponse(request, 200)).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
 
         LibraryInstrumentationOptions libraryInstrumentationOptions
             = new LibraryInstrumentationOptions("test-library").setEndpoint("https://localhost");
@@ -133,8 +137,9 @@ public class SuppressionTests {
 
     @Test
     public void testNestedInternalScopeDisabledSuppression() throws IOException {
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(request -> new MockHttpResponse(request, 200)).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
         LibraryInstrumentationOptions libOptions
             = new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true);
         SampleClientCallInstrumentation client = new SampleClientCallInstrumentation(pipeline, otelOptions, libOptions);

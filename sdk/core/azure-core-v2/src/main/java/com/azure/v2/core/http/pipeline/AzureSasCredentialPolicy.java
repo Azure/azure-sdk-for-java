@@ -11,6 +11,8 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.models.binarydata.BinaryData;
+
 import java.util.Objects;
 
 /**
@@ -69,7 +71,7 @@ public final class AzureSasCredentialPolicy extends HttpCredentialPolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
 
         if (requireHttps && !"https".equals(httpRequest.getUri().getScheme())) {
             throw LOGGER.logThrowableAsError(

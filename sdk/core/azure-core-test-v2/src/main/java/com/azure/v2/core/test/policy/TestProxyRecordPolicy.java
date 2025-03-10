@@ -81,10 +81,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
                 .setBody(BinaryData.fromObject(new RecordFilePayload(recordFile.toString(), assetJsonPath)));
             request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
 
-            try (Response<?> response = client.send(request)) {
+            try (Response<BinaryData> response = client.send(request)) {
                 checkForTestProxyErrors(response);
                 if (response.getStatusCode() != 200) {
-                    throw new RuntimeException(response.getBody().toString());
+                    throw new RuntimeException(response.getValue().toString());
                 }
 
                 this.xRecordingId = response.getHeaders().getValue(X_RECORDING_ID);
@@ -117,10 +117,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
             .setBody(serializeVariables(variables));
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json").set(X_RECORDING_ID, xRecordingId);
 
-        try (Response<?> response = client.send(request)) {
+        try (Response<BinaryData> response = client.send(request)) {
             checkForTestProxyErrors(response);
             if (response.getStatusCode() != 200) {
-                throw new RuntimeException(response.getBody().toString());
+                throw new RuntimeException(response.getValue().toString());
             }
         }
     }
@@ -171,13 +171,13 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @param response The response received.
      * @return The transformed response.
      */
-    private Response<?> afterReceivedResponse(Response<?> response) {
+    private Response<BinaryData> afterReceivedResponse(Response<BinaryData> response) {
         TestProxyUtils.checkForTestProxyErrors(response);
         return TestProxyUtils.resetTestProxyData(response);
     }
 
     @Override
-    public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
         beforeSendingRequest(request);
         return afterReceivedResponse(next.process());
     }

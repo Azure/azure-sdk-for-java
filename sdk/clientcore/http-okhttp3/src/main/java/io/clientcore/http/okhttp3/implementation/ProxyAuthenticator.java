@@ -19,7 +19,6 @@ import okhttp3.Route;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
 import static io.clientcore.core.http.models.HttpHeaderName.PROXY_AUTHORIZATION;
 
@@ -50,7 +49,6 @@ public final class ProxyAuthenticator implements Authenticator {
     /*
      * Digest authentication to a proxy uses the 'CONNECT' method, these can't have a request body.
      */
-    private static final Supplier<BinaryData> NO_BODY = BinaryData::empty;
 
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
@@ -106,8 +104,9 @@ public final class ProxyAuthenticator implements Authenticator {
 
         Request.Builder requestBuilder = response.request().newBuilder();
         HttpRequest httpRequest = new HttpRequest().setMethod(PROXY_METHOD).setUri(PROXY_URI_PATH);
-        io.clientcore.core.http.models.Response<?> httpResponse = io.clientcore.core.http.models.Response
-            .create(httpRequest, response.code(), OkHttpResponse.fromOkHttpHeaders(response.headers()), NO_BODY);
+        io.clientcore.core.http.models.Response<BinaryData> httpResponse
+            = new io.clientcore.core.http.models.Response<>(httpRequest, response.code(),
+                OkHttpToCoreHttpHeadersWrapper.fromOkHttpHeaders(response.headers()), BinaryData.empty());
         String authorizationHeader;
         // Replace nonce value in the PROXY_AUTHENTICATE header with the updated nonce
         ConcurrentHashMap<String, String> lastChallengeMap = proxyInterceptor.getLastChallenge();

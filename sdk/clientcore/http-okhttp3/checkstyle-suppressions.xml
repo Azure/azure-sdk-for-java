@@ -6,7 +6,6 @@
   <suppress files="io.clientcore.http.okhttp3.implementation.OkHttpFileRequestBody.java" checks="MissingJavadocMethodCheck" />
   <suppress files="io.clientcore.http.okhttp3.implementation.OkHttpInputStreamRequestBody.java" checks="MissingJavadocMethodCheck" />
   <suppress files="io.clientcore.http.okhttp3.implementation.OkHttpProxySelector.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="io.clientcore.http.okhttp3.implementation.OkHttpResponse.java" checks="MissingJavadocMethodCheck" />
   <suppress files="io.clientcore.http.okhttp3.implementation.OkHttpStreamableRequestBody.java" checks="MissingJavadocMethodCheck" />
   <suppress files="io.clientcore.http.okhttp3.implementation.OkHttpToCoreHttpHeadersWrapper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="io.clientcore.http.okhttp3.OkHttpHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />

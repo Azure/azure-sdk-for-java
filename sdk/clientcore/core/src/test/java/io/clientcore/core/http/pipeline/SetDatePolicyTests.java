@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -37,9 +38,9 @@ public class SetDatePolicyTests {
                 String date = request.getHeaders().getValue(HttpHeaderName.DATE);
                 if (!firstDate.compareAndSet(null, date)) {
                     assertNotEquals(firstDate.get(), date);
-                    return new MockHttpResponse(request, 200);
+                    return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                 } else {
-                    return new MockHttpResponse(request, 429);
+                    return new Response<>(request, 429, new HttpHeaders(), BinaryData.empty());
                 }
             })
             .build();
