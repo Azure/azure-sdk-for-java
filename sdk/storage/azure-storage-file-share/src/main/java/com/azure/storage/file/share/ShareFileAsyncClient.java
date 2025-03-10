@@ -3419,6 +3419,21 @@ public class ShareFileAsyncClient {
             .flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * NFS only. Creates a symbolic link to a file specified by the path.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLink#ShareFileCreateSymbolicLinkOptions -->
+     * <pre>
+     * ShareFileCreateSymbolicLinkOptions options = new ShareFileCreateSymbolicLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;;
+     * symbolicLinkClient.createSymbolicLinkWithResponse&#40;options&#41;
+     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Link count is is %s.&quot;,
+     *         result.getValue&#40;&#41;.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLink#ShareFileCreateSymbolicLinkOptions -->
+     *
+     * @param options {@link ShareFileCreateSymbolicLinkOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains
+     * {@link ShareFileInfo} describing the state of the symbolic link.
+     */
     public Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
@@ -3461,6 +3476,20 @@ public class ShareFileAsyncClient {
         return getSymbolicLinkWithResponse().flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * Reads the value of the symbolic link. Only applicable if this {@link ShareFileAsyncClient} is pointed
+     * at an NFS symbolic link.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLinkWithResponse -->
+     * <pre>
+     * symbolicLinkClient.getSymbolicLinkWithResponse&#40;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Link text is %s.&quot;, response.getLinkText&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLinkWithResponse -->
+     *
+     * @return A {@link Mono} containing a {@link ShareFileSymbolicLinkInfo} describing the symbolic link.
+     */
     public Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse() {
         try {
             return withContext(this::getSymbolicLinkWithResponse);
