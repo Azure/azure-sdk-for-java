@@ -3421,12 +3421,12 @@ public class ShareFileAsyncClient {
 
     /**
      * NFS only. Creates a symbolic link to a file specified by the path.
-     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLink#ShareFileCreateSymbolicLinkOptions -->
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLinkWithResponse#ShareFileCreateSymbolicLinkOptions -->
      * <pre>
      * ShareFileCreateSymbolicLinkOptions options = new ShareFileCreateSymbolicLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;;
      * symbolicLinkClient.createSymbolicLinkWithResponse&#40;options&#41;
-     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Link count is is %s.&quot;,
-     *         result.getValue&#40;&#41;.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Link count is %s.&quot;,
+     *         response.getValue&#40;&#41;.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLink#ShareFileCreateSymbolicLinkOptions -->
      *
@@ -3483,7 +3483,7 @@ public class ShareFileAsyncClient {
      * <pre>
      * symbolicLinkClient.getSymbolicLinkWithResponse&#40;&#41;
      *     .subscribe&#40;response -&gt; &#123;
-     *         System.out.printf&#40;&quot;Link text is %s.&quot;, response.getLinkText&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Link text is %s.&quot;, response.getValue&#40;&#41;.getLinkText&#40;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLinkWithResponse -->
