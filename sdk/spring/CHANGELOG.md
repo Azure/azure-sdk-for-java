@@ -3,7 +3,7 @@
 ## 5.21.0-beta.1 (Unreleased)
 
 #### Features Added
-- Release the `spring-cloud-azure-starter-keyvault-jca`. This starter supports SSL Bundle with Azure Key Vault certificates. [#35782](https://github.com/Azure/azure-sdk-for-java/issues/35782).
+- Add the `spring-cloud-azure-starter-keyvault-jca`. This starter supports SSL Bundle with Azure Key Vault certificates. [#35782](https://github.com/Azure/azure-sdk-for-java/issues/35782).
 
 ### Spring Cloud Azure Dependencies (BOM)
 
