@@ -7187,6 +7187,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (firstContactedLocationEndpoint != null) {
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+        } else {
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+                .handleLocationExceptionForPartitionKeyRange(failedRequest, failedRequest.requestContext.regionalRoutingContextToRoute);
         }
     }
 
