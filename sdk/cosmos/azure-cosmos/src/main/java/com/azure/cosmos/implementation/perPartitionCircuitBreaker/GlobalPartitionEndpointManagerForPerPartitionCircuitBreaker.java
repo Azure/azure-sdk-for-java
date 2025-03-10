@@ -327,27 +327,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
                                         partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
 
-                                        if (locationSpecificContextAsVal != null) {
-                                            locationSpecificContextAsVal = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
-                                                .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
-                                                locationSpecificContextAsVal,
-                                                partitionKeyRangeWrapper,
-                                                this.regionalRoutingContextToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
-                                                false,
-                                                true);
-                                        }
-                                        return locationSpecificContextAsVal;
-                                    });
-                                });
-                        }
-                    } else {
-                        partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
                                             if (locationSpecificContextAsVal != null) {
                                                 locationSpecificContextAsVal = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
                                                     .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
                                                     locationSpecificContextAsVal,
                                                     partitionKeyRangeWrapper,
-                                                    this.locationToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
+                                                    this.regionalRoutingContextToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
                                                     false,
                                                     true);
                                             }
@@ -365,23 +350,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         } else {
                             partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
 
-                            if (locationSpecificContextAsVal != null) {
-                                locationSpecificContextAsVal = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
-                                    .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
-                                    locationSpecificContextAsVal,
-                                    partitionKeyRangeWrapper,
-                                    GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
-                                    false,
-                                    true);
-                            }
-                            return locationSpecificContextAsVal;
-                        });
                                 if (locationSpecificContextAsVal != null) {
                                     locationSpecificContextAsVal = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
                                         .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
                                         locationSpecificContextAsVal,
                                         partitionKeyRangeWrapper,
-                                        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.locationToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
+                                        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
                                         false,
                                         true);
                                 }
@@ -390,6 +364,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         }
                     }
                 } catch (Exception e) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("An exception {} was thrown trying to recover an Unavailable partition key range!", e.getMessage());
+                    }
                     return Flux.empty();
                 }
 
