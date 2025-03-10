@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -64,11 +65,8 @@ public class DocumentServiceRequestContext implements Cloneable {
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
-//    private PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker;
-//
-//    private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
-
-//    private AvailabilityStrategyContext crossRegionAvailabilityStrategyContext;
+    // Track request timelines of HTTP requests which were in transit when RxGatewayStoreModel#invokeAsync pipeline is cancelled
+    public final List<GatewayRequestTimelineContext> cancelledGatewayRequestTimelineContexts = new ArrayList<>();
 
     private volatile CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest;
 
@@ -161,6 +159,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.endToEndOperationLatencyPolicyConfig = this.endToEndOperationLatencyPolicyConfig;
         context.unavailableRegionsForPartition = this.unavailableRegionsForPartition;
         context.crossRegionAvailabilityContextForRequest = this.crossRegionAvailabilityContextForRequest;
+        context.cancelledGatewayRequestTimelineContexts = this.cancelledGatewayRequestTimelineContexts;
         return context;
     }
 
