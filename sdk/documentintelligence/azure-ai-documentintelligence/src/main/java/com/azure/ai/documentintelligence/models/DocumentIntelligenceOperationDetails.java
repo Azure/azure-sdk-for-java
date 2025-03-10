@@ -31,7 +31,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
      * Operation ID
      */
     @Generated
-    private String operationId;
+    private final String operationId;
 
     /*
      * Operation status. notStarted, running, completed, or failed
@@ -82,23 +82,6 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
     private DocumentIntelligenceError error;
 
     /**
-     * Creates an instance of DocumentIntelligenceOperationDetails class.
-     *
-     * @param status the status value to set.
-     * @param createdOn the createdOn value to set.
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @param resourceLocation the resourceLocation value to set.
-     */
-    @Generated
-    protected DocumentIntelligenceOperationDetails(DocumentIntelligenceOperationStatus status, OffsetDateTime createdOn,
-        OffsetDateTime lastUpdatedOn, String resourceLocation) {
-        this.status = status;
-        this.createdOn = createdOn;
-        this.lastUpdatedOn = lastUpdatedOn;
-        this.resourceLocation = resourceLocation;
-    }
-
-    /**
      * Get the kind property: Type of operation.
      *
      * @return the kind value.
@@ -116,18 +99,6 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
     @Generated
     public String getOperationId() {
         return this.operationId;
-    }
-
-    /**
-     * Set the operationId property: Operation ID.
-     *
-     * @param operationId the operationId value to set.
-     * @return the DocumentIntelligenceOperationDetails object itself.
-     */
-    @Generated
-    DocumentIntelligenceOperationDetails setOperationId(String operationId) {
-        this.operationId = operationId;
-        return this;
     }
 
     /**
@@ -265,6 +236,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", this.operationId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("createdDateTime",
             this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
@@ -366,8 +338,8 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
                 }
             }
             DocumentIntelligenceOperationDetails deserializedDocumentIntelligenceOperationDetails
-                = new DocumentIntelligenceOperationDetails(status, createdOn, lastUpdatedOn, resourceLocation);
-            deserializedDocumentIntelligenceOperationDetails.operationId = operationId;
+                = new DocumentIntelligenceOperationDetails(operationId, status, createdOn, lastUpdatedOn,
+                    resourceLocation);
             deserializedDocumentIntelligenceOperationDetails.kind = kind;
             deserializedDocumentIntelligenceOperationDetails.percentCompleted = percentCompleted;
             deserializedDocumentIntelligenceOperationDetails.apiVersion = apiVersion;
@@ -375,5 +347,24 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
             deserializedDocumentIntelligenceOperationDetails.error = error;
             return deserializedDocumentIntelligenceOperationDetails;
         });
+    }
+
+    /**
+     * Creates an instance of DocumentIntelligenceOperationDetails class.
+     *
+     * @param operationId the operationId value to set.
+     * @param status the status value to set.
+     * @param createdOn the createdOn value to set.
+     * @param lastUpdatedOn the lastUpdatedOn value to set.
+     * @param resourceLocation the resourceLocation value to set.
+     */
+    @Generated
+    protected DocumentIntelligenceOperationDetails(String operationId, DocumentIntelligenceOperationStatus status,
+        OffsetDateTime createdOn, OffsetDateTime lastUpdatedOn, String resourceLocation) {
+        this.operationId = operationId;
+        this.status = status;
+        this.createdOn = createdOn;
+        this.lastUpdatedOn = lastUpdatedOn;
+        this.resourceLocation = resourceLocation;
     }
 }

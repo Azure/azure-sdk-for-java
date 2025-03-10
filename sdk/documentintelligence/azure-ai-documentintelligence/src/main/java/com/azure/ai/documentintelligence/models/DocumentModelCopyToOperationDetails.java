@@ -33,20 +33,6 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
     private DocumentModelDetails result;
 
     /**
-     * Creates an instance of DocumentModelCopyToOperationDetails class.
-     *
-     * @param status the status value to set.
-     * @param createdOn the createdOn value to set.
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @param resourceLocation the resourceLocation value to set.
-     */
-    @Generated
-    private DocumentModelCopyToOperationDetails(DocumentIntelligenceOperationStatus status, OffsetDateTime createdOn,
-        OffsetDateTime lastUpdatedOn, String resourceLocation) {
-        super(status, createdOn, lastUpdatedOn, resourceLocation);
-    }
-
-    /**
      * Get the kind property: Type of operation.
      *
      * @return the kind value.
@@ -74,6 +60,7 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", getOperationId());
         jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("createdDateTime",
             getCreatedOn() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedOn()));
@@ -144,8 +131,8 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
                 }
             }
             DocumentModelCopyToOperationDetails deserializedDocumentModelCopyToOperationDetails
-                = new DocumentModelCopyToOperationDetails(status, createdOn, lastUpdatedOn, resourceLocation);
-            deserializedDocumentModelCopyToOperationDetails.setOperationId(operationId);
+                = new DocumentModelCopyToOperationDetails(operationId, status, createdOn, lastUpdatedOn,
+                    resourceLocation);
             deserializedDocumentModelCopyToOperationDetails.setPercentCompleted(percentCompleted);
             deserializedDocumentModelCopyToOperationDetails.setApiVersion(apiVersion);
             deserializedDocumentModelCopyToOperationDetails.setTags(tags);
@@ -154,5 +141,20 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
             deserializedDocumentModelCopyToOperationDetails.result = result;
             return deserializedDocumentModelCopyToOperationDetails;
         });
+    }
+
+    /**
+     * Creates an instance of DocumentModelCopyToOperationDetails class.
+     *
+     * @param operationId the operationId value to set.
+     * @param status the status value to set.
+     * @param createdOn the createdOn value to set.
+     * @param lastUpdatedOn the lastUpdatedOn value to set.
+     * @param resourceLocation the resourceLocation value to set.
+     */
+    @Generated
+    private DocumentModelCopyToOperationDetails(String operationId, DocumentIntelligenceOperationStatus status,
+        OffsetDateTime createdOn, OffsetDateTime lastUpdatedOn, String resourceLocation) {
+        super(operationId, status, createdOn, lastUpdatedOn, resourceLocation);
     }
 }

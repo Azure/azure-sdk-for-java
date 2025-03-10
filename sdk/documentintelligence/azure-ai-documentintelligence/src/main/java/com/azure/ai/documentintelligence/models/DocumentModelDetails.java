@@ -25,7 +25,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * Unique document model name.
      */
     @Generated
-    private String modelId;
+    private final String modelId;
 
     /*
      * Document model description.
@@ -112,13 +112,6 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      */
     @Generated
     private Double trainingHours;
-
-    /**
-     * Creates an instance of DocumentModelDetails class.
-     */
-    @Generated
-    private DocumentModelDetails() {
-    }
 
     /**
      * Get the modelId property: Unique document model name.
@@ -279,6 +272,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modelId", this.modelId);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("classifierId", this.classifierId);
@@ -298,54 +292,87 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     @Generated
     public static DocumentModelDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DocumentModelDetails deserializedDocumentModelDetails = new DocumentModelDetails();
+            String modelId = null;
+            OffsetDateTime createdOn = null;
+            String description = null;
+            OffsetDateTime expiresOn = null;
+            OffsetDateTime modifiedOn = null;
+            String apiVersion = null;
+            Map<String, String> tags = null;
+            DocumentBuildMode buildMode = null;
+            AzureBlobContentSource azureBlobSource = null;
+            AzureBlobFileListContentSource azureBlobFileListSource = null;
+            String classifierId = null;
+            SplitMode split = null;
+            Map<String, DocumentTypeDetails> documentTypes = null;
+            List<DocumentIntelligenceWarning> warnings = null;
+            Double trainingHours = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("modelId".equals(fieldName)) {
-                    deserializedDocumentModelDetails.modelId = reader.getString();
+                    modelId = reader.getString();
                 } else if ("createdDateTime".equals(fieldName)) {
-                    deserializedDocumentModelDetails.createdOn = reader
+                    createdOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("description".equals(fieldName)) {
-                    deserializedDocumentModelDetails.description = reader.getString();
+                    description = reader.getString();
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    deserializedDocumentModelDetails.expiresOn = reader
+                    expiresOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("modifiedDateTime".equals(fieldName)) {
-                    deserializedDocumentModelDetails.modifiedOn = reader
+                    modifiedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("apiVersion".equals(fieldName)) {
-                    deserializedDocumentModelDetails.apiVersion = reader.getString();
+                    apiVersion = reader.getString();
                 } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedDocumentModelDetails.tags = tags;
+                    tags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("buildMode".equals(fieldName)) {
-                    deserializedDocumentModelDetails.buildMode = DocumentBuildMode.fromString(reader.getString());
+                    buildMode = DocumentBuildMode.fromString(reader.getString());
                 } else if ("azureBlobSource".equals(fieldName)) {
-                    deserializedDocumentModelDetails.azureBlobSource = AzureBlobContentSource.fromJson(reader);
+                    azureBlobSource = AzureBlobContentSource.fromJson(reader);
                 } else if ("azureBlobFileListSource".equals(fieldName)) {
-                    deserializedDocumentModelDetails.azureBlobFileListSource
-                        = AzureBlobFileListContentSource.fromJson(reader);
+                    azureBlobFileListSource = AzureBlobFileListContentSource.fromJson(reader);
                 } else if ("classifierId".equals(fieldName)) {
-                    deserializedDocumentModelDetails.classifierId = reader.getString();
+                    classifierId = reader.getString();
                 } else if ("split".equals(fieldName)) {
-                    deserializedDocumentModelDetails.split = SplitMode.fromString(reader.getString());
+                    split = SplitMode.fromString(reader.getString());
                 } else if ("docTypes".equals(fieldName)) {
-                    Map<String, DocumentTypeDetails> documentTypes
-                        = reader.readMap(reader1 -> DocumentTypeDetails.fromJson(reader1));
-                    deserializedDocumentModelDetails.documentTypes = documentTypes;
+                    documentTypes = reader.readMap(reader1 -> DocumentTypeDetails.fromJson(reader1));
                 } else if ("warnings".equals(fieldName)) {
-                    List<DocumentIntelligenceWarning> warnings
-                        = reader.readArray(reader1 -> DocumentIntelligenceWarning.fromJson(reader1));
-                    deserializedDocumentModelDetails.warnings = warnings;
+                    warnings = reader.readArray(reader1 -> DocumentIntelligenceWarning.fromJson(reader1));
                 } else if ("trainingHours".equals(fieldName)) {
-                    deserializedDocumentModelDetails.trainingHours = reader.getNullable(JsonReader::getDouble);
+                    trainingHours = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
             }
+            DocumentModelDetails deserializedDocumentModelDetails = new DocumentModelDetails(modelId);
+            deserializedDocumentModelDetails.createdOn = createdOn;
+            deserializedDocumentModelDetails.description = description;
+            deserializedDocumentModelDetails.expiresOn = expiresOn;
+            deserializedDocumentModelDetails.modifiedOn = modifiedOn;
+            deserializedDocumentModelDetails.apiVersion = apiVersion;
+            deserializedDocumentModelDetails.tags = tags;
+            deserializedDocumentModelDetails.buildMode = buildMode;
+            deserializedDocumentModelDetails.azureBlobSource = azureBlobSource;
+            deserializedDocumentModelDetails.azureBlobFileListSource = azureBlobFileListSource;
+            deserializedDocumentModelDetails.classifierId = classifierId;
+            deserializedDocumentModelDetails.split = split;
+            deserializedDocumentModelDetails.documentTypes = documentTypes;
+            deserializedDocumentModelDetails.warnings = warnings;
+            deserializedDocumentModelDetails.trainingHours = trainingHours;
             return deserializedDocumentModelDetails;
         });
+    }
+
+    /**
+     * Creates an instance of DocumentModelDetails class.
+     *
+     * @param modelId the modelId value to set.
+     */
+    @Generated
+    private DocumentModelDetails(String modelId) {
+        this.modelId = modelId;
     }
 }

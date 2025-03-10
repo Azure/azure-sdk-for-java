@@ -26,7 +26,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * Unique document classifier name.
      */
     @Generated
-    private String classifierId;
+    private final String classifierId;
 
     /*
      * Document classifier description.
@@ -75,21 +75,6 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      */
     @Generated
     private List<DocumentIntelligenceWarning> warnings;
-
-    /**
-     * Creates an instance of DocumentClassifierDetails class.
-     *
-     * @param createdOn the createdOn value to set.
-     * @param apiVersion the apiVersion value to set.
-     * @param documentTypes the documentTypes value to set.
-     */
-    @Generated
-    private DocumentClassifierDetails(OffsetDateTime createdOn, String apiVersion,
-        Map<String, ClassifierDocumentTypeDetails> documentTypes) {
-        this.createdOn = createdOn;
-        this.apiVersion = apiVersion;
-        this.documentTypes = documentTypes;
-    }
 
     /**
      * Get the classifierId property: Unique document classifier name.
@@ -188,6 +173,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("classifierId", this.classifierId);
         jsonWriter.writeStringField("createdDateTime",
             this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
         jsonWriter.writeStringField("apiVersion", this.apiVersion);
@@ -250,8 +236,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
                 }
             }
             DocumentClassifierDetails deserializedDocumentClassifierDetails
-                = new DocumentClassifierDetails(createdOn, apiVersion, documentTypes);
-            deserializedDocumentClassifierDetails.classifierId = classifierId;
+                = new DocumentClassifierDetails(classifierId, createdOn, apiVersion, documentTypes);
             deserializedDocumentClassifierDetails.description = description;
             deserializedDocumentClassifierDetails.expiresOn = expiresOn;
             deserializedDocumentClassifierDetails.modifiedOn = modifiedOn;
@@ -259,5 +244,22 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
             deserializedDocumentClassifierDetails.warnings = warnings;
             return deserializedDocumentClassifierDetails;
         });
+    }
+
+    /**
+     * Creates an instance of DocumentClassifierDetails class.
+     *
+     * @param classifierId the classifierId value to set.
+     * @param createdOn the createdOn value to set.
+     * @param apiVersion the apiVersion value to set.
+     * @param documentTypes the documentTypes value to set.
+     */
+    @Generated
+    private DocumentClassifierDetails(String classifierId, OffsetDateTime createdOn, String apiVersion,
+        Map<String, ClassifierDocumentTypeDetails> documentTypes) {
+        this.classifierId = classifierId;
+        this.createdOn = createdOn;
+        this.apiVersion = apiVersion;
+        this.documentTypes = documentTypes;
     }
 }

@@ -33,20 +33,6 @@ public final class DocumentModelComposeOperationDetails extends DocumentIntellig
     private DocumentModelDetails result;
 
     /**
-     * Creates an instance of DocumentModelComposeOperationDetails class.
-     *
-     * @param status the status value to set.
-     * @param createdOn the createdOn value to set.
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @param resourceLocation the resourceLocation value to set.
-     */
-    @Generated
-    private DocumentModelComposeOperationDetails(DocumentIntelligenceOperationStatus status, OffsetDateTime createdOn,
-        OffsetDateTime lastUpdatedOn, String resourceLocation) {
-        super(status, createdOn, lastUpdatedOn, resourceLocation);
-    }
-
-    /**
      * Get the kind property: Type of operation.
      *
      * @return the kind value.
@@ -74,6 +60,7 @@ public final class DocumentModelComposeOperationDetails extends DocumentIntellig
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", getOperationId());
         jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("createdDateTime",
             getCreatedOn() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedOn()));
@@ -144,8 +131,8 @@ public final class DocumentModelComposeOperationDetails extends DocumentIntellig
                 }
             }
             DocumentModelComposeOperationDetails deserializedDocumentModelComposeOperationDetails
-                = new DocumentModelComposeOperationDetails(status, createdOn, lastUpdatedOn, resourceLocation);
-            deserializedDocumentModelComposeOperationDetails.setOperationId(operationId);
+                = new DocumentModelComposeOperationDetails(operationId, status, createdOn, lastUpdatedOn,
+                    resourceLocation);
             deserializedDocumentModelComposeOperationDetails.setPercentCompleted(percentCompleted);
             deserializedDocumentModelComposeOperationDetails.setApiVersion(apiVersion);
             deserializedDocumentModelComposeOperationDetails.setTags(tags);
@@ -154,5 +141,20 @@ public final class DocumentModelComposeOperationDetails extends DocumentIntellig
             deserializedDocumentModelComposeOperationDetails.result = result;
             return deserializedDocumentModelComposeOperationDetails;
         });
+    }
+
+    /**
+     * Creates an instance of DocumentModelComposeOperationDetails class.
+     *
+     * @param operationId the operationId value to set.
+     * @param status the status value to set.
+     * @param createdOn the createdOn value to set.
+     * @param lastUpdatedOn the lastUpdatedOn value to set.
+     * @param resourceLocation the resourceLocation value to set.
+     */
+    @Generated
+    private DocumentModelComposeOperationDetails(String operationId, DocumentIntelligenceOperationStatus status,
+        OffsetDateTime createdOn, OffsetDateTime lastUpdatedOn, String resourceLocation) {
+        super(operationId, status, createdOn, lastUpdatedOn, resourceLocation);
     }
 }

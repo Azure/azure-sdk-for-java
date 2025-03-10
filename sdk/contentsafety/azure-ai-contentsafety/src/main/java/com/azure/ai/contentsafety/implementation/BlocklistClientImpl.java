@@ -493,7 +493,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -504,7 +504,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -537,7 +537,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -548,7 +548,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -621,7 +621,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -653,7 +653,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -975,7 +975,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -1009,7 +1009,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -1042,7 +1042,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -1075,7 +1075,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -1246,7 +1246,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }
@@ -1280,7 +1280,7 @@ public final class BlocklistClientImpl {
      * <pre>
      * {@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }

@@ -112,6 +112,7 @@ public final class TextBlocklist implements JsonSerializable<TextBlocklist> {
             return toJsonMergePatch(jsonWriter);
         } else {
             jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("blocklistName", this.name);
             jsonWriter.writeStringField("description", this.description);
             return jsonWriter.writeEndObject();
         }
@@ -120,6 +121,13 @@ public final class TextBlocklist implements JsonSerializable<TextBlocklist> {
     @Generated
     private JsonWriter toJsonMergePatch(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        if (updatedProperties.contains("name")) {
+            if (this.name == null) {
+                jsonWriter.writeNullField("blocklistName");
+            } else {
+                jsonWriter.writeStringField("blocklistName", this.name);
+            }
+        }
         if (updatedProperties.contains("description")) {
             if (this.description == null) {
                 jsonWriter.writeNullField("description");
@@ -136,7 +144,6 @@ public final class TextBlocklist implements JsonSerializable<TextBlocklist> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of TextBlocklist if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TextBlocklist.
      */
     @Generated
@@ -156,5 +163,19 @@ public final class TextBlocklist implements JsonSerializable<TextBlocklist> {
             }
             return deserializedTextBlocklist;
         });
+    }
+
+    /**
+     * Set the name property: Text blocklist name.
+     * <p>Required when create the resource.</p>
+     *
+     * @param name the name value to set.
+     * @return the TextBlocklist object itself.
+     */
+    @Generated
+    public TextBlocklist setName(String name) {
+        this.name = name;
+        this.updatedProperties.add("name");
+        return this;
     }
 }
