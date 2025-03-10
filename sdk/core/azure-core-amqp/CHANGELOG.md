@@ -1,14 +1,12 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.9.16 (2025-03-10)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to `1.55.3`.
 
 ## 2.9.15 (2025-02-20)
 
