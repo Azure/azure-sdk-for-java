@@ -71,18 +71,18 @@ public class FullSampleMigrationTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
-        System.out.printf("Active recipe: %s\n", RECIPE_NAME);
         spec.recipeFromResources(RECIPE_NAME)
             .typeValidationOptions(TypeValidation.none());
     }
 
-
-
-    @ParameterizedTest(name = "{0}")
+    @ParameterizedTest(name="{0}")
     @Execution(ExecutionMode.CONCURRENT)
     @MethodSource("sampleDirectories")
     public void testGoldenImage(String sampleDirString) throws Exception {
+        System.out.printf("Sample: %s\nActive Recipe: %s", sampleDirString, RECIPE_NAME);
+
         Path sampleDir = Paths.get(sampleDirString);
+
         Assumptions.assumeFalse(isDisabledDir(sampleDir));
         Map<String, String> fileMap = new HashMap<String, String>();
 
@@ -125,14 +125,8 @@ public class FullSampleMigrationTest implements RewriteTest {
             );
         } catch (AssertionError e) {
             String message = e.getMessage();
-            String relevantPortion = message.substring(message.indexOf("diff") , message.indexOf("expected: "));
-            throw new AssertionError("Migration failed for sample directory: " + name + "\n" + relevantPortion);
+            throw new AssertionError("Migration failed for sample directory: " + name + "\n" + e.getLocalizedMessage());
         }
 
     }
-
-
-
-
-
 }

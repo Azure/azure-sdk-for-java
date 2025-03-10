@@ -3,18 +3,20 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.util.Context;
+
 import java.util.Base64;
 
 public class HttpBasicAuthExample {
     public static void main(String... args) {
-        HttpClient client = new NettyAsyncHttpClientBuilder().build();
+        HttpClient client = HttpClient.createDefault();
         String auth = "username:password";
         String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
         HttpHeaders headers = new HttpHeaders().set("Authorization", "Basic " + encodedAuth);
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.com", headers, null);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.com")
+                .setHeaders(headers);
 
-        HttpResponse response = client.send(request).block();
+        HttpResponse response = client.sendSync(request, Context.NONE);
         System.out.println("Status code: " + response.getStatusCode());
         System.out.println("Headers: " + response.getHeaders());
     }

@@ -4,133 +4,19 @@
 # Migration Recipes for Azure-Core Library
 # --------------------------------------------------------------------
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.openrewrite.recipes.migrateAzureCore
+name: com.azure.openrewrite.recipes.AzureCore
 displayName: Migrate from azure-core to next generation stack
 description: This recipe migrates the Azure Storage Core library to the next generation stack.
 recipeList:
-  # Before: import com.azure.core.http.HttpHeaderName;
-  # After: import io.clientcore.core.http.models.HttpHeaderName;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.HttpHeaderName
-      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpHeaderName
 
-  # Before: import com.azure.core.util.logging.ClientLogger;
-  # After: import io.clientcore.core.util.ClientLogger;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.logging.ClientLogger
-      newFullyQualifiedTypeName: io.clientcore.core.instrumentation.logging.ClientLogger
-
-
-  # Before: import com.azure.core.util.CoreUtils;
-  # After: import com.azure.core.v2.util.CoreUtils;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.CoreUtils
-      newFullyQualifiedTypeName: com.azure.core.v2.util.CoreUtils
-
-
-  # Before: import com.azure.core.http.policy.KeyCredentialPolicy;
-  # After: import io.clientcore.core.http.pipeline.KeyCredentialPolicy;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.policy.KeyCredentialPolicy
-      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.KeyCredentialPolicy
-
-  # Before: import com.azure.core.client.traits.KeyCredentialTrait;
-  # After: import io.clientcore.core.models.traits.KeyCredentialTrait;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.client.traits.KeyCredentialTrait
-      newFullyQualifiedTypeName: io.clientcore.core.models.traits.KeyCredentialTrait
-
-
-  # Before: import com.azure.core.http.HttpClient;
-  # After: import io.clientcore.core.http.client.HttpClient;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.HttpClient
-      newFullyQualifiedTypeName: io.clientcore.core.http.client.HttpClient
-      ignoreDefinition: false
-
-  # Before: import com.azure.core.http.HttpPipeline;
-  # After: import io.clientcore.core.http.pipeline.HttpPipeline;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.HttpPipeline
-      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipeline
-      ignoreDefinition: false
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.HttpPipelineBuilder
-      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipelineBuilder
-      ignoreDefinition: false
-
-  # Before: import com.azure.core.http.policy.HttpPipelinePolicy;
-  # After: import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.policy.HttpPipelinePolicy
-      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipelinePolicy
-      ignoreDefinition: false
-
-  # Before: import com.azure.core.exception.yml.ClientAuthenticationException;
-  # After: import com.azure.core.v2.exception.ClientAuthenticationException;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.exception.yml.ClientAuthenticationException
-      newFullyQualifiedTypeName: com.azure.core.v2.exception.ClientAuthenticationException
-
-  # Before: import com.azure.core.exception.yml.ResourceModifiedException;
-  # After: import com.azure.core.v2.exception.ResourceModifiedException;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.exception.yml.ResourceModifiedException
-      newFullyQualifiedTypeName: com.azure.core.v2.exception.ResourceModifiedException
-  # Before: import com.azure.core.exception.yml.ResourceNotFoundException;
-  # After: import com.azure.core.v2.exception.ResourceNotFoundException;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.exception.yml.ResourceNotFoundException
-      newFullyQualifiedTypeName: com.azure.core.v2.exception.ResourceNotFoundException
-
-  # Before: import com.azure.core.exception.yml.HttpResponseException;
-  # After: import io.clientcore.core.http.exception.HttpResponseException;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.exception.yml.HttpResponseException
-      newFullyQualifiedTypeName: io.clientcore.core.http.exception.HttpResponseException
-  # End azure-core-exception change type Recipes
-
-  # Before: import com.azure.core.util.Configuration;
-  # After: import io.clientcore.core.util.configuration.Configuration;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.Configuration
-      newFullyQualifiedTypeName: io.clientcore.core.util.configuration.Configuration
-
-  # Before: import com.azure.core.credential.AzureSasCredential;
-  # After: import io.clientcore.core.credential.KeyCredential;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.credential.AzureSasCredential
-      newFullyQualifiedTypeName: io.clientcore.core.credential.KeyCredential
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.policy.HttpLogOptions
-      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpInstrumentationOptions
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.policy.HttpLogDetailLevel
-      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpInstrumentationOptions$HttpLogDetailLevel
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.policy.RetryPolicy
-      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpRetryPolicy
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.Context
-      newFullyQualifiedTypeName: io.clientcore.core.util.Context
-
-  - org.openrewrite.java.ChangeType:
-        oldFullyQualifiedTypeName: com.azure.core.http.rest.RequestOptions
-        newFullyQualifiedTypeName: io.clientcore.core.http.models.RequestOptions
-
-  - org.openrewrite.java.ChangeStaticFieldToMethod:
-      oldClassName: io.clientcore.core.util.Context
-      oldFieldName: NONE
-      newMethodName: none
-
-  - org.openrewrite.java.ChangeMethodName:
-      methodPattern: com.azure..* httpLogOptions(..)
-      newMethodName: httpInstrumentationOptions
-      matchOverrides: false
-      ignoreDefinition: false
+  - com.azure.openrewrite.migration.azure.core.annotation
+  - com.azure.openrewrite.migration.azure.core.credential
+  - com.azure.openrewrite.migration.azure.core.cryptography
+  - com.azure.openrewrite.migration.azure.core.exception
+  - com.azure.openrewrite.migration.azure.core.http.policy
+  - com.azure.openrewrite.migration.azure.core.http.rest
+  - com.azure.openrewrite.migration.azure.core.http
+  - com.azure.openrewrite.migration.azure.core.models
+  - com.azure.openrewrite.migration.azure.core.util
+  - com.azure.openrewrite.migration.azure.core.clients.traits
 
