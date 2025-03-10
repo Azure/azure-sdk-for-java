@@ -226,108 +226,124 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
 
                 logger.debug("Background updateStaleLocationInfo kicking in...");
-                PartitionKeyRangeWrapper partitionKeyRangeWrapper = partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair.getKey();
 
-                PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+                try {
+                    PartitionKeyRangeWrapper partitionKeyRangeWrapper = partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair.getKey();
 
-                if (partitionLevelLocationUnavailabilityInfo != null) {
+                    PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
 
-                    List<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> locationToLocationSpecificHealthContextList = new ArrayList<>();
+                    if (partitionLevelLocationUnavailabilityInfo != null) {
 
-                    for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
+                        List<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> locationToLocationSpecificHealthContextList = new ArrayList<>();
 
-                        RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
-                        LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
+                        for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
 
-                        if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
-                            locationToLocationSpecificHealthContextList.add(
-                                Pair.of(
-                                    partitionKeyRangeWrapper,
+                            RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
+                            LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
+
+                            if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
+                                locationToLocationSpecificHealthContextList.add(
                                     Pair.of(
-                                        locationWithStaleUnavailabilityInfo,
-                                        locationSpecificHealthContext)));
+                                        partitionKeyRangeWrapper,
+                                        Pair.of(
+                                            locationWithStaleUnavailabilityInfo,
+                                            locationSpecificHealthContext)));
+                            }
                         }
-                    }
 
-                    if (locationToLocationSpecificHealthContextList.isEmpty()) {
-                        this.partitionKeyRangesWithPossibleUnavailableRegions.remove(partitionKeyRangeWrapper);
-                        return Flux.empty();
+                        if (locationToLocationSpecificHealthContextList.isEmpty()) {
+                            this.partitionKeyRangesWithPossibleUnavailableRegions.remove(partitionKeyRangeWrapper);
+                            return Flux.empty();
+                        } else {
+                            return Flux.fromIterable(locationToLocationSpecificHealthContextList);
+                        }
                     } else {
-                        return Flux.fromIterable(locationToLocationSpecificHealthContextList);
+                        this.partitionKeyRangesWithPossibleUnavailableRegions.remove(partitionKeyRangeWrapper);
+                        return Mono.empty();
                     }
-                } else {
-                    this.partitionKeyRangesWithPossibleUnavailableRegions.remove(partitionKeyRangeWrapper);
-                    return Mono.empty();
+                } catch (Exception e) {
+                    return Flux.empty();
                 }
             })
             .flatMap(locationToLocationSpecificHealthContextPair -> {
 
-                PartitionKeyRangeWrapper partitionKeyRangeWrapper = locationToLocationSpecificHealthContextPair.getLeft();
-                RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationSpecificHealthContextPair.getRight().getLeft();
+                try {
+                    PartitionKeyRangeWrapper partitionKeyRangeWrapper = locationToLocationSpecificHealthContextPair.getLeft();
+                    RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationSpecificHealthContextPair.getRight().getLeft();
 
-                PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+                    PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
 
-                if (partitionLevelLocationUnavailabilityInfo != null) {
+                    if (partitionLevelLocationUnavailabilityInfo != null) {
 
-                    GlobalAddressResolver globalAddressResolver = this.globalAddressResolverSnapshot.get();
+                        GlobalAddressResolver globalAddressResolver = this.globalAddressResolverSnapshot.get();
 
-                    if (globalAddressResolver != null) {
+                        if (globalAddressResolver != null) {
 
-                        GatewayAddressCache gatewayAddressCache = globalAddressResolver.getGatewayAddressCache(locationWithStaleUnavailabilityInfo.getGatewayRegionalEndpoint());
+                            GatewayAddressCache gatewayAddressCache = globalAddressResolver.getGatewayAddressCache(locationWithStaleUnavailabilityInfo.getGatewayRegionalEndpoint());
 
-                        if (gatewayAddressCache != null) {
+                            if (gatewayAddressCache != null) {
 
-                            return gatewayAddressCache
-                                .submitOpenConnectionTasks(partitionKeyRangeWrapper.getPartitionKeyRange(), partitionKeyRangeWrapper.getCollectionResourceId())
-                                .publishOn(this.partitionRecoveryScheduler)
-                                .timeout(Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()))
-                                .doOnComplete(() -> {
+                                return gatewayAddressCache
+                                    .submitOpenConnectionTasks(partitionKeyRangeWrapper.getPartitionKeyRange(), partitionKeyRangeWrapper.getCollectionResourceId())
+                                    .publishOn(this.partitionRecoveryScheduler)
+                                    .timeout(Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()))
+                                    .doOnComplete(() -> {
 
-                                    if (logger.isDebugEnabled()) {
-                                        logger.debug("Partition health recovery query for partition key range : {}-{} and " +
-                                                "collection rid : {} has succeeded...",
-                                            partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
-                                            partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                                            partitionKeyRangeWrapper.getCollectionResourceId());
-                                    }
-
-                                    partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
-
-                                        if (locationSpecificContextAsVal != null) {
-                                            locationSpecificContextAsVal = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
-                                                .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
-                                                locationSpecificContextAsVal,
-                                                partitionKeyRangeWrapper,
-                                                this.locationToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
-                                                false,
-                                                true);
+                                        if (logger.isDebugEnabled()) {
+                                            logger.debug("Partition health recovery query for partition key range : {}-{} and " +
+                                                    "collection rid : {} has succeeded...",
+                                                partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                                                partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
+                                                partitionKeyRangeWrapper.getCollectionResourceId());
                                         }
-                                        return locationSpecificContextAsVal;
-                                    });
-                                });
-                        }
-                    } else {
-                        partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
 
-                            if (locationSpecificContextAsVal != null) {
-                                locationSpecificContextAsVal = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
-                                    .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
-                                    locationSpecificContextAsVal,
-                                    partitionKeyRangeWrapper,
-                                    GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.locationToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
-                                    false,
-                                    true);
+                                        partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
+
+                                            if (locationSpecificContextAsVal != null) {
+                                                locationSpecificContextAsVal = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
+                                                    .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
+                                                    locationSpecificContextAsVal,
+                                                    partitionKeyRangeWrapper,
+                                                    this.locationToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
+                                                    false,
+                                                    true);
+                                            }
+                                            return locationSpecificContextAsVal;
+                                        });
+                                    })
+                                    .onErrorResume(throwable -> {
+                                        if (logger.isDebugEnabled()) {
+                                            logger.debug("An exception : {} was thrown trying to recover an Unavailable partition key range!", throwable.getMessage());
+                                        }
+
+                                        return Mono.empty();
+                                    });
                             }
-                            return locationSpecificContextAsVal;
-                        });
+                        } else {
+                            partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
+
+                                if (locationSpecificContextAsVal != null) {
+                                    locationSpecificContextAsVal = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
+                                        .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
+                                        locationSpecificContextAsVal,
+                                        partitionKeyRangeWrapper,
+                                        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.locationToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
+                                        false,
+                                        true);
+                                }
+                                return locationSpecificContextAsVal;
+                            });
+                        }
                     }
+                } catch (Exception e) {
+                    return Flux.empty();
                 }
 
                 return Flux.empty();
             })
             .onErrorResume(throwable -> {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("An exception was thrown trying to recover an Unavailable partition key range!");
+                if (logger.isWarnEnabled()) {
+                    logger.warn("An exception : {} was thrown trying to recover an Unavailable partition key range!, fail-back flow won't be executed!", throwable.getMessage());
                 }
                 return Flux.empty();
             });
