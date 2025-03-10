@@ -119,12 +119,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         assertThat(ctx.getContactedRegionNames()).contains(this.secondPreferredRegion.toLowerCase(Locale.ROOT));
     };
 
-    Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAnyTwoPreferredRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
-    };
-
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAtMostTwoPreferredRegions = (ctx) -> {
         assertThat(ctx).isNotNull();
         assertThat(ctx.getContactedRegionNames()).isNotNull();
@@ -186,17 +180,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         assertThat(responseWrapper.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
     };
 
-    Consumer<ResponseWrapper<?>> validateResponseHasServiceUnavailableError = (responseWrapper) -> {
-        assertThat(responseWrapper.cosmosException).isNotNull();
-        assertThat(responseWrapper.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
-    };
-
-    Consumer<ResponseWrapper<?>> validateResponseHasRequestTimeoutException = (responseWrapper) -> {
-        assertThat(responseWrapper.cosmosException).isNotNull();
-        assertThat(responseWrapper.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
-        assertThat(responseWrapper.cosmosException.getSubStatusCode()).isNotEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
-    };
-
     private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildServiceUnavailableFaultInjectionRules
         = PerPartitionCircuitBreakerE2ETests::buildServiceUnavailableFaultInjectionRules;
 
@@ -217,9 +200,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildInternalServerErrorFaultInjectionRules
         = PerPartitionCircuitBreakerE2ETests::buildInternalServerErrorFaultInjectionRules;
-
-    private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildRetryWithFaultInjectionRules
-        = PerPartitionCircuitBreakerE2ETests::buildRetryWithFaultInjectionRules;
 
     private static final CosmosRegionSwitchHint NO_REGION_SWITCH_HINT = null;
 
@@ -3617,7 +3597,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             regionMap);
     }
 
-
     private static List<FaultInjectionRule> buildServiceUnavailableFaultInjectionRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
 
         List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
@@ -3726,50 +3705,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
 
             FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("invalid-partition-rule-" + UUID.randomUUID())
-                .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult);
-
-            if (paramsWrapper.getFaultInjectionDuration() != null) {
-                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
-            }
-
-            if (paramsWrapper.getHitLimit() != null) {
-                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
-            }
-
-            faultInjectionRules.add(faultInjectionRuleBuilder.build());
-        }
-
-        return faultInjectionRules;
-    }
-
-    private static List<FaultInjectionRule> buildTransitTimeoutFaultInjectionRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
-
-        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-            .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-            .delay(paramsWrapper.getResponseDelay())
-            .suppressServiceRequests(false)
-            .build();
-
-        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
-
-        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
-
-            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
-                .connectionType(paramsWrapper.getFaultInjectionConnectionType())
-                .region(applicableRegion);
-
-            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
-                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
-            }
-
-            if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
-                faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
-            }
-
-            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
-
-            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("response-delay-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
                 .result(faultInjectionServerErrorResult);
 
@@ -3940,47 +3875,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
 
             FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("internal-server-error-rule-" + UUID.randomUUID())
-                .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult);
-
-            if (paramsWrapper.getFaultInjectionDuration() != null) {
-                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
-            }
-
-            if (paramsWrapper.getHitLimit() != null) {
-                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
-            }
-
-            faultInjectionRules.add(faultInjectionRuleBuilder.build());
-        }
-
-        return faultInjectionRules;
-    }
-
-    private static List<FaultInjectionRule> buildRetryWithFaultInjectionRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
-        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-            .getResultBuilder(FaultInjectionServerErrorType.RETRY_WITH)
-            .build();
-
-        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
-
-        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
-
-            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
-                .connectionType(paramsWrapper.getFaultInjectionConnectionType())
-                .region(applicableRegion);
-
-            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
-                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
-            }
-
-            if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
-                faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
-            }
-
-            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
-
-            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("retry-with-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
                 .result(faultInjectionServerErrorResult);
 
