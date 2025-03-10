@@ -150,6 +150,7 @@ public class CosmosClientBuilder implements
     private final List<CosmosOperationPolicy> requestPolicies;
     private CosmosItemSerializer defaultCustomSerializer;
     private boolean isRegionScopedSessionCapturingEnabled = false;
+    private boolean isPerPartitionAutomaticFailoverEnabled = false;
     private boolean serverCertValidationDisabled = false;
 
     /**
@@ -225,6 +226,29 @@ public class CosmosClientBuilder implements
      * */
     boolean isRegionScopedSessionCapturingEnabled() {
         return this.isRegionScopedSessionCapturingEnabled;
+    }
+
+    /**
+     * The {@code perPartitionAutomaticFailoverEnabled} flag is a way for the {@link CosmosClient} or {@link CosmosAsyncClient}
+     * instance to opt in into failing over a specific physical partition(s) in the write region for single-write accounts as
+     * opposed to the write region as a whole.
+     * <p>
+     * IMPORTANT: {@link perPartitionAutomaticFailoverEnabled()} is a package-private method used in tests and benchmarking scenarios.
+     *
+     * @param isPerPartitionAutomaticFailoverEnabled A boolean flag to indicate whether PPAF is enabled.
+     * */
+    CosmosClientBuilder perPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
+        this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
+        return this;
+    }
+
+    /**
+     * Gets whether PPAF is enabled.
+     *
+     * @return isPerPartitionAutomaticFailoverEnabled
+     * */
+    boolean isPerPartitionAutomaticFailoverEnabled() {
+        return this.isPerPartitionAutomaticFailoverEnabled;
     }
 
     /**
@@ -865,6 +889,15 @@ public class CosmosClientBuilder implements
         }
     }
 
+    void resetIsPerPartitionAutomaticFailoverEnabled() {
+        String isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp
+            = Configs.isPerPartitionAutomaticFailoverEnabled();
+
+        if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp)) {
+            this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp);
+        }
+    }
+
     /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
@@ -1185,6 +1218,8 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
+        this.resetIsPerPartitionAutomaticFailoverEnabled();
+
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
@@ -1225,6 +1260,8 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
+        this.resetIsPerPartitionAutomaticFailoverEnabled();
+
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
@@ -1447,6 +1484,16 @@ public class CosmosClientBuilder implements
                 @Override
                 public boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder) {
                     return builder.isRegionScopedSessionCapturingEnabled();
+                }
+
+                @Override
+                public void setPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder, boolean isPerPartitionAutomaticFailoverEnabled) {
+                    builder.perPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverEnabled);
+                }
+
+                @Override
+                public boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder) {
+                    return builder.isPerPartitionAutomaticFailoverEnabled();
                 }
             });
     }

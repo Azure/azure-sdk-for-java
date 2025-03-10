@@ -127,6 +127,14 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getAvailableWriteEndpoints();
     }
 
+    public List<RegionalRoutingContext> getAvailableReadRoutingContexts() {
+        return this.locationCache.getAvailableReadRegionalRoutingContexts();
+    }
+
+    public List<RegionalRoutingContext> getAvailableWriteRoutingContexts() {
+        return this.locationCache.getAvailableWriteRegionalRoutingContexts();
+    }
+
     public static Mono<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
             URI defaultEndpoint, List<String> locations, Function<URI, Mono<DatabaseAccount>> getDatabaseAccountFn) {
 
@@ -372,6 +380,10 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public String getRegionName(URI locationEndpoint, OperationType operationType) {
         return this.locationCache.getRegionName(locationEndpoint, operationType);
+    }
+
+    public String getRegionName(URI locationEndpoint, OperationType operationType, boolean isPerPartitionAutomaticFailoverEnabledAndWriteRequest) {
+        return this.locationCache.getRegionName(locationEndpoint, operationType, isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
     }
 
     public ConnectionPolicy getConnectionPolicy() {
