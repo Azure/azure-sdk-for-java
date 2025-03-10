@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import io.netty.buffer.ByteBuf;
@@ -35,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -493,6 +495,42 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             }
 
             return Mono.error(dce);
+        }).doFinally(signalType -> {
+
+            if (signalType != SignalType.CANCEL) {
+                return;
+            }
+
+            RegionalRoutingContext regionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
+
+            OperationCancelledException operationCancelledException =
+                new OperationCancelledException(httpRequest.toString(), regionalRoutingContext.getGatewayRegionalEndpoint());
+
+            if (request.requestContext.cosmosDiagnostics != null) {
+                if (httpRequest.reactorNettyRequestRecord() != null) {
+                    ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+                    BridgeInternal.setRequestTimeline(operationCancelledException, reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                    ImplementationBridgeHelpers
+                        .CosmosExceptionHelper
+                        .getCosmosExceptionAccessor()
+                        .setFaultInjectionRuleId(
+                            operationCancelledException,
+                            request.faultInjectionRequestContext
+                                .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+
+                    ImplementationBridgeHelpers
+                        .CosmosExceptionHelper
+                        .getCosmosExceptionAccessor()
+                        .setFaultInjectionEvaluationResults(
+                            operationCancelledException,
+                            request.faultInjectionRequestContext
+                                .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                }
+
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, operationCancelledException, globalEndpointManager);
+            }
+
         });
     }
 
