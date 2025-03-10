@@ -6,7 +6,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.CoreUtilsTests;
 import io.clientcore.core.utils.configuration.Configuration;
-import io.clientcore.core.utils.configuration.ConfigurationSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

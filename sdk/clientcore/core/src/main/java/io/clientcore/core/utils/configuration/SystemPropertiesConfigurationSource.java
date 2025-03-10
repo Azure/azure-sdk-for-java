@@ -13,7 +13,7 @@ public final class SystemPropertiesConfigurationSource implements ConfigurationS
      */
     public SystemPropertiesConfigurationSource() {
     }
-    
+
     @Override
     public String getProperty(String name) {
         Objects.requireNonNull(name, "'name' cannot be null.");

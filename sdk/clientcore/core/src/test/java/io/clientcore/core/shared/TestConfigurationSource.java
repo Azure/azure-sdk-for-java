@@ -8,7 +8,6 @@ import io.clientcore.core.utils.configuration.ConfigurationSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class TestConfigurationSource implements ConfigurationSource {
     private final Map<String, String> testData;

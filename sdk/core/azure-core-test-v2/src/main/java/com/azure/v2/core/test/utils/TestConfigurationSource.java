@@ -7,44 +7,41 @@ import io.clientcore.core.utils.configuration.ConfigurationSource;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * Test configuration source implementation.
  */
-public final class TestConfigurationSource implements ConfigurationSource {
+public class TestConfigurationSource implements ConfigurationSource {
     private final Map<String, String> testData;
 
     /**
-     * Creates TestConfigurationSource with given property names and values.
+     * Creates an instance of {@link TestConfigurationSource}.
      */
     public TestConfigurationSource() {
         this.testData = new HashMap<>();
     }
 
     /**
-     * Adds property name and value to the source.
+     * Adds a key-value pair to the test configuration source.
      *
-     * @param name property name
-     * @param value property value
-     * @return this {@code TestConfigurationSource} for chaining.
+     * @param key The key to add.
+     * @param value The value to add.
+     * @return The current instance of {@link TestConfigurationSource}.
      */
-    public TestConfigurationSource put(String name, String value) {
-        this.testData.put(name, value);
+    public TestConfigurationSource put(String key, String value) {
+        this.testData.put(key, value);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Map<String, String> getProperties(String path) {
-        if (path == null) {
-            return testData;
-        }
-        return testData.entrySet()
-            .stream()
-            .filter(prop -> prop.getKey().startsWith(path + "."))
-            .collect(Collectors.toMap(Map.Entry<String, String>::getKey, Map.Entry<String, String>::getValue));
+    public String getProperty(String name) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        return testData.get(name);
+    }
+
+    @Override
+    public boolean isMutable() {
+        return true;
     }
 }
