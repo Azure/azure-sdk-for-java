@@ -341,6 +341,11 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         }
                     }
                 } catch (Exception e) {
+
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("An exception : {} was thrown trying to recover an Unavailable partition key range!", e.getMessage());
+                    }
+
                     return Flux.empty();
                 }
 
