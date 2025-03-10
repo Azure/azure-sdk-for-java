@@ -18,7 +18,6 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -527,32 +526,32 @@ public class UnionTests {
     @MethodSource("getModelSerializationTestData")
     @ParameterizedTest
     void modelSerializationTest(FooModel model, String expectedJson) throws Exception {
-        ByteArrayOutputStream byteArraOS = new ByteArrayOutputStream();
-        JsonWriter jsonWriter = JsonWriter.toStream(byteArraOS);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        JsonWriter jsonWriter = JsonWriter.toStream(byteArrayOutputStream);
         JsonWriter updatedJsonWriter = model.toJson(jsonWriter);
         updatedJsonWriter.close();
-        String json = byteArraOS.toString();
+        String json = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
         assertEquals(expectedJson, json);
     }
 
     @MethodSource("getPrimitiveSerializationTestData")
     @ParameterizedTest
     void primitiveSerializationTest(Union union, String expectedJson) throws Exception {
-        ByteArrayOutputStream byteArraOS = new ByteArrayOutputStream();
-        JsonWriter jsonWriter = JsonWriter.toStream(byteArraOS);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        JsonWriter jsonWriter = JsonWriter.toStream(byteArrayOutputStream);
         JsonWriter updatedJsonWriter = union.toJson(jsonWriter);
         updatedJsonWriter.close();
-        String json = byteArraOS.toString();
+        String json = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
         assertEquals(expectedJson, json);
     }
 
     public static Stream<Arguments> getPrimitiveSerializationTestData() {
         return Stream.of(Arguments.of(Union.ofTypes(int.class, String.class).setValue(42), "42"),
-            Arguments.of(Union.ofTypes(double.class, String.class).setValue(3.14), "3.14"),
+            Arguments.of(Union.ofTypes(double.class, String.class).setValue(10.14), "10.14"),
             Arguments.of(Union.ofTypes(boolean.class, String.class).setValue(true), "true"),
             Arguments.of(Union.ofTypes(boolean.class, String.class).setValue(false), "false"),
             Arguments.of(Union.ofTypes(String.class, String.class).setValue("Hello, world!"), "\"Hello, world!\""),
-            Arguments.of(Union.ofTypes(float.class, String.class).setValue(3.14f), "3.14"),
+            Arguments.of(Union.ofTypes(float.class, String.class).setValue(10.14f), "10.14"),
             Arguments.of(Union.ofTypes(long.class, String.class).setValue(42L), "42"),
             Arguments.of(Union.ofTypes(TypeUtil.createParameterizedType(List.class, String.class), String.class)
                 .setValue(Arrays.asList("Hello", "world")), "[\"Hello\",\"world\"]"));

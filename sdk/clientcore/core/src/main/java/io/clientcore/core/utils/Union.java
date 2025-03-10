@@ -191,7 +191,7 @@ public final class Union implements JsonSerializable<Union> {
      * Gets the value of the union if it is of the expected type.
      *
      * @param clazz The expected type of the value.
-     * @param <T>   The expected type of the value.
+     * @param <T> The expected type of the value.
      * @return The value of the union.
      */
     @SuppressWarnings("unchecked")
@@ -212,9 +212,9 @@ public final class Union implements JsonSerializable<Union> {
     /**
      * Gets the value of the union if it is of the expected type.
      *
-     * @param clazz        The expected type of the value.
+     * @param clazz The expected type of the value.
      * @param genericTypes The generic types of the expected type.
-     * @param <T>          The expected type of the value.
+     * @param <T> The expected type of the value.
      * @return The value of the union.
      */
     public <T> T getValue(Class<T> clazz, Class<?>... genericTypes) {
@@ -225,7 +225,7 @@ public final class Union implements JsonSerializable<Union> {
      * Gets the value of the union if it is of the expected type.
      *
      * @param type The expected type of the value.
-     * @param <T>  The expected type of the value.
+     * @param <T> The expected type of the value.
      * @return The value of the union.
      */
     @SuppressWarnings("unchecked")
@@ -244,8 +244,8 @@ public final class Union implements JsonSerializable<Union> {
      * This method is used to consume the value of the Union if it is of the expected type.
      *
      * @param consumer A consumer that will consume the value of the Union if it is of the expected type.
-     * @param clazz    The expected type of the value.
-     * @param <T>      The value type expected by the consumer.
+     * @param clazz The expected type of the value.
+     * @param <T> The value type expected by the consumer.
      * @return Returns true if the value was consumable by the consumer, and false if it was not.
      */
     @SuppressWarnings("unchecked")
@@ -270,11 +270,11 @@ public final class Union implements JsonSerializable<Union> {
     /**
      * This method is used to consume the value of the Union if it is of the expected type.
      *
-     * @param consumer     A consumer that will consume the value of the Union if it is of the expected type.
-     * @param clazz        The expected type of the value.
+     * @param consumer A consumer that will consume the value of the Union if it is of the expected type.
+     * @param clazz The expected type of the value.
      * @param genericTypes A var-args representation of generic types that are expected by the consumer, for example,
-     *                     <code>List&lt;String&gt;</code> would be represented as <pre>List.class, String.class</pre>.
-     * @param <T>          The value type expected by the consumer.
+     * <code>List&lt;String&gt;</code> would be represented as <pre>List.class, String.class</pre>.
+     * @param <T> The value type expected by the consumer.
      * @return Returns true if the value was consumable by the consumer, and false if it was not.
      */
     public <T> boolean tryConsume(Consumer<T> consumer, Class<T> clazz, Class<?>... genericTypes) {
@@ -285,8 +285,8 @@ public final class Union implements JsonSerializable<Union> {
      * This method is used to consume the value of the Union if it is of the expected type.
      *
      * @param consumer A consumer that will consume the value of the Union if it is of the expected type.
-     * @param type     The expected type of the value.
-     * @param <T>      The value type expected by the consumer.
+     * @param type The expected type of the value.
+     * @param <T> The value type expected by the consumer.
      * @return Returns true if the value was consumable by the consumer, and false if it was not.
      */
     @SuppressWarnings("unchecked")

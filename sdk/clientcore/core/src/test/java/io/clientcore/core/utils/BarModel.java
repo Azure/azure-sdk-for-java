@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.utils;
 
 import io.clientcore.core.serialization.json.JsonReader;
@@ -9,7 +12,6 @@ import java.io.IOException;
 
 public class BarModel implements JsonSerializable<BarModel> {
 
-    private String id;
     private String barId;
     private String barName;
 
