@@ -52,8 +52,6 @@ class AzureMonitorExporterBuilder {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
 
-    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
-
     private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME
         = "STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME";
     private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME
@@ -183,7 +181,7 @@ class AzureMonitorExporterBuilder {
         policies.add(new CookiePolicy());
         if (exporterOptions.credential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(exporterOptions.credential,
-                APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
+                getConnectionString().getAadAudienceWithScope()));
         }
 
         if (exporterOptions.retryOptions != null) {
