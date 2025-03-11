@@ -13,6 +13,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import static java.util.Arrays.asList;
 
+import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
+
 public class ReadmeSamples {
 
     /**
@@ -115,7 +117,7 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-getTrunk
         String fqdn = "<trunk fqdn>";
-        SipTrunk trunk = sipRoutingClient.getTrunk(fqdn);
+        SipTrunk trunk = sipRoutingClient.getTrunk(fqdn, ExpandEnum.TRUNKS_HEALTH);
         if (trunk != null) {
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
         } else {

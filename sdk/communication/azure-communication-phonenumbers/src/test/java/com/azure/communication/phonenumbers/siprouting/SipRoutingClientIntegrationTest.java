@@ -20,9 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
+import java.util.HashMap;
+import java.util.Map;
 import static java.util.Arrays.asList;
+
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.azure.communication.phonenumbers.siprouting.implementation.models.Domain;
+import com.azure.communication.phonenumbers.siprouting.implementation.models.RoutesForNumber;
+import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
+import com.azure.communication.phonenumbers.siprouting.models.SipConfigurationModel;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
 public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBase {
@@ -33,7 +40,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void getTrunkNotExisting(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "getTrunkNotExistingSync");
-        SipTrunk trunk = client.getTrunk(NOT_EXISTING_FQDN);
+        SipTrunk trunk = client.getTrunk(NOT_EXISTING_FQDN, ExpandEnum.TRUNKS_HEALTH);
 
         assertNull(trunk);
     }
@@ -44,7 +51,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void getTrunkNotExistingWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "getTrunkNotExistingWithResponseSync");
 
-        Response<SipTrunk> response = client.getTrunkWithResponse(NOT_EXISTING_FQDN, Context.NONE);
+        Response<SipTrunk> response
+            = client.getTrunkWithResponse(NOT_EXISTING_FQDN, ExpandEnum.TRUNKS_HEALTH, Context.NONE);
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -58,7 +66,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "getTrunkExistingSync");
         client.setTrunk(SET_TRUNK);
 
-        SipTrunk trunk = client.getTrunk(SET_TRUNK_FQDN);
+        SipTrunk trunk = client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH);
 
         assertNotNull(trunk);
         assertEquals(SET_TRUNK_PORT, trunk.getSipSignalingPort());
@@ -71,7 +79,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "getTrunkExistingWithResponseSync");
         client.setTrunk(SET_TRUNK);
 
-        Response<SipTrunk> response = client.getTrunkWithResponse(SET_TRUNK_FQDN, Context.NONE);
+        Response<SipTrunk> response
+            = client.getTrunkWithResponse(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH, Context.NONE);
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -87,7 +96,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithManagedIdentity(httpClient, "getTrunkExistingWithAADSync");
         client.setTrunk(SET_TRUNK);
 
-        SipTrunk trunk = client.getTrunk(SET_TRUNK_FQDN);
+        SipTrunk trunk = client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH);
 
         assertNotNull(trunk);
         assertEquals(SET_TRUNK_PORT, trunk.getSipSignalingPort());
@@ -173,7 +182,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
         client.setTrunk(SET_TRUNK);
 
-        SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN);
+        SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH);
         assertNotNull(storedTrunk);
         assertEquals(SET_TRUNK_PORT, storedTrunk.getSipSignalingPort());
 
@@ -191,7 +200,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
         client.setTrunk(SET_TRUNK);
 
-        SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN);
+        SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH);
         assertNotNull(storedTrunk);
         assertEquals(SET_TRUNK_PORT, storedTrunk.getSipSignalingPort());
 
@@ -212,7 +221,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
         client.setTrunk(SET_UPDATED_TRUNK);
 
-        SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN);
+        SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH);
         assertNotNull(storedTrunk);
         assertEquals(SET_TRUNK_UPDATED_PORT, storedTrunk.getSipSignalingPort());
         expectedTrunks = new ArrayList<>(EXPECTED_TRUNKS);
@@ -232,7 +241,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
         client.setTrunk(SET_UPDATED_TRUNK);
 
-        SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN);
+        SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH);
         assertNotNull(storedTrunk);
         assertEquals(SET_TRUNK_UPDATED_PORT, storedTrunk.getSipSignalingPort());
         expectedTrunks = new ArrayList<>(EXPECTED_TRUNKS);
@@ -423,7 +432,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
         assertThrows(HttpResponseException.class, () -> client.setTrunks(asList(invalidTrunk)));
 
-        SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN);
+        SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH);
         assertNotNull(storedTrunk);
         assertEquals(SET_TRUNK_PORT, storedTrunk.getSipSignalingPort());
     }
@@ -752,11 +761,11 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void deleteTrunkExisting(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "deleteTrunkExistingSync");
         client.setTrunk(DELETE_TRUNK);
-        assertNotNull(client.getTrunk(DELETE_FQDN));
+        assertNotNull(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH));
 
         client.deleteTrunk(DELETE_FQDN);
 
-        assertNull(client.getTrunk(DELETE_FQDN));
+        assertNull(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH));
     }
 
     @ParameterizedTest
@@ -765,14 +774,14 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void deleteTrunkExistingWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "deleteTrunkExistingWithResponseSync");
         client.setTrunk(DELETE_TRUNK);
-        assertNotNull(client.getTrunk(DELETE_FQDN));
+        assertNotNull(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH));
 
         Response<Void> response = client.deleteTrunkWithResponse(DELETE_FQDN, Context.NONE);
 
         assertNotNull(response);
         assertNull(response.getValue());
         assertEquals(200, response.getStatusCode());
-        assertNull(client.getTrunk(DELETE_FQDN));
+        assertNull(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH));
     }
 
     @ParameterizedTest
@@ -781,11 +790,11 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void deleteTrunkExistingWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithManagedIdentity(httpClient, "deleteTrunkExistingWithAADSync");
         client.setTrunk(DELETE_TRUNK);
-        assertNotNull(client.getTrunk(DELETE_FQDN));
+        assertNotNull(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH));
 
         client.deleteTrunk(DELETE_FQDN);
 
-        assertNull(client.getTrunk(DELETE_FQDN));
+        assertNull(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH));
     }
 
     @ParameterizedTest
@@ -795,11 +804,11 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "deleteTrunkNotExistingSync");
         client.setTrunks(new ArrayList<>());
         assertTrue(getAsList(client.listTrunks()).size() == 0);
-        assertNull(client.getTrunk(DELETE_FQDN));
+        assertNull(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH));
 
         client.deleteTrunk(DELETE_FQDN);
 
-        assertNull(client.getTrunk(DELETE_FQDN));
+        assertNull(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH));
     }
 
     @ParameterizedTest
@@ -809,14 +818,34 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "deleteTrunkNotExistingWithResponseSync");
         client.setTrunks(new ArrayList<>());
         assertTrue(getAsList(client.listTrunks()).size() == 0);
-        assertNull(client.getTrunk(DELETE_FQDN));
+        assertNull(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH));
 
         Response<Void> response = client.deleteTrunkWithResponse(DELETE_FQDN, Context.NONE);
 
         assertNotNull(response);
         assertNull(response.getValue());
         assertEquals(200, response.getStatusCode());
-        assertNull(client.getTrunk(DELETE_FQDN));
+        assertNull(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
+    public void testRoutesWithNumberWithResponse(HttpClient httpClient) {
+        SipRoutingClient client = getClientWithConnectionString(httpClient, "testRoutesWithNumberWithResponse");
+        String targetPhonenumber = "+11234567890";
+        Map<String, Domain> domain = new HashMap<>();
+        Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunk
+            = new HashMap<>();
+        List<com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute> trunkRoute
+            = new ArrayList<>();
+        SipConfigurationModel sipConfigurationModel = new SipConfigurationModel(domain, trunk, trunkRoute);
+
+        Response<RoutesForNumber> response
+            = client.testRoutesWithNumberWithResponse(targetPhonenumber, sipConfigurationModel, Context.NONE);
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+        assertNotNull(response.getValue());
     }
 
     private void validateTrunks(List<SipTrunk> expected, PagedIterable<SipTrunk> actual) {

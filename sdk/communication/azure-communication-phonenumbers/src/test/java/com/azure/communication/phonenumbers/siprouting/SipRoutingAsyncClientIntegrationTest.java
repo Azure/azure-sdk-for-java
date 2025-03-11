@@ -14,15 +14,22 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
+import java.util.Map;
 import static java.util.Arrays.asList;
+
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.azure.communication.phonenumbers.siprouting.implementation.models.Domain;
+import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
+import com.azure.communication.phonenumbers.siprouting.models.SipConfigurationModel;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
 public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationTestBase {
@@ -33,7 +40,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void getTrunkNotExisting(HttpClient httpClient) {
         SipRoutingAsyncClient client = getClientWithConnectionString(httpClient, "getTrunkNotExisting");
-        StepVerifier.create(client.getTrunk(NOT_EXISTING_FQDN)).verifyComplete();
+        StepVerifier.create(client.getTrunk(NOT_EXISTING_FQDN, ExpandEnum.TRUNKS_HEALTH)).verifyComplete();
     }
 
     @ParameterizedTest
@@ -41,11 +48,13 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void getTrunkNotExistingWithResponse(HttpClient httpClient) {
         SipRoutingAsyncClient client = getClientWithConnectionString(httpClient, "getTrunkNotExistingWithResponse");
-        StepVerifier.create(client.getTrunkWithResponse(NOT_EXISTING_FQDN)).assertNext(response -> {
-            assertNotNull(response);
-            assertEquals(200, response.getStatusCode());
-            assertNull(response.getValue());
-        }).verifyComplete();
+        StepVerifier.create(client.getTrunkWithResponse(NOT_EXISTING_FQDN, ExpandEnum.TRUNKS_HEALTH))
+            .assertNext(response -> {
+                assertNotNull(response);
+                assertEquals(200, response.getStatusCode());
+                assertNull(response.getValue());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -55,7 +64,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
         SipRoutingAsyncClient client = getClientWithConnectionString(httpClient, "getTrunkExisting");
         StepVerifier.create(client.setTrunk(SET_TRUNK)).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN)).assertNext(trunk -> {
+        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH)).assertNext(trunk -> {
             assertNotNull(trunk);
             assertEquals(SET_TRUNK_PORT, trunk.getSipSignalingPort());
         }).verifyComplete();
@@ -68,13 +77,15 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
         SipRoutingAsyncClient client = getClientWithConnectionString(httpClient, "getTrunkExistingWithResponse");
         StepVerifier.create(client.setTrunk(SET_TRUNK)).verifyComplete();
 
-        StepVerifier.create(client.getTrunkWithResponse(SET_TRUNK_FQDN)).assertNext(response -> {
-            assertNotNull(response);
-            assertEquals(200, response.getStatusCode());
-            SipTrunk trunk = response.getValue();
-            assertNotNull(trunk);
-            assertEquals(SET_TRUNK_PORT, trunk.getSipSignalingPort());
-        }).verifyComplete();
+        StepVerifier.create(client.getTrunkWithResponse(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH))
+            .assertNext(response -> {
+                assertNotNull(response);
+                assertEquals(200, response.getStatusCode());
+                SipTrunk trunk = response.getValue();
+                assertNotNull(trunk);
+                assertEquals(SET_TRUNK_PORT, trunk.getSipSignalingPort());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -84,7 +95,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
         SipRoutingAsyncClient client = getClientWithManagedIdentity(httpClient, "getTrunkExistingWithAAD");
         StepVerifier.create(client.setTrunk(SET_TRUNK)).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN)).assertNext(trunk -> {
+        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH)).assertNext(trunk -> {
             assertNotNull(trunk);
             assertEquals(SET_TRUNK_PORT, trunk.getSipSignalingPort());
         }).verifyComplete();
@@ -168,7 +179,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
 
         StepVerifier.create(client.setTrunk(SET_TRUNK)).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN)).assertNext(trunk -> {
+        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH)).assertNext(trunk -> {
             assertNotNull(trunk);
             assertEquals(SET_TRUNK_PORT, trunk.getSipSignalingPort());
         }).verifyComplete();
@@ -189,7 +200,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
 
         StepVerifier.create(client.setTrunk(SET_TRUNK)).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN)).assertNext(trunk -> {
+        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH)).assertNext(trunk -> {
             assertNotNull(trunk);
             assertEquals(SET_TRUNK_PORT, trunk.getSipSignalingPort());
         }).verifyComplete();
@@ -213,7 +224,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
 
         StepVerifier.create(client.setTrunk(SET_UPDATED_TRUNK)).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN)).assertNext(trunk -> {
+        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH)).assertNext(trunk -> {
             assertNotNull(trunk);
             assertEquals(SET_TRUNK_UPDATED_PORT, trunk.getSipSignalingPort());
         }).verifyComplete();
@@ -236,7 +247,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
 
         StepVerifier.create(client.setTrunk(SET_UPDATED_TRUNK)).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN)).assertNext(trunk -> {
+        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH)).assertNext(trunk -> {
             assertNotNull(trunk);
             assertEquals(SET_TRUNK_UPDATED_PORT, trunk.getSipSignalingPort());
         }).verifyComplete();
@@ -450,7 +461,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
         assertThrows(HttpResponseException.class, () -> client.setTrunk(invalidTrunk).block());
         assertThrows(HttpResponseException.class, () -> client.setTrunks(asList(invalidTrunk)).block());
 
-        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN)).assertNext(storedTrunk -> {
+        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH)).assertNext(storedTrunk -> {
             assertNotNull(storedTrunk);
             assertEquals(SET_TRUNK_PORT, storedTrunk.getSipSignalingPort());
         }).verifyComplete();
@@ -466,7 +477,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
 
         assertThrows(HttpResponseException.class, () -> client.setTrunksWithResponse(asList(invalidTrunk)).block());
 
-        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN)).assertNext(storedTrunk -> {
+        StepVerifier.create(client.getTrunk(SET_TRUNK_FQDN, ExpandEnum.TRUNKS_HEALTH)).assertNext(storedTrunk -> {
             assertNotNull(storedTrunk);
             assertEquals(SET_TRUNK_PORT, storedTrunk.getSipSignalingPort());
         }).verifyComplete();
@@ -803,11 +814,13 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
     public void deleteTrunkExisting(HttpClient httpClient) {
         SipRoutingAsyncClient client = getClientWithConnectionString(httpClient, "deleteTrunkExisting");
         StepVerifier.create(client.setTrunk(DELETE_TRUNK)).verifyComplete();
-        StepVerifier.create(client.getTrunk(DELETE_FQDN)).assertNext(Assertions::assertNotNull).verifyComplete();
+        StepVerifier.create(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
 
         StepVerifier.create(client.deleteTrunk(DELETE_FQDN)).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(DELETE_FQDN)).verifyComplete();
+        StepVerifier.create(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH)).verifyComplete();
     }
 
     @ParameterizedTest
@@ -816,7 +829,9 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
     public void deleteTrunkExistingWithResponse(HttpClient httpClient) {
         SipRoutingAsyncClient client = getClientWithConnectionString(httpClient, "deleteTrunkExistingWithResponse");
         StepVerifier.create(client.setTrunk(DELETE_TRUNK)).verifyComplete();
-        StepVerifier.create(client.getTrunk(DELETE_FQDN)).assertNext(Assertions::assertNotNull).verifyComplete();
+        StepVerifier.create(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
 
         StepVerifier.create(client.deleteTrunkWithResponse(DELETE_FQDN)).assertNext(response -> {
             assertNotNull(response);
@@ -824,7 +839,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
             assertNull(response.getValue());
         }).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(DELETE_FQDN)).verifyComplete();
+        StepVerifier.create(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH)).verifyComplete();
     }
 
     @ParameterizedTest
@@ -833,11 +848,13 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
     public void deleteTrunkExistingWithAAD(HttpClient httpClient) {
         SipRoutingAsyncClient client = getClientWithManagedIdentity(httpClient, "deleteTrunkExistingWithAAD");
         StepVerifier.create(client.setTrunk(DELETE_TRUNK)).verifyComplete();
-        StepVerifier.create(client.getTrunk(DELETE_FQDN)).assertNext(Assertions::assertNotNull).verifyComplete();
+        StepVerifier.create(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
 
         StepVerifier.create(client.deleteTrunk(DELETE_FQDN)).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(DELETE_FQDN)).verifyComplete();
+        StepVerifier.create(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH)).verifyComplete();
     }
 
     @ParameterizedTest
@@ -847,11 +864,11 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
         SipRoutingAsyncClient client = getClientWithConnectionString(httpClient, "deleteTrunkNotExisting");
         StepVerifier.create(client.setTrunks(new ArrayList<>())).verifyComplete();
         StepVerifier.create(client.listTrunks()).verifyComplete();
-        StepVerifier.create(client.getTrunk(DELETE_FQDN)).verifyComplete();
+        StepVerifier.create(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH)).verifyComplete();
 
         StepVerifier.create(client.deleteTrunk(DELETE_FQDN)).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(DELETE_FQDN)).verifyComplete();
+        StepVerifier.create(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH)).verifyComplete();
     }
 
     @ParameterizedTest
@@ -861,7 +878,7 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
         SipRoutingAsyncClient client = getClientWithConnectionString(httpClient, "deleteTrunkNotExistingWithResponse");
         StepVerifier.create(client.setTrunks(new ArrayList<>())).verifyComplete();
         StepVerifier.create(client.listTrunks()).verifyComplete();
-        StepVerifier.create(client.getTrunk(DELETE_FQDN)).verifyComplete();
+        StepVerifier.create(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH)).verifyComplete();
 
         StepVerifier.create(client.deleteTrunkWithResponse(DELETE_FQDN)).assertNext(response -> {
             assertNotNull(response);
@@ -869,7 +886,49 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
             assertNull(response.getValue());
         }).verifyComplete();
 
-        StepVerifier.create(client.getTrunk(DELETE_FQDN)).verifyComplete();
+        StepVerifier.create(client.getTrunk(DELETE_FQDN, ExpandEnum.TRUNKS_HEALTH)).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
+    public void testRoutesWithNumberWithResponse(HttpClient httpClient) {
+        SipRoutingAsyncClient client = getClientWithManagedIdentity(httpClient, "testRoutesWithNumberWithResponse");
+        String targetPhonenumber = "+11234567890";
+        Map<String, Domain> domain = new HashMap<>();
+        Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunk
+            = new HashMap<>();
+        List<com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute> trunkRoute
+            = new ArrayList<>();
+        SipConfigurationModel sipConfigurationModel = new SipConfigurationModel(domain, trunk, trunkRoute);
+
+        StepVerifier.create(client.testRoutesWithNumberWithResponse(targetPhonenumber, sipConfigurationModel))
+            .assertNext(response -> {
+                assertNotNull(response);
+                assertEquals(200, response.getStatusCode());
+                assertNotNull(response.getValue());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
+    public void testRoutesWithNumber(HttpClient httpClient) {
+        SipRoutingAsyncClient client = getClientWithManagedIdentity(httpClient, "testRoutesWithNumber");
+        String targetPhonenumber = "+11234567890";
+        Map<String, Domain> domain = new HashMap<>();
+        Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunk
+            = new HashMap<>();
+        List<com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute> trunkRoute
+            = new ArrayList<>();
+        SipConfigurationModel sipConfigurationModel = new SipConfigurationModel(domain, trunk, trunkRoute);
+
+        StepVerifier.create(client.testRoutesWithNumber(targetPhonenumber, sipConfigurationModel))
+            .assertNext(response -> {
+                assertNotNull(response);
+            })
+            .verifyComplete();
     }
 
     private void validateTrunks(List<SipTrunk> expected, List<SipTrunk> actual) {
