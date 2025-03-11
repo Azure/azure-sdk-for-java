@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fix audio data serialization
+
 ### Other Changes
 
 ## 1.3.2 (2025-03-03)
