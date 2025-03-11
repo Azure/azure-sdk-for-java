@@ -46,8 +46,4 @@ public final class OpenAIUtils {
     public static boolean useAzureOpenAIService(String endpoint) {
         return endpoint != null && !endpoint.startsWith(OPEN_AI_ENDPOINT);
     }
-
-    public static String getOpenAIEndpoint() {
-        return OPEN_AI_ENDPOINT;
-    }
 }

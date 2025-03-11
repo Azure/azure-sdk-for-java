@@ -202,8 +202,8 @@ public final class ResponsesAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createResponseWithResponse(String accept, BinaryData requestBody,
         RequestOptions requestOptions) {
-        if (this.nonAzureServiceClient != null) {
-            return this.nonAzureServiceClient.createResponseWithResponseAsync(accept, requestBody, requestOptions);
+        if (nonAzureServiceClient != null) {
+            return nonAzureServiceClient.createResponseWithResponseAsync(accept, requestBody, requestOptions);
         } else {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
@@ -299,8 +299,8 @@ public final class ResponsesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
-        if (this.nonAzureServiceClient != null) {
-            return this.nonAzureServiceClient.getResponseWithResponseAsync(responseId, requestOptions);
+        if (nonAzureServiceClient != null) {
+            return nonAzureServiceClient.getResponseWithResponseAsync(responseId, requestOptions);
         } else {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
@@ -344,8 +344,8 @@ public final class ResponsesAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listInputItemsWithResponse(String responseId, int limit, String order,
         String after, String before, RequestOptions requestOptions) {
-        if (this.nonAzureServiceClient != null) {
-            return this.nonAzureServiceClient.listInputItemsWithResponseAsync(responseId, limit, order, after, before,
+        if (nonAzureServiceClient != null) {
+            return nonAzureServiceClient.listInputItemsWithResponseAsync(responseId, limit, order, after, before,
                 requestOptions);
         } else {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
@@ -564,8 +564,8 @@ public final class ResponsesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
-        if (this.nonAzureServiceClient != null) {
-            return this.nonAzureServiceClient.deleteResponseWithResponseAsync(responseId, requestOptions);
+        if (nonAzureServiceClient != null) {
+            return nonAzureServiceClient.deleteResponseWithResponseAsync(responseId, requestOptions);
         } else {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
