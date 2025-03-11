@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta model.
+ * Emitted when a partial code snippet is added by the code interpreter.
  */
 @Immutable
 public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta
@@ -25,19 +25,19 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDe
         = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_CODE_DELTA;
 
     /*
-     * The ID of the response.
+     * The ID of the response that this stream event is associated with.
      */
     @Generated
     private final String responseId;
 
     /*
-     * The output_index property.
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
     private final int outputIndex;
 
     /*
-     * The code delta.
+     * The partial code snippet added by the code interpreter.
      */
     @Generated
     private final String delta;
@@ -69,7 +69,7 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDe
     }
 
     /**
-     * Get the responseId property: The ID of the response.
+     * Get the responseId property: The ID of the response that this stream event is associated with.
      * 
      * @return the responseId value.
      */
@@ -79,7 +79,7 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDe
     }
 
     /**
-     * Get the outputIndex property: The output_index property.
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
      * 
      * @return the outputIndex value.
      */
@@ -89,7 +89,7 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDe
     }
 
     /**
-     * Get the delta property: The code delta.
+     * Get the delta property: The partial code snippet added by the code interpreter.
      * 
      * @return the delta value.
      */

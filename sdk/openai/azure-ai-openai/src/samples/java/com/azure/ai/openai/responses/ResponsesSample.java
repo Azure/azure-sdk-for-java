@@ -12,7 +12,6 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
@@ -29,7 +28,7 @@ public class ResponsesSample {
         // Create a request
         CreateResponsesRequest request = new CreateResponsesRequest(
             CreateResponsesRequestModel.GPT_4O_MINI,
-                BinaryData.fromObject(Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))))
+                Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!"))))
         );
 
         RequestOptions requestOptions = new RequestOptions();

@@ -9,104 +9,9 @@ package com.azure.ai.openai.responses.models;
  */
 public enum ResponsesResponseStreamEventType {
     /**
-     * Enum value response.created.
+     * Enum value error.
      */
-    RESPONSE_CREATED("response.created"),
-
-    /**
-     * Enum value response.in_progress.
-     */
-    RESPONSE_IN_PROGRESS("response.in_progress"),
-
-    /**
-     * Enum value response.completed.
-     */
-    RESPONSE_COMPLETED("response.completed"),
-
-    /**
-     * Enum value response.output_item.added.
-     */
-    RESPONSE_OUTPUT_ITEM_ADDED("response.output_item.added"),
-
-    /**
-     * Enum value response.output_item.done.
-     */
-    RESPONSE_OUTPUT_ITEM_DONE("response.output_item.done"),
-
-    /**
-     * Enum value response.content_part.added.
-     */
-    RESPONSE_CONTENT_PART_ADDED("response.content_part.added"),
-
-    /**
-     * Enum value response.content_part.done.
-     */
-    RESPONSE_CONTENT_PART_DONE("response.content_part.done"),
-
-    /**
-     * Enum value response.output_text.delta.
-     */
-    RESPONSE_OUTPUT_TEXT_DELTA("response.output_text.delta"),
-
-    /**
-     * Enum value response.output_text.done.
-     */
-    RESPONSE_OUTPUT_TEXT_DONE("response.output_text.done"),
-
-    /**
-     * Enum value response.output_text.annotation.added.
-     */
-    RESPONSE_TEXT_ANNOTATION_DELTA("response.output_text.annotation.added"),
-
-    /**
-     * Enum value response.output_text.done.
-     */
-    RESPONSE_TEXT_DONE("response.output_text.done"),
-
-    /**
-     * Enum value response.refusal.delta.
-     */
-    RESPONSE_REFUSAL_DELTA("response.refusal.delta"),
-
-    /**
-     * Enum value response.refusal.done.
-     */
-    RESPONSE_REFUSAL_DONE("response.refusal.done"),
-
-    /**
-     * Enum value response.function_call_arguments.delta.
-     */
-    RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA("response.function_call_arguments.delta"),
-
-    /**
-     * Enum value response.function_call_arguments.done.
-     */
-    RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE("response.function_call_arguments.done"),
-
-    /**
-     * Enum value response.file_search_call.in_progress.
-     */
-    RESPONSE_FILE_SEARCH_CALL_IN_PROGRESS("response.file_search_call.in_progress"),
-
-    /**
-     * Enum value response.file_search_call.searching.
-     */
-    RESPONSE_FILE_SEARCH_CALL_SEARCHING("response.file_search_call.searching"),
-
-    /**
-     * Enum value response.file_search_call.completed.
-     */
-    RESPONSE_FILE_SEARCH_CALL_COMPLETED("response.file_search_call.completed"),
-
-    /**
-     * Enum value response.code_interpreter_call.in_progress.
-     */
-    RESPONSE_CODE_INTERPRETER_CALL_IN_PROGRESS("response.code_interpreter_call.in_progress"),
-
-    /**
-     * Enum value response.code_interpreter_call.interpreting.
-     */
-    RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING("response.code_interpreter_call.interpreting"),
+    ERROR("error"),
 
     /**
      * Enum value response.code_interpreter_call.code.delta.
@@ -121,7 +26,112 @@ public enum ResponsesResponseStreamEventType {
     /**
      * Enum value response.code_interpreter_call.completed.
      */
-    RESPONSE_CODE_INTERPRETER_CALL_COMPLETED("response.code_interpreter_call.completed");
+    RESPONSE_CODE_INTERPRETER_CALL_COMPLETED("response.code_interpreter_call.completed"),
+
+    /**
+     * Enum value response.code_interpreter_call.in_progress.
+     */
+    RESPONSE_CODE_INTERPRETER_CALL_IN_PROGRESS("response.code_interpreter_call.in_progress"),
+
+    /**
+     * Enum value response.code_interpreter_call.interpreting.
+     */
+    RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING("response.code_interpreter_call.interpreting"),
+
+    /**
+     * Enum value response.completed.
+     */
+    RESPONSE_COMPLETED("response.completed"),
+
+    /**
+     * Enum value response.content_part.added.
+     */
+    RESPONSE_CONTENT_PART_ADDED("response.content_part.added"),
+
+    /**
+     * Enum value response.content_part.done.
+     */
+    RESPONSE_CONTENT_PART_DONE("response.content_part.done"),
+
+    /**
+     * Enum value response.created.
+     */
+    RESPONSE_CREATED("response.created"),
+
+    /**
+     * Enum value response.failed.
+     */
+    RESPONSE_FAILED("response.failed"),
+
+    /**
+     * Enum value response.file_search_call.completed.
+     */
+    RESPONSE_FILE_SEARCH_CALL_COMPLETED("response.file_search_call.completed"),
+
+    /**
+     * Enum value response.file_search_call.in.progress.
+     */
+    RESPONSE_FILE_SEARCH_CALL_IN_PROGRESS("response.file_search_call.in.progress"),
+
+    /**
+     * Enum value response.file_search_call.searching.
+     */
+    RESPONSE_FILE_SEARCH_CALL_SEARCHING("response.file_search_call.searching"),
+
+    /**
+     * Enum value response.function_call_arguments.delta.
+     */
+    RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA("response.function_call_arguments.delta"),
+
+    /**
+     * Enum value response.function_call_arguments.done.
+     */
+    RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE("response.function_call_arguments.done"),
+
+    /**
+     * Enum value response.in_progress.
+     */
+    RESPONSE_IN_PROGRESS("response.in_progress"),
+
+    /**
+     * Enum value response.incomplete.
+     */
+    RESPONSE_INCOMPLETE("response.incomplete"),
+
+    /**
+     * Enum value response.output_item.added.
+     */
+    RESPONSE_OUTPUT_ITEM_ADDED("response.output_item.added"),
+
+    /**
+     * Enum value response.output_item.done.
+     */
+    RESPONSE_OUTPUT_ITEM_DONE("response.output_item.done"),
+
+    /**
+     * Enum value response.output_text.annotation.added.
+     */
+    RESPONSE_OUTPUT_TEXT_ANNOTATION_ADDED("response.output_text.annotation.added"),
+
+    /**
+     * Enum value response.output_text.delta.
+     */
+    RESPONSE_OUTPUT_TEXT_DELTA("response.output_text.delta"),
+
+    /**
+     * Enum value response.output_text.done.
+     */
+    RESPONSE_OUTPUT_TEXT_DONE("response.output_text.done"),
+
+    /**
+     * Enum value response.refusal.delta.
+     */
+    RESPONSE_REFUSAL_DELTA("response.refusal.delta"),
+
+    /**
+     * Enum value response.refusal.done.
+     */
+    RESPONSE_REFUSAL_DONE("response.refusal.done");
 
     /**
      * The actual serialized value for a ResponsesResponseStreamEventType instance.

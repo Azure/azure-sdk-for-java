@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesResponseStreamEventResponseInProgress model.
+ * Emitted when the response is in progress.
  */
 @Immutable
 public final class ResponsesResponseStreamEventResponseInProgress extends ResponsesResponseStreamEvent {
@@ -23,7 +23,7 @@ public final class ResponsesResponseStreamEventResponseInProgress extends Respon
     private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_IN_PROGRESS;
 
     /*
-     * The response property.
+     * Detailed properties for the response now in progress.
      */
     @Generated
     private final ResponsesResponse response;
@@ -50,7 +50,7 @@ public final class ResponsesResponseStreamEventResponseInProgress extends Respon
     }
 
     /**
-     * Get the response property: The response property.
+     * Get the response property: Detailed properties for the response now in progress.
      * 
      * @return the response value.
      */

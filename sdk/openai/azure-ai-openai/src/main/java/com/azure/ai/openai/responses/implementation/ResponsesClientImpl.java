@@ -751,8 +751,8 @@ public final class ResponsesClientImpl {
      * @param responseId The ID of the response to retrieve.
      * @param limit The maximum number of input items to return.
      * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after
-     * @param before
+     * @param after The cursor ID for positioning the returned list starting point.
+     * @param before The cursor ID for positioning the returned list end point.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -793,8 +793,8 @@ public final class ResponsesClientImpl {
      * @param responseId The ID of the response to retrieve.
      * @param limit The maximum number of input items to return.
      * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after
-     * @param before
+     * @param after The cursor ID for positioning the returned list starting point.
+     * @param before The cursor ID for positioning the returned list end point.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

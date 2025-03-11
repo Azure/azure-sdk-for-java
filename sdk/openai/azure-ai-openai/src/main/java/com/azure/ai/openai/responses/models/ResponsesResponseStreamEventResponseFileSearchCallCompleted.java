@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesResponseStreamEventResponseFileSearchCallCompleted model.
+ * Emitted when a file search call is completed (results found).
  */
 @Immutable
 public final class ResponsesResponseStreamEventResponseFileSearchCallCompleted extends ResponsesResponseStreamEvent {
@@ -24,19 +24,27 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallCompleted e
         = ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_COMPLETED;
 
     /*
-     * The item_id property.
+     * The ID of the item that this stream event applies to.
      */
     @Generated
     private final String itemId;
+
+    /*
+     * The index of the output item within the response that this stream event applies to.
+     */
+    @Generated
+    private final int outputIndex;
 
     /**
      * Creates an instance of ResponsesResponseStreamEventResponseFileSearchCallCompleted class.
      * 
      * @param itemId the itemId value to set.
+     * @param outputIndex the outputIndex value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseFileSearchCallCompleted(String itemId) {
+    private ResponsesResponseStreamEventResponseFileSearchCallCompleted(String itemId, int outputIndex) {
         this.itemId = itemId;
+        this.outputIndex = outputIndex;
     }
 
     /**
@@ -51,13 +59,23 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallCompleted e
     }
 
     /**
-     * Get the itemId property: The item_id property.
+     * Get the itemId property: The ID of the item that this stream event applies to.
      * 
      * @return the itemId value.
      */
     @Generated
     public String getItemId() {
         return this.itemId;
+    }
+
+    /**
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
+     * 
+     * @return the outputIndex value.
+     */
+    @Generated
+    public int getOutputIndex() {
+        return this.outputIndex;
     }
 
     /**
@@ -68,6 +86,7 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallCompleted e
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("item_id", this.itemId);
+        jsonWriter.writeIntField("output_index", this.outputIndex);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -87,6 +106,7 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallCompleted e
         throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
+            int outputIndex = 0;
             ResponsesResponseStreamEventType type
                 = ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_COMPLETED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -95,6 +115,8 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallCompleted e
 
                 if ("item_id".equals(fieldName)) {
                     itemId = reader.getString();
+                } else if ("output_index".equals(fieldName)) {
+                    outputIndex = reader.getInt();
                 } else if ("type".equals(fieldName)) {
                     type = ResponsesResponseStreamEventType.fromString(reader.getString());
                 } else {
@@ -102,7 +124,7 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallCompleted e
                 }
             }
             ResponsesResponseStreamEventResponseFileSearchCallCompleted deserializedResponsesResponseStreamEventResponseFileSearchCallCompleted
-                = new ResponsesResponseStreamEventResponseFileSearchCallCompleted(itemId);
+                = new ResponsesResponseStreamEventResponseFileSearchCallCompleted(itemId, outputIndex);
             deserializedResponsesResponseStreamEventResponseFileSearchCallCompleted.type = type;
 
             return deserializedResponsesResponseStreamEventResponseFileSearchCallCompleted;

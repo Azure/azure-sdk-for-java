@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesMessage model.
+ * A response message item, representing a role and content.
  */
 @Immutable
 public class ResponsesMessage extends ResponsesItem {
@@ -23,7 +23,7 @@ public class ResponsesMessage extends ResponsesItem {
     private ResponsesItemType type = ResponsesItemType.MESSAGE;
 
     /*
-     * The role property.
+     * The role associated with the message.
      */
     @Generated
     private ResponsesMessageRole role;
@@ -47,7 +47,7 @@ public class ResponsesMessage extends ResponsesItem {
     }
 
     /**
-     * Get the role property: The role property.
+     * Get the role property: The role associated with the message.
      * 
      * @return the role value.
      */

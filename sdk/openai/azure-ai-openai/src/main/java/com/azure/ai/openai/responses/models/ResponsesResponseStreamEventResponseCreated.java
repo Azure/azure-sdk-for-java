@@ -12,8 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when a new Response is created. The first event of response creation,
- * where the response is in an initial state of `in_progress`.
+ * Returned when a new Response is created.
  */
 @Immutable
 public final class ResponsesResponseStreamEventResponseCreated extends ResponsesResponseStreamEvent {
@@ -24,7 +23,7 @@ public final class ResponsesResponseStreamEventResponseCreated extends Responses
     private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_CREATED;
 
     /*
-     * The response property.
+     * The details of the initialized response.
      */
     @Generated
     private final ResponsesResponse response;
@@ -51,7 +50,7 @@ public final class ResponsesResponseStreamEventResponseCreated extends Responses
     }
 
     /**
-     * Get the response property: The response property.
+     * Get the response property: The details of the initialized response.
      * 
      * @return the response value.
      */

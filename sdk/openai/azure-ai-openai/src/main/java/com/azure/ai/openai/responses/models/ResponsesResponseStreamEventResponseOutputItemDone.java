@@ -12,8 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when an Item is done streaming. Also emitted when a Response is
- * interrupted, incomplete, or cancelled.
+ * Returned when an output item is done streaming.
  */
 @Immutable
 public final class ResponsesResponseStreamEventResponseOutputItemDone extends ResponsesResponseStreamEvent {
@@ -24,13 +23,13 @@ public final class ResponsesResponseStreamEventResponseOutputItemDone extends Re
     private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_ITEM_DONE;
 
     /*
-     * The index of the output item in the Response.
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
     private final int outputIndex;
 
     /*
-     * The item property.
+     * The completed output item.
      */
     @Generated
     private final ResponsesItem item;
@@ -59,7 +58,7 @@ public final class ResponsesResponseStreamEventResponseOutputItemDone extends Re
     }
 
     /**
-     * Get the outputIndex property: The index of the output item in the Response.
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
      * 
      * @return the outputIndex value.
      */
@@ -69,7 +68,7 @@ public final class ResponsesResponseStreamEventResponseOutputItemDone extends Re
     }
 
     /**
-     * Get the item property: The item property.
+     * Get the item property: The completed output item.
      * 
      * @return the item value.
      */

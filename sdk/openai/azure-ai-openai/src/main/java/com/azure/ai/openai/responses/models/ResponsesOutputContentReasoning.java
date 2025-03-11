@@ -15,7 +15,7 @@ import java.io.IOException;
  * The ResponsesOutputContentReasoning model.
  */
 @Immutable
-public final class ResponsesOutputContentReasoning extends ResponsesOutputContent {
+public final class ResponsesOutputContentReasoning extends ResponsesContent {
     /*
      * The type property.
      */

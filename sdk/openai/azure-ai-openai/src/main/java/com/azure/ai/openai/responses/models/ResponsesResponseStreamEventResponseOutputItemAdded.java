@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when a new Item is created during Response generation.
+ * Returned when a new output item is created during response generation.
  */
 @Immutable
 public final class ResponsesResponseStreamEventResponseOutputItemAdded extends ResponsesResponseStreamEvent {
@@ -23,13 +23,13 @@ public final class ResponsesResponseStreamEventResponseOutputItemAdded extends R
     private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_ITEM_ADDED;
 
     /*
-     * The index of the output item in the Response.
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
     private final int outputIndex;
 
     /*
-     * The item property.
+     * The new output item created.
      */
     @Generated
     private final ResponsesItem item;
@@ -58,7 +58,7 @@ public final class ResponsesResponseStreamEventResponseOutputItemAdded extends R
     }
 
     /**
-     * Get the outputIndex property: The index of the output item in the Response.
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
      * 
      * @return the outputIndex value.
      */
@@ -68,7 +68,7 @@ public final class ResponsesResponseStreamEventResponseOutputItemAdded extends R
     }
 
     /**
-     * Get the item property: The item property.
+     * Get the item property: The new output item created.
      * 
      * @return the item value.
      */

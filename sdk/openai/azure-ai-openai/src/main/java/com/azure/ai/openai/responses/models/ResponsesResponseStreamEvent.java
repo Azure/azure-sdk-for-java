@@ -76,44 +76,8 @@ public class ResponsesResponseStreamEvent implements JsonSerializable<ResponsesR
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("response.created".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseCreated.fromJson(readerToUse.reset());
-                } else if ("response.in_progress".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseInProgress.fromJson(readerToUse.reset());
-                } else if ("response.completed".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseCompleted.fromJson(readerToUse.reset());
-                } else if ("response.output_item.added".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseOutputItemAdded.fromJson(readerToUse.reset());
-                } else if ("response.output_item.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseOutputItemDone.fromJson(readerToUse.reset());
-                } else if ("response.content_part.added".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseContentPartAdded.fromJson(readerToUse.reset());
-                } else if ("response.content_part.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseContentPartDone.fromJson(readerToUse.reset());
-                } else if ("response.output_text.delta".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseOutputTextDelta.fromJson(readerToUse.reset());
-                } else if ("response.output_text.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseOutputTextDone.fromJson(readerToUse.reset());
-                } else if ("response.output_text.annotation.added".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseTextAnnotationAdded.fromJson(readerToUse.reset());
-                } else if ("response.refusal.delta".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseRefusalDelta.fromJson(readerToUse.reset());
-                } else if ("response.refusal.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseRefusalDone.fromJson(readerToUse.reset());
-                } else if ("response.function_call_arguments.delta".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseFunctionCallArgumentsDelta.fromJson(readerToUse.reset());
-                } else if ("response.function_call_arguments.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseFunctionCallArgumentsDone.fromJson(readerToUse.reset());
-                } else if ("response.file_search_call.in_progress".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventFileSearchCallInProgress.fromJson(readerToUse.reset());
-                } else if ("response.file_search_call.searching".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventFileSearchCallSearching.fromJson(readerToUse.reset());
-                } else if ("response.file_search_call.completed".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseFileSearchCallCompleted.fromJson(readerToUse.reset());
-                } else if ("response.code_interpreter_call.in_progress".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventCodeInterpreterCallInProgress.fromJson(readerToUse.reset());
-                } else if ("response.code_interpreter_call.interpreting".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventCodeInterpreterCallInterpreting.fromJson(readerToUse.reset());
+                if ("error".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventError.fromJson(readerToUse.reset());
                 } else if ("response.code_interpreter_call.code.delta".equals(discriminatorValue)) {
                     return ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta
                         .fromJson(readerToUse.reset());
@@ -123,6 +87,50 @@ public class ResponsesResponseStreamEvent implements JsonSerializable<ResponsesR
                 } else if ("response.code_interpreter_call.completed".equals(discriminatorValue)) {
                     return ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted
                         .fromJson(readerToUse.reset());
+                } else if ("response.code_interpreter_call.in_progress".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress
+                        .fromJson(readerToUse.reset());
+                } else if ("response.code_interpreter_call.interpreting".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting
+                        .fromJson(readerToUse.reset());
+                } else if ("response.completed".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseCompleted.fromJson(readerToUse.reset());
+                } else if ("response.content_part.added".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseContentPartAdded.fromJson(readerToUse.reset());
+                } else if ("response.content_part.done".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseContentPartDone.fromJson(readerToUse.reset());
+                } else if ("response.created".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseCreated.fromJson(readerToUse.reset());
+                } else if ("response.failed".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseFailed.fromJson(readerToUse.reset());
+                } else if ("response.file_search_call.completed".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseFileSearchCallCompleted.fromJson(readerToUse.reset());
+                } else if ("response.file_search_call.in.progress".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseFileSearchCallInProgress.fromJson(readerToUse.reset());
+                } else if ("response.file_search_call.searching".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseFileSearchCallSearching.fromJson(readerToUse.reset());
+                } else if ("response.function_call_arguments.delta".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseFunctionCallArgumentsDelta.fromJson(readerToUse.reset());
+                } else if ("response.function_call_arguments.done".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseFunctionCallArgumentsDone.fromJson(readerToUse.reset());
+                } else if ("response.incomplete".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseIncomplete.fromJson(readerToUse.reset());
+                } else if ("response.in_progress".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseInProgress.fromJson(readerToUse.reset());
+                } else if ("response.output_item.added".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseOutputItemAdded.fromJson(readerToUse.reset());
+                } else if ("response.output_item.done".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseOutputItemDone.fromJson(readerToUse.reset());
+                } else if ("response.output_text.annotation.added".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseOutputTextAnnotationAdded.fromJson(readerToUse.reset());
+                } else if ("response.output_text.delta".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseOutputTextDelta.fromJson(readerToUse.reset());
+                } else if ("response.output_text.done".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseOutputTextDone.fromJson(readerToUse.reset());
+                } else if ("response.refusal.delta".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseRefusalDelta.fromJson(readerToUse.reset());
+                } else if ("response.refusal.done".equals(discriminatorValue)) {
+                    return ResponsesResponseStreamEventResponseRefusalDone.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

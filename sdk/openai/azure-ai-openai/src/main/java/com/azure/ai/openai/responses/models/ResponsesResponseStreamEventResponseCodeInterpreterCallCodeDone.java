@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone model.
+ * Emitted when code snippet output is finalized by the code interpreter.
  */
 @Immutable
 public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone
@@ -25,13 +25,19 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDo
         = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_CODE_DONE;
 
     /*
-     * The output_index property.
+     * The ID of the response that this stream event is associated with.
+     */
+    @Generated
+    private final String responseId;
+
+    /*
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
     private final int outputIndex;
 
     /*
-     * The code.
+     * The final code snippet output by the code interpreter.
      */
     @Generated
     private final String code;
@@ -39,11 +45,14 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDo
     /**
      * Creates an instance of ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone class.
      * 
+     * @param responseId the responseId value to set.
      * @param outputIndex the outputIndex value to set.
      * @param code the code value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone(int outputIndex, String code) {
+    private ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone(String responseId, int outputIndex,
+        String code) {
+        this.responseId = responseId;
         this.outputIndex = outputIndex;
         this.code = code;
     }
@@ -60,7 +69,17 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDo
     }
 
     /**
-     * Get the outputIndex property: The output_index property.
+     * Get the responseId property: The ID of the response that this stream event is associated with.
+     * 
+     * @return the responseId value.
+     */
+    @Generated
+    public String getResponseId() {
+        return this.responseId;
+    }
+
+    /**
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
      * 
      * @return the outputIndex value.
      */
@@ -70,7 +89,7 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDo
     }
 
     /**
-     * Get the code property: The code.
+     * Get the code property: The final code snippet output by the code interpreter.
      * 
      * @return the code value.
      */
@@ -86,6 +105,7 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("response_id", this.responseId);
         jsonWriter.writeIntField("output_index", this.outputIndex);
         jsonWriter.writeStringField("code", this.code);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
@@ -106,6 +126,7 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDo
     public static ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
+            String responseId = null;
             int outputIndex = 0;
             String code = null;
             ResponsesResponseStreamEventType type
@@ -114,7 +135,9 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDo
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("output_index".equals(fieldName)) {
+                if ("response_id".equals(fieldName)) {
+                    responseId = reader.getString();
+                } else if ("output_index".equals(fieldName)) {
                     outputIndex = reader.getInt();
                 } else if ("code".equals(fieldName)) {
                     code = reader.getString();
@@ -125,7 +148,7 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDo
                 }
             }
             ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone deserializedResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone
-                = new ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone(outputIndex, code);
+                = new ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone(responseId, outputIndex, code);
             deserializedResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone.type = type;
 
             return deserializedResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone;

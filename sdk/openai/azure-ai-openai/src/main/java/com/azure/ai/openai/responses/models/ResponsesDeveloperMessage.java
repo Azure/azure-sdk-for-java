@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ResponsesDeveloperMessage model.
+ * A message item with the `developer` role.
  */
 @Immutable
 public final class ResponsesDeveloperMessage extends ResponsesMessage {
@@ -24,16 +24,16 @@ public final class ResponsesDeveloperMessage extends ResponsesMessage {
     private ResponsesItemType type = ResponsesItemType.MESSAGE;
 
     /*
-     * The role property.
+     * The role associated with the message.
      */
     @Generated
     private ResponsesMessageRole role = ResponsesMessageRole.DEVELOPER;
 
     /*
-     * The content property.
+     * The content associated with the message.
      */
     @Generated
-    private final List<ResponsesInputContent> content;
+    private final List<ResponsesContent> content;
 
     /**
      * Creates an instance of ResponsesDeveloperMessage class.
@@ -41,7 +41,7 @@ public final class ResponsesDeveloperMessage extends ResponsesMessage {
      * @param content the content value to set.
      */
     @Generated
-    public ResponsesDeveloperMessage(List<ResponsesInputContent> content) {
+    public ResponsesDeveloperMessage(List<ResponsesContent> content) {
         this.content = content;
     }
 
@@ -57,7 +57,7 @@ public final class ResponsesDeveloperMessage extends ResponsesMessage {
     }
 
     /**
-     * Get the role property: The role property.
+     * Get the role property: The role associated with the message.
      * 
      * @return the role value.
      */
@@ -68,12 +68,12 @@ public final class ResponsesDeveloperMessage extends ResponsesMessage {
     }
 
     /**
-     * Get the content property: The content property.
+     * Get the content property: The content associated with the message.
      * 
      * @return the content value.
      */
     @Generated
-    public List<ResponsesInputContent> getContent() {
+    public List<ResponsesContent> getContent() {
         return this.content;
     }
 
@@ -104,7 +104,7 @@ public final class ResponsesDeveloperMessage extends ResponsesMessage {
         return jsonReader.readObject(reader -> {
             String id = null;
             ResponsesItemStatus status = null;
-            List<ResponsesInputContent> content = null;
+            List<ResponsesContent> content = null;
             ResponsesMessageRole role = ResponsesMessageRole.DEVELOPER;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -115,7 +115,7 @@ public final class ResponsesDeveloperMessage extends ResponsesMessage {
                 } else if ("status".equals(fieldName)) {
                     status = ResponsesItemStatus.fromString(reader.getString());
                 } else if ("content".equals(fieldName)) {
-                    content = reader.readArray(reader1 -> ResponsesInputContent.fromJson(reader1));
+                    content = reader.readArray(reader1 -> ResponsesContent.fromJson(reader1));
                 } else if ("role".equals(fieldName)) {
                     role = ResponsesMessageRole.fromString(reader.getString());
                 } else {

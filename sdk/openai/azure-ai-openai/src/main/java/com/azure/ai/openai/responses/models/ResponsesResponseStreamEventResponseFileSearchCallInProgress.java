@@ -12,31 +12,39 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesResponseStreamEventCodeInterpreterCallInterpreting model.
+ * Emitted when a file search call is initiated.
  */
 @Immutable
-public final class ResponsesResponseStreamEventCodeInterpreterCallInterpreting extends ResponsesResponseStreamEvent {
+public final class ResponsesResponseStreamEventResponseFileSearchCallInProgress extends ResponsesResponseStreamEvent {
     /*
      * The type property.
      */
     @Generated
     private ResponsesResponseStreamEventType type
-        = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING;
+        = ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_IN_PROGRESS;
 
     /*
-     * The item_id property.
+     * The ID of the item that this stream event applies to.
      */
     @Generated
     private final String itemId;
 
-    /**
-     * Creates an instance of ResponsesResponseStreamEventCodeInterpreterCallInterpreting class.
-     * 
-     * @param itemId the itemId value to set.
+    /*
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
-    private ResponsesResponseStreamEventCodeInterpreterCallInterpreting(String itemId) {
+    private final int outputIndex;
+
+    /**
+     * Creates an instance of ResponsesResponseStreamEventResponseFileSearchCallInProgress class.
+     * 
+     * @param itemId the itemId value to set.
+     * @param outputIndex the outputIndex value to set.
+     */
+    @Generated
+    private ResponsesResponseStreamEventResponseFileSearchCallInProgress(String itemId, int outputIndex) {
         this.itemId = itemId;
+        this.outputIndex = outputIndex;
     }
 
     /**
@@ -51,13 +59,23 @@ public final class ResponsesResponseStreamEventCodeInterpreterCallInterpreting e
     }
 
     /**
-     * Get the itemId property: The item_id property.
+     * Get the itemId property: The ID of the item that this stream event applies to.
      * 
      * @return the itemId value.
      */
     @Generated
     public String getItemId() {
         return this.itemId;
+    }
+
+    /**
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
+     * 
+     * @return the outputIndex value.
+     */
+    @Generated
+    public int getOutputIndex() {
+        return this.outputIndex;
     }
 
     /**
@@ -68,44 +86,48 @@ public final class ResponsesResponseStreamEventCodeInterpreterCallInterpreting e
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("item_id", this.itemId);
+        jsonWriter.writeIntField("output_index", this.outputIndex);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventCodeInterpreterCallInterpreting from the JsonReader.
+     * Reads an instance of ResponsesResponseStreamEventResponseFileSearchCallInProgress from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventCodeInterpreterCallInterpreting if the JsonReader was pointing
-     * to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesResponseStreamEventResponseFileSearchCallInProgress if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the
-     * ResponsesResponseStreamEventCodeInterpreterCallInterpreting.
+     * ResponsesResponseStreamEventResponseFileSearchCallInProgress.
      */
     @Generated
-    public static ResponsesResponseStreamEventCodeInterpreterCallInterpreting fromJson(JsonReader jsonReader)
+    public static ResponsesResponseStreamEventResponseFileSearchCallInProgress fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
+            int outputIndex = 0;
             ResponsesResponseStreamEventType type
-                = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING;
+                = ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_IN_PROGRESS;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("item_id".equals(fieldName)) {
                     itemId = reader.getString();
+                } else if ("output_index".equals(fieldName)) {
+                    outputIndex = reader.getInt();
                 } else if ("type".equals(fieldName)) {
                     type = ResponsesResponseStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventCodeInterpreterCallInterpreting deserializedResponsesResponseStreamEventCodeInterpreterCallInterpreting
-                = new ResponsesResponseStreamEventCodeInterpreterCallInterpreting(itemId);
-            deserializedResponsesResponseStreamEventCodeInterpreterCallInterpreting.type = type;
+            ResponsesResponseStreamEventResponseFileSearchCallInProgress deserializedResponsesResponseStreamEventResponseFileSearchCallInProgress
+                = new ResponsesResponseStreamEventResponseFileSearchCallInProgress(itemId, outputIndex);
+            deserializedResponsesResponseStreamEventResponseFileSearchCallInProgress.type = type;
 
-            return deserializedResponsesResponseStreamEventCodeInterpreterCallInterpreting;
+            return deserializedResponsesResponseStreamEventResponseFileSearchCallInProgress;
         });
     }
 }

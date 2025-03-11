@@ -24,19 +24,19 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDelt
         = ResponsesResponseStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA;
 
     /*
-     * The ID of the function call item.
+     * The ID of the item that this stream event applies to.
      */
     @Generated
     private final String itemId;
 
     /*
-     * The index of the output item in the response.
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
     private final int outputIndex;
 
     /*
-     * The arguments delta as a JSON string.
+     * The arguments delta as a partial JSON fragment.
      */
     @Generated
     private final String delta;
@@ -68,7 +68,7 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDelt
     }
 
     /**
-     * Get the itemId property: The ID of the function call item.
+     * Get the itemId property: The ID of the item that this stream event applies to.
      * 
      * @return the itemId value.
      */
@@ -78,7 +78,7 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDelt
     }
 
     /**
-     * Get the outputIndex property: The index of the output item in the response.
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
      * 
      * @return the outputIndex value.
      */
@@ -88,7 +88,7 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDelt
     }
 
     /**
-     * Get the delta property: The arguments delta as a JSON string.
+     * Get the delta property: The arguments delta as a partial JSON fragment.
      * 
      * @return the delta value.
      */

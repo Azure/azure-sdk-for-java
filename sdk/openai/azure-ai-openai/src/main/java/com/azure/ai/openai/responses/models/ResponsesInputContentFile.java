@@ -15,7 +15,7 @@ import java.io.IOException;
  * The ResponsesInputContentFile model.
  */
 @Fluent
-public final class ResponsesInputContentFile extends ResponsesInputContent {
+public final class ResponsesInputContentFile extends ResponsesContent {
     /*
      * The type property.
      */

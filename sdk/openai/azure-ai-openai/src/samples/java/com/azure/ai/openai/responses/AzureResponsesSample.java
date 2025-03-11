@@ -5,7 +5,7 @@ package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
-import com.azure.ai.openai.responses.models.ResponsesInputContent;
+import com.azure.ai.openai.responses.models.ResponsesContent;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
@@ -32,10 +32,10 @@ public class AzureResponsesSample {
             .buildClient();
 
         // Create a request
-        List<ResponsesInputContent> messages = Arrays.asList(new ResponsesInputContentText("Hello, world!"));
+        List<ResponsesContent> messages = Arrays.asList(new ResponsesInputContentText("Hello, world!"));
         CreateResponsesRequest request = new CreateResponsesRequest(
             CreateResponsesRequestModel.fromString("computer-use-preview"),
-                BinaryData.fromObject(Arrays.asList(new ResponsesUserMessage(messages)))
+                Arrays.asList(new ResponsesUserMessage(messages))
         );
 
         RequestOptions requestOptions = new RequestOptions();

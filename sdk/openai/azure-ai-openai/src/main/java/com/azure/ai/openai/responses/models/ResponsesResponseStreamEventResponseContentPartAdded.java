@@ -12,8 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when a new content part is added to an assistant message item during
- * response generation.
+ * Emitted when a new content part is added.
  */
 @Immutable
 public final class ResponsesResponseStreamEventResponseContentPartAdded extends ResponsesResponseStreamEvent {
@@ -24,28 +23,28 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
     private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_CONTENT_PART_ADDED;
 
     /*
-     * The ID of the item to which the content part was added.
+     * The ID of the item that this stream event applies to.
      */
     @Generated
     private final String itemId;
 
     /*
-     * The index of the output item in the response.
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
     private final int outputIndex;
 
     /*
-     * The index of the content part in the item's content array.
+     * The index of the content part that was added to an item's content collection.
      */
     @Generated
     private final int contentIndex;
 
     /*
-     * The content part that was added.
+     * The initialized content part that was added.
      */
     @Generated
-    private final ResponsesOutputContent part;
+    private final ResponsesContent part;
 
     /**
      * Creates an instance of ResponsesResponseStreamEventResponseContentPartAdded class.
@@ -57,7 +56,7 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
      */
     @Generated
     private ResponsesResponseStreamEventResponseContentPartAdded(String itemId, int outputIndex, int contentIndex,
-        ResponsesOutputContent part) {
+        ResponsesContent part) {
         this.itemId = itemId;
         this.outputIndex = outputIndex;
         this.contentIndex = contentIndex;
@@ -76,7 +75,7 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
     }
 
     /**
-     * Get the itemId property: The ID of the item to which the content part was added.
+     * Get the itemId property: The ID of the item that this stream event applies to.
      * 
      * @return the itemId value.
      */
@@ -86,7 +85,7 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
     }
 
     /**
-     * Get the outputIndex property: The index of the output item in the response.
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
      * 
      * @return the outputIndex value.
      */
@@ -96,7 +95,7 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
     }
 
     /**
-     * Get the contentIndex property: The index of the content part in the item's content array.
+     * Get the contentIndex property: The index of the content part that was added to an item's content collection.
      * 
      * @return the contentIndex value.
      */
@@ -106,12 +105,12 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
     }
 
     /**
-     * Get the part property: The content part that was added.
+     * Get the part property: The initialized content part that was added.
      * 
      * @return the part value.
      */
     @Generated
-    public ResponsesOutputContent getPart() {
+    public ResponsesContent getPart() {
         return this.part;
     }
 
@@ -146,7 +145,7 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
             String itemId = null;
             int outputIndex = 0;
             int contentIndex = 0;
-            ResponsesOutputContent part = null;
+            ResponsesContent part = null;
             ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_CONTENT_PART_ADDED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -159,7 +158,7 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
                 } else if ("content_index".equals(fieldName)) {
                     contentIndex = reader.getInt();
                 } else if ("part".equals(fieldName)) {
-                    part = ResponsesOutputContent.fromJson(reader);
+                    part = ResponsesContent.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = ResponsesResponseStreamEventType.fromString(reader.getString());
                 } else {

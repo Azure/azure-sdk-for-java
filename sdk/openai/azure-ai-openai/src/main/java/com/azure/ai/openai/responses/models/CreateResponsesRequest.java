@@ -160,8 +160,7 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
      * @param model the model value to set.
      * @param input the input value to set.
      */
-    @Generated
-    public CreateResponsesRequest(CreateResponsesRequestModel model, BinaryData input) {
+    private CreateResponsesRequest(CreateResponsesRequestModel model, BinaryData input) {
         this.model = model;
         this.input = input;
     }
@@ -187,6 +186,8 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
         this.model = model;
         this.input = BinaryData.fromObject(input);
     }
+
+
 
     /**
      * Get the model property: Model ID used to generate the response, like `gpt-4o` or `o1`.

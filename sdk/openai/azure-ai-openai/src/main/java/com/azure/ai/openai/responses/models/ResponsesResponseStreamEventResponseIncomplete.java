@@ -12,31 +12,29 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when a Response is done streaming. Always emitted, no matter the
- * final state. The Response object included in the `response.completed` event will
- * include all output Items in the Response but will omit the raw audio data.
+ * Emitted when response generation has terminated in an incomplete status.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseCompleted extends ResponsesResponseStreamEvent {
+public final class ResponsesResponseStreamEventResponseIncomplete extends ResponsesResponseStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_COMPLETED;
+    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_INCOMPLETE;
 
     /*
-     * The completed response.
+     * Detailed properties for the incomplete response.
      */
     @Generated
     private final ResponsesResponse response;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseCompleted class.
+     * Creates an instance of ResponsesResponseStreamEventResponseIncomplete class.
      * 
      * @param response the response value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseCompleted(ResponsesResponse response) {
+    private ResponsesResponseStreamEventResponseIncomplete(ResponsesResponse response) {
         this.response = response;
     }
 
@@ -52,7 +50,7 @@ public final class ResponsesResponseStreamEventResponseCompleted extends Respons
     }
 
     /**
-     * Get the response property: The completed response.
+     * Get the response property: Detailed properties for the incomplete response.
      * 
      * @return the response value.
      */
@@ -74,19 +72,19 @@ public final class ResponsesResponseStreamEventResponseCompleted extends Respons
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseCompleted from the JsonReader.
+     * Reads an instance of ResponsesResponseStreamEventResponseIncomplete from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseCompleted if the JsonReader was pointing to an
+     * @return An instance of ResponsesResponseStreamEventResponseIncomplete if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseCompleted.
+     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseIncomplete.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseCompleted fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesResponseStreamEventResponseIncomplete fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResponsesResponse response = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_COMPLETED;
+            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_INCOMPLETE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -99,11 +97,11 @@ public final class ResponsesResponseStreamEventResponseCompleted extends Respons
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseCompleted deserializedResponsesResponseStreamEventResponseCompleted
-                = new ResponsesResponseStreamEventResponseCompleted(response);
-            deserializedResponsesResponseStreamEventResponseCompleted.type = type;
+            ResponsesResponseStreamEventResponseIncomplete deserializedResponsesResponseStreamEventResponseIncomplete
+                = new ResponsesResponseStreamEventResponseIncomplete(response);
+            deserializedResponsesResponseStreamEventResponseIncomplete.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseCompleted;
+            return deserializedResponsesResponseStreamEventResponseIncomplete;
         });
     }
 }

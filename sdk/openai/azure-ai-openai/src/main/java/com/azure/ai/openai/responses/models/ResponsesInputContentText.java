@@ -15,7 +15,7 @@ import java.io.IOException;
  * The ResponsesInputContentText model.
  */
 @Immutable
-public final class ResponsesInputContentText extends ResponsesInputContent {
+public final class ResponsesInputContentText extends ResponsesContent {
     /*
      * The type property.
      */

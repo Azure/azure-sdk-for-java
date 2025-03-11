@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesResponseStreamEventResponseRefusalDone model.
+ * Emitted when a refusal output item is completed.
  */
 @Immutable
 public final class ResponsesResponseStreamEventResponseRefusalDone extends ResponsesResponseStreamEvent {
@@ -23,19 +23,19 @@ public final class ResponsesResponseStreamEventResponseRefusalDone extends Respo
     private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_REFUSAL_DONE;
 
     /*
-     * The item_id property.
+     * The ID of the item that this stream event applies to.
      */
     @Generated
     private final String itemId;
 
     /*
-     * The output_index property.
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
     private final int outputIndex;
 
     /*
-     * The content_index property.
+     * The index of the content part that was added to an item's content collection.
      */
     @Generated
     private final int contentIndex;
@@ -75,7 +75,7 @@ public final class ResponsesResponseStreamEventResponseRefusalDone extends Respo
     }
 
     /**
-     * Get the itemId property: The item_id property.
+     * Get the itemId property: The ID of the item that this stream event applies to.
      * 
      * @return the itemId value.
      */
@@ -85,7 +85,7 @@ public final class ResponsesResponseStreamEventResponseRefusalDone extends Respo
     }
 
     /**
-     * Get the outputIndex property: The output_index property.
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
      * 
      * @return the outputIndex value.
      */
@@ -95,7 +95,7 @@ public final class ResponsesResponseStreamEventResponseRefusalDone extends Respo
     }
 
     /**
-     * Get the contentIndex property: The content_index property.
+     * Get the contentIndex property: The index of the content part that was added to an item's content collection.
      * 
      * @return the contentIndex value.
      */

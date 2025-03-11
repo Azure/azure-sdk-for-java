@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Emitted when the code interpreter call is completed.
+ * Emitted when the code interpreter is actively interpreting the code snippet.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted
+public final class ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting
     extends ResponsesResponseStreamEvent {
     /*
      * The type property.
      */
     @Generated
     private ResponsesResponseStreamEventType type
-        = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_COMPLETED;
+        = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING;
 
     /*
      * The index of the output item within the response that this stream event applies to.
@@ -37,13 +37,13 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallComple
     private final ResponsesCodeInterpreterCallItem codeInterpreterCall;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted class.
+     * Creates an instance of ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting class.
      * 
      * @param outputIndex the outputIndex value to set.
      * @param codeInterpreterCall the codeInterpreterCall value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted(int outputIndex,
+    private ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting(int outputIndex,
         ResponsesCodeInterpreterCallItem codeInterpreterCall) {
         this.outputIndex = outputIndex;
         this.codeInterpreterCall = codeInterpreterCall;
@@ -94,23 +94,23 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallComple
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted from the JsonReader.
+     * Reads an instance of ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted if the JsonReader was
+     * @return An instance of ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting if the JsonReader was
      * pointing to an instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the
-     * ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted.
+     * ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted fromJson(JsonReader jsonReader)
+    public static ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
             int outputIndex = 0;
             ResponsesCodeInterpreterCallItem codeInterpreterCall = null;
             ResponsesResponseStreamEventType type
-                = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_COMPLETED;
+                = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -125,12 +125,12 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallComple
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted deserializedResponsesResponseStreamEventResponseCodeInterpreterCallCompleted
-                = new ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted(outputIndex,
+            ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting deserializedResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting
+                = new ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting(outputIndex,
                     codeInterpreterCall);
-            deserializedResponsesResponseStreamEventResponseCodeInterpreterCallCompleted.type = type;
+            deserializedResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseCodeInterpreterCallCompleted;
+            return deserializedResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting;
         });
     }
 }

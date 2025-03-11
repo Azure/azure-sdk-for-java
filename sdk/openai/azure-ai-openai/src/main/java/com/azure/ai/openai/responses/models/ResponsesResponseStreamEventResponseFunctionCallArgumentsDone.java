@@ -25,19 +25,19 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDone
         = ResponsesResponseStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE;
 
     /*
-     * The ID of the function call item.
+     * The ID of the item that this stream event applies to.
      */
     @Generated
     private final String itemId;
 
     /*
-     * The index of the output item in the response.
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
     private final int outputIndex;
 
     /*
-     * The final arguments as a JSON string.
+     * The final function call arguments as a complete JSON string.
      */
     @Generated
     private final String arguments;
@@ -69,7 +69,7 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDone
     }
 
     /**
-     * Get the itemId property: The ID of the function call item.
+     * Get the itemId property: The ID of the item that this stream event applies to.
      * 
      * @return the itemId value.
      */
@@ -79,7 +79,7 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDone
     }
 
     /**
-     * Get the outputIndex property: The index of the output item in the response.
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
      * 
      * @return the outputIndex value.
      */
@@ -89,7 +89,7 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDone
     }
 
     /**
-     * Get the arguments property: The final arguments as a JSON string.
+     * Get the arguments property: The final function call arguments as a complete JSON string.
      * 
      * @return the arguments value.
      */

@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesResponseStreamEventResponseRefusalDelta model.
+ * Emitted when an incremental delta update to refusal information is available.
  */
 @Immutable
 public final class ResponsesResponseStreamEventResponseRefusalDelta extends ResponsesResponseStreamEvent {
@@ -23,19 +23,19 @@ public final class ResponsesResponseStreamEventResponseRefusalDelta extends Resp
     private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_REFUSAL_DELTA;
 
     /*
-     * The item_id property.
+     * The ID of the item that this stream event applies to.
      */
     @Generated
     private final String itemId;
 
     /*
-     * The output_index property.
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
     private final int outputIndex;
 
     /*
-     * The content_index property.
+     * The index of the content part that was added to an item's content collection.
      */
     @Generated
     private final int contentIndex;
@@ -75,7 +75,7 @@ public final class ResponsesResponseStreamEventResponseRefusalDelta extends Resp
     }
 
     /**
-     * Get the itemId property: The item_id property.
+     * Get the itemId property: The ID of the item that this stream event applies to.
      * 
      * @return the itemId value.
      */
@@ -85,7 +85,7 @@ public final class ResponsesResponseStreamEventResponseRefusalDelta extends Resp
     }
 
     /**
-     * Get the outputIndex property: The output_index property.
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
      * 
      * @return the outputIndex value.
      */
@@ -95,7 +95,7 @@ public final class ResponsesResponseStreamEventResponseRefusalDelta extends Resp
     }
 
     /**
-     * Get the contentIndex property: The content_index property.
+     * Get the contentIndex property: The index of the content part that was added to an item's content collection.
      * 
      * @return the contentIndex value.
      */

@@ -6,8 +6,8 @@ package com.azure.ai.openai.responses;
 import static com.azure.ai.openai.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
 
 import com.azure.ai.openai.responses.implementation.NonAzureResponsesClientImpl;
-import com.azure.ai.openai.responses.implementation.ResponsesClientImpl;
 import com.azure.ai.openai.responses.implementation.OpenAIServerSentEvents;
+import com.azure.ai.openai.responses.implementation.ResponsesClientImpl;
 import com.azure.ai.openai.responses.models.CreateResponseRequestAccept;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;

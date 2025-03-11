@@ -16,7 +16,7 @@ import java.io.IOException;
  * The ResponsesInputContentAudio model.
  */
 @Immutable
-public final class ResponsesInputContentAudio extends ResponsesInputContent {
+public final class ResponsesInputContentAudio extends ResponsesContent {
     /*
      * The type property.
      */

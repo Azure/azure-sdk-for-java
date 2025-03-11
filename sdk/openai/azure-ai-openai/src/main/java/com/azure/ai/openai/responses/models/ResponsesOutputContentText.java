@@ -16,7 +16,7 @@ import java.util.List;
  * The ResponsesOutputContentText model.
  */
 @Fluent
-public final class ResponsesOutputContentText extends ResponsesOutputContent {
+public final class ResponsesOutputContentText extends ResponsesContent {
     /*
      * The type property.
      */
@@ -28,12 +28,6 @@ public final class ResponsesOutputContentText extends ResponsesOutputContent {
      */
     @Generated
     private final String text;
-
-    /*
-     * The logprobs property.
-     */
-    @Generated
-    private List<ResponsesLogProb> logprobs;
 
     /*
      * The annotations property.
@@ -73,28 +67,6 @@ public final class ResponsesOutputContentText extends ResponsesOutputContent {
     }
 
     /**
-     * Get the logprobs property: The logprobs property.
-     * 
-     * @return the logprobs value.
-     */
-    @Generated
-    public List<ResponsesLogProb> getLogprobs() {
-        return this.logprobs;
-    }
-
-    /**
-     * Set the logprobs property: The logprobs property.
-     * 
-     * @param logprobs the logprobs value to set.
-     * @return the ResponsesOutputContentText object itself.
-     */
-    @Generated
-    public ResponsesOutputContentText setLogprobs(List<ResponsesLogProb> logprobs) {
-        this.logprobs = logprobs;
-        return this;
-    }
-
-    /**
      * Get the annotations property: The annotations property.
      * 
      * @return the annotations value.
@@ -125,7 +97,6 @@ public final class ResponsesOutputContentText extends ResponsesOutputContent {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeArrayField("logprobs", this.logprobs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", this.annotations, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -144,7 +115,6 @@ public final class ResponsesOutputContentText extends ResponsesOutputContent {
         return jsonReader.readObject(reader -> {
             String text = null;
             ResponsesContentType type = ResponsesContentType.OUTPUT_TEXT;
-            List<ResponsesLogProb> logprobs = null;
             List<ResponsesOutputTextAnnotation> annotations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -154,8 +124,6 @@ public final class ResponsesOutputContentText extends ResponsesOutputContent {
                     text = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = ResponsesContentType.fromString(reader.getString());
-                } else if ("logprobs".equals(fieldName)) {
-                    logprobs = reader.readArray(reader1 -> ResponsesLogProb.fromJson(reader1));
                 } else if ("annotations".equals(fieldName)) {
                     annotations = reader.readArray(reader1 -> ResponsesOutputTextAnnotation.fromJson(reader1));
                 } else {
@@ -164,7 +132,6 @@ public final class ResponsesOutputContentText extends ResponsesOutputContent {
             }
             ResponsesOutputContentText deserializedResponsesOutputContentText = new ResponsesOutputContentText(text);
             deserializedResponsesOutputContentText.type = type;
-            deserializedResponsesOutputContentText.logprobs = logprobs;
             deserializedResponsesOutputContentText.annotations = annotations;
 
             return deserializedResponsesOutputContentText;

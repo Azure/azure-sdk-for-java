@@ -134,6 +134,8 @@ public class ResponsesItem implements JsonSerializable<ResponsesItem> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("message".equals(discriminatorValue)) {
                     return ResponsesMessage.fromJson(readerToUse.reset());
+                } else if ("code_interpreter_call".equals(discriminatorValue)) {
+                    return ResponsesCodeInterpreterCallItem.fromJson(readerToUse.reset());
                 } else if ("function_call".equals(discriminatorValue)) {
                     return ResponsesFunctionCallItem.fromJson(readerToUse.reset());
                 } else if ("function_call_output".equals(discriminatorValue)) {
@@ -148,8 +150,6 @@ public class ResponsesItem implements JsonSerializable<ResponsesItem> {
                     return ResponsesItemReferenceItem.fromJson(readerToUse.reset());
                 } else if ("web_search_call".equals(discriminatorValue)) {
                     return ResponsesWebSearchCallItem.fromJson(readerToUse.reset());
-                } else if ("code_interpreter_call".equals(discriminatorValue)) {
-                    return ResponsesCodeInterpreterCallItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

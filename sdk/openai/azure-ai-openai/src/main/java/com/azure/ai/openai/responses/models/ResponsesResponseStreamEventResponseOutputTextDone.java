@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when the text value of a "text" content part is done streaming. Also
+ * Emitted when the text value of a "text" content part is done streaming. Also
  * emitted when a Response is interrupted, incomplete, or cancelled.
  */
 @Immutable
@@ -24,19 +24,19 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
     private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_DONE;
 
     /*
-     * The ID of the item.
+     * The ID of the item that this stream event applies to.
      */
     @Generated
     private final String itemId;
 
     /*
-     * The index of the output item in the response.
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
     private final int outputIndex;
 
     /*
-     * The index of the content part in the item's content array.
+     * The index of the content part that was added to an item's content collection.
      */
     @Generated
     private final int contentIndex;
@@ -46,12 +46,6 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
      */
     @Generated
     private final String text;
-
-    /*
-     * The logprobs property.
-     */
-    @Generated
-    private ResponsesLogProb logprobs;
 
     /**
      * Creates an instance of ResponsesResponseStreamEventResponseOutputTextDone class.
@@ -82,7 +76,7 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
     }
 
     /**
-     * Get the itemId property: The ID of the item.
+     * Get the itemId property: The ID of the item that this stream event applies to.
      * 
      * @return the itemId value.
      */
@@ -92,7 +86,7 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
     }
 
     /**
-     * Get the outputIndex property: The index of the output item in the response.
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
      * 
      * @return the outputIndex value.
      */
@@ -102,7 +96,7 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
     }
 
     /**
-     * Get the contentIndex property: The index of the content part in the item's content array.
+     * Get the contentIndex property: The index of the content part that was added to an item's content collection.
      * 
      * @return the contentIndex value.
      */
@@ -122,16 +116,6 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
     }
 
     /**
-     * Get the logprobs property: The logprobs property.
-     * 
-     * @return the logprobs value.
-     */
-    @Generated
-    public ResponsesLogProb getLogprobs() {
-        return this.logprobs;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -143,7 +127,6 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
         jsonWriter.writeIntField("content_index", this.contentIndex);
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeJsonField("logprobs", this.logprobs);
         return jsonWriter.writeEndObject();
     }
 
@@ -165,7 +148,6 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
             int contentIndex = 0;
             String text = null;
             ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_DONE;
-            ResponsesLogProb logprobs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -180,8 +162,6 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
                     text = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = ResponsesResponseStreamEventType.fromString(reader.getString());
-                } else if ("logprobs".equals(fieldName)) {
-                    logprobs = ResponsesLogProb.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -189,7 +169,6 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
             ResponsesResponseStreamEventResponseOutputTextDone deserializedResponsesResponseStreamEventResponseOutputTextDone
                 = new ResponsesResponseStreamEventResponseOutputTextDone(itemId, outputIndex, contentIndex, text);
             deserializedResponsesResponseStreamEventResponseOutputTextDone.type = type;
-            deserializedResponsesResponseStreamEventResponseOutputTextDone.logprobs = logprobs;
 
             return deserializedResponsesResponseStreamEventResponseOutputTextDone;
         });

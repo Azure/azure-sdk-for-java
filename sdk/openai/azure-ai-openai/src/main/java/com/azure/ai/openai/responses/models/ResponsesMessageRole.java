@@ -5,7 +5,7 @@
 package com.azure.ai.openai.responses.models;
 
 /**
- * Defines values for ResponsesMessageRole.
+ * The collection of valid roles for responses message items.
  */
 public enum ResponsesMessageRole {
     /**

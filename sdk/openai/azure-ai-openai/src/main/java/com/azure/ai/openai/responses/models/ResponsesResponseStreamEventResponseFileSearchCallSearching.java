@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesResponseStreamEventFileSearchCallSearching model.
+ * Emitted when a file search call has begun searching.
  */
 @Immutable
-public final class ResponsesResponseStreamEventFileSearchCallSearching extends ResponsesResponseStreamEvent {
+public final class ResponsesResponseStreamEventResponseFileSearchCallSearching extends ResponsesResponseStreamEvent {
     /*
      * The type property.
      */
@@ -24,19 +24,27 @@ public final class ResponsesResponseStreamEventFileSearchCallSearching extends R
         = ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_SEARCHING;
 
     /*
-     * The item_id property.
+     * The ID of the item that this stream event applies to.
      */
     @Generated
     private final String itemId;
 
-    /**
-     * Creates an instance of ResponsesResponseStreamEventFileSearchCallSearching class.
-     * 
-     * @param itemId the itemId value to set.
+    /*
+     * The index of the output item within the response that this stream event applies to.
      */
     @Generated
-    private ResponsesResponseStreamEventFileSearchCallSearching(String itemId) {
+    private final int outputIndex;
+
+    /**
+     * Creates an instance of ResponsesResponseStreamEventResponseFileSearchCallSearching class.
+     * 
+     * @param itemId the itemId value to set.
+     * @param outputIndex the outputIndex value to set.
+     */
+    @Generated
+    private ResponsesResponseStreamEventResponseFileSearchCallSearching(String itemId, int outputIndex) {
         this.itemId = itemId;
+        this.outputIndex = outputIndex;
     }
 
     /**
@@ -51,13 +59,23 @@ public final class ResponsesResponseStreamEventFileSearchCallSearching extends R
     }
 
     /**
-     * Get the itemId property: The item_id property.
+     * Get the itemId property: The ID of the item that this stream event applies to.
      * 
      * @return the itemId value.
      */
     @Generated
     public String getItemId() {
         return this.itemId;
+    }
+
+    /**
+     * Get the outputIndex property: The index of the output item within the response that this stream event applies to.
+     * 
+     * @return the outputIndex value.
+     */
+    @Generated
+    public int getOutputIndex() {
+        return this.outputIndex;
     }
 
     /**
@@ -68,24 +86,27 @@ public final class ResponsesResponseStreamEventFileSearchCallSearching extends R
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("item_id", this.itemId);
+        jsonWriter.writeIntField("output_index", this.outputIndex);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventFileSearchCallSearching from the JsonReader.
+     * Reads an instance of ResponsesResponseStreamEventResponseFileSearchCallSearching from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventFileSearchCallSearching if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesResponseStreamEventResponseFileSearchCallSearching if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventFileSearchCallSearching.
+     * @throws IOException If an error occurs while reading the
+     * ResponsesResponseStreamEventResponseFileSearchCallSearching.
      */
     @Generated
-    public static ResponsesResponseStreamEventFileSearchCallSearching fromJson(JsonReader jsonReader)
+    public static ResponsesResponseStreamEventResponseFileSearchCallSearching fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
+            int outputIndex = 0;
             ResponsesResponseStreamEventType type
                 = ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_SEARCHING;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -94,17 +115,19 @@ public final class ResponsesResponseStreamEventFileSearchCallSearching extends R
 
                 if ("item_id".equals(fieldName)) {
                     itemId = reader.getString();
+                } else if ("output_index".equals(fieldName)) {
+                    outputIndex = reader.getInt();
                 } else if ("type".equals(fieldName)) {
                     type = ResponsesResponseStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventFileSearchCallSearching deserializedResponsesResponseStreamEventFileSearchCallSearching
-                = new ResponsesResponseStreamEventFileSearchCallSearching(itemId);
-            deserializedResponsesResponseStreamEventFileSearchCallSearching.type = type;
+            ResponsesResponseStreamEventResponseFileSearchCallSearching deserializedResponsesResponseStreamEventResponseFileSearchCallSearching
+                = new ResponsesResponseStreamEventResponseFileSearchCallSearching(itemId, outputIndex);
+            deserializedResponsesResponseStreamEventResponseFileSearchCallSearching.type = type;
 
-            return deserializedResponsesResponseStreamEventFileSearchCallSearching;
+            return deserializedResponsesResponseStreamEventResponseFileSearchCallSearching;
         });
     }
 }
