@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AzureBearerTokenAuthenticationPolicyTests {
+public class BearerTokenAuthenticationPolicyTests {
 
     @ParameterizedTest
     @MethodSource("caeTestArguments")
@@ -38,7 +38,7 @@ public class AzureBearerTokenAuthenticationPolicyTests {
         AtomicInteger callCount = new AtomicInteger();
 
         TokenCredential credential = getCaeTokenCredential(claims, callCount);
-        AzureBearerTokenAuthenticationPolicy policy = new AzureBearerTokenAuthenticationPolicy(credential, "scope");
+        BearerTokenAuthenticationPolicy policy = new BearerTokenAuthenticationPolicy(credential, "scope");
         HttpClient client = getCaeHttpClient(challenge, callCount);
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(policy).httpClient(client).build();
 
@@ -51,7 +51,7 @@ public class AzureBearerTokenAuthenticationPolicyTests {
         assertEquals(expectedClaims, claims.get());
 
         if (expectedClaims != null) {
-            String actualEncodedClaims = AzureBearerTokenAuthenticationPolicy.getChallengeParameterFromResponse(
+            String actualEncodedClaims = BearerTokenAuthenticationPolicy.getChallengeParameterFromResponse(
                 new HttpResponse<>(null, 401, new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge), null),
                 "Bearer", "claims");
             assertEquals(encodedClaims, actualEncodedClaims);

@@ -3,6 +3,8 @@
 
 package io.clientcore.core.utils;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.utils.QueryParameter;
 import io.clientcore.core.implementation.utils.UriToken;
 import io.clientcore.core.implementation.utils.UriTokenType;
@@ -26,6 +28,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 /**
  * A builder class that is used to create URIs.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class UriBuilder {
     private static final Map<String, UriBuilder> PARSED_URIS = new ConcurrentHashMap<>();
     private static final int MAX_CACHE_SIZE = 10000;

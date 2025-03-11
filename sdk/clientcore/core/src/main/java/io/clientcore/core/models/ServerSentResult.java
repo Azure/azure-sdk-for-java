@@ -3,6 +3,9 @@
 
 package io.clientcore.core.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
@@ -10,6 +13,7 @@ import java.util.List;
 /**
  * Class to hold the result for a retry of an ServerSentEvent content type request.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class ServerSentResult {
     private final String lastEventId;
     private final Duration retryAfter;

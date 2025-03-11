@@ -3,6 +3,8 @@
 
 package com.azure.v2.core.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -24,6 +26,7 @@ import java.util.List;
  * @see JsonReader
  * @see JsonWriter
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class AzureResponseError implements JsonSerializable<AzureResponseError> {
     private final String code;
     private final String message;

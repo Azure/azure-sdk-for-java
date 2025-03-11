@@ -6,15 +6,14 @@ package io.clientcore.annotation.processor.test;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.implementation.http.HttpResponse;
-import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 
 /**
  * A mock implementation of {@link HttpResponse} that can be used for testing.
  */
 public class MockHttpResponse extends HttpResponse<BinaryData> {
-    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
+    private static final JsonSerializer SERIALIZER = new JsonSerializer();
 
     /**
      * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and has an empty

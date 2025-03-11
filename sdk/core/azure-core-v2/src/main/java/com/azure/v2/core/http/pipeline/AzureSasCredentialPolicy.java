@@ -4,6 +4,8 @@
 package com.azure.v2.core.http.pipeline;
 
 import com.azure.v2.core.credentials.AzureSasCredential;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.pipeline.HttpCredentialPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.http.models.HttpRequest;
@@ -35,6 +37,7 @@ import java.util.Objects;
  * @see HttpRequest
  * @see Response
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class AzureSasCredentialPolicy extends HttpCredentialPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(AzureSasCredentialPolicy.class);
     private final AzureSasCredential credential;

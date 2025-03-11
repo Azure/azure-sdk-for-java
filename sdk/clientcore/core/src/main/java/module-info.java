@@ -17,7 +17,6 @@ module io.clientcore.core {
     exports io.clientcore.core.http;
     exports io.clientcore.core.http.annotations;
     exports io.clientcore.core.http.client;
-    exports io.clientcore.core.http.exceptions;
     exports io.clientcore.core.http.models;
     exports io.clientcore.core.http.paging;
     exports io.clientcore.core.http.pipeline;

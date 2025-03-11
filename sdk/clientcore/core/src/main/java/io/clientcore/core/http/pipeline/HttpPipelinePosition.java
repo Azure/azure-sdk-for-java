@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.utils.ExpandableEnum;
 
 /**
@@ -36,6 +38,7 @@ import io.clientcore.core.utils.ExpandableEnum;
  *     +------------------------+
  * </pre>
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpPipelinePosition implements ExpandableEnum<Integer> {
     private final int value;
 

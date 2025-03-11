@@ -3,10 +3,10 @@
 
 package io.clientcore.core.models.binarydata;
 
-import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.Person;
 import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -171,7 +171,7 @@ public class BinaryDataJavaDocCodeSnippet {
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use the provided serializers.
-        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
+        final JsonSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
         System.out.println(binaryData.toString());
@@ -242,7 +242,7 @@ public class BinaryDataJavaDocCodeSnippet {
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use the provided serializers.
-        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
+        final JsonSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
         Person person = binaryData.toObject(Person.class, serializer);
@@ -262,7 +262,7 @@ public class BinaryDataJavaDocCodeSnippet {
         personList.add(person1);
         personList.add(person2);
 
-        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
+        final JsonSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(personList, serializer);
 
         // Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the

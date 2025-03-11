@@ -3,6 +3,8 @@
 
 package com.azure.v2.core.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -24,6 +26,7 @@ import java.io.IOException;
  * @see JsonReader
  * @see JsonWriter
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 final class AzureResponseInnerError implements JsonSerializable<AzureResponseInnerError> {
     private String code;
     private AzureResponseInnerError innerError;

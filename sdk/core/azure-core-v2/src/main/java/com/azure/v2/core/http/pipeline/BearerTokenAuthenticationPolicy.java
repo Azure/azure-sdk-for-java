@@ -6,6 +6,8 @@ package com.azure.v2.core.http.pipeline;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.implementation.AccessTokenCache;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
@@ -52,8 +54,9 @@ import java.util.Objects;
  * @see HttpRequest
  * @see Response
  */
-public class AzureBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(AzureBearerTokenAuthenticationPolicy.class);
+@Metadata(properties = MetadataProperties.IMMUTABLE)
+public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
     private static final String BEARER = "Bearer";
 
     private final String[] scopes;
@@ -65,7 +68,7 @@ public class AzureBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param credential the token credential to authenticate the request
      * @param scopes the scopes of authentication the credential should get token for
      */
-    public AzureBearerTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {
+    public BearerTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {
         Objects.requireNonNull(credential);
         this.scopes = scopes;
         this.cache = new AccessTokenCache(credential);

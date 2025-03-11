@@ -3,18 +3,20 @@
 
 package com.azure.v2.core.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.utils.ExpandableEnum;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * An expandable enum that describes Azure cloud environment.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class AzureCloud implements ExpandableEnum<String> {
-
     private static final Map<String, AzureCloud> VALUES = new ConcurrentHashMap<>();
+
     /**
      * Azure public cloud.
      */
@@ -50,15 +52,6 @@ public final class AzureCloud implements ExpandableEnum<String> {
     @Override
     public String getValue() {
         return this.cloudName;
-    }
-
-    /**
-     * Gets all known {@link AzureCloud} values.
-     *
-     * @return The known {@link AzureCloud} values.
-     */
-    public static Collection<AzureCloud> values() {
-        return VALUES.values();
     }
 
     @Override
