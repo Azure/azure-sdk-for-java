@@ -80,7 +80,7 @@ public class DigestChallengeHandler implements ChallengeHandler {
     }
 
     @Override
-    public void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy) {
+    public void handleChallenge(HttpRequest request, Response<BinaryData> response, boolean isProxy) {
         if (!canHandle(response, isProxy)) {
             return;
         }
@@ -107,7 +107,7 @@ public class DigestChallengeHandler implements ChallengeHandler {
 
             // Generate Digest Authorization header
             String digestAuthHeader = generateDigestAuthHeader(request.getHttpMethod().name(),
-                request.getUri().toString(), algorithm, digestFunction, response.getBody());
+                request.getUri().toString(), algorithm, digestFunction, response.getValue());
 
             synchronized (request.getHeaders()) {
                 HttpHeaderName headerName = isProxy ? HttpHeaderName.PROXY_AUTHORIZATION : HttpHeaderName.AUTHORIZATION;
@@ -117,18 +117,17 @@ public class DigestChallengeHandler implements ChallengeHandler {
     }
 
     @Override
-    public boolean canHandle(Response<?> response, boolean isProxy) {
-        String authHeader;
+    public boolean canHandle(Response<BinaryData> response, boolean isProxy) {
         if (response.getHeaders() != null) {
             HttpHeaderName authHeaderName
                 = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
-            authHeader = response.getHeaders().getValue(authHeaderName);
+            String authHeader = response.getHeaders().getValue(authHeaderName);
 
             if (authHeader != null) {
-                // Split by commas to handle multiple authentication methods in the header.
-                String[] challenges = authHeader.split(",");
-                for (String challenge : challenges) {
-                    if (challenge.trim().regionMatches(true, 0, DIGEST, 0, DIGEST.length())) {
+                // Parse the authenticate header into AuthenticateChallenges, then check if any use scheme 'Digest'.
+                List<AuthenticateChallenge> challenges = AuthUtils.parseAuthenticateHeader(authHeader);
+                for (AuthenticateChallenge challenge : challenges) {
+                    if (DIGEST.equalsIgnoreCase(challenge.getScheme())) {
                         return true;
                     }
                 }

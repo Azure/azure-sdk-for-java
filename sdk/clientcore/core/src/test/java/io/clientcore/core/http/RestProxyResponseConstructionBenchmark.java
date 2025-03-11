@@ -6,7 +6,6 @@ package io.clientcore.core.http;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
@@ -43,7 +42,7 @@ public class RestProxyResponseConstructionBenchmark {
     private static final HttpHeaders HEADERS = new HttpHeaders();
 
     private static final Class<? extends Response<?>> RESPONSE_TYPE = (Class<? extends Response<?>>) TypeUtil
-        .getRawClass(TypeUtil.createParameterizedType(HttpResponse.class, Object.class, String.class));
+        .getRawClass(TypeUtil.createParameterizedType(Response.class, Object.class, String.class));
 
     /**
      * Benchmarks creating a {@link Response} type using the constructor directly when possible (types outside the scope
@@ -53,7 +52,7 @@ public class RestProxyResponseConstructionBenchmark {
      */
     @Benchmark
     public void directConstruction(Blackhole blackhole) {
-        blackhole.consume(new HttpResponse<>(REQUEST, 200, HEADERS, "value"));
+        blackhole.consume(new Response<>(REQUEST, 200, HEADERS, "value"));
     }
 
     /**

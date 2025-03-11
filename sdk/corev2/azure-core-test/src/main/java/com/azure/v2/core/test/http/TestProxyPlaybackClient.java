@@ -95,7 +95,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             request.getHeaders()
                 .set(HttpHeaderName.ACCEPT, "application/json")
                 .set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            Response<?> response = sendRequestWithRetries(request);
+            Response<BinaryData> response = sendRequestWithRetries(request);
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaders().getValue(X_RECORDING_ID);
             xRecordingFileLocation
@@ -109,7 +109,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             // the key. See TestProxyRecordPolicy.serializeVariables.
             // This deserializes the map returned from the test proxy and creates an ordered list
             // based on the key.
-            try (JsonReader jsonReader = JsonReader.fromBytes(response.getBody().toBytes())) {
+            try (JsonReader jsonReader = JsonReader.fromBytes(response.getValue().toBytes())) {
                 Map<String, String> variables = jsonReader.readMap(JsonReader::getString);
                 List<Map.Entry<String, String>> toSort;
                 if (variables == null) {
@@ -131,14 +131,14 @@ public class TestProxyPlaybackClient implements HttpClient {
         }
     }
 
-    private Response<?> sendRequestWithRetries(HttpRequest request) throws IOException {
+    private Response<BinaryData> sendRequestWithRetries(HttpRequest request) throws IOException {
         int retries = 0;
         while (true) {
             try {
-                Response<?> response = client.send(request);
+                Response<BinaryData> response = client.send(request);
                 if (response.getStatusCode() / 100 != 2) {
                     throw new RuntimeException("Test proxy returned a non-successful status code. "
-                        + response.getStatusCode() + "; response: " + response.getBody());
+                        + response.getStatusCode() + "; response: " + response.getValue());
                 }
                 return response;
             } catch (Exception e) {
@@ -190,7 +190,7 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @param response The response received.
      * @return The transformed response.
      */
-    private Response<?> afterReceivedResponse(Response<?> response) {
+    private Response<BinaryData> afterReceivedResponse(Response<BinaryData> response) {
         TestProxyUtils.checkForTestProxyErrors(response);
         return TestProxyUtils.resetTestProxyData(response);
     }
@@ -202,9 +202,9 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @throws IOException If an error occurs while sending the request.
      */
     @Override
-    public Response<?> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) throws IOException {
         beforeSendingRequest(request);
-        Response<?> response = client.send(request);
+        Response<BinaryData> response = client.send(request);
         return afterReceivedResponse(response);
     }
 

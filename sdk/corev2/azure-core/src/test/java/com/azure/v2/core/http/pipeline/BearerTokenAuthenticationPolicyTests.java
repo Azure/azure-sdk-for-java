@@ -13,7 +13,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.http.HttpResponse;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,7 +41,7 @@ public class BearerTokenAuthenticationPolicyTests {
         HttpClient client = getCaeHttpClient(challenge, callCount);
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(policy).httpClient(client).build();
 
-        try (Response<?> response
+        try (Response<BinaryData> response
             = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"))) {
             assertEquals(expectedStatusCode, response.getStatusCode());
         } catch (IOException e) {
@@ -51,7 +51,7 @@ public class BearerTokenAuthenticationPolicyTests {
 
         if (expectedClaims != null) {
             String actualEncodedClaims = BearerTokenAuthenticationPolicy.getChallengeParameterFromResponse(
-                new HttpResponse<>(null, 401, new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge), null),
+                new Response<>(null, 401, new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge), null),
                 "Bearer", "claims");
             assertEquals(encodedClaims, actualEncodedClaims);
         }
@@ -74,12 +74,12 @@ public class BearerTokenAuthenticationPolicyTests {
         return request -> {
             if (callCount.get() <= 1) {
                 if (challenge == null) {
-                    return new HttpResponse<>(request, 200, new HttpHeaders(), null);
+                    return new Response<>(request, 200, new HttpHeaders(), null);
                 }
-                return new HttpResponse<>(request, 401,
-                    new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge), null);
+                return new Response<>(request, 401, new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge),
+                    null);
             }
-            return new HttpResponse<>(request, 200, new HttpHeaders(), null);
+            return new Response<>(request, 200, new HttpHeaders(), null);
         };
     }
 

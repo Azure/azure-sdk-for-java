@@ -157,7 +157,7 @@ public class ClientLoggerJavaDocCodeSnippets {
     }
 
     private Response<Void> getResponse() {
-        return Response.create(null, 200, null, null);
+        return new Response<>(null, 200, null, null);
     }
 
     /**

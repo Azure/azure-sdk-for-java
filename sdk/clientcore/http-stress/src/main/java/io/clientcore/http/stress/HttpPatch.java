@@ -60,10 +60,10 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
 
     private void runInternal() {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
-        try (Response<?> response = pipeline.send(createRequest())) {
+        try (Response<BinaryData> response = pipeline.send(createRequest())) {
             int responseCode = response.getStatusCode();
             assert responseCode == 200 : "Unexpected response code: " + responseCode;
-            response.getBody().close();
+            response.getValue().close();
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }

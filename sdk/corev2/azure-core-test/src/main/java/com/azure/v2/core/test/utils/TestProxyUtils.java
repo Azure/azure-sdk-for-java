@@ -14,6 +14,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.StringBinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.UriBuilder;
@@ -169,7 +170,7 @@ public final class TestProxyUtils {
      * @return The modified response.
      * @throws RuntimeException Construction of one of the URIs failed.
      */
-    public static Response<?> resetTestProxyData(Response<?> response) {
+    public static Response<BinaryData> resetTestProxyData(Response<BinaryData> response) {
         HttpRequest responseRequest = response.getRequest();
         HttpHeaders requestHeaders = responseRequest.getHeaders();
         try {
@@ -217,7 +218,7 @@ public final class TestProxyUtils {
      * Checks the return from a request through the test proxy for special error headers.
      * @param response The {@link Response} from the test proxy.
      */
-    public static void checkForTestProxyErrors(Response<?> response) {
+    public static void checkForTestProxyErrors(Response<BinaryData> response) {
         String error = response.getHeaders().getValue(X_REQUEST_MISMATCH_ERROR);
         if (error == null) {
             error = response.getHeaders().getValue(X_REQUEST_KNOWN_EXCEPTION_ERROR);

@@ -5,11 +5,11 @@ package io.clientcore.core.http;
 
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.implementation.http.HttpResponse;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonSerializer;
 
-public class MockHttpResponse extends HttpResponse<BinaryData> {
+public class MockHttpResponse extends Response<BinaryData> {
     private static final JsonSerializer SERIALIZER = new JsonSerializer();
 
     /**

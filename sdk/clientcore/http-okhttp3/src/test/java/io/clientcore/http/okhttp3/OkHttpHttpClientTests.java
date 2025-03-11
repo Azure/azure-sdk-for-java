@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
 import org.conscrypt.Conscrypt;
@@ -112,7 +113,7 @@ public class OkHttpHttpClientTests {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, "/connectionClose"));
 
-        assertThrows(IOException.class, () -> client.send(request).getBody().toBytes());
+        assertThrows(IOException.class, () -> client.send(request).getValue().toBytes());
     }
 
     @Test
@@ -125,8 +126,8 @@ public class OkHttpHttpClientTests {
 
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (Response<?> response = doRequest(client, "/long")) {
-                    byte[] body = response.getBody().toBytes();
+                try (Response<BinaryData> response = doRequest(client, "/long")) {
+                    byte[] body = response.getValue().toBytes();
                     assertArraysEqual(LONG_BODY, body);
 
                     return null;
@@ -183,9 +184,9 @@ public class OkHttpHttpClientTests {
                 .hostnameVerifier((hostname, session) -> true)
                 .build();
 
-        try (Response<?> response
+        try (Response<BinaryData> response
             = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(httpsUri(server, "/short")))) {
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
+            TestUtils.assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
 
@@ -218,14 +219,14 @@ public class OkHttpHttpClientTests {
 
     private static void checkBodyReceived(byte[] expectedBody, String path) throws IOException {
         HttpClient client = new OkHttpHttpClientBuilder().build();
-        try (Response<?> response = doRequest(client, path)) {
-            byte[] bytes = response.getBody().toBytes();
+        try (Response<BinaryData> response = doRequest(client, path)) {
+            byte[] bytes = response.getValue().toBytes();
 
             assertArraysEqual(expectedBody, bytes);
         }
     }
 
-    private static Response<?> doRequest(HttpClient client, String path) throws IOException {
+    private static Response<BinaryData> doRequest(HttpClient client, String path) throws IOException {
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path));
 
         return client.send(request);

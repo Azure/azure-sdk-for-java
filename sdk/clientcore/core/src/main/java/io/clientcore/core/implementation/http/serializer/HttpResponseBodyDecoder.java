@@ -46,7 +46,7 @@ public final class HttpResponseBodyDecoder {
      * @throws HttpResponseException If the body cannot be decoded.
      * @throws RuntimeException If the body cannot be decoded.
      */
-    public static Object decodeByteArray(BinaryData body, Response<?> response, CompositeSerializer serializer,
+    public static Object decodeByteArray(BinaryData body, Response<BinaryData> response, CompositeSerializer serializer,
         HttpResponseDecodeData decodeData) {
         ensureRequestSet(response);
 
@@ -90,7 +90,7 @@ public final class HttpResponseBodyDecoder {
             }
 
             try {
-                return deserializeBody(body == null ? response.getBody() : body,
+                return deserializeBody(body == null ? response.getValue() : body,
                     extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
                     RestProxyImpl.serializationFormatFromContentType(response.getHeaders()), serializer);
             } catch (MalformedValueException e) {

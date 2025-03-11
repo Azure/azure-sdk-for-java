@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 
@@ -49,8 +50,8 @@ public class MockHttpClient extends NoOpHttpClient {
     }
 
     @Override
-    public Response<?> send(HttpRequest request) throws IOException {
-        Response<?> response = null;
+    public Response<BinaryData> send(HttpRequest request) throws IOException {
+        Response<BinaryData> response = null;
         final URI requestUri = request.getUri();
         final String requestHost = requestUri.getHost();
         final String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);

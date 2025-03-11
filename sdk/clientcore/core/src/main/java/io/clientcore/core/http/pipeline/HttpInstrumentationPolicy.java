@@ -11,7 +11,6 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
@@ -118,7 +117,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  *
  * HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy&#40;&#41; &#123;
  *     &#64;Override
- *     public Response&lt;?&gt; process&#40;HttpRequest request, HttpPipelineNextPolicy next&#41; &#123;
+ *     public Response&lt;BinaryData&gt; process&#40;HttpRequest request, HttpPipelineNextPolicy next&#41; &#123;
  *         Span span = request.getRequestOptions&#40;&#41; == null
  *             ? Span.noop&#40;&#41;
  *             : request.getRequestOptions&#40;&#41;.getInstrumentationContext&#40;&#41;.getSpan&#40;&#41;;
@@ -235,7 +234,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      */
     @SuppressWarnings("try")
     @Override
-    public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
         if (!isTracingEnabled && !isLoggingEnabled && !isMetricsEnabled) {
             return next.process();
         }
@@ -270,7 +269,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, context);
 
         try (TracingScope scope = span.makeCurrent()) {
-            Response<?> response = next.process();
+            Response<BinaryData> response = next.process();
 
             if (response == null) {
                 LOGGER.atError()
@@ -437,7 +436,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         logBuilder.log();
     }
 
-    private Response<?> logResponse(ClientLogger logger, Response<?> response, long startNanoTime,
+    private Response<BinaryData> logResponse(ClientLogger logger, Response<BinaryData> response, long startNanoTime,
         long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
         LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
         if (!isLoggingEnabled) {
@@ -457,13 +456,13 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 .addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode())
                 .addKeyValue(HTTP_REQUEST_BODY_SIZE_KEY, requestContentLength)
                 .addKeyValue(HTTP_RESPONSE_BODY_SIZE_KEY,
-                    getContentLength(logger, response.getBody(), response.getHeaders(), false));
+                    getContentLength(logger, response.getValue(), response.getHeaders(), false));
 
             addHeadersToLogMessage(response.getHeaders(), logBuilder);
         }
 
-        if (isContentLoggingEnabled && canLogBody(response.getBody())) {
-            return new LoggingHttpResponse<>(response, content -> {
+        if (isContentLoggingEnabled && canLogBody(response.getValue())) {
+            return new LoggingHttpResponse(response, content -> {
                 if (logBuilder.isEnabled()) {
                     logBuilder.addKeyValue(HTTP_RESPONSE_BODY_CONTENT_KEY, content.toString())
                         .addKeyValue(HTTP_REQUEST_DURATION_KEY, getDurationMs(startNanoTime, System.nanoTime()))
@@ -480,9 +479,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         return response;
     }
 
-    private <T extends Throwable> T logException(ClientLogger logger, HttpRequest request, Response<?> response,
-        T throwable, long startNanoTime, Long responseStartNanoTime, long requestContentLength, String redactedUrl,
-        int tryCount, InstrumentationContext context) {
+    private <T extends Throwable> T logException(ClientLogger logger, HttpRequest request,
+        Response<BinaryData> response, T throwable, long startNanoTime, Long responseStartNanoTime,
+        long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
 
         LoggingEvent log = logger.atLevel(LogLevel.WARNING);
         if (!log.isEnabled() || !isLoggingEnabled) {
@@ -500,7 +499,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         if (response != null) {
             addHeadersToLogMessage(response.getHeaders(), log);
             log.addKeyValue(HTTP_RESPONSE_BODY_SIZE_KEY,
-                getContentLength(logger, response.getBody(), response.getHeaders(), false))
+                getContentLength(logger, response.getValue(), response.getHeaders(), false))
                 .addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode());
 
             if (responseStartNanoTime != null) {
@@ -589,24 +588,24 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         return contentLength;
     }
 
-    private static final class LoggingHttpResponse<T> extends HttpResponse<T> {
+    private static final class LoggingHttpResponse extends Response<BinaryData> {
         private final Consumer<BinaryData> onContent;
         private final Consumer<Throwable> onException;
         private final BinaryData originalBody;
         private BinaryData bufferedBody;
 
-        private LoggingHttpResponse(Response<T> actualResponse, Consumer<BinaryData> onContent,
+        private LoggingHttpResponse(Response<BinaryData> actualResponse, Consumer<BinaryData> onContent,
             Consumer<Throwable> onException) {
             super(actualResponse.getRequest(), actualResponse.getStatusCode(), actualResponse.getHeaders(),
                 actualResponse.getValue());
 
             this.onContent = onContent;
             this.onException = onException;
-            this.originalBody = actualResponse.getBody();
+            this.originalBody = actualResponse.getValue();
         }
 
         @Override
-        public BinaryData getBody() {
+        public BinaryData getValue() {
             if (bufferedBody != null) {
                 return bufferedBody;
             }
@@ -625,7 +624,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         @Override
         public void close() throws IOException {
             if (bufferedBody == null) {
-                getBody();
+                getValue();
             }
             if (bufferedBody != null) {
                 bufferedBody.close();

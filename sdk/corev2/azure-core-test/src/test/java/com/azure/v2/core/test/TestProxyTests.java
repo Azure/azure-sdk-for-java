@@ -187,8 +187,8 @@ public class TestProxyTests extends TestBase {
         // test being flaky
         request.getHeaders().set(HttpHeaderName.ACCEPT, "*/*");
 
-        try (Response<?> response = client.send(request)) {
-            assertEquals("first path", response.getBody().toString());
+        try (Response<BinaryData> response = client.send(request)) {
+            assertEquals("first path", response.getValue().toString());
             assertEquals(200, response.getStatusCode());
         }
     }
