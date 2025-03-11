@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent-v2</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent-v2;current} -->
-    <relativePath>../../parents/azure-client-sdk-parent-v2</relativePath>
+    <groupId>com.azure.v2</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent-v2/pom.xml</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-test-v2</artifactId>
+  <groupId>com.azure.v2</groupId>
+  <artifactId>azure-core-test</artifactId>
   <packaging>jar</packaging>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test-v2;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core-test;current} -->
 
   <name>Microsoft Azure Java Core Test V2 Library</name>
   <description>This package contains core test types for Azure Java V2 clients.</description>
@@ -74,9 +74,9 @@
       <version>1.0.0-beta.6</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-v2</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-v2;current} -->
+      <groupId>com.azure.v2</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core;current} -->
     </dependency>
 
     <dependency>
