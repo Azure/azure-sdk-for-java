@@ -3,6 +3,8 @@
 
 package io.clientcore.core.serialization.json.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -17,6 +19,7 @@ import java.util.Objects;
 /**
  * Class representing the JSON number type
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class JsonNumber extends JsonElement {
     private static final ClientLogger LOGGER = new ClientLogger(JsonNumber.class);
 

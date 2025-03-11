@@ -96,6 +96,7 @@
       <Class name="io.clientcore.core.utils.AuthorizationChallengeHandlerTests" />
       <Class name="io.clientcore.core.utils.ClientOptionsJavadocCodeSnippets" />
       <Class name="io.clientcore.core.utils.ConfigurationJavaDocCodeSnippet" />
+      <Class name="io.clientcore.core.utils.ProgressReporterTests" />
       <Class name="io.clientcore.core.utils.union.codesnippets.UnionJavaDocCodeSnippets" />
     </Or>
   </Match>
@@ -273,6 +274,7 @@
       <Class name="io.clientcore.core.models.geo.GeoPolygonTests" />
       <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
       <Class name="io.clientcore.core.serialization.json.models.JsonPatchDocument" />
+      <Class name="io.clientcore.core.utils.ProgressReporterTests" />
     </Or>
   </Match>
   <Match>

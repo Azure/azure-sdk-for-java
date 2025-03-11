@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.utils.CoreUtils;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * If multiple header values are added to a request with the same name (case-insensitive), then the values will be
  * appended at the end of the same {@link HttpHeader} with commas separating them.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class HttpHeader {
     private static final String[] EMPTY_HEADER_ARRAY = new String[0];
 
