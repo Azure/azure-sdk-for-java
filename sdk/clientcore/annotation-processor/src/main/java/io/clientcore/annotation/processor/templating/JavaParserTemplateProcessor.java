@@ -20,7 +20,6 @@ import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
-import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -34,6 +33,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
+import io.clientcore.core.serialization.xml.XmlSerializer;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
@@ -140,29 +140,25 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         configureLoggerField(classBuilder.addField("ClientLogger", "LOGGER", Modifier.Keyword.PRIVATE,
             Modifier.Keyword.STATIC, Modifier.Keyword.FINAL), serviceInterfaceShortName);
 
-        classBuilder.addField(HttpPipeline.class, "defaultPipeline", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
-        classBuilder.addField(ObjectSerializer.class, "serializer", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
-
+        classBuilder.addField(HttpPipeline.class, "httpPipeline", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
         compilationUnit.addImport(JsonSerializer.class);
+        classBuilder.addField(JsonSerializer.class, "jsonSerializer", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
+        compilationUnit.addImport(XmlSerializer.class);
+        classBuilder.addField(XmlSerializer.class, "xmlSerializer", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
+
         classBuilder.addConstructor(Modifier.Keyword.PRIVATE)
-            .addParameter(HttpPipeline.class, "defaultPipeline")
-            .addParameter(ObjectSerializer.class, "serializer")
+            .addParameter(HttpPipeline.class, "httpPipeline")
             .setBody(StaticJavaParser.parseBlock(
-                "{ this.defaultPipeline = defaultPipeline; this.serializer = serializer == null ? new JsonSerializer() : serializer; }"));
+                "{ this.httpPipeline = httpPipeline; this.jsonSerializer = new JsonSerializer(); this.xmlSerializer = new XmlSerializer(); }"));
 
         classBuilder.addMethod("getNewInstance", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
             .setType(serviceInterfaceShortName)
             .addParameter(HttpPipeline.class, "pipeline")
-            .addParameter(ObjectSerializer.class, "serializer")
-            .setBody(StaticJavaParser
-                .parseBlock("{ return new " + serviceInterfaceImplShortName + "(pipeline, serializer); }"))
+            .setBody(StaticJavaParser.parseBlock("{ return new " + serviceInterfaceImplShortName + "(pipeline); }"))
             .setJavadocComment("Creates an instance of " + serviceInterfaceShortName
                 + " that is capable of sending requests to the service.\n"
-                + "@param pipeline The HTTP pipeline to use for sending requests.\n"
-                + "@param serializer The serializer to use for serializing and deserializing request and response bodies.\n"
-                + "@return An instance of `" + serviceInterfaceShortName + "`;");
-
-        configurePipelineMethod(classBuilder.addMethod("getPipeline", Modifier.Keyword.PRIVATE));
+                + "@param pipeline The HTTP pipeline to use for sending requests.\n" + "@return An instance of `"
+                + serviceInterfaceShortName + "`;");
 
         for (HttpRequestContext method : templateInput.getHttpRequestContexts()) {
             if (!method.isConvenience()) {
@@ -229,14 +225,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 .setInitializer("new ClientLogger(" + serviceInterfaceShortName + ".class)")));
     }
 
-    void configurePipelineMethod(MethodDeclaration pipelineMethod) {
-        pipelineMethod.tryAddImportToParentCompilationUnit(HttpPipeline.class);
-        pipelineMethod.setName("getPipeline")
-            .setModifiers(Modifier.Keyword.PRIVATE)
-            .setType(HttpPipeline.class)
-            .setBody(new BlockStmt().addStatement(new ReturnStmt("defaultPipeline")));
-    }
-
     /**
      * Configures the request with the body content and content type.
      *
@@ -269,8 +257,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             }
             if ("io.clientcore.core.models.binarydata.BinaryData".equals(parameterType)) {
                 body.tryAddImportToParentCompilationUnit(BinaryData.class);
-                body.addStatement(
-                    StaticJavaParser.parseStatement("BinaryData binaryData = (BinaryData) " + parameterName + ";"));
+                body.addStatement(StaticJavaParser.parseStatement("BinaryData binaryData = " + parameterName + ";"));
                 body.addStatement(StaticJavaParser.parseStatement("if (binaryData.getLength() != null) {"
                     + "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(binaryData.getLength()));"
                     + "httpRequest.setBody(binaryData); }"));
@@ -278,16 +265,29 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             }
 
             boolean isJson = false;
+            boolean isXml = false;
             final String[] contentTypeParts = contentType.split(";");
 
             for (final String contentTypePart : contentTypeParts) {
                 if (contentTypePart.trim().equalsIgnoreCase(APPLICATION_JSON)) {
                     isJson = true;
-
+                    break;
+                } else if (contentTypePart.trim().equalsIgnoreCase("application/xml")
+                    || contentTypePart.trim().equalsIgnoreCase("application/xml;charset=utf-8")
+                    || contentTypePart.trim().equalsIgnoreCase("text/xml")) {
+                    isXml = true;
                     break;
                 }
             }
-            updateRequestWithBodyContent(body, isJson, parameterType, parameterName);
+
+            if (isJson) {
+                body.addStatement(StaticJavaParser.parseStatement(
+                    "httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", jsonSerializer));"));
+            } else if (isXml) {
+                body.addStatement(StaticJavaParser.parseStatement(
+                    "httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", xmlSerializer));"));
+            }
+            updateRequestWithBodyContent(body, parameterType, parameterName);
         }
     }
 
@@ -307,7 +307,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
 
         BlockStmt body = internalMethod.getBody().get();
-        body.addStatement(StaticJavaParser.parseStatement("HttpPipeline pipeline = this.getPipeline();"));
 
         initializeHttpRequest(body, method);
         addHeadersToRequest(body, method);
@@ -409,7 +408,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
         Statement statement
-            = StaticJavaParser.parseStatement("Response<BinaryData> networkResponse = pipeline.send(httpRequest);");
+            = StaticJavaParser.parseStatement("Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);");
         statement.setLineComment("\n Send the request through the pipeline");
         body.addStatement(statement);
 
@@ -443,15 +442,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             + " throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
     }
 
-    private void updateRequestWithBodyContent(BlockStmt body, boolean isJson, String parameterType,
-        String parameterName) {
+    private void updateRequestWithBodyContent(BlockStmt body, String parameterType, String parameterName) {
         if (parameterType == null) {
             return;
         }
-        if (isJson) {
-            body.addStatement(StaticJavaParser
-                .parseStatement("httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", serializer));"));
-        } else if ("byte[]".equals(parameterType)) {
+        if ("byte[]".equals(parameterType)) {
             body.addStatement(StaticJavaParser
                 .parseStatement("httpRequest.setBody(BinaryData.fromBytes((byte[]) " + parameterName + "));"));
         } else if ("String".equals(parameterType)) {
@@ -474,7 +469,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 "httpRequest.setBody(BinaryData.fromBytes(((ByteBuffer) " + parameterName + ").array()));"));
         } else {
             body.addStatement(StaticJavaParser
-                .parseStatement("httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", serializer));"));
+                .parseStatement("httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", jsonSerializer));"));
         }
     }
 }
