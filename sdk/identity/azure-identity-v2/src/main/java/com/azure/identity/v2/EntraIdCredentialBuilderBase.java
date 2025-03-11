@@ -5,10 +5,9 @@ package com.azure.identity.v2;
 
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
-import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpRedirectOptions;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -17,6 +16,7 @@ import io.clientcore.core.traits.HttpTrait;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
 
 /**
  * <p>The base class for credential builders that allow specifying a client ID, tenant ID, authority host, and
@@ -101,13 +101,6 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
 
     @SuppressWarnings("unchecked")
     @Override
-    public T addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
-        getHttpPipelineOptions().addHttpPipelinePolicy(pipelinePolicy);
-        return (T) this;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
     public T httpRetryOptions(HttpRetryOptions retryOptions) {
         getHttpPipelineOptions().setHttpRetryOptions(retryOptions);
         return (T) this;
@@ -129,8 +122,8 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
 
     @SuppressWarnings("unchecked")
     @Override
-    public T httpClient(HttpClient client) {
-        getHttpPipelineOptions().setHttpClient(client);
+    public T modifyHttpPipelineBuilder(Consumer<HttpPipelineBuilder> pipelineBuilderModifier) {
+        pipelineBuilderModifier.accept(getHttpPipelineOptions().getHttpPipelineBuilder());
         return (T) this;
     }
 

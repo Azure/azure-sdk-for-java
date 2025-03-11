@@ -60,7 +60,7 @@ public class ManagedIdentityClientOptions extends ClientOptions {
                 .setObjectId(objectId)
                 .setClientId(this.getClientId())
                 .setTenantId(this.getTenantId())
-                .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
+                .setHttpPipelineOptions(this.getHttpPipelineOptions().copy())
                 .setExecutorService(this.getExecutorService())
                 .setAuthorityHost(this.getAuthorityHost())
                 .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())

@@ -7,12 +7,8 @@ import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.HttpPipelineOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public abstract class ClientBase {
@@ -56,12 +52,7 @@ public abstract class ClientBase {
 
     HttpPipeline setupPipeline() {
         //TODO (g2vinay): Wire the HttpPipelineOptions in Pipeline construction.
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new HttpRetryPolicy());
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().addPolicy(policies.get(0))
-            .httpClient(getHttpPipelineOptions().getHttpClient())
-            .build();
-        return httpPipeline;
+        return getHttpPipelineOptions().getHttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).build();
     }
 
     void initializeHttpPipelineAdapter() {

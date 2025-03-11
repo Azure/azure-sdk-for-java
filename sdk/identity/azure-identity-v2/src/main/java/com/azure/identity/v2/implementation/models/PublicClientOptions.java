@@ -67,7 +67,7 @@ public class PublicClientOptions extends ClientOptions {
             .setBrowserCustomizationOptions(browserCustomizationOptions)
             .setClientId(this.getClientId())
             .setTenantId(this.getTenantId())
-            .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
+            .setHttpPipelineOptions(this.getHttpPipelineOptions().copy())
             .setExecutorService(this.getExecutorService())
             .setAuthorityHost(this.getAuthorityHost())
             .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())

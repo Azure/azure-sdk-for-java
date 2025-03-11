@@ -56,7 +56,7 @@ public class ConfidentialClientOptions extends ClientOptions {
                 .setClientAssertionFunction(this.clientAssertionFunction)
                 .setClientId(this.getClientId())
                 .setTenantId(this.getTenantId())
-                .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
+                .setHttpPipelineOptions(this.getHttpPipelineOptions().copy())
                 .setExecutorService(this.getExecutorService())
                 .setAuthorityHost(this.getAuthorityHost())
                 .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())
