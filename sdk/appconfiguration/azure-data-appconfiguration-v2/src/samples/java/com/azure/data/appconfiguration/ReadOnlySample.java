@@ -3,18 +3,17 @@
 
 package com.azure.data.appconfiguration;
 
-
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClient;
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClientBuilder;
 import com.azure.v2.data.appconfiguration.models.KeyValue;
 import io.clientcore.core.utils.configuration.Configuration;
 
 /**
- * Sample demonstrates how to add, get, and delete a configuration setting.
+ * Sample demonstrates how to set and clear read-only a configuration setting.
  */
-public class HelloWorld {
+public class ReadOnlySample {
     /**
-     * Runs the sample algorithm and demonstrates how to add, get, and delete a configuration setting.
+     * Runs the sample algorithm and demonstrates how to set and clear read-only a configuration setting.
      *
      * @param args Unused. Arguments to the program.
      */
@@ -32,17 +31,17 @@ public class HelloWorld {
         final String key = "hello";
         final String value = "world";
 
-        System.out.println("Beginning of synchronous sample...");
-
         KeyValue setting = client.putKeyValue(key, null, null, null, null, null, new KeyValue().setValue(value));
         System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
-        setting = client.getKeyValue(key, null);
-        System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s%n", setting.getKey(), setting.getValue());
 
-        setting = client.deleteKeyValue(key, null);
-        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s%n", setting.getKey(), setting.getValue());
-
-        System.out.println("End of synchronous sample.");
+        // Read-Only
+        final KeyValue readOnlySetting = client.putLock(setting.getKey(), null);
+        System.out.printf("Setting is read-only now, Key: %s, Value: %s",
+            readOnlySetting.getKey(), readOnlySetting.getValue());
+        // Clear Read-Only
+        final KeyValue clearedReadOnlySetting = client.deleteLock(setting.getKey(), null);
+        System.out.printf("Setting is no longer read-only, Key: %s, Value: %s",
+            clearedReadOnlySetting.getKey(), clearedReadOnlySetting.getValue());
     }
 }

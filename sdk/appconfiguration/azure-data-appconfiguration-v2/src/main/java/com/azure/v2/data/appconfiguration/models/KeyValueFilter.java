@@ -41,7 +41,7 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
      * @param key the key value to set.
      */
     @Metadata(generated = true)
-    private KeyValueFilter(String key) {
+    public KeyValueFilter(String key) {
         this.key = key;
     }
 

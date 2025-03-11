@@ -3,18 +3,18 @@
 
 package com.azure.data.appconfiguration;
 
-
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClient;
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClientBuilder;
 import com.azure.v2.data.appconfiguration.models.KeyValue;
+import io.clientcore.core.http.models.PagedIterable;
 import io.clientcore.core.utils.configuration.Configuration;
 
 /**
- * Sample demonstrates how to add, get, and delete a configuration setting.
+ * Sample demonstrates how to read configuration setting revision history.
  */
-public class HelloWorld {
+public class ReadRevisionHistory {
     /**
-     * Runs the sample algorithm and demonstrates how to add, get, and delete a configuration setting.
+     * Runs the sample algorithm and demonstrates how to read configuration setting revision history.
      *
      * @param args Unused. Arguments to the program.
      */
@@ -28,21 +28,19 @@ public class HelloWorld {
 //            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        // Name of the key to add to the configuration service.
         final String key = "hello";
-        final String value = "world";
 
-        System.out.println("Beginning of synchronous sample...");
-
-        KeyValue setting = client.putKeyValue(key, null, null, null, null, null, new KeyValue().setValue(value));
+        // Adding a couple of settings and then fetching all the settings in our repository.
+        KeyValue setting = client.putKeyValue(key, null, null, null, null, null, new KeyValue().setValue("world"));
         System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        KeyValue setting2 = client.putKeyValue(key, null, null, null, null, null, new KeyValue().setValue("newValue"));
+        System.out.printf("[Override ConfigurationSetting] Key: %s, Value: %s", setting2.getKey(), setting2.getValue());
 
-        setting = client.getKeyValue(key, null);
-        System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s%n", setting.getKey(), setting.getValue());
-
-        setting = client.deleteKeyValue(key, null);
-        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s%n", setting.getKey(), setting.getValue());
-
-        System.out.println("End of synchronous sample.");
+        PagedIterable<KeyValue> revisions = client.getRevisions(null, key, null, null, null, null, null, null);
+        revisions.stream().forEach(
+            revision -> {
+                System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s%n", revision.getKey(), revision.getValue());
+            }
+        );
     }
 }
