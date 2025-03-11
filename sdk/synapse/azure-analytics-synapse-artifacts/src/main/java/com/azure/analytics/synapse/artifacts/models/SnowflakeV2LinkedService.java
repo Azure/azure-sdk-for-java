@@ -74,6 +74,11 @@ public class SnowflakeV2LinkedService extends LinkedService {
     private Object scope;
 
     /*
+     * The host name of the Snowflake account.
+     */
+    private Object host;
+
+    /*
      * The Azure key vault secret reference of privateKey for KeyPair auth.
      */
     private SecretBase privateKey;
@@ -316,6 +321,26 @@ public class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
+     * Get the host property: The host name of the Snowflake account.
+     * 
+     * @return the host value.
+     */
+    public Object getHost() {
+        return this.host;
+    }
+
+    /**
+     * Set the host property: The host name of the Snowflake account.
+     * 
+     * @param host the host value to set.
+     * @return the SnowflakeV2LinkedService object itself.
+     */
+    public SnowflakeV2LinkedService setHost(Object host) {
+        this.host = host;
+        return this;
+    }
+
+    /**
      * Get the privateKey property: The Azure key vault secret reference of privateKey for KeyPair auth.
      * 
      * @return the privateKey value.
@@ -383,6 +408,15 @@ public class SnowflakeV2LinkedService extends LinkedService {
      * {@inheritDoc}
      */
     @Override
+    public SnowflakeV2LinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SnowflakeV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
@@ -421,6 +455,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -436,6 +471,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
             || clientSecret != null
             || tenantId != null
             || scope != null
+            || host != null
             || privateKey != null
             || privateKeyPassphrase != null
             || encryptedCredential != null) {
@@ -451,6 +487,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
             jsonWriter.writeJsonField("clientSecret", this.clientSecret);
             jsonWriter.writeUntypedField("tenantId", this.tenantId);
             jsonWriter.writeUntypedField("scope", this.scope);
+            jsonWriter.writeUntypedField("host", this.host);
             jsonWriter.writeJsonField("privateKey", this.privateKey);
             jsonWriter.writeJsonField("privateKeyPassphrase", this.privateKeyPassphrase);
             jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
@@ -481,7 +518,9 @@ public class SnowflakeV2LinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSnowflakeV2LinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSnowflakeV2LinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedSnowflakeV2LinkedService.setDescription(reader.getString());
@@ -520,6 +559,8 @@ public class SnowflakeV2LinkedService extends LinkedService {
                             deserializedSnowflakeV2LinkedService.tenantId = reader.readUntyped();
                         } else if ("scope".equals(fieldName)) {
                             deserializedSnowflakeV2LinkedService.scope = reader.readUntyped();
+                        } else if ("host".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.host = reader.readUntyped();
                         } else if ("privateKey".equals(fieldName)) {
                             deserializedSnowflakeV2LinkedService.privateKey = SecretBase.fromJson(reader);
                         } else if ("privateKeyPassphrase".equals(fieldName)) {

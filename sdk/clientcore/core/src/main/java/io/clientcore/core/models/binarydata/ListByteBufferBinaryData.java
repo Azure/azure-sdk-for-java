@@ -3,6 +3,8 @@
 
 package io.clientcore.core.models.binarydata;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.implementation.utils.IterableOfByteBuffersInputStream;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -24,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 /**
  * A {@link BinaryData} implementation backed by a {@link List} of {@link ByteBuffer}.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 final class ListByteBufferBinaryData extends BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(ListByteBufferBinaryData.class);
 

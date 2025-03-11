@@ -25,7 +25,8 @@ public class MariaDBLinkedService extends LinkedService {
 
     /*
      * The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support
-     * connection string and property bag, V2 can only support connection string.
+     * connection string and property bag, V2 can only support connection string. The legacy driver is scheduled for
+     * deprecation by October 2024.
      */
     private Object driverVersion;
 
@@ -53,6 +54,19 @@ public class MariaDBLinkedService extends LinkedService {
      * Database name for connection. Type: string.
      */
     private Object database;
+
+    /*
+     * This option specifies whether the driver uses TLS encryption and verification when connecting to MariaDB. E.g.,
+     * SSLMode=<0/1/2/3/4>. Options: DISABLED (0) / PREFERRED (1) (Default) / REQUIRED (2) / VERIFY_CA (3) /
+     * VERIFY_IDENTITY (4), REQUIRED (2) is recommended to only allow connections encrypted with SSL/TLS.
+     */
+    private Object sslMode;
+
+    /*
+     * This option specifies whether to use a CA certificate from the system trust store, or from a specified PEM file.
+     * E.g. UseSystemTrustStore=<0/1>; Options: Enabled (1) / Disabled (0) (Default)
+     */
+    private Object useSystemTrustStore;
 
     /*
      * The Azure key vault secret reference of password in connection string.
@@ -83,7 +97,8 @@ public class MariaDBLinkedService extends LinkedService {
 
     /**
      * Get the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
-     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string. The
+     * legacy driver is scheduled for deprecation by October 2024.
      * 
      * @return the driverVersion value.
      */
@@ -93,7 +108,8 @@ public class MariaDBLinkedService extends LinkedService {
 
     /**
      * Set the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
-     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string. The
+     * legacy driver is scheduled for deprecation by October 2024.
      * 
      * @param driverVersion the driverVersion value to set.
      * @return the MariaDBLinkedService object itself.
@@ -206,6 +222,56 @@ public class MariaDBLinkedService extends LinkedService {
     }
 
     /**
+     * Get the sslMode property: This option specifies whether the driver uses TLS encryption and verification when
+     * connecting to MariaDB. E.g., SSLMode=&lt;0/1/2/3/4&gt;. Options: DISABLED (0) / PREFERRED (1) (Default) /
+     * REQUIRED (2) / VERIFY_CA (3) / VERIFY_IDENTITY (4), REQUIRED (2) is recommended to only allow connections
+     * encrypted with SSL/TLS.
+     * 
+     * @return the sslMode value.
+     */
+    public Object getSslMode() {
+        return this.sslMode;
+    }
+
+    /**
+     * Set the sslMode property: This option specifies whether the driver uses TLS encryption and verification when
+     * connecting to MariaDB. E.g., SSLMode=&lt;0/1/2/3/4&gt;. Options: DISABLED (0) / PREFERRED (1) (Default) /
+     * REQUIRED (2) / VERIFY_CA (3) / VERIFY_IDENTITY (4), REQUIRED (2) is recommended to only allow connections
+     * encrypted with SSL/TLS.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService setSslMode(Object sslMode) {
+        this.sslMode = sslMode;
+        return this;
+    }
+
+    /**
+     * Get the useSystemTrustStore property: This option specifies whether to use a CA certificate from the system trust
+     * store, or from a specified PEM file. E.g. UseSystemTrustStore=&lt;0/1&gt;; Options: Enabled (1) / Disabled (0)
+     * (Default).
+     * 
+     * @return the useSystemTrustStore value.
+     */
+    public Object getUseSystemTrustStore() {
+        return this.useSystemTrustStore;
+    }
+
+    /**
+     * Set the useSystemTrustStore property: This option specifies whether to use a CA certificate from the system trust
+     * store, or from a specified PEM file. E.g. UseSystemTrustStore=&lt;0/1&gt;; Options: Enabled (1) / Disabled (0)
+     * (Default).
+     * 
+     * @param useSystemTrustStore the useSystemTrustStore value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService setUseSystemTrustStore(Object useSystemTrustStore) {
+        this.useSystemTrustStore = useSystemTrustStore;
+        return this;
+    }
+
+    /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
      * 
      * @return the password value.
@@ -251,6 +317,15 @@ public class MariaDBLinkedService extends LinkedService {
      * {@inheritDoc}
      */
     @Override
+    public MariaDBLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public MariaDBLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
@@ -289,6 +364,7 @@ public class MariaDBLinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -300,6 +376,8 @@ public class MariaDBLinkedService extends LinkedService {
             || port != null
             || username != null
             || database != null
+            || sslMode != null
+            || useSystemTrustStore != null
             || password != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
@@ -309,6 +387,8 @@ public class MariaDBLinkedService extends LinkedService {
             jsonWriter.writeUntypedField("port", this.port);
             jsonWriter.writeUntypedField("username", this.username);
             jsonWriter.writeUntypedField("database", this.database);
+            jsonWriter.writeUntypedField("sslMode", this.sslMode);
+            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
             jsonWriter.writeJsonField("password", this.password);
             jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
             jsonWriter.writeEndObject();
@@ -337,7 +417,9 @@ public class MariaDBLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedMariaDBLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedMariaDBLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedMariaDBLinkedService.setDescription(reader.getString());
@@ -367,6 +449,10 @@ public class MariaDBLinkedService extends LinkedService {
                             deserializedMariaDBLinkedService.username = reader.readUntyped();
                         } else if ("database".equals(fieldName)) {
                             deserializedMariaDBLinkedService.database = reader.readUntyped();
+                        } else if ("sslMode".equals(fieldName)) {
+                            deserializedMariaDBLinkedService.sslMode = reader.readUntyped();
+                        } else if ("useSystemTrustStore".equals(fieldName)) {
+                            deserializedMariaDBLinkedService.useSystemTrustStore = reader.readUntyped();
                         } else if ("password".equals(fieldName)) {
                             deserializedMariaDBLinkedService.password = AzureKeyVaultSecretReference.fromJson(reader);
                         } else if ("encryptedCredential".equals(fieldName)) {

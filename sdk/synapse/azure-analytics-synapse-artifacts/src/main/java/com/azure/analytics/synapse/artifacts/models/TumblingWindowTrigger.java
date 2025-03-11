@@ -76,11 +76,6 @@ public class TumblingWindowTrigger extends Trigger {
      */
     private List<DependencyReference> dependsOn;
 
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
-
     /**
      * Creates an instance of TumblingWindowTrigger class.
      */
@@ -290,17 +285,6 @@ public class TumblingWindowTrigger extends Trigger {
     }
 
     /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState getRuntimeState() {
-        return this.runtimeState;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -368,7 +352,8 @@ public class TumblingWindowTrigger extends Trigger {
                 if ("description".equals(fieldName)) {
                     deserializedTumblingWindowTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedTumblingWindowTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedTumblingWindowTrigger
+                        .setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedTumblingWindowTrigger.setAnnotations(annotations);

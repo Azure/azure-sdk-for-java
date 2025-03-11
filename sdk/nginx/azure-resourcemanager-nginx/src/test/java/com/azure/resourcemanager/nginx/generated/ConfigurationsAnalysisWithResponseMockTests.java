@@ -6,15 +6,17 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.nginx.NginxManager;
 import com.azure.resourcemanager.nginx.models.AnalysisCreate;
 import com.azure.resourcemanager.nginx.models.AnalysisCreateConfig;
 import com.azure.resourcemanager.nginx.models.AnalysisResult;
+import com.azure.resourcemanager.nginx.models.Level;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationFile;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationProtectedFileRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -26,34 +28,55 @@ public final class ConfigurationsAnalysisWithResponseMockTests {
     @Test
     public void testAnalysisWithResponse() throws Exception {
         String responseStr
-            = "{\"status\":\"eh\",\"data\":{\"errors\":[{\"id\":\"gmifthnzd\",\"directive\":\"dslgnayqigynduh\",\"description\":\"vhqlkthumaqo\",\"file\":\"bgycduiertgccym\",\"line\":30.20277,\"message\":\"olpsslqlf\",\"rule\":\"mdnbbglzpswiy\"},{\"id\":\"cwyhzdxssa\",\"directive\":\"bzmnvdfznud\",\"description\":\"od\",\"file\":\"xzb\",\"line\":92.67567,\"message\":\"blylpstdbh\",\"rule\":\"xsrz\"}]}}";
+            = "{\"status\":\"lmdjrkvfgbvfvpdb\",\"data\":{\"errors\":[{\"id\":\"zsjqlh\",\"directive\":\"rribd\",\"description\":\"ibqipqkg\",\"file\":\"vxndz\",\"line\":86.36127,\"message\":\"krefajpjo\",\"rule\":\"wkqnyhg\"},{\"id\":\"j\",\"directive\":\"jivfxzsjabib\",\"description\":\"ystawfsdjpvkvp\",\"file\":\"jxbkzbzkdvn\",\"line\":76.89379,\"message\":\"abudurgk\",\"rule\":\"kmokz\"},{\"id\":\"jk\",\"directive\":\"ffhmouwqlgzr\",\"description\":\"zeeyebi\",\"file\":\"ikayuhqlbjbsybb\",\"line\":12.803698,\"message\":\"r\",\"rule\":\"t\"},{\"id\":\"gmfpgvmp\",\"directive\":\"paslthaqfxssmwu\",\"description\":\"wbdsr\",\"file\":\"zpdrhneu\",\"line\":67.33827,\"message\":\"wqkdwytisibi\",\"rule\":\"cgpik\"}],\"diagnostics\":[{\"id\":\"ejzanlfz\",\"directive\":\"iavrm\",\"description\":\"zonokixrjqci\",\"file\":\"gzpfrla\",\"line\":33.48236,\"message\":\"zrnw\",\"rule\":\"iin\",\"level\":\"Warning\",\"category\":\"wp\"},{\"id\":\"lwbtlhf\",\"directive\":\"sj\",\"description\":\"dhszfjv\",\"file\":\"bgofeljag\",\"line\":66.963486,\"message\":\"mqhldvrii\",\"rule\":\"ojnal\",\"level\":\"Warning\",\"category\":\"kvtvsexso\"}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NginxManager manager = NginxManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AnalysisResult response = manager.configurations()
-            .analysisWithResponse("tkblmpewww", "bkrvrnsvshqj", "hxcr",
-                new AnalysisCreate().withConfig(new AnalysisCreateConfig().withRootFile("fovasr")
-                    .withFiles(Arrays
-                        .asList(new NginxConfigurationFile().withContent("bhsqfsubcgjbirxb").withVirtualPath("bsrfbj")))
-                    .withProtectedFiles(Arrays
-                        .asList(new NginxConfigurationFile().withContent("ssotftpv").withVirtualPath("bexilzznfqqnv")))
-                    .withPackageProperty(new NginxConfigurationPackage().withData("qtaruoujmkcjhwq")
-                        .withProtectedFiles(Arrays.asList("r", "bnw", "ewgdrjervn", "enq")))),
+            .analysisWithResponse("rmaequ", "ah", "icslfaoq", new AnalysisCreate().withConfig(new AnalysisCreateConfig()
+                .withRootFile("iyylhalnswhccsp")
+                .withFiles(Arrays.asList(new NginxConfigurationFile().withContent("vwitqscyw").withVirtualPath("gwol"),
+                    new NginxConfigurationFile().withContent("czbwemhairsbr").withVirtualPath("dwmsweypqwd"),
+                    new NginxConfigurationFile().withContent("gicccnxqhuex").withVirtualPath("ttlstvlzywemhz")))
+                .withProtectedFiles(Arrays.asList(
+                    new NginxConfigurationProtectedFileRequest().withContent("dtclusiypb")
+                        .withVirtualPath("gytguslfead")
+                        .withContentHash("gq"),
+                    new NginxConfigurationProtectedFileRequest().withContent("yhejhzisxgfp")
+                        .withVirtualPath("olppvksrpqvujz")
+                        .withContentHash("ehtwdwrft"),
+                    new NginxConfigurationProtectedFileRequest().withContent("iby")
+                        .withVirtualPath("dl")
+                        .withContentHash("shfwpracstwity"),
+                    new NginxConfigurationProtectedFileRequest().withContent("evxccedcp")
+                        .withVirtualPath("dyodnwzxltj")
+                        .withContentHash("nhltiugcxn")))
+                .withPackageProperty(
+                    new NginxConfigurationPackage().withData("wxqibyq").withProtectedFiles(Arrays.asList("owx")))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("eh", response.status());
-        Assertions.assertEquals("gmifthnzd", response.data().errors().get(0).id());
-        Assertions.assertEquals("dslgnayqigynduh", response.data().errors().get(0).directive());
-        Assertions.assertEquals("vhqlkthumaqo", response.data().errors().get(0).description());
-        Assertions.assertEquals("bgycduiertgccym", response.data().errors().get(0).file());
-        Assertions.assertEquals(30.20277f, response.data().errors().get(0).line());
-        Assertions.assertEquals("olpsslqlf", response.data().errors().get(0).message());
-        Assertions.assertEquals("mdnbbglzpswiy", response.data().errors().get(0).rule());
+        Assertions.assertEquals("lmdjrkvfgbvfvpdb", response.status());
+        Assertions.assertEquals("zsjqlh", response.data().errors().get(0).id());
+        Assertions.assertEquals("rribd", response.data().errors().get(0).directive());
+        Assertions.assertEquals("ibqipqkg", response.data().errors().get(0).description());
+        Assertions.assertEquals("vxndz", response.data().errors().get(0).file());
+        Assertions.assertEquals(86.36127f, response.data().errors().get(0).line());
+        Assertions.assertEquals("krefajpjo", response.data().errors().get(0).message());
+        Assertions.assertEquals("wkqnyhg", response.data().errors().get(0).rule());
+        Assertions.assertEquals("ejzanlfz", response.data().diagnostics().get(0).id());
+        Assertions.assertEquals("iavrm", response.data().diagnostics().get(0).directive());
+        Assertions.assertEquals("zonokixrjqci", response.data().diagnostics().get(0).description());
+        Assertions.assertEquals("gzpfrla", response.data().diagnostics().get(0).file());
+        Assertions.assertEquals(33.48236f, response.data().diagnostics().get(0).line());
+        Assertions.assertEquals("zrnw", response.data().diagnostics().get(0).message());
+        Assertions.assertEquals("iin", response.data().diagnostics().get(0).rule());
+        Assertions.assertEquals(Level.WARNING, response.data().diagnostics().get(0).level());
+        Assertions.assertEquals("wp", response.data().diagnostics().get(0).category());
     }
 }

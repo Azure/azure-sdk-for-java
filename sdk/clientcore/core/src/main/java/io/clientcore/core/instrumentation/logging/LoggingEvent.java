@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static io.clientcore.core.annotations.TypeConditions.FLUENT;
+import static io.clientcore.core.annotations.MetadataProperties.FLUENT;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EVENT_NAME_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_MESSAGE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_STACKTRACE_KEY;
@@ -42,7 +42,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.TR
  * </pre>
  * <!-- end io.clientcore.core.util.logging.loggingeventbuilder -->
  */
-@Metadata(conditions = FLUENT)
+@Metadata(properties = FLUENT)
 public final class LoggingEvent {
     private static final LoggingEvent NOOP = new LoggingEvent(null, null, null, false);
 

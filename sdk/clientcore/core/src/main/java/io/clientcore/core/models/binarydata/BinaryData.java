@@ -3,7 +3,9 @@
 
 package io.clientcore.core.models.binarydata;
 
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
 
@@ -113,6 +115,7 @@ import java.util.List;
  * @see ObjectSerializer
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public abstract class BinaryData implements Closeable {
     private static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
 
@@ -470,8 +473,8 @@ public abstract class BinaryData implements Closeable {
      *
      * <p>This method returns a reference to the underlying byte array. Modifying the contents of the returned byte
      * array may change the content of this BinaryData instance. If the content source of this BinaryData instance is
-     * a file, an {@link InputStream}, or a {@code Flux<ByteBuffer>} the source is not modified. To safely update the
-     * byte array, it is recommended to make a copy of the contents first.</p>
+     * a file or an {@link InputStream} the source is not modified. To safely update the byte array, it is recommended
+     * to make a copy of the contents first.</p>
      *
      * <p>If the {@link BinaryData} is larger than the maximum size allowed for a {@code byte[]} this will throw an
      * {@link IllegalStateException}.</p>

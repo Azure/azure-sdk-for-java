@@ -56,7 +56,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static io.clientcore.core.implementation.TypeUtil.typeImplementsInterface;
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * This class contains the metadata of a {@link Method} contained in a Swagger interface used to make REST API calls in

@@ -6,7 +6,7 @@ package io.clientcore.core.shared;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.utils.DateTimeRfc1123;
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.ObjectSerializer;
 import org.eclipse.jetty.server.Response;
 import org.junit.jupiter.api.parallel.Execution;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Server used when running {@link HttpClient tests}.

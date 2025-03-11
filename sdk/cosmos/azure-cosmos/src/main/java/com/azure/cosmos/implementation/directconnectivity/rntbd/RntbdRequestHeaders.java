@@ -68,13 +68,20 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final byte[] content = request.getContentAsByteArray();
 
         this.getPayloadPresent().setValue(content != null && content.length > 0);
-        this.getReplicaPath().setValue(args.replicaPath());
-        this.getTransportRequestID().setValue(args.transportRequestId());
+
+        RntbdToken replicaPathToken = this.getReplicaPath();
+        if (replicaPathToken != null) {
+            replicaPathToken.setValue(args.replicaPath());
+        }
+
+        RntbdToken transportRequestIDToken = this.getTransportRequestID();
+        if (transportRequestIDToken != null) {
+            transportRequestIDToken.setValue(args.transportRequestId());
+        }
 
         final Map<String, String> headers = request.getHeaders();
 
         // Special-case headers
-
         this.addAimHeader(headers);
         this.addAllowScanOnQuery(headers);
         this.addBinaryIdIfPresent(headers);
@@ -124,6 +131,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addSDKSupportedCapabilities(headers);
         this.addChangeFeedWireFormatVersion(headers);
         this.addPriorityLevel(headers);
+        this.addGlobalDatabaseAccountName(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -282,6 +290,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     }
 
     private RntbdToken getPriorityLevel() { return this.get(RntbdRequestHeader.PriorityLevel); }
+
+    private RntbdToken getGlobalDatabaseAccountName() {
+        return this.get(RntbdRequestHeader.GlobalDatabaseAccountName);
+    }
 
     private RntbdToken getDatabaseName() {
         return this.get(RntbdRequestHeader.DatabaseName);
@@ -776,6 +788,15 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         }
     }
 
+    private void addGlobalDatabaseAccountName(final Map<String, String> headers)
+    {
+        final String value = headers.get(HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME);
+
+        if (StringUtils.isNotEmpty(value)) {
+            this.getGlobalDatabaseAccountName().setValue(value);
+        }
+    }
+
     private void addDateHeader(final Map<String, String> headers) {
 
         // Since the HTTP date header is overridden by some proxies/http client libraries, we support an additional date
@@ -1111,7 +1132,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
         if (StringUtils.isNotEmpty(value)) {
             // Name-based can also have ResourceId because gateway might have generated it
-            this.getResourceId().setValue(ResourceId.parse(request.getResourceType(), value));
+            RntbdToken requestIdToken = this.getResourceId();
+            if (requestIdToken != null) {
+                requestIdToken.setValue(ResourceId.parse(request.getResourceType(), value));
+            }
         }
 
         if (request.getIsNameBased()) {
