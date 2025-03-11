@@ -82,7 +82,9 @@ public class AuthUtilsTests {
             "Custom ABkd856gkslw-._~+/!", // token68 with invalid character
             "Custom realm=test/", // auth-param with invalid character
             "Custom realm=test realm2=test2", // missing comma between auth-params
-            "Custom realm=\"" // missing closing quote for auth-param
+            "Custom realm=\"", // missing closing quote for auth-param
+            "Custom realm=123, realm=456", // duplicate auth-param
+            "realm=123" // missing scheme
         );
     }
 }
