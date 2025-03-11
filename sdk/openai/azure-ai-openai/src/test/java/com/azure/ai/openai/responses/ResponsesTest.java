@@ -63,7 +63,8 @@ public class ResponsesTest extends AzureResponsesTestBase {
             events.forEach(event -> {
                 assertNotNull(event);
                 if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                    ResponsesResponseStreamEventResponseCompleted completedEvent = (ResponsesResponseStreamEventResponseCompleted) event;
+                    ResponsesResponseStreamEventResponseCompleted completedEvent
+                        = (ResponsesResponseStreamEventResponseCompleted) event;
                     assertResponsesResponse(completedEvent.getResponse());
                 }
             });
@@ -82,7 +83,8 @@ public class ResponsesTest extends AzureResponsesTestBase {
             events.forEach(event -> {
                 assertNotNull(event);
                 if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                    ResponsesResponseStreamEventResponseCompleted completedEvent = (ResponsesResponseStreamEventResponseCompleted) event;
+                    ResponsesResponseStreamEventResponseCompleted completedEvent
+                        = (ResponsesResponseStreamEventResponseCompleted) event;
                     assertResponsesResponse(completedEvent.getResponse());
                 }
             });

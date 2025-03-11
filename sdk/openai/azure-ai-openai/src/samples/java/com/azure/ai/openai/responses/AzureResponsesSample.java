@@ -14,7 +14,6 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
 import java.util.Arrays;

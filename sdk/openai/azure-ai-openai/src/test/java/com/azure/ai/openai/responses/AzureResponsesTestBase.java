@@ -5,15 +5,12 @@ package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
-import com.azure.ai.openai.responses.models.CreateResponsesRequestTruncation;
 import com.azure.ai.openai.responses.models.ResponsesComputerTool;
 import com.azure.ai.openai.responses.models.ResponsesComputerToolEnvironment;
 import com.azure.ai.openai.responses.models.ResponsesDeveloperMessage;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
-import com.azure.ai.openai.responses.models.ResponsesResponseTruncation;
-import com.azure.ai.openai.responses.models.ResponsesTool;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -74,13 +71,14 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
     }
 
     static void getCUARunner(Consumer<CreateResponsesRequest> runner) {
-        ResponsesComputerTool computerTool = new ResponsesComputerTool(1024, 768, ResponsesComputerToolEnvironment.WINDOWS);
-        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.COMPUTER_USE_PREVIEW, Arrays.asList(
-                new ResponsesDeveloperMessage(Arrays.asList(new ResponsesInputContentText("Call tools when the user asks to perform computer-related tasks like clicking interface elements."))),
-                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Click on the OK button")))
-        ));
+        ResponsesComputerTool computerTool
+            = new ResponsesComputerTool(1024, 768, ResponsesComputerToolEnvironment.WINDOWS);
+        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.COMPUTER_USE_PREVIEW,
+            Arrays.asList(new ResponsesDeveloperMessage(Arrays.asList(new ResponsesInputContentText(
+                "Call tools when the user asks to perform computer-related tasks like clicking interface elements."))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Click on the OK button")))));
         request.setTools(Arrays.asList(computerTool));
-//        request.setTruncation(CreateResponsesRequestTruncation.AUTO);
+        //        request.setTruncation(CreateResponsesRequestTruncation.AUTO);
         runner.accept(request);
     }
 
@@ -100,7 +98,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         assertNotNull(response.getOutput());
         assertNull(response.getError());
         assertNotNull(response.getTools());
-//        assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
+        //        assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
         assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
         assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
         assertNotNull(response.getUsage());

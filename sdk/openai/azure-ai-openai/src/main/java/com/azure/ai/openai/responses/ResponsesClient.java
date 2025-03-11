@@ -14,7 +14,6 @@ import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
 import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
-import com.azure.ai.openai.responses.models.ResponsesItem;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
 import com.azure.core.annotation.Generated;
@@ -25,8 +24,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -359,7 +356,7 @@ public final class ResponsesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponsesInputItemList listInputItems(String responseId, int limit, ListInputItemsRequestOrder order,
-                                                       String after, String before) {
+        String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         return listInputItemsWithResponse(responseId, limit, order.toString(), after, before, requestOptions).getValue()
             .toObject(ResponsesInputItemList.class);
