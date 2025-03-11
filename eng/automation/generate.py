@@ -112,8 +112,8 @@ def sdk_automation(input_file: str, output_file: str):
         config = json.load(fin)
 
     packages = []
-    # typespec
     try:
+        # typespec
         packages = sdk_automation_typespec(config)
         # autorest
         if not packages:
