@@ -4,10 +4,14 @@
 package io.clientcore.annotation.processor.utils;
 
 import com.github.javaparser.ast.stmt.BlockStmt;
+import io.clientcore.annotation.processor.mocks.MockDeclaredType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
 import org.junit.jupiter.api.Test;
 
+import javax.lang.model.type.TypeKind;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -21,7 +25,7 @@ public class ResponseBodyModeGenerationTest {
         ResponseBodyModeGeneration.generateResponseBodyMode(body);
         assertTrue(body.toString()
             .contains(
-                "ResponseBodyMode responseBodyMode = CodegenUtil.getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
+                "ResponseBodyMode responseBodyMode = getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
     }
 
     @Test
@@ -30,7 +34,7 @@ public class ResponseBodyModeGenerationTest {
         ResponseBodyModeGeneration.generateResponseBodyMode(body);
         assertTrue(body.toString()
             .contains(
-                "ResponseBodyMode responseBodyMode = CodegenUtil.getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
+                "ResponseBodyMode responseBodyMode = getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
     }
 
     @Test
@@ -38,26 +42,9 @@ public class ResponseBodyModeGenerationTest {
         BlockStmt body = new BlockStmt();
         HttpRequestContext context = new HttpRequestContext();
         context.setHttpMethod(HttpMethod.DELETE);
-        context.setMethodReturnType("void");
-        ResponseBodyModeGeneration.generateResponseHandling(body, "void", context);
-        assertTrue(body.toString().contains("return"));
-    }
-
-    @Test
-    void generateResponseHandlingWithResponseReturnType() {
-        BlockStmt body = new BlockStmt();
-        HttpRequestContext context = new HttpRequestContext();
-        context.setHttpMethod(HttpMethod.GET);
-        context.setMethodReturnType("Response<Foo>");
-        ResponseBodyModeGeneration.generateResponseHandling(body, "Response", context);
-    }
-
-    @Test
-    void generateResponseHandlingWithNonDeserializeMode() {
-        BlockStmt body = new BlockStmt();
-        HttpRequestContext context = new HttpRequestContext();
-        context.setHttpMethod(HttpMethod.GET);
-        context.setMethodReturnType("Response<Foo>");
-        ResponseBodyModeGeneration.generateResponseHandling(body, "Response", context);
+        MockDeclaredType returnType = new MockDeclaredType(TypeKind.VOID, "void");
+        context.setMethodReturnType(returnType);
+        ResponseBodyModeGeneration.generateResponseHandling(body, returnType, context);
+        assertFalse(body.toString().contains("return"));
     }
 }

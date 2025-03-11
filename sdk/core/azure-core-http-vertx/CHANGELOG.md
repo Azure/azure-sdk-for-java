@@ -10,8 +10,13 @@
 
 ### Other Changes
 
+## 1.0.3 (2025-03-10)
+
+### Other Changes
+
 #### Dependency Updates
 
+- Upgraded `azure-core` from `1.55.2` to `1.55.3`.
 - Upgraded `vertx-codegen` from `4.5.10` to `4.5.13`.
 
 ## 1.0.2 (2025-02-20)
