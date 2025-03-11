@@ -52,8 +52,8 @@ import java.util.Objects;
  * @see HttpRequest
  * @see Response
  */
-public class AzureBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(AzureBearerTokenAuthenticationPolicy.class);
+public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
     private static final String BEARER = "Bearer";
 
     private final String[] scopes;
@@ -65,7 +65,7 @@ public class AzureBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param credential the token credential to authenticate the request
      * @param scopes the scopes of authentication the credential should get token for
      */
-    public AzureBearerTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {
+    public BearerTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {
         Objects.requireNonNull(credential);
         this.scopes = scopes;
         this.cache = new AccessTokenCache(credential);

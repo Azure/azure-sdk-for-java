@@ -3,6 +3,8 @@
 
 package com.azure.v2.core.credentials;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
 
@@ -45,6 +47,7 @@ import java.util.Objects;
  * @see com.azure.v2.core.credentials
  * @see TokenCredential
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class TokenRequestContext {
     private static final ClientLogger LOGGER = new ClientLogger(TokenRequestContext.class);
     private final List<String> scopes;

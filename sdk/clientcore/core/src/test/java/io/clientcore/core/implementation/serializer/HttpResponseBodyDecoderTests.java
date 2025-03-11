@@ -5,7 +5,7 @@ package io.clientcore.core.implementation.serializer;
 
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.MockHttpResponseDecodeData;
-import io.clientcore.core.http.exceptions.HttpResponseException;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;

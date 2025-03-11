@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.exceptions;
+package io.clientcore.core.http.models;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
-import io.clientcore.core.http.models.Response;
 
 /**
  * The exception thrown when an unsuccessful response is received with http status code (e.g. {@code 3XX}, {@code 4XX},

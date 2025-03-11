@@ -3,6 +3,8 @@
 
 package io.clientcore.core.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.ExpandableEnum;
 
@@ -15,6 +17,7 @@ import io.clientcore.core.utils.ExpandableEnum;
  *
  * @see CloudEvent#CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class CloudEventDataFormat implements ExpandableEnum<String> {
     private final String value;
 
