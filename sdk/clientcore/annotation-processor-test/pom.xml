@@ -60,7 +60,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>http-okhttp3</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
     </dependency>
 
     <!-- Test dependencies -->
