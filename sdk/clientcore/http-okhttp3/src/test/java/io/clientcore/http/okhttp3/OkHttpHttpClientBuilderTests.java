@@ -13,7 +13,6 @@ import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.core.utils.configuration.Configuration;
-import io.clientcore.core.utils.configuration.ConfigurationBuilder;
 import io.clientcore.core.utils.configuration.ConfigurationSource;
 import okhttp3.Call;
 import okhttp3.ConnectionPool;
@@ -492,28 +491,26 @@ public class OkHttpHttpClientBuilderTests {
         /*
          * Simple non-authenticated HTTP proxies.
          */
-        arguments.add(Arguments.of(true,
-            new ConfigurationBuilder(EMPTY_SOURCE, baseJavaProxyConfigurationSupplier.get(), EMPTY_SOURCE).build(),
-            defaultUri));
+        arguments.add(Arguments.of(true, new Configuration(baseJavaProxyConfigurationSupplier.get()), defaultUri));
 
-        Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
+        Configuration simpleEnvProxy
+            = new Configuration(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
+                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"));
 
         arguments.add(Arguments.of(true, simpleEnvProxy, defaultUri));
 
         /*
          * HTTP proxy with authentication configured.
          */
-        Configuration javaProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE,
+        Configuration javaProxyWithAuthentication = new Configuration(EMPTY_SOURCE,
             baseJavaProxyConfigurationSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1"),
-            EMPTY_SOURCE).build();
+            EMPTY_SOURCE);
 
         arguments.add(Arguments.of(true, javaProxyWithAuthentication, defaultUri));
 
-        Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+        Configuration envProxyWithAuthentication = new Configuration(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
+                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"));
 
         arguments.add(Arguments.of(true, envProxyWithAuthentication, defaultUri));
 
@@ -545,14 +542,12 @@ public class OkHttpHttpClientBuilderTests {
         for (Supplier<TestConfigurationSource> configurationSupplier : nonProxyHostsSuppliers) {
             for (String requestUri : requestUrisWithoutProxying) {
                 arguments.add(Arguments.of(false,
-                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(),
-                    requestUri));
+                    new Configuration(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE), requestUri));
             }
 
             for (String requestUri : requestUrisWithProxying) {
                 arguments.add(Arguments.of(true,
-                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(),
-                    requestUri));
+                    new Configuration(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE), requestUri));
             }
         }
 
@@ -571,14 +566,12 @@ public class OkHttpHttpClientBuilderTests {
         for (Supplier<TestConfigurationSource> configurationSupplier : authenticatedNonProxyHostsSuppliers) {
             for (String requestUri : requestUrisWithoutProxying) {
                 arguments.add(Arguments.of(false,
-                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(),
-                    requestUri));
+                    new Configuration(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE), requestUri));
             }
 
             for (String requestUri : requestUrisWithProxying) {
                 arguments.add(Arguments.of(true,
-                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(),
-                    requestUri));
+                    new Configuration(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE), requestUri));
             }
         }
 
@@ -586,24 +579,22 @@ public class OkHttpHttpClientBuilderTests {
     }
 
     private static Stream<Arguments> buildWithExplicitConfigurationProxySupplier() {
-        Supplier<ConfigurationBuilder> baseHttpProxy
-            = () -> new ConfigurationBuilder().putProperty("http.proxy.hostname", "localhost")
-                .putProperty("http.proxy.port", "12345");
+        Supplier<TestConfigurationSource> baseHttpProxy
+            = () -> new TestConfigurationSource().put("http.proxy.hostname", "localhost")
+                .put("http.proxy.port", "12345");
 
         List<Arguments> arguments = new ArrayList<>();
 
         /*
          * Simple non-authenticated HTTP proxies.
          */
-        arguments.add(Arguments.of(true, baseHttpProxy.get().build(), defaultUri));
+        arguments.add(Arguments.of(true, new Configuration(baseHttpProxy.get()), defaultUri));
 
         /*
          * HTTP proxy with authentication configured.
          */
-        Configuration httpProxyWithAuthentication = baseHttpProxy.get()
-            .putProperty("http.proxy.username", "1")
-            .putProperty("http.proxy.password", "1")
-            .build();
+        Configuration httpProxyWithAuthentication
+            = new Configuration(baseHttpProxy.get().put("http.proxy.username", "1").put("http.proxy.password", "1"));
 
         arguments.add(Arguments.of(true, httpProxyWithAuthentication, defaultUri));
 
@@ -623,29 +614,30 @@ public class OkHttpHttpClientBuilderTests {
         /*
          * HTTP proxies with non-proxy hosts configured.
          */
-        Supplier<ConfigurationBuilder> javaNonProxyHostsSupplier
-            = () -> baseHttpProxy.get().putProperty("http.proxy.non-proxy-hosts", rawJavaNonProxyHosts);
+        Supplier<TestConfigurationSource> javaNonProxyHostsSupplier
+            = () -> baseHttpProxy.get().put("http.proxy.non-proxy-hosts", rawJavaNonProxyHosts);
         for (String requestUri : requestUrisWithoutProxying) {
-            arguments.add(Arguments.of(false, javaNonProxyHostsSupplier.get().build(), requestUri));
+            arguments.add(Arguments.of(false, new Configuration(javaNonProxyHostsSupplier.get()), requestUri));
         }
 
         for (String requestUri : requestUrisWithProxying) {
-            arguments.add(Arguments.of(true, javaNonProxyHostsSupplier.get().build(), requestUri));
+            arguments.add(Arguments.of(true, new Configuration(javaNonProxyHostsSupplier.get()), requestUri));
         }
 
         /*
          * HTTP proxies with authentication and non-proxy hosts configured.
          */
-        Supplier<ConfigurationBuilder> authenticatedJavaNonProxyHostsSupplier = () -> javaNonProxyHostsSupplier.get()
-            .putProperty("http.proxy.username", "1")
-            .putProperty("http.proxy.password", "1");
+        Supplier<TestConfigurationSource> authenticatedJavaNonProxyHostsSupplier
+            = () -> javaNonProxyHostsSupplier.get().put("http.proxy.username", "1").put("http.proxy.password", "1");
 
         for (String requestUri : requestUrisWithoutProxying) {
-            arguments.add(Arguments.of(false, authenticatedJavaNonProxyHostsSupplier.get().build(), requestUri));
+            arguments
+                .add(Arguments.of(false, new Configuration(authenticatedJavaNonProxyHostsSupplier.get()), requestUri));
         }
 
         for (String requestUri : requestUrisWithProxying) {
-            arguments.add(Arguments.of(true, authenticatedJavaNonProxyHostsSupplier.get().build(), requestUri));
+            arguments
+                .add(Arguments.of(true, new Configuration(authenticatedJavaNonProxyHostsSupplier.get()), requestUri));
         }
 
         return arguments.stream();

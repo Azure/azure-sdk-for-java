@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.annotations;
 
-import io.clientcore.core.http.exceptions.HttpResponseException;
+import io.clientcore.core.http.models.HttpResponseException;
 
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;

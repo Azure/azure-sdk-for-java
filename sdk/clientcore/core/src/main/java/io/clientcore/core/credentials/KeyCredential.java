@@ -3,6 +3,8 @@
 
 package io.clientcore.core.credentials;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Objects;
@@ -10,6 +12,7 @@ import java.util.Objects;
 /**
  * Represents a credential that uses a key to authenticate.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class KeyCredential {
     // KeyCredential is a commonly used credential type, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(KeyCredential.class);

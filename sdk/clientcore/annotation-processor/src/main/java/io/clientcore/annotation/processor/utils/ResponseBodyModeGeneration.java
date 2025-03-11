@@ -56,7 +56,7 @@ public final class ResponseBodyModeGeneration {
         HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
 
-        String typeCast = "Object";
+        String typeCast = entityType.toString();
         if (method.getHttpMethod() == HttpMethod.HEAD
             && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
                 || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {

@@ -6,9 +6,7 @@ package io.clientcore.annotation.processor.test;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.serialization.ObjectSerializer;
 
 /**
  * A mock implementation of {@link Response} that can be used for testing.

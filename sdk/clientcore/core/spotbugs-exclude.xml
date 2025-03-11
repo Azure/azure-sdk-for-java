@@ -52,7 +52,6 @@
       <Class name="io.clientcore.core.utils.DateTimeRfc1123" />
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
       <Class name="io.clientcore.core.utils.Union" />
-      <Class name="io.clientcore.core.utils.configuration.Configuration" />
     </Or>
   </Match>
   <Match>
@@ -97,7 +96,7 @@
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.utils.AuthorizationChallengeHandlerTests" />
       <Class name="io.clientcore.core.utils.ClientOptionsJavadocCodeSnippets" />
-      <Class name="io.clientcore.core.utils.ConfigurationJavaDocCodeSnippet" />
+      <Class name="io.clientcore.core.utils.ProgressReporterTests" />
       <Class name="io.clientcore.core.utils.union.codesnippets.UnionJavaDocCodeSnippets" />
     </Or>
   </Match>
@@ -164,10 +163,7 @@
   </Match>
   <Match>
     <Bug pattern="HARD_CODE_PASSWORD" />
-    <Or>
-      <Class name="io.clientcore.core.shared.LocalTestServer" />
-      <Class name="io.clientcore.core.utils.ConfigurationJavaDocCodeSnippet" />
-    </Or>
+    <Class name="io.clientcore.core.shared.LocalTestServer" />
   </Match>
   <Match>
     <Bug pattern="HE_HASHCODE_USE_OBJECT_EQUALS" />
@@ -207,7 +203,6 @@
   <Match>
     <Bug pattern="MS_EXPOSE_REP" />
     <Or>
-      <Class name="io.clientcore.core.implementation.utils.EnvironmentConfiguration" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.CharTypes" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.ContentReference" />
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
@@ -275,6 +270,7 @@
       <Class name="io.clientcore.core.models.geo.GeoPolygonTests" />
       <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
       <Class name="io.clientcore.core.serialization.json.models.JsonPatchDocument" />
+      <Class name="io.clientcore.core.utils.ProgressReporterTests" />
     </Or>
   </Match>
   <Match>
@@ -345,7 +341,7 @@
   <Match>
     <Bug pattern="SE_BAD_FIELD" />
     <Or>
-      <Class name="io.clientcore.core.http.exceptions.HttpResponseException" />
+      <Class name="io.clientcore.core.http.models.HttpResponseException" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.util.RequestPayload" />
     </Or>
   </Match>

@@ -5,9 +5,8 @@ package io.clientcore.core.shared;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.ContentType;
-import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.utils.DateTimeRfc1123;
 import org.eclipse.jetty.server.Response;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -36,7 +35,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpClientTestsServer {
-    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
+    private static final JsonSerializer SERIALIZER = new JsonSerializer();
     private static final String PLAIN_RESPONSE = "/plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "/plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "/plainBytesInvalidHeader";

@@ -10,12 +10,10 @@ import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.ITenantProfile;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.utils.configuration.Configuration;
-import io.clientcore.core.utils.configuration.ConfigurationBuilder;
 import io.clientcore.core.utils.configuration.ConfigurationSource;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -26,7 +24,17 @@ import java.util.concurrent.ExecutionException;
  * Utilities for identity tests.
  */
 public final class TestUtils {
-    private static final ConfigurationSource EMPTY_SOURCE = source -> Collections.emptyMap();
+    private static final ConfigurationSource EMPTY_SOURCE = new ConfigurationSource() {
+        @Override
+        public String getProperty(String name) {
+            return null;
+        }
+
+        @Override
+        public boolean isMutable() {
+            return true;
+        }
+    };
 
     /**
      * Creates a mock {@link IAuthenticationResult} instance.
@@ -141,7 +149,7 @@ public final class TestUtils {
      * @return A configuration used for testing.
      */
     public static Configuration createTestConfiguration(ConfigurationSource configurationSource) {
-        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, configurationSource).build();
+        return new Configuration(EMPTY_SOURCE, EMPTY_SOURCE, configurationSource);
     }
 
     private TestUtils() {

@@ -8,10 +8,9 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.utils.UriBuilder;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -69,7 +68,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         FooSimpleResponse getFooSimpleResponse();
     }
 
-    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
+    private static final JsonSerializer SERIALIZER = new JsonSerializer();
     private static final HttpRequest HTTP_REQUEST = new HttpRequest().setMethod(HttpMethod.GET).setUri(createUri());
     private static final HttpHeaderName HELLO = HttpHeaderName.fromString("hello");
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set(HELLO, "world");
