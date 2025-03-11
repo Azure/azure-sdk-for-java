@@ -4545,7 +4545,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
         return new AccountLevelLocationContext(
             serviceOrderedReadableRegions,
-            serviceOrderedWriteableRegions
+            serviceOrderedWriteableRegions,
+            regionMap
         );
     }
 
