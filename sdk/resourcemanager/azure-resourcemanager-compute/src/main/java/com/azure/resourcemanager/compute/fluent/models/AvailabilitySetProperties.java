@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetMigrationInfo;
 import java.io.IOException;
 import java.util.List;
 
@@ -51,6 +52,11 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
      * for the availability set.
      */
     private ScheduledEventsPolicy scheduledEventsPolicy;
+
+    /*
+     * Describes the migration properties on the Availability Set.
+     */
+    private VirtualMachineScaleSetMigrationInfo virtualMachineScaleSetMigrationInfo;
 
     /**
      * Creates an instance of AvailabilitySetProperties class.
@@ -172,6 +178,15 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
     }
 
     /**
+     * Get the virtualMachineScaleSetMigrationInfo property: Describes the migration properties on the Availability Set.
+     * 
+     * @return the virtualMachineScaleSetMigrationInfo value.
+     */
+    public VirtualMachineScaleSetMigrationInfo virtualMachineScaleSetMigrationInfo() {
+        return this.virtualMachineScaleSetMigrationInfo;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -182,6 +197,9 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
         }
         if (scheduledEventsPolicy() != null) {
             scheduledEventsPolicy().validate();
+        }
+        if (virtualMachineScaleSetMigrationInfo() != null) {
+            virtualMachineScaleSetMigrationInfo().validate();
         }
     }
 
@@ -233,6 +251,9 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
                 } else if ("scheduledEventsPolicy".equals(fieldName)) {
                     deserializedAvailabilitySetProperties.scheduledEventsPolicy
                         = ScheduledEventsPolicy.fromJson(reader);
+                } else if ("virtualMachineScaleSetMigrationInfo".equals(fieldName)) {
+                    deserializedAvailabilitySetProperties.virtualMachineScaleSetMigrationInfo
+                        = VirtualMachineScaleSetMigrationInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
