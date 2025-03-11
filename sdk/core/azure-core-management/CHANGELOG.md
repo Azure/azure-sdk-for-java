@@ -1,16 +1,16 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
+## 1.17.0 (2025-03-10)
 
 ### Features Added
 
 - Added sync-stack support `SyncPollerFactory`, for Azure Resource Manager(ARM) long-running-operation(LRO).
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to `1.55.3`.
 
 ## 1.16.2 (2025-02-20)
 

@@ -167,6 +167,13 @@ Get started with Azure libraries that are [built using Azure Core](https://azure
 If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
 or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
+### Android Support
+
+While the Azure SDKs for Java do not explicitly support Android, `azure-xml` is capable of being used in an Android
+application. However, for `azure-xml` to work on Android the Android application needs to add a dependency on
+[javax.xml.stream:stax-api](https://central.sonatype.com/artifact/javax.xml.stream/stax-api) which provides 
+`javax.xml.stream` to environments that don't have them (such as Android).
+
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).

@@ -40,6 +40,6 @@ public enum ModelServiceVersion implements ServiceVersion {
      * @return The latest {@link ModelServiceVersion}.
      */
     public static ModelServiceVersion getLatest() {
-        return V2024_08_01_PREVIEW;
+        return V2024_05_01_PREVIEW;
     }
 }

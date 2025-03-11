@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.paging;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Iterator;
@@ -18,6 +20,7 @@ import java.util.stream.StreamSupport;
  *
  * @param <T> The type of items in the page.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class PagedIterable<T> implements Iterable<T> {
 
     private final Function<PagingContext, PagedResponse<T>> pageRetriever;
