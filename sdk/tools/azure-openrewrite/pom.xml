@@ -67,12 +67,7 @@
             <artifactId>rewrite-maven</artifactId>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-core</artifactId>
-            <version>1.55.2</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.openrewrite</groupId>
             <artifactId>rewrite-test</artifactId>
@@ -119,6 +114,20 @@
             <artifactId>lombok</artifactId>
             <version>1.18.34</version> <!-- {x-version-update;org.projectlombok:lombok;external_dependency} -->
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Library Test dependencies -->
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+          <version>1.55.2</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>io.clientcore</groupId>
+          <artifactId>core</artifactId>
+          <version>1.0.0-beta.5</version>
         </dependency>
 
         <dependency>
