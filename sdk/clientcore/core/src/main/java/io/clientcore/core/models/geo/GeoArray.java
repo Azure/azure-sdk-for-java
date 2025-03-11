@@ -4,7 +4,7 @@
 package io.clientcore.core.models.geo;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.AbstractList;
@@ -23,7 +23,7 @@ import java.util.function.UnaryOperator;
  *
  * @param <T> The type of geometry coordinates.
  */
-@Metadata(conditions = TypeConditions.IMMUTABLE)
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 final class GeoArray<T> extends AbstractList<T> {
     private static final String NO_MUTATION_MESSAGE = "GeoArray cannot be mutated.";
     // GeoArray is a commonly used model, use a static logger.

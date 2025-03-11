@@ -23,9 +23,18 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     private String type = "SalesforceServiceCloudV2Source";
 
     /*
-     * Database query. Type: string (or Expression with resultType string).
+     * Deprecating, please use 'query' property instead. Type: string (or Expression with resultType string).
      */
     private Object soqlQuery;
+
+    /*
+     * You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL limitations, see this
+     * article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     */
+    private Object query;
 
     /*
      * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
@@ -56,7 +65,8 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     }
 
     /**
-     * Get the soqlQuery property: Database query. Type: string (or Expression with resultType string).
+     * Get the soqlQuery property: Deprecating, please use 'query' property instead. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the soqlQuery value.
      */
@@ -65,13 +75,42 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     }
 
     /**
-     * Set the soqlQuery property: Database query. Type: string (or Expression with resultType string).
+     * Set the soqlQuery property: Deprecating, please use 'query' property instead. Type: string (or Expression with
+     * resultType string).
      * 
      * @param soqlQuery the soqlQuery value to set.
      * @return the SalesforceServiceCloudV2Source object itself.
      */
     public SalesforceServiceCloudV2Source setSoqlQuery(Object soqlQuery) {
         this.soqlQuery = soqlQuery;
+        return this;
+    }
+
+    /**
+     * Get the query property: You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL
+     * limitations, see this article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     * 
+     * @return the query value.
+     */
+    public Object getQuery() {
+        return this.query;
+    }
+
+    /**
+     * Set the query property: You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL
+     * limitations, see this article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     * 
+     * @param query the query value to set.
+     * @return the SalesforceServiceCloudV2Source object itself.
+     */
+    public SalesforceServiceCloudV2Source setQuery(Object query) {
+        this.query = query;
         return this;
     }
 
@@ -157,6 +196,7 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
         jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
+        jsonWriter.writeUntypedField("query", this.query);
         jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
         jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
         if (getAdditionalProperties() != null) {
@@ -194,6 +234,8 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
                     deserializedSalesforceServiceCloudV2Source.type = reader.getString();
                 } else if ("SOQLQuery".equals(fieldName)) {
                     deserializedSalesforceServiceCloudV2Source.soqlQuery = reader.readUntyped();
+                } else if ("query".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudV2Source.query = reader.readUntyped();
                 } else if ("includeDeletedObjects".equals(fieldName)) {
                     deserializedSalesforceServiceCloudV2Source.includeDeletedObjects = reader.readUntyped();
                 } else if ("additionalColumns".equals(fieldName)) {

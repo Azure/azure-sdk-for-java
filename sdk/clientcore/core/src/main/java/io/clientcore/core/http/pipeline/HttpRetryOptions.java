@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -15,6 +17,7 @@ import java.util.function.Predicate;
 /**
  * Options to configure the retry policy's behavior.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class HttpRetryOptions {
     private static final ClientLogger LOGGER = new ClientLogger(HttpRetryOptions.class);
     private final int maxRetries;

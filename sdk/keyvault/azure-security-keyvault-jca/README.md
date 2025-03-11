@@ -10,6 +10,20 @@ Azure Key Vault. It is built on four principles:
 [Source code] | [API reference documentation] | [Product documentation] | [Samples]
 
 ## Getting started
+
+### Prerequisites
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+    - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
+- [Azure Subscription][azure_subscription]
+- An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
+
+  ```Bash
+  az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
+  ```
+- Access configuration:
+    - If using [role-based](https://learn.microsoft.com/azure/key-vault/general/rbac-guide) access, assign the roles: `Key Vault Secrets User` and `Key Vault Certificate User`. If used for Jar signing, add role `Key Vault Crypto User`.
+    - If using [access policy](https://learn.microsoft.com/azure/key-vault/general/assign-access-policy), add the permissions: `get` and `list` Secret permissions, `get` and `list` Certificate permissions. If used for Jar signing, add `Sign` Cryptographic Operations.
+
 ### Include the package
 
 #### Include the BOM file
@@ -50,20 +64,10 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.10.0</version>
+    <version>2.11.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-### Prerequisites
-- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
-  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
-- [Azure Subscription][azure_subscription]
-- An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
-
-```Bash
-az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
-```
 
 ## Key concepts
 ### SSL/TLS and mTLS

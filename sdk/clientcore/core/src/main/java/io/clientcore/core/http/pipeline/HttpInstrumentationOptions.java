@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -80,6 +82,7 @@ import java.util.Set;
  * </pre>
  * <!-- end io.clientcore.core.telemetry.useexplicitopentelemetry -->
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class HttpInstrumentationOptions extends InstrumentationOptions {
     private HttpLogLevel logLevel;
     private boolean isRedactedHeaderNamesLoggingEnabled;

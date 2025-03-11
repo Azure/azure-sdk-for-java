@@ -14,7 +14,7 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.ServerSentEventUtils;
-import io.clientcore.core.utils.ServerSentResult;
+import io.clientcore.core.models.ServerSentResult;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.FileBinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
