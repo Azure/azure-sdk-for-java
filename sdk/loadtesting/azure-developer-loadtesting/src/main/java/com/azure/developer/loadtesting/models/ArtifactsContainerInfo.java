@@ -26,12 +26,6 @@ public final class ArtifactsContainerInfo implements JsonSerializable<ArtifactsC
     @Generated
     private String url;
 
-    /*
-     * Expiry time of the container (RFC 3339 literal format)
-     */
-    @Generated
-    private OffsetDateTime expireDateTime;
-
     /**
      * Creates an instance of ArtifactsContainerInfo class.
      */
@@ -50,16 +44,6 @@ public final class ArtifactsContainerInfo implements JsonSerializable<ArtifactsC
     }
 
     /**
-     * Get the expireDateTime property: Expiry time of the container (RFC 3339 literal format).
-     *
-     * @return the expireDateTime value.
-     */
-    @Generated
-    public OffsetDateTime getExpireDateTime() {
-        return this.expireDateTime;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -68,7 +52,7 @@ public final class ArtifactsContainerInfo implements JsonSerializable<ArtifactsC
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeStringField("expireDateTime",
-            this.expireDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expireDateTime));
+            this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));
         return jsonWriter.writeEndObject();
     }
 
@@ -90,7 +74,7 @@ public final class ArtifactsContainerInfo implements JsonSerializable<ArtifactsC
                 if ("url".equals(fieldName)) {
                     deserializedArtifactsContainerInfo.url = reader.getString();
                 } else if ("expireDateTime".equals(fieldName)) {
-                    deserializedArtifactsContainerInfo.expireDateTime = reader
+                    deserializedArtifactsContainerInfo.expiresOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
@@ -98,5 +82,21 @@ public final class ArtifactsContainerInfo implements JsonSerializable<ArtifactsC
             }
             return deserializedArtifactsContainerInfo;
         });
+    }
+
+    /*
+     * Expiry time of the container (RFC 3339 literal format)
+     */
+    @Generated
+    private OffsetDateTime expiresOn;
+
+    /**
+     * Get the expiresOn property: Expiry time of the container (RFC 3339 literal format).
+     *
+     * @return the expiresOn value.
+     */
+    @Generated
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 }

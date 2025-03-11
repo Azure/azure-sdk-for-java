@@ -7,7 +7,7 @@ package com.azure.developer.loadtesting.generated;
 import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestRunClient;
 import com.azure.developer.loadtesting.LoadTestRunClientBuilder;
-import com.azure.developer.loadtesting.models.AppComponent;
+import com.azure.developer.loadtesting.models.LoadTestingAppComponent;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class AddOrUpdateAppComponentsToALoadTestRun {
             "ee843bd9-a6d4-4364-a45c-427a03c39fa7",
             new TestRunAppComponents().setComponents(mapOf(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource",
-                new AppComponent().setResourceName("appcomponentresource")
+                new LoadTestingAppComponent().setResourceName("appcomponentresource")
                     .setResourceType("microsoft.insights/components")
                     .setDisplayName("Performance_LoadTest_Insights")
                     .setKind("web"))));

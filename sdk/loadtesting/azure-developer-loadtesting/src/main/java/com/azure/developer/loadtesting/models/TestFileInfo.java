@@ -38,12 +38,6 @@ public final class TestFileInfo implements JsonSerializable<TestFileInfo> {
     private FileType fileType;
 
     /*
-     * Expiry time of the file (RFC 3339 literal format)
-     */
-    @Generated
-    private OffsetDateTime expireDateTime;
-
-    /*
      * Validation status of the file
      */
     @Generated
@@ -90,16 +84,6 @@ public final class TestFileInfo implements JsonSerializable<TestFileInfo> {
     @Generated
     public FileType getFileType() {
         return this.fileType;
-    }
-
-    /**
-     * Get the expireDateTime property: Expiry time of the file (RFC 3339 literal format).
-     *
-     * @return the expireDateTime value.
-     */
-    @Generated
-    public OffsetDateTime getExpireDateTime() {
-        return this.expireDateTime;
     }
 
     /**
@@ -155,7 +139,7 @@ public final class TestFileInfo implements JsonSerializable<TestFileInfo> {
                 } else if ("fileType".equals(fieldName)) {
                     deserializedTestFileInfo.fileType = FileType.fromString(reader.getString());
                 } else if ("expireDateTime".equals(fieldName)) {
-                    deserializedTestFileInfo.expireDateTime = reader
+                    deserializedTestFileInfo.expiresOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("validationStatus".equals(fieldName)) {
                     deserializedTestFileInfo.validationStatus = FileValidationStatus.fromString(reader.getString());
@@ -167,5 +151,21 @@ public final class TestFileInfo implements JsonSerializable<TestFileInfo> {
             }
             return deserializedTestFileInfo;
         });
+    }
+
+    /*
+     * Expiry time of the file (RFC 3339 literal format)
+     */
+    @Generated
+    private OffsetDateTime expiresOn;
+
+    /**
+     * Get the expiresOn property: Expiry time of the file (RFC 3339 literal format).
+     *
+     * @return the expiresOn value.
+     */
+    @Generated
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 }

@@ -29,7 +29,7 @@ public final class TestAppComponents implements JsonSerializable<TestAppComponen
      * : resource object }
      */
     @Generated
-    private Map<String, AppComponent> components;
+    private Map<String, LoadTestingAppComponent> components;
 
     /*
      * Test identifier
@@ -107,7 +107,7 @@ public final class TestAppComponents implements JsonSerializable<TestAppComponen
      * @return the components value.
      */
     @Generated
-    public Map<String, AppComponent> getComponents() {
+    public Map<String, LoadTestingAppComponent> getComponents() {
         return this.components;
     }
 
@@ -121,7 +121,7 @@ public final class TestAppComponents implements JsonSerializable<TestAppComponen
      * @return the TestAppComponents object itself.
      */
     @Generated
-    public TestAppComponents setComponents(Map<String, AppComponent> components) {
+    public TestAppComponents setComponents(Map<String, LoadTestingAppComponent> components) {
         this.components = components;
         this.updatedProperties.add("components");
         return this;
@@ -201,9 +201,11 @@ public final class TestAppComponents implements JsonSerializable<TestAppComponen
             } else {
                 jsonWriter.writeMapField("components", this.components, (writer, element) -> {
                     if (element != null) {
-                        JsonMergePatchHelper.getAppComponentAccessor().prepareModelForJsonMergePatch(element, true);
+                        JsonMergePatchHelper.getLoadTestingAppComponentAccessor()
+                            .prepareModelForJsonMergePatch(element, true);
                         writer.writeJson(element);
-                        JsonMergePatchHelper.getAppComponentAccessor().prepareModelForJsonMergePatch(element, false);
+                        JsonMergePatchHelper.getLoadTestingAppComponentAccessor()
+                            .prepareModelForJsonMergePatch(element, false);
                     } else {
                         writer.writeNull();
                     }
@@ -229,7 +231,8 @@ public final class TestAppComponents implements JsonSerializable<TestAppComponen
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("components".equals(fieldName)) {
-                    Map<String, AppComponent> components = reader.readMap(reader1 -> AppComponent.fromJson(reader1));
+                    Map<String, LoadTestingAppComponent> components
+                        = reader.readMap(reader1 -> LoadTestingAppComponent.fromJson(reader1));
                     deserializedTestAppComponents.components = components;
                 } else if ("testId".equals(fieldName)) {
                     deserializedTestAppComponents.testId = reader.getString();

@@ -4,11 +4,11 @@
 
 package com.azure.developer.loadtesting.implementation;
 
-import com.azure.developer.loadtesting.models.AppComponent;
 import com.azure.developer.loadtesting.models.AutoStopCriteria;
 import com.azure.developer.loadtesting.models.CertificateMetadata;
 import com.azure.developer.loadtesting.models.FunctionFlexConsumptionResourceConfiguration;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
+import com.azure.developer.loadtesting.models.LoadTestingAppComponent;
 import com.azure.developer.loadtesting.models.OptionalLoadTestConfiguration;
 import com.azure.developer.loadtesting.models.PassFailCriteria;
 import com.azure.developer.loadtesting.models.PassFailMetric;
@@ -214,20 +214,21 @@ public class JsonMergePatchHelper {
         return testAppComponentsAccessor;
     }
 
-    private static AppComponentAccessor appComponentAccessor;
+    private static LoadTestingAppComponentAccessor loadTestingAppComponentAccessor;
 
-    public interface AppComponentAccessor {
-        AppComponent prepareModelForJsonMergePatch(AppComponent appComponent, boolean jsonMergePatchEnabled);
+    public interface LoadTestingAppComponentAccessor {
+        LoadTestingAppComponent prepareModelForJsonMergePatch(LoadTestingAppComponent loadTestingAppComponent,
+            boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(AppComponent appComponent);
+        boolean isJsonMergePatch(LoadTestingAppComponent loadTestingAppComponent);
     }
 
-    public static void setAppComponentAccessor(AppComponentAccessor accessor) {
-        appComponentAccessor = accessor;
+    public static void setLoadTestingAppComponentAccessor(LoadTestingAppComponentAccessor accessor) {
+        loadTestingAppComponentAccessor = accessor;
     }
 
-    public static AppComponentAccessor getAppComponentAccessor() {
-        return appComponentAccessor;
+    public static LoadTestingAppComponentAccessor getLoadTestingAppComponentAccessor() {
+        return loadTestingAppComponentAccessor;
     }
 
     private static TestServerMetricsConfigurationAccessor testServerMetricsConfigurationAccessor;
