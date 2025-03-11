@@ -12,29 +12,29 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Emitted when in-progress response generation has failed.
+ * Emitted when response generation has terminated in an incomplete status.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseFailed extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventIncomplete extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_FAILED;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_INCOMPLETE;
 
     /*
-     * Detailed properties for the failed response.
+     * Detailed properties for the incomplete response.
      */
     @Generated
     private final ResponsesResponse response;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseFailed class.
+     * Creates an instance of ResponsesStreamEventIncomplete class.
      * 
      * @param response the response value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseFailed(ResponsesResponse response) {
+    private ResponsesStreamEventIncomplete(ResponsesResponse response) {
         this.response = response;
     }
 
@@ -45,12 +45,12 @@ public final class ResponsesResponseStreamEventResponseFailed extends ResponsesR
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
     /**
-     * Get the response property: Detailed properties for the failed response.
+     * Get the response property: Detailed properties for the incomplete response.
      * 
      * @return the response value.
      */
@@ -72,19 +72,19 @@ public final class ResponsesResponseStreamEventResponseFailed extends ResponsesR
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseFailed from the JsonReader.
+     * Reads an instance of ResponsesStreamEventIncomplete from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseFailed if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventIncomplete if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseFailed.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventIncomplete.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseFailed fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesStreamEventIncomplete fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResponsesResponse response = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_FAILED;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_INCOMPLETE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -92,16 +92,16 @@ public final class ResponsesResponseStreamEventResponseFailed extends ResponsesR
                 if ("response".equals(fieldName)) {
                     response = ResponsesResponse.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseFailed deserializedResponsesResponseStreamEventResponseFailed
-                = new ResponsesResponseStreamEventResponseFailed(response);
-            deserializedResponsesResponseStreamEventResponseFailed.type = type;
+            ResponsesStreamEventIncomplete deserializedResponsesStreamEventIncomplete
+                = new ResponsesStreamEventIncomplete(response);
+            deserializedResponsesStreamEventIncomplete.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseFailed;
+            return deserializedResponsesStreamEventIncomplete;
         });
     }
 }

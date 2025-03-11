@@ -13,21 +13,21 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesResponseStreamEvent model.
+ * The ResponsesStreamEvent model.
  */
 @Immutable
-public class ResponsesResponseStreamEvent implements JsonSerializable<ResponsesResponseStreamEvent> {
+public class ResponsesStreamEvent implements JsonSerializable<ResponsesStreamEvent> {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type;
+    private ResponsesStreamEventType type;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEvent class.
+     * Creates an instance of ResponsesStreamEvent class.
      */
     @Generated
-    protected ResponsesResponseStreamEvent() {
+    protected ResponsesStreamEvent() {
     }
 
     /**
@@ -36,7 +36,7 @@ public class ResponsesResponseStreamEvent implements JsonSerializable<ResponsesR
      * @return the type value.
      */
     @Generated
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -52,15 +52,15 @@ public class ResponsesResponseStreamEvent implements JsonSerializable<ResponsesR
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEvent from the JsonReader.
+     * Reads an instance of ResponsesStreamEvent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEvent if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEvent.
+     * @return An instance of ResponsesStreamEvent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEvent.
      */
     @Generated
-    public static ResponsesResponseStreamEvent fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesStreamEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -77,60 +77,55 @@ public class ResponsesResponseStreamEvent implements JsonSerializable<ResponsesR
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("error".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventError.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventError.fromJson(readerToUse.reset());
                 } else if ("response.code_interpreter_call.code.delta".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta
-                        .fromJson(readerToUse.reset());
+                    return ResponsesStreamEventCodeInterpreterCallCodeDelta.fromJson(readerToUse.reset());
                 } else if ("response.code_interpreter_call.code.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDone
-                        .fromJson(readerToUse.reset());
+                    return ResponsesStreamEventCodeInterpreterCallCodeDone.fromJson(readerToUse.reset());
                 } else if ("response.code_interpreter_call.completed".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseCodeInterpreterCallCompleted
-                        .fromJson(readerToUse.reset());
+                    return ResponsesStreamEventCodeInterpreterCallCompleted.fromJson(readerToUse.reset());
                 } else if ("response.code_interpreter_call.in_progress".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress
-                        .fromJson(readerToUse.reset());
+                    return ResponsesStreamEventCodeInterpreterCallInProgress.fromJson(readerToUse.reset());
                 } else if ("response.code_interpreter_call.interpreting".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseCodeInterpreterCallInterpreting
-                        .fromJson(readerToUse.reset());
+                    return ResponsesStreamEventCodeInterpreterCallInterpreting.fromJson(readerToUse.reset());
                 } else if ("response.completed".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseCompleted.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventCompleted.fromJson(readerToUse.reset());
                 } else if ("response.content_part.added".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseContentPartAdded.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventContentPartAdded.fromJson(readerToUse.reset());
                 } else if ("response.content_part.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseContentPartDone.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventContentPartDone.fromJson(readerToUse.reset());
                 } else if ("response.created".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseCreated.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventCreated.fromJson(readerToUse.reset());
                 } else if ("response.failed".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseFailed.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventFailed.fromJson(readerToUse.reset());
                 } else if ("response.file_search_call.completed".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseFileSearchCallCompleted.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventFileSearchCallCompleted.fromJson(readerToUse.reset());
                 } else if ("response.file_search_call.in.progress".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseFileSearchCallInProgress.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventFileSearchCallInProgress.fromJson(readerToUse.reset());
                 } else if ("response.file_search_call.searching".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseFileSearchCallSearching.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventFileSearchCallSearching.fromJson(readerToUse.reset());
                 } else if ("response.function_call_arguments.delta".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseFunctionCallArgumentsDelta.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventFunctionCallArgumentsDelta.fromJson(readerToUse.reset());
                 } else if ("response.function_call_arguments.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseFunctionCallArgumentsDone.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventFunctionCallArgumentsDone.fromJson(readerToUse.reset());
                 } else if ("response.incomplete".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseIncomplete.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventIncomplete.fromJson(readerToUse.reset());
                 } else if ("response.in_progress".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseInProgress.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventInProgress.fromJson(readerToUse.reset());
                 } else if ("response.output_item.added".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseOutputItemAdded.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventOutputItemAdded.fromJson(readerToUse.reset());
                 } else if ("response.output_item.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseOutputItemDone.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventOutputItemDone.fromJson(readerToUse.reset());
                 } else if ("response.output_text.annotation.added".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseOutputTextAnnotationAdded.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventOutputTextAnnotationAdded.fromJson(readerToUse.reset());
                 } else if ("response.output_text.delta".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseOutputTextDelta.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventOutputTextDelta.fromJson(readerToUse.reset());
                 } else if ("response.output_text.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseOutputTextDone.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventOutputTextDone.fromJson(readerToUse.reset());
                 } else if ("response.refusal.delta".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseRefusalDelta.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventRefusalDelta.fromJson(readerToUse.reset());
                 } else if ("response.refusal.done".equals(discriminatorValue)) {
-                    return ResponsesResponseStreamEventResponseRefusalDone.fromJson(readerToUse.reset());
+                    return ResponsesStreamEventRefusalDone.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -139,22 +134,21 @@ public class ResponsesResponseStreamEvent implements JsonSerializable<ResponsesR
     }
 
     @Generated
-    static ResponsesResponseStreamEvent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static ResponsesStreamEvent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResponsesResponseStreamEvent deserializedResponsesResponseStreamEvent = new ResponsesResponseStreamEvent();
+            ResponsesStreamEvent deserializedResponsesStreamEvent = new ResponsesStreamEvent();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("type".equals(fieldName)) {
-                    deserializedResponsesResponseStreamEvent.type
-                        = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    deserializedResponsesStreamEvent.type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedResponsesResponseStreamEvent;
+            return deserializedResponsesStreamEvent;
         });
     }
 }

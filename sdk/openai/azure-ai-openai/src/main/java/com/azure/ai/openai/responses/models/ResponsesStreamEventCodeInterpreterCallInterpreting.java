@@ -12,17 +12,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Emitted when a code interpreter call is in progress.
+ * Emitted when the code interpreter is actively interpreting the code snippet.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress
-    extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventCodeInterpreterCallInterpreting extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type
-        = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_IN_PROGRESS;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING;
 
     /*
      * The index of the output item within the response that this stream event applies to.
@@ -37,13 +35,13 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallInProg
     private final ResponsesCodeInterpreterCallItem codeInterpreterCall;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress class.
+     * Creates an instance of ResponsesStreamEventCodeInterpreterCallInterpreting class.
      * 
      * @param outputIndex the outputIndex value to set.
      * @param codeInterpreterCall the codeInterpreterCall value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress(int outputIndex,
+    private ResponsesStreamEventCodeInterpreterCallInterpreting(int outputIndex,
         ResponsesCodeInterpreterCallItem codeInterpreterCall) {
         this.outputIndex = outputIndex;
         this.codeInterpreterCall = codeInterpreterCall;
@@ -56,7 +54,7 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallInProg
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -94,23 +92,21 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallInProg
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress from the JsonReader.
+     * Reads an instance of ResponsesStreamEventCodeInterpreterCallInterpreting from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress if the JsonReader was
-     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventCodeInterpreterCallInterpreting if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the
-     * ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventCodeInterpreterCallInterpreting.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress fromJson(JsonReader jsonReader)
+    public static ResponsesStreamEventCodeInterpreterCallInterpreting fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
             int outputIndex = 0;
             ResponsesCodeInterpreterCallItem codeInterpreterCall = null;
-            ResponsesResponseStreamEventType type
-                = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_IN_PROGRESS;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -120,17 +116,16 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallInProg
                 } else if ("code_interpreter_call".equals(fieldName)) {
                     codeInterpreterCall = ResponsesCodeInterpreterCallItem.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress deserializedResponsesResponseStreamEventResponseCodeInterpreterCallInProgress
-                = new ResponsesResponseStreamEventResponseCodeInterpreterCallInProgress(outputIndex,
-                    codeInterpreterCall);
-            deserializedResponsesResponseStreamEventResponseCodeInterpreterCallInProgress.type = type;
+            ResponsesStreamEventCodeInterpreterCallInterpreting deserializedResponsesStreamEventCodeInterpreterCallInterpreting
+                = new ResponsesStreamEventCodeInterpreterCallInterpreting(outputIndex, codeInterpreterCall);
+            deserializedResponsesStreamEventCodeInterpreterCallInterpreting.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseCodeInterpreterCallInProgress;
+            return deserializedResponsesStreamEventCodeInterpreterCallInterpreting;
         });
     }
 }

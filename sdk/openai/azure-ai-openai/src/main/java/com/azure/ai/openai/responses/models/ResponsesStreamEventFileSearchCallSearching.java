@@ -12,17 +12,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when the model-generated function call arguments are done streaming.
- * Also emitted when a Response is interrupted, incomplete, or cancelled.
+ * Emitted when a file search call has begun searching.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDone extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventFileSearchCallSearching extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type
-        = ResponsesResponseStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_FILE_SEARCH_CALL_SEARCHING;
 
     /*
      * The ID of the item that this stream event applies to.
@@ -36,25 +34,16 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDone
     @Generated
     private final int outputIndex;
 
-    /*
-     * The final function call arguments as a complete JSON string.
-     */
-    @Generated
-    private final String arguments;
-
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseFunctionCallArgumentsDone class.
+     * Creates an instance of ResponsesStreamEventFileSearchCallSearching class.
      * 
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
-     * @param arguments the arguments value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseFunctionCallArgumentsDone(String itemId, int outputIndex,
-        String arguments) {
+    private ResponsesStreamEventFileSearchCallSearching(String itemId, int outputIndex) {
         this.itemId = itemId;
         this.outputIndex = outputIndex;
-        this.arguments = arguments;
     }
 
     /**
@@ -64,7 +53,7 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDone
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -89,16 +78,6 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDone
     }
 
     /**
-     * Get the arguments property: The final function call arguments as a complete JSON string.
-     * 
-     * @return the arguments value.
-     */
-    @Generated
-    public String getArguments() {
-        return this.arguments;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -107,30 +86,25 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDone
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeIntField("output_index", this.outputIndex);
-        jsonWriter.writeStringField("arguments", this.arguments);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseFunctionCallArgumentsDone from the JsonReader.
+     * Reads an instance of ResponsesStreamEventFileSearchCallSearching from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseFunctionCallArgumentsDone if the JsonReader was
-     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventFileSearchCallSearching if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the
-     * ResponsesResponseStreamEventResponseFunctionCallArgumentsDone.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventFileSearchCallSearching.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseFunctionCallArgumentsDone fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static ResponsesStreamEventFileSearchCallSearching fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
             int outputIndex = 0;
-            String arguments = null;
-            ResponsesResponseStreamEventType type
-                = ResponsesResponseStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_FILE_SEARCH_CALL_SEARCHING;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -139,19 +113,17 @@ public final class ResponsesResponseStreamEventResponseFunctionCallArgumentsDone
                     itemId = reader.getString();
                 } else if ("output_index".equals(fieldName)) {
                     outputIndex = reader.getInt();
-                } else if ("arguments".equals(fieldName)) {
-                    arguments = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseFunctionCallArgumentsDone deserializedResponsesResponseStreamEventResponseFunctionCallArgumentsDone
-                = new ResponsesResponseStreamEventResponseFunctionCallArgumentsDone(itemId, outputIndex, arguments);
-            deserializedResponsesResponseStreamEventResponseFunctionCallArgumentsDone.type = type;
+            ResponsesStreamEventFileSearchCallSearching deserializedResponsesStreamEventFileSearchCallSearching
+                = new ResponsesStreamEventFileSearchCallSearching(itemId, outputIndex);
+            deserializedResponsesStreamEventFileSearchCallSearching.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseFunctionCallArgumentsDone;
+            return deserializedResponsesStreamEventFileSearchCallSearching;
         });
     }
 }

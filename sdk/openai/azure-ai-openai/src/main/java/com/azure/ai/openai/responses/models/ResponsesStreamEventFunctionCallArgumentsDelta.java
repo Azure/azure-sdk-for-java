@@ -12,16 +12,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Emitted when a file search call is initiated.
+ * Returned when the model-generated function call arguments are updated.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseFileSearchCallInProgress extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventFunctionCallArgumentsDelta extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type
-        = ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_IN_PROGRESS;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA;
 
     /*
      * The ID of the item that this stream event applies to.
@@ -35,16 +34,24 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallInProgress 
     @Generated
     private final int outputIndex;
 
+    /*
+     * The arguments delta as a partial JSON fragment.
+     */
+    @Generated
+    private final String delta;
+
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseFileSearchCallInProgress class.
+     * Creates an instance of ResponsesStreamEventFunctionCallArgumentsDelta class.
      * 
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
+     * @param delta the delta value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseFileSearchCallInProgress(String itemId, int outputIndex) {
+    private ResponsesStreamEventFunctionCallArgumentsDelta(String itemId, int outputIndex, String delta) {
         this.itemId = itemId;
         this.outputIndex = outputIndex;
+        this.delta = delta;
     }
 
     /**
@@ -54,7 +61,7 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallInProgress 
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -79,6 +86,16 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallInProgress 
     }
 
     /**
+     * Get the delta property: The arguments delta as a partial JSON fragment.
+     * 
+     * @return the delta value.
+     */
+    @Generated
+    public String getDelta() {
+        return this.delta;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -87,28 +104,27 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallInProgress 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeIntField("output_index", this.outputIndex);
+        jsonWriter.writeStringField("delta", this.delta);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseFileSearchCallInProgress from the JsonReader.
+     * Reads an instance of ResponsesStreamEventFunctionCallArgumentsDelta from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseFileSearchCallInProgress if the JsonReader was
-     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventFunctionCallArgumentsDelta if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the
-     * ResponsesResponseStreamEventResponseFileSearchCallInProgress.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventFunctionCallArgumentsDelta.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseFileSearchCallInProgress fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static ResponsesStreamEventFunctionCallArgumentsDelta fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
             int outputIndex = 0;
-            ResponsesResponseStreamEventType type
-                = ResponsesResponseStreamEventType.RESPONSE_FILE_SEARCH_CALL_IN_PROGRESS;
+            String delta = null;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -117,17 +133,19 @@ public final class ResponsesResponseStreamEventResponseFileSearchCallInProgress 
                     itemId = reader.getString();
                 } else if ("output_index".equals(fieldName)) {
                     outputIndex = reader.getInt();
+                } else if ("delta".equals(fieldName)) {
+                    delta = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseFileSearchCallInProgress deserializedResponsesResponseStreamEventResponseFileSearchCallInProgress
-                = new ResponsesResponseStreamEventResponseFileSearchCallInProgress(itemId, outputIndex);
-            deserializedResponsesResponseStreamEventResponseFileSearchCallInProgress.type = type;
+            ResponsesStreamEventFunctionCallArgumentsDelta deserializedResponsesStreamEventFunctionCallArgumentsDelta
+                = new ResponsesStreamEventFunctionCallArgumentsDelta(itemId, outputIndex, delta);
+            deserializedResponsesStreamEventFunctionCallArgumentsDelta.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseFileSearchCallInProgress;
+            return deserializedResponsesStreamEventFunctionCallArgumentsDelta;
         });
     }
 }

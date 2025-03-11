@@ -12,15 +12,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when a new output item is created during response generation.
+ * Returned when an output item is done streaming.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseOutputItemAdded extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventOutputItemDone extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_ITEM_ADDED;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_OUTPUT_ITEM_DONE;
 
     /*
      * The index of the output item within the response that this stream event applies to.
@@ -29,19 +29,19 @@ public final class ResponsesResponseStreamEventResponseOutputItemAdded extends R
     private final int outputIndex;
 
     /*
-     * The new output item created.
+     * The completed output item.
      */
     @Generated
     private final ResponsesItem item;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseOutputItemAdded class.
+     * Creates an instance of ResponsesStreamEventOutputItemDone class.
      * 
      * @param outputIndex the outputIndex value to set.
      * @param item the item value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseOutputItemAdded(int outputIndex, ResponsesItem item) {
+    private ResponsesStreamEventOutputItemDone(int outputIndex, ResponsesItem item) {
         this.outputIndex = outputIndex;
         this.item = item;
     }
@@ -53,7 +53,7 @@ public final class ResponsesResponseStreamEventResponseOutputItemAdded extends R
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -68,7 +68,7 @@ public final class ResponsesResponseStreamEventResponseOutputItemAdded extends R
     }
 
     /**
-     * Get the item property: The new output item created.
+     * Get the item property: The completed output item.
      * 
      * @return the item value.
      */
@@ -91,21 +91,20 @@ public final class ResponsesResponseStreamEventResponseOutputItemAdded extends R
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseOutputItemAdded from the JsonReader.
+     * Reads an instance of ResponsesStreamEventOutputItemDone from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseOutputItemAdded if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventOutputItemDone if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseOutputItemAdded.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventOutputItemDone.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseOutputItemAdded fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static ResponsesStreamEventOutputItemDone fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int outputIndex = 0;
             ResponsesItem item = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_ITEM_ADDED;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_OUTPUT_ITEM_DONE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -115,16 +114,16 @@ public final class ResponsesResponseStreamEventResponseOutputItemAdded extends R
                 } else if ("item".equals(fieldName)) {
                     item = ResponsesItem.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseOutputItemAdded deserializedResponsesResponseStreamEventResponseOutputItemAdded
-                = new ResponsesResponseStreamEventResponseOutputItemAdded(outputIndex, item);
-            deserializedResponsesResponseStreamEventResponseOutputItemAdded.type = type;
+            ResponsesStreamEventOutputItemDone deserializedResponsesStreamEventOutputItemDone
+                = new ResponsesStreamEventOutputItemDone(outputIndex, item);
+            deserializedResponsesStreamEventOutputItemDone.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseOutputItemAdded;
+            return deserializedResponsesStreamEventOutputItemDone;
         });
     }
 }

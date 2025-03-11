@@ -12,16 +12,16 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Emitted when a new output text annotation is added.
+ * Emitted when the text value of a "text" content part is done streaming. Also
+ * emitted when a Response is interrupted, incomplete, or cancelled.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseOutputTextAnnotationAdded extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventOutputTextDone extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type
-        = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_ANNOTATION_ADDED;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_OUTPUT_TEXT_DONE;
 
     /*
      * The ID of the item that this stream event applies to.
@@ -42,26 +42,25 @@ public final class ResponsesResponseStreamEventResponseOutputTextAnnotationAdded
     private final int contentIndex;
 
     /*
-     * The annotation index, within the output item content part, for the new annotation.The new annotation added.
+     * The final text content.
      */
     @Generated
-    private final ResponsesOutputTextAnnotation annotation;
+    private final String text;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseOutputTextAnnotationAdded class.
+     * Creates an instance of ResponsesStreamEventOutputTextDone class.
      * 
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
      * @param contentIndex the contentIndex value to set.
-     * @param annotation the annotation value to set.
+     * @param text the text value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseOutputTextAnnotationAdded(String itemId, int outputIndex,
-        int contentIndex, ResponsesOutputTextAnnotation annotation) {
+    private ResponsesStreamEventOutputTextDone(String itemId, int outputIndex, int contentIndex, String text) {
         this.itemId = itemId;
         this.outputIndex = outputIndex;
         this.contentIndex = contentIndex;
-        this.annotation = annotation;
+        this.text = text;
     }
 
     /**
@@ -71,7 +70,7 @@ public final class ResponsesResponseStreamEventResponseOutputTextAnnotationAdded
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -106,14 +105,13 @@ public final class ResponsesResponseStreamEventResponseOutputTextAnnotationAdded
     }
 
     /**
-     * Get the annotation property: The annotation index, within the output item content part, for the new
-     * annotation.The new annotation added.
+     * Get the text property: The final text content.
      * 
-     * @return the annotation value.
+     * @return the text value.
      */
     @Generated
-    public ResponsesOutputTextAnnotation getAnnotation() {
-        return this.annotation;
+    public String getText() {
+        return this.text;
     }
 
     /**
@@ -126,31 +124,28 @@ public final class ResponsesResponseStreamEventResponseOutputTextAnnotationAdded
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeIntField("output_index", this.outputIndex);
         jsonWriter.writeIntField("content_index", this.contentIndex);
-        jsonWriter.writeJsonField("annotation", this.annotation);
+        jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseOutputTextAnnotationAdded from the JsonReader.
+     * Reads an instance of ResponsesStreamEventOutputTextDone from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseOutputTextAnnotationAdded if the JsonReader was
-     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventOutputTextDone if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the
-     * ResponsesResponseStreamEventResponseOutputTextAnnotationAdded.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventOutputTextDone.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseOutputTextAnnotationAdded fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static ResponsesStreamEventOutputTextDone fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
             int outputIndex = 0;
             int contentIndex = 0;
-            ResponsesOutputTextAnnotation annotation = null;
-            ResponsesResponseStreamEventType type
-                = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_ANNOTATION_ADDED;
+            String text = null;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_OUTPUT_TEXT_DONE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -161,20 +156,19 @@ public final class ResponsesResponseStreamEventResponseOutputTextAnnotationAdded
                     outputIndex = reader.getInt();
                 } else if ("content_index".equals(fieldName)) {
                     contentIndex = reader.getInt();
-                } else if ("annotation".equals(fieldName)) {
-                    annotation = ResponsesOutputTextAnnotation.fromJson(reader);
+                } else if ("text".equals(fieldName)) {
+                    text = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseOutputTextAnnotationAdded deserializedResponsesResponseStreamEventResponseOutputTextAnnotationAdded
-                = new ResponsesResponseStreamEventResponseOutputTextAnnotationAdded(itemId, outputIndex, contentIndex,
-                    annotation);
-            deserializedResponsesResponseStreamEventResponseOutputTextAnnotationAdded.type = type;
+            ResponsesStreamEventOutputTextDone deserializedResponsesStreamEventOutputTextDone
+                = new ResponsesStreamEventOutputTextDone(itemId, outputIndex, contentIndex, text);
+            deserializedResponsesStreamEventOutputTextDone.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseOutputTextAnnotationAdded;
+            return deserializedResponsesStreamEventOutputTextDone;
         });
     }
 }

@@ -15,12 +15,12 @@ import java.io.IOException;
  * Emitted when an error has occurred.
  */
 @Immutable
-public final class ResponsesResponseStreamEventError extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventError extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.ERROR;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.ERROR;
 
     /*
      * The error message.
@@ -41,14 +41,14 @@ public final class ResponsesResponseStreamEventError extends ResponsesResponseSt
     private final String param;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventError class.
+     * Creates an instance of ResponsesStreamEventError class.
      * 
      * @param message the message value to set.
      * @param code the code value to set.
      * @param param the param value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventError(String message, String code, String param) {
+    private ResponsesStreamEventError(String message, String code, String param) {
         this.message = message;
         this.code = code;
         this.param = param;
@@ -61,7 +61,7 @@ public final class ResponsesResponseStreamEventError extends ResponsesResponseSt
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -110,21 +110,21 @@ public final class ResponsesResponseStreamEventError extends ResponsesResponseSt
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventError from the JsonReader.
+     * Reads an instance of ResponsesStreamEventError from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventError if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventError if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventError.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventError.
      */
     @Generated
-    public static ResponsesResponseStreamEventError fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesStreamEventError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String message = null;
             String code = null;
             String param = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.ERROR;
+            ResponsesStreamEventType type = ResponsesStreamEventType.ERROR;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -136,16 +136,16 @@ public final class ResponsesResponseStreamEventError extends ResponsesResponseSt
                 } else if ("param".equals(fieldName)) {
                     param = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventError deserializedResponsesResponseStreamEventError
-                = new ResponsesResponseStreamEventError(message, code, param);
-            deserializedResponsesResponseStreamEventError.type = type;
+            ResponsesStreamEventError deserializedResponsesStreamEventError
+                = new ResponsesStreamEventError(message, code, param);
+            deserializedResponsesStreamEventError.type = type;
 
-            return deserializedResponsesResponseStreamEventError;
+            return deserializedResponsesStreamEventError;
         });
     }
 }

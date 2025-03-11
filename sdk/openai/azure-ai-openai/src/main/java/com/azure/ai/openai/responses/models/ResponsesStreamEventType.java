@@ -5,9 +5,9 @@
 package com.azure.ai.openai.responses.models;
 
 /**
- * Defines values for ResponsesResponseStreamEventType.
+ * Defines values for ResponsesStreamEventType.
  */
-public enum ResponsesResponseStreamEventType {
+public enum ResponsesStreamEventType {
     /**
      * Enum value error.
      */
@@ -134,26 +134,26 @@ public enum ResponsesResponseStreamEventType {
     RESPONSE_REFUSAL_DONE("response.refusal.done");
 
     /**
-     * The actual serialized value for a ResponsesResponseStreamEventType instance.
+     * The actual serialized value for a ResponsesStreamEventType instance.
      */
     private final String value;
 
-    ResponsesResponseStreamEventType(String value) {
+    ResponsesStreamEventType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ResponsesResponseStreamEventType instance.
+     * Parses a serialized value to a ResponsesStreamEventType instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ResponsesResponseStreamEventType object, or null if unable to parse.
+     * @return the parsed ResponsesStreamEventType object, or null if unable to parse.
      */
-    public static ResponsesResponseStreamEventType fromString(String value) {
+    public static ResponsesStreamEventType fromString(String value) {
         if (value == null) {
             return null;
         }
-        ResponsesResponseStreamEventType[] items = ResponsesResponseStreamEventType.values();
-        for (ResponsesResponseStreamEventType item : items) {
+        ResponsesStreamEventType[] items = ResponsesStreamEventType.values();
+        for (ResponsesStreamEventType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

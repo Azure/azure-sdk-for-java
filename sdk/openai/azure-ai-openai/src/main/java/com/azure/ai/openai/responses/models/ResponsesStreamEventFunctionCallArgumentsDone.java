@@ -12,16 +12,16 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Emitted when the text value of a "text" content part is done streaming. Also
- * emitted when a Response is interrupted, incomplete, or cancelled.
+ * Returned when the model-generated function call arguments are done streaming.
+ * Also emitted when a Response is interrupted, incomplete, or cancelled.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseOutputTextDone extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventFunctionCallArgumentsDone extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_DONE;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE;
 
     /*
      * The ID of the item that this stream event applies to.
@@ -36,32 +36,23 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
     private final int outputIndex;
 
     /*
-     * The index of the content part that was added to an item's content collection.
+     * The final function call arguments as a complete JSON string.
      */
     @Generated
-    private final int contentIndex;
-
-    /*
-     * The final text content.
-     */
-    @Generated
-    private final String text;
+    private final String arguments;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseOutputTextDone class.
+     * Creates an instance of ResponsesStreamEventFunctionCallArgumentsDone class.
      * 
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
-     * @param contentIndex the contentIndex value to set.
-     * @param text the text value to set.
+     * @param arguments the arguments value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseOutputTextDone(String itemId, int outputIndex, int contentIndex,
-        String text) {
+    private ResponsesStreamEventFunctionCallArgumentsDone(String itemId, int outputIndex, String arguments) {
         this.itemId = itemId;
         this.outputIndex = outputIndex;
-        this.contentIndex = contentIndex;
-        this.text = text;
+        this.arguments = arguments;
     }
 
     /**
@@ -71,7 +62,7 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -96,23 +87,13 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
     }
 
     /**
-     * Get the contentIndex property: The index of the content part that was added to an item's content collection.
+     * Get the arguments property: The final function call arguments as a complete JSON string.
      * 
-     * @return the contentIndex value.
+     * @return the arguments value.
      */
     @Generated
-    public int getContentIndex() {
-        return this.contentIndex;
-    }
-
-    /**
-     * Get the text property: The final text content.
-     * 
-     * @return the text value.
-     */
-    @Generated
-    public String getText() {
-        return this.text;
+    public String getArguments() {
+        return this.arguments;
     }
 
     /**
@@ -124,30 +105,27 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeIntField("output_index", this.outputIndex);
-        jsonWriter.writeIntField("content_index", this.contentIndex);
-        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("arguments", this.arguments);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseOutputTextDone from the JsonReader.
+     * Reads an instance of ResponsesStreamEventFunctionCallArgumentsDone from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseOutputTextDone if the JsonReader was pointing to an
+     * @return An instance of ResponsesStreamEventFunctionCallArgumentsDone if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseOutputTextDone.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventFunctionCallArgumentsDone.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseOutputTextDone fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static ResponsesStreamEventFunctionCallArgumentsDone fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
             int outputIndex = 0;
-            int contentIndex = 0;
-            String text = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_DONE;
+            String arguments = null;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -156,21 +134,19 @@ public final class ResponsesResponseStreamEventResponseOutputTextDone extends Re
                     itemId = reader.getString();
                 } else if ("output_index".equals(fieldName)) {
                     outputIndex = reader.getInt();
-                } else if ("content_index".equals(fieldName)) {
-                    contentIndex = reader.getInt();
-                } else if ("text".equals(fieldName)) {
-                    text = reader.getString();
+                } else if ("arguments".equals(fieldName)) {
+                    arguments = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseOutputTextDone deserializedResponsesResponseStreamEventResponseOutputTextDone
-                = new ResponsesResponseStreamEventResponseOutputTextDone(itemId, outputIndex, contentIndex, text);
-            deserializedResponsesResponseStreamEventResponseOutputTextDone.type = type;
+            ResponsesStreamEventFunctionCallArgumentsDone deserializedResponsesStreamEventFunctionCallArgumentsDone
+                = new ResponsesStreamEventFunctionCallArgumentsDone(itemId, outputIndex, arguments);
+            deserializedResponsesStreamEventFunctionCallArgumentsDone.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseOutputTextDone;
+            return deserializedResponsesStreamEventFunctionCallArgumentsDone;
         });
     }
 }

@@ -12,15 +12,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Emitted when an incremental delta update to refusal information is available.
+ * Emitted when a new output text annotation is added.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseRefusalDelta extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventOutputTextAnnotationAdded extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_REFUSAL_DELTA;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_OUTPUT_TEXT_ANNOTATION_ADDED;
 
     /*
      * The ID of the item that this stream event applies to.
@@ -41,26 +41,26 @@ public final class ResponsesResponseStreamEventResponseRefusalDelta extends Resp
     private final int contentIndex;
 
     /*
-     * The refusal delta.
+     * The annotation index, within the output item content part, for the new annotation.The new annotation added.
      */
     @Generated
-    private final String delta;
+    private final ResponsesOutputTextAnnotation annotation;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseRefusalDelta class.
+     * Creates an instance of ResponsesStreamEventOutputTextAnnotationAdded class.
      * 
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
      * @param contentIndex the contentIndex value to set.
-     * @param delta the delta value to set.
+     * @param annotation the annotation value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseRefusalDelta(String itemId, int outputIndex, int contentIndex,
-        String delta) {
+    private ResponsesStreamEventOutputTextAnnotationAdded(String itemId, int outputIndex, int contentIndex,
+        ResponsesOutputTextAnnotation annotation) {
         this.itemId = itemId;
         this.outputIndex = outputIndex;
         this.contentIndex = contentIndex;
-        this.delta = delta;
+        this.annotation = annotation;
     }
 
     /**
@@ -70,7 +70,7 @@ public final class ResponsesResponseStreamEventResponseRefusalDelta extends Resp
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -105,13 +105,14 @@ public final class ResponsesResponseStreamEventResponseRefusalDelta extends Resp
     }
 
     /**
-     * Get the delta property: The refusal delta.
+     * Get the annotation property: The annotation index, within the output item content part, for the new
+     * annotation.The new annotation added.
      * 
-     * @return the delta value.
+     * @return the annotation value.
      */
     @Generated
-    public String getDelta() {
-        return this.delta;
+    public ResponsesOutputTextAnnotation getAnnotation() {
+        return this.annotation;
     }
 
     /**
@@ -124,28 +125,28 @@ public final class ResponsesResponseStreamEventResponseRefusalDelta extends Resp
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeIntField("output_index", this.outputIndex);
         jsonWriter.writeIntField("content_index", this.contentIndex);
-        jsonWriter.writeStringField("delta", this.delta);
+        jsonWriter.writeJsonField("annotation", this.annotation);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseRefusalDelta from the JsonReader.
+     * Reads an instance of ResponsesStreamEventOutputTextAnnotationAdded from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseRefusalDelta if the JsonReader was pointing to an
+     * @return An instance of ResponsesStreamEventOutputTextAnnotationAdded if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseRefusalDelta.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventOutputTextAnnotationAdded.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseRefusalDelta fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesStreamEventOutputTextAnnotationAdded fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
             int outputIndex = 0;
             int contentIndex = 0;
-            String delta = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_REFUSAL_DELTA;
+            ResponsesOutputTextAnnotation annotation = null;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_OUTPUT_TEXT_ANNOTATION_ADDED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -156,19 +157,19 @@ public final class ResponsesResponseStreamEventResponseRefusalDelta extends Resp
                     outputIndex = reader.getInt();
                 } else if ("content_index".equals(fieldName)) {
                     contentIndex = reader.getInt();
-                } else if ("delta".equals(fieldName)) {
-                    delta = reader.getString();
+                } else if ("annotation".equals(fieldName)) {
+                    annotation = ResponsesOutputTextAnnotation.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseRefusalDelta deserializedResponsesResponseStreamEventResponseRefusalDelta
-                = new ResponsesResponseStreamEventResponseRefusalDelta(itemId, outputIndex, contentIndex, delta);
-            deserializedResponsesResponseStreamEventResponseRefusalDelta.type = type;
+            ResponsesStreamEventOutputTextAnnotationAdded deserializedResponsesStreamEventOutputTextAnnotationAdded
+                = new ResponsesStreamEventOutputTextAnnotationAdded(itemId, outputIndex, contentIndex, annotation);
+            deserializedResponsesStreamEventOutputTextAnnotationAdded.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseRefusalDelta;
+            return deserializedResponsesStreamEventOutputTextAnnotationAdded;
         });
     }
 }

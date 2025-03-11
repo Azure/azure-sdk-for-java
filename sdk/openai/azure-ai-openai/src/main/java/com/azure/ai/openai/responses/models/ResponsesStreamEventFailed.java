@@ -12,29 +12,29 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when a new Response is created.
+ * Emitted when in-progress response generation has failed.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseCreated extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventFailed extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_CREATED;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_FAILED;
 
     /*
-     * The details of the initialized response.
+     * Detailed properties for the failed response.
      */
     @Generated
     private final ResponsesResponse response;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseCreated class.
+     * Creates an instance of ResponsesStreamEventFailed class.
      * 
      * @param response the response value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseCreated(ResponsesResponse response) {
+    private ResponsesStreamEventFailed(ResponsesResponse response) {
         this.response = response;
     }
 
@@ -45,12 +45,12 @@ public final class ResponsesResponseStreamEventResponseCreated extends Responses
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
     /**
-     * Get the response property: The details of the initialized response.
+     * Get the response property: Detailed properties for the failed response.
      * 
      * @return the response value.
      */
@@ -72,19 +72,19 @@ public final class ResponsesResponseStreamEventResponseCreated extends Responses
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseCreated from the JsonReader.
+     * Reads an instance of ResponsesStreamEventFailed from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseCreated if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventFailed if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseCreated.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventFailed.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseCreated fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesStreamEventFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResponsesResponse response = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_CREATED;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_FAILED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -92,16 +92,16 @@ public final class ResponsesResponseStreamEventResponseCreated extends Responses
                 if ("response".equals(fieldName)) {
                     response = ResponsesResponse.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseCreated deserializedResponsesResponseStreamEventResponseCreated
-                = new ResponsesResponseStreamEventResponseCreated(response);
-            deserializedResponsesResponseStreamEventResponseCreated.type = type;
+            ResponsesStreamEventFailed deserializedResponsesStreamEventFailed
+                = new ResponsesStreamEventFailed(response);
+            deserializedResponsesStreamEventFailed.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseCreated;
+            return deserializedResponsesStreamEventFailed;
         });
     }
 }

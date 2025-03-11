@@ -15,12 +15,12 @@ import java.io.IOException;
  * Emitted when a new content part is added.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseContentPartAdded extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventContentPartAdded extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_CONTENT_PART_ADDED;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_CONTENT_PART_ADDED;
 
     /*
      * The ID of the item that this stream event applies to.
@@ -47,7 +47,7 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
     private final ResponsesContent part;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseContentPartAdded class.
+     * Creates an instance of ResponsesStreamEventContentPartAdded class.
      * 
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
@@ -55,7 +55,7 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
      * @param part the part value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseContentPartAdded(String itemId, int outputIndex, int contentIndex,
+    private ResponsesStreamEventContentPartAdded(String itemId, int outputIndex, int contentIndex,
         ResponsesContent part) {
         this.itemId = itemId;
         this.outputIndex = outputIndex;
@@ -70,7 +70,7 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -130,23 +130,22 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseContentPartAdded from the JsonReader.
+     * Reads an instance of ResponsesStreamEventContentPartAdded from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseContentPartAdded if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventContentPartAdded if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseContentPartAdded.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventContentPartAdded.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseContentPartAdded fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static ResponsesStreamEventContentPartAdded fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
             int outputIndex = 0;
             int contentIndex = 0;
             ResponsesContent part = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_CONTENT_PART_ADDED;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_CONTENT_PART_ADDED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -160,16 +159,16 @@ public final class ResponsesResponseStreamEventResponseContentPartAdded extends 
                 } else if ("part".equals(fieldName)) {
                     part = ResponsesContent.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseContentPartAdded deserializedResponsesResponseStreamEventResponseContentPartAdded
-                = new ResponsesResponseStreamEventResponseContentPartAdded(itemId, outputIndex, contentIndex, part);
-            deserializedResponsesResponseStreamEventResponseContentPartAdded.type = type;
+            ResponsesStreamEventContentPartAdded deserializedResponsesStreamEventContentPartAdded
+                = new ResponsesStreamEventContentPartAdded(itemId, outputIndex, contentIndex, part);
+            deserializedResponsesStreamEventContentPartAdded.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseContentPartAdded;
+            return deserializedResponsesStreamEventContentPartAdded;
         });
     }
 }

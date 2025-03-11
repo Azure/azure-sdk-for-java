@@ -15,12 +15,12 @@ import java.io.IOException;
  * Emitted when a refusal output item is completed.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseRefusalDone extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventRefusalDone extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_REFUSAL_DONE;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_REFUSAL_DONE;
 
     /*
      * The ID of the item that this stream event applies to.
@@ -47,7 +47,7 @@ public final class ResponsesResponseStreamEventResponseRefusalDone extends Respo
     private final String refusal;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseRefusalDone class.
+     * Creates an instance of ResponsesStreamEventRefusalDone class.
      * 
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
@@ -55,8 +55,7 @@ public final class ResponsesResponseStreamEventResponseRefusalDone extends Respo
      * @param refusal the refusal value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseRefusalDone(String itemId, int outputIndex, int contentIndex,
-        String refusal) {
+    private ResponsesStreamEventRefusalDone(String itemId, int outputIndex, int contentIndex, String refusal) {
         this.itemId = itemId;
         this.outputIndex = outputIndex;
         this.contentIndex = contentIndex;
@@ -70,7 +69,7 @@ public final class ResponsesResponseStreamEventResponseRefusalDone extends Respo
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -130,22 +129,22 @@ public final class ResponsesResponseStreamEventResponseRefusalDone extends Respo
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseRefusalDone from the JsonReader.
+     * Reads an instance of ResponsesStreamEventRefusalDone from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseRefusalDone if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventRefusalDone if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseRefusalDone.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventRefusalDone.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseRefusalDone fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesStreamEventRefusalDone fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
             int outputIndex = 0;
             int contentIndex = 0;
             String refusal = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_REFUSAL_DONE;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_REFUSAL_DONE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -159,16 +158,16 @@ public final class ResponsesResponseStreamEventResponseRefusalDone extends Respo
                 } else if ("refusal".equals(fieldName)) {
                     refusal = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseRefusalDone deserializedResponsesResponseStreamEventResponseRefusalDone
-                = new ResponsesResponseStreamEventResponseRefusalDone(itemId, outputIndex, contentIndex, refusal);
-            deserializedResponsesResponseStreamEventResponseRefusalDone.type = type;
+            ResponsesStreamEventRefusalDone deserializedResponsesStreamEventRefusalDone
+                = new ResponsesStreamEventRefusalDone(itemId, outputIndex, contentIndex, refusal);
+            deserializedResponsesStreamEventRefusalDone.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseRefusalDone;
+            return deserializedResponsesStreamEventRefusalDone;
         });
     }
 }

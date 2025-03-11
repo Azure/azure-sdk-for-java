@@ -15,14 +15,12 @@ import java.io.IOException;
  * Emitted when a partial code snippet is added by the code interpreter.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta
-    extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventCodeInterpreterCallCodeDelta extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type
-        = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_CODE_DELTA;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_CODE_DELTA;
 
     /*
      * The ID of the response that this stream event is associated with.
@@ -43,15 +41,14 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDe
     private final String delta;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta class.
+     * Creates an instance of ResponsesStreamEventCodeInterpreterCallCodeDelta class.
      * 
      * @param responseId the responseId value to set.
      * @param outputIndex the outputIndex value to set.
      * @param delta the delta value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta(String responseId, int outputIndex,
-        String delta) {
+    private ResponsesStreamEventCodeInterpreterCallCodeDelta(String responseId, int outputIndex, String delta) {
         this.responseId = responseId;
         this.outputIndex = outputIndex;
         this.delta = delta;
@@ -64,7 +61,7 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDe
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -113,24 +110,21 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDe
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta from the JsonReader.
+     * Reads an instance of ResponsesStreamEventCodeInterpreterCallCodeDelta from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta if the JsonReader was
-     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventCodeInterpreterCallCodeDelta if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the
-     * ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventCodeInterpreterCallCodeDelta.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static ResponsesStreamEventCodeInterpreterCallCodeDelta fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String responseId = null;
             int outputIndex = 0;
             String delta = null;
-            ResponsesResponseStreamEventType type
-                = ResponsesResponseStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_CODE_DELTA;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_CODE_INTERPRETER_CALL_CODE_DELTA;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -142,16 +136,16 @@ public final class ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDe
                 } else if ("delta".equals(fieldName)) {
                     delta = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta deserializedResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta
-                = new ResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta(responseId, outputIndex, delta);
-            deserializedResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta.type = type;
+            ResponsesStreamEventCodeInterpreterCallCodeDelta deserializedResponsesStreamEventCodeInterpreterCallCodeDelta
+                = new ResponsesStreamEventCodeInterpreterCallCodeDelta(responseId, outputIndex, delta);
+            deserializedResponsesStreamEventCodeInterpreterCallCodeDelta.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseCodeInterpreterCallCodeDelta;
+            return deserializedResponsesStreamEventCodeInterpreterCallCodeDelta;
         });
     }
 }

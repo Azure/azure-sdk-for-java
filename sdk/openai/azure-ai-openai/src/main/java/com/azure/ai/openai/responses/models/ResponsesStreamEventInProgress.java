@@ -15,12 +15,12 @@ import java.io.IOException;
  * Emitted when the response is in progress.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseInProgress extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventInProgress extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_IN_PROGRESS;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_IN_PROGRESS;
 
     /*
      * Detailed properties for the response now in progress.
@@ -29,12 +29,12 @@ public final class ResponsesResponseStreamEventResponseInProgress extends Respon
     private final ResponsesResponse response;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseInProgress class.
+     * Creates an instance of ResponsesStreamEventInProgress class.
      * 
      * @param response the response value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseInProgress(ResponsesResponse response) {
+    private ResponsesStreamEventInProgress(ResponsesResponse response) {
         this.response = response;
     }
 
@@ -45,7 +45,7 @@ public final class ResponsesResponseStreamEventResponseInProgress extends Respon
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -72,19 +72,19 @@ public final class ResponsesResponseStreamEventResponseInProgress extends Respon
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseInProgress from the JsonReader.
+     * Reads an instance of ResponsesStreamEventInProgress from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseInProgress if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventInProgress if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseInProgress.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventInProgress.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseInProgress fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesStreamEventInProgress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResponsesResponse response = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_IN_PROGRESS;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_IN_PROGRESS;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -92,16 +92,16 @@ public final class ResponsesResponseStreamEventResponseInProgress extends Respon
                 if ("response".equals(fieldName)) {
                     response = ResponsesResponse.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseInProgress deserializedResponsesResponseStreamEventResponseInProgress
-                = new ResponsesResponseStreamEventResponseInProgress(response);
-            deserializedResponsesResponseStreamEventResponseInProgress.type = type;
+            ResponsesStreamEventInProgress deserializedResponsesStreamEventInProgress
+                = new ResponsesStreamEventInProgress(response);
+            deserializedResponsesStreamEventInProgress.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseInProgress;
+            return deserializedResponsesStreamEventInProgress;
         });
     }
 }

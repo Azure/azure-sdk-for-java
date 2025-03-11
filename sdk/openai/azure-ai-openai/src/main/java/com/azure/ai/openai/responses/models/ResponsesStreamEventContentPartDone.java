@@ -12,15 +12,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Emitted when the text value of a "text" content part is updated.
+ * Emitted when a content part is done.
  */
 @Immutable
-public final class ResponsesResponseStreamEventResponseOutputTextDelta extends ResponsesResponseStreamEvent {
+public final class ResponsesStreamEventContentPartDone extends ResponsesStreamEvent {
     /*
      * The type property.
      */
     @Generated
-    private ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_DELTA;
+    private ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_CONTENT_PART_DONE;
 
     /*
      * The ID of the item that this stream event applies to.
@@ -41,26 +41,26 @@ public final class ResponsesResponseStreamEventResponseOutputTextDelta extends R
     private final int contentIndex;
 
     /*
-     * The text delta.
+     * The initialized content part that was added.
      */
     @Generated
-    private final String delta;
+    private final ResponsesContent part;
 
     /**
-     * Creates an instance of ResponsesResponseStreamEventResponseOutputTextDelta class.
+     * Creates an instance of ResponsesStreamEventContentPartDone class.
      * 
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
      * @param contentIndex the contentIndex value to set.
-     * @param delta the delta value to set.
+     * @param part the part value to set.
      */
     @Generated
-    private ResponsesResponseStreamEventResponseOutputTextDelta(String itemId, int outputIndex, int contentIndex,
-        String delta) {
+    private ResponsesStreamEventContentPartDone(String itemId, int outputIndex, int contentIndex,
+        ResponsesContent part) {
         this.itemId = itemId;
         this.outputIndex = outputIndex;
         this.contentIndex = contentIndex;
-        this.delta = delta;
+        this.part = part;
     }
 
     /**
@@ -70,7 +70,7 @@ public final class ResponsesResponseStreamEventResponseOutputTextDelta extends R
      */
     @Generated
     @Override
-    public ResponsesResponseStreamEventType getType() {
+    public ResponsesStreamEventType getType() {
         return this.type;
     }
 
@@ -105,13 +105,13 @@ public final class ResponsesResponseStreamEventResponseOutputTextDelta extends R
     }
 
     /**
-     * Get the delta property: The text delta.
+     * Get the part property: The initialized content part that was added.
      * 
-     * @return the delta value.
+     * @return the part value.
      */
     @Generated
-    public String getDelta() {
-        return this.delta;
+    public ResponsesContent getPart() {
+        return this.part;
     }
 
     /**
@@ -124,29 +124,28 @@ public final class ResponsesResponseStreamEventResponseOutputTextDelta extends R
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeIntField("output_index", this.outputIndex);
         jsonWriter.writeIntField("content_index", this.contentIndex);
-        jsonWriter.writeStringField("delta", this.delta);
+        jsonWriter.writeJsonField("part", this.part);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResponsesResponseStreamEventResponseOutputTextDelta from the JsonReader.
+     * Reads an instance of ResponsesStreamEventContentPartDone from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseStreamEventResponseOutputTextDelta if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ResponsesStreamEventContentPartDone if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseStreamEventResponseOutputTextDelta.
+     * @throws IOException If an error occurs while reading the ResponsesStreamEventContentPartDone.
      */
     @Generated
-    public static ResponsesResponseStreamEventResponseOutputTextDelta fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static ResponsesStreamEventContentPartDone fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String itemId = null;
             int outputIndex = 0;
             int contentIndex = 0;
-            String delta = null;
-            ResponsesResponseStreamEventType type = ResponsesResponseStreamEventType.RESPONSE_OUTPUT_TEXT_DELTA;
+            ResponsesContent part = null;
+            ResponsesStreamEventType type = ResponsesStreamEventType.RESPONSE_CONTENT_PART_DONE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -157,19 +156,19 @@ public final class ResponsesResponseStreamEventResponseOutputTextDelta extends R
                     outputIndex = reader.getInt();
                 } else if ("content_index".equals(fieldName)) {
                     contentIndex = reader.getInt();
-                } else if ("delta".equals(fieldName)) {
-                    delta = reader.getString();
+                } else if ("part".equals(fieldName)) {
+                    part = ResponsesContent.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesResponseStreamEventType.fromString(reader.getString());
+                    type = ResponsesStreamEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesResponseStreamEventResponseOutputTextDelta deserializedResponsesResponseStreamEventResponseOutputTextDelta
-                = new ResponsesResponseStreamEventResponseOutputTextDelta(itemId, outputIndex, contentIndex, delta);
-            deserializedResponsesResponseStreamEventResponseOutputTextDelta.type = type;
+            ResponsesStreamEventContentPartDone deserializedResponsesStreamEventContentPartDone
+                = new ResponsesStreamEventContentPartDone(itemId, outputIndex, contentIndex, part);
+            deserializedResponsesStreamEventContentPartDone.type = type;
 
-            return deserializedResponsesResponseStreamEventResponseOutputTextDelta;
+            return deserializedResponsesStreamEventContentPartDone;
         });
     }
 }
