@@ -19,7 +19,7 @@ public final class HttpRequestContext {
 
     // Request Configuration
     private String methodName;
-    private String methodReturnType;
+    private TypeMirror methodReturnType;
     private final List<MethodParameter> parameters;
     private HttpMethod httpMethod;
     private boolean isConvenience;
@@ -75,7 +75,7 @@ public final class HttpRequestContext {
      *
      * @return the method return type.
      */
-    public String getMethodReturnType() {
+    public TypeMirror getMethodReturnType() {
         return methodReturnType;
     }
 
@@ -84,7 +84,7 @@ public final class HttpRequestContext {
      *
      * @param methodReturnType the method return type to set.
      */
-    public void setMethodReturnType(String methodReturnType) {
+    public void setMethodReturnType(TypeMirror methodReturnType) {
         this.methodReturnType = methodReturnType;
     }
 

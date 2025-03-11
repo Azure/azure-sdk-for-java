@@ -22,7 +22,6 @@ pr:
     include:
       - sdk/identity/ci.v2.yml
       - sdk/identity/azure-identity-v2/
-      - sdk/core/azure-core-test-v2/
 
 parameters:
   - name: release_dependsonlivetests

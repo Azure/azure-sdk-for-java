@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,11 +60,6 @@ public final class ImplUtils {
         DEFAULT_HTTP_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
             Configuration.REQUEST_READ_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
     }
-
-    /**
-     * Default sanitizer for a value, where it is simply replaced with "REDACTED".
-     */
-    public static final Function<String, String> DEFAULT_SANITIZER = value -> "REDACTED";
 
     private ImplUtils() {
         // Exists only to defeat instantiation.
@@ -362,45 +356,6 @@ public final class ImplUtils {
                 return new String(bytes, offset, count, StandardCharsets.UTF_8);
             }
         }
-    }
-
-    /**
-     * Gets either the system property or environment variable configuration for the passed environment.
-     * <p>
-     * The system property is checked first, then the environment variable. If neither are found, null is returned.
-     *
-     * @param environmentConfiguration The environment to search.
-     * @param systemProperty The system property name.
-     * @param envVar The environment variable name.
-     * @param valueSanitizer The function to sanitize the value.
-     * @param logger The logger to log the property retrieval.
-     * @return The value of the property if found, otherwise null.
-     */
-    public static String getFromEnvironment(EnvironmentConfiguration environmentConfiguration, String systemProperty,
-        String envVar, Function<String, String> valueSanitizer, ClientLogger logger) {
-        if (systemProperty != null) {
-            final String value = environmentConfiguration.getSystemProperty(systemProperty);
-            if (value != null) {
-                logger.atVerbose()
-                    .addKeyValue("systemProperty", systemProperty)
-                    .addKeyValue("value", () -> valueSanitizer.apply(value))
-                    .log("Got property from system property.");
-                return value;
-            }
-        }
-
-        if (envVar != null) {
-            final String value = environmentConfiguration.getEnvironmentVariable(envVar);
-            if (value != null) {
-                logger.atVerbose()
-                    .addKeyValue("envVar", envVar)
-                    .addKeyValue("value", () -> valueSanitizer.apply(value))
-                    .log("Got property from environment variable.");
-                return value;
-            }
-        }
-
-        return null;
     }
 
     /**

@@ -1,8 +1,16 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.6 (2025-03-10)
 
 ### Breaking Changes
 
@@ -16,8 +24,6 @@
 
 - `JsonReader.readUntyped()` had incomplete support for untyped numerics. Numerics too large for `double` and `long` are
   now supported and a bug where exponents were not being parsed correctly is fixed.
-
-### Other Changes
 
 ## 1.0.0-beta.5 (2025-02-14)
 
