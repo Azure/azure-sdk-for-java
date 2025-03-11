@@ -199,7 +199,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
                     + " https://aka.ms/azsdk/java/identity/managedidentitycredential/troubleshoot")));
         }
 
-        // Not having a managedIdentityId at this point means it is a system-assigned managed identity.
         if (!CoreUtils.isNullOrEmpty(managedIdentityId)) {
             ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
             if (ManagedIdentitySourceType.CLOUD_SHELL.equals(managedIdentitySourceType)
@@ -212,8 +211,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
                             ? "DefaultAzureCredentialBuilder."
                             : "ManagedIdentityCredentialBuilder."))));
             }
-
-            LOGGER.info("User-assigned Managed Identity ID: " + getClientId());
         }
 
         return managedIdentityServiceCredential.authenticate(request)
