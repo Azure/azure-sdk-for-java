@@ -20,7 +20,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.serialization.ObjectSerializer;
+
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -33,15 +33,15 @@ public final class TestInterfaceClientImpl {
 
     @ServiceInterface(name = "myService")
     public interface TestInterfaceClientService {
-        static TestInterfaceClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer) {
+        static TestInterfaceClientService getNewInstance(HttpPipeline pipeline) {
             if (pipeline == null) {
                 throw new IllegalArgumentException("pipeline cannot be null");
             }
             try {
                 Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.implementation.TestInterfaceClientServiceImpl");
                 return (TestInterfaceClientService) clazz
-                    .getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class)
-                    .invoke(null, pipeline, serializer);
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
                      | InvocationTargetException e) {
                 throw new RuntimeException(e);

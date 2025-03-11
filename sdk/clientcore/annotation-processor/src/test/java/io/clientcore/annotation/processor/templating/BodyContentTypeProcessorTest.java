@@ -135,13 +135,13 @@ public class BodyContentTypeProcessorTest {
         return Stream.of(
             // scenario for isJson = true and parameterType == "ByteBuffer"
             Arguments.of(new HttpRequestContext.Body(null, "ByteBuffer", "request"),
-                "httpRequest.setBody(BinaryData.fromObject(request, serializer));"),
+                "httpRequest.setBody(BinaryData.fromObject(request, jsonSerializer));"),
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "BinaryData", "request"),
-                "httpRequest.setBody(BinaryData.fromObject(request, serializer));"),
+                "httpRequest.setBody(BinaryData.fromObject(request, jsonSerializer));"),
             Arguments.of(new HttpRequestContext.Body("application/json", "BinaryData", "request"),
-                "httpRequest.setBody(BinaryData.fromObject(request, serializer));"),
+                "httpRequest.setBody(BinaryData.fromObject(request, jsonSerializer));"),
             Arguments.of(new HttpRequestContext.Body("application/json", "serializable", "request"),
-                "httpRequest.setBody(BinaryData.fromObject(request, serializer))"),
+                "httpRequest.setBody(BinaryData.fromObject(request, jsonSerializer))"),
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "byte[]", "request"),
                 "httpRequest.setBody(BinaryData.fromBytes((byte[]) request))"),
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "String", "request"),
@@ -149,7 +149,7 @@ public class BodyContentTypeProcessorTest {
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "ByteBuffer", "request"),
                 "httpRequest.setBody(BinaryData.fromBytes(((ByteBuffer) request).array()))"),
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "Object", "request"),
-                "httpRequest.setBody(BinaryData.fromObject(request, serializer))"),
+                "httpRequest.setBody(BinaryData.fromObject(request, jsonSerializer))"),
             // scenario for isJson = false and parameterType == "String"
             Arguments.of(new HttpRequestContext.Body("text/html", "String", "request"),
                 "httpRequest.setBody(BinaryData.fromString((String) request));"),

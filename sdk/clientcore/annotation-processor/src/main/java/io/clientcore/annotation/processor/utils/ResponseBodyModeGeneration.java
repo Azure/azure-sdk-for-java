@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -102,8 +103,24 @@ public final class ResponseBodyModeGeneration {
                     }
                 }
             }
-            body.addStatement(
-                "Object result = decodeNetworkResponse(networkResponse.getValue(), serializer, returnType);");
+            String contentTypeValue = method.getHeaders()
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().equals("contentType"))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse(null);
+            if (contentTypeValue != null) {
+                if (contentTypeValue.trim().equalsIgnoreCase("application/xml")
+                    || contentTypeValue.trim().equalsIgnoreCase("application/xml;charset=utf-8")
+                    || contentTypeValue.trim().equalsIgnoreCase("text/xml")) {
+                    body.addStatement(
+                        "Object result = decodeByteArray(response.getBody().toBytes(), xmlSerializer, returnType);");
+                }
+            } else {
+                body.addStatement(
+                    "Object result = decodeByteArray(response.getBody().toBytes(), jsonSerializer, returnType);");
+            }
         }
 
         body.addStatement(StaticJavaParser.parseStatement("return new Response<>("
