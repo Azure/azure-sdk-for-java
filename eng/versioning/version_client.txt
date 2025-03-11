@@ -496,7 +496,6 @@ io.clientcore:annotation-processor-test;1.0.0-beta.1;1.0.0-beta.1
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
-unreleased_com.azure:azure-json;1.5.0
 unreleased_io.clientcore:core;1.0.0-beta.6
 unreleased_com.azure:azure-core-v2;2.0.0-beta.1
 
