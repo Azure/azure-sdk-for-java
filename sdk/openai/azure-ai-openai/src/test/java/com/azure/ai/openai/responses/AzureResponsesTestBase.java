@@ -20,13 +20,18 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+import static com.azure.ai.openai.responses.TestUtils.FAKE_API_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -35,44 +40,99 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AzureResponsesTestBase extends TestProxyTestBase {
 
+    private ResponsesClientBuilder getBuilderForTests(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClientBuilder builder = new ResponsesClientBuilder().httpClient(httpClient);
+        if (serviceVersion != null) {
+            builder.serviceVersion(serviceVersion);
+        }
+
+        TestMode testMode = getTestMode();
+
+        if (testMode != TestMode.LIVE) {
+            addTestRecordCustomSanitizers();
+            addCustomMatchers();
+            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+
+            if (testMode == TestMode.PLAYBACK) {
+                builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
+            } else if (testMode == TestMode.RECORD) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+        }
+        return builder;
+    }
+
+    private ResponsesClientBuilder getBuilderForTests(HttpClient httpClient) {
+        return getBuilderForTests(httpClient, null);
+    }
+
+
+    private void addTestRecordCustomSanitizers() {
+        interceptorManager.addSanitizers(
+                Arrays.asList(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                        new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+                        new TestProxySanitizer("Content-Type",
+                                "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                                "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)));
+    }
+
+    private void addCustomMatchers() {
+        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie")));
+    }
+
+    private void addAzureOpenAIEnvVars(ResponsesClientBuilder builder) {
+        builder.endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"));
+        builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+    }
+
+    private void AddOpenAIEnvVars(ResponsesClientBuilder builder) {
+        builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("OPENAI_KEY")));
+    }
+
     ResponsesClient getAzureResponseClient(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClientBuilder builder = new ResponsesClientBuilder().serviceVersion(serviceVersion)
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
-            .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")))
+        ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion)
             .addPolicy(
                 new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")))
-            .httpClient(httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
+        if (getTestMode() != TestMode.PLAYBACK) {
+            addAzureOpenAIEnvVars(builder);
+        }
         return builder.buildClient();
     }
 
     ResponsesAsyncClient getAzureResponseAsyncClient(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClientBuilder builder = new ResponsesClientBuilder().serviceVersion(serviceVersion)
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
-                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")))
-                .addPolicy(
-                        new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")))
-                .httpClient(httpClient)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion)
+            .addPolicy(
+                    new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        if (getTestMode() != TestMode.PLAYBACK) {
+            addAzureOpenAIEnvVars(builder);
+        }
 
         return builder.buildAsyncClient();
     }
 
     ResponsesClient getResponseClient(HttpClient httpClient) {
-        ResponsesClientBuilder builder = new ResponsesClientBuilder()
-            .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("OPENAI_KEY")))
-            .httpClient(httpClient)
+        ResponsesClientBuilder builder = getBuilderForTests(httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        if (getTestMode() != TestMode.PLAYBACK) {
+            AddOpenAIEnvVars(builder);
+        }
 
         return builder.buildClient();
     }
 
     ResponsesAsyncClient getResponseAsyncClient(HttpClient httpClient) {
-        ResponsesClientBuilder builder = new ResponsesClientBuilder()
-            .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("OPENAI_KEY")))
-            .httpClient(httpClient)
+        ResponsesClientBuilder builder = getBuilderForTests(httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        if (getTestMode() != TestMode.PLAYBACK) {
+            AddOpenAIEnvVars(builder);
+        }
 
         return builder.buildAsyncClient();
     }
@@ -111,7 +171,6 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         assertNotNull(response.getOutput());
         assertNull(response.getError());
         assertNotNull(response.getTools());
-        //        assertEquals(ResponsesResponseTruncation.DISABLED, response.getTruncation());
         assertTrue(response.getTemperature() >= 0 && response.getTemperature() <= 2);
         assertTrue(response.getTopP() >= 0 && response.getTopP() <= 1);
         assertNotNull(response.getUsage());

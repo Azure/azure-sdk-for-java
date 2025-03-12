@@ -20,6 +20,8 @@ public class TestUtils {
     private static final String AZURE_RESPONSES_TEST_SERVICE_VERSIONS = "AZURE_RESPONSES_TEST_SERVICE_VERSIONS";
     private static final String SERVICE_VERSION_FROM_ENV
         = Configuration.getGlobalConfiguration().get(AZURE_RESPONSES_TEST_SERVICE_VERSIONS);
+    static final String FAKE_API_KEY = "fakeKeyPlaceholder";
+
 
     static Stream<Arguments> getTestParametersResponses() {
         List<Arguments> argumentsList = new ArrayList<>();

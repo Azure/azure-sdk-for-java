@@ -13,6 +13,7 @@ import com.azure.ai.openai.responses.models.ResponsesStreamEventCompleted;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -105,6 +106,7 @@ public class AzureResponsesAsyncTest extends AzureResponsesTestBase {
         });
     }
 
+    @Disabled("Query parameter value not supported yet")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void getResponseWithIncludables(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
