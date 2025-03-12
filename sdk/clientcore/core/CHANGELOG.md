@@ -1,14 +1,9 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
-
-### Features Added
+## 1.0.0-beta.7 (2025-03-12)
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+ - API updates to refactor and cleanup public APIs [#44565](https://github.com/Azure/azure-sdk-for-java/pull/44565), [#44555](https://github.com/Azure/azure-sdk-for-java/pull/44555) and [#44592](https://github.com/Azure/azure-sdk-for-java/pull/44592)
 
 ## 1.0.0-beta.6 (2025-03-10)
 
