@@ -22,12 +22,14 @@ public final class LocalSource implements JsonSerializable<LocalSource> {
     private Integer id;
 
     /*
-     * Name of the local data provider. Name is displayed in the language specified by language code in URL, if available. Otherwise, Name is displayed in English or the language in which the name was provided.
+     * Name of the local data provider. Name is displayed in the language specified by language code in URL, if
+     * available. Otherwise, Name is displayed in English or the language in which the name was provided.
      */
     private String name;
 
     /*
-     * Weather code provided by the local data provider. This weather code allows the forecast to be matched to icons provided by the local data provider instead of Azure Maps icons.
+     * Weather code provided by the local data provider. This weather code allows the forecast to be matched to icons
+     * provided by the local data provider instead of Azure Maps icons.
      */
     private String weatherCode;
 

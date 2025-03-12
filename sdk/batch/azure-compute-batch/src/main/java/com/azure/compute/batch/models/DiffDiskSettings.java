@@ -22,8 +22,8 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * Specifies the ephemeral disk placement for operating system disk for all VMs in the pool. This property can be
      * used by user in the request to choose the location e.g., cache disk space for Ephemeral OS disk provisioning. For
      * more information on Ephemeral OS disk size requirements, please refer to Ephemeral OS disk size requirements for
-     * Windows VMs at https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and
-     * Linux VMs at https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
+     * Windows VMs at https://learn.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements
+     * and Linux VMs at https://learn.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
      */
     @Generated
     private DiffDiskPlacement placement;
@@ -40,8 +40,8 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * pool. This property can be used by user in the request to choose the location e.g., cache disk space for
      * Ephemeral OS disk provisioning. For more information on Ephemeral OS disk size requirements, please refer to
      * Ephemeral OS disk size requirements for Windows VMs at
-     * https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VMs at
-     * https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
+     * https://learn.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VMs at
+     * https://learn.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
      *
      * @return the placement value.
      */
@@ -55,8 +55,8 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * pool. This property can be used by user in the request to choose the location e.g., cache disk space for
      * Ephemeral OS disk provisioning. For more information on Ephemeral OS disk size requirements, please refer to
      * Ephemeral OS disk size requirements for Windows VMs at
-     * https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VMs at
-     * https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
+     * https://learn.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VMs at
+     * https://learn.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
      *
      * @param placement the placement value to set.
      * @return the DiffDiskSettings object itself.

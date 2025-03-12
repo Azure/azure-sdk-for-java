@@ -3,14 +3,11 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.http.exception.HttpExceptionType;
-import io.clientcore.core.http.exception.HttpResponseException;
-import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
@@ -18,18 +15,18 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.ReflectionSerializable;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
-import io.clientcore.core.util.Base64Uri;
-import io.clientcore.core.implementation.util.ImplUtils;
-import io.clientcore.core.util.UriBuilder;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.binarydata.InputStreamBinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
-import io.clientcore.core.util.serializer.SerializationFormat;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.InputStreamBinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.utils.Base64Uri;
+import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.UriBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +38,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
 import static io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
 public class RestProxyImpl {
@@ -96,7 +92,7 @@ public class RestProxyImpl {
                 request.setBody(RestProxyImpl.validateLength(request));
             }
 
-            final Response<?> response = httpPipeline.send(request);
+            final Response<BinaryData> response = httpPipeline.send(request);
 
             return handleRestReturnType(response, methodParser, methodParser.getReturnType(), serializer);
         } catch (IOException e) {
@@ -204,8 +200,8 @@ public class RestProxyImpl {
         methodParser.setEncodedQueryParameters(args, uriBuilder, serializer);
 
         final URI uri = uriBuilder.toUri();
-        final HttpRequest request
-            = configRequest(new HttpRequest(methodParser.getHttpMethod(), uri), methodParser, serializer, args);
+        final HttpRequest request = configRequest(new HttpRequest().setMethod(methodParser.getHttpMethod()).setUri(uri),
+            methodParser, serializer, args);
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
 
@@ -271,8 +267,8 @@ public class RestProxyImpl {
     }
 
     /**
-     * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has 'disallowed status
-     * code' OR (2) emits provided response if it's status code ia allowed.
+     * Throws an exception if the provided response {@code decodedResponse} has 'disallowed status code' OR returns a
+     * response that has 'allowed status code'.
      *
      * <p>'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser or is in the int[]
      * of additional allowed status codes.</p>
@@ -282,7 +278,7 @@ public class RestProxyImpl {
      * the HTTP request.
      * @return The decodedResponse.
      */
-    private static Response<?> ensureExpectedStatus(Response<?> response, SwaggerMethodParser methodParser,
+    private static Response<?> ensureExpectedStatus(Response<BinaryData> response, SwaggerMethodParser methodParser,
         CompositeSerializer serializer) {
         int responseStatusCode = response.getStatusCode();
 
@@ -292,14 +288,14 @@ public class RestProxyImpl {
         }
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
-        if (response.getBody() == null || response.getBody().toBytes().length == 0) {
+        if (response.getValue() == null || response.getValue().toBytes().length == 0) {
             // No body, create an exception response with an empty body.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode), response,
                 null, null);
         } else {
             // Create an exception response containing the decoded response body.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode), response,
-                response.getBody(), decodeByteArray(response.getBody(), response, serializer, methodParser));
+                response.getValue(), decodeByteArray(response.getValue(), response, serializer, methodParser));
         }
     }
 
@@ -313,8 +309,8 @@ public class RestProxyImpl {
      * @return The {@link HttpResponseException} created from the provided details.
      */
     private static HttpResponseException instantiateUnexpectedException(
-        UnexpectedExceptionInformation unexpectedExceptionInformation, Response<?> response, BinaryData responseBody,
-        Object responseDecodedBody) {
+        UnexpectedExceptionInformation unexpectedExceptionInformation, Response<BinaryData> response,
+        BinaryData responseBody, Object responseDecodedBody) {
         StringBuilder exceptionMessage
             = new StringBuilder("Status code ").append(response.getStatusCode()).append(", ");
 
@@ -339,16 +335,13 @@ public class RestProxyImpl {
             || responseDecodedBody instanceof MalformedValueException
             || responseDecodedBody instanceof IllegalStateException) {
 
-            return new HttpResponseException(exceptionMessage.toString(), response, null,
-                (Throwable) responseDecodedBody);
+            return new HttpResponseException(exceptionMessage.toString(), response, (Throwable) responseDecodedBody);
         }
 
-        HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
-
-        return new HttpResponseException(exceptionMessage.toString(), response, exceptionType, responseDecodedBody);
+        return new HttpResponseException(exceptionMessage.toString(), response, responseDecodedBody);
     }
 
-    private static Object handleRestResponseReturnType(Response<?> response, SwaggerMethodParser methodParser,
+    private static Object handleRestResponseReturnType(Response<BinaryData> response, SwaggerMethodParser methodParser,
         Type entityType, CompositeSerializer serializer) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
@@ -360,7 +353,7 @@ public class RestProxyImpl {
                     throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
                 }
 
-                return createResponseIfNecessary(response, entityType, null);
+                return new Response<Void>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
             } else {
                 ResponseBodyMode responseBodyMode = null;
                 RequestOptions requestOptions = response.getRequest().getRequestOptions();
@@ -369,26 +362,14 @@ public class RestProxyImpl {
                     responseBodyMode = requestOptions.getResponseBodyMode();
                 }
 
-                if (responseBodyMode == DESERIALIZE) {
-                    HttpResponseAccessHelper.setValue((HttpResponse<?>) response,
-                        handleResponseBody(response, methodParser, bodyType, response.getBody(), serializer));
-                } else {
-                    HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response,
-                        (body) -> handleResponseBody(response, methodParser, bodyType, body, serializer));
-                }
-
-                Response<?> responseToReturn = createResponseIfNecessary(response, entityType, response.getBody());
-
-                if (responseToReturn == null) {
-                    return createResponseIfNecessary(response, entityType, null);
-                }
-
-                return responseToReturn;
+                // TODO (alzimmer): Need a way to support deferred deserialization.
+                return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    handleResponseBody(response, methodParser, bodyType, response.getValue(), serializer));
             }
         } else {
             // When not handling a Response subtype, we need to eagerly read the response body to construct the correct
             // return type.
-            return handleResponseBody(response, methodParser, entityType, response.getBody(), serializer);
+            return handleResponseBody(response, methodParser, entityType, response.getValue(), serializer);
         }
     }
 
@@ -414,8 +395,8 @@ public class RestProxyImpl {
         }
     }
 
-    private static Object handleResponseBody(Response<?> response, SwaggerMethodParser methodParser, Type entityType,
-        BinaryData responseBody, CompositeSerializer serializer) {
+    private static Object handleResponseBody(Response<BinaryData> response, SwaggerMethodParser methodParser,
+        Type entityType, BinaryData responseBody, CompositeSerializer serializer) {
         final int responseStatusCode = response.getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
@@ -459,8 +440,8 @@ public class RestProxyImpl {
      * @param returnType The type of value that will be returned.
      * @return The deserialized result.
      */
-    private static Object handleRestReturnType(Response<?> response, SwaggerMethodParser methodParser, Type returnType,
-        CompositeSerializer serializer) {
+    private static Object handleRestReturnType(Response<BinaryData> response, SwaggerMethodParser methodParser,
+        Type returnType, CompositeSerializer serializer) {
         final Response<?> expectedResponse = ensureExpectedStatus(response, methodParser, serializer);
         final Object result;
 
@@ -531,7 +512,7 @@ public class RestProxyImpl {
         }
 
         String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
-        if (ImplUtils.isNullOrEmpty(contentType)) {
+        if (CoreUtils.isNullOrEmpty(contentType)) {
             // When in doubt, JSON!
             return SerializationFormat.JSON;
         }
