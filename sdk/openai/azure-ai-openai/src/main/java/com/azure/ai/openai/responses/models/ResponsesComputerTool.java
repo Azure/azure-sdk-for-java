@@ -26,13 +26,13 @@ public final class ResponsesComputerTool extends ResponsesTool {
      * The display_width property.
      */
     @Generated
-    private final double displayWidth;
+    private final int displayWidth;
 
     /*
      * The display_height property.
      */
     @Generated
-    private final double displayHeight;
+    private final int displayHeight;
 
     /*
      * The environment property.
@@ -57,7 +57,7 @@ public final class ResponsesComputerTool extends ResponsesTool {
      * @return the displayWidth value.
      */
     @Generated
-    public double getDisplayWidth() {
+    public int getDisplayWidth() {
         return this.displayWidth;
     }
 
@@ -67,7 +67,7 @@ public final class ResponsesComputerTool extends ResponsesTool {
      * @return the displayHeight value.
      */
     @Generated
-    public double getDisplayHeight() {
+    public int getDisplayHeight() {
         return this.displayHeight;
     }
 
@@ -88,8 +88,8 @@ public final class ResponsesComputerTool extends ResponsesTool {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeDoubleField("display_width", this.displayWidth);
-        jsonWriter.writeDoubleField("display_height", this.displayHeight);
+        jsonWriter.writeIntField("display_width", this.displayWidth);
+        jsonWriter.writeIntField("display_height", this.displayHeight);
         jsonWriter.writeStringField("environment", this.environment == null ? null : this.environment.toString());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
@@ -107,17 +107,17 @@ public final class ResponsesComputerTool extends ResponsesTool {
     @Generated
     public static ResponsesComputerTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            double displayWidth = 0.0;
-            double displayHeight = 0.0;
+            int displayWidth = 0;
+            int displayHeight = 0;
             ResponsesComputerToolEnvironment environment = null;
             ResponsesToolType type = ResponsesToolType.COMPUTER;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("display_width".equals(fieldName)) {
-                    displayWidth = reader.getDouble();
+                    displayWidth = reader.getInt();
                 } else if ("display_height".equals(fieldName)) {
-                    displayHeight = reader.getDouble();
+                    displayHeight = reader.getInt();
                 } else if ("environment".equals(fieldName)) {
                     environment = ResponsesComputerToolEnvironment.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
@@ -127,7 +127,7 @@ public final class ResponsesComputerTool extends ResponsesTool {
                 }
             }
             ResponsesComputerTool deserializedResponsesComputerTool
-                = new ResponsesComputerTool(displayWidth, displayHeight, environment);
+                    = new ResponsesComputerTool(displayWidth, displayHeight, environment);
             deserializedResponsesComputerTool.type = type;
             return deserializedResponsesComputerTool;
         });
@@ -141,8 +141,7 @@ public final class ResponsesComputerTool extends ResponsesTool {
      * @param environment the environment value to set.
      */
     @Generated
-    public ResponsesComputerTool(double displayWidth, double displayHeight,
-        ResponsesComputerToolEnvironment environment) {
+    public ResponsesComputerTool(int displayWidth, int displayHeight, ResponsesComputerToolEnvironment environment) {
         this.displayWidth = displayWidth;
         this.displayHeight = displayHeight;
         this.environment = environment;
