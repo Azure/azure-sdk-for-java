@@ -86,7 +86,7 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
      * The text property.
      */
     @Generated
-    private CreateResponsesRequestText text;
+    private ResponseTextOptions text;
 
     /*
      * The tools to use to generate a response.
@@ -108,7 +108,7 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
      * 400 error.
      */
     @Generated
-    private CreateResponsesRequestTruncation truncation;
+    private ResponseTruncation truncation;
 
     /*
      * A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn
@@ -386,20 +386,8 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
      * @return the text value.
      */
     @Generated
-    public CreateResponsesRequestText getText() {
+    public ResponseTextOptions getText() {
         return this.text;
-    }
-
-    /**
-     * Set the text property: The text property.
-     *
-     * @param text the text value to set.
-     * @return the CreateResponsesRequest object itself.
-     */
-    @Generated
-    public CreateResponsesRequest setText(CreateResponsesRequestText text) {
-        this.text = text;
-        return this;
     }
 
     /**
@@ -456,24 +444,8 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
      * @return the truncation value.
      */
     @Generated
-    public CreateResponsesRequestTruncation getTruncation() {
+    public ResponseTruncation getTruncation() {
         return this.truncation;
-    }
-
-    /**
-     * Set the truncation property: The truncation strategy to use for the model response.
-     * - `auto`: If the context of this response and previous ones exceeds the model's context window size, the model
-     * will truncate the response to fit the context window by dropping input items in the middle of the conversation.
-     * - `disabled`: If a model response will exceed the context window size for a model, the request will fail with a
-     * 400 error.
-     *
-     * @param truncation the truncation value to set.
-     * @return the CreateResponsesRequest object itself.
-     */
-    @Generated
-    public CreateResponsesRequest setTruncation(CreateResponsesRequestTruncation truncation) {
-        this.truncation = truncation;
-        return this;
     }
 
     /**
@@ -663,10 +635,10 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
             ResponsesReasoningConfiguration reasoning = null;
             Integer maxOutputTokens = null;
             String instructions = null;
-            CreateResponsesRequestText text = null;
+            ResponseTextOptions text = null;
             List<ResponsesTool> tools = null;
             BinaryData toolChoice = null;
-            CreateResponsesRequestTruncation truncation = null;
+            ResponseTruncation truncation = null;
             String user = null;
             List<CreateResponsesRequestIncludable> include = null;
             Boolean parallelToolCalls = null;
@@ -694,14 +666,14 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
                 } else if ("instructions".equals(fieldName)) {
                     instructions = reader.getString();
                 } else if ("text".equals(fieldName)) {
-                    text = CreateResponsesRequestText.fromJson(reader);
+                    text = ResponseTextOptions.fromJson(reader);
                 } else if ("tools".equals(fieldName)) {
                     tools = reader.readArray(reader1 -> ResponsesTool.fromJson(reader1));
                 } else if ("tool_choice".equals(fieldName)) {
                     toolChoice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("truncation".equals(fieldName)) {
-                    truncation = CreateResponsesRequestTruncation.fromString(reader.getString());
+                    truncation = ResponseTruncation.fromString(reader.getString());
                 } else if ("user".equals(fieldName)) {
                     user = reader.getString();
                 } else if ("include".equals(fieldName)) {
@@ -736,5 +708,33 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
             deserializedCreateResponsesRequest.stream = stream;
             return deserializedCreateResponsesRequest;
         });
+    }
+
+    /**
+     * Set the text property: The text property.
+     *
+     * @param text the text value to set.
+     * @return the CreateResponsesRequest object itself.
+     */
+    @Generated
+    public CreateResponsesRequest setText(ResponseTextOptions text) {
+        this.text = text;
+        return this;
+    }
+
+    /**
+     * Set the truncation property: The truncation strategy to use for the model response.
+     * - `auto`: If the context of this response and previous ones exceeds the model's context window size, the model
+     * will truncate the response to fit the context window by dropping input items in the middle of the conversation.
+     * - `disabled`: If a model response will exceed the context window size for a model, the request will fail with a
+     * 400 error.
+     *
+     * @param truncation the truncation value to set.
+     * @return the CreateResponsesRequest object itself.
+     */
+    @Generated
+    public CreateResponsesRequest setTruncation(ResponseTruncation truncation) {
+        this.truncation = truncation;
+        return this;
     }
 }

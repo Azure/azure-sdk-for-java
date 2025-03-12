@@ -406,33 +406,6 @@ public final class ResponsesAsyncClient {
     }
 
     /**
-     * Returns a list of input items for a given response.
-     *
-     * @param responseId The ID of the response to retrieve.
-     * @param limit The maximum number of input items to return.
-     * @param order The order in which to return the input items.
-     * @param after The cursor ID for positioning the returned list starting point.
-     * @param before The cursor ID for positioning the returned list end point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponsesInputItemList> listInputItems(String responseId, int limit, ListInputItemsRequestOrder order,
-        String after, String before) {
-        // Generated convenience method for listInputItemsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return listInputItemsWithResponse(responseId, limit, order.toString(), after, before, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ResponsesInputItemList.class));
-    }
-
-    /**
      * Creates a model response.
      *
      * @param accept The accept parameter.
@@ -601,5 +574,70 @@ public final class ResponsesAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return deleteResponseWithResponse(responseId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DeleteResponseResponse.class));
+    }
+
+    /**
+     * Returns a list of input items for a given response.
+     *
+     * @param responseId The ID of the response to retrieve.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponsesInputItemList> listInputItems(String responseId, Integer limit,
+        ListInputItemsRequestOrder order, String after, String before) {
+        // Generated convenience method for listInputItemsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return listInputItemsWithResponse(responseId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ResponsesInputItemList.class));
+    }
+
+    /**
+     * Returns a list of input items for a given response.
+     *
+     * @param responseId The ID of the response to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponsesInputItemList> listInputItems(String responseId) {
+        // Generated convenience method for listInputItemsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return listInputItemsWithResponse(responseId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ResponsesInputItemList.class));
     }
 }

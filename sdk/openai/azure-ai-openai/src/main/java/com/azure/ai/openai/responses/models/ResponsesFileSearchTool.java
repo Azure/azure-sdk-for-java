@@ -5,6 +5,7 @@ package com.azure.ai.openai.responses.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -99,6 +100,11 @@ public final class ResponsesFileSearchTool extends ResponsesTool {
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("max_num_results", this.maxNumResults);
+        jsonWriter.writeJsonField("ranking_options", this.rankingOptions);
+        if (this.filters != null) {
+            jsonWriter.writeFieldName("filters");
+            this.filters.writeTo(jsonWriter);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -117,6 +123,8 @@ public final class ResponsesFileSearchTool extends ResponsesTool {
             List<String> vectorStoreIds = null;
             ResponsesToolType type = ResponsesToolType.FILE_SEARCH;
             Integer maxNumResults = null;
+            ResponsesFileSearchToolRankingOptions rankingOptions = null;
+            BinaryData filters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -126,6 +134,10 @@ public final class ResponsesFileSearchTool extends ResponsesTool {
                     type = ResponsesToolType.fromString(reader.getString());
                 } else if ("max_num_results".equals(fieldName)) {
                     maxNumResults = reader.getNullable(JsonReader::getInt);
+                } else if ("ranking_options".equals(fieldName)) {
+                    rankingOptions = ResponsesFileSearchToolRankingOptions.fromJson(reader);
+                } else if ("filters".equals(fieldName)) {
+                    filters = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }
@@ -133,7 +145,65 @@ public final class ResponsesFileSearchTool extends ResponsesTool {
             ResponsesFileSearchTool deserializedResponsesFileSearchTool = new ResponsesFileSearchTool(vectorStoreIds);
             deserializedResponsesFileSearchTool.type = type;
             deserializedResponsesFileSearchTool.maxNumResults = maxNumResults;
+            deserializedResponsesFileSearchTool.rankingOptions = rankingOptions;
+            deserializedResponsesFileSearchTool.filters = filters;
             return deserializedResponsesFileSearchTool;
         });
+    }
+
+    /*
+     * The ranking_options property.
+     */
+    @Generated
+    private ResponsesFileSearchToolRankingOptions rankingOptions;
+
+    /*
+     * The filters property.
+     */
+    @Generated
+    private BinaryData filters;
+
+    /**
+     * Get the rankingOptions property: The ranking_options property.
+     *
+     * @return the rankingOptions value.
+     */
+    @Generated
+    public ResponsesFileSearchToolRankingOptions getRankingOptions() {
+        return this.rankingOptions;
+    }
+
+    /**
+     * Set the rankingOptions property: The ranking_options property.
+     *
+     * @param rankingOptions the rankingOptions value to set.
+     * @return the ResponsesFileSearchTool object itself.
+     */
+    @Generated
+    public ResponsesFileSearchTool setRankingOptions(ResponsesFileSearchToolRankingOptions rankingOptions) {
+        this.rankingOptions = rankingOptions;
+        return this;
+    }
+
+    /**
+     * Get the filters property: The filters property.
+     *
+     * @return the filters value.
+     */
+    @Generated
+    public BinaryData getFilters() {
+        return this.filters;
+    }
+
+    /**
+     * Set the filters property: The filters property.
+     *
+     * @param filters the filters value to set.
+     * @return the ResponsesFileSearchTool object itself.
+     */
+    @Generated
+    public ResponsesFileSearchTool setFilters(BinaryData filters) {
+        this.filters = filters;
+        return this;
     }
 }

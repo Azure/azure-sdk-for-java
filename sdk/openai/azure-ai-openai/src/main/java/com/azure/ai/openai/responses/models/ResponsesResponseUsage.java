@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesResponseUsage1 model.
+ * The ResponsesResponseUsage model.
  */
 @Immutable
-public final class ResponsesResponseUsage1 implements JsonSerializable<ResponsesResponseUsage1> {
+public final class ResponsesResponseUsage implements JsonSerializable<ResponsesResponseUsage> {
 
     /*
      * The input_tokens property.
@@ -42,7 +42,7 @@ public final class ResponsesResponseUsage1 implements JsonSerializable<Responses
     private final ResponsesResponseUsageOutputTokensDetails outputTokensDetails;
 
     /**
-     * Creates an instance of ResponsesResponseUsage1 class.
+     * Creates an instance of ResponsesResponseUsage class.
      *
      * @param inputTokens the inputTokens value to set.
      * @param outputTokens the outputTokens value to set.
@@ -50,7 +50,7 @@ public final class ResponsesResponseUsage1 implements JsonSerializable<Responses
      * @param outputTokensDetails the outputTokensDetails value to set.
      */
     @Generated
-    private ResponsesResponseUsage1(int inputTokens, int outputTokens, int totalTokens,
+    private ResponsesResponseUsage(int inputTokens, int outputTokens, int totalTokens,
         ResponsesResponseUsageOutputTokensDetails outputTokensDetails) {
         this.inputTokens = inputTokens;
         this.outputTokens = outputTokens;
@@ -113,16 +113,16 @@ public final class ResponsesResponseUsage1 implements JsonSerializable<Responses
     }
 
     /**
-     * Reads an instance of ResponsesResponseUsage1 from the JsonReader.
+     * Reads an instance of ResponsesResponseUsage from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesResponseUsage1 if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of ResponsesResponseUsage if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesResponseUsage1.
+     * @throws IOException If an error occurs while reading the ResponsesResponseUsage.
      */
     @Generated
-    public static ResponsesResponseUsage1 fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesResponseUsage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int inputTokens = 0;
             int outputTokens = 0;
@@ -143,7 +143,7 @@ public final class ResponsesResponseUsage1 implements JsonSerializable<Responses
                     reader.skipChildren();
                 }
             }
-            return new ResponsesResponseUsage1(inputTokens, outputTokens, totalTokens, outputTokensDetails);
+            return new ResponsesResponseUsage(inputTokens, outputTokens, totalTokens, outputTokensDetails);
         });
     }
 }

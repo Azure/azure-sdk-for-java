@@ -103,23 +103,23 @@ public final class ResponsesFunctionCallOutput extends ResponsesItem {
     public static ResponsesFunctionCallOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            ResponsesItemStatus status = null;
             String callId = null;
             String output = null;
             ResponsesItemType type = ResponsesItemType.FUNCTION_CALL_OUTPUT;
+            ResponsesFunctionCallOutputStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = ResponsesItemStatus.fromString(reader.getString());
                 } else if ("call_id".equals(fieldName)) {
                     callId = reader.getString();
                 } else if ("output".equals(fieldName)) {
                     output = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = ResponsesItemType.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    status = ResponsesFunctionCallOutputStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -127,9 +127,25 @@ public final class ResponsesFunctionCallOutput extends ResponsesItem {
             ResponsesFunctionCallOutput deserializedResponsesFunctionCallOutput
                 = new ResponsesFunctionCallOutput(callId, output);
             deserializedResponsesFunctionCallOutput.setId(id);
-            deserializedResponsesFunctionCallOutput.setStatus(status);
             deserializedResponsesFunctionCallOutput.type = type;
+            deserializedResponsesFunctionCallOutput.status = status;
             return deserializedResponsesFunctionCallOutput;
         });
+    }
+
+    /*
+     * The status property.
+     */
+    @Generated
+    private ResponsesFunctionCallOutputStatus status;
+
+    /**
+     * Get the status property: The status property.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public ResponsesFunctionCallOutputStatus getStatus() {
+        return this.status;
     }
 }

@@ -5,6 +5,7 @@ package com.azure.ai.openai.responses.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -39,16 +40,6 @@ public final class ResponsesTextFormatJsonSchema extends ResponsesTextFormat {
      */
     @Generated
     private Boolean strict;
-
-    /**
-     * Creates an instance of ResponsesTextFormatJsonSchema class.
-     *
-     * @param name the name value to set.
-     */
-    @Generated
-    public ResponsesTextFormatJsonSchema(String name) {
-        this.name = name;
-    }
 
     /**
      * Get the type property: The type property.
@@ -123,6 +114,8 @@ public final class ResponsesTextFormatJsonSchema extends ResponsesTextFormat {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeFieldName("schema");
+        this.schema.writeTo(jsonWriter);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeBooleanField("strict", this.strict);
@@ -142,6 +135,7 @@ public final class ResponsesTextFormatJsonSchema extends ResponsesTextFormat {
     public static ResponsesTextFormatJsonSchema fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
+            BinaryData schema = null;
             ResponsesTextFormatType type = ResponsesTextFormatType.JSON_SCHEMA;
             String description = null;
             Boolean strict = null;
@@ -150,6 +144,8 @@ public final class ResponsesTextFormatJsonSchema extends ResponsesTextFormat {
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
+                } else if ("schema".equals(fieldName)) {
+                    schema = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
                     type = ResponsesTextFormatType.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
@@ -161,11 +157,39 @@ public final class ResponsesTextFormatJsonSchema extends ResponsesTextFormat {
                 }
             }
             ResponsesTextFormatJsonSchema deserializedResponsesTextFormatJsonSchema
-                = new ResponsesTextFormatJsonSchema(name);
+                = new ResponsesTextFormatJsonSchema(name, schema);
             deserializedResponsesTextFormatJsonSchema.type = type;
             deserializedResponsesTextFormatJsonSchema.description = description;
             deserializedResponsesTextFormatJsonSchema.strict = strict;
             return deserializedResponsesTextFormatJsonSchema;
         });
+    }
+
+    /*
+     * The schema property.
+     */
+    @Generated
+    private final BinaryData schema;
+
+    /**
+     * Creates an instance of ResponsesTextFormatJsonSchema class.
+     *
+     * @param name the name value to set.
+     * @param schema the schema value to set.
+     */
+    @Generated
+    public ResponsesTextFormatJsonSchema(String name, BinaryData schema) {
+        this.name = name;
+        this.schema = schema;
+    }
+
+    /**
+     * Get the schema property: The schema property.
+     *
+     * @return the schema value.
+     */
+    @Generated
+    public BinaryData getSchema() {
+        return this.schema;
     }
 }

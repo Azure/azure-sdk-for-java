@@ -77,15 +77,13 @@ public class ResponsesTool implements JsonSerializable<ResponsesTool> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("code_interpreter".equals(discriminatorValue)) {
-                    return ResponsesCodeInterpreterTool.fromJson(readerToUse.reset());
-                } else if ("function".equals(discriminatorValue)) {
+                if ("function".equals(discriminatorValue)) {
                     return ResponsesFunctionTool.fromJson(readerToUse.reset());
                 } else if ("file_search".equals(discriminatorValue)) {
                     return ResponsesFileSearchTool.fromJson(readerToUse.reset());
-                } else if ("web_search".equals(discriminatorValue)) {
+                } else if ("web_search_preview".equals(discriminatorValue)) {
                     return ResponsesWebSearchTool.fromJson(readerToUse.reset());
-                } else if ("computer-preview".equals(discriminatorValue)) {
+                } else if ("computer_use_preview".equals(discriminatorValue)) {
                     return ResponsesComputerTool.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());

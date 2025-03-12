@@ -77,14 +77,14 @@ public class ResponsesComputerCallItemAction implements JsonSerializable<Respons
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("screenshot".equals(discriminatorValue)) {
-                    return ResponsesComputerCallScreenshotAction.fromJson(readerToUse.reset());
-                } else if ("click".equals(discriminatorValue)) {
+                if ("click".equals(discriminatorValue)) {
                     return ResponsesComputerCallClickAction.fromJson(readerToUse.reset());
                 } else if ("double_click".equals(discriminatorValue)) {
                     return ResponsesComputerCallDoubleClickAction.fromJson(readerToUse.reset());
                 } else if ("scroll".equals(discriminatorValue)) {
                     return ResponsesComputerCallScrollAction.fromJson(readerToUse.reset());
+                } else if ("screenshot".equals(discriminatorValue)) {
+                    return ResponsesComputerCallScreenshotAction.fromJson(readerToUse.reset());
                 } else if ("type".equals(discriminatorValue)) {
                     return ResponsesComputerCallTypeAction.fromJson(readerToUse.reset());
                 } else if ("wait".equals(discriminatorValue)) {

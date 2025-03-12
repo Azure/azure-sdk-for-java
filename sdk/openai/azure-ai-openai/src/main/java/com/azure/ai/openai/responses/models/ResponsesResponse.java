@@ -45,7 +45,7 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      * The status of the response generation.
      */
     @Generated
-    private final ResponsesResponseStatus status;
+    private ResponsesResponseStatus status;
 
     /*
      * The error property.
@@ -57,7 +57,7 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      * The incomplete_details property.
      */
     @Generated
-    private final ResponsesResponseIncompleteDetails1 incompleteDetails;
+    private final ResponsesResponseIncompleteDetails incompleteDetails;
 
     /*
      * The instructions property.
@@ -69,7 +69,7 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      * The max_output_tokens property.
      */
     @Generated
-    private final Integer maxOutputTokens;
+    private Integer maxOutputTokens;
 
     /*
      * The model used to generate this Response.
@@ -99,13 +99,7 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      * The reasoning property.
      */
     @Generated
-    private final ResponsesReasoningConfiguration reasoning;
-
-    /*
-     * The store property.
-     */
-    @Generated
-    private final boolean store;
+    private ResponsesReasoningConfiguration reasoning;
 
     /*
      * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while
@@ -120,7 +114,7 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      * The text property.
      */
     @Generated
-    private final ResponsesResponseText text;
+    private ResponseTextOptions text;
 
     /*
      * The tool_choice property.
@@ -150,19 +144,19 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      * 400 error.
      */
     @Generated
-    private final ResponsesResponseTruncation truncation;
+    private ResponseTruncation truncation;
 
     /*
      * The usage property.
      */
     @Generated
-    private final ResponsesResponseUsage1 usage;
+    private ResponsesResponseUsage usage;
 
     /*
      * The user property.
      */
     @Generated
-    private final String user;
+    private String user;
 
     /*
      * Set of 16 key-value pairs that can be attached to an object. This can be
@@ -174,67 +168,6 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      */
     @Generated
     private final Map<String, String> metadata;
-
-    /**
-     * Creates an instance of ResponsesResponse class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param status the status value to set.
-     * @param error the error value to set.
-     * @param incompleteDetails the incompleteDetails value to set.
-     * @param instructions the instructions value to set.
-     * @param maxOutputTokens the maxOutputTokens value to set.
-     * @param model the model value to set.
-     * @param output the output value to set.
-     * @param parallelToolCalls the parallelToolCalls value to set.
-     * @param previousResponseId the previousResponseId value to set.
-     * @param reasoning the reasoning value to set.
-     * @param store the store value to set.
-     * @param temperature the temperature value to set.
-     * @param text the text value to set.
-     * @param toolChoice the toolChoice value to set.
-     * @param tools the tools value to set.
-     * @param topP the topP value to set.
-     * @param truncation the truncation value to set.
-     * @param usage the usage value to set.
-     * @param user the user value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    private ResponsesResponse(String id, OffsetDateTime createdAt, ResponsesResponseStatus status, ResponsesError error,
-        ResponsesResponseIncompleteDetails1 incompleteDetails, String instructions, Integer maxOutputTokens,
-        String model, List<ResponsesItem> output, boolean parallelToolCalls, String previousResponseId,
-        ResponsesReasoningConfiguration reasoning, boolean store, double temperature, ResponsesResponseText text,
-        BinaryData toolChoice, List<ResponsesTool> tools, double topP, ResponsesResponseTruncation truncation,
-        ResponsesResponseUsage1 usage, String user, Map<String, String> metadata) {
-        this.id = id;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.status = status;
-        this.error = error;
-        this.incompleteDetails = incompleteDetails;
-        this.instructions = instructions;
-        this.maxOutputTokens = maxOutputTokens;
-        this.model = model;
-        this.output = output;
-        this.parallelToolCalls = parallelToolCalls;
-        this.previousResponseId = previousResponseId;
-        this.reasoning = reasoning;
-        this.store = store;
-        this.temperature = temperature;
-        this.text = text;
-        this.toolChoice = toolChoice;
-        this.tools = tools;
-        this.topP = topP;
-        this.truncation = truncation;
-        this.usage = usage;
-        this.user = user;
-        this.metadata = metadata;
-    }
 
     /**
      * Get the id property: A unique identifier for this Response.
@@ -292,7 +225,7 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      * @return the incompleteDetails value.
      */
     @Generated
-    public ResponsesResponseIncompleteDetails1 getIncompleteDetails() {
+    public ResponsesResponseIncompleteDetails getIncompleteDetails() {
         return this.incompleteDetails;
     }
 
@@ -368,16 +301,6 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
     }
 
     /**
-     * Get the store property: The store property.
-     *
-     * @return the store value.
-     */
-    @Generated
-    public boolean isStore() {
-        return this.store;
-    }
-
-    /**
      * Get the temperature property: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
      * the output more random, while lower values like 0.2 will make it more focused and deterministic.
      *
@@ -396,7 +319,7 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      * @return the text value.
      */
     @Generated
-    public ResponsesResponseText getText() {
+    public ResponseTextOptions getText() {
         return this.text;
     }
 
@@ -442,7 +365,7 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      * @return the truncation value.
      */
     @Generated
-    public ResponsesResponseTruncation getTruncation() {
+    public ResponseTruncation getTruncation() {
         return this.truncation;
     }
 
@@ -452,7 +375,7 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      * @return the usage value.
      */
     @Generated
-    public ResponsesResponseUsage1 getUsage() {
+    public ResponsesResponseUsage getUsage() {
         return this.usage;
     }
 
@@ -491,27 +414,26 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("object", this.object);
         jsonWriter.writeLongField("created_at", this.createdAt);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeJsonField("incomplete_details", this.incompleteDetails);
         jsonWriter.writeStringField("instructions", this.instructions);
-        jsonWriter.writeNumberField("max_output_tokens", this.maxOutputTokens);
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeArrayField("output", this.output, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         jsonWriter.writeStringField("previous_response_id", this.previousResponseId);
-        jsonWriter.writeJsonField("reasoning", this.reasoning);
-        jsonWriter.writeBooleanField("store", this.store);
         jsonWriter.writeDoubleField("temperature", this.temperature);
-        jsonWriter.writeJsonField("text", this.text);
         jsonWriter.writeFieldName("tool_choice");
         this.toolChoice.writeTo(jsonWriter);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeDoubleField("top_p", this.topP);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeNumberField("max_output_tokens", this.maxOutputTokens);
+        jsonWriter.writeJsonField("reasoning", this.reasoning);
+        jsonWriter.writeJsonField("text", this.text);
         jsonWriter.writeStringField("truncation", this.truncation == null ? null : this.truncation.toString());
         jsonWriter.writeJsonField("usage", this.usage);
         jsonWriter.writeStringField("user", this.user);
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -529,26 +451,25 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
         return jsonReader.readObject(reader -> {
             String id = null;
             OffsetDateTime createdAt = null;
-            ResponsesResponseStatus status = null;
             ResponsesError error = null;
-            ResponsesResponseIncompleteDetails1 incompleteDetails = null;
+            ResponsesResponseIncompleteDetails incompleteDetails = null;
             String instructions = null;
-            Integer maxOutputTokens = null;
             String model = null;
             List<ResponsesItem> output = null;
             boolean parallelToolCalls = false;
             String previousResponseId = null;
-            ResponsesReasoningConfiguration reasoning = null;
-            boolean store = false;
             double temperature = 0.0;
-            ResponsesResponseText text = null;
             BinaryData toolChoice = null;
             List<ResponsesTool> tools = null;
             double topP = 0.0;
-            ResponsesResponseTruncation truncation = null;
-            ResponsesResponseUsage1 usage = null;
-            String user = null;
             Map<String, String> metadata = null;
+            ResponsesResponseStatus status = null;
+            Integer maxOutputTokens = null;
+            ResponsesReasoningConfiguration reasoning = null;
+            ResponseTextOptions text = null;
+            ResponseTruncation truncation = null;
+            ResponsesResponseUsage usage = null;
+            String user = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -556,16 +477,12 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
                     id = reader.getString();
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
-                } else if ("status".equals(fieldName)) {
-                    status = ResponsesResponseStatus.fromString(reader.getString());
                 } else if ("error".equals(fieldName)) {
                     error = ResponsesError.fromJson(reader);
                 } else if ("incomplete_details".equals(fieldName)) {
-                    incompleteDetails = ResponsesResponseIncompleteDetails1.fromJson(reader);
+                    incompleteDetails = ResponsesResponseIncompleteDetails.fromJson(reader);
                 } else if ("instructions".equals(fieldName)) {
                     instructions = reader.getString();
-                } else if ("max_output_tokens".equals(fieldName)) {
-                    maxOutputTokens = reader.getNullable(JsonReader::getInt);
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
                 } else if ("output".equals(fieldName)) {
@@ -574,14 +491,8 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
                     parallelToolCalls = reader.getBoolean();
                 } else if ("previous_response_id".equals(fieldName)) {
                     previousResponseId = reader.getString();
-                } else if ("reasoning".equals(fieldName)) {
-                    reasoning = ResponsesReasoningConfiguration.fromJson(reader);
-                } else if ("store".equals(fieldName)) {
-                    store = reader.getBoolean();
                 } else if ("temperature".equals(fieldName)) {
                     temperature = reader.getDouble();
-                } else if ("text".equals(fieldName)) {
-                    text = ResponsesResponseText.fromJson(reader);
                 } else if ("tool_choice".equals(fieldName)) {
                     toolChoice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
@@ -589,21 +500,80 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
                     tools = reader.readArray(reader1 -> ResponsesTool.fromJson(reader1));
                 } else if ("top_p".equals(fieldName)) {
                     topP = reader.getDouble();
-                } else if ("truncation".equals(fieldName)) {
-                    truncation = ResponsesResponseTruncation.fromString(reader.getString());
-                } else if ("usage".equals(fieldName)) {
-                    usage = ResponsesResponseUsage1.fromJson(reader);
-                } else if ("user".equals(fieldName)) {
-                    user = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("status".equals(fieldName)) {
+                    status = ResponsesResponseStatus.fromString(reader.getString());
+                } else if ("max_output_tokens".equals(fieldName)) {
+                    maxOutputTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("reasoning".equals(fieldName)) {
+                    reasoning = ResponsesReasoningConfiguration.fromJson(reader);
+                } else if ("text".equals(fieldName)) {
+                    text = ResponseTextOptions.fromJson(reader);
+                } else if ("truncation".equals(fieldName)) {
+                    truncation = ResponseTruncation.fromString(reader.getString());
+                } else if ("usage".equals(fieldName)) {
+                    usage = ResponsesResponseUsage.fromJson(reader);
+                } else if ("user".equals(fieldName)) {
+                    user = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ResponsesResponse(id, createdAt, status, error, incompleteDetails, instructions, maxOutputTokens,
-                model, output, parallelToolCalls, previousResponseId, reasoning, store, temperature, text, toolChoice,
-                tools, topP, truncation, usage, user, metadata);
+            ResponsesResponse deserializedResponsesResponse
+                = new ResponsesResponse(id, createdAt, error, incompleteDetails, instructions, model, output,
+                    parallelToolCalls, previousResponseId, temperature, toolChoice, tools, topP, metadata);
+            deserializedResponsesResponse.status = status;
+            deserializedResponsesResponse.maxOutputTokens = maxOutputTokens;
+            deserializedResponsesResponse.reasoning = reasoning;
+            deserializedResponsesResponse.text = text;
+            deserializedResponsesResponse.truncation = truncation;
+            deserializedResponsesResponse.usage = usage;
+            deserializedResponsesResponse.user = user;
+            return deserializedResponsesResponse;
         });
+    }
+
+    /**
+     * Creates an instance of ResponsesResponse class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param error the error value to set.
+     * @param incompleteDetails the incompleteDetails value to set.
+     * @param instructions the instructions value to set.
+     * @param model the model value to set.
+     * @param output the output value to set.
+     * @param parallelToolCalls the parallelToolCalls value to set.
+     * @param previousResponseId the previousResponseId value to set.
+     * @param temperature the temperature value to set.
+     * @param toolChoice the toolChoice value to set.
+     * @param tools the tools value to set.
+     * @param topP the topP value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private ResponsesResponse(String id, OffsetDateTime createdAt, ResponsesError error,
+                              ResponsesResponseIncompleteDetails incompleteDetails, String instructions, String model,
+                              List<ResponsesItem> output, boolean parallelToolCalls, String previousResponseId, double temperature,
+                              BinaryData toolChoice, List<ResponsesTool> tools, double topP, Map<String, String> metadata) {
+        this.id = id;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.error = error;
+        this.incompleteDetails = incompleteDetails;
+        this.instructions = instructions;
+        this.model = model;
+        this.output = output;
+        this.parallelToolCalls = parallelToolCalls;
+        this.previousResponseId = previousResponseId;
+        this.temperature = temperature;
+        this.toolChoice = toolChoice;
+        this.tools = tools;
+        this.topP = topP;
+        this.metadata = metadata;
     }
 }

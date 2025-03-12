@@ -14,31 +14,6 @@ public enum ResponsesStreamEventType {
     ERROR("error"),
 
     /**
-     * Enum value response.code_interpreter_call.code.delta.
-     */
-    RESPONSE_CODE_INTERPRETER_CALL_CODE_DELTA("response.code_interpreter_call.code.delta"),
-
-    /**
-     * Enum value response.code_interpreter_call.code.done.
-     */
-    RESPONSE_CODE_INTERPRETER_CALL_CODE_DONE("response.code_interpreter_call.code.done"),
-
-    /**
-     * Enum value response.code_interpreter_call.completed.
-     */
-    RESPONSE_CODE_INTERPRETER_CALL_COMPLETED("response.code_interpreter_call.completed"),
-
-    /**
-     * Enum value response.code_interpreter_call.in_progress.
-     */
-    RESPONSE_CODE_INTERPRETER_CALL_IN_PROGRESS("response.code_interpreter_call.in_progress"),
-
-    /**
-     * Enum value response.code_interpreter_call.interpreting.
-     */
-    RESPONSE_CODE_INTERPRETER_CALL_INTERPRETING("response.code_interpreter_call.interpreting"),
-
-    /**
      * Enum value response.completed.
      */
     RESPONSE_COMPLETED("response.completed"),
@@ -131,7 +106,22 @@ public enum ResponsesStreamEventType {
     /**
      * Enum value response.refusal.done.
      */
-    RESPONSE_REFUSAL_DONE("response.refusal.done");
+    RESPONSE_REFUSAL_DONE("response.refusal.done"),
+
+    /**
+     * Enum value response.web_search_call.completed.
+     */
+    RESPONSE_WEB_SEARCH_CALL_COMPLETED("response.web_search_call.completed"),
+
+    /**
+     * Enum value response.web_search_call.in_progress.
+     */
+    RESPONSE_WEB_SEARCH_CALL_IN_PROGRESS("response.web_search_call.in_progress"),
+
+    /**
+     * Enum value response.web_search_call.searching.
+     */
+    RESPONSE_WEB_SEARCH_CALL_SEARCHING("response.web_search_call.searching");
 
     /**
      * The actual serialized value for a ResponsesStreamEventType instance.

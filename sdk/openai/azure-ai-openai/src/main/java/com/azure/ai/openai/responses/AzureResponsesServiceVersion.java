@@ -53,7 +53,12 @@ public enum AzureResponsesServiceVersion implements ServiceVersion {
     /**
      * Enum value 2025-01-01-preview.
      */
-    V2025_01_01_PREVIEW("2025-01-01-preview");
+    V2025_01_01_PREVIEW("2025-01-01-preview"),
+
+    /**
+     * Enum value 2025-03-01-preview.
+     */
+    V2025_03_01_PREVIEW("2025-03-01-preview");
 
     private final String version;
 
@@ -75,6 +80,6 @@ public enum AzureResponsesServiceVersion implements ServiceVersion {
      * @return The latest {@link AzureResponsesServiceVersion}.
      */
     public static AzureResponsesServiceVersion getLatest() {
-        return V2025_01_01_PREVIEW;
+        return V2025_03_01_PREVIEW;
     }
 }

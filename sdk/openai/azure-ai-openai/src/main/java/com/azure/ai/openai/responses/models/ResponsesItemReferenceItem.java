@@ -68,9 +68,6 @@ public final class ResponsesItemReferenceItem extends ResponsesItem {
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     deserializedResponsesItemReferenceItem.setId(reader.getString());
-                } else if ("status".equals(fieldName)) {
-                    deserializedResponsesItemReferenceItem
-                        .setStatus(ResponsesItemStatus.fromString(reader.getString()));
                 } else if ("type".equals(fieldName)) {
                     deserializedResponsesItemReferenceItem.type = ResponsesItemType.fromString(reader.getString());
                 } else {

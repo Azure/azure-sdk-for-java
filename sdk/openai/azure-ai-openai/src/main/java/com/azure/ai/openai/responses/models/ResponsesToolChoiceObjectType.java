@@ -9,29 +9,24 @@ package com.azure.ai.openai.responses.models;
  */
 public enum ResponsesToolChoiceObjectType {
     /**
-     * Enum value file_search.
-     */
-    FILE_SEARCH("file_search"),
-
-    /**
-     * Enum value web_search.
-     */
-    WEB_SEARCH("web_search"),
-
-    /**
-     * Enum value code_interpreter.
-     */
-    CODE_INTERPRETER("code_interpreter"),
-
-    /**
      * Enum value function.
      */
     FUNCTION("function"),
 
     /**
-     * Enum value computer-preview.
+     * Enum value file_search.
      */
-    COMPUTER_PREVIEW("computer-preview");
+    FILE_SEARCH("file_search"),
+
+    /**
+     * Enum value web_search_preview.
+     */
+    WEB_SEARCH("web_search_preview"),
+
+    /**
+     * Enum value computer_use_preview.
+     */
+    COMPUTER("computer_use_preview");
 
     /**
      * The actual serialized value for a ResponsesToolChoiceObjectType instance.

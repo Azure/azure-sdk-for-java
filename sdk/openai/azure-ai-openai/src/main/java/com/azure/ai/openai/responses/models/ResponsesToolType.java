@@ -9,11 +9,6 @@ package com.azure.ai.openai.responses.models;
  */
 public enum ResponsesToolType {
     /**
-     * Enum value code_interpreter.
-     */
-    CODE_INTERPRETER("code_interpreter"),
-
-    /**
      * Enum value function.
      */
     FUNCTION("function"),
@@ -24,14 +19,14 @@ public enum ResponsesToolType {
     FILE_SEARCH("file_search"),
 
     /**
-     * Enum value web_search.
+     * Enum value web_search_preview.
      */
-    WEB_SEARCH("web_search"),
+    WEB_SEARCH("web_search_preview"),
 
     /**
-     * Enum value computer-preview.
+     * Enum value computer_use_preview.
      */
-    COMPUTER("computer-preview");
+    COMPUTER("computer_use_preview");
 
     /**
      * The actual serialized value for a ResponsesToolType instance.

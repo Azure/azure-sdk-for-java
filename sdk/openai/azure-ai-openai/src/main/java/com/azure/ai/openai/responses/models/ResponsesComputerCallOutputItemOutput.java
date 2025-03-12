@@ -21,7 +21,7 @@ public class ResponsesComputerCallOutputItemOutput implements JsonSerializable<R
      * The type property.
      */
     @Generated
-    private ResponsesComputerCallOutputItemType type;
+    private ResponsesComputerCallOutputItemOutputType type;
 
     /**
      * Creates an instance of ResponsesComputerCallOutputItemOutput class.
@@ -36,7 +36,7 @@ public class ResponsesComputerCallOutputItemOutput implements JsonSerializable<R
      * @return the type value.
      */
     @Generated
-    public ResponsesComputerCallOutputItemType getType() {
+    public ResponsesComputerCallOutputItemOutputType getType() {
         return this.type;
     }
 
@@ -96,7 +96,7 @@ public class ResponsesComputerCallOutputItemOutput implements JsonSerializable<R
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     deserializedResponsesComputerCallOutputItemOutput.type
-                        = ResponsesComputerCallOutputItemType.fromString(reader.getString());
+                        = ResponsesComputerCallOutputItemOutputType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -14,7 +14,6 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
@@ -221,9 +220,8 @@ public final class ResponsesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listInputItems(@HostParam("endpoint") String endpoint,
-            @PathParam("response_id") String responseId, @QueryParam("limit") int limit,
-            @QueryParam("order") String order, @QueryParam("after") String after, @QueryParam("before") String before,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/responses/{response_id}/input_items")
         @ExpectedResponses({ 200 })
@@ -232,9 +230,8 @@ public final class ResponsesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listInputItemsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("response_id") String responseId, @QueryParam("limit") int limit,
-            @QueryParam("order") String order, @QueryParam("after") String after, @QueryParam("before") String before,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -253,7 +250,7 @@ public final class ResponsesClientImpl {
      *     previous_response_id: String (Optional)
      *     reasoning (Optional): {
      *         effort: String(low/medium/high) (Required)
-     *         summary: String(concise/detailed) (Optional)
+     *         generate_summary: String(concise/detailed) (Optional)
      *     }
      *     max_output_tokens: Integer (Optional)
      *     instructions: String (Optional)
@@ -264,7 +261,7 @@ public final class ResponsesClientImpl {
      *     }
      *     tools (Optional): [
      *          (Optional){
-     *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
+     *             type: String(function/file_search/web_search_preview/computer_use_preview) (Required)
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
@@ -289,48 +286,44 @@ public final class ResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(completed/in_progress/failed/incomplete) (Required)
+     *     status: String(completed/in_progress/failed/incomplete) (Optional)
      *     error (Required): {
-     *         message: String (Required)
-     *         type: String (Required)
-     *         param: String (Required)
      *         code: String (Required)
+     *         message: String (Required)
      *     }
      *     incomplete_details (Required): {
-     *         reason: String(max_output_tokens/content_filter) (Required)
+     *         reason: String(max_output_tokens/content_filter) (Optional)
      *     }
      *     instructions: String (Required)
-     *     max_output_tokens: Integer (Required)
+     *     max_output_tokens: Integer (Optional)
      *     model: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
      *             id: String (Optional)
-     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
      *     previous_response_id: String (Required)
-     *     reasoning (Required): {
+     *     reasoning (Optional): {
      *         effort: String(low/medium/high) (Required)
-     *         summary: String(concise/detailed) (Optional)
+     *         generate_summary: String(concise/detailed) (Optional)
      *     }
-     *     store: boolean (Required)
      *     temperature: double (Required)
-     *     text (Required): {
-     *         format (Required): {
+     *     text (Optional): {
+     *         format (Optional): {
      *             type: String(text/json_object/json_schema) (Required)
      *         }
      *     }
      *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
+     *             type: String(function/file_search/web_search_preview/computer_use_preview) (Required)
      *         }
      *     ]
      *     top_p: double (Required)
-     *     truncation: String(auto/disabled) (Required)
-     *     usage (Required): {
+     *     truncation: String(auto/disabled) (Optional)
+     *     usage (Optional): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
      *         total_tokens: int (Required)
@@ -338,7 +331,7 @@ public final class ResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
-     *     user: String (Required)
+     *     user: String (Optional)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -379,7 +372,7 @@ public final class ResponsesClientImpl {
      *     previous_response_id: String (Optional)
      *     reasoning (Optional): {
      *         effort: String(low/medium/high) (Required)
-     *         summary: String(concise/detailed) (Optional)
+     *         generate_summary: String(concise/detailed) (Optional)
      *     }
      *     max_output_tokens: Integer (Optional)
      *     instructions: String (Optional)
@@ -390,7 +383,7 @@ public final class ResponsesClientImpl {
      *     }
      *     tools (Optional): [
      *          (Optional){
-     *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
+     *             type: String(function/file_search/web_search_preview/computer_use_preview) (Required)
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
@@ -415,48 +408,44 @@ public final class ResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(completed/in_progress/failed/incomplete) (Required)
+     *     status: String(completed/in_progress/failed/incomplete) (Optional)
      *     error (Required): {
-     *         message: String (Required)
-     *         type: String (Required)
-     *         param: String (Required)
      *         code: String (Required)
+     *         message: String (Required)
      *     }
      *     incomplete_details (Required): {
-     *         reason: String(max_output_tokens/content_filter) (Required)
+     *         reason: String(max_output_tokens/content_filter) (Optional)
      *     }
      *     instructions: String (Required)
-     *     max_output_tokens: Integer (Required)
+     *     max_output_tokens: Integer (Optional)
      *     model: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
      *             id: String (Optional)
-     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
      *     previous_response_id: String (Required)
-     *     reasoning (Required): {
+     *     reasoning (Optional): {
      *         effort: String(low/medium/high) (Required)
-     *         summary: String(concise/detailed) (Optional)
+     *         generate_summary: String(concise/detailed) (Optional)
      *     }
-     *     store: boolean (Required)
      *     temperature: double (Required)
-     *     text (Required): {
-     *         format (Required): {
+     *     text (Optional): {
+     *         format (Optional): {
      *             type: String(text/json_object/json_schema) (Required)
      *         }
      *     }
      *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
+     *             type: String(function/file_search/web_search_preview/computer_use_preview) (Required)
      *         }
      *     ]
      *     top_p: double (Required)
-     *     truncation: String(auto/disabled) (Required)
-     *     usage (Required): {
+     *     truncation: String(auto/disabled) (Optional)
+     *     usage (Optional): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
      *         total_tokens: int (Required)
@@ -464,7 +453,7 @@ public final class ResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
-     *     user: String (Required)
+     *     user: String (Optional)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -507,48 +496,44 @@ public final class ResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(completed/in_progress/failed/incomplete) (Required)
+     *     status: String(completed/in_progress/failed/incomplete) (Optional)
      *     error (Required): {
-     *         message: String (Required)
-     *         type: String (Required)
-     *         param: String (Required)
      *         code: String (Required)
+     *         message: String (Required)
      *     }
      *     incomplete_details (Required): {
-     *         reason: String(max_output_tokens/content_filter) (Required)
+     *         reason: String(max_output_tokens/content_filter) (Optional)
      *     }
      *     instructions: String (Required)
-     *     max_output_tokens: Integer (Required)
+     *     max_output_tokens: Integer (Optional)
      *     model: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
      *             id: String (Optional)
-     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
      *     previous_response_id: String (Required)
-     *     reasoning (Required): {
+     *     reasoning (Optional): {
      *         effort: String(low/medium/high) (Required)
-     *         summary: String(concise/detailed) (Optional)
+     *         generate_summary: String(concise/detailed) (Optional)
      *     }
-     *     store: boolean (Required)
      *     temperature: double (Required)
-     *     text (Required): {
-     *         format (Required): {
+     *     text (Optional): {
+     *         format (Optional): {
      *             type: String(text/json_object/json_schema) (Required)
      *         }
      *     }
      *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
+     *             type: String(function/file_search/web_search_preview/computer_use_preview) (Required)
      *         }
      *     ]
      *     top_p: double (Required)
-     *     truncation: String(auto/disabled) (Required)
-     *     usage (Required): {
+     *     truncation: String(auto/disabled) (Optional)
+     *     usage (Optional): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
      *         total_tokens: int (Required)
@@ -556,7 +541,7 @@ public final class ResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
-     *     user: String (Required)
+     *     user: String (Optional)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -597,48 +582,44 @@ public final class ResponsesClientImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     status: String(completed/in_progress/failed/incomplete) (Required)
+     *     status: String(completed/in_progress/failed/incomplete) (Optional)
      *     error (Required): {
-     *         message: String (Required)
-     *         type: String (Required)
-     *         param: String (Required)
      *         code: String (Required)
+     *         message: String (Required)
      *     }
      *     incomplete_details (Required): {
-     *         reason: String(max_output_tokens/content_filter) (Required)
+     *         reason: String(max_output_tokens/content_filter) (Optional)
      *     }
      *     instructions: String (Required)
-     *     max_output_tokens: Integer (Required)
+     *     max_output_tokens: Integer (Optional)
      *     model: String (Required)
      *     output (Required): [
      *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
      *             id: String (Optional)
-     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
      *         }
      *     ]
      *     parallel_tool_calls: boolean (Required)
      *     previous_response_id: String (Required)
-     *     reasoning (Required): {
+     *     reasoning (Optional): {
      *         effort: String(low/medium/high) (Required)
-     *         summary: String(concise/detailed) (Optional)
+     *         generate_summary: String(concise/detailed) (Optional)
      *     }
-     *     store: boolean (Required)
      *     temperature: double (Required)
-     *     text (Required): {
-     *         format (Required): {
+     *     text (Optional): {
+     *         format (Optional): {
      *             type: String(text/json_object/json_schema) (Required)
      *         }
      *     }
      *     tool_choice: BinaryData (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/function/file_search/web_search/computer-preview) (Required)
+     *             type: String(function/file_search/web_search_preview/computer_use_preview) (Required)
      *         }
      *     ]
      *     top_p: double (Required)
-     *     truncation: String(auto/disabled) (Required)
-     *     usage (Required): {
+     *     truncation: String(auto/disabled) (Optional)
+     *     usage (Optional): {
      *         input_tokens: int (Required)
      *         output_tokens: int (Required)
      *         total_tokens: int (Required)
@@ -646,7 +627,7 @@ public final class ResponsesClientImpl {
      *             reasoning_tokens: int (Required)
      *         }
      *     }
-     *     user: String (Required)
+     *     user: String (Optional)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -728,6 +709,26 @@ public final class ResponsesClientImpl {
 
     /**
      * Returns a list of input items for a given response.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -736,9 +737,8 @@ public final class ResponsesClientImpl {
      *     object: String (Required)
      *     data (Required): [
      *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
      *             id: String (Optional)
-     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
      *         }
      *     ]
      *     first_id: String (Required)
@@ -749,10 +749,6 @@ public final class ResponsesClientImpl {
      * </pre>
      * 
      * @param responseId The ID of the response to retrieve.
-     * @param limit The maximum number of input items to return.
-     * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after The cursor ID for positioning the returned list starting point.
-     * @param before The cursor ID for positioning the returned list end point.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -761,15 +757,35 @@ public final class ResponsesClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listInputItemsWithResponseAsync(String responseId, int limit, String order,
-        String after, String before, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listInputItemsWithResponseAsync(String responseId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listInputItems(this.getEndpoint(), responseId, limit, order,
-            after, before, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.listInputItems(this.getEndpoint(), responseId, accept, requestOptions, context));
     }
 
     /**
      * Returns a list of input items for a given response.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -778,9 +794,8 @@ public final class ResponsesClientImpl {
      *     object: String (Required)
      *     data (Required): [
      *          (Required){
-     *             type: String(message/file_search_call/code_interpreter_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/item_reference/reasoning) (Required)
      *             id: String (Optional)
-     *             status: String(in_progress/searching/interpreting/completed/failed/incomplete) (Optional)
      *         }
      *     ]
      *     first_id: String (Required)
@@ -791,10 +806,6 @@ public final class ResponsesClientImpl {
      * </pre>
      * 
      * @param responseId The ID of the response to retrieve.
-     * @param limit The maximum number of input items to return.
-     * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after The cursor ID for positioning the returned list starting point.
-     * @param before The cursor ID for positioning the returned list end point.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -803,10 +814,8 @@ public final class ResponsesClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listInputItemsWithResponse(String responseId, int limit, String order, String after,
-        String before, RequestOptions requestOptions) {
+    public Response<BinaryData> listInputItemsWithResponse(String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listInputItemsSync(this.getEndpoint(), responseId, limit, order, after, before, accept,
-            requestOptions, Context.NONE);
+        return service.listInputItemsSync(this.getEndpoint(), responseId, accept, requestOptions, Context.NONE);
     }
 }

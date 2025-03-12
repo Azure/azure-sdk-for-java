@@ -19,11 +19,6 @@ public enum ResponsesItemType {
     FILE_SEARCH_CALL("file_search_call"),
 
     /**
-     * Enum value code_interpreter_call.
-     */
-    CODE_INTERPRETER_CALL("code_interpreter_call"),
-
-    /**
      * Enum value function_call.
      */
     FUNCTION_CALL("function_call"),

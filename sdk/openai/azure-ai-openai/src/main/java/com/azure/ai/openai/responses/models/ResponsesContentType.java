@@ -39,11 +39,6 @@ public enum ResponsesContentType {
     REASONING("reasoning"),
 
     /**
-     * Enum value reasoning_summary.
-     */
-    REASONING_SUMMARY("reasoning_summary"),
-
-    /**
      * Enum value output_audio.
      */
     OUTPUT_AUDIO("output_audio"),

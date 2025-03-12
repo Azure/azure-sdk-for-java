@@ -118,15 +118,43 @@ public class ResponsesMessage extends ResponsesItem {
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     deserializedResponsesMessage.setId(reader.getString());
-                } else if ("status".equals(fieldName)) {
-                    deserializedResponsesMessage.setStatus(ResponsesItemStatus.fromString(reader.getString()));
                 } else if ("role".equals(fieldName)) {
                     deserializedResponsesMessage.role = ResponsesMessageRole.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedResponsesMessage.status = ResponsesMessageStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedResponsesMessage;
         });
+    }
+
+    /*
+     * The status property.
+     */
+    @Generated
+    private ResponsesMessageStatus status;
+
+    /**
+     * Get the status property: The status property.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public ResponsesMessageStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: The status property.
+     *
+     * @param status the status value to set.
+     * @return the ResponsesMessage object itself.
+     */
+    @Generated
+    ResponsesMessage setStatus(ResponsesMessageStatus status) {
+        this.status = status;
+        return this;
     }
 }

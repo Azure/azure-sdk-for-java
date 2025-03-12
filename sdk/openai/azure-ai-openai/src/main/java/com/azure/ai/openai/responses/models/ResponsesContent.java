@@ -89,8 +89,6 @@ public class ResponsesContent implements JsonSerializable<ResponsesContent> {
                     return ResponsesOutputContentText.fromJson(readerToUse.reset());
                 } else if ("reasoning".equals(discriminatorValue)) {
                     return ResponsesOutputContentReasoning.fromJson(readerToUse.reset());
-                } else if ("reasoning_summary".equals(discriminatorValue)) {
-                    return ResponsesOutputContentReasoningSummary.fromJson(readerToUse.reset());
                 } else if ("output_audio".equals(discriminatorValue)) {
                     return ResponsesOutputContentAudio.fromJson(readerToUse.reset());
                 } else if ("output_image".equals(discriminatorValue)) {

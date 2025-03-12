@@ -1,7 +1,0 @@
-directory: openai-in-typespec
-commit: foo
-repo: bar
-entrypointFile: entrypoints/responses.azure/client.tsp
-
-# tsp-client sync --local-spec-repo ~/Code/work/sdk/openai-in-typespec
-# tsp-client generate --save-inputs

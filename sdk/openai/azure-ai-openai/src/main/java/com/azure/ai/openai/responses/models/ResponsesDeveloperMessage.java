@@ -103,7 +103,7 @@ public final class ResponsesDeveloperMessage extends ResponsesMessage {
     public static ResponsesDeveloperMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            ResponsesItemStatus status = null;
+            ResponsesMessageStatus status = null;
             List<ResponsesContent> content = null;
             ResponsesMessageRole role = ResponsesMessageRole.DEVELOPER;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -112,7 +112,7 @@ public final class ResponsesDeveloperMessage extends ResponsesMessage {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = ResponsesItemStatus.fromString(reader.getString());
+                    status = ResponsesMessageStatus.fromString(reader.getString());
                 } else if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> ResponsesContent.fromJson(reader1));
                 } else if ("role".equals(fieldName)) {

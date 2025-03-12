@@ -104,7 +104,7 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
     public static ResponsesFileSearchCallItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            ResponsesItemStatus status = null;
+            ResponsesFileSearchCallItemStatus status = null;
             List<String> queries = null;
             List<ResponsesFileSearchCallItemResult> results = null;
             ResponsesItemType type = ResponsesItemType.FILE_SEARCH_CALL;
@@ -114,7 +114,7 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = ResponsesItemStatus.fromString(reader.getString());
+                    status = ResponsesFileSearchCallItemStatus.fromString(reader.getString());
                 } else if ("queries".equals(fieldName)) {
                     queries = reader.readArray(reader1 -> reader1.getString());
                 } else if ("results".equals(fieldName)) {
@@ -128,9 +128,25 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
             ResponsesFileSearchCallItem deserializedResponsesFileSearchCallItem
                 = new ResponsesFileSearchCallItem(queries, results);
             deserializedResponsesFileSearchCallItem.setId(id);
-            deserializedResponsesFileSearchCallItem.setStatus(status);
+            deserializedResponsesFileSearchCallItem.status = status;
             deserializedResponsesFileSearchCallItem.type = type;
             return deserializedResponsesFileSearchCallItem;
         });
+    }
+
+    /*
+     * The status property.
+     */
+    @Generated
+    private ResponsesFileSearchCallItemStatus status;
+
+    /**
+     * Get the status property: The status property.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public ResponsesFileSearchCallItemStatus getStatus() {
+        return this.status;
     }
 }

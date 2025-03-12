@@ -20,7 +20,8 @@ public final class ResponsesComputerCallOutputItemScreenshot extends ResponsesCo
      * The type property.
      */
     @Generated
-    private ResponsesComputerCallOutputItemType type = ResponsesComputerCallOutputItemType.COMPUTER_SCREENSHOT;
+    private ResponsesComputerCallOutputItemOutputType type
+        = ResponsesComputerCallOutputItemOutputType.COMPUTER_SCREENSHOT;
 
     /*
      * The image_url property.
@@ -48,7 +49,7 @@ public final class ResponsesComputerCallOutputItemScreenshot extends ResponsesCo
      */
     @Generated
     @Override
-    public ResponsesComputerCallOutputItemType getType() {
+    public ResponsesComputerCallOutputItemOutputType getType() {
         return this.type;
     }
 
@@ -127,7 +128,7 @@ public final class ResponsesComputerCallOutputItemScreenshot extends ResponsesCo
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     deserializedResponsesComputerCallOutputItemScreenshot.type
-                        = ResponsesComputerCallOutputItemType.fromString(reader.getString());
+                        = ResponsesComputerCallOutputItemOutputType.fromString(reader.getString());
                 } else if ("image_url".equals(fieldName)) {
                     deserializedResponsesComputerCallOutputItemScreenshot.imageUrl = reader.getString();
                 } else if ("file_id".equals(fieldName)) {

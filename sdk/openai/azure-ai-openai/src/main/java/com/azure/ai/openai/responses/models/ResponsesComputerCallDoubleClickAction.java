@@ -23,12 +23,6 @@ public final class ResponsesComputerCallDoubleClickAction extends ResponsesCompu
     private ResponsesComputerCallActionType type = ResponsesComputerCallActionType.DOUBLE_CLICK;
 
     /*
-     * The button property.
-     */
-    @Generated
-    private final ResponsesComputerCallClickButtonType button;
-
-    /*
      * The x property.
      */
     @Generated
@@ -41,20 +35,6 @@ public final class ResponsesComputerCallDoubleClickAction extends ResponsesCompu
     private final int y;
 
     /**
-     * Creates an instance of ResponsesComputerCallDoubleClickAction class.
-     *
-     * @param button the button value to set.
-     * @param x the x value to set.
-     * @param y the y value to set.
-     */
-    @Generated
-    public ResponsesComputerCallDoubleClickAction(ResponsesComputerCallClickButtonType button, int x, int y) {
-        this.button = button;
-        this.x = x;
-        this.y = y;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -63,16 +43,6 @@ public final class ResponsesComputerCallDoubleClickAction extends ResponsesCompu
     @Override
     public ResponsesComputerCallActionType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the button property: The button property.
-     *
-     * @return the button value.
-     */
-    @Generated
-    public ResponsesComputerCallClickButtonType getButton() {
-        return this.button;
     }
 
     /**
@@ -102,7 +72,6 @@ public final class ResponsesComputerCallDoubleClickAction extends ResponsesCompu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("button", this.button == null ? null : this.button.toString());
         jsonWriter.writeIntField("x", this.x);
         jsonWriter.writeIntField("y", this.y);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
@@ -121,16 +90,13 @@ public final class ResponsesComputerCallDoubleClickAction extends ResponsesCompu
     @Generated
     public static ResponsesComputerCallDoubleClickAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResponsesComputerCallClickButtonType button = null;
             int x = 0;
             int y = 0;
             ResponsesComputerCallActionType type = ResponsesComputerCallActionType.DOUBLE_CLICK;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("button".equals(fieldName)) {
-                    button = ResponsesComputerCallClickButtonType.fromString(reader.getString());
-                } else if ("x".equals(fieldName)) {
+                if ("x".equals(fieldName)) {
                     x = reader.getInt();
                 } else if ("y".equals(fieldName)) {
                     y = reader.getInt();
@@ -141,9 +107,21 @@ public final class ResponsesComputerCallDoubleClickAction extends ResponsesCompu
                 }
             }
             ResponsesComputerCallDoubleClickAction deserializedResponsesComputerCallDoubleClickAction
-                = new ResponsesComputerCallDoubleClickAction(button, x, y);
+                = new ResponsesComputerCallDoubleClickAction(x, y);
             deserializedResponsesComputerCallDoubleClickAction.type = type;
             return deserializedResponsesComputerCallDoubleClickAction;
         });
+    }
+
+    /**
+     * Creates an instance of ResponsesComputerCallDoubleClickAction class.
+     *
+     * @param x the x value to set.
+     * @param y the y value to set.
+     */
+    @Generated
+    public ResponsesComputerCallDoubleClickAction(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }

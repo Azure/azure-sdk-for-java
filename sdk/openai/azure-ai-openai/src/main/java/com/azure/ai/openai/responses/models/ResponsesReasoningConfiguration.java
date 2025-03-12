@@ -23,23 +23,7 @@ public final class ResponsesReasoningConfiguration implements JsonSerializable<R
      * The effort property.
      */
     @Generated
-    private final ReasoningEffort effort;
-
-    /*
-     * The summary property.
-     */
-    @Generated
-    private ResponsesReasoningConfigurationSummary summary;
-
-    /**
-     * Creates an instance of ResponsesReasoningConfiguration class.
-     *
-     * @param effort the effort value to set.
-     */
-    @Generated
-    public ResponsesReasoningConfiguration(ReasoningEffort effort) {
-        this.effort = effort;
-    }
+    private final ResponsesReasoningConfigurationEffort effort;
 
     /**
      * Get the effort property: The effort property.
@@ -47,30 +31,8 @@ public final class ResponsesReasoningConfiguration implements JsonSerializable<R
      * @return the effort value.
      */
     @Generated
-    public ReasoningEffort getEffort() {
+    public ResponsesReasoningConfigurationEffort getEffort() {
         return this.effort;
-    }
-
-    /**
-     * Get the summary property: The summary property.
-     *
-     * @return the summary value.
-     */
-    @Generated
-    public ResponsesReasoningConfigurationSummary getSummary() {
-        return this.summary;
-    }
-
-    /**
-     * Set the summary property: The summary property.
-     *
-     * @param summary the summary value to set.
-     * @return the ResponsesReasoningConfiguration object itself.
-     */
-    @Generated
-    public ResponsesReasoningConfiguration setSummary(ResponsesReasoningConfigurationSummary summary) {
-        this.summary = summary;
-        return this;
     }
 
     /**
@@ -81,7 +43,8 @@ public final class ResponsesReasoningConfiguration implements JsonSerializable<R
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("effort", this.effort == null ? null : this.effort.toString());
-        jsonWriter.writeStringField("summary", this.summary == null ? null : this.summary.toString());
+        jsonWriter.writeStringField("generate_summary",
+            this.generateSummary == null ? null : this.generateSummary.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -97,23 +60,62 @@ public final class ResponsesReasoningConfiguration implements JsonSerializable<R
     @Generated
     public static ResponsesReasoningConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ReasoningEffort effort = null;
-            ResponsesReasoningConfigurationSummary summary = null;
+            ResponsesReasoningConfigurationEffort effort = null;
+            ResponsesReasoningConfigurationGenerateSummary generateSummary = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("effort".equals(fieldName)) {
-                    effort = ReasoningEffort.fromString(reader.getString());
-                } else if ("summary".equals(fieldName)) {
-                    summary = ResponsesReasoningConfigurationSummary.fromString(reader.getString());
+                    effort = ResponsesReasoningConfigurationEffort.fromString(reader.getString());
+                } else if ("generate_summary".equals(fieldName)) {
+                    generateSummary = ResponsesReasoningConfigurationGenerateSummary.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             ResponsesReasoningConfiguration deserializedResponsesReasoningConfiguration
                 = new ResponsesReasoningConfiguration(effort);
-            deserializedResponsesReasoningConfiguration.summary = summary;
+            deserializedResponsesReasoningConfiguration.generateSummary = generateSummary;
             return deserializedResponsesReasoningConfiguration;
         });
+    }
+
+    /*
+     * The generate_summary property.
+     */
+    @Generated
+    private ResponsesReasoningConfigurationGenerateSummary generateSummary;
+
+    /**
+     * Creates an instance of ResponsesReasoningConfiguration class.
+     *
+     * @param effort the effort value to set.
+     */
+    @Generated
+    public ResponsesReasoningConfiguration(ResponsesReasoningConfigurationEffort effort) {
+        this.effort = effort;
+    }
+
+    /**
+     * Get the generateSummary property: The generate_summary property.
+     *
+     * @return the generateSummary value.
+     */
+    @Generated
+    public ResponsesReasoningConfigurationGenerateSummary getGenerateSummary() {
+        return this.generateSummary;
+    }
+
+    /**
+     * Set the generateSummary property: The generate_summary property.
+     *
+     * @param generateSummary the generateSummary value to set.
+     * @return the ResponsesReasoningConfiguration object itself.
+     */
+    @Generated
+    public ResponsesReasoningConfiguration
+        setGenerateSummary(ResponsesReasoningConfigurationGenerateSummary generateSummary) {
+        this.generateSummary = generateSummary;
+        return this;
     }
 }

@@ -26,33 +26,19 @@ public final class ResponsesComputerTool extends ResponsesTool {
      * The display_width property.
      */
     @Generated
-    private final int displayWidth;
+    private final double displayWidth;
 
     /*
      * The display_height property.
      */
     @Generated
-    private final int displayHeight;
+    private final double displayHeight;
 
     /*
      * The environment property.
      */
     @Generated
     private final ResponsesComputerToolEnvironment environment;
-
-    /**
-     * Creates an instance of ResponsesComputerTool class.
-     *
-     * @param displayWidth the displayWidth value to set.
-     * @param displayHeight the displayHeight value to set.
-     * @param environment the environment value to set.
-     */
-    @Generated
-    public ResponsesComputerTool(int displayWidth, int displayHeight, ResponsesComputerToolEnvironment environment) {
-        this.displayWidth = displayWidth;
-        this.displayHeight = displayHeight;
-        this.environment = environment;
-    }
 
     /**
      * Get the type property: The type property.
@@ -71,7 +57,7 @@ public final class ResponsesComputerTool extends ResponsesTool {
      * @return the displayWidth value.
      */
     @Generated
-    public int getDisplayWidth() {
+    public double getDisplayWidth() {
         return this.displayWidth;
     }
 
@@ -81,7 +67,7 @@ public final class ResponsesComputerTool extends ResponsesTool {
      * @return the displayHeight value.
      */
     @Generated
-    public int getDisplayHeight() {
+    public double getDisplayHeight() {
         return this.displayHeight;
     }
 
@@ -102,8 +88,8 @@ public final class ResponsesComputerTool extends ResponsesTool {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("display_width", this.displayWidth);
-        jsonWriter.writeIntField("display_height", this.displayHeight);
+        jsonWriter.writeDoubleField("display_width", this.displayWidth);
+        jsonWriter.writeDoubleField("display_height", this.displayHeight);
         jsonWriter.writeStringField("environment", this.environment == null ? null : this.environment.toString());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
@@ -121,17 +107,17 @@ public final class ResponsesComputerTool extends ResponsesTool {
     @Generated
     public static ResponsesComputerTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int displayWidth = 0;
-            int displayHeight = 0;
+            double displayWidth = 0.0;
+            double displayHeight = 0.0;
             ResponsesComputerToolEnvironment environment = null;
             ResponsesToolType type = ResponsesToolType.COMPUTER;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("display_width".equals(fieldName)) {
-                    displayWidth = reader.getInt();
+                    displayWidth = reader.getDouble();
                 } else if ("display_height".equals(fieldName)) {
-                    displayHeight = reader.getInt();
+                    displayHeight = reader.getDouble();
                 } else if ("environment".equals(fieldName)) {
                     environment = ResponsesComputerToolEnvironment.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
@@ -145,5 +131,20 @@ public final class ResponsesComputerTool extends ResponsesTool {
             deserializedResponsesComputerTool.type = type;
             return deserializedResponsesComputerTool;
         });
+    }
+
+    /**
+     * Creates an instance of ResponsesComputerTool class.
+     *
+     * @param displayWidth the displayWidth value to set.
+     * @param displayHeight the displayHeight value to set.
+     * @param environment the environment value to set.
+     */
+    @Generated
+    public ResponsesComputerTool(double displayWidth, double displayHeight,
+        ResponsesComputerToolEnvironment environment) {
+        this.displayWidth = displayWidth;
+        this.displayHeight = displayHeight;
+        this.environment = environment;
     }
 }

@@ -20,7 +20,7 @@ public final class ResponsesToolChoiceObjectComputer extends ResponsesToolChoice
      * The type property.
      */
     @Generated
-    private ResponsesToolChoiceObjectType type = ResponsesToolChoiceObjectType.COMPUTER_PREVIEW;
+    private ResponsesToolChoiceObjectType type = ResponsesToolChoiceObjectType.COMPUTER;
 
     /**
      * Creates an instance of ResponsesToolChoiceObjectComputer class.

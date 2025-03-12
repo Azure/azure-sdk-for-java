@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The ResponsesWebSearchTool model.
@@ -27,13 +26,7 @@ public final class ResponsesWebSearchTool extends ResponsesTool {
      * The user_location property.
      */
     @Generated
-    private ResponsesWebSearchToolUserLocation userLocation;
-
-    /*
-     * The domains property.
-     */
-    @Generated
-    private List<String> domains;
+    private ResponsesWebSearchLocation userLocation;
 
     /**
      * Creates an instance of ResponsesWebSearchTool class.
@@ -59,42 +52,8 @@ public final class ResponsesWebSearchTool extends ResponsesTool {
      * @return the userLocation value.
      */
     @Generated
-    public ResponsesWebSearchToolUserLocation getUserLocation() {
+    public ResponsesWebSearchLocation getUserLocation() {
         return this.userLocation;
-    }
-
-    /**
-     * Set the userLocation property: The user_location property.
-     *
-     * @param userLocation the userLocation value to set.
-     * @return the ResponsesWebSearchTool object itself.
-     */
-    @Generated
-    public ResponsesWebSearchTool setUserLocation(ResponsesWebSearchToolUserLocation userLocation) {
-        this.userLocation = userLocation;
-        return this;
-    }
-
-    /**
-     * Get the domains property: The domains property.
-     *
-     * @return the domains value.
-     */
-    @Generated
-    public List<String> getDomains() {
-        return this.domains;
-    }
-
-    /**
-     * Set the domains property: The domains property.
-     *
-     * @param domains the domains value to set.
-     * @return the ResponsesWebSearchTool object itself.
-     */
-    @Generated
-    public ResponsesWebSearchTool setDomains(List<String> domains) {
-        this.domains = domains;
-        return this;
     }
 
     /**
@@ -106,7 +65,8 @@ public final class ResponsesWebSearchTool extends ResponsesTool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("user_location", this.userLocation);
-        jsonWriter.writeArrayField("domains", this.domains, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("search_context_size",
+            this.searchContextSize == null ? null : this.searchContextSize.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -128,16 +88,55 @@ public final class ResponsesWebSearchTool extends ResponsesTool {
                 if ("type".equals(fieldName)) {
                     deserializedResponsesWebSearchTool.type = ResponsesToolType.fromString(reader.getString());
                 } else if ("user_location".equals(fieldName)) {
-                    deserializedResponsesWebSearchTool.userLocation
-                        = ResponsesWebSearchToolUserLocation.fromJson(reader);
-                } else if ("domains".equals(fieldName)) {
-                    List<String> domains = reader.readArray(reader1 -> reader1.getString());
-                    deserializedResponsesWebSearchTool.domains = domains;
+                    deserializedResponsesWebSearchTool.userLocation = ResponsesWebSearchLocation.fromJson(reader);
+                } else if ("search_context_size".equals(fieldName)) {
+                    deserializedResponsesWebSearchTool.searchContextSize
+                        = ResponsesWebSearchContextSize.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedResponsesWebSearchTool;
         });
+    }
+
+    /*
+     * The search_context_size property.
+     */
+    @Generated
+    private ResponsesWebSearchContextSize searchContextSize;
+
+    /**
+     * Set the userLocation property: The user_location property.
+     *
+     * @param userLocation the userLocation value to set.
+     * @return the ResponsesWebSearchTool object itself.
+     */
+    @Generated
+    public ResponsesWebSearchTool setUserLocation(ResponsesWebSearchLocation userLocation) {
+        this.userLocation = userLocation;
+        return this;
+    }
+
+    /**
+     * Get the searchContextSize property: The search_context_size property.
+     *
+     * @return the searchContextSize value.
+     */
+    @Generated
+    public ResponsesWebSearchContextSize getSearchContextSize() {
+        return this.searchContextSize;
+    }
+
+    /**
+     * Set the searchContextSize property: The search_context_size property.
+     *
+     * @param searchContextSize the searchContextSize value to set.
+     * @return the ResponsesWebSearchTool object itself.
+     */
+    @Generated
+    public ResponsesWebSearchTool setSearchContextSize(ResponsesWebSearchContextSize searchContextSize) {
+        this.searchContextSize = searchContextSize;
+        return this;
     }
 }

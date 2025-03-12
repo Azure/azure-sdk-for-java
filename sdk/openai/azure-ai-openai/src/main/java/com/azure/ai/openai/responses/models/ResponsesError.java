@@ -24,38 +24,10 @@ public final class ResponsesError implements JsonSerializable<ResponsesError> {
     private final String message;
 
     /*
-     * The type property.
-     */
-    @Generated
-    private final String type;
-
-    /*
-     * The param property.
-     */
-    @Generated
-    private final String param;
-
-    /*
      * The code property.
      */
     @Generated
     private final String code;
-
-    /**
-     * Creates an instance of ResponsesError class.
-     *
-     * @param message the message value to set.
-     * @param type the type value to set.
-     * @param param the param value to set.
-     * @param code the code value to set.
-     */
-    @Generated
-    private ResponsesError(String message, String type, String param, String code) {
-        this.message = message;
-        this.type = type;
-        this.param = param;
-        this.code = code;
-    }
 
     /**
      * Get the message property: The message property.
@@ -65,26 +37,6 @@ public final class ResponsesError implements JsonSerializable<ResponsesError> {
     @Generated
     public String getMessage() {
         return this.message;
-    }
-
-    /**
-     * Get the type property: The type property.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public String getType() {
-        return this.type;
-    }
-
-    /**
-     * Get the param property: The param property.
-     *
-     * @return the param value.
-     */
-    @Generated
-    public String getParam() {
-        return this.param;
     }
 
     /**
@@ -104,10 +56,8 @@ public final class ResponsesError implements JsonSerializable<ResponsesError> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeStringField("param", this.param);
         jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,26 +73,32 @@ public final class ResponsesError implements JsonSerializable<ResponsesError> {
     @Generated
     public static ResponsesError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String message = null;
-            String type = null;
-            String param = null;
             String code = null;
+            String message = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("message".equals(fieldName)) {
-                    message = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                } else if ("param".equals(fieldName)) {
-                    param = reader.getString();
-                } else if ("code".equals(fieldName)) {
+                if ("code".equals(fieldName)) {
                     code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ResponsesError(message, type, param, code);
+            return new ResponsesError(code, message);
         });
+    }
+
+    /**
+     * Creates an instance of ResponsesError class.
+     *
+     * @param code the code value to set.
+     * @param message the message value to set.
+     */
+    @Generated
+    private ResponsesError(String code, String message) {
+        this.code = code;
+        this.message = message;
     }
 }

@@ -29,12 +29,6 @@ public class ResponsesItem implements JsonSerializable<ResponsesItem> {
     @Generated
     private String id;
 
-    /*
-     * The status property.
-     */
-    @Generated
-    private ResponsesItemStatus status;
-
     /**
      * Creates an instance of ResponsesItem class.
      */
@@ -71,28 +65,6 @@ public class ResponsesItem implements JsonSerializable<ResponsesItem> {
     @Generated
     ResponsesItem setId(String id) {
         this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the status property: The status property.
-     *
-     * @return the status value.
-     */
-    @Generated
-    public ResponsesItemStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: The status property.
-     *
-     * @param status the status value to set.
-     * @return the ResponsesItem object itself.
-     */
-    @Generated
-    ResponsesItem setStatus(ResponsesItemStatus status) {
-        this.status = status;
         return this;
     }
 
@@ -135,8 +107,6 @@ public class ResponsesItem implements JsonSerializable<ResponsesItem> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("message".equals(discriminatorValue)) {
                     return ResponsesMessage.fromJson(readerToUse.reset());
-                } else if ("code_interpreter_call".equals(discriminatorValue)) {
-                    return ResponsesCodeInterpreterCallItem.fromJson(readerToUse.reset());
                 } else if ("function_call".equals(discriminatorValue)) {
                     return ResponsesFunctionCallItem.fromJson(readerToUse.reset());
                 } else if ("function_call_output".equals(discriminatorValue)) {
@@ -151,6 +121,8 @@ public class ResponsesItem implements JsonSerializable<ResponsesItem> {
                     return ResponsesItemReferenceItem.fromJson(readerToUse.reset());
                 } else if ("web_search_call".equals(discriminatorValue)) {
                     return ResponsesWebSearchCallItem.fromJson(readerToUse.reset());
+                } else if ("reasoning".equals(discriminatorValue)) {
+                    return ResponsesReasoningItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -169,8 +141,6 @@ public class ResponsesItem implements JsonSerializable<ResponsesItem> {
                     deserializedResponsesItem.type = ResponsesItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     deserializedResponsesItem.id = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    deserializedResponsesItem.status = ResponsesItemStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
