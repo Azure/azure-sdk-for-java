@@ -40,7 +40,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AzureResponsesTestBase extends TestProxyTestBase {
 
-    private ResponsesClientBuilder getBuilderForTests(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+    private ResponsesClientBuilder getBuilderForTests(HttpClient httpClient,
+        AzureResponsesServiceVersion serviceVersion) {
         ResponsesClientBuilder builder = new ResponsesClientBuilder().httpClient(httpClient);
         if (serviceVersion != null) {
             builder.serviceVersion(serviceVersion);
@@ -67,14 +68,13 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         return getBuilderForTests(httpClient, null);
     }
 
-
     private void addTestRecordCustomSanitizers() {
         interceptorManager.addSanitizers(
-                Arrays.asList(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-                        new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
-                        new TestProxySanitizer("Content-Type",
-                                "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
-                                "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)));
+            Arrays.asList(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("Content-Type",
+                    "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                    "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)));
     }
 
     private void addCustomMatchers() {
@@ -102,10 +102,11 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         return builder.buildClient();
     }
 
-    ResponsesAsyncClient getAzureResponseAsyncClient(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+    ResponsesAsyncClient getAzureResponseAsyncClient(HttpClient httpClient,
+        AzureResponsesServiceVersion serviceVersion) {
         ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion)
             .addPolicy(
-                    new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")))
+                new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (getTestMode() != TestMode.PLAYBACK) {
@@ -151,7 +152,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
                 "Call tools when the user asks to perform computer-related tasks like clicking interface elements."))),
                 new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Click on the OK button")))));
         request.setTools(Arrays.asList(computerTool));
-                request.setTruncation(ResponseTruncation.AUTO);
+        request.setTruncation(ResponseTruncation.AUTO);
         runner.accept(request);
     }
 

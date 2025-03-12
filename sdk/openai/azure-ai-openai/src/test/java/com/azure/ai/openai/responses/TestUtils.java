@@ -22,7 +22,6 @@ public class TestUtils {
         = Configuration.getGlobalConfiguration().get(AZURE_RESPONSES_TEST_SERVICE_VERSIONS);
     static final String FAKE_API_KEY = "fakeKeyPlaceholder";
 
-
     static Stream<Arguments> getTestParametersResponses() {
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients().forEach(httpClient -> Arrays.stream(AzureResponsesServiceVersion.values())

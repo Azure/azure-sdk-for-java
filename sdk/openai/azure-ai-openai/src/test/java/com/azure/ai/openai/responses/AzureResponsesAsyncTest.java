@@ -61,8 +61,7 @@ public class AzureResponsesAsyncTest extends AzureResponsesTestBase {
             StepVerifier.create(client.createResponseStream(request)).thenConsumeWhile(_unused -> true, event -> {
                 assertNotNull(event);
                 if (event instanceof ResponsesStreamEventCompleted) {
-                    ResponsesStreamEventCompleted completedEvent
-                        = (ResponsesStreamEventCompleted) event;
+                    ResponsesStreamEventCompleted completedEvent = (ResponsesStreamEventCompleted) event;
                     assertResponsesResponse(completedEvent.getResponse());
                 }
             }).verifyComplete();
@@ -79,8 +78,7 @@ public class AzureResponsesAsyncTest extends AzureResponsesTestBase {
                 .thenConsumeWhile(_unused -> true, event -> {
                     assertNotNull(event);
                     if (event instanceof ResponsesStreamEventCompleted) {
-                        ResponsesStreamEventCompleted completedEvent
-                            = (ResponsesStreamEventCompleted) event;
+                        ResponsesStreamEventCompleted completedEvent = (ResponsesStreamEventCompleted) event;
                         assertResponsesResponse(completedEvent.getResponse());
                     }
                 })
@@ -196,8 +194,9 @@ public class AzureResponsesAsyncTest extends AzureResponsesTestBase {
         ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         getCUARunner(request -> {
-            StepVerifier.create(client.createResponse(request)).assertNext(AzureResponsesTestBase::assertResponsesResponse)
-                    .verifyComplete();
+            StepVerifier.create(client.createResponse(request))
+                .assertNext(AzureResponsesTestBase::assertResponsesResponse)
+                .verifyComplete();
         });
     }
 }

@@ -15,8 +15,7 @@ import java.io.IOException;
  * The ResponsesResponseIncompleteDetails1 model.
  */
 @Immutable
-public final class ResponsesResponseIncompleteDetails
-    implements JsonSerializable<ResponsesResponseIncompleteDetails> {
+public final class ResponsesResponseIncompleteDetails implements JsonSerializable<ResponsesResponseIncompleteDetails> {
 
     /*
      * The reason property.

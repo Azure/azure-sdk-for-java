@@ -98,8 +98,8 @@ public final class NonAzureResponsesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createResponse(@HostParam("endpoint") String endpoint,
-                                                  @HeaderParam("accept") String accept, @HeaderParam("Content-Type") String contentType,
-                                                  @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
 
         @Post("/responses")
         @ExpectedResponses({ 200 })
@@ -108,8 +108,8 @@ public final class NonAzureResponsesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createResponseSync(@HostParam("endpoint") String endpoint,
-                                                @HeaderParam("accept") String accept, @HeaderParam("Content-Type") String contentType,
-                                                @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
 
         @Get("/responses/{response_id}")
         @ExpectedResponses({ 200 })
@@ -118,8 +118,8 @@ public final class NonAzureResponsesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getResponse(@HostParam("endpoint") String endpoint,
-                                               @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
-                                               RequestOptions requestOptions, Context context);
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/responses/{response_id}")
         @ExpectedResponses({ 200 })
@@ -128,8 +128,8 @@ public final class NonAzureResponsesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getResponseSync(@HostParam("endpoint") String endpoint,
-                                             @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
-                                             RequestOptions requestOptions, Context context);
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/responses/{response_id}")
         @ExpectedResponses({ 200 })
@@ -138,8 +138,8 @@ public final class NonAzureResponsesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteResponse(@HostParam("endpoint") String endpoint,
-                                                  @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
-                                                  RequestOptions requestOptions, Context context);
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/responses/{response_id}")
         @ExpectedResponses({ 200 })
@@ -148,8 +148,8 @@ public final class NonAzureResponsesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteResponseSync(@HostParam("endpoint") String endpoint,
-                                                @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
-                                                RequestOptions requestOptions, Context context);
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/responses/{response_id}/input_items")
         @ExpectedResponses({ 200 })
@@ -158,8 +158,8 @@ public final class NonAzureResponsesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listInputItems(@HostParam("endpoint") String endpoint,
-                                                  @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
-                                                  RequestOptions requestOptions, Context context);
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/responses/{response_id}/input_items")
         @ExpectedResponses({ 200 })
@@ -168,8 +168,8 @@ public final class NonAzureResponsesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listInputItemsSync(@HostParam("endpoint") String endpoint,
-                                                @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
-                                                RequestOptions requestOptions, Context context);
+            @PathParam("response_id") String responseId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -288,10 +288,10 @@ public final class NonAzureResponsesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createResponseWithResponseAsync(String accept, BinaryData requestBody,
-                                                                      RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createResponse(OPEN_AI_ENDPOINT, accept, contentType,
-                requestBody, requestOptions, context));
+            requestBody, requestOptions, context));
     }
 
     /**
@@ -410,10 +410,10 @@ public final class NonAzureResponsesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createResponseWithResponse(String accept, BinaryData requestBody,
-                                                           RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         return service.createResponseSync(OPEN_AI_ENDPOINT, accept, contentType, requestBody, requestOptions,
-                Context.NONE);
+            Context.NONE);
     }
 
     /**
@@ -498,8 +498,8 @@ public final class NonAzureResponsesClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getResponseWithResponseAsync(String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.getResponse(OPEN_AI_ENDPOINT, responseId, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getResponse(OPEN_AI_ENDPOINT, responseId, accept, requestOptions, context));
     }
 
     /**
@@ -611,10 +611,10 @@ public final class NonAzureResponsesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteResponseWithResponseAsync(String responseId,
-                                                                      RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteResponse(OPEN_AI_ENDPOINT, responseId, accept, requestOptions, context));
+            context -> service.deleteResponse(OPEN_AI_ENDPOINT, responseId, accept, requestOptions, context));
     }
 
     /**
@@ -696,10 +696,10 @@ public final class NonAzureResponsesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listInputItemsWithResponseAsync(String responseId,
-                                                                      RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.listInputItems(OPEN_AI_ENDPOINT, responseId, accept, requestOptions, context));
+            context -> service.listInputItems(OPEN_AI_ENDPOINT, responseId, accept, requestOptions, context));
     }
 
     /**

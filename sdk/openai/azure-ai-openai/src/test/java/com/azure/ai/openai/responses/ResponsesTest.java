@@ -64,8 +64,7 @@ public class ResponsesTest extends AzureResponsesTestBase {
             events.forEach(event -> {
                 assertNotNull(event);
                 if (event instanceof ResponsesStreamEventCompleted) {
-                    ResponsesStreamEventCompleted completedEvent
-                        = (ResponsesStreamEventCompleted) event;
+                    ResponsesStreamEventCompleted completedEvent = (ResponsesStreamEventCompleted) event;
                     assertResponsesResponse(completedEvent.getResponse());
                 }
             });
@@ -78,14 +77,12 @@ public class ResponsesTest extends AzureResponsesTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            IterableStream<ResponsesStreamEvent> events
-                = client.createResponseStreaming(request, new RequestOptions());
+            IterableStream<ResponsesStreamEvent> events = client.createResponseStreaming(request, new RequestOptions());
 
             events.forEach(event -> {
                 assertNotNull(event);
                 if (event instanceof ResponsesStreamEventCompleted) {
-                    ResponsesStreamEventCompleted completedEvent
-                        = (ResponsesStreamEventCompleted) event;
+                    ResponsesStreamEventCompleted completedEvent = (ResponsesStreamEventCompleted) event;
                     assertResponsesResponse(completedEvent.getResponse());
                 }
             });
