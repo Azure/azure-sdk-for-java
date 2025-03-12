@@ -439,7 +439,7 @@ public final class NetworkCloudImpl implements NetworkCloud {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-06-01-preview";
+        this.apiVersion = "2024-07-01";
         this.operations = new OperationsClientImpl(this);
         this.bareMetalMachines = new BareMetalMachinesClientImpl(this);
         this.cloudServicesNetworks = new CloudServicesNetworksClientImpl(this);

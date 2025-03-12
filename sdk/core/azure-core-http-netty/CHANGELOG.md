@@ -10,6 +10,20 @@
 
 ### Other Changes
 
+## 1.15.11 (2025-03-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to `1.55.3`.
+
+## 1.15.10 (2025-02-20)
+
+### Other Changes
+
+- Fix for the `1.15.9` release as Netty dependencies weren't updated.
+
 ## 1.15.9 (2025-02-12)
 
 ### Other Changes

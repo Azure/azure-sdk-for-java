@@ -4,8 +4,14 @@
 package io.clientcore.annotation.processor.utils;
 
 import com.github.javaparser.ast.stmt.BlockStmt;
+import io.clientcore.annotation.processor.mocks.MockDeclaredType;
+import io.clientcore.annotation.processor.models.HttpRequestContext;
+import io.clientcore.core.http.models.HttpMethod;
 import org.junit.jupiter.api.Test;
 
+import javax.lang.model.type.TypeKind;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -16,35 +22,29 @@ public class ResponseBodyModeGenerationTest {
     @Test
     void generateResponseBodyModeWithRequestOptions() {
         BlockStmt body = new BlockStmt();
-        ResponseBodyModeGeneration.generateResponseBodyMode(body, "String", true);
-        assertTrue(body.toString().contains("responseBodyMode = requestOptions.getResponseBodyMode()"));
+        ResponseBodyModeGeneration.generateResponseBodyMode(body);
+        assertTrue(body.toString()
+            .contains(
+                "ResponseBodyMode responseBodyMode = getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
     }
 
     @Test
     void generateResponseBodyModeWithoutRequestOptions() {
         BlockStmt body = new BlockStmt();
-        ResponseBodyModeGeneration.generateResponseBodyMode(body, "String", false);
-        assertTrue(body.toString().contains("responseBodyMode = ResponseBodyMode.DESERIALIZE"));
+        ResponseBodyModeGeneration.generateResponseBodyMode(body);
+        assertTrue(body.toString()
+            .contains(
+                "ResponseBodyMode responseBodyMode = getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
     }
 
     @Test
     void generateResponseHandlingWithVoidReturnType() {
         BlockStmt body = new BlockStmt();
-        ResponseBodyModeGeneration.generateResponseHandling(body, "void", false);
-        assertTrue(body.toString().contains("return"));
-    }
-
-    @Test
-    void generateResponseHandlingWithResponseReturnType() {
-        BlockStmt body = new BlockStmt();
-        ResponseBodyModeGeneration.generateResponseHandling(body, "HttpResponse", false);
-        assertTrue(body.toString().contains("HttpResponseAccessHelper.setValue"));
-    }
-
-    @Test
-    void generateResponseHandlingWithNonDeserializeMode() {
-        BlockStmt body = new BlockStmt();
-        ResponseBodyModeGeneration.generateResponseHandling(body, "HttpResponse", false);
-        assertTrue(body.toString().contains("HttpResponseAccessHelper.setBodyDeserializer"));
+        HttpRequestContext context = new HttpRequestContext();
+        context.setHttpMethod(HttpMethod.DELETE);
+        MockDeclaredType returnType = new MockDeclaredType(TypeKind.VOID, "void");
+        context.setMethodReturnType(returnType);
+        ResponseBodyModeGeneration.generateResponseHandling(body, returnType, context);
+        assertFalse(body.toString().contains("return"));
     }
 }

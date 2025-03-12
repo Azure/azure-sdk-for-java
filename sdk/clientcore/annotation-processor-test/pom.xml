@@ -8,7 +8,7 @@
   <parent>
     <groupId>io.clientcore</groupId>
     <artifactId>clientcore-parent</artifactId>
-    <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
     <relativePath>../../parents/clientcore-parent</relativePath>
   </parent>
 
@@ -42,16 +42,47 @@
     <spotless.skip>true</spotless.skip>
     <revapi.skip>true</revapi.skip>
     <doclint>all,-missing</doclint>
+    <javaModulesSurefireArgLine>
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
+
+      --add-opens io.clientcore.http.okhttp3/io.clientcore.http.okhttp3=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.7</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>http-okhttp3</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
     </dependency>
 
     <!-- Test dependencies -->
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.7</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -73,6 +104,11 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>${project.build.directory}/generated-sources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -87,16 +123,14 @@
             </goals>
 
             <configuration>
-              <source>1.8</source>
-              <target>1.8</target>
-              <release>8</release>
+              <release>11</release>
               <proc>only</proc>
               <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
               <annotationProcessorPaths>
                 <annotationProcessorPath>
                   <groupId>io.clientcore</groupId>
                   <artifactId>annotation-processor</artifactId>
-                  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+                  <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
                 </annotationProcessorPath>
               </annotationProcessorPaths>
               <annotationProcessors>
@@ -114,7 +148,7 @@
           <dependency>
             <groupId>io.clientcore</groupId>
             <artifactId>annotation-processor</artifactId>
-            <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+            <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
           </dependency>
         </dependencies>
       </plugin>

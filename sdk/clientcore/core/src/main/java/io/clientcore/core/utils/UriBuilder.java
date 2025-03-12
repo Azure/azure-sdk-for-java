@@ -3,6 +3,9 @@
 
 package io.clientcore.core.utils;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.implementation.utils.QueryParameter;
 import io.clientcore.core.implementation.utils.UriToken;
 import io.clientcore.core.implementation.utils.UriTokenType;
@@ -11,21 +14,20 @@ import io.clientcore.core.implementation.utils.UriTokenizerState;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * A builder class that is used to create URIs.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class UriBuilder {
     private static final Map<String, UriBuilder> PARSED_URIS = new ConcurrentHashMap<>();
     private static final int MAX_CACHE_SIZE = 10000;
@@ -519,80 +521,6 @@ public final class UriBuilder {
     private static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
         return (isNullOrEmpty(queryParameters))
             ? Collections.emptyIterator()
-            : new QueryParameterIterator(queryParameters);
-    }
-
-    private static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
-        private final String queryParameters;
-        private final int queryParametersLength;
-
-        private boolean done = false;
-        private int position;
-
-        QueryParameterIterator(String queryParameters) {
-            this.queryParameters = queryParameters;
-            this.queryParametersLength = queryParameters.length();
-
-            // If the URI query begins with '?' the first possible start of a query parameter key is the
-            // second character in the query.
-            position = (queryParameters.startsWith("?")) ? 1 : 0;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return !done;
-        }
-
-        @Override
-        public Map.Entry<String, String> next() {
-            if (done) {
-                throw new NoSuchElementException();
-            }
-
-            int nextPosition = position;
-            char c;
-            while (nextPosition < queryParametersLength) {
-                // Next position can either be '=' or '&' as a query parameter may not have a '=', ex 'key&key2=value'.
-                c = queryParameters.charAt(nextPosition);
-                if (c == '=') {
-                    break;
-                } else if (c == '&') {
-                    String key = queryParameters.substring(position, nextPosition);
-
-                    // Position is set to nextPosition + 1 to skip over the '&'
-                    position = nextPosition + 1;
-
-                    return new AbstractMap.SimpleImmutableEntry<>(key, "");
-                }
-
-                nextPosition++;
-            }
-
-            if (nextPosition == queryParametersLength) {
-                // Query parameters completed.
-                done = true;
-                return new AbstractMap.SimpleImmutableEntry<>(queryParameters.substring(position), "");
-            }
-
-            String key = queryParameters.substring(position, nextPosition);
-
-            // Position is set to nextPosition + 1 to skip over the '='
-            position = nextPosition + 1;
-
-            nextPosition = queryParameters.indexOf('&', position);
-
-            String value = null;
-            if (nextPosition == -1) {
-                // This was the last key-value pair in the query parameters 'https://example.com?param=done'
-                done = true;
-                value = queryParameters.substring(position);
-            } else {
-                value = queryParameters.substring(position, nextPosition);
-                // Position is set to nextPosition + 1 to skip over the '&'
-                position = nextPosition + 1;
-            }
-
-            return new AbstractMap.SimpleImmutableEntry<>(key, value);
-        }
+            : new ImplUtils.QueryParameterIterator(queryParameters);
     }
 }

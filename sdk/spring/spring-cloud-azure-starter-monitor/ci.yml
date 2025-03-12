@@ -38,3 +38,5 @@ extends:
     AdditionalModules:
       - name: spring-cloud-azure-starter-monitor-test
         groupId: com.azure.spring
+    MatrixFilters:
+      - JavaTestVersion=^(?!1.8|1.11).*

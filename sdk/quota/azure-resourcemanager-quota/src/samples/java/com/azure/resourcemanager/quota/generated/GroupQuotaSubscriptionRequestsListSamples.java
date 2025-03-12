@@ -10,7 +10,7 @@ package com.azure.resourcemanager.quota.generated;
 public final class GroupQuotaSubscriptionRequestsListSamples {
     /*
      * x-ms-original-file:
-     * specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/SubscriptionRequests/
+     * specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/SubscriptionRequests/
      * SubscriptionRequests_List.json
      */
     /**
