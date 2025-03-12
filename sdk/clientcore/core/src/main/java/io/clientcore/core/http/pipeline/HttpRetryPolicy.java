@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
@@ -11,6 +13,7 @@ import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -40,6 +43,7 @@ import static io.clientcore.core.utils.configuration.Configuration.MAX_RETRY_ATT
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpRetryPolicy implements HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRetryPolicy.class);
@@ -129,7 +133,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         return attempt(httpRequest, next, 0, null);
     }
 
@@ -152,8 +156,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         return calculateRetryDelay(tryCount);
     }
 
-    private Response<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
-        final List<Exception> suppressed) {
+    private Response<BinaryData> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+        final int tryCount, final List<Exception> suppressed) {
 
         // the tryCount is updated by the caller and represents the number of attempts made so far.
         // It can be used by the policies during the process call.
@@ -163,7 +167,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
             ? null
             : httpRequest.getRequestOptions().getInstrumentationContext();
 
-        Response<?> response;
+        Response<BinaryData> response;
         ClientLogger logger = getLogger(httpRequest);
 
         try {
@@ -240,7 +244,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying.
      */
-    private Duration determineDelayDuration(Response<?> response, int tryCount,
+    private Duration determineDelayDuration(Response<BinaryData> response, int tryCount,
         Function<HttpHeaders, Duration> delayFromHeaders) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (delayFromHeaders == null) {
@@ -256,7 +260,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         return calculateRetryDelay(tryCount);
     }
 
-    private boolean shouldRetryResponse(Response<?> response, int tryCount, List<Exception> retriedExceptions) {
+    private boolean shouldRetryResponse(Response<BinaryData> response, int tryCount,
+        List<Exception> retriedExceptions) {
         if (shouldRetryCondition != null) {
             return tryCount < maxRetries
                 && shouldRetryCondition.test(new HttpRetryCondition(response, null, tryCount, retriedExceptions));

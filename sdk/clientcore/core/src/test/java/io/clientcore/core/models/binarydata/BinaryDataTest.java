@@ -9,10 +9,9 @@ import io.clientcore.core.models.MockPath;
 import io.clientcore.core.models.Person;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.implementation.utils.JsonSerializer;
-import io.clientcore.core.serialization.ObjectSerializer;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -51,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Test class for {@link BinaryData}.
  */
 public class BinaryDataTest {
-    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
+    private static final JsonSerializer SERIALIZER = new JsonSerializer();
     private static final byte[] RANDOM_DATA;
 
     static {

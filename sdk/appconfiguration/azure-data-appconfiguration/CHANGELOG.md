@@ -1,14 +1,18 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.8.0 (2025-03-12)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for specifying the token credential's Microsoft Entra audience when creating a client.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 
 ## 1.7.4 (2025-02-25)
 

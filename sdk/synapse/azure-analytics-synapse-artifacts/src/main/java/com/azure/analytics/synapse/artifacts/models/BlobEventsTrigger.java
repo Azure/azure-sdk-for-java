@@ -52,11 +52,6 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      */
     private String scope;
 
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
-
     /**
      * Creates an instance of BlobEventsTrigger class.
      */
@@ -182,17 +177,6 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
     }
 
     /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState getRuntimeState() {
-        return this.runtimeState;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -271,7 +255,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
                 if ("description".equals(fieldName)) {
                     deserializedBlobEventsTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedBlobEventsTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedBlobEventsTrigger.setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedBlobEventsTrigger.setAnnotations(annotations);

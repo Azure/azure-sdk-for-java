@@ -4,7 +4,7 @@
 package io.clientcore.core.serialization.json.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.utils.Option;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
@@ -28,7 +28,7 @@ import java.util.Optional;
  *
  * @see JsonPatchOperationKind
  */
-@Metadata(conditions = TypeConditions.IMMUTABLE)
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
     private final JsonPatchOperationKind op;
     private final String from;

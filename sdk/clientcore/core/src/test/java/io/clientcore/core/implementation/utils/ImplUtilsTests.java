@@ -6,14 +6,13 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.CoreUtilsTests;
 import io.clientcore.core.utils.configuration.Configuration;
-import io.clientcore.core.utils.configuration.ConfigurationBuilder;
-import io.clientcore.core.utils.configuration.ConfigurationSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -22,6 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -38,7 +38,6 @@ public class ImplUtilsTests {
     private static final byte[] UTF_32LE_BOM = { (byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00 };
 
     private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
-    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     @ParameterizedTest
     @MethodSource("bomAwareToStringSupplier")
@@ -47,16 +46,37 @@ public class ImplUtilsTests {
     }
 
     private static Stream<Arguments> bomAwareToStringSupplier() {
-        return Stream.of(Arguments.arguments(BYTES, null, new String(BYTES, StandardCharsets.UTF_8)),
-            Arguments.arguments(BYTES, "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_16BE)),
-            Arguments.arguments(BYTES, "charset=invalid", new String(BYTES, StandardCharsets.UTF_8)),
-            Arguments.arguments(addBom(UTF_8_BOM), null, new String(BYTES, StandardCharsets.UTF_8)),
-            Arguments.arguments(addBom(UTF_16BE_BOM), null, new String(BYTES, StandardCharsets.UTF_16BE)),
-            Arguments.arguments(addBom(UTF_16LE_BOM), null, new String(BYTES, StandardCharsets.UTF_16LE)),
-            Arguments.arguments(addBom(UTF_32BE_BOM), null, new String(BYTES, Charset.forName("UTF-32BE"))),
-            Arguments.arguments(addBom(UTF_32LE_BOM), null, new String(BYTES, Charset.forName("UTF-32LE"))),
-            Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-8", new String(BYTES, StandardCharsets.UTF_8)),
-            Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_8)));
+        return Stream.of(
+            // no content type returns UTF-8
+            Arguments.of(BYTES, null, new String(BYTES, StandardCharsets.UTF_8)),
+
+            // no content type returns UTF-8
+            Arguments.of(BYTES, "application/text", new String(BYTES, StandardCharsets.UTF_8)),
+
+            // charset=UTF-16E returns UTF-16E
+            Arguments.of(BYTES, "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_16BE)),
+
+            // invalid charset returns UTF-8
+            Arguments.of(BYTES, "charset=invalid", new String(BYTES, StandardCharsets.UTF_8)),
+
+            // UTF-8 BOM returns UTF-8
+            Arguments.of(addBom(UTF_8_BOM), null, new String(BYTES, StandardCharsets.UTF_8)),
+
+            // UTF-16BE BOM returns UTF-16BE
+            Arguments.of(addBom(UTF_16BE_BOM), null, new String(BYTES, StandardCharsets.UTF_16BE)),
+
+            // UTF-16LE BOM returns UTF-16LE
+            Arguments.of(addBom(UTF_16LE_BOM), null, new String(BYTES, StandardCharsets.UTF_16LE)),
+
+            // UTF-32BE BOM returns UTF-32BE
+            Arguments.of(addBom(UTF_32BE_BOM), null, new String(BYTES, Charset.forName("UTF-32BE"))),
+
+            // UTF-32LE BOM returns UTF-32LE
+            Arguments.of(addBom(UTF_32LE_BOM), null, new String(BYTES, Charset.forName("UTF-32LE"))),
+
+            // BOM preferred over charset
+            Arguments.of(addBom(UTF_8_BOM), "charset=UTF-8", new String(BYTES, StandardCharsets.UTF_8)),
+            Arguments.of(addBom(UTF_8_BOM), "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_8)));
     }
 
     private static byte[] addBom(byte[] arr1) {
@@ -81,33 +101,23 @@ public class ImplUtilsTests {
 
         return Stream.of(
             // Configuration has an empty string timeout property configured.
-            Arguments.of(
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "")).build(),
+            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "")),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has a value that isn't a valid number.
-            Arguments.of(
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "ten")).build(),
+            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "ten")),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has a negative value.
-            Arguments.of(
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "-10")).build(),
+            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "-10")),
                 Duration.ofMillis(10000), logger, Duration.ZERO),
 
             // Configuration has a zero value.
-            Arguments.of(
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "0")).build(),
+            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "0")),
                 Duration.ofMillis(10000), logger, Duration.ZERO),
 
             // Configuration has a positive value.
-            Arguments.of(
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "42")).build(),
+            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "42")),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(42)));
     }
 
@@ -182,5 +192,23 @@ public class ImplUtilsTests {
         assertEquals(new AbstractMap.SimpleImmutableEntry<>("key2", ""), iterator.next());
         assertEquals(new AbstractMap.SimpleImmutableEntry<>("key3", "value3"), iterator.next());
         assertFalse(iterator.hasNext());
+    }
+
+    @ParameterizedTest
+    @MethodSource("byteBufferToArraySupplier")
+    public void byteBufferToArray(ByteBuffer buffer, byte[] expected) {
+        assertArraysEqual(expected, ImplUtils.byteBufferToArray(buffer));
+    }
+
+    private static Stream<Arguments> byteBufferToArraySupplier() {
+        return Stream.of(
+            // empty buffer returns empty array
+            Arguments.of(ByteBuffer.allocate(0), new byte[0]),
+
+            // non-empty buffer returns byte array
+            Arguments.of(ByteBuffer.wrap(BYTES), BYTES),
+
+            // direct buffer
+            Arguments.of(ByteBuffer.allocateDirect(BYTES.length).put(BYTES).position(0), BYTES));
     }
 }

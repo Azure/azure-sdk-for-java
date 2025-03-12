@@ -5,9 +5,9 @@ package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
@@ -22,6 +22,7 @@ import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -354,7 +355,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy() {
             @Override
-            public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
+            public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
                 Span span = request.getRequestOptions() == null
                     ? Span.noop()
                     : request.getRequestOptions().getInstrumentationContext().getSpan();

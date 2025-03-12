@@ -3,9 +3,12 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 /**
  * <p>The {@code AddHeadersPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy
@@ -37,6 +40,7 @@ import io.clientcore.core.http.models.Response;
  * @see Response
  * @see HttpHeaders
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class AddHeadersPolicy implements HttpPipelinePolicy {
     private final HttpHeaders headers;
 
@@ -54,7 +58,7 @@ public class AddHeadersPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         setHeaders(httpRequest.getHeaders(), headers);
 
         return next.process();

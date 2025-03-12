@@ -56,10 +56,16 @@ public class DynamicsCrmLinkedService extends LinkedService {
 
     /*
      * The authentication type to connect to Dynamics CRM server. 'Office365' for online scenario, 'Ifd' for on-premises
-     * with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online scenario. Type: string (or
-     * Expression with resultType string).
+     * with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online scenario, 'Active
+     * Directory' for Dynamics on-premises with IFD. Type: string (or Expression with resultType string).
      */
     private Object authenticationType;
+
+    /*
+     * The Active Directory domain that will verify user credentials. Type: string (or Expression with resultType
+     * string).
+     */
+    private Object domain;
 
     /*
      * User name to access the Dynamics CRM instance. Type: string (or Expression with resultType string).
@@ -89,6 +95,11 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * AzureKeyVaultSecretReference.
      */
     private SecretBase servicePrincipalCredential;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    private SecretBase credential;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
@@ -229,7 +240,8 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Get the authenticationType property: The authentication type to connect to Dynamics CRM server. 'Office365' for
      * online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server
-     * authentication in online scenario. Type: string (or Expression with resultType string).
+     * authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the authenticationType value.
      */
@@ -240,13 +252,36 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Set the authenticationType property: The authentication type to connect to Dynamics CRM server. 'Office365' for
      * online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server
-     * authentication in online scenario. Type: string (or Expression with resultType string).
+     * authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or
+     * Expression with resultType string).
      * 
      * @param authenticationType the authenticationType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
     public DynamicsCrmLinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the domain value.
+     */
+    public Object getDomain() {
+        return this.domain;
+    }
+
+    /**
+     * Set the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param domain the domain value to set.
+     * @return the DynamicsCrmLinkedService object itself.
+     */
+    public DynamicsCrmLinkedService setDomain(Object domain) {
+        this.domain = domain;
         return this;
     }
 
@@ -361,6 +396,26 @@ public class DynamicsCrmLinkedService extends LinkedService {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public SecretBase getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the DynamicsCrmLinkedService object itself.
+     */
+    public DynamicsCrmLinkedService setCredential(SecretBase credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
@@ -379,6 +434,15 @@ public class DynamicsCrmLinkedService extends LinkedService {
      */
     public DynamicsCrmLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DynamicsCrmLinkedService setVersion(String version) {
+        super.setVersion(version);
         return this;
     }
 
@@ -424,6 +488,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -435,11 +500,13 @@ public class DynamicsCrmLinkedService extends LinkedService {
             || serviceUri != null
             || organizationName != null
             || authenticationType != null
+            || domain != null
             || username != null
             || password != null
             || servicePrincipalId != null
             || servicePrincipalCredentialType != null
             || servicePrincipalCredential != null
+            || credential != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("deploymentType", this.deploymentType);
@@ -448,11 +515,13 @@ public class DynamicsCrmLinkedService extends LinkedService {
             jsonWriter.writeUntypedField("serviceUri", this.serviceUri);
             jsonWriter.writeUntypedField("organizationName", this.organizationName);
             jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+            jsonWriter.writeUntypedField("domain", this.domain);
             jsonWriter.writeUntypedField("username", this.username);
             jsonWriter.writeJsonField("password", this.password);
             jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
             jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
             jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+            jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
             jsonWriter.writeEndObject();
         }
@@ -481,7 +550,9 @@ public class DynamicsCrmLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedDynamicsCrmLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedDynamicsCrmLinkedService.setDescription(reader.getString());
@@ -511,6 +582,8 @@ public class DynamicsCrmLinkedService extends LinkedService {
                             deserializedDynamicsCrmLinkedService.organizationName = reader.readUntyped();
                         } else if ("authenticationType".equals(fieldName)) {
                             deserializedDynamicsCrmLinkedService.authenticationType = reader.readUntyped();
+                        } else if ("domain".equals(fieldName)) {
+                            deserializedDynamicsCrmLinkedService.domain = reader.readUntyped();
                         } else if ("username".equals(fieldName)) {
                             deserializedDynamicsCrmLinkedService.username = reader.readUntyped();
                         } else if ("password".equals(fieldName)) {
@@ -522,6 +595,8 @@ public class DynamicsCrmLinkedService extends LinkedService {
                         } else if ("servicePrincipalCredential".equals(fieldName)) {
                             deserializedDynamicsCrmLinkedService.servicePrincipalCredential
                                 = SecretBase.fromJson(reader);
+                        } else if ("credential".equals(fieldName)) {
+                            deserializedDynamicsCrmLinkedService.credential = SecretBase.fromJson(reader);
                         } else if ("encryptedCredential".equals(fieldName)) {
                             deserializedDynamicsCrmLinkedService.encryptedCredential = reader.readUntyped();
                         } else {

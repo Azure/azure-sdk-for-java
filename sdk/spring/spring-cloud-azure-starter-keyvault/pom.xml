@@ -96,6 +96,11 @@
       <artifactId>spring-cloud-azure-starter-keyvault-certificates</artifactId>
       <version>5.21.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;current} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-keyvault-jca</artifactId>
+      <version>5.21.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-jca;current} -->
+    </dependency>
   </dependencies>
 
   <build>
