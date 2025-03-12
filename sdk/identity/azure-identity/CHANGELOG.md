@@ -3,6 +3,7 @@
 ## 1.16.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support to specify `subscription` ID or name on `AzureCliCredentialBuilder`.
 
 ### Breaking Changes
 

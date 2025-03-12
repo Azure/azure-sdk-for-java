@@ -289,7 +289,7 @@ public class IdentityClient extends IdentityClientBase {
 
             String subscription = options.getSubscription();
             if (!CoreUtils.isNullOrEmpty(subscription)) {
-                azCommand.append(" --subscription ").append(subscription);
+                azCommand.append(" --subscription \"").append(subscription).append("\"");
             }
         } catch (ClientAuthenticationException | IllegalArgumentException e) {
             return Mono.error(e);
