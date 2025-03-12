@@ -6,20 +6,16 @@ package com.azure.ai.openai.responses;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
-import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
-import com.azure.ai.openai.responses.models.ResponseTruncation;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
-import com.azure.ai.openai.responses.models.ResponsesInputItemList;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
-import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesStreamEventCompleted;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 
@@ -29,175 +25,177 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ResponsesTest extends AzureResponsesTestBase {
+public class AzureResponsesAsyncTest extends AzureResponsesTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void createResponseBlocking(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClient client = getResponseClient(httpClient);
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            ResponsesResponse response = client.createResponse(request);
-            assertResponsesResponse(response);
+            StepVerifier.create(client.createResponse(request))
+                .assertNext(response -> assertResponsesResponse(response))
+                .verifyComplete();
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void createResponseWithOptions(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClient client = getResponseClient(httpClient);
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            ResponsesResponse response = client.createResponse(request, new RequestOptions());
-            assertResponsesResponse(response);
+            StepVerifier.create(client.createResponse(request, new RequestOptions()))
+                .assertNext(response -> assertResponsesResponse(response))
+                .verifyComplete();
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void createResponseStreaming(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClient client = getResponseClient(httpClient);
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            IterableStream<ResponsesStreamEvent> events = client.createResponseStreaming(request);
-
-            events.forEach(event -> {
+            StepVerifier.create(client.createResponseStream(request)).thenConsumeWhile(_unused -> true, event -> {
                 assertNotNull(event);
                 if (event instanceof ResponsesStreamEventCompleted) {
                     ResponsesStreamEventCompleted completedEvent
                         = (ResponsesStreamEventCompleted) event;
                     assertResponsesResponse(completedEvent.getResponse());
                 }
-            });
+            }).verifyComplete();
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void createResponseStreamingWithOptions(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClient client = getResponseClient(httpClient);
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            IterableStream<ResponsesStreamEvent> events
-                = client.createResponseStreaming(request, new RequestOptions());
-
-            events.forEach(event -> {
-                assertNotNull(event);
-                if (event instanceof ResponsesStreamEventCompleted) {
-                    ResponsesStreamEventCompleted completedEvent
-                        = (ResponsesStreamEventCompleted) event;
-                    assertResponsesResponse(completedEvent.getResponse());
-                }
-            });
+            StepVerifier.create(client.createResponseStream(request, new RequestOptions()))
+                .thenConsumeWhile(_unused -> true, event -> {
+                    assertNotNull(event);
+                    if (event instanceof ResponsesStreamEventCompleted) {
+                        ResponsesStreamEventCompleted completedEvent
+                            = (ResponsesStreamEventCompleted) event;
+                        assertResponsesResponse(completedEvent.getResponse());
+                    }
+                })
+                .verifyComplete();
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void getResponse(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClient client = getResponseClient(httpClient);
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         // First create a response to get its ID
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            ResponsesResponse createdResponse = client.createResponse(request);
+            ResponsesResponse createdResponse = client.createResponse(request).block();
             String responseId = createdResponse.getId();
 
             // Now get the response
-            ResponsesResponse response = client.getResponse(responseId);
-            assertResponsesResponse(response);
-            assertResponsesResponseEquals(createdResponse, response);
+            StepVerifier.create(client.getResponse(responseId)).assertNext(response -> {
+                assertResponsesResponse(response);
+                assertResponsesResponseEquals(createdResponse, response);
+            }).verifyComplete();
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void getResponseWithIncludables(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClient client = getResponseClient(httpClient);
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         // First create a response to get its ID
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            ResponsesResponse createdResponse = client.createResponse(request);
+            ResponsesResponse createdResponse = client.createResponse(request).block();
             String responseId = createdResponse.getId();
 
             // Now get the response with includables
-            ResponsesResponse response = client.getResponse(responseId,
-                Arrays.asList(CreateResponsesRequestIncludable.FILE_SEARCH_CALL_RESULTS));
-            assertResponsesResponse(response);
-            assertResponsesResponseEquals(createdResponse, response);
+            StepVerifier.create(client.getResponse(responseId,
+                Arrays.asList(CreateResponsesRequestIncludable.FILE_SEARCH_CALL_RESULTS))).assertNext(response -> {
+                    assertResponsesResponse(response);
+                    assertResponsesResponseEquals(createdResponse, response);
+                }).verifyComplete();
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void listInputItems(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClient client = getResponseClient(httpClient);
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         // First create a response to get its ID
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
             Arrays.asList(new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Hello, world!")))));
-        ResponsesResponse createdResponse = client.createResponse(request);
+        ResponsesResponse createdResponse = client.createResponse(request).block();
         String responseId = createdResponse.getId();
 
         // Now list input items
-        ResponsesInputItemList items
-            = client.listInputItems(responseId, 10, ListInputItemsRequestOrder.ASC, null, null);
-
-        assertNotNull(items);
-        assertNotNull(items.getObject());
-        assertNotNull(items.getData());
-        assertNotNull(items.getFirstId());
-        assertNotNull(items.getLastId());
-        assertFalse(items.isHasMore()); // Either true or false is valid
+        StepVerifier.create(client.listInputItems(responseId, 10, ListInputItemsRequestOrder.ASC, null, null))
+            .assertNext(items -> {
+                assertNotNull(items);
+                assertNotNull(items.getObject());
+                assertNotNull(items.getData());
+                assertNotNull(items.getFirstId());
+                assertNotNull(items.getLastId());
+                assertFalse(items.isHasMore()); // Either true or false is valid
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void deleteResponse(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClient client = getResponseClient(httpClient);
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         // First create a response to get its ID
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            ResponsesResponse createdResponse = client.createResponse(request);
+            ResponsesResponse createdResponse = client.createResponse(request).block();
             String responseId = createdResponse.getId();
 
             // Now delete the response
-            DeleteResponseResponse deleteResponse = client.deleteResponse(responseId);
-
-            assertNotNull(deleteResponse);
-            assertEquals(responseId, deleteResponse.getId());
-            assertNotNull(deleteResponse.getObject());
-            assertTrue(deleteResponse.isDeleted());
+            StepVerifier.create(client.deleteResponse(responseId)).assertNext(deleteResponse -> {
+                assertNotNull(deleteResponse);
+                assertEquals(responseId, deleteResponse.getId());
+                assertNotNull(deleteResponse.getObject());
+                assertTrue(deleteResponse.isDeleted());
+            }).verifyComplete();
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void deleteResponseWithOptions(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClient client = getResponseClient(httpClient);
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         // First create a response to get its ID
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            ResponsesResponse createdResponse = client.createResponse(request);
+            ResponsesResponse createdResponse = client.createResponse(request).block();
             String responseId = createdResponse.getId();
 
             // Now delete the response
-            DeleteResponseResponse deleteResponse = client.deleteResponse(responseId, new RequestOptions());
-
-            assertNotNull(deleteResponse);
-            assertEquals(responseId, deleteResponse.getId());
-            assertNotNull(deleteResponse.getObject());
-            assertTrue(deleteResponse.isDeleted());
+            StepVerifier.create(client.deleteResponse(responseId, new RequestOptions())).assertNext(deleteResponse -> {
+                assertNotNull(deleteResponse);
+                assertEquals(responseId, deleteResponse.getId());
+                assertNotNull(deleteResponse.getObject());
+                assertTrue(deleteResponse.isDeleted());
+            }).verifyComplete();
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
     public void chatWithCua(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClient client = getResponseClient(httpClient);
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
 
         getCUARunner(request -> {
-            ResponsesResponse response = client.createResponse(request);
-            assertResponsesResponse(response);
+            StepVerifier.create(client.createResponse(request)).assertNext(AzureResponsesTestBase::assertResponsesResponse)
+                    .verifyComplete();
         });
     }
 }

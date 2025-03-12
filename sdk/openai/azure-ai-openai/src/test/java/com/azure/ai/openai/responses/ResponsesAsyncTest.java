@@ -187,4 +187,15 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
             }).verifyComplete();
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void chatWithCua(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesAsyncClient client = getResponseAsyncClient(httpClient);
+
+        getCUARunner(request -> {
+            StepVerifier.create(client.createResponse(request)).assertNext(AzureResponsesTestBase::assertResponsesResponse)
+                .verifyComplete();
+        });
+    }
 }

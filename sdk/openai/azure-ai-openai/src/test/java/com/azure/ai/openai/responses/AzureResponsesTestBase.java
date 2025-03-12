@@ -5,6 +5,8 @@ package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
+import com.azure.ai.openai.responses.models.CreateResponsesRequestTruncation;
+import com.azure.ai.openai.responses.models.ResponseTruncation;
 import com.azure.ai.openai.responses.models.ResponsesComputerTool;
 import com.azure.ai.openai.responses.models.ResponsesComputerToolEnvironment;
 import com.azure.ai.openai.responses.models.ResponsesDeveloperMessage;
@@ -46,6 +48,18 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         return builder.buildClient();
     }
 
+    ResponsesAsyncClient getAzureResponseAsyncClient(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClientBuilder builder = new ResponsesClientBuilder().serviceVersion(serviceVersion)
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")))
+                .addPolicy(
+                        new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")))
+                .httpClient(httpClient)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        return builder.buildAsyncClient();
+    }
+
     ResponsesClient getResponseClient(HttpClient httpClient) {
         ResponsesClientBuilder builder = new ResponsesClientBuilder()
             .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("OPENAI_KEY")))
@@ -78,7 +92,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
                 "Call tools when the user asks to perform computer-related tasks like clicking interface elements."))),
                 new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Click on the OK button")))));
         request.setTools(Arrays.asList(computerTool));
-        //        request.setTruncation(CreateResponsesRequestTruncation.AUTO);
+                request.setTruncation(ResponseTruncation.AUTO);
         runner.accept(request);
     }
 
