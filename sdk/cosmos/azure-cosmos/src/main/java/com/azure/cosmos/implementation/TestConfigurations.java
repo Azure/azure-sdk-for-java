@@ -4,6 +4,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +36,7 @@ public final class TestConfigurations {
 
     private final static String COSMOS_EMULATOR_KEY = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
     private final static String COSMOS_EMULATOR_HOST = "https://localhost:8081/";
+    public final static DefaultAzureCredential AZURE_CREDENTIAL = new DefaultAzureCredentialBuilder().build();
 
     // REPLACE MASTER_KEY and HOST with values from your Azure Cosmos DB account.
     // The default values are credentials of the local emulator, which are not used in any production environment.
