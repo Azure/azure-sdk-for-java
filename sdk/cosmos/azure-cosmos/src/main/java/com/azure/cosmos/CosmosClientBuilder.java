@@ -896,13 +896,15 @@ public class CosmosClientBuilder implements
         if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp)) {
             this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp);
 
-            System.setProperty(
-                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
-                    + "}");
+            if (this.isPerPartitionAutomaticFailoverEnabled) {
+                System.setProperty(
+                    "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+                    "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                        + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                        + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                        + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                        + "}");
+            }
         }
     }
 
