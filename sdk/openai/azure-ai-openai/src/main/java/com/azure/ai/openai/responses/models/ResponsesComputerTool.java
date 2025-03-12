@@ -127,7 +127,7 @@ public final class ResponsesComputerTool extends ResponsesTool {
                 }
             }
             ResponsesComputerTool deserializedResponsesComputerTool
-                    = new ResponsesComputerTool(displayWidth, displayHeight, environment);
+                = new ResponsesComputerTool(displayWidth, displayHeight, environment);
             deserializedResponsesComputerTool.type = type;
             return deserializedResponsesComputerTool;
         });

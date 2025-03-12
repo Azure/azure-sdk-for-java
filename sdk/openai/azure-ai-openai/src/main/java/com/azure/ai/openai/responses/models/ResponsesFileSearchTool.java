@@ -36,6 +36,18 @@ public final class ResponsesFileSearchTool extends ResponsesTool {
     @Generated
     private Integer maxNumResults;
 
+    /*
+     * The ranking_options property.
+     */
+    @Generated
+    private ResponsesFileSearchToolRankingOptions rankingOptions;
+
+    /*
+     * The filters property.
+     */
+    @Generated
+    private BinaryData filters;
+
     /**
      * Creates an instance of ResponsesFileSearchTool class.
      *
@@ -86,6 +98,50 @@ public final class ResponsesFileSearchTool extends ResponsesTool {
     @Generated
     public ResponsesFileSearchTool setMaxNumResults(Integer maxNumResults) {
         this.maxNumResults = maxNumResults;
+        return this;
+    }
+
+    /**
+     * Get the rankingOptions property: The ranking_options property.
+     *
+     * @return the rankingOptions value.
+     */
+    @Generated
+    public ResponsesFileSearchToolRankingOptions getRankingOptions() {
+        return this.rankingOptions;
+    }
+
+    /**
+     * Set the rankingOptions property: The ranking_options property.
+     *
+     * @param rankingOptions the rankingOptions value to set.
+     * @return the ResponsesFileSearchTool object itself.
+     */
+    @Generated
+    public ResponsesFileSearchTool setRankingOptions(ResponsesFileSearchToolRankingOptions rankingOptions) {
+        this.rankingOptions = rankingOptions;
+        return this;
+    }
+
+    /**
+     * Get the filters property: The filters property.
+     *
+     * @return the filters value.
+     */
+    @Generated
+    public BinaryData getFilters() {
+        return this.filters;
+    }
+
+    /**
+     * Set the filters property: The filters property.
+     *
+     * @param filters the filters value to set.
+     * @return the ResponsesFileSearchTool object itself.
+     */
+    @Generated
+    public ResponsesFileSearchTool setFilters(BinaryData filters) {
+        this.filters = filters;
         return this;
     }
 
@@ -149,61 +205,5 @@ public final class ResponsesFileSearchTool extends ResponsesTool {
             deserializedResponsesFileSearchTool.filters = filters;
             return deserializedResponsesFileSearchTool;
         });
-    }
-
-    /*
-     * The ranking_options property.
-     */
-    @Generated
-    private ResponsesFileSearchToolRankingOptions rankingOptions;
-
-    /*
-     * The filters property.
-     */
-    @Generated
-    private BinaryData filters;
-
-    /**
-     * Get the rankingOptions property: The ranking_options property.
-     *
-     * @return the rankingOptions value.
-     */
-    @Generated
-    public ResponsesFileSearchToolRankingOptions getRankingOptions() {
-        return this.rankingOptions;
-    }
-
-    /**
-     * Set the rankingOptions property: The ranking_options property.
-     *
-     * @param rankingOptions the rankingOptions value to set.
-     * @return the ResponsesFileSearchTool object itself.
-     */
-    @Generated
-    public ResponsesFileSearchTool setRankingOptions(ResponsesFileSearchToolRankingOptions rankingOptions) {
-        this.rankingOptions = rankingOptions;
-        return this;
-    }
-
-    /**
-     * Get the filters property: The filters property.
-     *
-     * @return the filters value.
-     */
-    @Generated
-    public BinaryData getFilters() {
-        return this.filters;
-    }
-
-    /**
-     * Set the filters property: The filters property.
-     *
-     * @param filters the filters value to set.
-     * @return the ResponsesFileSearchTool object itself.
-     */
-    @Generated
-    public ResponsesFileSearchTool setFilters(BinaryData filters) {
-        this.filters = filters;
-        return this;
     }
 }

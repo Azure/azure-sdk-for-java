@@ -30,6 +30,12 @@ public final class ResponsesTextFormatJsonSchema extends ResponsesTextFormat {
     private final String name;
 
     /*
+     * The schema property.
+     */
+    @Generated
+    private final BinaryData schema;
+
+    /*
      * The description property.
      */
     @Generated
@@ -40,6 +46,18 @@ public final class ResponsesTextFormatJsonSchema extends ResponsesTextFormat {
      */
     @Generated
     private Boolean strict;
+
+    /**
+     * Creates an instance of ResponsesTextFormatJsonSchema class.
+     *
+     * @param name the name value to set.
+     * @param schema the schema value to set.
+     */
+    @Generated
+    public ResponsesTextFormatJsonSchema(String name, BinaryData schema) {
+        this.name = name;
+        this.schema = schema;
+    }
 
     /**
      * Get the type property: The type property.
@@ -60,6 +78,16 @@ public final class ResponsesTextFormatJsonSchema extends ResponsesTextFormat {
     @Generated
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Get the schema property: The schema property.
+     *
+     * @return the schema value.
+     */
+    @Generated
+    public BinaryData getSchema() {
+        return this.schema;
     }
 
     /**
@@ -163,33 +191,5 @@ public final class ResponsesTextFormatJsonSchema extends ResponsesTextFormat {
             deserializedResponsesTextFormatJsonSchema.strict = strict;
             return deserializedResponsesTextFormatJsonSchema;
         });
-    }
-
-    /*
-     * The schema property.
-     */
-    @Generated
-    private final BinaryData schema;
-
-    /**
-     * Creates an instance of ResponsesTextFormatJsonSchema class.
-     *
-     * @param name the name value to set.
-     * @param schema the schema value to set.
-     */
-    @Generated
-    public ResponsesTextFormatJsonSchema(String name, BinaryData schema) {
-        this.name = name;
-        this.schema = schema;
-    }
-
-    /**
-     * Get the schema property: The schema property.
-     *
-     * @return the schema value.
-     */
-    @Generated
-    public BinaryData getSchema() {
-        return this.schema;
     }
 }

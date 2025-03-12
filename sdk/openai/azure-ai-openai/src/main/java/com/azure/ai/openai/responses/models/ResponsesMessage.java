@@ -28,6 +28,12 @@ public class ResponsesMessage extends ResponsesItem {
     @Generated
     private ResponsesMessageRole role;
 
+    /*
+     * The status property.
+     */
+    @Generated
+    private ResponsesMessageStatus status;
+
     /**
      * Creates an instance of ResponsesMessage class.
      */
@@ -54,6 +60,28 @@ public class ResponsesMessage extends ResponsesItem {
     @Generated
     public ResponsesMessageRole getRole() {
         return this.role;
+    }
+
+    /**
+     * Get the status property: The status property.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public ResponsesMessageStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: The status property.
+     *
+     * @param status the status value to set.
+     * @return the ResponsesMessage object itself.
+     */
+    @Generated
+    ResponsesMessage setStatus(ResponsesMessageStatus status) {
+        this.status = status;
+        return this;
     }
 
     /**
@@ -128,33 +156,5 @@ public class ResponsesMessage extends ResponsesItem {
             }
             return deserializedResponsesMessage;
         });
-    }
-
-    /*
-     * The status property.
-     */
-    @Generated
-    private ResponsesMessageStatus status;
-
-    /**
-     * Get the status property: The status property.
-     *
-     * @return the status value.
-     */
-    @Generated
-    public ResponsesMessageStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: The status property.
-     *
-     * @param status the status value to set.
-     * @return the ResponsesMessage object itself.
-     */
-    @Generated
-    ResponsesMessage setStatus(ResponsesMessageStatus status) {
-        this.status = status;
-        return this;
     }
 }

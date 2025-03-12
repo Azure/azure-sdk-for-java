@@ -23,6 +23,12 @@ public final class ResponsesFunctionCallOutput extends ResponsesItem {
     private ResponsesItemType type = ResponsesItemType.FUNCTION_CALL_OUTPUT;
 
     /*
+     * The status property.
+     */
+    @Generated
+    private ResponsesFunctionCallOutputStatus status;
+
+    /*
      * The call_id property.
      */
     @Generated
@@ -55,6 +61,16 @@ public final class ResponsesFunctionCallOutput extends ResponsesItem {
     @Override
     public ResponsesItemType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the status property: The status property.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public ResponsesFunctionCallOutputStatus getStatus() {
+        return this.status;
     }
 
     /**
@@ -131,21 +147,5 @@ public final class ResponsesFunctionCallOutput extends ResponsesItem {
             deserializedResponsesFunctionCallOutput.status = status;
             return deserializedResponsesFunctionCallOutput;
         });
-    }
-
-    /*
-     * The status property.
-     */
-    @Generated
-    private ResponsesFunctionCallOutputStatus status;
-
-    /**
-     * Get the status property: The status property.
-     *
-     * @return the status value.
-     */
-    @Generated
-    public ResponsesFunctionCallOutputStatus getStatus() {
-        return this.status;
     }
 }

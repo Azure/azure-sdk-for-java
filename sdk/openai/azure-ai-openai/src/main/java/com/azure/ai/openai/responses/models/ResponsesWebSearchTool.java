@@ -28,6 +28,12 @@ public final class ResponsesWebSearchTool extends ResponsesTool {
     @Generated
     private ResponsesWebSearchLocation userLocation;
 
+    /*
+     * The search_context_size property.
+     */
+    @Generated
+    private ResponsesWebSearchContextSize searchContextSize;
+
     /**
      * Creates an instance of ResponsesWebSearchTool class.
      */
@@ -54,6 +60,40 @@ public final class ResponsesWebSearchTool extends ResponsesTool {
     @Generated
     public ResponsesWebSearchLocation getUserLocation() {
         return this.userLocation;
+    }
+
+    /**
+     * Set the userLocation property: The user_location property.
+     *
+     * @param userLocation the userLocation value to set.
+     * @return the ResponsesWebSearchTool object itself.
+     */
+    @Generated
+    public ResponsesWebSearchTool setUserLocation(ResponsesWebSearchLocation userLocation) {
+        this.userLocation = userLocation;
+        return this;
+    }
+
+    /**
+     * Get the searchContextSize property: The search_context_size property.
+     *
+     * @return the searchContextSize value.
+     */
+    @Generated
+    public ResponsesWebSearchContextSize getSearchContextSize() {
+        return this.searchContextSize;
+    }
+
+    /**
+     * Set the searchContextSize property: The search_context_size property.
+     *
+     * @param searchContextSize the searchContextSize value to set.
+     * @return the ResponsesWebSearchTool object itself.
+     */
+    @Generated
+    public ResponsesWebSearchTool setSearchContextSize(ResponsesWebSearchContextSize searchContextSize) {
+        this.searchContextSize = searchContextSize;
+        return this;
     }
 
     /**
@@ -98,45 +138,5 @@ public final class ResponsesWebSearchTool extends ResponsesTool {
             }
             return deserializedResponsesWebSearchTool;
         });
-    }
-
-    /*
-     * The search_context_size property.
-     */
-    @Generated
-    private ResponsesWebSearchContextSize searchContextSize;
-
-    /**
-     * Set the userLocation property: The user_location property.
-     *
-     * @param userLocation the userLocation value to set.
-     * @return the ResponsesWebSearchTool object itself.
-     */
-    @Generated
-    public ResponsesWebSearchTool setUserLocation(ResponsesWebSearchLocation userLocation) {
-        this.userLocation = userLocation;
-        return this;
-    }
-
-    /**
-     * Get the searchContextSize property: The search_context_size property.
-     *
-     * @return the searchContextSize value.
-     */
-    @Generated
-    public ResponsesWebSearchContextSize getSearchContextSize() {
-        return this.searchContextSize;
-    }
-
-    /**
-     * Set the searchContextSize property: The search_context_size property.
-     *
-     * @param searchContextSize the searchContextSize value to set.
-     * @return the ResponsesWebSearchTool object itself.
-     */
-    @Generated
-    public ResponsesWebSearchTool setSearchContextSize(ResponsesWebSearchContextSize searchContextSize) {
-        this.searchContextSize = searchContextSize;
-        return this;
     }
 }

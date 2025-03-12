@@ -35,6 +35,18 @@ public final class ResponsesComputerCallDoubleClickAction extends ResponsesCompu
     private final int y;
 
     /**
+     * Creates an instance of ResponsesComputerCallDoubleClickAction class.
+     *
+     * @param x the x value to set.
+     * @param y the y value to set.
+     */
+    @Generated
+    public ResponsesComputerCallDoubleClickAction(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -111,17 +123,5 @@ public final class ResponsesComputerCallDoubleClickAction extends ResponsesCompu
             deserializedResponsesComputerCallDoubleClickAction.type = type;
             return deserializedResponsesComputerCallDoubleClickAction;
         });
-    }
-
-    /**
-     * Creates an instance of ResponsesComputerCallDoubleClickAction class.
-     *
-     * @param x the x value to set.
-     * @param y the y value to set.
-     */
-    @Generated
-    public ResponsesComputerCallDoubleClickAction(int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 }

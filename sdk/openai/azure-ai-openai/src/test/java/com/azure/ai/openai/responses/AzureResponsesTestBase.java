@@ -5,7 +5,6 @@ package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
-import com.azure.ai.openai.responses.models.CreateResponsesRequestTruncation;
 import com.azure.ai.openai.responses.models.ResponseTruncation;
 import com.azure.ai.openai.responses.models.ResponsesComputerTool;
 import com.azure.ai.openai.responses.models.ResponsesComputerToolEnvironment;

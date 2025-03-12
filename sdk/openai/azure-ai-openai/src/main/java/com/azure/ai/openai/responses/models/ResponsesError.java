@@ -18,25 +18,27 @@ import java.io.IOException;
 public final class ResponsesError implements JsonSerializable<ResponsesError> {
 
     /*
-     * The message property.
-     */
-    @Generated
-    private final String message;
-
-    /*
      * The code property.
      */
     @Generated
     private final String code;
 
-    /**
-     * Get the message property: The message property.
-     *
-     * @return the message value.
+    /*
+     * The message property.
      */
     @Generated
-    public String getMessage() {
-        return this.message;
+    private final String message;
+
+    /**
+     * Creates an instance of ResponsesError class.
+     *
+     * @param code the code value to set.
+     * @param message the message value to set.
+     */
+    @Generated
+    private ResponsesError(String code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
     /**
@@ -47,6 +49,16 @@ public final class ResponsesError implements JsonSerializable<ResponsesError> {
     @Generated
     public String getCode() {
         return this.code;
+    }
+
+    /**
+     * Get the message property: The message property.
+     *
+     * @return the message value.
+     */
+    @Generated
+    public String getMessage() {
+        return this.message;
     }
 
     /**
@@ -88,17 +100,5 @@ public final class ResponsesError implements JsonSerializable<ResponsesError> {
             }
             return new ResponsesError(code, message);
         });
-    }
-
-    /**
-     * Creates an instance of ResponsesError class.
-     *
-     * @param code the code value to set.
-     * @param message the message value to set.
-     */
-    @Generated
-    private ResponsesError(String code, String message) {
-        this.code = code;
-        this.message = message;
     }
 }

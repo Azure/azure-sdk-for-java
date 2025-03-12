@@ -391,6 +391,18 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
     }
 
     /**
+     * Set the text property: The text property.
+     *
+     * @param text the text value to set.
+     * @return the CreateResponsesRequest object itself.
+     */
+    @Generated
+    public CreateResponsesRequest setText(ResponseTextOptions text) {
+        this.text = text;
+        return this;
+    }
+
+    /**
      * Get the tools property: The tools to use to generate a response.
      *
      * @return the tools value.
@@ -446,6 +458,22 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
     @Generated
     public ResponseTruncation getTruncation() {
         return this.truncation;
+    }
+
+    /**
+     * Set the truncation property: The truncation strategy to use for the model response.
+     * - `auto`: If the context of this response and previous ones exceeds the model's context window size, the model
+     * will truncate the response to fit the context window by dropping input items in the middle of the conversation.
+     * - `disabled`: If a model response will exceed the context window size for a model, the request will fail with a
+     * 400 error.
+     *
+     * @param truncation the truncation value to set.
+     * @return the CreateResponsesRequest object itself.
+     */
+    @Generated
+    public CreateResponsesRequest setTruncation(ResponseTruncation truncation) {
+        this.truncation = truncation;
+        return this;
     }
 
     /**
@@ -708,33 +736,5 @@ public final class CreateResponsesRequest implements JsonSerializable<CreateResp
             deserializedCreateResponsesRequest.stream = stream;
             return deserializedCreateResponsesRequest;
         });
-    }
-
-    /**
-     * Set the text property: The text property.
-     *
-     * @param text the text value to set.
-     * @return the CreateResponsesRequest object itself.
-     */
-    @Generated
-    public CreateResponsesRequest setText(ResponseTextOptions text) {
-        this.text = text;
-        return this;
-    }
-
-    /**
-     * Set the truncation property: The truncation strategy to use for the model response.
-     * - `auto`: If the context of this response and previous ones exceeds the model's context window size, the model
-     * will truncate the response to fit the context window by dropping input items in the middle of the conversation.
-     * - `disabled`: If a model response will exceed the context window size for a model, the request will fail with a
-     * 400 error.
-     *
-     * @param truncation the truncation value to set.
-     * @return the CreateResponsesRequest object itself.
-     */
-    @Generated
-    public CreateResponsesRequest setTruncation(ResponseTruncation truncation) {
-        this.truncation = truncation;
-        return this;
     }
 }

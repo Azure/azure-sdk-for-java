@@ -37,88 +37,6 @@ public final class ResponsesFileSearchCallItemResult implements JsonSerializable
     @Generated
     private String filename;
 
-    /**
-     * Get the fileId property: The file_id property.
-     *
-     * @return the fileId value.
-     */
-    @Generated
-    public String getFileId() {
-        return this.fileId;
-    }
-
-    /**
-     * Get the text property: The text property.
-     *
-     * @return the text value.
-     */
-    @Generated
-    public String getText() {
-        return this.text;
-    }
-
-    /**
-     * Get the filename property: The filename property.
-     *
-     * @return the filename value.
-     */
-    @Generated
-    public String getFilename() {
-        return this.filename;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("file_id", this.fileId);
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("filename", this.filename);
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeNumberField("score", this.score);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ResponsesFileSearchCallItemResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesFileSearchCallItemResult if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResponsesFileSearchCallItemResult.
-     */
-    @Generated
-    public static ResponsesFileSearchCallItemResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ResponsesFileSearchCallItemResult deserializedResponsesFileSearchCallItemResult
-                = new ResponsesFileSearchCallItemResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("file_id".equals(fieldName)) {
-                    deserializedResponsesFileSearchCallItemResult.fileId = reader.getString();
-                } else if ("text".equals(fieldName)) {
-                    deserializedResponsesFileSearchCallItemResult.text = reader.getString();
-                } else if ("filename".equals(fieldName)) {
-                    deserializedResponsesFileSearchCallItemResult.filename = reader.getString();
-                } else if ("attributes".equals(fieldName)) {
-                    Map<String, BinaryData> attributes = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedResponsesFileSearchCallItemResult.attributes = attributes;
-                } else if ("score".equals(fieldName)) {
-                    deserializedResponsesFileSearchCallItemResult.score = reader.getNullable(JsonReader::getDouble);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedResponsesFileSearchCallItemResult;
-        });
-    }
-
     /*
      * The attributes property.
      */
@@ -139,6 +57,16 @@ public final class ResponsesFileSearchCallItemResult implements JsonSerializable
     }
 
     /**
+     * Get the fileId property: The file_id property.
+     *
+     * @return the fileId value.
+     */
+    @Generated
+    public String getFileId() {
+        return this.fileId;
+    }
+
+    /**
      * Set the fileId property: The file_id property.
      *
      * @param fileId the fileId value to set.
@@ -151,6 +79,16 @@ public final class ResponsesFileSearchCallItemResult implements JsonSerializable
     }
 
     /**
+     * Get the text property: The text property.
+     *
+     * @return the text value.
+     */
+    @Generated
+    public String getText() {
+        return this.text;
+    }
+
+    /**
      * Set the text property: The text property.
      *
      * @param text the text value to set.
@@ -160,6 +98,16 @@ public final class ResponsesFileSearchCallItemResult implements JsonSerializable
     public ResponsesFileSearchCallItemResult setText(String text) {
         this.text = text;
         return this;
+    }
+
+    /**
+     * Get the filename property: The filename property.
+     *
+     * @return the filename value.
+     */
+    @Generated
+    public String getFilename() {
+        return this.filename;
     }
 
     /**
@@ -216,5 +164,57 @@ public final class ResponsesFileSearchCallItemResult implements JsonSerializable
     public ResponsesFileSearchCallItemResult setScore(Double score) {
         this.score = score;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("file_id", this.fileId);
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("filename", this.filename);
+        jsonWriter.writeMapField("attributes", this.attributes,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeNumberField("score", this.score);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResponsesFileSearchCallItemResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResponsesFileSearchCallItemResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResponsesFileSearchCallItemResult.
+     */
+    @Generated
+    public static ResponsesFileSearchCallItemResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResponsesFileSearchCallItemResult deserializedResponsesFileSearchCallItemResult
+                = new ResponsesFileSearchCallItemResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("file_id".equals(fieldName)) {
+                    deserializedResponsesFileSearchCallItemResult.fileId = reader.getString();
+                } else if ("text".equals(fieldName)) {
+                    deserializedResponsesFileSearchCallItemResult.text = reader.getString();
+                } else if ("filename".equals(fieldName)) {
+                    deserializedResponsesFileSearchCallItemResult.filename = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    Map<String, BinaryData> attributes = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    deserializedResponsesFileSearchCallItemResult.attributes = attributes;
+                } else if ("score".equals(fieldName)) {
+                    deserializedResponsesFileSearchCallItemResult.score = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedResponsesFileSearchCallItemResult;
+        });
     }
 }

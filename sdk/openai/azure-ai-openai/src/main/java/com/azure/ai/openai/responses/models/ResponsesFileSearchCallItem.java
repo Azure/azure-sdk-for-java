@@ -24,6 +24,12 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
     private ResponsesItemType type = ResponsesItemType.FILE_SEARCH_CALL;
 
     /*
+     * The status property.
+     */
+    @Generated
+    private ResponsesFileSearchCallItemStatus status;
+
+    /*
      * The queries property.
      */
     @Generated
@@ -56,6 +62,16 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
     @Override
     public ResponsesItemType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the status property: The status property.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public ResponsesFileSearchCallItemStatus getStatus() {
+        return this.status;
     }
 
     /**
@@ -132,21 +148,5 @@ public final class ResponsesFileSearchCallItem extends ResponsesItem {
             deserializedResponsesFileSearchCallItem.type = type;
             return deserializedResponsesFileSearchCallItem;
         });
-    }
-
-    /*
-     * The status property.
-     */
-    @Generated
-    private ResponsesFileSearchCallItemStatus status;
-
-    /**
-     * Get the status property: The status property.
-     *
-     * @return the status value.
-     */
-    @Generated
-    public ResponsesFileSearchCallItemStatus getStatus() {
-        return this.status;
     }
 }

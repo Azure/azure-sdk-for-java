@@ -22,6 +22,12 @@ public final class ResponsesWebSearchCallItem extends ResponsesItem {
     @Generated
     private ResponsesItemType type = ResponsesItemType.WEB_SEARCH_CALL;
 
+    /*
+     * The status property.
+     */
+    @Generated
+    private ResponsesWebSearchCallItemStatus status;
+
     /**
      * Creates an instance of ResponsesWebSearchCallItem class.
      */
@@ -38,6 +44,16 @@ public final class ResponsesWebSearchCallItem extends ResponsesItem {
     @Override
     public ResponsesItemType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the status property: The status property.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public ResponsesWebSearchCallItemStatus getStatus() {
+        return this.status;
     }
 
     /**
@@ -80,21 +96,5 @@ public final class ResponsesWebSearchCallItem extends ResponsesItem {
             }
             return deserializedResponsesWebSearchCallItem;
         });
-    }
-
-    /*
-     * The status property.
-     */
-    @Generated
-    private ResponsesWebSearchCallItemStatus status;
-
-    /**
-     * Get the status property: The status property.
-     *
-     * @return the status value.
-     */
-    @Generated
-    public ResponsesWebSearchCallItemStatus getStatus() {
-        return this.status;
     }
 }

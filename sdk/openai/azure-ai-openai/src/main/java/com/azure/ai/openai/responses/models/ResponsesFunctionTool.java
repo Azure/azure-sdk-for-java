@@ -48,6 +48,22 @@ public final class ResponsesFunctionTool extends ResponsesTool {
     private final boolean strict;
 
     /**
+     * Creates an instance of ResponsesFunctionTool class.
+     *
+     * @param name the name value to set.
+     * @param description the description value to set.
+     * @param parameters the parameters value to set.
+     * @param strict the strict value to set.
+     */
+    @Generated
+    public ResponsesFunctionTool(String name, String description, BinaryData parameters, boolean strict) {
+        this.name = name;
+        this.description = description;
+        this.parameters = parameters;
+        this.strict = strict;
+    }
+
+    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -154,21 +170,5 @@ public final class ResponsesFunctionTool extends ResponsesTool {
             deserializedResponsesFunctionTool.type = type;
             return deserializedResponsesFunctionTool;
         });
-    }
-
-    /**
-     * Creates an instance of ResponsesFunctionTool class.
-     *
-     * @param name the name value to set.
-     * @param description the description value to set.
-     * @param parameters the parameters value to set.
-     * @param strict the strict value to set.
-     */
-    @Generated
-    public ResponsesFunctionTool(String name, String description, BinaryData parameters, boolean strict) {
-        this.name = name;
-        this.description = description;
-        this.parameters = parameters;
-        this.strict = strict;
     }
 }

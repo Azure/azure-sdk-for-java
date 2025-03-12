@@ -30,10 +30,40 @@ public final class ResponsesComputerCallOutputItem extends ResponsesItem {
     private final String callId;
 
     /*
+     * The safety checks reported by the API that have been acknowledged by the
+     * developer.
+     */
+    @Generated
+    private final List<ResponsesComputerCallItemSafetyCheck> acknowledgedSafetyChecks;
+
+    /*
      * The output property.
      */
     @Generated
     private final ResponsesComputerCallOutputItemOutput output;
+
+    /*
+     * The status of the message input. One of `in_progress`, `completed`, or `incomplete`. Populated when input items
+     * are returned via API.
+     */
+    @Generated
+    private ResponsesComputerCallOutputItemStatus status;
+
+    /**
+     * Creates an instance of ResponsesComputerCallOutputItem class.
+     *
+     * @param callId the callId value to set.
+     * @param acknowledgedSafetyChecks the acknowledgedSafetyChecks value to set.
+     * @param output the output value to set.
+     */
+    @Generated
+    public ResponsesComputerCallOutputItem(String callId,
+        List<ResponsesComputerCallItemSafetyCheck> acknowledgedSafetyChecks,
+        ResponsesComputerCallOutputItemOutput output) {
+        this.callId = callId;
+        this.acknowledgedSafetyChecks = acknowledgedSafetyChecks;
+        this.output = output;
+    }
 
     /**
      * Get the type property: The type property.
@@ -57,6 +87,18 @@ public final class ResponsesComputerCallOutputItem extends ResponsesItem {
     }
 
     /**
+     * Get the acknowledgedSafetyChecks property: The safety checks reported by the API that have been acknowledged by
+     * the
+     * developer.
+     *
+     * @return the acknowledgedSafetyChecks value.
+     */
+    @Generated
+    public List<ResponsesComputerCallItemSafetyCheck> getAcknowledgedSafetyChecks() {
+        return this.acknowledgedSafetyChecks;
+    }
+
+    /**
      * Get the output property: The output property.
      *
      * @return the output value.
@@ -64,6 +106,17 @@ public final class ResponsesComputerCallOutputItem extends ResponsesItem {
     @Generated
     public ResponsesComputerCallOutputItemOutput getOutput() {
         return this.output;
+    }
+
+    /**
+     * Get the status property: The status of the message input. One of `in_progress`, `completed`, or `incomplete`.
+     * Populated when input items are returned via API.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public ResponsesComputerCallOutputItemStatus getStatus() {
+        return this.status;
     }
 
     /**
@@ -126,58 +179,5 @@ public final class ResponsesComputerCallOutputItem extends ResponsesItem {
             deserializedResponsesComputerCallOutputItem.status = status;
             return deserializedResponsesComputerCallOutputItem;
         });
-    }
-
-    /*
-     * The safety checks reported by the API that have been acknowledged by the
-     * developer.
-     */
-    @Generated
-    private final List<ResponsesComputerCallItemSafetyCheck> acknowledgedSafetyChecks;
-
-    /*
-     * The status of the message input. One of `in_progress`, `completed`, or `incomplete`. Populated when input items
-     * are returned via API.
-     */
-    @Generated
-    private ResponsesComputerCallOutputItemStatus status;
-
-    /**
-     * Creates an instance of ResponsesComputerCallOutputItem class.
-     *
-     * @param callId the callId value to set.
-     * @param acknowledgedSafetyChecks the acknowledgedSafetyChecks value to set.
-     * @param output the output value to set.
-     */
-    @Generated
-    public ResponsesComputerCallOutputItem(String callId,
-        List<ResponsesComputerCallItemSafetyCheck> acknowledgedSafetyChecks,
-        ResponsesComputerCallOutputItemOutput output) {
-        this.callId = callId;
-        this.acknowledgedSafetyChecks = acknowledgedSafetyChecks;
-        this.output = output;
-    }
-
-    /**
-     * Get the acknowledgedSafetyChecks property: The safety checks reported by the API that have been acknowledged by
-     * the
-     * developer.
-     *
-     * @return the acknowledgedSafetyChecks value.
-     */
-    @Generated
-    public List<ResponsesComputerCallItemSafetyCheck> getAcknowledgedSafetyChecks() {
-        return this.acknowledgedSafetyChecks;
-    }
-
-    /**
-     * Get the status property: The status of the message input. One of `in_progress`, `completed`, or `incomplete`.
-     * Populated when input items are returned via API.
-     *
-     * @return the status value.
-     */
-    @Generated
-    public ResponsesComputerCallOutputItemStatus getStatus() {
-        return this.status;
     }
 }

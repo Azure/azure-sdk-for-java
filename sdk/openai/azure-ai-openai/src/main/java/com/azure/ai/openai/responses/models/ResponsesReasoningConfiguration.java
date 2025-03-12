@@ -25,6 +25,22 @@ public final class ResponsesReasoningConfiguration implements JsonSerializable<R
     @Generated
     private final ResponsesReasoningConfigurationEffort effort;
 
+    /*
+     * The generate_summary property.
+     */
+    @Generated
+    private ResponsesReasoningConfigurationGenerateSummary generateSummary;
+
+    /**
+     * Creates an instance of ResponsesReasoningConfiguration class.
+     *
+     * @param effort the effort value to set.
+     */
+    @Generated
+    public ResponsesReasoningConfiguration(ResponsesReasoningConfigurationEffort effort) {
+        this.effort = effort;
+    }
+
     /**
      * Get the effort property: The effort property.
      *
@@ -33,6 +49,29 @@ public final class ResponsesReasoningConfiguration implements JsonSerializable<R
     @Generated
     public ResponsesReasoningConfigurationEffort getEffort() {
         return this.effort;
+    }
+
+    /**
+     * Get the generateSummary property: The generate_summary property.
+     *
+     * @return the generateSummary value.
+     */
+    @Generated
+    public ResponsesReasoningConfigurationGenerateSummary getGenerateSummary() {
+        return this.generateSummary;
+    }
+
+    /**
+     * Set the generateSummary property: The generate_summary property.
+     *
+     * @param generateSummary the generateSummary value to set.
+     * @return the ResponsesReasoningConfiguration object itself.
+     */
+    @Generated
+    public ResponsesReasoningConfiguration
+        setGenerateSummary(ResponsesReasoningConfigurationGenerateSummary generateSummary) {
+        this.generateSummary = generateSummary;
+        return this;
     }
 
     /**
@@ -78,44 +117,5 @@ public final class ResponsesReasoningConfiguration implements JsonSerializable<R
             deserializedResponsesReasoningConfiguration.generateSummary = generateSummary;
             return deserializedResponsesReasoningConfiguration;
         });
-    }
-
-    /*
-     * The generate_summary property.
-     */
-    @Generated
-    private ResponsesReasoningConfigurationGenerateSummary generateSummary;
-
-    /**
-     * Creates an instance of ResponsesReasoningConfiguration class.
-     *
-     * @param effort the effort value to set.
-     */
-    @Generated
-    public ResponsesReasoningConfiguration(ResponsesReasoningConfigurationEffort effort) {
-        this.effort = effort;
-    }
-
-    /**
-     * Get the generateSummary property: The generate_summary property.
-     *
-     * @return the generateSummary value.
-     */
-    @Generated
-    public ResponsesReasoningConfigurationGenerateSummary getGenerateSummary() {
-        return this.generateSummary;
-    }
-
-    /**
-     * Set the generateSummary property: The generate_summary property.
-     *
-     * @param generateSummary the generateSummary value to set.
-     * @return the ResponsesReasoningConfiguration object itself.
-     */
-    @Generated
-    public ResponsesReasoningConfiguration
-        setGenerateSummary(ResponsesReasoningConfigurationGenerateSummary generateSummary) {
-        this.generateSummary = generateSummary;
-        return this;
     }
 }

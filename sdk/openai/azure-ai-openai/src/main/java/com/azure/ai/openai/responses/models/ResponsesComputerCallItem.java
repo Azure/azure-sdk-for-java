@@ -36,6 +36,34 @@ public final class ResponsesComputerCallItem extends ResponsesItem {
     @Generated
     private final ResponsesComputerCallItemAction action;
 
+    /*
+     * The pending safety checks for the computer call.
+     */
+    @Generated
+    private final List<ResponsesComputerCallItemSafetyCheck> pendingSafetyChecks;
+
+    /*
+     * The status of the item. One of `in_progress`, `completed`, or `incomplete`. Populated when items are returned via
+     * API.
+     */
+    @Generated
+    private ResponsesComputerCallItemStatus status;
+
+    /**
+     * Creates an instance of ResponsesComputerCallItem class.
+     *
+     * @param callId the callId value to set.
+     * @param action the action value to set.
+     * @param pendingSafetyChecks the pendingSafetyChecks value to set.
+     */
+    @Generated
+    public ResponsesComputerCallItem(String callId, ResponsesComputerCallItemAction action,
+        List<ResponsesComputerCallItemSafetyCheck> pendingSafetyChecks) {
+        this.callId = callId;
+        this.action = action;
+        this.pendingSafetyChecks = pendingSafetyChecks;
+    }
+
     /**
      * Get the type property: The type property.
      *
@@ -65,6 +93,27 @@ public final class ResponsesComputerCallItem extends ResponsesItem {
     @Generated
     public ResponsesComputerCallItemAction getAction() {
         return this.action;
+    }
+
+    /**
+     * Get the pendingSafetyChecks property: The pending safety checks for the computer call.
+     *
+     * @return the pendingSafetyChecks value.
+     */
+    @Generated
+    public List<ResponsesComputerCallItemSafetyCheck> getPendingSafetyChecks() {
+        return this.pendingSafetyChecks;
+    }
+
+    /**
+     * Get the status property: The status of the item. One of `in_progress`, `completed`, or `incomplete`. Populated
+     * when items are returned via API.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public ResponsesComputerCallItemStatus getStatus() {
+        return this.status;
     }
 
     /**
@@ -127,54 +176,5 @@ public final class ResponsesComputerCallItem extends ResponsesItem {
             deserializedResponsesComputerCallItem.type = type;
             return deserializedResponsesComputerCallItem;
         });
-    }
-
-    /*
-     * The pending safety checks for the computer call.
-     */
-    @Generated
-    private final List<ResponsesComputerCallItemSafetyCheck> pendingSafetyChecks;
-
-    /*
-     * The status of the item. One of `in_progress`, `completed`, or `incomplete`. Populated when items are returned via
-     * API.
-     */
-    @Generated
-    private ResponsesComputerCallItemStatus status;
-
-    /**
-     * Creates an instance of ResponsesComputerCallItem class.
-     *
-     * @param callId the callId value to set.
-     * @param action the action value to set.
-     * @param pendingSafetyChecks the pendingSafetyChecks value to set.
-     */
-    @Generated
-    public ResponsesComputerCallItem(String callId, ResponsesComputerCallItemAction action,
-        List<ResponsesComputerCallItemSafetyCheck> pendingSafetyChecks) {
-        this.callId = callId;
-        this.action = action;
-        this.pendingSafetyChecks = pendingSafetyChecks;
-    }
-
-    /**
-     * Get the pendingSafetyChecks property: The pending safety checks for the computer call.
-     *
-     * @return the pendingSafetyChecks value.
-     */
-    @Generated
-    public List<ResponsesComputerCallItemSafetyCheck> getPendingSafetyChecks() {
-        return this.pendingSafetyChecks;
-    }
-
-    /**
-     * Get the status property: The status of the item. One of `in_progress`, `completed`, or `incomplete`. Populated
-     * when items are returned via API.
-     *
-     * @return the status value.
-     */
-    @Generated
-    public ResponsesComputerCallItemStatus getStatus() {
-        return this.status;
     }
 }
