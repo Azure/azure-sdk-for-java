@@ -280,14 +280,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 }
             }
 
-            if (isJson) {
-                body.addStatement(StaticJavaParser.parseStatement(
-                    "httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", jsonSerializer));"));
-            } else if (isXml) {
-                body.addStatement(StaticJavaParser.parseStatement(
-                    "httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", xmlSerializer));"));
-            }
-            updateRequestWithBodyContent(body, parameterType, parameterName);
+            updateRequestWithBodyContent(body, isJson, isXml, parameterType, parameterName);
         }
     }
 
@@ -407,8 +400,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
-        Statement statement
-            = StaticJavaParser.parseStatement("Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);");
+        Statement statement = StaticJavaParser
+            .parseStatement("Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);");
         statement.setLineComment("\n Send the request through the pipeline");
         body.addStatement(statement);
 
@@ -442,11 +435,18 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             + " throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
     }
 
-    private void updateRequestWithBodyContent(BlockStmt body, String parameterType, String parameterName) {
+    private void updateRequestWithBodyContent(BlockStmt body, boolean isJson, boolean isXml, String parameterType,
+        String parameterName) {
         if (parameterType == null) {
             return;
         }
-        if ("byte[]".equals(parameterType)) {
+        if (isJson) {
+            body.addStatement(StaticJavaParser
+                .parseStatement("httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", jsonSerializer));"));
+        } else if (isXml) {
+            body.addStatement(StaticJavaParser
+                .parseStatement("httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", xmlSerializer));"));
+        } else if ("byte[]".equals(parameterType)) {
             body.addStatement(StaticJavaParser
                 .parseStatement("httpRequest.setBody(BinaryData.fromBytes((byte[]) " + parameterName + "));"));
         } else if ("String".equals(parameterType)) {

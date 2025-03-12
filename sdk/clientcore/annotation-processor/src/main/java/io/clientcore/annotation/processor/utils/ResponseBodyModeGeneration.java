@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -41,7 +40,7 @@ public final class ResponseBodyModeGeneration {
      */
     public static void handleResponseBody(BlockStmt body, TypeMirror returnType, java.lang.reflect.Type entityType,
         HttpRequestContext method) {
-        String typeCast = entityType.toString();
+        String typeCast = returnType.toString();
         if (method.getHttpMethod() == HttpMethod.HEAD
             && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
                 || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
@@ -102,29 +101,47 @@ public final class ResponseBodyModeGeneration {
                             + typeElement.getSimpleName() + ".class, " + genericType + ".class);");
                     }
                 }
-            }
-            String contentTypeValue = method.getHeaders()
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getKey().equals("contentType"))
-                .map(Map.Entry::getValue)
-                .findFirst()
-                .orElse(null);
-            if (contentTypeValue != null) {
-                if (contentTypeValue.trim().equalsIgnoreCase("application/xml")
-                    || contentTypeValue.trim().equalsIgnoreCase("application/xml;charset=utf-8")
-                    || contentTypeValue.trim().equalsIgnoreCase("text/xml")) {
-                    body.addStatement(
-                        "Object result = decodeByteArray(response.getBody().toBytes(), xmlSerializer, returnType);");
-                }
             } else {
                 body.addStatement(
-                    "Object result = decodeByteArray(response.getBody().toBytes(), jsonSerializer, returnType);");
+                    "ParameterizedType returnType = CoreUtils.createParameterizedType(" + returnType + ".class);");
+            }
+            boolean isContentTypeSetInHeaders
+                = method.getParameters().stream().anyMatch(parameter -> parameter.getName().equals("contentType"));
+            body.addStatement("Object result = null;");
+            if (isContentTypeSetInHeaders) {
+                body.addStatement(StaticJavaParser.parseStatement("if (contentType != null) {"
+                    + "    if (contentType.trim().equalsIgnoreCase(\"application/xml\") || "
+                    + "        contentType.trim().equalsIgnoreCase(\"application/xml;charset=utf-8\") || "
+                    + "        contentType.trim().equalsIgnoreCase(\"text/xml\")) {"
+                    + "        result = decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);"
+                    + "    } else {"
+                    + "        result = decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);"
+                    + "    }" + "}"));
+            } else {
+                body.addStatement(StaticJavaParser.parseStatement(
+                    "result = decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);"));
             }
         }
+        if (returnType instanceof DeclaredType) {
+            DeclaredType declaredType = (DeclaredType) returnType;
+            if (!declaredType.getTypeArguments().isEmpty()) {
+                body.addStatement(StaticJavaParser.parseStatement("return new Response<>("
+                    + "networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (" + typeCast
+                    + ") result);"));
 
-        body.addStatement(StaticJavaParser.parseStatement("return new Response<>("
-            + "networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (" + typeCast + ") result);"));
+            } else {
+                closeResponse(body);
+                CastExpr castExpr
+                    = new CastExpr(StaticJavaParser.parseType(returnType.toString()), new NameExpr("result"));
+
+                // Add the cast statement to the method body
+                body.addStatement(new ReturnStmt(castExpr));
+            }
+        } else {
+            body.addStatement(StaticJavaParser.parseStatement(
+                "return new Response<>(" + "networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), ("
+                    + typeCast + ") result);"));
+        }
     }
 
     /**
@@ -135,7 +152,7 @@ public final class ResponseBodyModeGeneration {
      * @param method whether request options are used.
      */
     public static void generateResponseHandling(BlockStmt body, TypeMirror returnType, HttpRequestContext method) {
-        java.lang.reflect.Type bodyType = null;
+        java.lang.reflect.Type bodyType;
 
         if (returnType.getKind() == TypeKind.VOID) {
             closeResponse(body);
@@ -161,11 +178,13 @@ public final class ResponseBodyModeGeneration {
                         return TypeConverter.getPrimitiveClass(t);
                     }
                 }, null);
-            } else if (returnType.getKind() == TypeKind.ARRAY) {
+            } else {
                 bodyType = TypeConverter.getEntityType(returnType);
             }
             handleRestResponseReturnType(body, returnType, bodyType, method);
-            if (!returnType.getKind().isPrimitive() && returnType.getKind() != TypeKind.ARRAY) {
+            if (!returnType.getKind().isPrimitive()
+                && returnType.getKind() != TypeKind.ARRAY
+                && returnType.getKind() != TypeKind.DECLARED) {
                 closeResponse(body);
                 CastExpr castExpr
                     = new CastExpr(StaticJavaParser.parseType(returnType.toString()), new NameExpr("result"));
