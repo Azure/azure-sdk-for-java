@@ -20,16 +20,6 @@ final class BackoffTimeCalculator {
     private static Long minBackoff = (long) 30;
 
     /**
-     *
-     * @param maxBackoff maximum amount of time between requests
-     * @param minBackoff minimum amount of time between requests
-     */
-    static void setDefaults(Long maxBackoff, Long minBackoff) {
-        BackoffTimeCalculator.maxBackoff = maxBackoff;
-        BackoffTimeCalculator.minBackoff = minBackoff;
-    }
-
-    /**
      * Calculates the new Backoff time for requests.
      * @param attempts Number of attempts so far
      * @return Nano Seconds to the next request

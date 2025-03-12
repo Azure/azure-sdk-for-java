@@ -21,7 +21,7 @@ final class StateHolder {
     private static StateHolder currentState;
 
     private final Map<String, State> state = new ConcurrentHashMap<>();
-    
+
     private final Map<String, FeatureFlagState> featureFlagState = new ConcurrentHashMap<>();
 
     private final Map<String, Boolean> loadState = new ConcurrentHashMap<>();
@@ -53,7 +53,7 @@ final class StateHolder {
     private Map<String, State> getFullState() {
         return state;
     }
-    
+
     private Map<String, FeatureFlagState> getFullFeatureFlagState() {
         return featureFlagState;
     }
@@ -86,23 +86,15 @@ final class StateHolder {
      */
     void setStateFeatureFlag(String originEndpoint, List<FeatureFlags> watchKeys,
         Duration duration) {
-        featureFlagState.put(originEndpoint, new FeatureFlagState(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
-    }
-
-    /**
-     * @param state previous state to base off
-     * @param duration nextRefreshPeriod
-     */
-    void setState(State state, Duration duration) {
-        this.state.put(state.getOriginEndpoint(),
-            new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
+        featureFlagState.put(originEndpoint,
+            new FeatureFlagState(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
     }
 
     void updateStateRefresh(State state, Duration duration) {
         this.state.put(state.getOriginEndpoint(),
             new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
     }
-    
+
     void updateFeatureFlagStateRefresh(FeatureFlagState state, Duration duration) {
         this.featureFlagState.put(state.getOriginEndpoint(),
             new FeatureFlagState(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
@@ -123,10 +115,6 @@ final class StateHolder {
      */
     static boolean getLoadState(String originEndpoint) {
         return currentState.getFullLoadState().getOrDefault(originEndpoint, false);
-    }
-
-    Map<String, Boolean> getLoadState() {
-        return loadState;
     }
 
     /**
@@ -158,7 +146,7 @@ final class StateHolder {
      * Sets a minimum value until the next refresh. If a refresh interval has passed or is smaller than the calculated
      * backoff time, the refresh interval is set to the backoff time.
      * @param refreshInterval period between refresh checks.
-     * @param defaultMinBackoff  min backoff between checks
+     * @param defaultMinBackoff min backoff between checks
      */
     void updateNextRefreshTime(Duration refreshInterval, Long defaultMinBackoff) {
         if (refreshInterval != null) {

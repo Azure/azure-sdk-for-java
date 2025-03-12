@@ -16,7 +16,6 @@ public class BackoffTimeCalculatorTest {
     public void testCalculate() {
         int testTime = 10;
 
-        BackoffTimeCalculator.setDefaults((long) 600, (long) 30);
         Long testDate = BackoffTimeCalculator.calculateBackoff(1);
 
         assertNotNull(testDate);
