@@ -54,13 +54,14 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
             addCustomMatchers();
             // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
-
-            if (testMode == TestMode.PLAYBACK) {
-                builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
-            } else if (testMode == TestMode.RECORD) {
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            }
         }
+
+        if (testMode == TestMode.PLAYBACK) {
+            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
+        } else if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
         return builder;
     }
 
