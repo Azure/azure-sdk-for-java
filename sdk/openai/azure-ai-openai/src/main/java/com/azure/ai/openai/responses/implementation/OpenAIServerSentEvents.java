@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.ai.openai.responses.implementation;
 
-import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
+import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
+import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -51,18 +52,18 @@ public final class OpenAIServerSentEvents {
      *
      * @return A stream of server sent events.
      */
-    public Flux<ResponsesResponseStreamEvent> getEvents() {
+    public Flux<ResponsesStreamEvent> getEvents() {
         return mapEventStream();
     }
 
     /**
      * Maps the byte buffer to a stream of server sent events.
      *
-     * @return A stream of server sent events deserialized into ResponsesResponseStreamEvents.
+     * @return A stream of server sent events deserialized into ResponsesStreamEvents.
      */
-    private Flux<ResponsesResponseStreamEvent> mapEventStream() {
+    private Flux<ResponsesStreamEvent> mapEventStream() {
         return source.publishOn(Schedulers.boundedElastic()).concatMap(byteBuffer -> {
-            List<ResponsesResponseStreamEvent> values = new ArrayList<>();
+            List<ResponsesStreamEvent> values = new ArrayList<>();
             byte[] byteArray = byteBuffer.array();
             int lineBreakCharsEncountered = 0;
             try {
@@ -88,12 +89,12 @@ public final class OpenAIServerSentEvents {
         }).cache();
     }
 
-    private void processCurrentEvent(List<ResponsesResponseStreamEvent> values) throws UnsupportedEncodingException {
+    private void processCurrentEvent(List<ResponsesStreamEvent> values) throws UnsupportedEncodingException {
         String currentLine = outStream.toString(StandardCharsets.UTF_8.name());
         handleCurrentEvent(currentLine, values);
     }
 
-    private void processRemainingBytes(List<ResponsesResponseStreamEvent> values) throws UnsupportedEncodingException {
+    private void processRemainingBytes(List<ResponsesStreamEvent> values) throws UnsupportedEncodingException {
         String remainingBytes = outStream.toString(StandardCharsets.UTF_8.name());
         if (remainingBytes.endsWith("\n\n") || remainingBytes.endsWith("\r\n\r\n")) {
             handleCurrentEvent(remainingBytes, values);
@@ -126,7 +127,7 @@ public final class OpenAIServerSentEvents {
      * @param currentEvent The current line of the server sent event.
      * @param outputValues The list of values to add the current line to.
      */
-    public void handleCurrentEvent(String currentEvent, List<ResponsesResponseStreamEvent> outputValues) {
+    public void handleCurrentEvent(String currentEvent, List<ResponsesStreamEvent> outputValues) {
         if (currentEvent.isEmpty()) {
             return;
         }
@@ -140,6 +141,6 @@ public final class OpenAIServerSentEvents {
         //        String eventName = lines[0].substring(6).trim();
         String eventJson = lines[1].substring(5).trim();
 
-        outputValues.add(BinaryData.fromString(eventJson).toObject(ResponsesResponseStreamEvent.class));
+        outputValues.add(BinaryData.fromString(eventJson).toObject(ResponsesStreamEvent.class));
     }
 }

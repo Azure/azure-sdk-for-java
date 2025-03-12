@@ -15,7 +15,7 @@ import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
-import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
+import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -265,10 +265,6 @@ public final class ResponsesClient {
      * </pre>
      *
      * @param responseId The ID of the response to retrieve.
-     * @param limit The maximum number of input items to return.
-     * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after The cursor ID for positioning the returned list starting point.
-     * @param before The cursor ID for positioning the returned list end point.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -277,16 +273,13 @@ public final class ResponsesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> listInputItemsWithResponse(String responseId, int limit, String order, String after,
-        String before, RequestOptions requestOptions) {
+    private Response<BinaryData> listInputItemsWithResponse(String responseId, RequestOptions requestOptions) {
         if (nonAzureServiceClient != null) {
-            return nonAzureServiceClient.listInputItemsWithResponse(responseId, limit, order, after, before,
-                requestOptions);
+            return nonAzureServiceClient.listInputItemsWithResponse(responseId, requestOptions);
         } else {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
-            return this.serviceClient.listInputItemsWithResponse(responseId, limit, order, after, before,
-                requestOptions);
+            return this.serviceClient.listInputItemsWithResponse(responseId, requestOptions);
         }
     }
 
@@ -355,11 +348,40 @@ public final class ResponsesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponsesInputItemList listInputItems(String responseId, int limit, ListInputItemsRequestOrder order,
+    public ResponsesInputItemList listInputItems(String responseId, Integer limit, ListInputItemsRequestOrder order,
         String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
-        return listInputItemsWithResponse(responseId, limit, order.toString(), after, before, requestOptions).getValue()
-            .toObject(ResponsesInputItemList.class);
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return listInputItemsWithResponse(responseId, requestOptions).getValue().toObject(ResponsesInputItemList.class);
+    }
+
+    /**
+     * Returns a list of input items for a given response.
+     *
+     * @param responseId The ID of the response to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponsesInputItemList listInputItems(String responseId) {
+        RequestOptions requestOptions = new RequestOptions();
+        return listInputItemsWithResponse(responseId, requestOptions).getValue().toObject(ResponsesInputItemList.class);
     }
 
     /**
@@ -438,7 +460,7 @@ public final class ResponsesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<ResponsesResponseStreamEvent> createResponseStreaming(CreateResponsesRequest requestBody,
+    public IterableStream<ResponsesStreamEvent> createResponseStreaming(CreateResponsesRequest requestBody,
         RequestOptions requestOptions) {
         requestBody.setStream(true);
         Flux<ByteBuffer> events = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
@@ -460,7 +482,7 @@ public final class ResponsesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<ResponsesResponseStreamEvent> createResponseStreaming(CreateResponsesRequest requestBody) {
+    public IterableStream<ResponsesStreamEvent> createResponseStreaming(CreateResponsesRequest requestBody) {
         RequestOptions requestOptions = new RequestOptions();
         requestBody.setStream(true);
         Flux<ByteBuffer> events = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),

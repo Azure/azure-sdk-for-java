@@ -9,7 +9,7 @@ import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
-import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseCompleted;
+import com.azure.ai.openai.responses.models.ResponsesStreamEventCompleted;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
@@ -59,9 +59,9 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
             StepVerifier.create(client.createResponseStream(request)).thenConsumeWhile(_unused -> true, event -> {
                 assertNotNull(event);
-                if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                    ResponsesResponseStreamEventResponseCompleted completedEvent
-                        = (ResponsesResponseStreamEventResponseCompleted) event;
+                if (event instanceof ResponsesStreamEventCompleted) {
+                    ResponsesStreamEventCompleted completedEvent
+                        = (ResponsesStreamEventCompleted) event;
                     assertResponsesResponse(completedEvent.getResponse());
                 }
             }).verifyComplete();
@@ -77,9 +77,9 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
             StepVerifier.create(client.createResponseStream(request, new RequestOptions()))
                 .thenConsumeWhile(_unused -> true, event -> {
                     assertNotNull(event);
-                    if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                        ResponsesResponseStreamEventResponseCompleted completedEvent
-                            = (ResponsesResponseStreamEventResponseCompleted) event;
+                    if (event instanceof ResponsesStreamEventCompleted) {
+                        ResponsesStreamEventCompleted completedEvent
+                            = (ResponsesStreamEventCompleted) event;
                         assertResponsesResponse(completedEvent.getResponse());
                     }
                 })

@@ -11,8 +11,8 @@ import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
-import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
-import com.azure.ai.openai.responses.models.ResponsesResponseStreamEventResponseCompleted;
+import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
+import com.azure.ai.openai.responses.models.ResponsesStreamEventCompleted;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
@@ -58,13 +58,13 @@ public class ResponsesTest extends AzureResponsesTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            IterableStream<ResponsesResponseStreamEvent> events = client.createResponseStreaming(request);
+            IterableStream<ResponsesStreamEvent> events = client.createResponseStreaming(request);
 
             events.forEach(event -> {
                 assertNotNull(event);
-                if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                    ResponsesResponseStreamEventResponseCompleted completedEvent
-                        = (ResponsesResponseStreamEventResponseCompleted) event;
+                if (event instanceof ResponsesStreamEventCompleted) {
+                    ResponsesStreamEventCompleted completedEvent
+                        = (ResponsesStreamEventCompleted) event;
                     assertResponsesResponse(completedEvent.getResponse());
                 }
             });
@@ -77,14 +77,14 @@ public class ResponsesTest extends AzureResponsesTestBase {
         ResponsesClient client = getResponseClient(httpClient);
 
         getCreateResponseRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
-            IterableStream<ResponsesResponseStreamEvent> events
+            IterableStream<ResponsesStreamEvent> events
                 = client.createResponseStreaming(request, new RequestOptions());
 
             events.forEach(event -> {
                 assertNotNull(event);
-                if (event instanceof ResponsesResponseStreamEventResponseCompleted) {
-                    ResponsesResponseStreamEventResponseCompleted completedEvent
-                        = (ResponsesResponseStreamEventResponseCompleted) event;
+                if (event instanceof ResponsesStreamEventCompleted) {
+                    ResponsesStreamEventCompleted completedEvent
+                        = (ResponsesStreamEventCompleted) event;
                     assertResponsesResponse(completedEvent.getResponse());
                 }
             });

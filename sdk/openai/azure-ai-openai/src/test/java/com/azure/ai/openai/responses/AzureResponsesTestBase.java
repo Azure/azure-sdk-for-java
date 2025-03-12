@@ -10,7 +10,7 @@ import com.azure.ai.openai.responses.models.ResponsesComputerToolEnvironment;
 import com.azure.ai.openai.responses.models.ResponsesDeveloperMessage;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
-import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
+import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -82,7 +82,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         runner.accept(request);
     }
 
-    public static void assertStreamUpdate(ResponsesResponseStreamEvent responsesResponseStreamEvent) {
+    public static void assertStreamUpdate(ResponsesStreamEvent responsesResponseStreamEvent) {
         assertNotNull(responsesResponseStreamEvent);
         assertNotNull(responsesResponseStreamEvent.getType());
         assertFalse(CoreUtils.isNullOrEmpty(responsesResponseStreamEvent.getType().toString()));

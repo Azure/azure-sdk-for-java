@@ -15,7 +15,7 @@ import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
-import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
+import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -330,10 +330,6 @@ public final class ResponsesAsyncClient {
      * </pre>
      *
      * @param responseId The ID of the response to retrieve.
-     * @param limit The maximum number of input items to return.
-     * @param order The order in which to return the input items. Allowed values: "asc", "desc".
-     * @param after The cursor ID for positioning the returned list starting point.
-     * @param before The cursor ID for positioning the returned list end point.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -342,16 +338,13 @@ public final class ResponsesAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listInputItemsWithResponse(String responseId, int limit, String order,
-        String after, String before, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> listInputItemsWithResponse(String responseId, RequestOptions requestOptions) {
         if (nonAzureServiceClient != null) {
-            return nonAzureServiceClient.listInputItemsWithResponseAsync(responseId, limit, order, after, before,
-                requestOptions);
+            return nonAzureServiceClient.listInputItemsWithResponseAsync(responseId, requestOptions);
         } else {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
-            return this.serviceClient.listInputItemsWithResponseAsync(responseId, limit, order, after, before,
-                requestOptions);
+            return this.serviceClient.listInputItemsWithResponseAsync(responseId, requestOptions);
         }
     }
 
@@ -483,7 +476,7 @@ public final class ResponsesAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<ResponsesResponseStreamEvent> createResponseStream(CreateResponsesRequest requestBody) {
+    public Flux<ResponsesStreamEvent> createResponseStream(CreateResponsesRequest requestBody) {
         RequestOptions requestOptions = new RequestOptions();
         requestBody.setStream(true);
         Flux<ByteBuffer> response = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
@@ -505,7 +498,7 @@ public final class ResponsesAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<ResponsesResponseStreamEvent> createResponseStream(CreateResponsesRequest requestBody,
+    public Flux<ResponsesStreamEvent> createResponseStream(CreateResponsesRequest requestBody,
         RequestOptions requestOptions) {
         requestBody.setStream(true);
         Flux<ByteBuffer> response = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),

@@ -554,9 +554,9 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
      */
     @Generated
     private ResponsesResponse(String id, OffsetDateTime createdAt, ResponsesError error,
-                              ResponsesResponseIncompleteDetails incompleteDetails, String instructions, String model,
-                              List<ResponsesItem> output, boolean parallelToolCalls, String previousResponseId, double temperature,
-                              BinaryData toolChoice, List<ResponsesTool> tools, double topP, Map<String, String> metadata) {
+        ResponsesResponseIncompleteDetails incompleteDetails, String instructions, String model,
+        List<ResponsesItem> output, boolean parallelToolCalls, String previousResponseId, double temperature,
+        BinaryData toolChoice, List<ResponsesTool> tools, double topP, Map<String, String> metadata) {
         this.id = id;
         if (createdAt == null) {
             this.createdAt = 0L;
