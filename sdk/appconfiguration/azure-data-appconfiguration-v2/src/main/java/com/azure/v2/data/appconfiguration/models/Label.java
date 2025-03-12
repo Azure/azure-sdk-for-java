@@ -3,7 +3,7 @@
 package com.azure.v2.data.appconfiguration.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -13,18 +13,18 @@ import java.io.IOException;
 /**
  * Labels are used to group key-values.
  */
-@Metadata(conditions = { TypeConditions.IMMUTABLE })
+@Metadata(properties = { MetadataProperties.IMMUTABLE })
 public final class Label implements JsonSerializable<Label> {
     /*
      * The name of the label.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String name;
 
     /**
      * Creates an instance of Label class.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private Label() {
     }
 
@@ -33,7 +33,7 @@ public final class Label implements JsonSerializable<Label> {
      * 
      * @return the name value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getName() {
         return this.name;
     }
@@ -41,7 +41,7 @@ public final class Label implements JsonSerializable<Label> {
     /**
      * {@inheritDoc}
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -57,7 +57,7 @@ public final class Label implements JsonSerializable<Label> {
      * JSON null.
      * @throws IOException If an error occurs while reading the Label.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static Label fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Label deserializedLabel = new Label();

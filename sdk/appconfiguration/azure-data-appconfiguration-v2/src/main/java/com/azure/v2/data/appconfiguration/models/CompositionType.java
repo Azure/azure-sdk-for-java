@@ -3,6 +3,7 @@
 package com.azure.v2.data.appconfiguration.models;
 
 import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -27,13 +28,13 @@ public final class CompositionType implements ExpandableEnum<String>, JsonSerial
     /**
      * The 'key' composition type.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static final CompositionType KEY = fromValue("key");
 
     /**
      * The 'key_label' composition type.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static final CompositionType KEY_LABEL = fromValue("key_label");
 
     private final String value;
@@ -49,7 +50,7 @@ public final class CompositionType implements ExpandableEnum<String>, JsonSerial
      * @return the corresponding CompositionType.
      * @throws IllegalArgumentException if value is null.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static CompositionType fromValue(String value) {
         if (value == null) {
             throw new IllegalArgumentException("'value' cannot be null.");
@@ -62,7 +63,7 @@ public final class CompositionType implements ExpandableEnum<String>, JsonSerial
      * 
      * @return Known CompositionType values.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static Collection<CompositionType> values() {
         return new ArrayList<>(VALUES.values());
     }
@@ -72,7 +73,7 @@ public final class CompositionType implements ExpandableEnum<String>, JsonSerial
      * 
      * @return the value of the CompositionType instance.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public String getValue() {
         return this.value;
@@ -81,7 +82,7 @@ public final class CompositionType implements ExpandableEnum<String>, JsonSerial
     /**
      * {@inheritDoc}
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeString(getValue());
@@ -96,7 +97,7 @@ public final class CompositionType implements ExpandableEnum<String>, JsonSerial
      * @throws IOException If an error occurs while reading the CompositionType.
      * @throws IllegalStateException If unexpected JSON token is found.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static CompositionType fromJson(JsonReader jsonReader) throws IOException {
         JsonToken nextToken = jsonReader.nextToken();
         if (nextToken == JsonToken.NULL) {
@@ -109,19 +110,19 @@ public final class CompositionType implements ExpandableEnum<String>, JsonSerial
         return CompositionType.fromValue(jsonReader.getString());
     }
 
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public String toString() {
         return Objects.toString(this.value);
     }
 
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public boolean equals(Object obj) {
         return this == obj;
     }
 
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public int hashCode() {
         return Objects.hashCode(this.value);

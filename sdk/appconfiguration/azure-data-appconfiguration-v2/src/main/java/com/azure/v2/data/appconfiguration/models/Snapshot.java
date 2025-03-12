@@ -3,7 +3,7 @@
 package com.azure.v2.data.appconfiguration.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -16,24 +16,24 @@ import java.util.Map;
 /**
  * A snapshot is a named, immutable subset of an App Configuration store's key-values.
  */
-@Metadata(conditions = { TypeConditions.IMMUTABLE })
+@Metadata(properties = { MetadataProperties.IMMUTABLE })
 public final class Snapshot implements JsonSerializable<Snapshot> {
     /*
      * The name of the snapshot.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String name;
 
     /*
      * The current status of the snapshot.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private SnapshotStatus status;
 
     /*
      * A list of filters used to filter the key-values included in the snapshot.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private final List<KeyValueFilter> filters;
 
     /*
@@ -42,19 +42,19 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * containing the same key. The 'key_label' composition type ensures there are no
      * two key-values containing the same key and label.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private CompositionType compositionType;
 
     /*
      * The time that the snapshot was created.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private OffsetDateTime created;
 
     /*
      * The time that the snapshot will expire.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private OffsetDateTime expires;
 
     /*
@@ -63,31 +63,31 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * snapshot. If not specified, the default lifetime of key-value revisions will be
      * used.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private Long retentionPeriod;
 
     /*
      * The size in bytes of the snapshot.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private Long size;
 
     /*
      * The amount of key-values in the snapshot.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private Long itemsCount;
 
     /*
      * The tags of the snapshot.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private Map<String, String> tags;
 
     /*
      * A value representing the current state of the snapshot.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String etag;
 
     /**
@@ -95,7 +95,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @param filters the filters value to set.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private Snapshot(List<KeyValueFilter> filters) {
         this.filters = filters;
     }
@@ -105,7 +105,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the name value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getName() {
         return this.name;
     }
@@ -115,7 +115,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the status value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public SnapshotStatus getStatus() {
         return this.status;
     }
@@ -125,7 +125,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the filters value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public List<KeyValueFilter> getFilters() {
         return this.filters;
     }
@@ -138,7 +138,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the compositionType value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public CompositionType getCompositionType() {
         return this.compositionType;
     }
@@ -148,7 +148,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the created value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public OffsetDateTime getCreated() {
         return this.created;
     }
@@ -158,7 +158,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the expires value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public OffsetDateTime getExpires() {
         return this.expires;
     }
@@ -171,7 +171,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the retentionPeriod value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public Long getRetentionPeriod() {
         return this.retentionPeriod;
     }
@@ -181,7 +181,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the size value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public Long getSize() {
         return this.size;
     }
@@ -191,7 +191,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the itemsCount value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public Long getItemsCount() {
         return this.itemsCount;
     }
@@ -201,7 +201,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the tags value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -211,7 +211,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * 
      * @return the etag value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getEtag() {
         return this.etag;
     }
@@ -219,7 +219,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
     /**
      * {@inheritDoc}
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -240,7 +240,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Snapshot.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static Snapshot fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;

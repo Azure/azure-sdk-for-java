@@ -4,7 +4,7 @@ package com.azure.v2.data.appconfiguration.implementation.models;
 
 import com.azure.v2.data.appconfiguration.models.Label;
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -15,24 +15,24 @@ import java.util.List;
 /**
  * The result of a list request.
  */
-@Metadata(conditions = { TypeConditions.IMMUTABLE })
+@Metadata(properties = { MetadataProperties.IMMUTABLE })
 public final class LabelListResult implements JsonSerializable<LabelListResult> {
     /*
      * The collection value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private List<Label> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String nextLink;
 
     /**
      * Creates an instance of LabelListResult class.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private LabelListResult() {
     }
 
@@ -41,7 +41,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * 
      * @return the items value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public List<Label> getItems() {
         return this.items;
     }
@@ -51,7 +51,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * 
      * @return the nextLink value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getNextLink() {
         return this.nextLink;
     }
@@ -59,7 +59,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
     /**
      * {@inheritDoc}
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,7 +76,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LabelListResult.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static LabelListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LabelListResult deserializedLabelListResult = new LabelListResult();

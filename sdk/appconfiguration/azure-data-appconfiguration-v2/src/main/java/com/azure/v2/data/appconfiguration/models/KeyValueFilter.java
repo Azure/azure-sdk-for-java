@@ -3,7 +3,7 @@
 package com.azure.v2.data.appconfiguration.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -15,24 +15,24 @@ import java.util.List;
  * Enables filtering of key-values. Syntax reference:
  * https://aka.ms/azconfig/docs/restapisnapshots.
  */
-@Metadata(conditions = { TypeConditions.IMMUTABLE })
+@Metadata(properties = { MetadataProperties.IMMUTABLE })
 public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
     /*
      * Filters key-values by their key field.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private final String key;
 
     /*
      * Filters key-values by their label field.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String label;
 
     /*
      * Filters key-values by their tags field.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private List<String> tags;
 
     /**
@@ -40,7 +40,7 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
      * 
      * @param key the key value to set.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private KeyValueFilter(String key) {
         this.key = key;
     }
@@ -50,7 +50,7 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
      * 
      * @return the key value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getKey() {
         return this.key;
     }
@@ -60,7 +60,7 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
      * 
      * @return the label value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getLabel() {
         return this.label;
     }
@@ -70,7 +70,7 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
      * 
      * @return the tags value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public List<String> getTags() {
         return this.tags;
     }
@@ -78,7 +78,7 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
     /**
      * {@inheritDoc}
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -97,7 +97,7 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyValueFilter.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static KeyValueFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String key = null;

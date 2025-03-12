@@ -28,12 +28,11 @@ import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.exceptions.HttpResponseException;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.PagedIterable;
-import io.clientcore.core.http.models.PagedResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.paging.PagedIterable;
+import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.utils.Context;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -104,7 +103,7 @@ public final class AzureAppConfigurationClientImpl {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.service = com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientServiceImpl
-            .getNewInstance(this.httpPipeline, null);
+            .getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -113,13 +112,12 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceInterface(name = "AzureAppConfiguratio", host = "{endpoint}")
     public interface AzureAppConfigurationClientService {
-        static AzureAppConfigurationClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer) {
+        static AzureAppConfigurationClientService getNewInstance(HttpPipeline pipeline) {
             try {
                 Class<?> clazz = Class.forName(
                     "com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientServiceImpl");
-                return (AzureAppConfigurationClientService) clazz
-                    .getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class)
-                    .invoke(null, pipeline, serializer);
+                return (AzureAppConfigurationClientService) clazz.getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
                 | InvocationTargetException e) {
                 throw new RuntimeException(e);

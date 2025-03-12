@@ -2,8 +2,12 @@
 
 package com.azure.v2.data.appconfiguration;
 
+import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.core.http.pipeline.BearerTokenAuthenticationPolicy;
+import com.azure.v2.core.traits.TokenCredentialTrait;
 import com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientImpl;
 import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.annotations.ServiceClientBuilder;
 import io.clientcore.core.credentials.KeyCredential;
 import io.clientcore.core.http.client.HttpClient;
@@ -33,22 +37,26 @@ import java.util.Objects;
  * A builder for creating a new instance of the AzureAppConfigurationClient type.
  */
 @ServiceClientBuilder(serviceClients = { AzureAppConfigurationClient.class })
-public final class AzureAppConfigurationClientBuilder implements HttpTrait<AzureAppConfigurationClientBuilder>,
-    ProxyTrait<AzureAppConfigurationClientBuilder>, ConfigurationTrait<AzureAppConfigurationClientBuilder>,
+public final class AzureAppConfigurationClientBuilder
+    implements HttpTrait<AzureAppConfigurationClientBuilder>, ProxyTrait<AzureAppConfigurationClientBuilder>,
+    ConfigurationTrait<AzureAppConfigurationClientBuilder>, TokenCredentialTrait<AzureAppConfigurationClientBuilder>,
     KeyCredentialTrait<AzureAppConfigurationClientBuilder>, EndpointTrait<AzureAppConfigurationClientBuilder> {
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private static final String SDK_NAME = "name";
 
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private static final String SDK_VERSION = "version";
 
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://azconfig.io/.default" };
+
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Create an instance of the AzureAppConfigurationClientBuilder.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public AzureAppConfigurationClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -56,13 +64,13 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private HttpPipeline pipeline;
 
     /**
      * {@inheritDoc}.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public AzureAppConfigurationClientBuilder httpPipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
@@ -75,13 +83,13 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     /*
      * The HTTP client used to send the request.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private HttpClient httpClient;
 
     /**
      * {@inheritDoc}.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public AzureAppConfigurationClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
@@ -91,13 +99,13 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private HttpRetryOptions retryOptions;
 
     /**
      * {@inheritDoc}.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public AzureAppConfigurationClientBuilder httpRetryOptions(HttpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
@@ -107,7 +115,7 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     /**
      * {@inheritDoc}.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public AzureAppConfigurationClientBuilder addHttpPipelinePolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
@@ -118,13 +126,13 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     /*
      * The redirect options to configure redirect policy
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private HttpRedirectOptions redirectOptions;
 
     /**
      * {@inheritDoc}.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public AzureAppConfigurationClientBuilder httpRedirectOptions(HttpRedirectOptions redirectOptions) {
         this.redirectOptions = redirectOptions;
@@ -134,13 +142,13 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     /*
      * The instrumentation configuration for HTTP requests and responses.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private HttpInstrumentationOptions httpInstrumentationOptions;
 
     /**
      * {@inheritDoc}.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public AzureAppConfigurationClientBuilder
         httpInstrumentationOptions(HttpInstrumentationOptions httpInstrumentationOptions) {
@@ -151,13 +159,13 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     /*
      * The proxy options used during construction of the service client.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private ProxyOptions proxyOptions;
 
     /**
      * {@inheritDoc}.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public AzureAppConfigurationClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
@@ -167,13 +175,13 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private Configuration configuration;
 
     /**
      * {@inheritDoc}.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public AzureAppConfigurationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
@@ -181,15 +189,31 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     }
 
     /*
+     * The TokenCredential used for authentication.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    private TokenCredential tokenCredential;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    @Override
+    public AzureAppConfigurationClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
+
+    /*
      * The KeyCredential used for authentication.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private KeyCredential keyCredential;
 
     /**
      * {@inheritDoc}.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public AzureAppConfigurationClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = keyCredential;
@@ -199,13 +223,13 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     /*
      * The service endpoint
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String endpoint;
 
     /**
      * {@inheritDoc}.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public AzureAppConfigurationClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
@@ -215,7 +239,7 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     /*
      * Service version
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private AzureAppConfigurationServiceVersion serviceVersion;
 
     /**
@@ -224,7 +248,7 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
      * @param serviceVersion the serviceVersion value.
      * @return the AzureAppConfigurationClientBuilder.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public AzureAppConfigurationClientBuilder serviceVersion(AzureAppConfigurationServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
@@ -235,7 +259,7 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
      * 
      * @return an instance of AzureAppConfigurationClientImpl.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private AzureAppConfigurationClientImpl buildInnerClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
@@ -246,14 +270,14 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
         return client;
     }
 
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private void validateClient() {
         // This method is invoked from 'buildInnerClient'/'buildClient' method.
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -266,7 +290,10 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
         policies.add(retryOptions == null ? new HttpRetryPolicy() : new HttpRetryPolicy(retryOptions));
         this.pipelinePolicies.stream().forEach(p -> policies.add(p));
         if (keyCredential != null) {
-            policies.add(new KeyCredentialPolicy("authorization", keyCredential, "Bearer"));
+            policies.add(new KeyCredentialPolicy("Connection String", keyCredential, null));
+        }
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         policies.add(new HttpInstrumentationPolicy(localHttpInstrumentationOptions));
         policies.forEach(httpPipelineBuilder::addPolicy);
@@ -278,7 +305,7 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
      * 
      * @return an instance of AzureAppConfigurationClient.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public AzureAppConfigurationClient buildClient() {
         return new AzureAppConfigurationClient(buildInnerClient());
     }

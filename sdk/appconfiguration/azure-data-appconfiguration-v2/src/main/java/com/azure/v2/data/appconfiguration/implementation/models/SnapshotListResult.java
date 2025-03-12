@@ -4,7 +4,7 @@ package com.azure.v2.data.appconfiguration.implementation.models;
 
 import com.azure.v2.data.appconfiguration.models.Snapshot;
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -15,24 +15,24 @@ import java.util.List;
 /**
  * The result of a snapshot list request.
  */
-@Metadata(conditions = { TypeConditions.IMMUTABLE })
+@Metadata(properties = { MetadataProperties.IMMUTABLE })
 public final class SnapshotListResult implements JsonSerializable<SnapshotListResult> {
     /*
      * The collection value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private List<Snapshot> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String nextLink;
 
     /**
      * Creates an instance of SnapshotListResult class.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private SnapshotListResult() {
     }
 
@@ -41,7 +41,7 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * 
      * @return the items value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public List<Snapshot> getItems() {
         return this.items;
     }
@@ -51,7 +51,7 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * 
      * @return the nextLink value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getNextLink() {
         return this.nextLink;
     }
@@ -59,7 +59,7 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
     /**
      * {@inheritDoc}
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,7 +76,7 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SnapshotListResult.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static SnapshotListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SnapshotListResult deserializedSnapshotListResult = new SnapshotListResult();

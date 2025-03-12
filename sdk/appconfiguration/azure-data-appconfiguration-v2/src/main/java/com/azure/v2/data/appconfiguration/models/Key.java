@@ -3,7 +3,7 @@
 package com.azure.v2.data.appconfiguration.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -13,18 +13,18 @@ import java.io.IOException;
 /**
  * Keys serve as identifiers for key-values and are used to store and retrieve corresponding values.
  */
-@Metadata(conditions = { TypeConditions.IMMUTABLE })
+@Metadata(properties = { MetadataProperties.IMMUTABLE })
 public final class Key implements JsonSerializable<Key> {
     /*
      * The name of the key.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String name;
 
     /**
      * Creates an instance of Key class.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private Key() {
     }
 
@@ -33,7 +33,7 @@ public final class Key implements JsonSerializable<Key> {
      * 
      * @return the name value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getName() {
         return this.name;
     }
@@ -41,7 +41,7 @@ public final class Key implements JsonSerializable<Key> {
     /**
      * {@inheritDoc}
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -57,7 +57,7 @@ public final class Key implements JsonSerializable<Key> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Key.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static Key fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Key deserializedKey = new Key();

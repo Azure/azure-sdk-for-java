@@ -3,7 +3,7 @@
 package com.azure.v2.data.appconfiguration.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -13,18 +13,18 @@ import java.io.IOException;
 /**
  * Parameters used to update a snapshot.
  */
-@Metadata(conditions = { TypeConditions.FLUENT })
+@Metadata(properties = { MetadataProperties.FLUENT })
 public final class SnapshotUpdateParameters implements JsonSerializable<SnapshotUpdateParameters> {
     /*
      * The desired status of the snapshot.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private SnapshotStatus status;
 
     /**
      * Creates an instance of SnapshotUpdateParameters class.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public SnapshotUpdateParameters() {
     }
 
@@ -33,7 +33,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
      * 
      * @return the status value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public SnapshotStatus getStatus() {
         return this.status;
     }
@@ -44,7 +44,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
      * @param status the status value to set.
      * @return the SnapshotUpdateParameters object itself.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public SnapshotUpdateParameters setStatus(SnapshotStatus status) {
         this.status = status;
         return this;
@@ -53,7 +53,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
     /**
      * {@inheritDoc}
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,7 +69,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SnapshotUpdateParameters.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static SnapshotUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SnapshotUpdateParameters deserializedSnapshotUpdateParameters = new SnapshotUpdateParameters();

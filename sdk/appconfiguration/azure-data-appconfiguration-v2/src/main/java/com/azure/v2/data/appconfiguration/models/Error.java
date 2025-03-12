@@ -3,7 +3,7 @@
 package com.azure.v2.data.appconfiguration.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -13,42 +13,42 @@ import java.io.IOException;
 /**
  * Azure App Configuration error object.
  */
-@Metadata(conditions = { TypeConditions.IMMUTABLE })
+@Metadata(properties = { MetadataProperties.IMMUTABLE })
 public final class Error implements JsonSerializable<Error> {
     /*
      * The type of the error.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String type;
 
     /*
      * A brief summary of the error.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String title;
 
     /*
      * The name of the parameter that resulted in the error.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String name;
 
     /*
      * A detailed description of the error.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private String detail;
 
     /*
      * The HTTP status code that the error maps to.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private Integer status;
 
     /**
      * Creates an instance of Error class.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     private Error() {
     }
 
@@ -57,7 +57,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the type value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getType() {
         return this.type;
     }
@@ -67,7 +67,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the title value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getTitle() {
         return this.title;
     }
@@ -77,7 +77,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the name value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getName() {
         return this.name;
     }
@@ -87,7 +87,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the detail value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public String getDetail() {
         return this.detail;
     }
@@ -97,7 +97,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the status value.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public Integer getStatus() {
         return this.status;
     }
@@ -105,7 +105,7 @@ public final class Error implements JsonSerializable<Error> {
     /**
      * {@inheritDoc}
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -125,7 +125,7 @@ public final class Error implements JsonSerializable<Error> {
      * JSON null.
      * @throws IOException If an error occurs while reading the Error.
      */
-    @Metadata(generated = true)
+    @Metadata(properties = { MetadataProperties.GENERATED })
     public static Error fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Error deserializedError = new Error();
