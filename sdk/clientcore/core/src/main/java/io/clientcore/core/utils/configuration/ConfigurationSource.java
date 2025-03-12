@@ -3,40 +3,43 @@
 
 package io.clientcore.core.utils.configuration;
 
-import java.util.Map;
-
 /**
  * Configuration property source which provides configuration values from a specific place. Samples may include
  * properties file supported by frameworks or other source.
- *
- * Note that environment configuration (environment variables and system properties) are supported by default and
- * don't need a source implementation.
  */
-@FunctionalInterface
 public interface ConfigurationSource {
     /**
-     * Returns all properties (name and value) which names start with given path.
-     * Null (or empty) path indicate that all properties should be returned.
-     *
+     * Gets the property with the given {@code name}. If the property doesn't exist this will return null.
+     * <p>
      * Example:
      * <p>
      * With following configuration properties:
      * <ul>
-     *   <li>sdk.foo = 1</li>
-     *   <li>sdk.bar.baz = 2</li>
+     *   <li>foo = 1</li>
+     *   <li>bar = 2</li>
      * </ul>
-     *
      * <p>
      * {@link ConfigurationSource} implementation must the following behavior:
      * <ul>
-     *       <li>{@code getProperties(null} must return both properties</li>
-     *       <li>{@code getProperties("sdk")} must return both properties</li>
-     *       <li>{@code getProperties("sdk.foo")} must return {"sdk.foo", "1"}</li>
-     *       <li>{@code getProperties("sdk.ba")} must return empty map</li>
+     *   <li>{@code getProperty(null} throws {@link NullPointerException}</li>
+     *   <li>{@code getProperties("foo")} must return {@code 1}</li>
+     *   <li>{@code getProperties("bar")} must return {@code 2}</li>
+     *   <li>{@code getProperties("baz")} must return null</li>
      * </ul>
      *
-     * @param source property name prefix
-     * @return Map of properties under given path.
+     * @param name Name of the property.
+     * @return The value of the property or null if the property doesn't exist.
+     * @throws NullPointerException If {@code name} is null.
      */
-    Map<String, String> getProperties(String source);
+    String getProperty(String name);
+
+    /**
+     * Flag indicating whether the configuration source is mutable.
+     * <p>
+     * If the configuration source is mutable, {@link Configuration} instances using this source won't cache the values
+     * and will always call {@link #getProperty(String)} to get the value.
+     *
+     * @return Whether the configuration source is mutable.
+     */
+    boolean isMutable();
 }

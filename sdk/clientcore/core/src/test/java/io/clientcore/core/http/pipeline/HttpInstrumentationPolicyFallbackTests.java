@@ -3,11 +3,12 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -30,7 +31,7 @@ public class HttpInstrumentationPolicyFallbackTests {
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(tracingOffLoggingOnOptions))
-                .httpClient(request -> new MockHttpResponse(request, 200))
+                .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
                 .build();
 
         // should not throw
@@ -50,7 +51,7 @@ public class HttpInstrumentationPolicyFallbackTests {
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(tracingOnLoggingOnOptions))
-                .httpClient(request -> new MockHttpResponse(request, statusCode))
+                .httpClient(request -> new Response<>(request, statusCode, new HttpHeaders(), BinaryData.empty()))
                 .build();
 
         // should not throw

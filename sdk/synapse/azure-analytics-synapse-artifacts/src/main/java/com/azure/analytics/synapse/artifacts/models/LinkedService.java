@@ -26,6 +26,11 @@ public class LinkedService implements JsonSerializable<LinkedService> {
     private String type = "LinkedService";
 
     /*
+     * Version of the linked service.
+     */
+    private String version;
+
+    /*
      * The integration runtime reference.
      */
     private IntegrationRuntimeReference connectVia;
@@ -64,6 +69,26 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      */
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * Get the version property: Version of the linked service.
+     * 
+     * @return the version value.
+     */
+    public String getVersion() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: Version of the linked service.
+     * 
+     * @param version the version value to set.
+     * @return the LinkedService object itself.
+     */
+    public LinkedService setVersion(String version) {
+        this.version = version;
+        return this;
     }
 
     /**
@@ -175,6 +200,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeJsonField("connectVia", this.connectVia);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
@@ -439,7 +465,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
                     return SharePointOnlineListLinkedService.fromJson(readerToUse.reset());
                 } else if ("AzureSynapseArtifacts".equals(discriminatorValue)) {
                     return AzureSynapseArtifactsLinkedService.fromJson(readerToUse.reset());
-                } else if ("LakeHouse".equals(discriminatorValue)) {
+                } else if ("Lakehouse".equals(discriminatorValue)) {
                     return LakeHouseLinkedService.fromJson(readerToUse.reset());
                 } else if ("PowerBIWorkspace".equals(discriminatorValue)) {
                     return PowerBIWorkspaceLinkedService.fromJson(readerToUse.reset());
@@ -466,6 +492,8 @@ public class LinkedService implements JsonSerializable<LinkedService> {
 
                 if ("type".equals(fieldName)) {
                     deserializedLinkedService.type = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedLinkedService.version = reader.getString();
                 } else if ("connectVia".equals(fieldName)) {
                     deserializedLinkedService.connectVia = IntegrationRuntimeReference.fromJson(reader);
                 } else if ("description".equals(fieldName)) {

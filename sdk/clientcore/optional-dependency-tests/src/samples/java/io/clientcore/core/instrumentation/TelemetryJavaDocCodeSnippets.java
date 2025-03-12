@@ -3,7 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -17,8 +17,6 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
-
-import java.net.URI;
 
 /**
  * Application developers are expected to configure OpenTelemetry
@@ -175,49 +173,45 @@ public class TelemetryJavaDocCodeSnippets {
 
         public SampleClient build() {
             return new SampleClient(instrumentationOptions, new HttpPipelineBuilder()
-                .policies(new HttpInstrumentationPolicy(instrumentationOptions))
+                .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
                 .build());
         }
     }
 
     static class SampleClient {
-        private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("contoso.sample");
-        private final static String SAMPLE_OPERATION_DURATION_METRIC_NAME = "contoso.sample.client.operation.duration";
+        private static final String LIBRARY_NAME = "contoso.sample";
+        private final Instrumentation instrumentation;
         private final HttpPipeline httpPipeline;
-        private final URI serviceEndpoint;
-        private final OperationInstrumentation clientCallInstrumentation;
+        private final String serviceEndpoint;
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
+            serviceEndpoint = "https://contoso.com";
+            LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions(LIBRARY_NAME)
+                .setEndpoint(serviceEndpoint);
             this.httpPipeline = httpPipeline;
-            this.serviceEndpoint = URI.create("https://example.com");
-            Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
-            clientCallInstrumentation = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("clientCall", SAMPLE_OPERATION_DURATION_METRIC_NAME)
-                .endpoint(this.serviceEndpoint));
+            this.instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
         }
 
         public Response<?> clientCall() {
-            return this.clientCall(null);
+            return this.clientCallWithResponse(null);
         }
 
         @SuppressWarnings("try")
-        public Response<?> clientCall(RequestOptions options) {
-            if (!clientCallInstrumentation.shouldInstrument(options)) {
-                return httpPipeline.send(new HttpRequest(HttpMethod.GET, serviceEndpoint));
-            }
+        public Response<?> clientCallWithResponse(RequestOptions options) {
+            return instrumentation.instrumentWithResponse("Sample.call", options, this::clientCallWithResponseImpl);
+        }
 
-            if (options == null || options == RequestOptions.none()) {
-                options = new RequestOptions();
-            }
+        @SuppressWarnings("try")
+        public void clientCall(RequestOptions options) {
+            instrumentation.instrument("Sample.call", options, this::clientCallImpl);
+        }
 
-            OperationInstrumentation.Scope scope = clientCallInstrumentation.startScope(options);
-            try {
-                return httpPipeline.send(new HttpRequest(HttpMethod.GET, serviceEndpoint));
-            } catch (Throwable t) {
-                scope.setError(t);
-                throw t;
-            } finally {
-                scope.close();
-            }
+        private Response<?> clientCallWithResponseImpl(RequestOptions options) {
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestOptions(options));
+        }
+
+        private void clientCallImpl(RequestOptions options) {
+            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestOptions(options));
         }
     }
 }
