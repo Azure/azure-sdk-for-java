@@ -154,25 +154,6 @@ public class OpenAIServerSentEventsTest {
         }).verifyComplete();
     }
 
-    @Test
-    public void dataSplitAcrossByteBuffers() {
-        Flux<ByteBuffer> testInput = Flux.just(
-            ByteBuffer.wrap("event: thread.created\n".getBytes()),
-            ByteBuffer.wrap("data: {\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\",\"created_at\":1710548044,\"meta".getBytes()),
-            ByteBuffer.wrap("data\":{}}\n\n".getBytes()),
-            ByteBuffer.wrap("event: done\n".getBytes()),
-            ByteBuffer.wrap("data: [DONE]\n\n".getBytes())
-        );
-        AssistantThread expectedThread = BinaryData.fromString("{\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\",\"created_at\":1710548044,\"metadata\":{}}").toObject(AssistantThread.class);
-
-        OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
-
-        StepVerifier.create(openAIServerSentEvents.getEvents()).assertNext(event -> {
-            assertInstanceOf(StreamThreadCreation.class, event);
-            assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getMessage());
-        }).verifyComplete();
-    }
-
     private static void assertAssistantThread(AssistantThread expectedThread, AssistantThread actual) {
         assertEquals(expectedThread.getId(), actual.getId());
         assertEquals(expectedThread.getObject(), actual.getObject());

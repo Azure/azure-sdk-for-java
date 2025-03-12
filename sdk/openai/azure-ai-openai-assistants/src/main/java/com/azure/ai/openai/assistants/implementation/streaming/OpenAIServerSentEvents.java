@@ -5,7 +5,6 @@ package com.azure.ai.openai.assistants.implementation.streaming;
 import com.azure.ai.openai.assistants.models.AssistantStreamEvent;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -42,7 +41,6 @@ public final class OpenAIServerSentEvents {
      * The output stream accumulating the server sent events.
      */
     private ByteArrayOutputStream outStream;
-    private final ClientLogger LOGGER = new ClientLogger(OpenAIServerSentEvents.class);
 
     /**
      * Creates a new instance of OpenAIServerSentEvents.
@@ -85,37 +83,42 @@ public final class OpenAIServerSentEvents {
 
                     // We are looking for 2 line breaks to signify the end of a server sent event.
                     if (lineBreakCharsEncountered == SSE_CHUNK_LINE_BREAK_COUNT_MARKER) {
-                        processCurrentEvent(values);
+                        String currentLine;
+                        try {
+                            currentLine = outStream.toString(StandardCharsets.UTF_8.name());
+                            handleCurrentEvent(currentLine, values);
+                        } catch (IOException e) {
+                            return Flux.error(e);
+                        }
                         outStream = new ByteArrayOutputStream();
                     }
-                } else if (!isByteCarriageReturn(currentByte)) {
-                    lineBreakCharsEncountered = 0;
+                } else {
+                    // In some cases line breaks can contain both the line feed and carriage return characters.
+                    // We don't want to reset the line break count if we encounter a carriage return character.
+                    // We are assuming that line feeds and carriage returns, if both present, are always paired.
+                    // With this assumption, we are able to operate when carriage returns aren't present in the input also.
+                    if (!isByteCarriageReturn(currentByte)) {
+                        lineBreakCharsEncountered = 0;
+                    }
                 }
             }
 
-            processRemainingBytes(values);
+            try {
+                String remainingBytes = outStream.toString(StandardCharsets.UTF_8.name());
+                // If this is in fact, the last event, it will be appropriately chunked. Otherwise, we will cache and
+                // try again in the next byte buffer with a fuller event.
+                if (remainingBytes.endsWith("\n\n") || remainingBytes.endsWith("\r\n\r\n")) {
+                    handleCurrentEvent(remainingBytes, values);
+                }
+            } catch (IllegalArgumentException | UncheckedIOException e) {
+                // UncheckedIOException is thrown when we attempt to deserialize incomplete JSON
+                // Even split across different ByteBuffers, the next one will contain the rest of the event.
+                return Flux.fromIterable(values);
+            } catch (IOException e) {
+                return Flux.error(e);
+            }
             return Flux.fromIterable(values);
         }).cache();
-    }
-
-    private void processCurrentEvent(List<StreamUpdate> values) {
-        try {
-            String currentLine = outStream.toString(StandardCharsets.UTF_8.name());
-            handleCurrentEvent(currentLine, values);
-        } catch (IOException e) {
-            LOGGER.error("Error occurred while processing the current event.", e);
-        }
-    }
-
-    private void processRemainingBytes(List<StreamUpdate> values) {
-        try {
-            String remainingBytes = outStream.toString(StandardCharsets.UTF_8.name());
-            if (remainingBytes.endsWith("\n\n") || remainingBytes.endsWith("\r\n\r\n")) {
-                handleCurrentEvent(remainingBytes, values);
-            }
-        } catch (IOException e) {
-            LOGGER.error("Error occurred while processing the remaining bytes.", e);
-        }
     }
 
     /**
@@ -143,26 +146,33 @@ public final class OpenAIServerSentEvents {
      *
      * @param currentEvent The current line of the server sent event.
      * @param outputValues The list of values to add the current line to.
+     * @throws IllegalStateException If the current event contains a server side error.
      */
-    public void handleCurrentEvent(String currentEvent, List<StreamUpdate> outputValues) {
+    public void handleCurrentEvent(String currentEvent, List<StreamUpdate> outputValues)
+        throws IllegalArgumentException {
         if (currentEvent.isEmpty()) {
             return;
         }
 
+        // We split the event into the event name and the event data. We don't want to split on \n in the data body.
         String[] lines = currentEvent.split("\n", 2);
-        if (lines.length != 2 || lines[0].isEmpty() || lines[1].isEmpty()) {
+
+        if (lines.length != 2) {
             return;
         }
 
-        String eventName = lines[0].substring(6).trim();
-        String eventJson = lines[1].substring(5).trim();
-
-        if (AssistantStreamEvent.DONE.equals(AssistantStreamEvent.fromString(eventName))) {
+        if (lines[0].isEmpty() || lines[1].isEmpty()) {
             return;
         }
-        if (AssistantStreamEvent.ERROR.equals(AssistantStreamEvent.fromString(eventName))) {
-            LOGGER.atError().log("Error event received: {}", eventJson);
+
+        String eventName = lines[0].substring(6).trim(); // removing "event:" prefix
+        String eventJson = lines[1].substring(5).trim(); // removing "data:" prefix
+
+        if (DONE.equals(AssistantStreamEvent.fromString(eventName))) {
             return;
+        }
+        if (ERROR.equals(AssistantStreamEvent.fromString(eventName))) {
+            throw new IllegalArgumentException(eventJson);
         }
 
         outputValues.add(this.eventDeserializer.deserializeEvent(eventName, BinaryData.fromString(eventJson)));
