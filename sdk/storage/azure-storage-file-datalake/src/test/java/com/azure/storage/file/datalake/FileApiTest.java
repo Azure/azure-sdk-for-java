@@ -73,7 +73,6 @@ import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -3559,8 +3558,13 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @Test
-    @Disabled //test structure wip, will add to: fileasyncapitests, directoryapitests, directoryasyncapitests when done
-    public void pathGetSystemPropertiesFile() throws NoSuchAlgorithmException {
+    /*
+    list of headers I have manually determined will not appear when using this API:
+    Accept-Ranges, Cache-Control, Content-Disposition, Content-Encoding, Content-Language, Content-Type, Content-MD5,
+    x-ms-acl, x-ms-lease-duration, x-ms-lease-state, x-ms-lease-status, x-ms-meta
+     */
+    public void pathGetSystemPropertiesFile() {
+        // setup
         FileSystemEncryptionScopeOptions encryptionScope
             = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
                 .setEncryptionScopeOverridePrevented(true);
@@ -3572,6 +3576,7 @@ public class FileApiTest extends DataLakeTestBase {
             .buildClient();
 
         client.create();
+        DataLakeFileClient fc = client.getFileClient(generatePathName());
 
         DataLakePathCreateOptions options = new DataLakePathCreateOptions();
         options.setPermissions("rwxr-x---");
@@ -3580,20 +3585,22 @@ public class FileApiTest extends DataLakeTestBase {
         options.setOwner(owner);
         options.setGroup(group);
         options.setScheduleDeletionOptions(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)));
+
         PathHttpHeaders headers = new PathHttpHeaders().setCacheControl("control")
-            .setContentDisposition("dispo")
+            .setContentDisposition("disposition")
             .setContentEncoding("encoding")
             .setContentLanguage("language")
-            .setContentType("type")
-            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())));
+            .setContentType("type");
         options.setPathHttpHeaders(headers);
+        options.setProposedLeaseId(CoreUtils.randomUuid().toString());
+        options.setLeaseDuration(15);
+        options.setMetadata(Collections.singletonMap("foo", "bar"));
 
-        DataLakeFileClient fc = client.getFileClient(generatePathName());
         fc.createWithResponse(options, null, null);
-
         Response<PathSystemProperties> response = fc.getSystemPropertiesWithResponse(null, null, null);
         PathSystemProperties value = response.getValue();
 
+        // should be present in the response
         assertEquals(200, response.getStatusCode());
         assertNotNull(value.getCreationTime());
         assertNotNull(value.getLastModified());
@@ -3607,10 +3614,12 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(group, value.getGroup());
         assertEquals(PathPermissions.parseSymbolic("rwxr-x---").toString(), value.getPermissions().toString());
 
-        assertNull(response.getHeaders().get("Content-Disposition"));
-        assertNull(response.getHeaders().get("Content-Encoding"));
-        assertNull(response.getHeaders().get("Content-Language"));
-        assertNull(response.getHeaders().get("Content-Type"));
-        assertNull(response.getHeaders().get("Content-MD5"));
+        // should not be present in the response
+        validateHeadersNotPresent(response);
+    }
+
+    @Test
+    public void pathGetSystemPropertiesFileMin() {
+        assertNotNull(fc.getSystemProperties());
     }
 }
