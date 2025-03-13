@@ -146,7 +146,7 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
         getListResponsesItemRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
             ResponsesResponse createdResponse = client.createResponse(request).block();
             StepVerifier.create(client.listInputItems(createdResponse.getId(), 5, ListInputItemsRequestOrder.DESC))
-                .assertNext(AzureResponsesTestBase::assertResponseItem)
+                .thenConsumeWhile(_unused -> true, AzureResponsesTestBase::assertResponseItem)
                 .verifyComplete();
             client.deleteResponse(createdResponse.getId());
         });

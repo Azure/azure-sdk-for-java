@@ -15,6 +15,7 @@ import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -58,9 +59,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
         }
 
-        if (testMode == TestMode.PLAYBACK) {
-            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
-        } else if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -85,10 +84,9 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
-    private ResponsesClientBuilder addAzureOpenAIEnvVars(ResponsesClientBuilder builder) {
+    private void addAzureOpenAIEnvVars(ResponsesClientBuilder builder) {
         builder.endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"));
         builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
-        return builder;
     }
 
     private void addOpenAIEnvVars(ResponsesClientBuilder builder) {
@@ -100,7 +98,9 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
             new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")));
 
         if (getTestMode() != TestMode.PLAYBACK) {
-            builder = addAzureOpenAIEnvVars(builder);
+            addAzureOpenAIEnvVars(builder);
+        } else {
+            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
         }
         return builder.buildClient();
     }
@@ -112,6 +112,8 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
 
         if (getTestMode() != TestMode.PLAYBACK) {
             addAzureOpenAIEnvVars(builder);
+        } else {
+            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
         }
 
         return builder.buildAsyncClient();
@@ -122,6 +124,8 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
 
         if (getTestMode() != TestMode.PLAYBACK) {
             addOpenAIEnvVars(builder);
+        } else {
+            builder.credential(new KeyCredential(FAKE_API_KEY));
         }
 
         return builder.buildClient();
@@ -132,6 +136,8 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
 
         if (getTestMode() != TestMode.PLAYBACK) {
             addOpenAIEnvVars(builder);
+        } else {
+            builder.credential(new KeyCredential(FAKE_API_KEY));
         }
 
         return builder.buildAsyncClient();
