@@ -41,7 +41,7 @@ param (
   [Parameter(Mandatory = $true)][string] $PRMatrixFile,
   [Parameter(Mandatory = $true)][string] $PRMatrixSetting,
   [Parameter(Mandatory = $False)][string] $DisplayNameFilter,
-  [Parameter(Mandatory = $False)][array] $Filters,
+  [Parameter(Mandatory = $False)][array] $Filters = @('', 'container=^$', 'SupportedClouds=^$|Public', 'Pool=.*Windows.*Pool$'),
   [Parameter(Mandatory = $False)][array] $IndirectFilters,
   [Parameter(Mandatory = $False)][array] $Replace,
   [Parameter(Mandatory = $False)][bool] $SparseIndirect = $true,
@@ -93,6 +93,7 @@ function GeneratePRMatrixForBatch {
   # to generate the matrix for the group, no reason to have to parse the key value backwards to get the matrix config.
   $matrixBatchesByConfig = Group-ByObjectKey $Packages "CIMatrixConfigs"
 
+  $matrixBatchCount = 1
   foreach ($matrixBatchKey in $matrixBatchesByConfig.Keys) {
     # recall that while we have grouped the package info by the matrix config object, each package still has knowledge about
     # every other matrix that it belongs to.
@@ -108,7 +109,7 @@ function GeneratePRMatrixForBatch {
       exit 1
     }
 
-    Write-Host "Generating config for $($matrixConfig.Path)"
+    Write-Host "Generating config for $($matrixConfig.Path), with count $matrixBatchCount"
     $nonSparse = $matrixConfig.PSObject.Properties['NonSparseParameters'] ? $matrixConfig.NonSparseParameters : @()
 
     if ($directBatch) {
@@ -159,6 +160,7 @@ function GeneratePRMatrixForBatch {
     # we only need to modify the generated job name if there is more than one matrix config + batch
     $matrixSuffixNecessary = $matrixBatchesByConfig.Keys.Count -gt 1
 
+    Write-Host "We are iterating over the batches for matrix config count $batchCount"
     # if we are doing direct packages (or a full indirect matrix), we need to walk the batches and duplicate the matrix config for each batch, fully assigning
     # the each batch's packages to the matrix config. This will generate a _non-sparse_ matrix for the incoming packages
     if ($directBatch -or $FullSparseMatrix) {
