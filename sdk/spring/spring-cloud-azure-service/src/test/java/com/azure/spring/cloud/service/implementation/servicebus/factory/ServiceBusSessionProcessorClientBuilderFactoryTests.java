@@ -29,17 +29,19 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
     ServiceBusSessionProcessorClientBuilderFactory> {
 
     @Test
-    void queueConfigured() {
+    void configured() {
         ServiceBusProcessorClientTestProperties properties = new ServiceBusProcessorClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityType(ServiceBusEntityType.QUEUE);
         properties.setEntityName("test-queue");
+        properties.setSessionIdleTimeout(Duration.ofSeconds(10));
 
         final ServiceBusSessionProcessorClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
         final ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = factory.build();
         builder.buildProcessorClient();
 
         verify(builder, times(1)).queueName("test-queue");
+        verify(builder, times(1)).sessionIdleTimeout(Duration.ofSeconds(10));
     }
 
     @Test
