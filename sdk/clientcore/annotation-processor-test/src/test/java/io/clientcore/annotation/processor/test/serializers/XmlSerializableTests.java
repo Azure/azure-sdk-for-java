@@ -80,7 +80,6 @@ public class XmlSerializableTests {
         assertEquals("10", xmlSerializable.getAString());
     }
 
-    @Disabled("Confirm behavior for unknown content type values")
     @ParameterizedTest
     @ValueSource(strings = { "application/xml", "application/xml;charset=utf-8", "text/xml" })
     public void getInvalidXml(String contentType) {

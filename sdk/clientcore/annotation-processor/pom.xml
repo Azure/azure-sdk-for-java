@@ -99,6 +99,8 @@
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <revapi.skip>true</revapi.skip>
+
+    <jacoco.min.linecoverage>0.36</jacoco.min.linecoverage>
   </properties>
 
   <dependencies>
