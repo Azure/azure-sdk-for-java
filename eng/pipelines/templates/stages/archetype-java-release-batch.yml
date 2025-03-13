@@ -222,8 +222,8 @@ stages:
               artifactName: 'packages-esrp-flattened'
               targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
           pool:
-            name: $(WINDOWSPOOL)
-            image: $(WINDOWSVMIMAGE)
+            name: azsdk-pool-mms-win-2022-general
+            image: azsdk-pool-mms-win-2022-1espt
             os: windows
           strategy:
             runOnce:
