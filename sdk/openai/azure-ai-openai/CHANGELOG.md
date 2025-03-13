@@ -2,6 +2,8 @@
 
 ## 1.0.0-beta.15 (Unreleased)
 
+- New subpackage `responses` contains support for OpenAI's recently released Responses functionality.
+
 ### Features Added
 
 ### Breaking Changes

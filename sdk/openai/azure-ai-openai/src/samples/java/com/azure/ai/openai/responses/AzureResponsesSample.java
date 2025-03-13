@@ -5,15 +5,15 @@ package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
+import com.azure.ai.openai.responses.models.ResponsesAssistantMessage;
 import com.azure.ai.openai.responses.models.ResponsesContent;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
+import com.azure.ai.openai.responses.models.ResponsesOutputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
@@ -37,13 +37,13 @@ public class AzureResponsesSample {
                 Arrays.asList(new ResponsesUserMessage(messages))
         );
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-preview"), "true");
-
         // Send the request and get the response
-        ResponsesResponse response = client.createResponse(request, requestOptions);
+        ResponsesResponse response = client.createResponse(request);
+        ResponsesAssistantMessage responseMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) responseMessage.getContent().get(0);
 
         // Print the response
         System.out.println("Response: " + response);
+        System.out.println("Output: " + outputContent.getText());
     }
 }

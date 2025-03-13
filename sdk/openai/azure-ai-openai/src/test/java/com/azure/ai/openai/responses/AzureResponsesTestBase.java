@@ -93,9 +93,8 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
     }
 
     ResponsesClient getAzureResponseClient(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion)
-            .addPolicy(
-                new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")));
+        ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion).addPolicy(
+            new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")));
 
         if (getTestMode() != TestMode.PLAYBACK) {
             addAzureOpenAIEnvVars(builder);
@@ -105,9 +104,8 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
 
     ResponsesAsyncClient getAzureResponseAsyncClient(HttpClient httpClient,
         AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion)
-            .addPolicy(
-                new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")));
+        ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion).addPolicy(
+            new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")));
 
         if (getTestMode() != TestMode.PLAYBACK) {
             addAzureOpenAIEnvVars(builder);
