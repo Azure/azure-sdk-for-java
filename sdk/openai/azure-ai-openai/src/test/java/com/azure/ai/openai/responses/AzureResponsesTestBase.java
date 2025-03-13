@@ -62,6 +62,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         return builder;
     }
 
@@ -94,8 +95,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
     ResponsesClient getAzureResponseClient(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
         ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion)
             .addPolicy(
-                new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+                new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")));
 
         if (getTestMode() != TestMode.PLAYBACK) {
             addAzureOpenAIEnvVars(builder);
@@ -107,8 +107,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         AzureResponsesServiceVersion serviceVersion) {
         ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion)
             .addPolicy(
-                new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+                new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")));
 
         if (getTestMode() != TestMode.PLAYBACK) {
             addAzureOpenAIEnvVars(builder);
@@ -118,8 +117,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
     }
 
     ResponsesClient getResponseClient(HttpClient httpClient) {
-        ResponsesClientBuilder builder = getBuilderForTests(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        ResponsesClientBuilder builder = getBuilderForTests(httpClient);
 
         if (getTestMode() != TestMode.PLAYBACK) {
             addOpenAIEnvVars(builder);
@@ -129,8 +127,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
     }
 
     ResponsesAsyncClient getResponseAsyncClient(HttpClient httpClient) {
-        ResponsesClientBuilder builder = getBuilderForTests(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        ResponsesClientBuilder builder = getBuilderForTests(httpClient);
 
         if (getTestMode() != TestMode.PLAYBACK) {
             addOpenAIEnvVars(builder);
