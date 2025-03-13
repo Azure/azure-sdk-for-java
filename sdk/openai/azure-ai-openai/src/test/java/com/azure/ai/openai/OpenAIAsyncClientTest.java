@@ -33,6 +33,7 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FileDeletionStatus;
+import com.azure.ai.openai.models.FileDetails;
 import com.azure.ai.openai.models.FilePurpose;
 import com.azure.ai.openai.models.FileState;
 import com.azure.ai.openai.models.FunctionCall;
@@ -55,7 +56,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2048,5 +2048,32 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 assertNotNull(cancelledId);
             }).verifyComplete();
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testUploadFileSuccess(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
+        FilePurpose purpose = FilePurpose.ASSISTANTS;
+
+        Mono<OpenAIFile> uploadFileMono = client.uploadFile(fileDetails, purpose);
+
+        StepVerifier.create(uploadFileMono).assertNext(openAIFile -> {
+            assertNotNull(openAIFile);
+            assertEquals("test-file.txt", openAIFile.getFilename());
+        }).verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testUploadFileFailure(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
+
+        Mono<OpenAIFile> uploadFileMono = client.uploadFile(fileDetails, null);
+
+        StepVerifier.create(uploadFileMono).expectError(HttpResponseException.class).verify();
     }
 }
