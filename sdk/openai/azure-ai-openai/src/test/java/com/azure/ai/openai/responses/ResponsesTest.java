@@ -8,7 +8,6 @@ import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
 import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
-import com.azure.ai.openai.responses.models.ResponseTruncation;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
 import com.azure.ai.openai.responses.models.ResponsesResponse;

@@ -87,7 +87,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
     }
 
-    private void AddOpenAIEnvVars(ResponsesClientBuilder builder) {
+    private void addOpenAIEnvVars(ResponsesClientBuilder builder) {
         builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("OPENAI_KEY")));
     }
 
@@ -122,7 +122,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (getTestMode() != TestMode.PLAYBACK) {
-            AddOpenAIEnvVars(builder);
+            addOpenAIEnvVars(builder);
         }
 
         return builder.buildClient();
@@ -133,7 +133,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (getTestMode() != TestMode.PLAYBACK) {
-            AddOpenAIEnvVars(builder);
+            addOpenAIEnvVars(builder);
         }
 
         return builder.buildAsyncClient();

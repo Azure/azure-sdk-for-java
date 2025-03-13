@@ -3,7 +3,6 @@
 package com.azure.ai.openai.responses.implementation;
 
 import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
-import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
