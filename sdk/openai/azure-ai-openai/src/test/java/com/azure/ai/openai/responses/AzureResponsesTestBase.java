@@ -43,7 +43,8 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
 
     private ResponsesClientBuilder getBuilderForTests(HttpClient httpClient,
         AzureResponsesServiceVersion serviceVersion) {
-        ResponsesClientBuilder builder = new ResponsesClientBuilder().httpClient(httpClient);
+        ResponsesClientBuilder builder = new ResponsesClientBuilder()
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
         if (serviceVersion != null) {
             builder.serviceVersion(serviceVersion);
         }
@@ -84,9 +85,10 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
-    private void addAzureOpenAIEnvVars(ResponsesClientBuilder builder) {
+    private ResponsesClientBuilder addAzureOpenAIEnvVars(ResponsesClientBuilder builder) {
         builder.endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"));
         builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+        return builder;
     }
 
     private void addOpenAIEnvVars(ResponsesClientBuilder builder) {
@@ -98,7 +100,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
             new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")));
 
         if (getTestMode() != TestMode.PLAYBACK) {
-            addAzureOpenAIEnvVars(builder);
+            builder = addAzureOpenAIEnvVars(builder);
         }
         return builder.buildClient();
     }
