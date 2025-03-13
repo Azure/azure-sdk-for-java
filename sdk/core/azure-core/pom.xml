@@ -11,7 +11,7 @@
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
-
+  <!-- JRS, will not be checked in -->
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
