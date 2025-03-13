@@ -3,6 +3,8 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 
 import java.util.Objects;
@@ -23,6 +25,7 @@ import java.util.Objects;
  * The {@link LibraryInstrumentationOptions} are usually static and shared across all instances of the client.
  * Application developers are not expected to change them.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class LibraryInstrumentationOptions {
     private final String libraryName;
     private String libraryVersion;

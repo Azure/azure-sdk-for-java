@@ -17,7 +17,6 @@ module io.clientcore.core {
     exports io.clientcore.core.http;
     exports io.clientcore.core.http.annotations;
     exports io.clientcore.core.http.client;
-    exports io.clientcore.core.http.exceptions;
     exports io.clientcore.core.http.models;
     exports io.clientcore.core.http.paging;
     exports io.clientcore.core.http.pipeline;
@@ -25,6 +24,7 @@ module io.clientcore.core {
     exports io.clientcore.core.instrumentation.logging;
     exports io.clientcore.core.instrumentation.metrics;
     exports io.clientcore.core.instrumentation.tracing;
+    exports io.clientcore.core.models;
     exports io.clientcore.core.models.binarydata;
     exports io.clientcore.core.models.geo;
     exports io.clientcore.core.serialization;
@@ -34,7 +34,6 @@ module io.clientcore.core {
     exports io.clientcore.core.traits;
     exports io.clientcore.core.utils;
     exports io.clientcore.core.utils.configuration;
-    exports io.clientcore.core.implementation.http.client;
     exports io.clientcore.core.implementation.http;
 
     uses io.clientcore.core.http.client.HttpClientProvider;

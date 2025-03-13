@@ -6,7 +6,8 @@ package io.clientcore.core.http.client;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.http.client.DefaultHttpClientProvider;
+import io.clientcore.core.implementation.http.client.GlobalJdkHttpClient;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.SharedExecutorService;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ public interface HttpClient {
      * @return The response.
      * @throws IOException If an I/O error occurs during sending the request or receiving the response.
      */
-    Response<?> send(HttpRequest request) throws IOException;
+    Response<BinaryData> send(HttpRequest request) throws IOException;
 
     /**
      * Sends the provided request asynchronously.
@@ -39,12 +40,11 @@ public interface HttpClient {
      * {@link CompletableFuture} will complete exceptionally.
      *
      * @param request The HTTP request to send.
-     * @return A CompletableFuture that will complete with the response.
+     * @return A CompletableFuture that will complete with the response or error.
      */
-    default CompletableFuture<Response<?>> sendAsync(HttpRequest request) {
-        ExecutorService asyncExecutor = (request.getRequestOptions() != null)
-            ? request.getRequestOptions().getAsyncExecutor()
-            : null;
+    default CompletableFuture<Response<BinaryData>> sendAsync(HttpRequest request) {
+        ExecutorService asyncExecutor
+            = (request.getRequestOptions() != null) ? request.getRequestOptions().getAsyncExecutor() : null;
 
         if (asyncExecutor == null) {
             asyncExecutor = SharedExecutorService.getInstance();
@@ -86,6 +86,6 @@ public interface HttpClient {
      */
     static HttpClient getSharedInstance() {
         return HttpClientProvider.getProviders()
-            .create(HttpClientProvider::getSharedInstance, new DefaultHttpClientProvider()::getSharedInstance, null);
+            .create(HttpClientProvider::getSharedInstance, GlobalJdkHttpClient.HTTP_CLIENT::getHttpClient, null);
     }
 }

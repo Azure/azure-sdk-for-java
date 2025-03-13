@@ -3,12 +3,12 @@
 
 package io.clientcore.core.http.paging;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,14 +17,8 @@ import java.util.List;
  * @param <T> The type of items in the page.
  * @see Response
  */
-public final class PagedResponse<T> implements Response<List<T>> {
-
-    private final HttpRequest request;
-    private final int statusCode;
-    private final HttpHeaders headers;
-    private final BinaryData body;
-
-    private final List<T> items;
+@Metadata(properties = MetadataProperties.IMMUTABLE)
+public final class PagedResponse<T> extends Response<List<T>> {
     private final String continuationToken;
     private final String nextLink;
     private final String previousLink;
@@ -37,11 +31,10 @@ public final class PagedResponse<T> implements Response<List<T>> {
      * @param request The HttpRequest that was sent to the service whose response resulted in this response.
      * @param statusCode The status code from the response.
      * @param headers The headers from the response.
-     * @param body The body from the response.
      * @param items The items returned from the service within the response.
      */
-    public PagedResponse(HttpRequest request, int statusCode, HttpHeaders headers, BinaryData body, List<T> items) {
-        this(request, statusCode, headers, body, items, null, null, null, null, null);
+    public PagedResponse(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items) {
+        this(request, statusCode, headers, items, null, null, null, null, null);
     }
 
     /**
@@ -50,7 +43,6 @@ public final class PagedResponse<T> implements Response<List<T>> {
      * @param request The HttpRequest that was sent to the service whose response resulted in this response.
      * @param statusCode The status code from the response.
      * @param headers The headers from the response.
-     * @param body The body from the response.
      * @param items The items returned from the service within the response.
      * @param continuationToken The continuation token returned from the service, to enable future requests to pick up
      * from the same place in the paged iteration.
@@ -59,13 +51,9 @@ public final class PagedResponse<T> implements Response<List<T>> {
      * @param firstLink The first page link returned from the service.
      * @param lastLink The last page link returned from the service.
      */
-    public PagedResponse(HttpRequest request, int statusCode, HttpHeaders headers, BinaryData body, List<T> items,
+    public PagedResponse(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items,
         String continuationToken, String nextLink, String previousLink, String firstLink, String lastLink) {
-        this.request = request;
-        this.statusCode = statusCode;
-        this.headers = headers;
-        this.body = body;
-        this.items = items;
+        super(request, statusCode, headers, items);
         this.continuationToken = continuationToken;
         this.nextLink = nextLink;
         this.previousLink = previousLink;
@@ -116,55 +104,5 @@ public final class PagedResponse<T> implements Response<List<T>> {
      */
     public String getLastLink() {
         return lastLink;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HttpHeaders getHeaders() {
-        return headers;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HttpRequest getRequest() {
-        return request;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<T> getValue() {
-        return items;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BinaryData getBody() {
-        return body;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void close() throws IOException {
-        if (body != null) {
-            body.close();
-        }
     }
 }

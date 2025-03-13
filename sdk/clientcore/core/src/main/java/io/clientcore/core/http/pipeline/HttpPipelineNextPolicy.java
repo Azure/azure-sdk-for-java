@@ -3,10 +3,12 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpPipelineCallState;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.SharedExecutorService;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -15,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * A type that invokes next policy in the pipeline.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class HttpPipelineNextPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineNextPolicy.class);
 
@@ -35,7 +38,7 @@ public class HttpPipelineNextPolicy {
      * @return The response.
      * @throws UncheckedIOException If an error occurs when sending the request or receiving the response.
      */
-    public Response<?> process() {
+    public Response<BinaryData> process() {
         HttpPipelinePolicy nextPolicy = state.getNextPolicy();
 
         if (nextPolicy == null) {
@@ -51,7 +54,7 @@ public class HttpPipelineNextPolicy {
         }
     }
 
-    public CompletableFuture<Response<?>> processAsync() {
+    public CompletableFuture<Response<BinaryData>> processAsync() {
         // TODO (alzimmer): Do we need a different design for async where this is doing something like
         //  CompletableFuture.thenCompose or CompletableFuture.thenApply, etc?
         //  I would imagine in most cases we don't want any thread switching happening while executing the pipeline,

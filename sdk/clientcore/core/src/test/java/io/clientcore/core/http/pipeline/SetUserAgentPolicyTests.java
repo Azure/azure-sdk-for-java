@@ -3,12 +3,13 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,13 +23,12 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Contains tests for {@link SetUserAgentPolicy}.
+ * Contains tests for {@link UserAgentPolicy}.
  */
 public class SetUserAgentPolicyTests {
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
-    public void validateUserAgentPolicyHandling(SetUserAgentPolicy userAgentPolicy, String expected)
-        throws IOException {
+    public void validateUserAgentPolicyHandling(UserAgentPolicy userAgentPolicy, String expected) throws IOException {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
@@ -42,13 +42,12 @@ public class SetUserAgentPolicyTests {
     }
 
     /**
-     * Tests that applying the {@link SetUserAgentPolicy} after a {@link HttpRetryPolicy} doesn't result in the
+     * Tests that applying the {@link UserAgentPolicy} after a {@link HttpRetryPolicy} doesn't result in the
      * User-Agent header being applied multiple times.
      */
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
-    public void userAgentPolicyAfterRetryPolicy(SetUserAgentPolicy userAgentPolicy, String expected)
-        throws IOException {
+    public void userAgentPolicyAfterRetryPolicy(UserAgentPolicy userAgentPolicy, String expected) throws IOException {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new RetryValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
@@ -63,12 +62,12 @@ public class SetUserAgentPolicyTests {
     }
 
     /**
-     * Tests that applying multiple {@link SetUserAgentPolicy} doesn't result in the User-Agent header being applied
+     * Tests that applying multiple {@link UserAgentPolicy} doesn't result in the User-Agent header being applied
      * multiple times.
      */
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
-    public void multipleUserAgentPolicies(SetUserAgentPolicy userAgentPolicy, String expected) throws IOException {
+    public void multipleUserAgentPolicies(UserAgentPolicy userAgentPolicy, String expected) throws IOException {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
@@ -83,7 +82,7 @@ public class SetUserAgentPolicyTests {
     }
 
     private static Stream<Arguments> userAgentAndExpectedSupplier() {
-        String defaultUserAgent = SetUserAgentPolicy.DEFAULT_USER_AGENT_HEADER;
+        String defaultUserAgent = UserAgentPolicy.DEFAULT_USER_AGENT_HEADER;
         String sdkName = "sdkName";
         String sdkVersion = "sdkVersion";
         String baseUserAgent = String.format("%s-%s/%s", defaultUserAgent, sdkName, sdkVersion);
@@ -94,17 +93,17 @@ public class SetUserAgentPolicyTests {
 
         return Stream.of(
             // Tests using the default User-Agent
-            Arguments.of(new SetUserAgentPolicy(), defaultUserAgent),
+            Arguments.of(new UserAgentPolicy(), defaultUserAgent),
 
             // Tests using a simple custom User-Agent
-            Arguments.of(new SetUserAgentPolicy("AutoRest-Java"), "AutoRest-Java"),
+            Arguments.of(new UserAgentPolicy("AutoRest-Java"), "AutoRest-Java"),
 
             // Tests using SDK name and version with platform information and without application ID
-            Arguments.of(new SetUserAgentPolicy(null, sdkName, sdkVersion),
+            Arguments.of(new UserAgentPolicy(null, sdkName, sdkVersion),
                 String.format("%s (%s)", baseUserAgent, platformInfo)),
 
             // Tests using SDK name and version with platform information and application ID
-            Arguments.of(new SetUserAgentPolicy(applicationId, sdkName, sdkVersion),
+            Arguments.of(new UserAgentPolicy(applicationId, sdkName, sdkVersion),
                 String.format("%s %s (%s)", applicationId, baseUserAgent, platformInfo)));
     }
 
@@ -120,9 +119,9 @@ public class SetUserAgentPolicyTests {
         }
 
         @Override
-        public Response<?> send(HttpRequest request) {
+        public Response<BinaryData> send(HttpRequest request) {
             validator.accept(request);
-            return new MockHttpResponse(request, 200);
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
         }
     }
 
@@ -135,14 +134,14 @@ public class SetUserAgentPolicyTests {
         }
 
         @Override
-        public Response<?> send(HttpRequest request) throws IOException {
+        public Response<BinaryData> send(HttpRequest request) throws IOException {
             if (retryCount < 5) {
                 retryCount++;
                 throw new IOException("Activating retry policy");
             }
 
             validator.accept(request);
-            return new MockHttpResponse(request, 200);
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
         }
     }
 }
