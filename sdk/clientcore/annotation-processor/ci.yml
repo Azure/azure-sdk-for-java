@@ -40,6 +40,3 @@ extends:
         groupId: io.clientcore
         safeName: annotationprocessor
         releaseInBatch: ${{ parameters.release_clientcoreannotationprocessor }}
-    AdditionalModules:
-      - name: annotation-processor-test
-        groupId: io.clientcore

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.annotation.processor.test;
+package io.clientcore.annotation.processor.integration;
 
 import io.clientcore.core.http.models.ServiceVersion;
 
