@@ -14,6 +14,7 @@ import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
 import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
+import com.azure.ai.openai.responses.models.ResponsesItem;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.core.annotation.Generated;
@@ -24,6 +25,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -577,6 +580,61 @@ public final class ResponsesAsyncClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ResponsesItem> listInputItems(String responseId, Integer limit, ListInputItemsRequestOrder order) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+
+        return new PagedFlux<>(() -> {
+            Mono<Response<BinaryData>> responseMono = listInputItemsWithResponse(responseId, requestOptions);
+            return responseMono.map(response -> {
+                ResponsesInputItemList pagedItems = response.getValue().toObject(ResponsesInputItemList.class);
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    pagedItems.getData(), pagedItems.isHasMore() ? pagedItems.getLastId() : null,
+                    response.getHeaders());
+            });
+        }, nextLink -> {
+            RequestOptions nextPageRequestOptions = new RequestOptions();
+            if (limit != null) {
+                nextPageRequestOptions.addQueryParam("limit", String.valueOf(limit), false);
+            }
+            if (order != null) {
+                nextPageRequestOptions.addQueryParam("order", order.toString(), false);
+            }
+            // nextLink is always define, as it being `null` is the break condition for the loop
+            nextPageRequestOptions.addQueryParam("after", nextLink, false);
+
+            Mono<Response<BinaryData>> responseMono = listInputItemsWithResponse(responseId, nextPageRequestOptions);
+            return responseMono.map(response -> {
+                ResponsesInputItemList pagedItems = response.getValue().toObject(ResponsesInputItemList.class);
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    pagedItems.getData(), pagedItems.isHasMore() ? pagedItems.getLastId() : null,
+                    response.getHeaders());
+            });
+        });
+    }
+
+    /**
+     * Returns a list of input items for a given response.
+     *
+     * @param responseId The ID of the response to retrieve.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
      * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include after=obj_foo in order to fetch the next page of the list.
@@ -591,9 +649,8 @@ public final class ResponsesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponsesInputItemList> listInputItems(String responseId, Integer limit,
+    private Mono<ResponsesInputItemList> listInputItems(String responseId, Integer limit,
         ListInputItemsRequestOrder order, String after, String before) {
         // Generated convenience method for listInputItemsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -625,9 +682,8 @@ public final class ResponsesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponsesInputItemList> listInputItems(String responseId) {
+    private Mono<ResponsesInputItemList> listInputItems(String responseId) {
         // Generated convenience method for listInputItemsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listInputItemsWithResponse(responseId, requestOptions).flatMap(FluxUtil::toMono)

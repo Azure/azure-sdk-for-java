@@ -10,6 +10,7 @@ import com.azure.ai.openai.responses.models.ResponsesComputerTool;
 import com.azure.ai.openai.responses.models.ResponsesComputerToolEnvironment;
 import com.azure.ai.openai.responses.models.ResponsesDeveloperMessage;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
+import com.azure.ai.openai.responses.models.ResponsesItem;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
@@ -140,6 +141,34 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         runner.accept(request);
     }
 
+    static void getListResponsesItemRunner(CreateResponsesRequestModel model, Consumer<CreateResponsesRequest> runner) {
+        CreateResponsesRequest request = new CreateResponsesRequest(model,
+            Arrays.asList(
+                new ResponsesUserMessage(
+                    Arrays.asList(new ResponsesInputContentText("I will give you a list of 20 items"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 1"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 2"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 3"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 4"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 5"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 6"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 7"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 8"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 9"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 10"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 11"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 12"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 13"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 14"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 15"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 16"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 17"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 18"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 19"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Item 20")))));
+        runner.accept(request);
+    }
+
     static void getCUARunner(Consumer<CreateResponsesRequest> runner) {
         ResponsesComputerTool computerTool
             = new ResponsesComputerTool(1024, 768, ResponsesComputerToolEnvironment.WINDOWS);
@@ -189,5 +218,11 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         assertEquals(expected.getUsage().getOutputTokens(), actual.getUsage().getOutputTokens());
         assertEquals(expected.getUsage().getTotalTokens(), actual.getUsage().getTotalTokens());
         assertEquals(expected.getMetadata(), actual.getMetadata());
+    }
+
+    public static void assertResponseItem(ResponsesItem responseItem) {
+        assertNotNull(responseItem);
+        assertNotNull(responseItem.getId());
+        assertNotNull(responseItem.getType());
     }
 }

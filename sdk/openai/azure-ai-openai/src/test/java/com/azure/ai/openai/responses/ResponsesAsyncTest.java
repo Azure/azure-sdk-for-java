@@ -21,7 +21,6 @@ import java.util.Arrays;
 
 import static com.azure.ai.openai.responses.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -134,16 +133,23 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
         String responseId = createdResponse.getId();
 
         // Now list input items
-        StepVerifier.create(client.listInputItems(responseId, 10, ListInputItemsRequestOrder.ASC, null, null))
-            .assertNext(items -> {
-                assertNotNull(items);
-                assertNotNull(items.getObject());
-                assertNotNull(items.getData());
-                assertNotNull(items.getFirstId());
-                assertNotNull(items.getLastId());
-                assertFalse(items.isHasMore()); // Either true or false is valid
-            })
+        StepVerifier.create(client.listInputItems(responseId, 10, ListInputItemsRequestOrder.ASC))
+            .assertNext(AzureResponsesTestBase::assertResponseItem)
             .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void listInputItemsDesc(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesAsyncClient client = getResponseAsyncClient(httpClient);
+        // First create a response to get its ID
+        getListResponsesItemRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
+            ResponsesResponse createdResponse = client.createResponse(request).block();
+            StepVerifier.create(client.listInputItems(createdResponse.getId(), 5, ListInputItemsRequestOrder.DESC))
+                .assertNext(AzureResponsesTestBase::assertResponseItem)
+                .verifyComplete();
+            client.deleteResponse(createdResponse.getId());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

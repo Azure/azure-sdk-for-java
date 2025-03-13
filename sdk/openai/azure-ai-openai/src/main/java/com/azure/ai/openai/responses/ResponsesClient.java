@@ -14,6 +14,7 @@ import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
 import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
+import com.azure.ai.openai.responses.models.ResponsesItem;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.core.annotation.Generated;
@@ -24,6 +25,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -337,8 +340,6 @@ public final class ResponsesClient {
      * @param responseId The ID of the response to retrieve.
      * @param limit The maximum number of input items to return.
      * @param order The order in which to return the input items.
-     * @param after The cursor ID for positioning the returned list starting point.
-     * @param before The cursor ID for positioning the returned list end point.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -347,9 +348,9 @@ public final class ResponsesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponsesInputItemList listInputItems(String responseId, Integer limit, ListInputItemsRequestOrder order,
-        String after, String before) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResponsesItem> listInputItems(String responseId, Integer limit,
+        ListInputItemsRequestOrder order) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -357,31 +358,29 @@ public final class ResponsesClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return listInputItemsWithResponse(responseId, requestOptions).getValue().toObject(ResponsesInputItemList.class);
-    }
 
-    /**
-     * Returns a list of input items for a given response.
-     *
-     * @param responseId The ID of the response to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponsesInputItemList listInputItems(String responseId) {
-        RequestOptions requestOptions = new RequestOptions();
-        return listInputItemsWithResponse(responseId, requestOptions).getValue().toObject(ResponsesInputItemList.class);
+        return new PagedIterable<>(() -> {
+            Response<BinaryData> response = listInputItemsWithResponse(responseId, requestOptions);
+            ResponsesInputItemList pagedItems = response.getValue().toObject(ResponsesInputItemList.class);
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                pagedItems.getData(), pagedItems.isHasMore() ? pagedItems.getLastId() : null, response.getHeaders());
+        }, nextLink -> {
+            RequestOptions nextPageRequestOptions = new RequestOptions();
+            if (limit != null) {
+                nextPageRequestOptions.addQueryParam("limit", String.valueOf(limit), false);
+            }
+            if (order != null) {
+                nextPageRequestOptions.addQueryParam("order", order.toString(), false);
+            }
+            // nextLink is always define, as it being `null` is the break condition for the loop
+            nextPageRequestOptions.addQueryParam("after", nextLink, false);
+
+            Response<BinaryData> response = listInputItemsWithResponse(responseId, nextPageRequestOptions);
+            ResponsesInputItemList pagedItems = response.getValue().toObject(ResponsesInputItemList.class);
+
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                pagedItems.getData(), pagedItems.isHasMore() ? pagedItems.getLastId() : null, response.getHeaders());
+        });
     }
 
     /**

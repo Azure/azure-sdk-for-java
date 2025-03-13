@@ -9,12 +9,13 @@ import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
 import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
-import com.azure.ai.openai.responses.models.ResponsesInputItemList;
+import com.azure.ai.openai.responses.models.ResponsesItem;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesStreamEventCompleted;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,7 +25,6 @@ import java.util.Arrays;
 
 import static com.azure.ai.openai.responses.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -135,15 +135,30 @@ public class ResponsesTest extends AzureResponsesTestBase {
         String responseId = createdResponse.getId();
 
         // Now list input items
-        ResponsesInputItemList items
-            = client.listInputItems(responseId, 10, ListInputItemsRequestOrder.ASC, null, null);
+        PagedIterable<ResponsesItem> items = client.listInputItems(responseId, 10, ListInputItemsRequestOrder.ASC);
 
-        assertNotNull(items);
-        assertNotNull(items.getObject());
-        assertNotNull(items.getData());
-        assertNotNull(items.getFirstId());
-        assertNotNull(items.getLastId());
-        assertFalse(items.isHasMore()); // Either true or false is valid
+        for (ResponsesItem item : items) {
+            assertResponseItem(item);
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void listInputItemsDesc(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClient client = getResponseClient(httpClient);
+        // First create a response to get its ID
+        getListResponsesItemRunner(CreateResponsesRequestModel.GPT_4O_MINI, request -> {
+            ResponsesResponse createdResponse = client.createResponse(request);
+            String responseId = createdResponse.getId();
+            // Now list input items
+            PagedIterable<ResponsesItem> items = client.listInputItems(responseId, 10, ListInputItemsRequestOrder.DESC);
+
+            for (ResponsesItem item : items) {
+                assertResponseItem(item);
+            }
+
+            client.deleteResponse(createdResponse.getId());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
