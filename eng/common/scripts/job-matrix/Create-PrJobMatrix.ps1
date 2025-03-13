@@ -176,10 +176,22 @@ function GeneratePRMatrixForBatch {
           $outputItem["parameters"]["$PRMatrixSetting"] = $namesForBatch
 
           if ($matrixSuffixNecessary) {
+            if (-not $outputItem.PSobject.Properties.Name -contains "name") {
+              foreach ($property in $outputItem.PSobject.Properties) {
+                Write-Host "$($property.Name): $($property.Value)"
+              }
+              Write-Error "1-The above object doesn't contain a name property"
+            }
             $outputItem["name"] = $outputItem["name"] + "_" + $matrixConfig.Name
           }
 
           if ($batchSuffixNecessary) {
+            if (-not $outputItem.PSobject.Properties.Name -contains "name") {
+              foreach ($property in $outputItem.PSobject.Properties) {
+                Write-Host "$($property.Name): $($property.Value)"
+              }
+              Write-Error "2-The above object doesn't contain a name property"
+            }
             $outputItem["name"] = $outputItem["name"] + "$batchNamePrefix$batchCounter"
           }
 
@@ -201,10 +213,22 @@ function GeneratePRMatrixForBatch {
         $outputItem["parameters"]["$PRMatrixSetting"] = $namesForBatch
 
         if ($matrixSuffixNecessary) {
-          $outputItem["name"] = $outputItem["name"] + "_" + $matrixConfig.Name
+          if (-not $outputItem.PSobject.Properties.Name -contains "name") {
+            foreach ($property in $outputItem.PSobject.Properties) {
+              Write-Host "$($property.Name): $($property.Value)"
+            }
+            Write-Error "3-The above object doesn't contain a name property"
+          }
+        $outputItem["name"] = $outputItem["name"] + "_" + $matrixConfig.Name
         }
 
         if ($batchSuffixNecessary) {
+          if (-not $outputItem.PSobject.Properties.Name -contains "name") {
+            foreach ($property in $outputItem.PSobject.Properties) {
+              Write-Host "$($property.Name): $($property.Value)"
+            }
+            Write-Error "3-The above object doesn't contain a name property"
+          }
           $outputItem["name"] = $outputItem["name"]  + "_$batchNamePrefix$batchCounter"
         }
         # now we need to take an item from the front of the matrix results, clone it, and add it to the back of the matrix results
