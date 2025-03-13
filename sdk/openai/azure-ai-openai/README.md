@@ -173,8 +173,9 @@ The Responses API is OpenAI's newest form of supporting agentic applications wit
 To use Responses, there is a separate client that is needed which can be initialized to work for both OpenAI and Azure OpenAI services.
 
 ```java readme-sample-createAzureResponsesClient
+TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 ResponsesClient client = new ResponsesClientBuilder()
-    .credential(new AzureKeyCredential("{key}"))
+    .credential(defaultCredential)
     .endpoint("{endpoint}")
     .buildClient(); // or .buildAsyncClient() for the ResponsesAsyncClient
 ```

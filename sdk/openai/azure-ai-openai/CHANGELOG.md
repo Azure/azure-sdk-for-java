@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- New subpackage `responses` contains support for OpenAI's recently released Responses functionality.
+- New subpackage `com.azure.ai.openai.responses` contains support for OpenAI's recently released Responses functionality.
 
 ### Breaking Changes
 

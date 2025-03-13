@@ -136,8 +136,9 @@ public final class ReadmeSamples {
 
     public void createAzureResponsesClient() {
         // BEGIN: readme-sample-createAzureResponsesClient
+        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         ResponsesClient client = new ResponsesClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
+            .credential(defaultCredential)
             .endpoint("{endpoint}")
             .buildClient(); // or .buildAsyncClient() for the ResponsesAsyncClient
         // END: readme-sample-createAzureResponsesClient
