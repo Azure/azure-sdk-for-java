@@ -23,11 +23,13 @@ extends:
   parameters:
     stages:
       - stage: Build
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
         jobs:
         - job: 'Build'
 
           variables:
-            - template: /eng/pipelines/templates/variables/globals.yml
             - name: ArtifactsJson
               value: '${{ convertToJson(parameters.Artifacts) }}'
             - name: ArtifactsJsonEscaped
@@ -177,7 +179,6 @@ extends:
           condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
           variables:
-            - template: /eng/pipelines/templates/variables/globals.yml
             - name: ArtifactsJson
               value: '${{ convertToJson(parameters.Artifacts) }}'
             - name: AdditionalModulesJson
