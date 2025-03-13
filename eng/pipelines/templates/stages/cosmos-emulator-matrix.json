@@ -1,8 +1,12 @@
 {
+  "displayNames": {
+    "clean verify": ""
+  },
   "matrix": {
     "Agent": {
       "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
     },
+    "TestGoals": "clean verify",
     "EmulatorConfig": {
       "Emulator Only Integration Tests Tcp - Java 8": {
           "ProfileFlag": "-Pemulator",
