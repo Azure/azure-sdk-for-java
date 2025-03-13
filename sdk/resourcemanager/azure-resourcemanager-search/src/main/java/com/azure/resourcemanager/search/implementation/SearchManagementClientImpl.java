@@ -27,11 +27,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.search.fluent.AdminKeysClient;
+import com.azure.resourcemanager.search.fluent.NetworkSecurityPerimeterConfigurationsClient;
+import com.azure.resourcemanager.search.fluent.OfferingsClient;
 import com.azure.resourcemanager.search.fluent.OperationsClient;
 import com.azure.resourcemanager.search.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.search.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.search.fluent.QueryKeysClient;
 import com.azure.resourcemanager.search.fluent.SearchManagementClient;
+import com.azure.resourcemanager.search.fluent.ServiceOperationsClient;
 import com.azure.resourcemanager.search.fluent.ServicesClient;
 import com.azure.resourcemanager.search.fluent.SharedPrivateLinkResourcesClient;
 import com.azure.resourcemanager.search.fluent.UsagesClient;
@@ -52,13 +55,13 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
 
     /**
      * The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
-     * Manager API, command line tools, or the portal.
+     * Manager API or the portal.
      */
     private final String subscriptionId;
 
     /**
      * Gets The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
-     * Manager API, command line tools, or the portal.
+     * Manager API or the portal.
      * 
      * @return the subscriptionId value.
      */
@@ -148,6 +151,20 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /**
+     * The OfferingsClient object to access its operations.
+     */
+    private final OfferingsClient offerings;
+
+    /**
+     * Gets the OfferingsClient object to access its operations.
+     * 
+     * @return the OfferingsClient object.
+     */
+    public OfferingsClient getOfferings() {
+        return this.offerings;
     }
 
     /**
@@ -249,6 +266,34 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
     }
 
     /**
+     * The NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     */
+    private final NetworkSecurityPerimeterConfigurationsClient networkSecurityPerimeterConfigurations;
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
+        return this.networkSecurityPerimeterConfigurations;
+    }
+
+    /**
+     * The ServiceOperationsClient object to access its operations.
+     */
+    private final ServiceOperationsClient serviceOperations;
+
+    /**
+     * Gets the ServiceOperationsClient object to access its operations.
+     * 
+     * @return the ServiceOperationsClient object.
+     */
+    public ServiceOperationsClient getServiceOperations() {
+        return this.serviceOperations;
+    }
+
+    /**
      * Initializes an instance of SearchManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -256,7 +301,7 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param subscriptionId The unique identifier for a Microsoft Azure subscription. You can obtain this value from
-     * the Azure Resource Manager API, command line tools, or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param endpoint server parameter.
      */
     SearchManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -267,8 +312,9 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-11-01";
+        this.apiVersion = "2025-02-01-preview";
         this.operations = new OperationsClientImpl(this);
+        this.offerings = new OfferingsClientImpl(this);
         this.adminKeys = new AdminKeysClientImpl(this);
         this.queryKeys = new QueryKeysClientImpl(this);
         this.services = new ServicesClientImpl(this);
@@ -276,6 +322,8 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.sharedPrivateLinkResources = new SharedPrivateLinkResourcesClientImpl(this);
         this.usages = new UsagesClientImpl(this);
+        this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
+        this.serviceOperations = new ServiceOperationsClientImpl(this);
         this.service
             = RestProxy.create(SearchManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }

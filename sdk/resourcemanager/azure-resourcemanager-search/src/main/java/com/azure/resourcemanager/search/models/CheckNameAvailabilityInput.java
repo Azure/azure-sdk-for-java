@@ -27,7 +27,7 @@ public final class CheckNameAvailabilityInput implements JsonSerializable<CheckN
     /*
      * The type of the resource whose name is to be validated. This value must always be 'searchServices'.
      */
-    private String type = "searchServices";
+    private final String type = "searchServices";
 
     /**
      * Creates an instance of CheckNameAvailabilityInput class.
@@ -67,18 +67,6 @@ public final class CheckNameAvailabilityInput implements JsonSerializable<CheckN
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The type of the resource whose name is to be validated. This value must always be
-     * 'searchServices'.
-     * 
-     * @param type the type value to set.
-     * @return the CheckNameAvailabilityInput object itself.
-     */
-    public CheckNameAvailabilityInput withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

@@ -12,12 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes an API key for a given search service that has permissions for query operations only.
+ * Describes an API key for a given Azure AI Search service that conveys read-only permissions on the docs collection of
+ * an index.
  */
 @Immutable
 public final class QueryKeyInner implements JsonSerializable<QueryKeyInner> {
     /*
-     * The name of the query API key; may be empty.
+     * The name of the query API key. Query names are optional, but assigning a name can help you remember how it's
+     * used.
      */
     private String name;
 
@@ -33,7 +35,8 @@ public final class QueryKeyInner implements JsonSerializable<QueryKeyInner> {
     }
 
     /**
-     * Get the name property: The name of the query API key; may be empty.
+     * Get the name property: The name of the query API key. Query names are optional, but assigning a name can help you
+     * remember how it's used.
      * 
      * @return the name value.
      */

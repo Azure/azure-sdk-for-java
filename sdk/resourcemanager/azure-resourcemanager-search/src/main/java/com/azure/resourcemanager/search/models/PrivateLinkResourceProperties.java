@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Describes the properties of a supported private link resource for the search service. For a given API version, this
- * represents the 'supported' groupIds when creating a shared private link resource.
+ * Describes the properties of a supported private link resource for the Azure AI Search service. For a given API
+ * version, this represents the 'supported' groupIds when creating a shared private link resource.
  */
 @Immutable
 public final class PrivateLinkResourceProperties implements JsonSerializable<PrivateLinkResourceProperties> {
@@ -34,7 +34,7 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
     private List<String> requiredZoneNames;
 
     /*
-     * The list of resources that are onboarded to private link service and that are supported by search.
+     * The list of resources that are onboarded to private link service, that are supported by Azure AI Search.
      */
     private List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes;
 
@@ -73,7 +73,7 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
 
     /**
      * Get the shareablePrivateLinkResourceTypes property: The list of resources that are onboarded to private link
-     * service and that are supported by search.
+     * service, that are supported by Azure AI Search.
      * 
      * @return the shareablePrivateLinkResourceTypes value.
      */

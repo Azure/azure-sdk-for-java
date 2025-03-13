@@ -8,8 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Sets options that control the availability of semantic ranking. This configuration is only possible for certain
- * search SKUs in certain locations.
+ * Sets options that control the availability of semantic search. This configuration is only possible for certain Azure
+ * AI Search SKUs in certain locations.
  */
 public final class SearchSemanticSearch extends ExpandableStringEnum<SearchSemanticSearch> {
     /**

@@ -13,19 +13,19 @@ import com.azure.resourcemanager.search.models.PrivateEndpointConnectionProperti
 import java.io.IOException;
 
 /**
- * Describes an existing private endpoint connection to the search service.
+ * Describes an existing private endpoint connection to the Azure AI Search service.
  */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
     /*
-     * Describes the properties of an existing private endpoint connection to the search service.
+     * Describes the properties of an existing private endpoint connection to the Azure AI Search service.
      */
     private PrivateEndpointConnectionProperties properties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -33,9 +33,9 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of PrivateEndpointConnectionInner class.
@@ -44,8 +44,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Describes the properties of an existing private endpoint connection to the search
-     * service.
+     * Get the properties property: Describes the properties of an existing private endpoint connection to the Azure AI
+     * Search service.
      * 
      * @return the properties value.
      */
@@ -54,8 +54,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: Describes the properties of an existing private endpoint connection to the search
-     * service.
+     * Set the properties property: Describes the properties of an existing private endpoint connection to the Azure AI
+     * Search service.
      * 
      * @param properties the properties value to set.
      * @return the PrivateEndpointConnectionInner object itself.
@@ -66,13 +66,13 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -86,13 +86,13 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**

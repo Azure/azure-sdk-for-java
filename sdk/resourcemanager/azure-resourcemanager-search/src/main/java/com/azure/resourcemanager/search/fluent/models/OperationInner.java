@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.search.models.OperationDisplay;
+import com.azure.resourcemanager.search.models.OperationProperties;
 import java.io.IOException;
 
 /**
@@ -26,6 +27,22 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
      * The object that describes the operation.
      */
     private OperationDisplay display;
+
+    /*
+     * Describes if the specified operation is a data plane API operation. Operations where this value is not true are
+     * supported directly by the resource provider.
+     */
+    private Boolean isDataAction;
+
+    /*
+     * Describes which originating entities are allowed to invoke this operation.
+     */
+    private String origin;
+
+    /*
+     * Describes additional properties for this operation.
+     */
+    private OperationProperties properties;
 
     /**
      * Creates an instance of OperationInner class.
@@ -52,6 +69,34 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     }
 
     /**
+     * Get the isDataAction property: Describes if the specified operation is a data plane API operation. Operations
+     * where this value is not true are supported directly by the resource provider.
+     * 
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Get the origin property: Describes which originating entities are allowed to invoke this operation.
+     * 
+     * @return the origin value.
+     */
+    public String origin() {
+        return this.origin;
+    }
+
+    /**
+     * Get the properties property: Describes additional properties for this operation.
+     * 
+     * @return the properties value.
+     */
+    public OperationProperties properties() {
+        return this.properties;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -59,6 +104,9 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     public void validate() {
         if (display() != null) {
             display().validate();
+        }
+        if (properties() != null) {
+            properties().validate();
         }
     }
 
@@ -90,6 +138,12 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
                     deserializedOperationInner.name = reader.getString();
                 } else if ("display".equals(fieldName)) {
                     deserializedOperationInner.display = OperationDisplay.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationInner.origin = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationInner.properties = OperationProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

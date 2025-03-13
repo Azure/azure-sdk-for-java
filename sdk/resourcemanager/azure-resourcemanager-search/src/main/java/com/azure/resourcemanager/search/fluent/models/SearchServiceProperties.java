@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.search.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.search.models.ComputeType;
 import com.azure.resourcemanager.search.models.DataPlaneAuthOptions;
 import com.azure.resourcemanager.search.models.EncryptionWithCmk;
 import com.azure.resourcemanager.search.models.HostingMode;
 import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.ProvisioningState;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
+import com.azure.resourcemanager.search.models.SearchDisabledDataExfiltrationOption;
 import com.azure.resourcemanager.search.models.SearchSemanticSearch;
 import com.azure.resourcemanager.search.models.SearchServiceStatus;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -39,11 +43,22 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     private Integer partitionCount;
 
     /*
+     * The endpoint of the Azure AI Search service.
+     */
+    private String endpoint;
+
+    /*
      * Applicable only for the standard3 SKU. You can set this property to enable up to 3 high density partitions that
      * allow up to 1000 indexes, which is much higher than the maximum indexes allowed for any other SKU. For the
      * standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this value must be 'default'.
      */
     private HostingMode hostingMode;
+
+    /*
+     * Configure this property to support the search service using either the default compute or Azure Confidential
+     * Compute.
+     */
+    private ComputeType computeType;
 
     /*
      * This value can be set to 'enabled' to avoid breaking changes on existing customer resources and templates. If set
@@ -58,9 +73,10 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
      * down. 'deleting': The search service is being deleted. 'degraded': The search service is degraded. This can occur
      * when the underlying search units are not healthy. The search service is most likely operational, but performance
      * might be slow and some requests might be dropped. 'disabled': The search service is disabled. In this state, the
-     * service will reject all API requests. 'error': The search service is in an error state. If your service is in the
-     * degraded, disabled, or error states, Microsoft is actively investigating the underlying issue. Dedicated services
-     * in these states are still chargeable based on the number of search units provisioned.
+     * service will reject all API requests. 'error': The search service is in an error state. 'stopped': The search
+     * service is in a subscription that's disabled. If your service is in the degraded, disabled, or error states, it
+     * means the Azure AI Search team is actively investigating the underlying issue. Dedicated services in these states
+     * are still chargeable based on the number of search units provisioned.
      */
     private SearchServiceStatus status;
 
@@ -72,17 +88,24 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     /*
      * The state of the last provisioning operation performed on the search service. Provisioning is an intermediate
      * state that occurs while service capacity is being established. After capacity is set up, provisioningState
-     * changes to either 'succeeded' or 'failed'. Client applications can poll provisioning status (the recommended
+     * changes to either 'Succeeded' or 'Failed'. Client applications can poll provisioning status (the recommended
      * polling interval is from 30 seconds to one minute) by using the Get Search Service operation to see when an
-     * operation is completed. If you are using the free service, this value tends to come back as 'succeeded' directly
+     * operation is completed. If you are using the free service, this value tends to come back as 'Succeeded' directly
      * in the call to Create search service. This is because the free service uses capacity that is already set up.
      */
     private ProvisioningState provisioningState;
 
     /*
-     * Network-specific rules that determine how the search service may be reached.
+     * Network specific rules that determine how the Azure AI Search service may be reached.
      */
     private NetworkRuleSet networkRuleSet;
+
+    /*
+     * A list of data exfiltration scenarios that are explicitly disallowed for the search service. Currently, the only
+     * supported value is 'All' to disable all possible data export scenarios with more fine grained controls planned
+     * for the future.
+     */
+    private List<SearchDisabledDataExfiltrationOption> disabledDataExfiltrationOptions;
 
     /*
      * Specifies any policy regarding encryption of resources (such as indexes) using customer manager keys within a
@@ -103,20 +126,37 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     private DataPlaneAuthOptions authOptions;
 
     /*
-     * The list of private endpoint connections to the search service.
-     */
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
-
-    /*
      * Sets options that control the availability of semantic search. This configuration is only possible for certain
-     * search SKUs in certain locations.
+     * Azure AI Search SKUs in certain locations.
      */
     private SearchSemanticSearch semanticSearch;
 
     /*
-     * The list of shared private link resources managed by the search service.
+     * The list of private endpoint connections to the Azure AI Search service.
+     */
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * The list of shared private link resources managed by the Azure AI Search service.
      */
     private List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources;
+
+    /*
+     * A system generated property representing the service's etag that can be for optimistic concurrency control during
+     * updates.
+     */
+    private String etag;
+
+    /*
+     * Indicates whether or not the search service has an upgrade available.
+     */
+    private Boolean upgradeAvailable;
+
+    /*
+     * The date and time the search service was last upgraded. This field will be null until the service gets upgraded
+     * for the first time.
+     */
+    private OffsetDateTime serviceUpgradeDate;
 
     /**
      * Creates an instance of SearchServiceProperties class.
@@ -171,6 +211,26 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
+     * Get the endpoint property: The endpoint of the Azure AI Search service.
+     * 
+     * @return the endpoint value.
+     */
+    public String endpoint() {
+        return this.endpoint;
+    }
+
+    /**
+     * Set the endpoint property: The endpoint of the Azure AI Search service.
+     * 
+     * @param endpoint the endpoint value to set.
+     * @return the SearchServiceProperties object itself.
+     */
+    public SearchServiceProperties withEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
+    /**
      * Get the hostingMode property: Applicable only for the standard3 SKU. You can set this property to enable up to 3
      * high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for
      * any other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this
@@ -193,6 +253,28 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
      */
     public SearchServiceProperties withHostingMode(HostingMode hostingMode) {
         this.hostingMode = hostingMode;
+        return this;
+    }
+
+    /**
+     * Get the computeType property: Configure this property to support the search service using either the default
+     * compute or Azure Confidential Compute.
+     * 
+     * @return the computeType value.
+     */
+    public ComputeType computeType() {
+        return this.computeType;
+    }
+
+    /**
+     * Set the computeType property: Configure this property to support the search service using either the default
+     * compute or Azure Confidential Compute.
+     * 
+     * @param computeType the computeType value to set.
+     * @return the SearchServiceProperties object itself.
+     */
+    public SearchServiceProperties withComputeType(ComputeType computeType) {
+        this.computeType = computeType;
         return this;
     }
 
@@ -227,9 +309,9 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
      * degraded. This can occur when the underlying search units are not healthy. The search service is most likely
      * operational, but performance might be slow and some requests might be dropped. 'disabled': The search service is
      * disabled. In this state, the service will reject all API requests. 'error': The search service is in an error
-     * state. If your service is in the degraded, disabled, or error states, Microsoft is actively investigating the
-     * underlying issue. Dedicated services in these states are still chargeable based on the number of search units
-     * provisioned.
+     * state. 'stopped': The search service is in a subscription that's disabled. If your service is in the degraded,
+     * disabled, or error states, it means the Azure AI Search team is actively investigating the underlying issue.
+     * Dedicated services in these states are still chargeable based on the number of search units provisioned.
      * 
      * @return the status value.
      */
@@ -249,10 +331,10 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     /**
      * Get the provisioningState property: The state of the last provisioning operation performed on the search service.
      * Provisioning is an intermediate state that occurs while service capacity is being established. After capacity is
-     * set up, provisioningState changes to either 'succeeded' or 'failed'. Client applications can poll provisioning
+     * set up, provisioningState changes to either 'Succeeded' or 'Failed'. Client applications can poll provisioning
      * status (the recommended polling interval is from 30 seconds to one minute) by using the Get Search Service
      * operation to see when an operation is completed. If you are using the free service, this value tends to come back
-     * as 'succeeded' directly in the call to Create search service. This is because the free service uses capacity that
+     * as 'Succeeded' directly in the call to Create search service. This is because the free service uses capacity that
      * is already set up.
      * 
      * @return the provisioningState value.
@@ -262,7 +344,8 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
-     * Get the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
+     * Get the networkRuleSet property: Network specific rules that determine how the Azure AI Search service may be
+     * reached.
      * 
      * @return the networkRuleSet value.
      */
@@ -271,13 +354,39 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
-     * Set the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
+     * Set the networkRuleSet property: Network specific rules that determine how the Azure AI Search service may be
+     * reached.
      * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the SearchServiceProperties object itself.
      */
     public SearchServiceProperties withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
         this.networkRuleSet = networkRuleSet;
+        return this;
+    }
+
+    /**
+     * Get the disabledDataExfiltrationOptions property: A list of data exfiltration scenarios that are explicitly
+     * disallowed for the search service. Currently, the only supported value is 'All' to disable all possible data
+     * export scenarios with more fine grained controls planned for the future.
+     * 
+     * @return the disabledDataExfiltrationOptions value.
+     */
+    public List<SearchDisabledDataExfiltrationOption> disabledDataExfiltrationOptions() {
+        return this.disabledDataExfiltrationOptions;
+    }
+
+    /**
+     * Set the disabledDataExfiltrationOptions property: A list of data exfiltration scenarios that are explicitly
+     * disallowed for the search service. Currently, the only supported value is 'All' to disable all possible data
+     * export scenarios with more fine grained controls planned for the future.
+     * 
+     * @param disabledDataExfiltrationOptions the disabledDataExfiltrationOptions value to set.
+     * @return the SearchServiceProperties object itself.
+     */
+    public SearchServiceProperties withDisabledDataExfiltrationOptions(
+        List<SearchDisabledDataExfiltrationOption> disabledDataExfiltrationOptions) {
+        this.disabledDataExfiltrationOptions = disabledDataExfiltrationOptions;
         return this;
     }
 
@@ -348,17 +457,8 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
-     * Get the privateEndpointConnections property: The list of private endpoint connections to the search service.
-     * 
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
      * Get the semanticSearch property: Sets options that control the availability of semantic search. This
-     * configuration is only possible for certain search SKUs in certain locations.
+     * configuration is only possible for certain Azure AI Search SKUs in certain locations.
      * 
      * @return the semanticSearch value.
      */
@@ -368,7 +468,7 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
 
     /**
      * Set the semanticSearch property: Sets options that control the availability of semantic search. This
-     * configuration is only possible for certain search SKUs in certain locations.
+     * configuration is only possible for certain Azure AI Search SKUs in certain locations.
      * 
      * @param semanticSearch the semanticSearch value to set.
      * @return the SearchServiceProperties object itself.
@@ -379,13 +479,52 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
-     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the search
+     * Get the privateEndpointConnections property: The list of private endpoint connections to the Azure AI Search
      * service.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the Azure AI
+     * Search service.
      * 
      * @return the sharedPrivateLinkResources value.
      */
     public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
         return this.sharedPrivateLinkResources;
+    }
+
+    /**
+     * Get the etag property: A system generated property representing the service's etag that can be for optimistic
+     * concurrency control during updates.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the upgradeAvailable property: Indicates whether or not the search service has an upgrade available.
+     * 
+     * @return the upgradeAvailable value.
+     */
+    public Boolean upgradeAvailable() {
+        return this.upgradeAvailable;
+    }
+
+    /**
+     * Get the serviceUpgradeDate property: The date and time the search service was last upgraded. This field will be
+     * null until the service gets upgraded for the first time.
+     * 
+     * @return the serviceUpgradeDate value.
+     */
+    public OffsetDateTime serviceUpgradeDate() {
+        return this.serviceUpgradeDate;
     }
 
     /**
@@ -419,10 +558,14 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("replicaCount", this.replicaCount);
         jsonWriter.writeNumberField("partitionCount", this.partitionCount);
+        jsonWriter.writeStringField("endpoint", this.endpoint);
         jsonWriter.writeStringField("hostingMode", this.hostingMode == null ? null : this.hostingMode.toString());
+        jsonWriter.writeStringField("computeType", this.computeType == null ? null : this.computeType.toString());
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeJsonField("networkRuleSet", this.networkRuleSet);
+        jsonWriter.writeArrayField("disabledDataExfiltrationOptions", this.disabledDataExfiltrationOptions,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("encryptionWithCmk", this.encryptionWithCmk);
         jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
         jsonWriter.writeJsonField("authOptions", this.authOptions);
@@ -450,8 +593,12 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
                     deserializedSearchServiceProperties.replicaCount = reader.getNullable(JsonReader::getInt);
                 } else if ("partitionCount".equals(fieldName)) {
                     deserializedSearchServiceProperties.partitionCount = reader.getNullable(JsonReader::getInt);
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedSearchServiceProperties.endpoint = reader.getString();
                 } else if ("hostingMode".equals(fieldName)) {
                     deserializedSearchServiceProperties.hostingMode = HostingMode.fromString(reader.getString());
+                } else if ("computeType".equals(fieldName)) {
+                    deserializedSearchServiceProperties.computeType = ComputeType.fromString(reader.getString());
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedSearchServiceProperties.publicNetworkAccess
                         = PublicNetworkAccess.fromString(reader.getString());
@@ -464,23 +611,35 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("networkRuleSet".equals(fieldName)) {
                     deserializedSearchServiceProperties.networkRuleSet = NetworkRuleSet.fromJson(reader);
+                } else if ("disabledDataExfiltrationOptions".equals(fieldName)) {
+                    List<SearchDisabledDataExfiltrationOption> disabledDataExfiltrationOptions = reader
+                        .readArray(reader1 -> SearchDisabledDataExfiltrationOption.fromString(reader1.getString()));
+                    deserializedSearchServiceProperties.disabledDataExfiltrationOptions
+                        = disabledDataExfiltrationOptions;
                 } else if ("encryptionWithCmk".equals(fieldName)) {
                     deserializedSearchServiceProperties.encryptionWithCmk = EncryptionWithCmk.fromJson(reader);
                 } else if ("disableLocalAuth".equals(fieldName)) {
                     deserializedSearchServiceProperties.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
                 } else if ("authOptions".equals(fieldName)) {
                     deserializedSearchServiceProperties.authOptions = DataPlaneAuthOptions.fromJson(reader);
+                } else if ("semanticSearch".equals(fieldName)) {
+                    deserializedSearchServiceProperties.semanticSearch
+                        = SearchSemanticSearch.fromString(reader.getString());
                 } else if ("privateEndpointConnections".equals(fieldName)) {
                     List<PrivateEndpointConnectionInner> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
                     deserializedSearchServiceProperties.privateEndpointConnections = privateEndpointConnections;
-                } else if ("semanticSearch".equals(fieldName)) {
-                    deserializedSearchServiceProperties.semanticSearch
-                        = SearchSemanticSearch.fromString(reader.getString());
                 } else if ("sharedPrivateLinkResources".equals(fieldName)) {
                     List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources
                         = reader.readArray(reader1 -> SharedPrivateLinkResourceInner.fromJson(reader1));
                     deserializedSearchServiceProperties.sharedPrivateLinkResources = sharedPrivateLinkResources;
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedSearchServiceProperties.etag = reader.getString();
+                } else if ("upgradeAvailable".equals(fieldName)) {
+                    deserializedSearchServiceProperties.upgradeAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("serviceUpgradeDate".equals(fieldName)) {
+                    deserializedSearchServiceProperties.serviceUpgradeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

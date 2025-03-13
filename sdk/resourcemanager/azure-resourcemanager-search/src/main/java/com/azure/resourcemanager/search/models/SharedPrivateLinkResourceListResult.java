@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Response containing a list of Shared Private Link Resources.
+ * Response containing a list of shared private link resources.
  */
 @Fluent
 public final class SharedPrivateLinkResourceListResult
     implements JsonSerializable<SharedPrivateLinkResourceListResult> {
     /*
-     * The list of Shared Private Link Resources.
+     * The list of shared private link resources.
      */
     private List<SharedPrivateLinkResourceInner> value;
 
@@ -36,7 +36,7 @@ public final class SharedPrivateLinkResourceListResult
     }
 
     /**
-     * Get the value property: The list of Shared Private Link Resources.
+     * Get the value property: The list of shared private link resources.
      * 
      * @return the value value.
      */
