@@ -20,7 +20,7 @@ public final class ResponsesOutputTextAnnotationFilePath extends ResponsesOutput
      * The type property.
      */
     @Generated
-    private ResponsesOutputTextAnnotationType type = ResponsesOutputTextAnnotationType.FILE_PATH;
+    private ResponseOutputTextAnnotationType type = ResponseOutputTextAnnotationType.FILE_PATH;
 
     /*
      * The file_id property.
@@ -53,7 +53,7 @@ public final class ResponsesOutputTextAnnotationFilePath extends ResponsesOutput
      */
     @Generated
     @Override
-    public ResponsesOutputTextAnnotationType getType() {
+    public ResponseOutputTextAnnotationType getType() {
         return this.type;
     }
 
@@ -104,7 +104,7 @@ public final class ResponsesOutputTextAnnotationFilePath extends ResponsesOutput
         return jsonReader.readObject(reader -> {
             String fileId = null;
             int index = 0;
-            ResponsesOutputTextAnnotationType type = ResponsesOutputTextAnnotationType.FILE_PATH;
+            ResponseOutputTextAnnotationType type = ResponseOutputTextAnnotationType.FILE_PATH;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -113,7 +113,7 @@ public final class ResponsesOutputTextAnnotationFilePath extends ResponsesOutput
                 } else if ("index".equals(fieldName)) {
                     index = reader.getInt();
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesOutputTextAnnotationType.fromString(reader.getString());
+                    type = ResponseOutputTextAnnotationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

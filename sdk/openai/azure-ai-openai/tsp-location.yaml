@@ -1,5 +1,4 @@
-directory: specification/cognitiveservices/OpenAI.Inference
-additionalDirectories:
-  - specification/cognitiveservices/OpenAI.Authoring
-commit: a378d871adcadc6c29994a2b99e008b5f0f9f5cf
-repo: Azure/azure-rest-api-specs
+directory: openai-in-typespec
+commit: foo
+repo: bar
+entrypointFile: entrypoints/responses.azure/client.tsp

@@ -11,31 +11,31 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResponsesOutputContentReasoning model.
+ * The ResponsesOutputContentRefusal model.
  */
 @Immutable
-public final class ResponsesOutputContentReasoning extends ResponsesContent {
+public final class ResponsesOutputContentRefusal extends ResponsesContent {
 
     /*
      * The type property.
      */
     @Generated
-    private ResponsesContentType type = ResponsesContentType.REASONING;
+    private ResponsesContentType type = ResponsesContentType.REFUSAL;
 
     /*
-     * The text property.
+     * The refusal property.
      */
     @Generated
-    private final String text;
+    private final String refusal;
 
     /**
-     * Creates an instance of ResponsesOutputContentReasoning class.
+     * Creates an instance of ResponsesOutputContentRefusal class.
      *
-     * @param text the text value to set.
+     * @param refusal the refusal value to set.
      */
     @Generated
-    public ResponsesOutputContentReasoning(String text) {
-        this.text = text;
+    public ResponsesOutputContentRefusal(String refusal) {
+        this.refusal = refusal;
     }
 
     /**
@@ -50,13 +50,13 @@ public final class ResponsesOutputContentReasoning extends ResponsesContent {
     }
 
     /**
-     * Get the text property: The text property.
+     * Get the refusal property: The refusal property.
      *
-     * @return the text value.
+     * @return the refusal value.
      */
     @Generated
-    public String getText() {
-        return this.text;
+    public String getRefusal() {
+        return this.refusal;
     }
 
     /**
@@ -66,40 +66,40 @@ public final class ResponsesOutputContentReasoning extends ResponsesContent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("refusal", this.refusal);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResponsesOutputContentReasoning from the JsonReader.
+     * Reads an instance of ResponsesOutputContentRefusal from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponsesOutputContentReasoning if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of ResponsesOutputContentRefusal if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponsesOutputContentReasoning.
+     * @throws IOException If an error occurs while reading the ResponsesOutputContentRefusal.
      */
     @Generated
-    public static ResponsesOutputContentReasoning fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponsesOutputContentRefusal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String text = null;
-            ResponsesContentType type = ResponsesContentType.REASONING;
+            String refusal = null;
+            ResponsesContentType type = ResponsesContentType.REFUSAL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("text".equals(fieldName)) {
-                    text = reader.getString();
+                if ("refusal".equals(fieldName)) {
+                    refusal = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = ResponsesContentType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponsesOutputContentReasoning deserializedResponsesOutputContentReasoning
-                = new ResponsesOutputContentReasoning(text);
-            deserializedResponsesOutputContentReasoning.type = type;
-            return deserializedResponsesOutputContentReasoning;
+            ResponsesOutputContentRefusal deserializedResponsesOutputContentRefusal
+                = new ResponsesOutputContentRefusal(refusal);
+            deserializedResponsesOutputContentRefusal.type = type;
+            return deserializedResponsesOutputContentRefusal;
         });
     }
 }

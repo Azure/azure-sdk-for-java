@@ -63,13 +63,13 @@ public final class ResponsesResponseIncompleteDetails implements JsonSerializabl
     public static ResponsesResponseIncompleteDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResponsesResponseIncompleteDetails deserializedResponsesResponseIncompleteDetails
-                = new ResponsesResponseIncompleteDetails();
+                    = new ResponsesResponseIncompleteDetails();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("reason".equals(fieldName)) {
                     deserializedResponsesResponseIncompleteDetails.reason
-                        = ResponsesResponseIncompleteDetailsReason.fromString(reader.getString());
+                            = ResponsesResponseIncompleteDetailsReason.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

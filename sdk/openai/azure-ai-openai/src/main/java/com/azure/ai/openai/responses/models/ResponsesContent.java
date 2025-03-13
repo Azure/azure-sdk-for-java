@@ -79,20 +79,14 @@ public class ResponsesContent implements JsonSerializable<ResponsesContent> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("input_text".equals(discriminatorValue)) {
                     return ResponsesInputContentText.fromJson(readerToUse.reset());
-                } else if ("input_audio".equals(discriminatorValue)) {
-                    return ResponsesInputContentAudio.fromJson(readerToUse.reset());
                 } else if ("input_image".equals(discriminatorValue)) {
                     return ResponsesInputContentImage.fromJson(readerToUse.reset());
                 } else if ("input_file".equals(discriminatorValue)) {
                     return ResponsesInputContentFile.fromJson(readerToUse.reset());
                 } else if ("output_text".equals(discriminatorValue)) {
                     return ResponsesOutputContentText.fromJson(readerToUse.reset());
-                } else if ("reasoning".equals(discriminatorValue)) {
-                    return ResponsesOutputContentReasoning.fromJson(readerToUse.reset());
-                } else if ("output_audio".equals(discriminatorValue)) {
-                    return ResponsesOutputContentAudio.fromJson(readerToUse.reset());
-                } else if ("output_image".equals(discriminatorValue)) {
-                    return ResponsesOutputContentImage.fromJson(readerToUse.reset());
+                } else if ("refusal".equals(discriminatorValue)) {
+                    return ResponsesOutputContentRefusal.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

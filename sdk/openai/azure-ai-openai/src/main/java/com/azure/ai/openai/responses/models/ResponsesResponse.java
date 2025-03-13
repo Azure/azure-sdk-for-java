@@ -170,49 +170,6 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
     private final Map<String, String> metadata;
 
     /**
-     * Creates an instance of ResponsesResponse class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param error the error value to set.
-     * @param incompleteDetails the incompleteDetails value to set.
-     * @param instructions the instructions value to set.
-     * @param model the model value to set.
-     * @param output the output value to set.
-     * @param parallelToolCalls the parallelToolCalls value to set.
-     * @param previousResponseId the previousResponseId value to set.
-     * @param temperature the temperature value to set.
-     * @param toolChoice the toolChoice value to set.
-     * @param tools the tools value to set.
-     * @param topP the topP value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    private ResponsesResponse(String id, OffsetDateTime createdAt, ResponsesError error,
-        ResponsesResponseIncompleteDetails incompleteDetails, String instructions, String model,
-        List<ResponsesItem> output, boolean parallelToolCalls, String previousResponseId, double temperature,
-        BinaryData toolChoice, List<ResponsesTool> tools, double topP, Map<String, String> metadata) {
-        this.id = id;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.error = error;
-        this.incompleteDetails = incompleteDetails;
-        this.instructions = instructions;
-        this.model = model;
-        this.output = output;
-        this.parallelToolCalls = parallelToolCalls;
-        this.previousResponseId = previousResponseId;
-        this.temperature = temperature;
-        this.toolChoice = toolChoice;
-        this.tools = tools;
-        this.topP = topP;
-        this.metadata = metadata;
-    }
-
-    /**
      * Get the id property: A unique identifier for this Response.
      *
      * @return the id value.
@@ -575,5 +532,48 @@ public final class ResponsesResponse implements JsonSerializable<ResponsesRespon
             deserializedResponsesResponse.user = user;
             return deserializedResponsesResponse;
         });
+    }
+
+    /**
+     * Creates an instance of ResponsesResponse class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param error the error value to set.
+     * @param incompleteDetails the incompleteDetails value to set.
+     * @param instructions the instructions value to set.
+     * @param model the model value to set.
+     * @param output the output value to set.
+     * @param parallelToolCalls the parallelToolCalls value to set.
+     * @param previousResponseId the previousResponseId value to set.
+     * @param temperature the temperature value to set.
+     * @param toolChoice the toolChoice value to set.
+     * @param tools the tools value to set.
+     * @param topP the topP value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private ResponsesResponse(String id, OffsetDateTime createdAt, ResponsesError error,
+        ResponsesResponseIncompleteDetails incompleteDetails, String instructions, String model,
+        List<ResponsesItem> output, boolean parallelToolCalls, String previousResponseId, double temperature,
+        BinaryData toolChoice, List<ResponsesTool> tools, double topP, Map<String, String> metadata) {
+        this.id = id;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.error = error;
+        this.incompleteDetails = incompleteDetails;
+        this.instructions = instructions;
+        this.model = model;
+        this.output = output;
+        this.parallelToolCalls = parallelToolCalls;
+        this.previousResponseId = previousResponseId;
+        this.temperature = temperature;
+        this.toolChoice = toolChoice;
+        this.tools = tools;
+        this.topP = topP;
+        this.metadata = metadata;
     }
 }

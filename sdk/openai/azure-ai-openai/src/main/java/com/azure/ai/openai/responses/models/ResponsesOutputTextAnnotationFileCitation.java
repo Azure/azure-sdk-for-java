@@ -20,7 +20,7 @@ public final class ResponsesOutputTextAnnotationFileCitation extends ResponsesOu
      * The type property.
      */
     @Generated
-    private ResponsesOutputTextAnnotationType type = ResponsesOutputTextAnnotationType.FILE_CITATION;
+    private ResponseOutputTextAnnotationType type = ResponseOutputTextAnnotationType.FILE_CITATION;
 
     /*
      * The index property.
@@ -34,26 +34,6 @@ public final class ResponsesOutputTextAnnotationFileCitation extends ResponsesOu
     @Generated
     private final String fileId;
 
-    /*
-     * The filename property.
-     */
-    @Generated
-    private final String filename;
-
-    /**
-     * Creates an instance of ResponsesOutputTextAnnotationFileCitation class.
-     *
-     * @param index the index value to set.
-     * @param fileId the fileId value to set.
-     * @param filename the filename value to set.
-     */
-    @Generated
-    public ResponsesOutputTextAnnotationFileCitation(int index, String fileId, String filename) {
-        this.index = index;
-        this.fileId = fileId;
-        this.filename = filename;
-    }
-
     /**
      * Get the type property: The type property.
      *
@@ -61,7 +41,7 @@ public final class ResponsesOutputTextAnnotationFileCitation extends ResponsesOu
      */
     @Generated
     @Override
-    public ResponsesOutputTextAnnotationType getType() {
+    public ResponseOutputTextAnnotationType getType() {
         return this.type;
     }
 
@@ -86,16 +66,6 @@ public final class ResponsesOutputTextAnnotationFileCitation extends ResponsesOu
     }
 
     /**
-     * Get the filename property: The filename property.
-     *
-     * @return the filename value.
-     */
-    @Generated
-    public String getFilename() {
-        return this.filename;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -104,7 +74,6 @@ public final class ResponsesOutputTextAnnotationFileCitation extends ResponsesOu
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("index", this.index);
         jsonWriter.writeStringField("file_id", this.fileId);
-        jsonWriter.writeStringField("filename", this.filename);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -123,8 +92,7 @@ public final class ResponsesOutputTextAnnotationFileCitation extends ResponsesOu
         return jsonReader.readObject(reader -> {
             int index = 0;
             String fileId = null;
-            String filename = null;
-            ResponsesOutputTextAnnotationType type = ResponsesOutputTextAnnotationType.FILE_CITATION;
+            ResponseOutputTextAnnotationType type = ResponseOutputTextAnnotationType.FILE_CITATION;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -132,18 +100,28 @@ public final class ResponsesOutputTextAnnotationFileCitation extends ResponsesOu
                     index = reader.getInt();
                 } else if ("file_id".equals(fieldName)) {
                     fileId = reader.getString();
-                } else if ("filename".equals(fieldName)) {
-                    filename = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ResponsesOutputTextAnnotationType.fromString(reader.getString());
+                    type = ResponseOutputTextAnnotationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             ResponsesOutputTextAnnotationFileCitation deserializedResponsesOutputTextAnnotationFileCitation
-                = new ResponsesOutputTextAnnotationFileCitation(index, fileId, filename);
+                = new ResponsesOutputTextAnnotationFileCitation(index, fileId);
             deserializedResponsesOutputTextAnnotationFileCitation.type = type;
             return deserializedResponsesOutputTextAnnotationFileCitation;
         });
+    }
+
+    /**
+     * Creates an instance of ResponsesOutputTextAnnotationFileCitation class.
+     *
+     * @param index the index value to set.
+     * @param fileId the fileId value to set.
+     */
+    @Generated
+    public ResponsesOutputTextAnnotationFileCitation(int index, String fileId) {
+        this.index = index;
+        this.fileId = fileId;
     }
 }

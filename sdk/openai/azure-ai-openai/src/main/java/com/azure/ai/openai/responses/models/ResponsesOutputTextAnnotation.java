@@ -21,7 +21,7 @@ public class ResponsesOutputTextAnnotation implements JsonSerializable<Responses
      * The type property.
      */
     @Generated
-    private ResponsesOutputTextAnnotationType type;
+    private ResponseOutputTextAnnotationType type;
 
     /**
      * Creates an instance of ResponsesOutputTextAnnotation class.
@@ -36,7 +36,7 @@ public class ResponsesOutputTextAnnotation implements JsonSerializable<Responses
      * @return the type value.
      */
     @Generated
-    public ResponsesOutputTextAnnotationType getType() {
+    public ResponseOutputTextAnnotationType getType() {
         return this.type;
     }
 
@@ -79,6 +79,8 @@ public class ResponsesOutputTextAnnotation implements JsonSerializable<Responses
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("file_citation".equals(discriminatorValue)) {
                     return ResponsesOutputTextAnnotationFileCitation.fromJson(readerToUse.reset());
+                } else if ("url_citation".equals(discriminatorValue)) {
+                    return ResponsesOutputTextAnnotationUrlCitation.fromJson(readerToUse.reset());
                 } else if ("file_path".equals(discriminatorValue)) {
                     return ResponsesOutputTextAnnotationFilePath.fromJson(readerToUse.reset());
                 } else {
@@ -98,7 +100,7 @@ public class ResponsesOutputTextAnnotation implements JsonSerializable<Responses
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     deserializedResponsesOutputTextAnnotation.type
-                        = ResponsesOutputTextAnnotationType.fromString(reader.getString());
+                        = ResponseOutputTextAnnotationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
