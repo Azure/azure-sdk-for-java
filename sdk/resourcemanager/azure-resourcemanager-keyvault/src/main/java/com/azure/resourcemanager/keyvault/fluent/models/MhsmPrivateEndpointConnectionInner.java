@@ -34,14 +34,9 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
     private String etag;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Metadata pertaining to creation and last modification of the key vault resource.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -49,9 +44,14 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
     private String type;
 
     /*
-     * Metadata pertaining to creation and last modification of the key vault resource.
+     * The name of the resource.
      */
-    private SystemData systemData;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of MhsmPrivateEndpointConnectionInner class.
@@ -89,23 +89,13 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the key vault resource.
      * 
-     * @return the id value.
+     * @return the systemData value.
      */
     @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -119,13 +109,23 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the key vault resource.
+     * Get the name property: The name of the resource.
      * 
-     * @return the systemData value.
+     * @return the name value.
      */
     @Override
-    public SystemData systemData() {
-        return this.systemData;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -242,9 +242,14 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 

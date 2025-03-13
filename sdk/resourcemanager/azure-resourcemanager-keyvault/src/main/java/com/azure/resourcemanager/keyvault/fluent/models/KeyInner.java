@@ -31,9 +31,9 @@ public final class KeyInner extends Resource {
     private KeyProperties innerProperties = new KeyProperties();
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -41,9 +41,9 @@ public final class KeyInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of KeyInner class.
@@ -61,13 +61,13 @@ public final class KeyInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -81,13 +81,13 @@ public final class KeyInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -178,7 +178,8 @@ public final class KeyInner extends Resource {
     }
 
     /**
-     * Get the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+     * Get the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA. Default for RSA and
+     * RSA-HSM keys is 2048. Exception made for bring your own key (BYOK), key exchange keys default to 4096.
      * 
      * @return the keySize value.
      */
@@ -187,7 +188,8 @@ public final class KeyInner extends Resource {
     }
 
     /**
-     * Set the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+     * Set the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA. Default for RSA and
+     * RSA-HSM keys is 2048. Exception made for bring your own key (BYOK), key exchange keys default to 4096.
      * 
      * @param keySize the keySize value to set.
      * @return the KeyInner object itself.
@@ -201,7 +203,8 @@ public final class KeyInner extends Resource {
     }
 
     /**
-     * Get the curveName property: The elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * Get the curveName property: The elliptic curve name. For valid values, see JsonWebKeyCurveName. Default for EC
+     * and EC-HSM keys is P-256.
      * 
      * @return the curveName value.
      */
@@ -210,7 +213,8 @@ public final class KeyInner extends Resource {
     }
 
     /**
-     * Set the curveName property: The elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * Set the curveName property: The elliptic curve name. For valid values, see JsonWebKeyCurveName. Default for EC
+     * and EC-HSM keys is P-256.
      * 
      * @param curveName the curveName value to set.
      * @return the KeyInner object itself.
