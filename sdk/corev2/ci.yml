@@ -47,10 +47,12 @@ extends:
       - name: azure-core
         groupId: com.azure.v2
         safeName: azurecore
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecore }}
         triggeringPaths:
         - /sdk/parents/azure-client-sdk-parent-v2
       - name: azure-core-test
         groupId: com.azure.v2
         safeName: azurecoretest
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecoretest }}
