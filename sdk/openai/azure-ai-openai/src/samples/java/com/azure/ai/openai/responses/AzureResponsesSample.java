@@ -19,8 +19,15 @@ import com.azure.core.util.Configuration;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This sample demonstrates how to use the Responses client to generate text using the Azure OpenAI service.
+ */
 public class AzureResponsesSample {
 
+    /**
+     * Main method to run the sample.
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         // Create a client
         ResponsesClient client = new ResponsesClientBuilder()
