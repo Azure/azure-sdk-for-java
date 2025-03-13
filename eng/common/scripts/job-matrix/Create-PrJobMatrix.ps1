@@ -199,10 +199,11 @@ function GeneratePRMatrixForBatch {
       $batchSuffixNecessary = $packageBatches.Length -gt 0
       $batchCounter = 1
       foreach ($batch in $packageBatches) {
-        Write-Host "Dumping indirect matrix item before modifying name"
-        Write-Host $batch | Out-String
         $namesForBatch = ($batch | ForEach-Object { $_.ArtifactName }) -join ","
         $outputItem = QueuePop -queue ([ref]$matrixResults)
+        Write-Host "Dumping indirect matrix item before modifying name"
+        Write-Host $outputItem
+        Write-Host $null -eq $outputItem
 
         $outputItem["parameters"]["$PRMatrixSetting"] = $namesForBatch
 
