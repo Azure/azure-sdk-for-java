@@ -12,7 +12,6 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -45,10 +44,8 @@ public class PagingOperationTests {
         String uri = "https://example.com";
         String firstPageUri = uri + "/foos";
         String nextLinkUri = uri + "/foos?page=2";
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             String requestUri = request.getUri().toString();
-            request.setRequestOptions(requestOptions);
             if (firstPageUri.equals(requestUri)) {
                 return createMockResponse(request, FIRST_PAGE_RESPONSE, nextLinkUri);
             } else if (nextLinkUri.equals(requestUri)) {
@@ -86,10 +83,8 @@ public class PagingOperationTests {
         String uri = "https://example.com";
         String firstPageUri = uri + "/foos";
         String nextLinkUri = uri + "/foos?page=2";
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             String requestUri = request.getUri().toString();
-            request.setRequestOptions(requestOptions);
             if (firstPageUri.equals(requestUri)) {
                 return createMockResponse(request,
                     BinaryData.fromString(
