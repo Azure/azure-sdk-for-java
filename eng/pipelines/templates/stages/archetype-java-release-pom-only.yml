@@ -9,11 +9,12 @@ stages:
   # is protected by an approval check but this may be removed in the future.
   - stage: Signing
     dependsOn: ${{parameters.DependsOn}}
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
     jobs:
       - job: SignPackage
         timeoutInMinutes: 20
-        variables:
-          - template: /eng/pipelines/templates/variables/globals.yml
         pool:
           name: $(WINDOWSPOOL)
           image: $(WINDOWSVMIMAGE)
@@ -76,13 +77,14 @@ stages:
       - stage:
         displayName: 'Release: ${{artifact.name}}'
         dependsOn: Signing
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
         condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
         jobs:
           - job: TagRepository
             displayName: "Create release tag"
             condition: ne(variables['Skip.TagRepository'], 'true')
-            variables:
-              - template: /eng/pipelines/templates/variables/globals.yml
             pool:
               name: $(WINDOWSPOOL)
               image: $(WINDOWSVMIMAGE)
@@ -130,8 +132,6 @@ stages:
             displayName: "Publish to Java Dev feed"
             condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
             dependsOn: PublishESRPPackage
-            variables:
-              - template: /eng/pipelines/templates/variables/globals.yml
             pool:
               name: $(WINDOWSPOOL)
               image: $(WINDOWSVMIMAGE)

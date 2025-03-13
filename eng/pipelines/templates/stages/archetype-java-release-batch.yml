@@ -27,12 +27,12 @@ stages:
   # is protected by an approval check but this may be removed in the future.
   - stage: Signing
     dependsOn: ${{parameters.DependsOn}}
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
     jobs:
       - job: SignPackage
         timeoutInMinutes: 20
-        variables:
-          - template: /eng/pipelines/templates/variables/globals.yml
-          - template: /eng/pipelines/templates/variables/image.yml
         pool:
           name: $(WINDOWSPOOL)
           image: $(WINDOWSVMIMAGE)
@@ -98,6 +98,7 @@ stages:
       condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
       variables:
         - template: /eng/pipelines/templates/variables/globals.yml
+        - template: /eng/pipelines/templates/variables/image.yml
         # Convert artifact parameter objects to json and set them as variables to be used in
         # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
         # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
