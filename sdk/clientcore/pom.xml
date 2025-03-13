@@ -15,6 +15,5 @@
     <module>optional-dependency-tests</module>
     <module>http-stress</module>
     <module>annotation-processor</module>
-    <module>annotation-processor-test</module>
   </modules>
 </project>

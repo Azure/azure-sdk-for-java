@@ -7,11 +7,27 @@
     <Class name="io.clientcore.annotation.processor.models.TemplateInput" />
   </Match>
   <Match>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
+    <Class name="io.clientcore.annotation.processor.integration.implementation.TestInterfaceClientServiceImpl" />
+  </Match>
+  <Match>
     <Bug pattern="DCN_NULLPOINTER_EXCEPTION" />
     <Class name="io.clientcore.annotation.processor.utils.PathBuilderTest" />
   </Match>
   <Match>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    <Class name="io.clientcore.annotation.processor.integration.implementation.TestInterfaceClientServiceImpl" />
+  </Match>
+  <Match>
+    <Bug pattern="DM_DEFAULT_ENCODING" />
+    <Class name="io.clientcore.annotation.processor.integration.RestProxyTests" />
+  </Match>
+  <Match>
     <Bug pattern="NM_CONFUSING" />
     <Class name="io.clientcore.annotation.processor.templating.BodyContentTypeProcessorTest" />
+  </Match>
+  <Match>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
+    <Class name="io.clientcore.annotation.processor.integration.implementation.TestInterfaceClientServiceImpl" />
   </Match>
 </FindBugsFilter>

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.annotation.processor.test;
+package io.clientcore.annotation.processor.integration;
 
-import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl.TestInterfaceClientService;
-import io.clientcore.annotation.processor.test.implementation.models.Foo;
-import io.clientcore.annotation.processor.test.implementation.models.FooListResult;
+import io.clientcore.annotation.processor.integration.implementation.TestInterfaceClientImpl;
+import io.clientcore.annotation.processor.integration.implementation.models.Foo;
+import io.clientcore.annotation.processor.integration.implementation.models.FooListResult;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -32,8 +32,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * Test class for verifying the deserialization of paged responses and their handling in code generation.
  */
 public class PagingOperationTests {
-    private static final BinaryData FIRST_PAGE_RESPONSE = BinaryData.fromString("[{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}]");
-    private static final BinaryData NEXTLINK_RESPONSE =  BinaryData.fromString("[{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}]");
+    private static final BinaryData FIRST_PAGE_RESPONSE = BinaryData.fromString(
+        "[{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}]");
+    private static final BinaryData NEXTLINK_RESPONSE = BinaryData.fromString(
+        "[{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}]");
 
     /**
      * Verifies that a response containing a List is correctly handled when returning a List<Foo>.
@@ -44,20 +46,19 @@ public class PagingOperationTests {
         String firstPageUri = uri + "/foos";
         String nextLinkUri = uri + "/foos?page=2";
         RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> {
-                String requestUri = request.getUri().toString();
-                request.setRequestOptions(requestOptions);
-                if (firstPageUri.equals(requestUri)) {
-                    return createMockResponse(request, FIRST_PAGE_RESPONSE, nextLinkUri);
-                } else if (nextLinkUri.equals(requestUri)) {
-                    return createMockResponse(request, NEXTLINK_RESPONSE, null);
-                }
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            String requestUri = request.getUri().toString();
+            request.setRequestOptions(requestOptions);
+            if (firstPageUri.equals(requestUri)) {
+                return createMockResponse(request, FIRST_PAGE_RESPONSE, nextLinkUri);
+            } else if (nextLinkUri.equals(requestUri)) {
+                return createMockResponse(request, NEXTLINK_RESPONSE, null);
+            }
 
-                return new MockHttpResponse(request, 404);
-            })
-            .build();
-        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+            return new MockHttpResponse(request, 404);
+        }).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
 
         // Retrieve initial response
         Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, RequestOptions.none());
@@ -69,13 +70,11 @@ public class PagingOperationTests {
         // Convert List<Foo> response to PagedResponse<Foo>
         PagedResponse<Foo> firstPage = toPagedResponse(initialResponse, null);
 
-        PagedIterable<Foo> pagedIterable = new PagedIterable<>(
-            pagingOptions -> firstPage,  // First page
+        PagedIterable<Foo> pagedIterable = new PagedIterable<>(pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
                 Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, RequestOptions.none());
                 return toPagedResponse(nextResponse, nextLink);
-            }
-        );
+            });
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());
@@ -88,33 +87,35 @@ public class PagingOperationTests {
         String firstPageUri = uri + "/foos";
         String nextLinkUri = uri + "/foos?page=2";
         RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> {
-                String requestUri = request.getUri().toString();
-                request.setRequestOptions(requestOptions);
-                if (firstPageUri.equals(requestUri)) {
-                    return createMockResponse(request, BinaryData.fromString(
-                            "{\"items\":[{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a" +
-                                ".b\":\"c.d\"," +
-                                "\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}], \"nextLink\":\"" + nextLinkUri + "\"}"),
-                        nextLinkUri);
-                } else if (nextLinkUri.equals(requestUri)) {
-                    return createMockResponse(request, BinaryData.fromString(
-                            "{\"items\":[{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a" +
-                                ".b\":\"c.d\",\"properties.bar\":\"barbar\"}}]"),
-                        null);
-                }
-                return new MockHttpResponse(request, 404);
-            })
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            String requestUri = request.getUri().toString();
+            request.setRequestOptions(requestOptions);
+            if (firstPageUri.equals(requestUri)) {
+                return createMockResponse(request,
+                    BinaryData.fromString(
+                        "{\"items\":[{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a"
+                            + ".b\":\"c.d\","
+                            + "\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}], \"nextLink\":\""
+                            + nextLinkUri + "\"}"),
+                    nextLinkUri);
+            } else if (nextLinkUri.equals(requestUri)) {
+                return createMockResponse(request,
+                    BinaryData.fromString(
+                        "{\"items\":[{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a"
+                            + ".b\":\"c.d\",\"properties.bar\":\"barbar\"}}]"),
+                    null);
+            }
+            return new MockHttpResponse(request, 404);
+        }).build();
 
-        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
             pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, RequestOptions.none()), nextLinkUri),
-            (pagingOptions, nextLink) -> toPagedResponse(testInterface.listNextFooListResult(nextLink, RequestOptions.none()), null)
-        );
+            (pagingOptions, nextLink) -> toPagedResponse(
+                testInterface.listNextFooListResult(nextLink, RequestOptions.none()), null));
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());
@@ -141,10 +142,10 @@ public class PagingOperationTests {
     private <T> PagedResponse<Foo> toPagedResponse(Response<T> response, String nextLink) {
         if (response == null || response.getValue() == null) {
             return new PagedResponse<>(
-                response != null ? response.getRequest() : new HttpRequest().setMethod(HttpMethod.GET).setUri("https://example.com"),
-                200,
-                response != null ? response.getHeaders() : new HttpHeaders(),
-                Collections.emptyList()  // Return an empty list when null
+                response != null
+                    ? response.getRequest()
+                    : new HttpRequest().setMethod(HttpMethod.GET).setUri("https://example.com"),
+                200, response != null ? response.getHeaders() : new HttpHeaders(), Collections.emptyList()  // Return an empty list when null
             );
         }
 
@@ -155,7 +156,8 @@ public class PagingOperationTests {
         } else if (response.getValue() instanceof List) {
             items = (List<Foo>) response.getValue();  // Directly use the List<Foo>
         } else {
-            throw new IllegalArgumentException("Unsupported response type: " + response.getValue().getClass().getName());
+            throw new IllegalArgumentException(
+                "Unsupported response type: " + response.getValue().getClass().getName());
         }
 
         return new PagedResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), items,

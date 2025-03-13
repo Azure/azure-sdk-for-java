@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.annotation.processor.test;
+package io.clientcore.annotation.processor.integration;
 
-import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
+import io.clientcore.annotation.processor.integration.implementation.TestInterfaceClientImpl;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -38,9 +38,8 @@ public class RestProxyTests {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline,
-            new JsonSerializer());
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
         byte[] bytes = "hello".getBytes();
         try (Response<Void> response
             = testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
@@ -58,9 +57,9 @@ public class RestProxyTests {
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
-
+    
         streamResponse.close();
-
+    
         // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/
@@ -71,8 +70,8 @@ public class RestProxyTests {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -101,8 +100,8 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         Class<? extends BinaryData> expectedContentClazz = data.getClass();
 
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
         Response<Void> response = testInterface.testMethod(data, ContentType.APPLICATION_JSON, contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -117,8 +116,8 @@ public class RestProxyTests {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
 
         testInterface.testMethodReturnsVoid();
 
@@ -143,7 +142,6 @@ public class RestProxyTests {
                 BinaryData.fromObject(bytes).getLength()));
     }
 
-
     @Test
     public void doesNotChangeEncodedPath() throws IOException {
         String nextLinkUri
@@ -154,8 +152,8 @@ public class RestProxyTests {
             return new MockHttpResponse(null, 200);
         }).build();
 
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
 
         testInterface.testListNext(nextLinkUri).close();
     }
