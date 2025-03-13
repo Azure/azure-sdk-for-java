@@ -4,7 +4,7 @@
 
 ### Features Added
 - Added support to specify `subscription` ID or name on `AzureCliCredentialBuilder`. [#44123](https://github.com/Azure/azure-sdk-for-java/pull/44123)
-- Log the client ID of the user-assigned managed identity. [#44305](https://github.com/Azure/azure-sdk-for-java/pull/44305)
+- Log the client, object, or resource ID of the user-assigned managed identity. [#44305](https://github.com/Azure/azure-sdk-for-java/pull/44305)
 
 ### Other Changes
 
