@@ -58,6 +58,6 @@ public final class ConnectionString {
     }
 
     public String getAadAudienceWithScope() {
-        return "https://" + aadAudience + "//.default";
+        return aadAudience + "/.default";
     }
 }

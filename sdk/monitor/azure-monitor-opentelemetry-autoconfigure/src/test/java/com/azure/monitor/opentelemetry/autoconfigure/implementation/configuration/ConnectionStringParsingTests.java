@@ -76,7 +76,7 @@ class ConnectionStringParsingTests {
     @Test
     void canParseAadAudience() {
         String ikey = "fake-ikey";
-        String aadAudience = "test-audience";
+        String aadAudience = "https://test-audience/";
         String cs = "InstrumentationKey=" + ikey + ";AADAudience=" + aadAudience;
         ConnectionString parsed = ConnectionString.parse(cs);
         assertThat(parsed.getInstrumentationKey()).isEqualTo(ikey);
