@@ -28,9 +28,7 @@ import io.clientcore.annotation.processor.utils.TypeConverter;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -175,8 +173,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         addDeserializeHelperMethod(
             classBuilder.addMethod("decodeNetworkResponse", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC));
-        addDefaultResponseHandlingMethod(
-            classBuilder.addMethod("getOrDefaultResponseBodyMode", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC));
     }
 
     /**
@@ -185,20 +181,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
      */
     CompilationUnit getCompilationUnit() {
         return this.compilationUnit;
-    }
-
-    private void addDefaultResponseHandlingMethod(MethodDeclaration defaultResponseHandlingMethod) {
-        defaultResponseHandlingMethod.setType(ResponseBodyMode.class)
-            .addParameter(RequestOptions.class, "requestOptions");
-        defaultResponseHandlingMethod
-            .setJavadocComment("Retrieve the ResponseBodyMode from RequestOptions or use the default "
-                + "ResponseBodyMode.BUFFER.\n" + "@param requestOptions the request options set on the HttpRequest\n"
-                + "@return the ResponseBodyMode from RequestOptions or ResponseBodyMode.BUFFER");
-        defaultResponseHandlingMethod.setBody(StaticJavaParser.parseBlock("{ ResponseBodyMode responseBodyMode;"
-            + " if (requestOptions != null && requestOptions.getResponseBodyMode() != null) {"
-            + " responseBodyMode = requestOptions.getResponseBodyMode();" + " } else {"
-            + " responseBodyMode = ResponseBodyMode.BUFFER;" + " }" + " return responseBodyMode; }"));
-
     }
 
     private void addDeserializeHelperMethod(MethodDeclaration deserializeHelperMethod) {

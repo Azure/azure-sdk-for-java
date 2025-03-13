@@ -21,7 +21,6 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
@@ -44,7 +43,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -72,10 +70,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
-import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
-import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
-import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.implementation.utils.ImplUtils.bomAwareToString;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -274,10 +268,8 @@ public abstract class HttpClientTests {
     @Test
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.PUT)
-            .setUri(getRequestUri(ECHO_RESPONSE))
-            .setBody(requestBody)
-            .setRequestOptions(new RequestOptions().setResponseBodyMode(DESERIALIZE));
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
 
         try (Response<BinaryData> response = getHttpClient().send(request)) {
             // Read response twice using all accessors.
@@ -1811,23 +1803,6 @@ public abstract class HttpClientTests {
         assertThrows(RuntimeException.class, () -> service.put(getServerUri(isSecure()), requestBody, null).close());
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "STREAM", "BUFFER", "DESERIALIZE" })
-    public void bodyIsDeserializedForServerSentEventType(String responseMode) throws IOException {
-        ServerSentEventService service = createService(ServerSentEventService.class);
-        RequestOptions requestOptions
-            = new RequestOptions().setResponseBodyMode(ResponseBodyMode.valueOf(responseMode));
-        List<String> expected = Arrays.asList("YHOO", "+2", "10");
-
-        try (Response<BinaryData> response = service.post(getServerUri(isSecure()), BinaryData.empty(),
-            sse -> assertEquals(expected, sse.getData()), requestOptions)) {
-            assertNotNull(response.getValue());
-            assertNotEquals(0, response.getValue().getLength());
-            assertNotNull(response.getValue());
-            assertEquals(String.join("\n", expected), response.getValue().toString());
-        }
-    }
-
     private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {
         return Stream.of((uri, service29) -> service29.headvoid(uri), (uri, service29) -> service29.headVoid(uri),
             (uri, service29) -> service29.headResponseVoid(uri));
@@ -1876,62 +1851,6 @@ public abstract class HttpClientTests {
         assertNotNull(httpBinJSON);
 
         try (Response<HttpBinJSON> response = service.putResponse(getServerUri(isSecure()), 42, null)) {
-            assertNotNull(response.getValue());
-        }
-    }
-
-    @Test
-    public void bodyIsEmptyWhenIgnoreBodyIsSet() throws IOException {
-        Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(IGNORE);
-        HttpBinJSON httpBinJSON = service.put(getServerUri(isSecure()), 42, requestOptions);
-
-        assertNull(httpBinJSON);
-
-        try (Response<HttpBinJSON> response = service.putResponse(getServerUri(isSecure()), 42, requestOptions)) {
-            assertNull(response.getValue());
-        }
-    }
-
-    @Test
-    public void bodyIsEmptyWhenIgnoreBodyIsSetForStreamResponse() throws IOException {
-        Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(IGNORE);
-        HttpBinJSON httpBinJSON = service.postStream(getServerUri(isSecure()), 42, requestOptions);
-
-        assertNull(httpBinJSON);
-
-        try (
-            Response<HttpBinJSON> response = service.postStreamResponse(getServerUri(isSecure()), 42, requestOptions)) {
-            assertNull(response.getValue());
-        }
-    }
-
-    @Test
-    public void bodyIsStreamedWhenResponseBodyModeIndicatesIt() throws IOException {
-        Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(STREAM);
-    }
-
-    @Test
-    public void bodyIsBufferedWhenResponseBodyModeIndicatesIt() throws IOException {
-        Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(BUFFER);
-        HttpBinJSON httpBinJSON = service.postStream(getServerUri(isSecure()), 42, requestOptions);
-
-        assertNotNull(httpBinJSON);
-    }
-
-    @Test
-    public void bodyIsDeserializedWhenResponseBodyModeIndicatesIt() throws IOException {
-        Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(DESERIALIZE);
-        HttpBinJSON httpBinJSON = service.postStream(getServerUri(isSecure()), 42, requestOptions);
-
-        assertNotNull(httpBinJSON);
-
-        try (
-            Response<HttpBinJSON> response = service.postStreamResponse(getServerUri(isSecure()), 42, requestOptions)) {
             assertNotNull(response.getValue());
         }
     }
