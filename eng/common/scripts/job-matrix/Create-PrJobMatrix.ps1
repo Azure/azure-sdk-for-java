@@ -160,7 +160,7 @@ function GeneratePRMatrixForBatch {
     # we only need to modify the generated job name if there is more than one matrix config + batch
     $matrixSuffixNecessary = $matrixBatchesByConfig.Keys.Count -gt 1
 
-    Write-Host "We are iterating over the batches for matrix config count $batchCount"
+    Write-Host "We are iterating over the batches for matrix config count $matrixBatchCount"
     # if we are doing direct packages (or a full indirect matrix), we need to walk the batches and duplicate the matrix config for each batch, fully assigning
     # the each batch's packages to the matrix config. This will generate a _non-sparse_ matrix for the incoming packages
     if ($directBatch -or $FullSparseMatrix) {
