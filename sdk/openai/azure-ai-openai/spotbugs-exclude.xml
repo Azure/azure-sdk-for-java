@@ -96,6 +96,7 @@
     <Or>
       <Class name="com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper" />
       <Class name="com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper" />
+      <Class name="com.azure.ai.openai.responses.implementation.accesshelpers.CreateResponsesRequestAccessHelper" />
     </Or>
   </Match>
   <Match>

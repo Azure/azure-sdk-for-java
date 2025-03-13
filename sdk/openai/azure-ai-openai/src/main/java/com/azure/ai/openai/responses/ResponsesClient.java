@@ -8,6 +8,7 @@ import static com.azure.ai.openai.implementation.OpenAIUtils.addAzureVersionToRe
 import com.azure.ai.openai.responses.implementation.NonAzureResponsesClientImpl;
 import com.azure.ai.openai.responses.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.responses.implementation.ResponsesClientImpl;
+import com.azure.ai.openai.responses.implementation.accesshelpers.CreateResponsesRequestAccessHelper;
 import com.azure.ai.openai.responses.models.CreateResponseRequestAccept;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
@@ -420,7 +421,7 @@ public final class ResponsesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponsesResponse createResponse(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
-        requestBody.setStream(false);
+        CreateResponsesRequestAccessHelper.setStream(requestBody, false);
         return createResponseWithResponse(CreateResponseRequestAccept.APPLICATION_JSON.toString(),
             BinaryData.fromObject(requestBody), requestOptions).getValue().toObject(ResponsesResponse.class);
     }
@@ -439,7 +440,7 @@ public final class ResponsesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponsesResponse createResponse(CreateResponsesRequest requestBody) {
-        requestBody.setStream(false);
+        CreateResponsesRequestAccessHelper.setStream(requestBody, false);
         RequestOptions requestOptions = new RequestOptions();
         return createResponseWithResponse(CreateResponseRequestAccept.APPLICATION_JSON.toString(),
             BinaryData.fromObject(requestBody), requestOptions).getValue().toObject(ResponsesResponse.class);
@@ -461,7 +462,7 @@ public final class ResponsesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<ResponsesStreamEvent> createResponseStreaming(CreateResponsesRequest requestBody,
         RequestOptions requestOptions) {
-        requestBody.setStream(true);
+        CreateResponsesRequestAccessHelper.setStream(requestBody, true);
         Flux<ByteBuffer> events = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
             BinaryData.fromObject(requestBody), requestOptions).getValue().toFluxByteBuffer();
         OpenAIServerSentEvents eventsProcessor = new OpenAIServerSentEvents(events);
@@ -483,7 +484,7 @@ public final class ResponsesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<ResponsesStreamEvent> createResponseStreaming(CreateResponsesRequest requestBody) {
         RequestOptions requestOptions = new RequestOptions();
-        requestBody.setStream(true);
+        CreateResponsesRequestAccessHelper.setStream(requestBody, true);
         Flux<ByteBuffer> events = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
             BinaryData.fromObject(requestBody), requestOptions).getValue().toFluxByteBuffer();
         OpenAIServerSentEvents eventsProcessor = new OpenAIServerSentEvents(events);

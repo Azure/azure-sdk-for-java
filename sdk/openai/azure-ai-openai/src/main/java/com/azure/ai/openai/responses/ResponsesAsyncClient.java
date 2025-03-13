@@ -8,6 +8,7 @@ import static com.azure.ai.openai.implementation.OpenAIUtils.addAzureVersionToRe
 import com.azure.ai.openai.responses.implementation.NonAzureResponsesClientImpl;
 import com.azure.ai.openai.responses.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.responses.implementation.ResponsesClientImpl;
+import com.azure.ai.openai.responses.implementation.accesshelpers.CreateResponsesRequestAccessHelper;
 import com.azure.ai.openai.responses.models.CreateResponseRequestAccept;
 import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
@@ -439,7 +440,7 @@ public final class ResponsesAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponsesResponse> createResponse(CreateResponsesRequest requestBody) {
         RequestOptions requestOptions = new RequestOptions();
-        requestBody.setStream(false);
+        CreateResponsesRequestAccessHelper.setStream(requestBody, false);
         return createResponseWithResponse(CreateResponseRequestAccept.APPLICATION_JSON.toString(),
             BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ResponsesResponse.class));
@@ -460,7 +461,7 @@ public final class ResponsesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponsesResponse> createResponse(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
-        requestBody.setStream(false);
+        CreateResponsesRequestAccessHelper.setStream(requestBody, false);
         return createResponseWithResponse(CreateResponseRequestAccept.APPLICATION_JSON.toString(),
             BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ResponsesResponse.class));
@@ -481,7 +482,7 @@ public final class ResponsesAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ResponsesStreamEvent> createResponseStream(CreateResponsesRequest requestBody) {
         RequestOptions requestOptions = new RequestOptions();
-        requestBody.setStream(true);
+        CreateResponsesRequestAccessHelper.setStream(requestBody, true);
         Flux<ByteBuffer> response = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
             BinaryData.fromObject(requestBody), requestOptions).flatMapMany(it -> it.getValue().toFluxByteBuffer());
         return new OpenAIServerSentEvents(response).getEvents();
@@ -503,7 +504,7 @@ public final class ResponsesAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ResponsesStreamEvent> createResponseStream(CreateResponsesRequest requestBody,
         RequestOptions requestOptions) {
-        requestBody.setStream(true);
+        CreateResponsesRequestAccessHelper.setStream(requestBody, true);
         Flux<ByteBuffer> response = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
             BinaryData.fromObject(requestBody), requestOptions).flatMapMany(it -> it.getValue().toFluxByteBuffer());
         return new OpenAIServerSentEvents(response).getEvents();
