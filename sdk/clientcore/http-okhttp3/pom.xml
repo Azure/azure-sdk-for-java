@@ -15,7 +15,7 @@
   <groupId>io.clientcore</groupId>
   <artifactId>http-okhttp3</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
 
   <name>Java OkHttp3 HTTP Client Library</name>
   <description>This package contains the OkHttp HTTP client plugin for io.clientcore.</description>
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
     <dependency>
       <groupId>com.squareup.okio</groupId>
@@ -86,7 +86,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;io.clientcore:core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

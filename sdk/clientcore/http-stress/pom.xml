@@ -32,12 +32,12 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>http-okhttp3</artifactId>
-      <version>1.0.0-beta.2</version>  <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
+      <version>1.0.0-beta.3</version>  <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
     </dependency>
     <!-- logging, tracing, metrics -->
     <dependency>
