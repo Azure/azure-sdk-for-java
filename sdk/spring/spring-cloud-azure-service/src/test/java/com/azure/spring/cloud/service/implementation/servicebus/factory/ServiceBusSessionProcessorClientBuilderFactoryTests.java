@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -27,6 +29,16 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
     ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder,
     ServiceBusProcessorClientTestProperties,
     ServiceBusSessionProcessorClientBuilderFactory> {
+
+    @Override
+    public PropertiesIntegrityParameters getParametersForPropertiesIntegrity() {
+        Map<String, String> namingFromBinderToProperties = new HashMap<>();
+        namingFromBinderToProperties.put("queuename", "entityname");
+        namingFromBinderToProperties.put("topicname", "entityname");
+        namingFromBinderToProperties.put("disableautocomplete", "autocomplete");
+        return new PropertiesIntegrityParameters(ServiceBusProcessorClientTestProperties.class,
+            ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class, namingFromBinderToProperties);
+    }
 
     @Test
     void configured() {
