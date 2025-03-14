@@ -204,7 +204,7 @@ public final class ResponsesAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createResponseWithResponse(String accept, BinaryData requestBody,
+    private Mono<Response<BinaryData>> createResponseWithResponse(String accept, BinaryData requestBody,
         RequestOptions requestOptions) {
         if (nonAzureServiceClient != null) {
             return nonAzureServiceClient.createResponseWithResponseAsync(accept, requestBody, requestOptions);
@@ -302,7 +302,7 @@ public final class ResponsesAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
         if (nonAzureServiceClient != null) {
             return nonAzureServiceClient.getResponseWithResponseAsync(responseId, requestOptions);
         } else {
@@ -533,7 +533,7 @@ public final class ResponsesAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
         if (nonAzureServiceClient != null) {
             return nonAzureServiceClient.deleteResponseWithResponseAsync(responseId, requestOptions);
         } else {

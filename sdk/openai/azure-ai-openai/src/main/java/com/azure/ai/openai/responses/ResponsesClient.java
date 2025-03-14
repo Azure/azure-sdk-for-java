@@ -160,7 +160,7 @@ public final class ResponsesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createResponseWithResponse(String accept, BinaryData requestBody,
+    private Response<BinaryData> createResponseWithResponse(String accept, BinaryData requestBody,
         RequestOptions requestOptions) {
         if (nonAzureServiceClient != null) {
             return nonAzureServiceClient.createResponseWithResponse(accept, requestBody, requestOptions);
@@ -237,7 +237,7 @@ public final class ResponsesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
+    private Response<BinaryData> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
         if (nonAzureServiceClient != null) {
             return nonAzureServiceClient.getResponseWithResponse(responseId, requestOptions);
         } else {
@@ -514,7 +514,7 @@ public final class ResponsesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
+    private Response<BinaryData> deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
         if (nonAzureServiceClient != null) {
             return nonAzureServiceClient.deleteResponseWithResponse(responseId, requestOptions);
         } else {
