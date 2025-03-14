@@ -94,8 +94,21 @@ public final class ValidationUtil {
             for (int i = 0; i < id.length(); i++) {
                 if (!isValidTenantCharacter(id.charAt(i))) {
                     throw logger.logExceptionAsError(new IllegalArgumentException(
-                        "Invalid tenant id provided. You can locate your tenant id by following the instructions"
+                        "Invalid tenant ID provided. You can locate your tenant ID by following the instructions"
                             + " listed here: https://learn.microsoft.com/partner-center/find-ids-and-domain-names"));
+                }
+            }
+        }
+    }
+
+    public static void validateSubscriptionCharacterRange(String subscription, ClientLogger logger) {
+        if (subscription != null) {
+            for (int i = 0; i < subscription.length(); i++) {
+                if (!isValidSubscriptionCharacter(subscription.charAt(i))) {
+                    throw logger.logExceptionAsError(new IllegalArgumentException("Invalid subscription: "
+                        + subscription + " provided. If this is the name of a subscription, use its ID instead."
+                        + " You can locate your subscription ID by following the instructions"
+                        + " listed here: https://learn.microsoft.com/azure/azure-portal/get-subscription-tenant-id"));
                 }
             }
         }
@@ -113,6 +126,16 @@ public final class ValidationUtil {
 
     private static boolean isValidTenantCharacter(char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '.') || (c == '-');
+    }
+
+    private static boolean isValidSubscriptionCharacter(char c) {
+        return (c >= 'a' && c <= 'z')
+            || (c >= 'A' && c <= 'Z')
+            || (c >= '0' && c <= '9')
+            || (c == '.')
+            || (c == '-')
+            || (c == '_')
+            || (c == ' ');
     }
 
     public static Path validateSecretFile(File file, ClientLogger logger) {

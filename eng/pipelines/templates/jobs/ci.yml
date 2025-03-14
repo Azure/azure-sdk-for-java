@@ -69,7 +69,6 @@ jobs:
   - job: 'Build'
 
     variables:
-      ArtifactName: 'packages'
       # The ServiceDirectory is an identifier. The pullrequest's ServiceDirectory of
       # 'auto' shouldn't cause any problems
       Codeql.Enabled: true
@@ -226,7 +225,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
-          ArtifactName: '$(ArtifactName)'
+          ArtifactName: 'packages'
 
       # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
       # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
@@ -453,6 +452,8 @@ jobs:
           - ${{ config }}
       ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
         EnablePRGeneration: true
+        # We want full matrix for indirect packages
+        PRMatrixSparseIndirect: false
         SparseCheckoutPaths:
           - '**/*.xml'
           - '**/*.md'

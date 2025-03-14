@@ -58,7 +58,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-messages</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -274,6 +274,127 @@ public void sendDocumentMessage() {
     result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
 }
 ```
+```java readme-sample-sendStickerMessage
+/*
+ * This sample shows how to send sticker message with below details
+ * Supported sticker type - (.webp)
+ * Note: Business cannot initiate conversation with media message.
+ * */
+public static void sendStickerMessage() {
+    //Update the Media URL
+    String mediaUrl = "https://www.gstatic.com/webp/gallery/1.sm.webp";
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
+    SendMessageResult result = client.send(
+        new StickerNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+}
+```
+```java readme-sample-sendReactionMessage
+/*
+ * This sample shows how to send reaction message with below details
+ * Emoji - unicode for emoji character.
+ * Reply Message ID - ID of the message to be replied with emoji
+ * Note: Business cannot initiate conversation with media message.
+ * */
+public static void sendReactionMessage() {
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
+    SendMessageResult result = client.send(
+        new ReactionNotificationContent("<CHANNEL_ID>", recipients, "\uD83D\uDE00", "<REPLY_MESSAGE_ID>"));
+
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+}
+```
+```java readme-sample-sendInteractiveMessageWithButtonAction
+/*
+ * This sample shows how to send interactive message with Button Action
+ * Note: Business cannot initiate conversation with interactive message.
+ * */
+public void sendInteractiveMessageWithButtonAction() {
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
+    List<ButtonContent> buttonActions =  new ArrayList<>();
+    buttonActions.add(new ButtonContent("no",  "No"));
+    buttonActions.add(new ButtonContent("yes",  "Yes"));
+    ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+    InteractiveMessage interactiveMessage = new InteractiveMessage(
+        new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
+    SendMessageResult result = client.send(
+        new InteractiveNotificationContent("<CHANNEL_ID>",  recipients, interactiveMessage));
+
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+}
+```
+```java readme-sample-sendInteractiveMessageWithListAction
+/*
+ * This sample shows how to send list action interactive message
+ * Note: Business cannot initiate conversation with interactive message.
+ * */
+public static void sendInteractiveMessageWithListAction() {
+    List<ActionGroupItem> group1 = new ArrayList<>();
+    group1.add(new ActionGroupItem("priority_express", "Priority Mail Express", "Delivered on same day!"));
+    group1.add(new ActionGroupItem("priority_mail", "Priority Mail", "Delivered in 1-2 days"));
+
+    List<ActionGroupItem> group2 = new ArrayList<>();
+    group2.add(new ActionGroupItem("usps_ground_advantage", "USPS Ground Advantage", "Delivered in 2-5 days"));
+    group2.add(new ActionGroupItem("media_mail", "Media Mail", "Delivered in 5-8 days"));
+
+    List<ActionGroup> options = new ArrayList<>();
+    options.add(new ActionGroup("Express Delivery", group1));
+    options.add(new ActionGroup("Normal Delivery", group2));
+
+    ActionGroupContent actionGroupContent = new ActionGroupContent("Shipping Options", options);
+    InteractiveMessage interactiveMessage = new InteractiveMessage(
+        new TextMessageContent("Which shipping option do you want?"), new WhatsAppListActionBindings(actionGroupContent));
+    interactiveMessage.setFooter(new TextMessageContent("Eagle Logistic"));
+    interactiveMessage.setHeader(new TextMessageContent("Shipping Options"));
+
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
+    SendMessageResult result = client.send(
+        new InteractiveNotificationContent("<CHANNEL_ID>",  recipients, interactiveMessage));
+
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+
+}
+```
+```java readme-sample-sendInteractiveMessageWithUrlAction
+/*
+ * This sample shows how to send url action interactive message
+ * Note: Business cannot initiate conversation with interactive message.
+ * */
+public static void sendInteractiveMessageWithUrlAction() {
+    LinkContent urlAction = new LinkContent("Rocket is the best!", "https://wallpapercave.com/wp/wp2163723.jpg");
+    InteractiveMessage interactiveMessage = new InteractiveMessage(
+        new TextMessageContent("The best Guardian of Galaxy"), new WhatsAppUrlActionBindings(urlAction));
+    interactiveMessage.setFooter(new TextMessageContent("Intergalactic New Ltd"));
+
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
+    SendMessageResult result = client.send(
+        new InteractiveNotificationContent("<CHANNEL_ID>",  recipients, interactiveMessage));
+
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+}
+```
+
 ### Get Template List for given channel example:
 ```java readme-sample-ListTemplates
 MessageTemplateClient templateClient =

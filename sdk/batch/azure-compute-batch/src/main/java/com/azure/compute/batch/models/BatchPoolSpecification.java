@@ -30,7 +30,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     /*
      * The size of the virtual machines in the Pool. All virtual machines in a Pool are the same size. For information
      * about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
-     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
     private final String vmSize;
@@ -200,7 +200,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     /**
      * Get the vmSize property: The size of the virtual machines in the Pool. All virtual machines in a Pool are the
      * same size. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute
-     * Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * Nodes in an Azure Batch Pool (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).
      *
      * @return the vmSize value.
      */

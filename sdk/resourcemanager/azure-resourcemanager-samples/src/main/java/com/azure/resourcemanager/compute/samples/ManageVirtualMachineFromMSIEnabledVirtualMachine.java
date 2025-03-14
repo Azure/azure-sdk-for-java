@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.compute.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
@@ -52,7 +52,7 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
 
-        AzureProfile profile = new AzureProfile(null, subscriptionId, AzureEnvironment.AZURE);
+        AzureProfile profile = new AzureProfile(null, subscriptionId, AzureCloud.AZURE_PUBLIC_CLOUD);
 
         AzureResourceManager azure = AzureResourceManager.configure()
             .withLogLevel(HttpLogDetailLevel.BASIC)

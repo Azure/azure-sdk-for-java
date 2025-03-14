@@ -27,6 +27,11 @@ public final class DynamicsAuthenticationType extends ExpandableStringEnum<Dynam
     public static final DynamicsAuthenticationType AADSERVICE_PRINCIPAL = fromString("AADServicePrincipal");
 
     /**
+     * Static value Active Directory for DynamicsAuthenticationType.
+     */
+    public static final DynamicsAuthenticationType ACTIVE_DIRECTORY = fromString("Active Directory");
+
+    /**
      * Creates a new instance of DynamicsAuthenticationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

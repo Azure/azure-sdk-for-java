@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("deprecation")
 public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractAzureServiceClientBuilderFactory<?>,
         P extends AzureProperties> {
 

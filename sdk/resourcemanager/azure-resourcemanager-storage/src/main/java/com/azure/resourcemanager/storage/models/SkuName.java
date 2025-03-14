@@ -53,6 +53,36 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     public static final SkuName STANDARD_RAGZRS = fromString("Standard_RAGZRS");
 
     /**
+     * Static value StandardV2_LRS for SkuName.
+     */
+    public static final SkuName STANDARD_V2_LRS = fromString("StandardV2_LRS");
+
+    /**
+     * Static value StandardV2_GRS for SkuName.
+     */
+    public static final SkuName STANDARD_V2_GRS = fromString("StandardV2_GRS");
+
+    /**
+     * Static value StandardV2_ZRS for SkuName.
+     */
+    public static final SkuName STANDARD_V2_ZRS = fromString("StandardV2_ZRS");
+
+    /**
+     * Static value StandardV2_GZRS for SkuName.
+     */
+    public static final SkuName STANDARD_V2_GZRS = fromString("StandardV2_GZRS");
+
+    /**
+     * Static value PremiumV2_LRS for SkuName.
+     */
+    public static final SkuName PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
+
+    /**
+     * Static value PremiumV2_ZRS for SkuName.
+     */
+    public static final SkuName PREMIUM_V2_ZRS = fromString("PremiumV2_ZRS");
+
+    /**
      * Creates a new instance of SkuName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
