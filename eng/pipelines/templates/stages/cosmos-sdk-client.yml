@@ -186,7 +186,7 @@ extends:
                 ACCOUNT_HOST: 'https://localhost:8081/'
                 ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
                 SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-                TimeoutInMinutes: 120
+                TimeoutInMinutes: 90
                 TestGoals: 'clean verify'
                 TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED=true'
                 PreSteps:
