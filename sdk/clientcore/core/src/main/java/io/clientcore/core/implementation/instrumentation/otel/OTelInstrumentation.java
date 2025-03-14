@@ -229,7 +229,7 @@ public class OTelInstrumentation implements Instrumentation {
             return operation.apply(requestOptions);
         }
 
-        if (requestOptions == null || requestOptions == RequestOptions.none()) {
+        if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
 
@@ -243,7 +243,7 @@ public class OTelInstrumentation implements Instrumentation {
         RuntimeException error = null;
         try {
             if (span.getInstrumentationContext().isValid()) {
-                requestOptions.setInstrumentationContext(span.getInstrumentationContext());
+                requestOptions = requestOptions.setInstrumentationContext(span.getInstrumentationContext());
             }
             return operation.apply(requestOptions);
         } catch (RuntimeException t) {

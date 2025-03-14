@@ -3,13 +3,12 @@
 package io.clientcore.core.implementation.utils;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.Context;
 
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * Internal representation of {@link Context}.
+ * Internal representation of
  */
 public abstract class InternalContext {
     /**
@@ -61,6 +60,7 @@ public abstract class InternalContext {
      * @return The value for the given key, or null if the key is not found.
      */
     public final Object get(Object key) {
+        Objects.requireNonNull(key, "'key' cannot be null.");
         Object value = getInternal(key);
 
         return Objects.equals(SENTINEL, value) ? null : value;

@@ -162,12 +162,10 @@ public class SuppressionTests {
         Tracer outerTracer = tracer;
         Tracer innerTracer = Instrumentation.create(otelOptions, libOptions.disableSpanSuppression(true)).getTracer();
 
-        RequestOptions options = new RequestOptions();
-        Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
 
-        options.setInstrumentationContext(outerSpan.getInstrumentationContext());
+        Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, null).startSpan();
 
-        Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
+        Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
         innerSpan.end();
         outerSpan.end();
 
@@ -187,11 +185,9 @@ public class SuppressionTests {
             .getTracer();
         Tracer innerTracer = tracer;
 
-        RequestOptions options = new RequestOptions();
-        Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
+        Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, null).startSpan();
 
-        options.setInstrumentationContext(outerSpan.getInstrumentationContext());
-        Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
+        Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
         innerSpan.end();
         outerSpan.end();
 
@@ -219,15 +215,9 @@ public class SuppressionTests {
     public void multipleLayers() {
         Tracer tracer = Instrumentation.create(otelOptions, libOptions).getTracer();
 
-        RequestOptions options = new RequestOptions();
-
-        Span outer = tracer.spanBuilder("outer", PRODUCER, options.getInstrumentationContext()).startSpan();
-        options.setInstrumentationContext(outer.getInstrumentationContext());
-
-        Span inner = tracer.spanBuilder("inner", CLIENT, options.getInstrumentationContext()).startSpan();
-        options.setInstrumentationContext(inner.getInstrumentationContext());
-
-        Span suppressed = tracer.spanBuilder("suppressed", CLIENT, options.getInstrumentationContext()).startSpan();
+        Span outer = tracer.spanBuilder("outer", PRODUCER, null).startSpan();
+        Span inner = tracer.spanBuilder("inner", CLIENT, outer.getInstrumentationContext()).startSpan();
+        Span suppressed = tracer.spanBuilder("suppressed", CLIENT, inner.getInstrumentationContext()).startSpan();
         suppressed.end();
         inner.end();
         outer.end();
@@ -246,14 +236,11 @@ public class SuppressionTests {
     @MethodSource("suppressionTestCases")
     @SuppressWarnings("try")
     public void testSuppressionExplicitContext(SpanKind outerKind, SpanKind innerKind, int expectedSpanCount) {
-        RequestOptions options = new RequestOptions();
-        Span outerSpan = tracer.spanBuilder("outerSpan", outerKind, options.getInstrumentationContext())
+        Span outerSpan = tracer.spanBuilder("outerSpan", outerKind, null)
             .setAttribute("key", "valueOuter")
             .startSpan();
 
-        options.setInstrumentationContext(outerSpan.getInstrumentationContext());
-
-        Span innerSpan = tracer.spanBuilder("innerSpan", innerKind, options.getInstrumentationContext())
+        Span innerSpan = tracer.spanBuilder("innerSpan", innerKind, outerSpan.getInstrumentationContext())
             .setAttribute("key", "valueInner")
             .startSpan();
         // sanity check - this should not throw
@@ -382,7 +369,7 @@ public class SuppressionTests {
         public void protocolMethod(RequestOptions options) {
             Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
 
-            options.setInstrumentationContext(span.getInstrumentationContext());
+            options = options.setInstrumentationContext(span.getInstrumentationContext());
 
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response
@@ -402,7 +389,7 @@ public class SuppressionTests {
             Span span
                 = tracer.spanBuilder("convenienceMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
 
-            options.setInstrumentationContext(span.getInstrumentationContext());
+            options = options.setInstrumentationContext(span.getInstrumentationContext());
 
             try (TracingScope scope = span.makeCurrent()) {
                 protocolMethod(options);

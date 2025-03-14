@@ -24,7 +24,6 @@ import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.utils.Base64Uri;
-import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.UriBuilder;
 import org.junit.jupiter.api.Test;
@@ -65,9 +64,6 @@ public class SwaggerMethodParserTests {
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void getMethod();
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        void getMethodWithContext(Context context);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void getMethodWithRequestOptions(RequestOptions requestOptions);

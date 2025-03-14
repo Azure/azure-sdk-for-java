@@ -3,40 +3,40 @@
 
 package io.clientcore.core.models;
 
-import io.clientcore.core.utils.Context;
+import io.clientcore.core.implementation.utils.InternalContext;
 
 /**
- * Code snippets for {@link Context}
+ * Code snippets for {@link InternalContext}
  */
 public class ContextJavaDocCodeSnippets {
 
     /**
-     * Code snippet for {@link Context#of(Object, Object)}
+     * Code snippet for {@link InternalContext#of(Object, Object)}
      */
     public void constructContextObject() {
         // BEGIN: io.clientcore.core.util.context#object-object
         // Create an empty context having no data
-        Context emptyContext = Context.none();
+        InternalContext emptyContext = InternalContext.empty();
 
         // Create a context with one key value pair
-        Context contextWithOnePair = Context.of("key", "value");
+        InternalContext contextWithOnePair = InternalContext.of("key", "value");
         // END: io.clientcore.core.util.context#object-object
     }
 
     /**
-     * Code snippet for {@link Context#put(Object, Object)}
+     * Code snippet for {@link InternalContext#put(Object, Object)}
      */
     public void putToContext() {
         // BEGIN: io.clientcore.core.util.context.addData#object-object
         // using the io.clientcore.core.util.Context object.
 
-        Context originalContext = Context.none();
+        InternalContext originalContext = InternalContext.empty();
 
         final String hostNameValue = "host-name-value";
         final String entityPathValue = "entity-path-value";
 
         // Add a new key value pair to the existing context object.
-        Context updatedContext = originalContext.put("HOST_NAME_KEY", hostNameValue)
+        InternalContext updatedContext = originalContext.put("HOST_NAME_KEY", hostNameValue)
             .put("ENTITY_PATH_KEY", entityPathValue);
 
         // Both key values found on the same updated context object
@@ -46,7 +46,7 @@ public class ContextJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link Context#get(Object)}
+     * Code snippet for {@link InternalContext#get(Object)}
      */
     public void getDataContext() {
         // BEGIN: io.clientcore.core.util.context.getData#object
@@ -54,7 +54,7 @@ public class ContextJavaDocCodeSnippets {
         final String value1 = "first-value";
 
         // Create a context object with given key and value
-        Context context = Context.of(key1, value1);
+        InternalContext context = InternalContext.of(key1, value1);
 
         // Look for the specified key in the returned context object
         Object optionalObject = context.get(key1);
