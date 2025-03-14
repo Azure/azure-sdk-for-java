@@ -3,6 +3,9 @@
 
 package io.clientcore.core.credentials.oauth;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -24,6 +27,7 @@ import java.time.OffsetDateTime;
  *
  * @see io.clientcore.core.credentials
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class AccessToken {
     private final String token;
     private final OffsetDateTime expiresAt;

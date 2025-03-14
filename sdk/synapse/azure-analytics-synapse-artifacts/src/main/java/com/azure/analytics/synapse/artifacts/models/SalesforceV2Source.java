@@ -23,15 +23,30 @@ public final class SalesforceV2Source extends TabularSource {
     private String type = "SalesforceV2Source";
 
     /*
-     * Database query. Type: string (or Expression with resultType string).
+     * Deprecating, please use 'query' property instead. Type: string (or Expression with resultType string).
      */
     private Object soqlQuery;
+
+    /*
+     * You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL limitations, see this
+     * article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     */
+    private Object query;
 
     /*
      * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
      * Expression with resultType boolean).
      */
     private Object includeDeletedObjects;
+
+    /*
+     * Page size for each http request, too large pageSize will caused timeout, default 300,000. Type: integer (or
+     * Expression with resultType integer).
+     */
+    private Object pageSize;
 
     /**
      * Creates an instance of SalesforceV2Source class.
@@ -50,7 +65,8 @@ public final class SalesforceV2Source extends TabularSource {
     }
 
     /**
-     * Get the soqlQuery property: Database query. Type: string (or Expression with resultType string).
+     * Get the soqlQuery property: Deprecating, please use 'query' property instead. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the soqlQuery value.
      */
@@ -59,13 +75,42 @@ public final class SalesforceV2Source extends TabularSource {
     }
 
     /**
-     * Set the soqlQuery property: Database query. Type: string (or Expression with resultType string).
+     * Set the soqlQuery property: Deprecating, please use 'query' property instead. Type: string (or Expression with
+     * resultType string).
      * 
      * @param soqlQuery the soqlQuery value to set.
      * @return the SalesforceV2Source object itself.
      */
     public SalesforceV2Source setSoqlQuery(Object soqlQuery) {
         this.soqlQuery = soqlQuery;
+        return this;
+    }
+
+    /**
+     * Get the query property: You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL
+     * limitations, see this article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     * 
+     * @return the query value.
+     */
+    public Object getQuery() {
+        return this.query;
+    }
+
+    /**
+     * Set the query property: You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL
+     * limitations, see this article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     * 
+     * @param query the query value to set.
+     * @return the SalesforceV2Source object itself.
+     */
+    public SalesforceV2Source setQuery(Object query) {
+        this.query = query;
         return this;
     }
 
@@ -88,6 +133,28 @@ public final class SalesforceV2Source extends TabularSource {
      */
     public SalesforceV2Source setIncludeDeletedObjects(Object includeDeletedObjects) {
         this.includeDeletedObjects = includeDeletedObjects;
+        return this;
+    }
+
+    /**
+     * Get the pageSize property: Page size for each http request, too large pageSize will caused timeout, default
+     * 300,000. Type: integer (or Expression with resultType integer).
+     * 
+     * @return the pageSize value.
+     */
+    public Object getPageSize() {
+        return this.pageSize;
+    }
+
+    /**
+     * Set the pageSize property: Page size for each http request, too large pageSize will caused timeout, default
+     * 300,000. Type: integer (or Expression with resultType integer).
+     * 
+     * @param pageSize the pageSize value to set.
+     * @return the SalesforceV2Source object itself.
+     */
+    public SalesforceV2Source setPageSize(Object pageSize) {
+        this.pageSize = pageSize;
         return this;
     }
 
@@ -149,7 +216,9 @@ public final class SalesforceV2Source extends TabularSource {
         jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
+        jsonWriter.writeUntypedField("query", this.query);
         jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
+        jsonWriter.writeUntypedField("pageSize", this.pageSize);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -188,8 +257,12 @@ public final class SalesforceV2Source extends TabularSource {
                     deserializedSalesforceV2Source.type = reader.getString();
                 } else if ("SOQLQuery".equals(fieldName)) {
                     deserializedSalesforceV2Source.soqlQuery = reader.readUntyped();
+                } else if ("query".equals(fieldName)) {
+                    deserializedSalesforceV2Source.query = reader.readUntyped();
                 } else if ("includeDeletedObjects".equals(fieldName)) {
                     deserializedSalesforceV2Source.includeDeletedObjects = reader.readUntyped();
+                } else if ("pageSize".equals(fieldName)) {
+                    deserializedSalesforceV2Source.pageSize = reader.readUntyped();
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

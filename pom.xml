@@ -55,11 +55,13 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
+    <module>sdk/corev2</module>
     <module>sdk/cosmos</module>
     <module>sdk/cosmosdbforpostgresql</module>
     <module>sdk/costmanagement</module>
     <module>sdk/customerinsights</module>
     <module>sdk/dashboard</module>
+    <module>sdk/databasewatcher</module>
     <module>sdk/databox</module>
     <module>sdk/databoxedge</module>
     <module>sdk/databricks</module>

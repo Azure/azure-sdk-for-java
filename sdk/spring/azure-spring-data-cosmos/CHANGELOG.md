@@ -3,12 +3,19 @@
 ### 5.21.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `readMany()` API support to `findAllByIds()` - See [PR 43759](https://github.com/Azure/azure-sdk-for-java/pull/43759).
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixing bug when the PartitionKey is on a parent entity that was introduced when bulk support was added - See [PR 43801](https://github.com/Azure/azure-sdk-for-java/pull/43801).
 
 #### Other Changes
+
+### 5.20.1 (2025-03-03)
+
+#### Other Changes
+* Upgrade `azure-sdk-bom` to 1.2.31.
 
 ### 5.20.0 (2025-02-12)
 

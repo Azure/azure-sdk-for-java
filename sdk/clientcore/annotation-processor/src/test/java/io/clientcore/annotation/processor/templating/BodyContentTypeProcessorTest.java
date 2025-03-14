@@ -5,6 +5,7 @@ package io.clientcore.annotation.processor.templating;
 
 import com.github.javaparser.ast.stmt.BlockStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,13 +25,13 @@ public class BodyContentTypeProcessorTest {
     }
 
     /**
-     * Test for the method configureRequestWithBodyAndContentType
+     * Test for the method configureBodyContentType
      */
     @Test
     public void bodyParamAnnotationPriorityOverContentTypeHeaderTest() {
         // Create a new HttpRequestContext
         HttpRequestContext context = new HttpRequestContext();
-        byte[] bytes = "hello".getBytes();
+        byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
 
         // Set the body
         // BodyParam annotation is set to "application/octet-stream"
@@ -43,8 +44,8 @@ public class BodyContentTypeProcessorTest {
         HttpRequestContext.Body requestBody = context.getBody();
 
         BlockStmt body = new BlockStmt();
-        processor.configureRequestWithBodyAndContentType(body, requestBody.getParameterType(),
-            requestBody.getContentType(), requestBody.getParameterName(), false);
+        processor.configureBodyContentType(body, requestBody.getParameterType(), requestBody.getContentType(),
+            requestBody.getParameterName(), false);
 
         // Expected output
         String expectedOutput = "httpRequest.setBody(BinaryData.fromBytes(((ByteBuffer) request).array()));";
@@ -62,8 +63,8 @@ public class BodyContentTypeProcessorTest {
     public void testConfigureRequestWithBodyAndParameterType(HttpRequestContext.Body requestBody,
         String expectedOutput) {
         BlockStmt body = new BlockStmt();
-        processor.configureRequestWithBodyAndContentType(body, requestBody.getParameterType(),
-            requestBody.getContentType(), requestBody.getParameterName(), false);
+        processor.configureBodyContentType(body, requestBody.getParameterType(), requestBody.getContentType(),
+            requestBody.getParameterName(), false);
 
         // Actual output
         String actualOutput = body.toString();
@@ -73,7 +74,7 @@ public class BodyContentTypeProcessorTest {
 
     @ParameterizedTest
     @MethodSource("knownContentTypesProvider")
-    public void testConfigureRequestWithBodyAndContentType(String parameterType, String expectedContentType) {
+    public void testconfigureBodyContentType(String parameterType, String expectedContentType) {
         // Create a new HttpRequestContext
         HttpRequestContext context = new HttpRequestContext();
 
@@ -81,7 +82,7 @@ public class BodyContentTypeProcessorTest {
         context.setBody(new HttpRequestContext.Body(null, parameterType, "request"));
 
         BlockStmt body = new BlockStmt();
-        processor.configureRequestWithBodyAndContentType(body, context.getBody().getParameterType(),
+        processor.configureBodyContentType(body, context.getBody().getParameterType(),
             context.getBody().getContentType(), context.getBody().getParameterName(), false);
 
         // Expected output
@@ -98,7 +99,7 @@ public class BodyContentTypeProcessorTest {
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
         // Create a new HttpRequestContext
         HttpRequestContext context = new HttpRequestContext();
-        byte[] bytes = "hello".getBytes();
+        byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
 
         // Set the body
         // BodyParam annotation is set to "application/octet-stream"
@@ -111,8 +112,8 @@ public class BodyContentTypeProcessorTest {
         HttpRequestContext.Body requestBody = context.getBody();
 
         BlockStmt body = new BlockStmt();
-        processor.configureRequestWithBodyAndContentType(body, requestBody.getParameterType(),
-            requestBody.getContentType(), requestBody.getParameterName(), true);
+        processor.configureBodyContentType(body, requestBody.getParameterType(), requestBody.getContentType(),
+            requestBody.getParameterName(), true);
 
         // Expected output
         String expectedOutput = "httpRequest.setBody(BinaryData.fromBytes(((ByteBuffer) request).array()));";

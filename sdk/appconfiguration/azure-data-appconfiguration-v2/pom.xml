@@ -4,15 +4,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent-v2</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent-v2;current} -->
+    <groupId>com.azure.v2</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent-v2;current} -->
     <relativePath>../../parents/azure-client-sdk-parent-v2</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration-v2</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:azure-v2-data-appconfiguration;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:azure-data-appconfiguration-v2;current} -->
   <packaging>jar</packaging>
 
   <name>SDK for AzureAppConfiguration</name>
@@ -47,12 +47,12 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.6</version> <!-- {x-version-update;io.clientcore:core;external_dependency} -->
+      <version>1.0.0-beta.7</version> <!-- {x-version-update;io.clientcore:core;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-v2</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-v2;dependency} -->
+      <groupId>com.azure.v2</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core;dependency} -->
     </dependency>
   </dependencies>
   <build>
@@ -73,6 +73,7 @@
               <target>1.11</target>
               <release>11</release>
               <proc>only</proc>
+              <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
               <annotationProcessorPaths>
                 <annotationProcessorPath>
                   <groupId>io.clientcore</groupId>
@@ -96,6 +97,21 @@
             <version>1.0.0-beta.1</version>
           </dependency>
         </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes combine.children="append">
+                <include>com.azure.v2:azure-core</include> <!-- {x-include-update;com.azure.v2:azure-core;dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
       </plugin>
     </plugins>
   </build>

@@ -51,6 +51,7 @@ The client-core annotation processor for introducing compile-time code generatio
             <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
           </dependency>
         </dependencies>
+      </plugin>
     </plugins>
    ```
 2. Annotate your interfaces with `@ServiceInterface`,  `@HttpRequestInformation` and
@@ -111,9 +112,9 @@ The client-core annotation processor for introducing compile-time code generatio
         // set the body content if present
 
         // send the request through the pipeline
-        Response<?> response = pipeline.send(httpRequest);
+        Response<BinaryData> networkResponse = pipeline.send(httpRequest);
 
-        final int responseCode = response.getStatusCode();
+        final int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
