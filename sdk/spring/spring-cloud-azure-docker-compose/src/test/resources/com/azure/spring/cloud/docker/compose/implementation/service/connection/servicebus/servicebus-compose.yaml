@@ -1,0 +1,30 @@
+services:
+  servicebus:
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    pull_policy: always
+    volumes:
+      - "Config.json:/ServiceBus_Emulator/ConfigFiles/Config.json"
+    ports:
+      - "5672"
+    environment:
+      SQL_SERVER: sqledge
+      MSSQL_SA_PASSWORD: A_Str0ng_Required_Password
+      ACCEPT_EULA: Y
+    depends_on:
+      - sqledge
+    networks:
+      sb-emulator:
+        aliases:
+          - "sb-emulator"
+  sqledge:
+    image: "mcr.microsoft.com/azure-sql-edge:latest"
+    networks:
+      sb-emulator:
+        aliases:
+          - "sqledge"
+    environment:
+        ACCEPT_EULA: Y
+        MSSQL_SA_PASSWORD: A_Str0ng_Required_Password
+
+networks:
+    sb-emulator:
