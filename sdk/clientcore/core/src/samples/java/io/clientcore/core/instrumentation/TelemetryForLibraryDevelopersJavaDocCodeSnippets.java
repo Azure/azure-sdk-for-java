@@ -5,7 +5,7 @@ package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
@@ -196,25 +196,25 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setEndpoint("https://example.com");
 
         Tracer tracer = Instrumentation.create(null, libraryOptions).getTracer();
-        RequestOptions requestOptions = null;
+        RequestContext requestContext = null;
 
         // BEGIN: io.clientcore.core.instrumentation.tracecall
 
-        InstrumentationContext context = requestOptions == null ? null : requestOptions.getInstrumentationContext();
+        InstrumentationContext context = requestContext == null ? null : requestContext.getInstrumentationContext();
         Span span = tracer.spanBuilder("{operationName}", SpanKind.CLIENT, context)
             .startSpan();
 
         // we'll propagate context implicitly using span.makeCurrent() as shown later.
         // Libraries that write async code should propagate context explicitly in addition to implicit propagation.
         if (tracer.isEnabled()) {
-            if (requestOptions == null) {
-                requestOptions = new RequestOptions();
+            if (requestContext == null) {
+                requestContext = new RequestContext();
             }
-            requestOptions = requestOptions.setInstrumentationContext(span.getInstrumentationContext());
+            requestContext = requestContext.setInstrumentationContext(span.getInstrumentationContext());
         }
 
         try (TracingScope scope = span.makeCurrent()) {
-            Response<?> response = clientCall(requestOptions);
+            Response<?> response = clientCall(requestContext);
             response.close();
         } catch (Throwable t) {
             // make sure to report any exceptions including unchecked ones.
@@ -238,11 +238,11 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setEndpoint("https://example.com");
         Instrumentation instrumentation = Instrumentation.create(null, libraryOptions);
 
-        RequestOptions requestOptions = null;
+        RequestContext requestContext = null;
 
         // BEGIN: io.clientcore.core.instrumentation.operation
 
-        instrumentation.instrument("downloadContent", requestOptions, this::clientCall);
+        instrumentation.instrument("downloadContent", requestContext, this::clientCall);
 
         // END: io.clientcore.core.instrumentation.operation
     }
@@ -257,10 +257,10 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
             .setEndpoint("https://example.com");
         Instrumentation instrumentation = Instrumentation.create(null, libraryOptions);
-        RequestOptions requestOptions = null;
+        RequestContext requestContext = null;
 
         // BEGIN: io.clientcore.core.instrumentation.enrich
-        instrumentation.instrumentWithResponse("downloadContent", requestOptions, updatedOptions -> {
+        instrumentation.instrumentWithResponse("downloadContent", requestContext, updatedOptions -> {
             Span span = updatedOptions.getInstrumentationContext().getSpan();
             if (span.isRecording()) {
                 span.setAttribute("sample.content.id", "{content-id}");
@@ -290,7 +290,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setEndpoint("https://example.com");
 
         Tracer tracer = Instrumentation.create(null, libraryOptions).getTracer();
-        RequestOptions requestOptions = null;
+        RequestContext requestContext = null;
 
         // BEGIN: io.clientcore.core.instrumentation.tracewithattributes
 
@@ -307,7 +307,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
                 sendSpan.setAttribute("messaging.message.id", "{message-id}");
             }
 
-            Response<?> response = clientCall(requestOptions);
+            Response<?> response = clientCall(requestContext);
             response.close();
         } catch (Throwable t) {
             sendSpan.end(t);
@@ -356,9 +356,9 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy() {
             @Override
             public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
-                Span span = request.getRequestOptions() == null
+                Span span = request.getRequestContext() == null
                     ? Span.noop()
-                    : request.getRequestOptions().getInstrumentationContext().getSpan();
+                    : request.getRequestContext().getInstrumentationContext().getSpan();
                 if (span.isRecording()) {
                     span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
                 }
@@ -385,7 +385,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     private void performOperation() {
     }
 
-    private Response<?> clientCall(RequestOptions options) {
+    private Response<?> clientCall(RequestContext options) {
         return null;
     }
 

@@ -20,21 +20,21 @@ public interface Tracer {
      * <!-- src_embed io.clientcore.core.instrumentation.tracecall -->
      * <pre>
      *
-     * InstrumentationContext context = requestOptions == null ? null : requestOptions.getInstrumentationContext&#40;&#41;;
+     * InstrumentationContext context = requestContext == null ? null : requestContext.getInstrumentationContext&#40;&#41;;
      * Span span = tracer.spanBuilder&#40;&quot;&#123;operationName&#125;&quot;, SpanKind.CLIENT, context&#41;
      *     .startSpan&#40;&#41;;
      *
      * &#47;&#47; we'll propagate context implicitly using span.makeCurrent&#40;&#41; as shown later.
      * &#47;&#47; Libraries that write async code should propagate context explicitly in addition to implicit propagation.
      * if &#40;tracer.isEnabled&#40;&#41;&#41; &#123;
-     *     if &#40;requestOptions == null&#41; &#123;
-     *         requestOptions = new RequestOptions&#40;&#41;;
+     *     if &#40;requestContext == null&#41; &#123;
+     *         requestContext = new RequestContext&#40;&#41;;
      *     &#125;
-     *     requestOptions = requestOptions.setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;;
+     *     requestContext = requestContext.setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;;
      * &#125;
      *
      * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
-     *     Response&lt;?&gt; response = clientCall&#40;requestOptions&#41;;
+     *     Response&lt;?&gt; response = clientCall&#40;requestContext&#41;;
      *     response.close&#40;&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     &#47;&#47; make sure to report any exceptions including unchecked ones.
@@ -65,7 +65,7 @@ public interface Tracer {
      *         sendSpan.setAttribute&#40;&quot;messaging.message.id&quot;, &quot;&#123;message-id&#125;&quot;&#41;;
      *     &#125;
      *
-     *     Response&lt;?&gt; response = clientCall&#40;requestOptions&#41;;
+     *     Response&lt;?&gt; response = clientCall&#40;requestContext&#41;;
      *     response.close&#40;&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     sendSpan.end&#40;t&#41;;

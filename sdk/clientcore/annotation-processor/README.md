@@ -107,7 +107,7 @@ The client-core annotation processor for introducing compile-time code generatio
         httpRequest.setHeaders(headers);
 
         // add RequestOptions to the request
-        httpRequest.setRequestOptions(requestOptions);
+        httpRequest.setRequestOptions(requestContext);
 
         // set the body content if present
 
@@ -120,8 +120,8 @@ The client-core annotation processor for introducing compile-time code generatio
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
         ResponseBodyMode responseBodyMode = ResponseBodyMode.IGNORE;
-        if (requestOptions != null) {
-            responseBodyMode = requestOptions.getResponseBodyMode();
+        if (requestContext != null) {
+            responseBodyMode = requestContext.getResponseBodyMode();
         }
         if (responseBodyMode == ResponseBodyMode.DESERIALIZE) {
             BinaryData responseBody = response.getBody();
