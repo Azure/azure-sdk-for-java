@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
  */
 public final class ImplUtils {
     private static final ClientLogger LOGGER = new ClientLogger(ImplUtils.class);
-
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
     private static final byte ZERO = (byte) 0x00;
