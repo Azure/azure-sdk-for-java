@@ -7,14 +7,12 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.ServerSentEventUtils;
 import io.clientcore.core.models.ServerSentResult;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.ServerSentEventUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,10 +24,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static io.clientcore.core.http.models.HttpMethod.HEAD;
-import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
-import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
-import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.implementation.http.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.implementation.http.client.JdkHttpUtils.fromJdkHttpHeaders;
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.isTextEventStreamContentType;
@@ -158,21 +152,13 @@ public final class JdkHttpClient implements HttpClient {
 
     private Response<BinaryData> processResponse(HttpRequest request, java.net.http.HttpResponse<InputStream> response,
         ServerSentResult serverSentResult, HttpHeaders coreHeaders, String contentType) throws IOException {
-        RequestOptions options = request.getRequestOptions();
-        ResponseBodyMode responseBodyMode = null;
-
-        if (options != null) {
-            responseBodyMode = options.getResponseBodyMode();
-        }
-
-        responseBodyMode = getResponseBodyMode(request, contentType, responseBodyMode);
 
         BinaryData body = null;
+        BodyHandling bodyHandling = getBodyHandling(request, coreHeaders);
 
-        switch (responseBodyMode) {
+        switch (bodyHandling) {
             case IGNORE:
                 response.body().close();
-
                 break;
 
             case STREAM:
@@ -185,7 +171,6 @@ public final class JdkHttpClient implements HttpClient {
                 break;
 
             case BUFFER:
-            case DESERIALIZE:
                 // Deserialization will occur at a later point in HttpResponseBodyDecoder.
                 if (isTextEventStreamContentType(contentType)) {
                     body = createBodyFromServerSentResult(serverSentResult);
@@ -203,20 +188,22 @@ public final class JdkHttpClient implements HttpClient {
         return new Response<>(request, response.statusCode(), coreHeaders, body == null ? BinaryData.empty() : body);
     }
 
-    private static ResponseBodyMode getResponseBodyMode(HttpRequest request, String contentType,
-        ResponseBodyMode responseBodyMode) {
-        if (responseBodyMode == null) {
-            if (request.getHttpMethod() == HEAD) {
-                responseBodyMode = IGNORE;
-            } else if (contentType != null
-                && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType, 0, APPLICATION_OCTET_STREAM.length())) {
+    private BodyHandling getBodyHandling(HttpRequest request, HttpHeaders responseHeaders) {
+        String contentType = responseHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
 
-                responseBodyMode = STREAM;
-            } else {
-                responseBodyMode = BUFFER;
-            }
+        if (request.getHttpMethod() == HEAD) {
+            return BodyHandling.IGNORE;
+        } else if ("application/octet-stream".equalsIgnoreCase(contentType)) {
+            return BodyHandling.STREAM;
+        } else {
+            return BodyHandling.BUFFER;
         }
-        return responseBodyMode;
+    }
+
+    private enum BodyHandling {
+        IGNORE,
+        STREAM,
+        BUFFER
     }
 
     private BinaryData createBodyFromServerSentResult(ServerSentResult serverSentResult) {

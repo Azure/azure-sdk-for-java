@@ -10,10 +10,8 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.ReflectionSerializable;
-import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
@@ -41,7 +39,6 @@ import java.util.Arrays;
 import static io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
 public class RestProxyImpl {
-    static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
 
     // RestProxy is a commonly used class, use a static logger.
     static final ClientLogger LOGGER = new ClientLogger(RestProxyImpl.class);
@@ -355,14 +352,6 @@ public class RestProxyImpl {
 
                 return new Response<Void>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
             } else {
-                ResponseBodyMode responseBodyMode = null;
-                RequestOptions requestOptions = response.getRequest().getRequestOptions();
-
-                if (requestOptions != null) {
-                    responseBodyMode = requestOptions.getResponseBodyMode();
-                }
-
-                // TODO (alzimmer): Need a way to support deferred deserialization.
                 return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     handleResponseBody(response, methodParser, bodyType, response.getValue(), serializer));
             }
@@ -370,28 +359,6 @@ public class RestProxyImpl {
             // When not handling a Response subtype, we need to eagerly read the response body to construct the correct
             // return type.
             return handleResponseBody(response, methodParser, entityType, response.getValue(), serializer);
-        }
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    private static Response<?> createResponseIfNecessary(Response<?> response, Type entityType, Object bodyAsObject) {
-        final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
-
-        // Inspection of the response type needs to be performed to determine the course of action: either return the
-        // Response or rely on reflection to create an appropriate Response subtype.
-        if (clazz.equals(Response.class)) {
-            // Return the Response.
-            return response;
-        } else {
-            // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
-            // subtype.
-            //
-            // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should
-            // be given a way to register their constructor as a callback method that consumes Response and the body as
-            // an Object.
-            ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz);
-
-            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
         }
     }
 
