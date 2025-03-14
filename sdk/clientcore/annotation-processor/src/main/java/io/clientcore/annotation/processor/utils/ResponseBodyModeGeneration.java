@@ -10,8 +10,6 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
@@ -33,18 +31,6 @@ import java.util.List;
 public final class ResponseBodyModeGeneration {
 
     /**
-     * Generates response body mode assignment based on request options and return type.
-     *
-     * @param body the method builder to append generated code.
-     */
-    public static void generateResponseBodyMode(BlockStmt body) {
-        body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
-        body.tryAddImportToParentCompilationUnit(RequestOptions.class);
-        body.addStatement(StaticJavaParser.parseStatement(
-            "ResponseBodyMode responseBodyMode = getOrDefaultResponseBodyMode" + "(httpRequest.getRequestOptions());"));
-    }
-
-    /**
      * Handles deserialization response mode logic.
      *
      * @param body the method builder to append generated code.
@@ -54,8 +40,6 @@ public final class ResponseBodyModeGeneration {
      */
     public static void handleResponseBody(BlockStmt body, TypeMirror returnType, java.lang.reflect.Type entityType,
         HttpRequestContext method) {
-        body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
-
         String typeCast = entityType.toString();
         if (method.getHttpMethod() == HttpMethod.HEAD
             && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
@@ -149,7 +133,6 @@ public final class ResponseBodyModeGeneration {
                     + "networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);"));
             } else {
                 // If this type has type arguments, then we look at the last one to determine if it expects a body
-                generateResponseBodyMode(body);
                 handleResponseBody(body, returnType, bodyType, method);
                 createResponseIfNecessary(body);
             }

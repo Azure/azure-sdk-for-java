@@ -1,13 +1,20 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.16.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support to specify `subscription` ID or name on `AzureCliCredentialBuilder`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.16.0-beta.1 (2025-03-13)
+
+### Features Added
+- Added support to specify `subscription` ID or name on `AzureCliCredentialBuilder`. [#44123](https://github.com/Azure/azure-sdk-for-java/pull/44123)
+- Log the client, object, or resource ID of the user-assigned managed identity. [#44305](https://github.com/Azure/azure-sdk-for-java/pull/44305)
 
 ### Other Changes
 

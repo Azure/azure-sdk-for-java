@@ -25,11 +25,6 @@
       <Class name="io.clientcore.core.implementation.ReflectionUtilsMethodHandle" />
       <Class name="io.clientcore.core.implementation.http.HttpPipelineCallState" />
       <Class name="io.clientcore.core.implementation.http.rest.PercentEscaper" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCache" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCacheLambdaMetaFactory" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCacheLambdaMetaFactory$ResponseConstructor" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsNoCacheReflection" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseExceptionConstructorCache" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
       <Class name="io.clientcore.core.implementation.utils.AuthenticateChallengeParser" />
       <Class name="io.clientcore.core.implementation.utils.InternalContext" />
@@ -425,10 +420,7 @@
   </Match>
   <Match>
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
-    <Or>
-      <Class name="io.clientcore.core.implementation.TypeUtilTests$Dog" />
-      <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCacheBenchMarkTestData$FooHeader" />
-    </Or>
+    <Class name="io.clientcore.core.implementation.TypeUtilTests$Dog" />
   </Match>
   <Match>
     <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY" />

@@ -121,7 +121,6 @@ public final class RequestOptions {
     private Consumer<HttpRequest> requestCallback = request -> {
     };
     private Context context;
-    private ResponseBodyMode responseBodyMode;
     private boolean locked;
     private ClientLogger logger;
     private InstrumentationContext instrumentationContext;
@@ -150,17 +149,6 @@ public final class RequestOptions {
      */
     public Context getContext() {
         return context;
-    }
-
-    /**
-     * Gets the configuration indicating how the body of the resulting HTTP response should be handled.
-     *
-     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
-     *
-     * @return The configuration indicating how the body of the resulting HTTP response should be handled.
-     */
-    public ResponseBodyMode getResponseBodyMode() {
-        return responseBodyMode;
     }
 
     /**
@@ -288,24 +276,6 @@ public final class RequestOptions {
     public RequestOptions setContext(Context context) {
         checkLocked("Cannot set context.");
         this.context = context;
-
-        return this;
-    }
-
-    /**
-     * Sets the configuration indicating how the body of the resulting HTTP response should be handled. If {@code null},
-     * the response body will be handled based on the content type of the response.
-     *
-     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
-     *
-     * @param responseBodyMode The configuration indicating how the body of the resulting HTTP response should be
-     * handled.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setResponseBodyMode(ResponseBodyMode responseBodyMode) {
-        checkLocked("Cannot set response body mode.");
-        this.responseBodyMode = responseBodyMode;
 
         return this;
     }
