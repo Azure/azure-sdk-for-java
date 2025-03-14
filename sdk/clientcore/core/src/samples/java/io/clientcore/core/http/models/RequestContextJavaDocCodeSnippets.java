@@ -9,28 +9,28 @@ import io.clientcore.core.serialization.json.models.JsonObject;
 import io.clientcore.core.utils.ProgressReporter;
 
 /**
- * JavaDoc code snippets for {@link RequestOptions}.
+ * JavaDoc code snippets for {@link RequestContext}.
  */
-public class RequestOptionsJavaDocCodeSnippets {
+public class RequestContextJavaDocCodeSnippets {
 
     /**
-     * Sample to demonstrate how to create an instance of {@link RequestOptions}.
-     * @return An instance of {@link RequestOptions}.
+     * Sample to demonstrate how to create an instance of {@link RequestContext}.
+     * @return An instance of {@link RequestContext}.
      */
-    public RequestOptions createInstance() {
-        // BEGIN: io.clientcore.core.http.rest.requestoptions.instantiation
-        RequestOptions options = new RequestOptions()
+    public RequestContext createInstance() {
+        // BEGIN: io.clientcore.core.http.rest.requestcontext.instantiation
+        RequestContext options = new RequestContext()
             .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"));
-        // END: io.clientcore.core.http.rest.requestoptions.instantiation
+        // END: io.clientcore.core.http.rest.requestcontext.instantiation
         return options;
     }
 
     /**
-     * Sample to demonstrate setting the JSON request body in a {@link RequestOptions}.
-     * @return An instance of {@link RequestOptions}.
+     * Sample to demonstrate setting the JSON request body in a {@link RequestContext}.
+     * @return An instance of {@link RequestContext}.
      */
-    public RequestOptions setJsonRequestBodyInRequestOptions() {
-        // BEGIN: io.clientcore.core.http.rest.requestoptions.createjsonrequest
+    public RequestContext setJsonRequestBodyInRequestContext() {
+        // BEGIN: io.clientcore.core.http.rest.requestcontext.createjsonrequest
         JsonArray photoUris = new JsonArray()
             .addElement("https://imgur.com/pet1")
             .addElement("https://imgur.com/pet2");
@@ -52,34 +52,34 @@ public class RequestOptionsJavaDocCodeSnippets {
             .setProperty("tags", tags);
 
         BinaryData requestBodyData = BinaryData.fromObject(requestBody);
-        // END: io.clientcore.core.http.rest.requestoptions.createjsonrequest
+        // END: io.clientcore.core.http.rest.requestcontext.createjsonrequest
 
-        // BEGIN: io.clientcore.core.http.rest.requestoptions.postrequest
-        RequestOptions options = new RequestOptions()
+        // BEGIN: io.clientcore.core.http.rest.requestcontext.postrequest
+        RequestContext options = new RequestContext()
             .addRequestCallback(request -> request
                 // may already be set if request is created from a client
                 .setUri("https://petstore.example.com/pet")
                 .setMethod(HttpMethod.POST)
                 .setBody(requestBodyData)
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
-        // END: io.clientcore.core.http.rest.requestoptions.postrequest
+        // END: io.clientcore.core.http.rest.requestcontext.postrequest
         return options;
     }
 
 
     /**
-     * Code snippet for {@link RequestOptions#putData(String, Object)}
+     * Code snippet for {@link RequestContext#putData(String, Object)}
      */
     public void putDataContext() {
-        // BEGIN: io.clientcore.core.http.rest.requestoptions.putData
+        // BEGIN: io.clientcore.core.http.rest.requestcontext.putData
 
-        RequestOptions options = new RequestOptions()
+        RequestContext options = new RequestContext()
             .putData("stringKey", "value")
             .putData("complexObject", ProgressReporter.withProgressListener(value -> System.out.printf("Got %s bytes", value)));
 
-        // END: io.clientcore.core.http.rest.requestoptions.putData
+        // END: io.clientcore.core.http.rest.requestcontext.putData
 
-        // BEGIN: io.clientcore.core.http.rest.requestoptions.getData
+        // BEGIN: io.clientcore.core.http.rest.requestcontext.getData
 
         // Get the string value
         String stringValue = options.getData("stringKey", String.class);
@@ -92,6 +92,6 @@ public class RequestOptionsJavaDocCodeSnippets {
             progressReporter.reportProgress(42);
         }
 
-        // END: io.clientcore.core.http.rest.requestoptions.getData
+        // END: io.clientcore.core.http.rest.requestcontext.getData
     }
 }

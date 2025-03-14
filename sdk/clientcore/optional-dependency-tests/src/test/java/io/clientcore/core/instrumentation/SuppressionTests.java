@@ -6,7 +6,7 @@ package io.clientcore.core.instrumentation;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
@@ -90,7 +90,7 @@ public class SuppressionTests {
             .build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
-        client.protocolMethod(new RequestOptions());
+        client.protocolMethod(new RequestContext());
 
         // test that one span is created for simple method
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -105,7 +105,7 @@ public class SuppressionTests {
             .build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
-        client.convenienceMethod(new RequestOptions());
+        client.convenienceMethod(new RequestContext());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData span = exporter.getFinishedSpanItems().get(0);
         assertEquals("convenienceMethod", span.getName());
@@ -123,7 +123,7 @@ public class SuppressionTests {
         SampleClientCallInstrumentation client
             = new SampleClientCallInstrumentation(pipeline, otelOptions, libraryInstrumentationOptions);
 
-        client.convenienceMethod(new RequestOptions());
+        client.convenienceMethod(new RequestContext());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData span = exporter.getFinishedSpanItems().get(0);
         assertEquals("convenience", span.getName());
@@ -144,7 +144,7 @@ public class SuppressionTests {
             = new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true);
         SampleClientCallInstrumentation client = new SampleClientCallInstrumentation(pipeline, otelOptions, libOptions);
 
-        client.convenienceMethod(new RequestOptions());
+        client.convenienceMethod(new RequestContext());
         assertEquals(2, exporter.getFinishedSpanItems().size());
         assertEquals("protocol", exporter.getFinishedSpanItems().get(0).getName());
         assertEquals("convenience", exporter.getFinishedSpanItems().get(1).getName());
@@ -365,7 +365,7 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void protocolMethod(RequestOptions options) {
+        public void protocolMethod(RequestContext options) {
             Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
@@ -382,7 +382,7 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void convenienceMethod(RequestOptions options) {
+        public void convenienceMethod(RequestContext options) {
             Span span
                 = tracer.spanBuilder("convenienceMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
 
@@ -407,15 +407,15 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public Response<?> protocolMethod(RequestOptions options) {
+        public Response<?> protocolMethod(RequestContext options) {
             return instrumentation.instrumentWithResponse("protocol", options,
                 updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
-                    .setRequestOptions(updatedOptions)));
+                    .setRequestContext(updatedOptions)));
         }
 
         @SuppressWarnings("try")
-        public Response<?> convenienceMethod(RequestOptions options) throws IOException {
+        public Response<?> convenienceMethod(RequestContext options) throws IOException {
             return instrumentation.instrumentWithResponse("convenience", options, this::protocolMethod);
         }
     }

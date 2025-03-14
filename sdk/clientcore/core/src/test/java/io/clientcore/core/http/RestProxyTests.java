@@ -14,7 +14,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
@@ -82,18 +82,18 @@ public class RestProxyTests {
         Response<InputStream> testDownload();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
-        Response<FooListResult> listFooListResult(@HostParam("uri") String uri, RequestOptions requestOptions);
+        Response<FooListResult> listFooListResult(@HostParam("uri") String uri, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<FooListResult> listNextFooListResult(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
-        Response<List<Foo>> listFoo(@HostParam("uri") String uri, RequestOptions requestOptions);
+        Response<List<Foo>> listFoo(@HostParam("uri") String uri, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
     }
 
     @Test
@@ -275,9 +275,9 @@ public class RestProxyTests {
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
-            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, RequestOptions.none()), null),
+            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, RequestContext.none()), null),
             (pagingOptions, nextLink) -> toPagedResponse(
-                testInterface.listNextFooListResult(nextLink, RequestOptions.none()), nextLink));
+                testInterface.listNextFooListResult(nextLink, RequestContext.none()), nextLink));
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());
@@ -317,7 +317,7 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, RequestOptions.none());
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, RequestContext.none());
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -328,7 +328,7 @@ public class RestProxyTests {
 
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
-                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, RequestOptions.none());
+                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, RequestContext.none());
                 return toPagedResponse(nextResponse, nextLink);
             });
 

@@ -8,7 +8,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.utils.ProgressReporter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RequestOptionsTests {
+public class RequestContextTests {
     private static final HttpHeaderName X_MS_FOO = HttpHeaderName.fromString("x-ms-foo");
 
     @Test
@@ -32,7 +32,7 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
+        RequestContext options = new RequestContext().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
 
         options.getRequestCallback().accept(request);
 
@@ -44,7 +44,7 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions().addRequestCallback(r -> r.getHeaders()
+        RequestContext options = new RequestContext().addRequestCallback(r -> r.getHeaders()
             .add(new HttpHeader(X_MS_FOO, "bar"))
             .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")));
         options.getRequestCallback().accept(request);
@@ -59,8 +59,8 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options
-            = new RequestOptions().addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
+        RequestContext options
+            = new RequestContext().addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
                 .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
                 .addRequestCallback(r -> r.setUri("https://request.uri"))
                 .addQueryParam("$skipToken", "1")
@@ -78,7 +78,7 @@ public class RequestOptionsTests {
     public void simpleContext() {
         Object complexObject = ProgressReporter.withProgressListener(value -> {
         });
-        RequestOptions options = new RequestOptions().putData("stringKey", "value")
+        RequestContext options = new RequestContext().putData("stringKey", "value")
             .putData("longKey", 10L)
             .putData("booleanKey", true)
             .putData("doubleKey", 42.0)
@@ -99,7 +99,7 @@ public class RequestOptionsTests {
     public void invalidGetDataParams() {
         Object complexObject = ProgressReporter.withProgressListener(value -> {
         });
-        RequestOptions options = new RequestOptions().putData("stringKey", "value").putData("intKey", 10);
+        RequestContext options = new RequestContext().putData("stringKey", "value").putData("intKey", 10);
 
         assertThrows(NullPointerException.class, () -> options.getData("stringKey", null));
         assertThrows(IllegalArgumentException.class, () -> options.getData("stringKey", Long.class));
@@ -108,7 +108,7 @@ public class RequestOptionsTests {
 
     @Test
     public void keysCannotBeNull() {
-        RequestOptions options = new RequestOptions();
+        RequestContext options = new RequestContext();
         assertThrows(NullPointerException.class, () -> options.putData(null, null));
         assertThrows(NullPointerException.class, () -> options.putData(null, "value"));
     }
@@ -116,7 +116,7 @@ public class RequestOptionsTests {
     @ParameterizedTest
     @MethodSource("addDataSupplier")
     public void addContext(String key, String value, String expectedOriginalValue) {
-        RequestOptions options = new RequestOptions().putData("key", "value").putData(key, value);
+        RequestContext options = new RequestContext().putData("key", "value").putData(key, value);
 
         assertEquals(value, options.getData(key, String.class));
         assertEquals(expectedOriginalValue, options.getData("key", String.class));
@@ -133,13 +133,13 @@ public class RequestOptionsTests {
 
     @Test
     public void putValueCanBeNull() {
-        RequestOptions options = new RequestOptions().putData("key", null);
+        RequestContext options = new RequestContext().putData("key", null);
 
         assertNull(options.getData("key", String.class));
     }
 
     @Test
     public void getValueKeyCannotBeNull() {
-        assertThrows(NullPointerException.class, () -> RequestOptions.none().getData(null, String.class));
+        assertThrows(NullPointerException.class, () -> RequestContext.none().getData(null, String.class));
     }
 }

@@ -8,7 +8,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.ReflectionSerializable;
@@ -66,7 +66,7 @@ public class RestProxyImpl {
      * Invokes the provided method using the provided arguments.
      *
      * @param proxy The proxy object to invoke the method on.
-     * @param options The RequestOptions to use for the request.
+     * @param options The RequestContext to use for the request.
      * @param methodParser The SwaggerMethodParser that contains information about the method to invoke.
      * @param args The arguments to use when invoking the method.
      * @return The result of invoking the method.
@@ -74,15 +74,15 @@ public class RestProxyImpl {
      * @throws RuntimeException When a URI syntax error occurs.
      */
     @SuppressWarnings({ "try", "unused" })
-    public final Object invoke(Object proxy, RequestOptions options, SwaggerMethodParser methodParser, Object[] args) {
+    public final Object invoke(Object proxy, RequestContext options, SwaggerMethodParser methodParser, Object[] args) {
         try {
-            HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestOptions(options)
+            HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestContext(options)
                 .setServerSentEventListener(methodParser.setServerSentEventListener(args));
 
-            // If there is 'RequestOptions' apply its request callback operations before validating the body.
+            // If there is 'RequestContext' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.
-            if (request.getRequestOptions() != null) {
-                request.getRequestOptions().getRequestCallback().accept(request);
+            if (request.getRequestContext() != null) {
+                request.getRequestContext().getRequestCallback().accept(request);
             }
 
             if (request.getBody() != null) {
