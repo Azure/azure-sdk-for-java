@@ -137,7 +137,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             .map(FeedResponse::getResults)
             .flatMap(Flux::fromIterable)
             .onErrorResume(throwable -> {
-                // TODO: Log the exception.
+                logger.error("Failed to retrieve physical partition information.", throwable);
                 return Flux.empty();
             });
     }
