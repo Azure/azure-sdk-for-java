@@ -2,7 +2,6 @@
 
 package com.azure.v2.security.keyvault.secrets.implementation.models;
 
-import com.azure.v2.security.keyvault.secrets.models.DeletedSecretItem;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.TypeConditions;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -40,7 +39,7 @@ public final class DeletedSecretListResult implements JsonSerializable<DeletedSe
     /**
      * Get the value property: A response message containing a list of deleted secrets in the key vault along with a
      * link to the next page of deleted secrets.
-     * 
+     *
      * @return the value value.
      */
     @Metadata(generated = true)
@@ -50,7 +49,7 @@ public final class DeletedSecretListResult implements JsonSerializable<DeletedSe
 
     /**
      * Get the nextLink property: The URL to get the next set of deleted secrets.
-     * 
+     *
      * @return the nextLink value.
      */
     @Metadata(generated = true)
@@ -70,7 +69,7 @@ public final class DeletedSecretListResult implements JsonSerializable<DeletedSe
 
     /**
      * Reads an instance of DeletedSecretListResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeletedSecretListResult if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

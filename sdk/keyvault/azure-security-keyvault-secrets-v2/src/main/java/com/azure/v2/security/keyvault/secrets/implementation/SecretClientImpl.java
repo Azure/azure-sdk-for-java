@@ -2,15 +2,15 @@
 
 package com.azure.v2.security.keyvault.secrets.implementation;
 
-import com.azure.v2.security.keyvault.secrets.KeyVaultServiceVersion;
+import com.azure.v2.security.keyvault.secrets.SecretServiceVersion;
+import com.azure.v2.security.keyvault.secrets.implementation.models.BackupSecretResult;
+import com.azure.v2.security.keyvault.secrets.implementation.models.DeletedSecretBundle;
+import com.azure.v2.security.keyvault.secrets.implementation.models.DeletedSecretItem;
 import com.azure.v2.security.keyvault.secrets.implementation.models.DeletedSecretListResult;
+import com.azure.v2.security.keyvault.secrets.implementation.models.KeyVaultError;
+import com.azure.v2.security.keyvault.secrets.implementation.models.SecretBundle;
+import com.azure.v2.security.keyvault.secrets.implementation.models.SecretItem;
 import com.azure.v2.security.keyvault.secrets.implementation.models.SecretListResult;
-import com.azure.v2.security.keyvault.secrets.models.BackupSecretResult;
-import com.azure.v2.security.keyvault.secrets.models.DeletedSecretBundle;
-import com.azure.v2.security.keyvault.secrets.models.DeletedSecretItem;
-import com.azure.v2.security.keyvault.secrets.models.KeyVaultError;
-import com.azure.v2.security.keyvault.secrets.models.SecretBundle;
-import com.azure.v2.security.keyvault.secrets.models.SecretItem;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
@@ -35,7 +35,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Initializes a new instance of the KeyVaultClient type.
  */
-public final class KeyVaultClientImpl {
+public final class SecretClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -47,7 +47,7 @@ public final class KeyVaultClientImpl {
 
     /**
      * Gets.
-     * 
+     *
      * @return the vaultBaseUrl value.
      */
     public String getVaultBaseUrl() {
@@ -57,14 +57,14 @@ public final class KeyVaultClientImpl {
     /**
      * Service version.
      */
-    private final KeyVaultServiceVersion serviceVersion;
+    private final SecretServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
-    public KeyVaultServiceVersion getServiceVersion() {
+    public SecretServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -75,7 +75,7 @@ public final class KeyVaultClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -84,12 +84,12 @@ public final class KeyVaultClientImpl {
 
     /**
      * Initializes an instance of KeyVaultClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
      */
-    public KeyVaultClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, KeyVaultServiceVersion serviceVersion) {
+    public SecretClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, SecretServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
@@ -196,7 +196,7 @@ public final class KeyVaultClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/secrets", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         default SecretListResult getSecrets(@QueryParam("api-version") String apiVersion) {
-            return getSecrets(apiVersion, null, null).getValue();
+            return getSecrets(apiVersion, null).getValue();
         }
 
         @HttpRequestInformation(
@@ -214,7 +214,7 @@ public final class KeyVaultClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         default SecretListResult getSecretVersions(@QueryParam("api-version") String apiVersion,
             @PathParam("secret-name") String secretName) {
-            return getSecretVersions(apiVersion, secretName, null, null).getValue();
+            return getSecretVersions(apiVersion, secretName, null).getValue();
         }
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/deletedsecrets", expectedStatusCodes = { 200 })
@@ -225,7 +225,7 @@ public final class KeyVaultClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/deletedsecrets", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         default DeletedSecretListResult getDeletedSecrets(@QueryParam("api-version") String apiVersion) {
-            return getDeletedSecrets(apiVersion, null, null).getValue();
+            return getDeletedSecrets(apiVersion, null).getValue();
         }
 
         @HttpRequestInformation(
@@ -350,11 +350,11 @@ public final class KeyVaultClientImpl {
 
     /**
      * Sets a secret in a specified key vault.
-     * 
+     *
      * The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
      * creates a new version of that secret. This operation requires the secrets/set permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -375,9 +375,9 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -401,7 +401,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters for setting the secret.
@@ -418,11 +418,11 @@ public final class KeyVaultClientImpl {
 
     /**
      * Deletes a secret from a specified key vault.
-     * 
+     *
      * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
      * version of a secret. This operation requires the secrets/delete permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -449,7 +449,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -462,12 +462,12 @@ public final class KeyVaultClientImpl {
 
     /**
      * Updates the attributes associated with a specified secret in a given key vault.
-     * 
+     *
      * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
      * in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the
      * secrets/set permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -487,9 +487,9 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -513,7 +513,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
      * @param parameters The parameters for update secret operation.
@@ -530,11 +530,11 @@ public final class KeyVaultClientImpl {
 
     /**
      * Get a specified secret from a given key vault.
-     * 
+     *
      * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
      * permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -558,14 +558,14 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
      * version of the secret is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return a specified secret from a given key vault.
-     * 
+     *
      * The GET operation is applicable to any secret stored in Azure Key Vault.
      */
     public Response<SecretBundle> getSecretWithResponse(String secretName, String secretVersion,
@@ -575,7 +575,7 @@ public final class KeyVaultClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     * 
+     *
      * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
@@ -588,7 +588,7 @@ public final class KeyVaultClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -615,7 +615,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the secret list result.
@@ -628,7 +628,7 @@ public final class KeyVaultClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     * 
+     *
      * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
@@ -641,7 +641,7 @@ public final class KeyVaultClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -668,7 +668,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the secret list result.
@@ -684,7 +684,7 @@ public final class KeyVaultClientImpl {
 
     /**
      * List all versions of the specified secret.
-     * 
+     *
      * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
      * This operations requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -696,7 +696,7 @@ public final class KeyVaultClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -723,7 +723,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -738,7 +738,7 @@ public final class KeyVaultClientImpl {
 
     /**
      * List all versions of the specified secret.
-     * 
+     *
      * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
      * This operations requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -750,7 +750,7 @@ public final class KeyVaultClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -777,7 +777,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -794,7 +794,7 @@ public final class KeyVaultClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     * 
+     *
      * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
      * This operation requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -806,7 +806,7 @@ public final class KeyVaultClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -836,7 +836,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the deleted secret list result.
@@ -850,7 +850,7 @@ public final class KeyVaultClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     * 
+     *
      * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
      * This operation requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -862,7 +862,7 @@ public final class KeyVaultClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -892,7 +892,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the deleted secret list result.
@@ -908,11 +908,11 @@ public final class KeyVaultClientImpl {
 
     /**
      * Gets the specified deleted secret.
-     * 
+     *
      * The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation
      * requires the secrets/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -939,12 +939,12 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the specified deleted secret.
-     * 
+     *
      * The Get Deleted Secret operation returns the specified deleted secret along with its attributes.
      */
     public Response<DeletedSecretBundle> getDeletedSecretWithResponse(String secretName,
@@ -954,11 +954,11 @@ public final class KeyVaultClientImpl {
 
     /**
      * Permanently deletes the specified secret.
-     * 
+     *
      * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
      * operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge
      * permission.
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -970,11 +970,11 @@ public final class KeyVaultClientImpl {
 
     /**
      * Recovers the deleted secret to the latest version.
-     * 
+     *
      * Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled
      * vault. This operation requires the secrets/recover permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -998,7 +998,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the deleted secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1010,11 +1010,11 @@ public final class KeyVaultClientImpl {
 
     /**
      * Backs up the specified secret.
-     * 
+     *
      * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
      * downloaded. This operation requires the secrets/backup permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1022,7 +1022,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1034,11 +1034,11 @@ public final class KeyVaultClientImpl {
 
     /**
      * Restores a backed up secret to a vault.
-     * 
+     *
      * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
      * permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1046,9 +1046,9 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1072,7 +1072,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param parameters The parameters to restore the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1085,10 +1085,10 @@ public final class KeyVaultClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1115,7 +1115,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1129,10 +1129,10 @@ public final class KeyVaultClientImpl {
 
     /**
      * List all versions of the specified secret.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1159,7 +1159,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1173,10 +1173,10 @@ public final class KeyVaultClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1206,7 +1206,7 @@ public final class KeyVaultClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
