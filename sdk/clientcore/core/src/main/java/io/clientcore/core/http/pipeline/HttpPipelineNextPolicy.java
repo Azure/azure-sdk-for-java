@@ -54,6 +54,11 @@ public class HttpPipelineNextPolicy {
         }
     }
 
+    /**
+     * Invokes the next {@link HttpPipelinePolicy}.
+     *
+     * @return A {@link CompletableFuture} representing the asynchronous response.
+     */
     public CompletableFuture<Response<BinaryData>> processAsync() {
         // TODO (alzimmer): Do we need a different design for async where this is doing something like
         //  CompletableFuture.thenCompose or CompletableFuture.thenApply, etc?

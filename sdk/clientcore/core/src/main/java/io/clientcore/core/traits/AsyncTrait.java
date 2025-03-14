@@ -4,7 +4,6 @@ package io.clientcore.core.traits;
 
 import io.clientcore.core.utils.SharedExecutorService;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 /**

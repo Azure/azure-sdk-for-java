@@ -26,7 +26,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Builder to configure and build an instance of the JDK {@code HttpClient} introduced in Java 11.
@@ -63,7 +63,7 @@ public class JdkHttpClientBuilder {
 
     private ProxyOptions proxyOptions;
     private Configuration configuration;
-    private Executor executor;
+    private ExecutorService executorService;
     private SSLContext sslContext;
 
     private Duration connectionTimeout;
@@ -75,24 +75,43 @@ public class JdkHttpClientBuilder {
      * Creates DefaultHttpClientBuilder.
      */
     public JdkHttpClientBuilder() {
-        this.executor = SharedExecutorService.getInstance();
     }
 
     /**
-     * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
+     * Sets the {@link ExecutorService} to use when sending requests.
      * <p>
-     * If this method is not invoked prior to {@link #build() building}, handling for a default will be based on whether
-     * the builder was created with the default constructor or the constructor that accepts an existing
-     * {@link java.net.http.HttpClient.Builder}. If the default constructor was used, the default executor will be
-     * {@link SharedExecutorService#getInstance()}. If the constructor that accepts an existing
-     * {@link java.net.http.HttpClient.Builder} was used, the executor from the existing builder will be used.
+     * If no {@link ExecutorService} is set, a default {@link ExecutorService} that uses the caller thread to send the
+     * request will be used.
+     * <p>
+     * While it is possible to use, setting {@link SharedExecutorService} as the {@code executorService} runs into risks
+     * with deadlocking as {@link SharedExecutorService} is the default used in many locations of the SDKs. Using it
+     * runs into the possibility of threads created and managed by {@link SharedExecutorService} making requests that
+     * requires {@link SharedExecutorService} to create more threads, therefore the possibility of deadlocking.
+     * <p>
+     * When the {@link #build() built} {@link HttpClient} is closed it will not terminate the configured
+     * {@link ExecutorService} as the {@link HttpClient} doesn't assume ownership of it. The creator of the
+     * {@link ExecutorService} will need to manage it in the event of JVM shutdown or termination.
+     * <p>
+     * If the passed {@code executorService} is shutdown or terminated after the {@link HttpClient} is created with it
+     * exceptions may be thrown if the {@link HttpClient} is continued to be used.
+     * <p>
+     * If the {@code executorService} is null a {@link NullPointerException} will be thrown. If the
+     * {@code executorService} is {@link ExecutorService#isShutdown()} or {@link ExecutorService#isTerminated()} an
+     * {@link IllegalStateException} will be thrown.
      *
-     * @param executor the executor to be used for asynchronous and dependent tasks
-     * @return the updated {@link JdkHttpClientBuilder} object
-     * @throws NullPointerException if {@code executor} is null
+     * @param executorService The {@link ExecutorService} that is used when sending requests.
+     * @return The updated {@link JdkHttpClientBuilder} object
+     * @throws NullPointerException If {@code executorService} is null
+     * @throws IllegalStateException If {@code executorService} is {@link ExecutorService#isShutdown()} or
+     * {@link ExecutorService#isTerminated()}.
      */
-    public JdkHttpClientBuilder executor(Executor executor) {
-        this.executor = Objects.requireNonNull(executor, "executor can not be null");
+    public JdkHttpClientBuilder executorService(ExecutorService executorService) {
+        Objects.requireNonNull(executorService, "'executorService' cannot be null.");
+        if (executorService.isShutdown() || executorService.isTerminated()) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "'executorService' must be running and cannot be shutdown or terminated."));
+        }
+        this.executorService = executorService;
         return this;
     }
 
@@ -257,8 +276,10 @@ public class JdkHttpClientBuilder {
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration) : proxyOptions;
 
-        if (executor != null) {
-            httpClientBuilder.executor(executor);
+        if (executorService != null) {
+            httpClientBuilder.executor(executorService);
+        } else {
+            httpClientBuilder.executor(Runnable::run);
         }
 
         if (sslContext != null) {
