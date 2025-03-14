@@ -30,7 +30,7 @@ public interface Tracer {
      *     if &#40;requestOptions == null&#41; &#123;
      *         requestOptions = new RequestOptions&#40;&#41;;
      *     &#125;
-     *     requestOptions.setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;;
+     *     requestOptions = requestOptions.setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;;
      * &#125;
      *
      * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;

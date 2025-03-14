@@ -7,6 +7,7 @@ import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.implementation.utils.InternalContext;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -108,8 +109,9 @@ import java.util.function.Consumer;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
-@Metadata(properties = MetadataProperties.FLUENT)
+@Metadata(properties = { MetadataProperties.IMMUTABLE, MetadataProperties.FLUENT })
 public final class RequestOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
     private static final RequestOptions NONE = new RequestOptions();
 
     private final Consumer<HttpRequest> requestCallback;
@@ -285,19 +287,40 @@ public final class RequestOptions {
         return new RequestOptions(requestCallback, logger, context, instrumentationContext);
     }
 
-    public RequestOptions addContext(String key, Object value) {
+    /**
+     * Adds a key-value pair to the {@link RequestOptions} that can be used to pass additional data to the
+     * components of HTTP pipeline.
+     *
+     * @param key The key to be added.
+     * @param value The value to be added.
+     * @return The new {@link RequestOptions} object.
+     * @throws NullPointerException If {@code key} is null.
+     */
+    public RequestOptions putData(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
 
         return new RequestOptions(requestCallback, logger, context.put(key, value), instrumentationContext);
     }
 
-    public <T> T getContext(String key, Class<T> clazz) {
+    /**
+     * Gets the value associated with the given key in the {@link RequestOptions} object. The value is cast to the
+     * given class type.
+     *
+     * @param key The key to be retrieved.
+     * @param clazz The class type to cast the value to.
+     * @return The value associated with the given key, cast to the given class type.
+     * @param <T> The type of the value to be retrieved.
+     * @throws NullPointerException If {@code key} is null.
+     * @throws IllegalArgumentException If the value associated with the key is not of the expected type.
+     */
+    public <T> T getData(String key, Class<T> clazz) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         Object value = context.get(key);
         if (clazz.isInstance(value)) {
             return clazz.cast(value);
         } else if (value != null) {
-            throw new IllegalArgumentException("Value for key '" + key + "' is not of type " + clazz.getName());
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("Value for key '" + key + "' is not of type " + clazz.getName()));
         }
 
         return null;
