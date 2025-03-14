@@ -95,7 +95,7 @@ The client-core annotation processor for introducing compile-time code generatio
     }
 
     @Override
-    private Response<BinaryData> getUser(String endpoint, String apiVersion, String userId, Context context) {
+    private Response<BinaryData> getUser(String endpoint, String apiVersion, String userId, RequestContext requestContext) {
         HttpPipeline pipeline = this.getPipeline();
         String host = endpoint + "/example/users/" + userId + "?api-version=" + apiVersion;
 
@@ -106,8 +106,8 @@ The client-core annotation processor for introducing compile-time code generatio
         HttpHeaders headers = new HttpHeaders();
         httpRequest.setHeaders(headers);
 
-        // add RequestOptions to the request
-        httpRequest.setRequestOptions(requestContext);
+        // add RequestContext to the request
+        httpRequest.setRequestContext(requestContext);
 
         // set the body content if present
 
