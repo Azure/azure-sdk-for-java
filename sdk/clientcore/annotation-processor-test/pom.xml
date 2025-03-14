@@ -47,8 +47,8 @@
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
 
-      --add-exports io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
+      --add-exports io.clientcore.annotation.processor.test/io.clientcore.annotation.processor.test.shared=ALL-UNNAMED
+      --add-opens io.clientcore.annotation.processor.test/io.clientcore.annotation.processor.test.shared.=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
