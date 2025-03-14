@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package io.clientcore.core.implementation.utils;
 
+import io.clientcore.core.http.models.TestConfigurationSource;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.CoreUtilsTests;
 import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.api.Test;
