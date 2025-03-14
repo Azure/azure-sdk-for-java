@@ -51,25 +51,25 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     /**
      * The service client containing this operation class.
      */
-    private final ComputeScheduleClientImpl client;
+    private final ComputeScheduleMgmtClientImpl client;
 
     /**
      * Initializes an instance of ScheduledActionsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ScheduledActionsClientImpl(ComputeScheduleClientImpl client) {
+    ScheduledActionsClientImpl(ComputeScheduleMgmtClientImpl client) {
         this.service
             = RestProxy.create(ScheduledActionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ComputeScheduleClientScheduledActions to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for ComputeScheduleMgmtClientScheduledActions to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ComputeScheduleClien")
+    @ServiceInterface(name = "ComputeScheduleMgmtC")
     public interface ScheduledActionsService {
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitDeallocate")
         @ExpectedResponses({ 200 })
@@ -163,7 +163,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitDeallocate: submitDeallocate for a virtual machine.
+     * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -203,7 +204,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitDeallocate: submitDeallocate for a virtual machine.
+     * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -242,7 +244,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitDeallocate: submitDeallocate for a virtual machine.
+     * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -259,7 +262,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitDeallocate: submitDeallocate for a virtual machine.
+     * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -276,7 +280,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitDeallocate: submitDeallocate for a virtual machine.
+     * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -292,7 +297,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitHibernate: submitHibernate for a virtual machine.
+     * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -332,7 +338,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitHibernate: submitHibernate for a virtual machine.
+     * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -371,7 +378,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitHibernate: submitHibernate for a virtual machine.
+     * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -388,7 +396,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitHibernate: submitHibernate for a virtual machine.
+     * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -405,7 +414,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitHibernate: submitHibernate for a virtual machine.
+     * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -421,7 +431,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitStart: submitStart for a virtual machine.
+     * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -460,7 +470,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitStart: submitStart for a virtual machine.
+     * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -498,7 +508,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitStart: submitStart for a virtual machine.
+     * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -515,7 +525,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitStart: submitStart for a virtual machine.
+     * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -532,7 +542,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesSubmitStart: submitStart for a virtual machine.
+     * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -548,7 +558,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteDeallocate: executeDeallocate for a virtual machine.
+     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -588,7 +599,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteDeallocate: executeDeallocate for a virtual machine.
+     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -627,7 +639,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteDeallocate: executeDeallocate for a virtual machine.
+     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -644,7 +657,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteDeallocate: executeDeallocate for a virtual machine.
+     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -661,7 +675,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteDeallocate: executeDeallocate for a virtual machine.
+     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -677,7 +692,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteHibernate: executeHibernate for a virtual machine.
+     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -717,7 +733,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteHibernate: executeHibernate for a virtual machine.
+     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -756,7 +773,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteHibernate: executeHibernate for a virtual machine.
+     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -773,7 +791,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteHibernate: executeHibernate for a virtual machine.
+     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -790,7 +809,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteHibernate: executeHibernate for a virtual machine.
+     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -806,7 +826,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteStart: executeStart for a virtual machine.
+     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
+     * as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -845,7 +866,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteStart: executeStart for a virtual machine.
+     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
+     * as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -883,7 +905,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteStart: executeStart for a virtual machine.
+     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
+     * as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -900,7 +923,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteStart: executeStart for a virtual machine.
+     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
+     * as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -917,7 +941,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesExecuteStart: executeStart for a virtual machine.
+     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
+     * as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -933,7 +958,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesGetOperationStatus: getOperationStatus for a virtual machine.
+     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -973,7 +998,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesGetOperationStatus: getOperationStatus for a virtual machine.
+     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1012,7 +1037,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesGetOperationStatus: getOperationStatus for a virtual machine.
+     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1029,7 +1054,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesGetOperationStatus: getOperationStatus for a virtual machine.
+     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1046,7 +1071,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesGetOperationStatus: getOperationStatus for a virtual machine.
+     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1062,7 +1087,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesCancelOperations: cancelOperations for a virtual machine.
+     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1102,7 +1127,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesCancelOperations: cancelOperations for a virtual machine.
+     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1141,7 +1166,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesCancelOperations: cancelOperations for a virtual machine.
+     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1158,7 +1183,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesCancelOperations: cancelOperations for a virtual machine.
+     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1175,7 +1200,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesCancelOperations: cancelOperations for a virtual machine.
+     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1191,7 +1216,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesGetOperationErrors: getOperationErrors associated with an operation on a virtual machine.
+     * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
+     * additional logs) if they exist.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1231,7 +1257,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesGetOperationErrors: getOperationErrors associated with an operation on a virtual machine.
+     * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
+     * additional logs) if they exist.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1270,7 +1297,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesGetOperationErrors: getOperationErrors associated with an operation on a virtual machine.
+     * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
+     * additional logs) if they exist.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1287,7 +1315,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesGetOperationErrors: getOperationErrors associated with an operation on a virtual machine.
+     * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
+     * additional logs) if they exist.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1304,7 +1333,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * virtualMachinesGetOperationErrors: getOperationErrors associated with an operation on a virtual machine.
+     * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
+     * additional logs) if they exist.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.

@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -331,7 +332,7 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics.getFirstContactedRegion();
     }
 
-    LocationCache.ConsolidatedRegionalEndpoint getFirstContactedLocationEndpoint() {
+    RegionalRoutingContext getFirstContactedLocationEndpoint() {
         return this.clientSideRequestStatistics.getFirstContactedLocationEndpoint();
     }
 
@@ -479,7 +480,7 @@ public final class CosmosDiagnostics {
                 }
 
                 @Override
-                public LocationCache.ConsolidatedRegionalEndpoint getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics) {
+                public RegionalRoutingContext getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics) {
 
                     if (cosmosDiagnostics == null) {
                         return null;

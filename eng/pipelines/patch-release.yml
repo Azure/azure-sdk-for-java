@@ -7,13 +7,16 @@ extends:
     - name: azure-sdk-template
       groupId: com.azure
       safeName: azuresdktemplate
+      skipPublishDocMs: true
       ServiceDirectory: template
     - name: azure-sdk-template-two
       groupId: com.azure
       safeName: azuresdktemplatetwo
+      skipPublishDocMs: true
       ServiceDirectory: template
     - name: azure-sdk-template-three
       groupId: com.azure
       safeName: azuresdktemplatethree
+      skipPublishDocMs: true
       ServiceDirectory: template
 

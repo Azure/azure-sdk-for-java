@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
@@ -447,8 +448,7 @@ public class FaultInjectionRuleProcessor {
                                     ResourceType.Document,
                                     null);
 
-                                faultInjectionAddressRequest.requestContext.locationEndpointToRoute = regionEndpoint;
-                                faultInjectionAddressRequest.requestContext.consolidatedRegionalEndpointToRoute = new LocationCache.ConsolidatedRegionalEndpoint(regionEndpoint, null);
+                                faultInjectionAddressRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(regionEndpoint);
                                 faultInjectionAddressRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(pkRangeId));
 
                                 if (isWriteOnly) {

@@ -5,6 +5,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFileInfoHelper;
 
 import java.time.OffsetDateTime;
 
@@ -17,6 +18,7 @@ public final class ShareFileInfo {
     private final OffsetDateTime lastModified;
     private final Boolean isServerEncrypted;
     private final FileSmbProperties smbProperties;
+    private final FilePosixProperties posixProperties;
 
     /**
      * Creates an instance of information about a specific Directory.
@@ -33,6 +35,21 @@ public final class ShareFileInfo {
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
+        this.posixProperties = null;
+    }
+
+    //Internal constructor to support FilePosixProperties class.
+    private ShareFileInfo(String eTag, OffsetDateTime lastModified, Boolean isServerEncrypted,
+        FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.isServerEncrypted = isServerEncrypted;
+        this.smbProperties = smbProperties;
+        this.posixProperties = posixProperties;
+    }
+
+    static {
+        ShareFileInfoHelper.setAccessor(ShareFileInfo::new);
     }
 
     /**
@@ -71,5 +88,15 @@ public final class ShareFileInfo {
      */
     public FileSmbProperties getSmbProperties() {
         return smbProperties;
+    }
+
+    /**
+     * Gets the file's NFS properties.
+     * Only applicable to files in a NFS share.
+     *
+     * @return The NFS Properties of the file.
+     */
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 }

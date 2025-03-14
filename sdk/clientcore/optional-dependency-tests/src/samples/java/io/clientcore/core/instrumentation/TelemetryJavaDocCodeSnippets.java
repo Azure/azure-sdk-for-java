@@ -3,6 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -10,17 +11,12 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.instrumentation.tracing.SpanKind;
-import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
 
 /**
  * Application developers are expected to configure OpenTelemetry
@@ -58,6 +54,8 @@ public class TelemetryJavaDocCodeSnippets {
         AutoConfiguredOpenTelemetrySdk.initialize();
 
         SampleClient client = new SampleClientBuilder().build();
+
+        // this call will be traced using OpenTelemetry SDK initialized globally
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.useglobalopentelemetry
@@ -70,11 +68,13 @@ public class TelemetryJavaDocCodeSnippets {
     public void useExplicitOpenTelemetry() {
         // BEGIN: io.clientcore.core.telemetry.useexplicitopentelemetry
 
-        OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
-        InstrumentationOptions<OpenTelemetry> instrumentationOptions = new InstrumentationOptions<OpenTelemetry>()
-            .setProvider(openTelemetry);
+        OpenTelemetry openTelemetry = AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
+            .setTelemetryProvider(openTelemetry);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
+
+        // this call will be traced using OpenTelemetry SDK provided explicitly
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.useexplicitopentelemetry
@@ -87,13 +87,29 @@ public class TelemetryJavaDocCodeSnippets {
     public void disableDistributedTracing() {
         // BEGIN: io.clientcore.core.telemetry.disabledistributedtracing
 
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>()
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
             .setTracingEnabled(false);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.disabledistributedtracing
+    }
+
+    /**
+     * This code snippet shows how to disable distributed tracing
+     * for a specific instance of client.
+     */
+    public void disableMetrics() {
+        // BEGIN: io.clientcore.core.telemetry.disablemetrics
+
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
+            .setMetricsEnabled(false);
+
+        SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
+        client.clientCall();
+
+        // END: io.clientcore.core.telemetry.disablemetrics
     }
 
     /**
@@ -132,6 +148,7 @@ public class TelemetryJavaDocCodeSnippets {
         Tracer tracer = GlobalOpenTelemetry.getTracer("sample");
         Span span = tracer.spanBuilder("my-operation")
             .startSpan();
+
         SampleClient client = new SampleClientBuilder().build();
 
         // Propagating context implicitly is preferred way in synchronous code.
@@ -148,60 +165,53 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClientBuilder {
-        private InstrumentationOptions<?> instrumentationOptions;
-        // TODO (limolkova): do we need InstrumentationTrait?
-        public SampleClientBuilder instrumentationOptions(InstrumentationOptions<?> instrumentationOptions) {
+        private HttpInstrumentationOptions instrumentationOptions;
+        public SampleClientBuilder instrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
             this.instrumentationOptions = instrumentationOptions;
             return this;
         }
 
         public SampleClient build() {
             return new SampleClient(instrumentationOptions, new HttpPipelineBuilder()
-                .policies(new HttpInstrumentationPolicy(instrumentationOptions, null))
+                .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
                 .build());
         }
     }
 
     static class SampleClient {
-        private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample");
+        private static final String LIBRARY_NAME = "contoso.sample";
+        private final Instrumentation instrumentation;
         private final HttpPipeline httpPipeline;
-        private final io.clientcore.core.instrumentation.tracing.Tracer tracer;
+        private final String serviceEndpoint;
 
-        SampleClient(InstrumentationOptions<?> instrumentationOptions, HttpPipeline httpPipeline) {
+        SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
+            serviceEndpoint = "https://contoso.com";
+            LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions(LIBRARY_NAME)
+                .setEndpoint(serviceEndpoint);
             this.httpPipeline = httpPipeline;
-            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).getTracer();
+            this.instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
         }
 
-        public void clientCall() {
-            this.clientCall(null);
+        public Response<?> clientCall() {
+            return this.clientCallWithResponse(null);
+        }
+
+        @SuppressWarnings("try")
+        public Response<?> clientCallWithResponse(RequestOptions options) {
+            return instrumentation.instrumentWithResponse("Sample.call", options, this::clientCallWithResponseImpl);
         }
 
         @SuppressWarnings("try")
         public void clientCall(RequestOptions options) {
-            io.clientcore.core.instrumentation.tracing.Span span = tracer.spanBuilder("clientCall", SpanKind.CLIENT, null)
-                .startSpan();
+            instrumentation.instrument("Sample.call", options, this::clientCallImpl);
+        }
 
-            if (options == null) {
-                options = new RequestOptions();
-            }
+        private Response<?> clientCallWithResponseImpl(RequestOptions options) {
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestOptions(options));
+        }
 
-            options.setInstrumentationContext(span.getInstrumentationContext());
-
-            try (TracingScope scope = span.makeCurrent()) {
-                Response<?> response = httpPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"));
-                response.close();
-                span.end();
-            } catch (Throwable t) {
-                span.end(t);
-
-                if (t instanceof IOException) {
-                    throw new UncheckedIOException((IOException) t);
-                } else if (t instanceof RuntimeException) {
-                    throw (RuntimeException) t;
-                } else {
-                    throw new RuntimeException(t);
-                }
-            }
+        private void clientCallImpl(RequestOptions options) {
+            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestOptions(options));
         }
     }
 }

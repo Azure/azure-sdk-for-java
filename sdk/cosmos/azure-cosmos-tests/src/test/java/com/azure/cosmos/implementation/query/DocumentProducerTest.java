@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -31,6 +30,7 @@ import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
@@ -113,9 +113,9 @@ public class DocumentProducerTest {
     }
 
     private IRetryPolicyFactory mockDocumentClientIRetryPolicyFactory() {
-        LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint;
+        RegionalRoutingContext regionalRoutingContext;
         try {
-            consolidatedRegionalEndpoint = new LocationCache.ConsolidatedRegionalEndpoint(new URI("http://localhost"), null);
+            regionalRoutingContext = new RegionalRoutingContext(new URI("http://localhost"));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -123,7 +123,7 @@ public class DocumentProducerTest {
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
-        Mockito.doReturn(consolidatedRegionalEndpoint).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(regionalRoutingContext).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         doReturn(false).when(globalEndpointManager).isClosed();
         return new RetryPolicy(mockDiagnosticsClientContext(), globalEndpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManager);
     }
@@ -841,12 +841,12 @@ public class DocumentProducerTest {
 
                 Document d = getDocumentDefinition();
                 if (isOrderby) {
-                    d.set(OrderByIntFieldName, orderByFieldInitialVal + RandomUtils.nextInt(0, 3), CosmosItemSerializer.DEFAULT_SERIALIZER);
-                    d.set(DocumentPartitionKeyRangeIdFieldName, feedRangeEpk.getRange().toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+                    d.set(OrderByIntFieldName, orderByFieldInitialVal + RandomUtils.nextInt(0, 3));
+                    d.set(DocumentPartitionKeyRangeIdFieldName, feedRangeEpk.getRange().toString());
                     PartitionKeyRange pkr = mockPartitionKeyRange(feedRangeEpk.getRange().toString(), feedRangeEpk.getRange());
 
-                    d.set(DocumentPartitionKeyRangeMinInclusiveFieldName, pkr.getMinInclusive(), CosmosItemSerializer.DEFAULT_SERIALIZER);
-                    d.set(DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+                    d.set(DocumentPartitionKeyRangeMinInclusiveFieldName, pkr.getMinInclusive());
+                    d.set(DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive());
 
                     QueryItem qi = new QueryItem("{ \"item\": " + d.getInt(OrderByIntFieldName) +
                         " }");

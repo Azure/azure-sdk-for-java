@@ -47,10 +47,10 @@ public final class AzureMonitorAutoConfigure {
     /**
      * Customizes an {@link AutoConfigurationCustomizer} for Azure Monitor.
      * @param autoConfigurationCustomizer the {@link AutoConfigurationCustomizer} object.
-     * @param exporterOptions Advanced configuration to send the data to Azure Monitor.
+     * @param autoConfigureOptions Advanced configuration to send the data to Azure Monitor.
      */
     public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer,
-        AzureMonitorAutoConfigureOptions exporterOptions) {
+        AzureMonitorAutoConfigureOptions autoConfigureOptions) {
         autoConfigurationCustomizer.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
@@ -62,21 +62,21 @@ public final class AzureMonitorAutoConfigure {
         AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
         autoConfigurationCustomizer.addSpanExporterCustomizer((spanExporter, configProperties) -> {
             if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                azureMonitorExporterBuilder.initializeIfNot(exporterOptions, configProperties);
+                azureMonitorExporterBuilder.initializeIfNot(autoConfigureOptions, configProperties);
                 spanExporter = azureMonitorExporterBuilder.buildSpanExporter();
             }
             return spanExporter;
         });
         autoConfigurationCustomizer.addMetricExporterCustomizer((metricExporter, configProperties) -> {
             if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                azureMonitorExporterBuilder.initializeIfNot(exporterOptions, configProperties);
+                azureMonitorExporterBuilder.initializeIfNot(autoConfigureOptions, configProperties);
                 metricExporter = azureMonitorExporterBuilder.buildMetricExporter();
             }
             return metricExporter;
         });
         autoConfigurationCustomizer.addLogRecordExporterCustomizer((logRecordExporter, configProperties) -> {
             if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                azureMonitorExporterBuilder.initializeIfNot(exporterOptions, configProperties);
+                azureMonitorExporterBuilder.initializeIfNot(autoConfigureOptions, configProperties);
                 logRecordExporter = azureMonitorExporterBuilder.buildLogRecordExporter();
             }
             return logRecordExporter;

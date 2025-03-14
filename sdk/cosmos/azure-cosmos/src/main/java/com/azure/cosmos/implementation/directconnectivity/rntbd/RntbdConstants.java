@@ -499,7 +499,7 @@ public final class RntbdConstants {
         ConsistencyLevel((short) 0x0010, RntbdTokenType.Byte, false),
         EntityId((short) 0x0011, RntbdTokenType.String, false),
         ResourceSchemaName((short) 0x0012, RntbdTokenType.SmallString, false),
-        ReplicaPath((short) 0x0013, RntbdTokenType.String, false),
+        ReplicaPath((short) 0x0013, RntbdTokenType.String, false), // true in direct, but not for thin client
         ResourceTokenExpiry((short) 0x0014, RntbdTokenType.ULong, false),
         DatabaseName((short) 0x0015, RntbdTokenType.String, false),
         CollectionName((short) 0x0016, RntbdTokenType.String, false),
@@ -598,7 +598,7 @@ public final class RntbdConstants {
         PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false),
         GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.String, false);
 
-        public static final List<RntbdConstants.RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
+        public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
             EffectivePartitionKey,
             GlobalDatabaseAccountName,
             DatabaseName,
@@ -618,6 +618,7 @@ public final class RntbdConstants {
 
         public static final Set<Short> thinClientProxyExcludedSet;
         public static final Set<Short> thinClientProxyOrderedOrExcludedSet;
+
         public static final Map<Short, RntbdRequestHeader> map;
         public static final EnumSet<RntbdRequestHeader> set = EnumSet.allOf(RntbdRequestHeader.class);
 
@@ -625,15 +626,15 @@ public final class RntbdConstants {
             final Collector<RntbdRequestHeader, ?, Map<Short, RntbdRequestHeader>> collector = Collectors.toMap(RntbdRequestHeader::id, h -> h);
             thinClientProxyOrderedOrExcludedSet =
                 Stream.concat(
-                    thinClientExclusionList.stream(),
-                    thinClientHeadersInOrderList.stream()
-                )
-                .map(RntbdRequestHeader::id)
-                .collect(Collectors.toSet());
+                          thinClientExclusionList.stream(),
+                          thinClientHeadersInOrderList.stream()
+                      )
+                      .map(RntbdRequestHeader::id)
+                      .collect(Collectors.toSet());
             thinClientProxyExcludedSet =
-               thinClientExclusionList.stream()
-                  .map(RntbdRequestHeader::id)
-                  .collect(Collectors.toSet());
+                thinClientExclusionList.stream()
+                                       .map(RntbdRequestHeader::id)
+                                       .collect(Collectors.toSet());
             map = set.stream().collect(collector);
         }
 

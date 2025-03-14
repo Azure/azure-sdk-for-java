@@ -20,7 +20,7 @@ Install the Azure Quantum Jobs client library for Java by adding the following t
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-quantum-jobs</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -226,4 +226,4 @@ additional questions or comments.
 [coc_contact]: mailto:opencode@microsoft.com
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/quantum/azure-quantum-jobs/src/samples/java/com/azure/quantum/jobs
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftemplate%2Fazure-sdk-template%2FREADME.png)
+

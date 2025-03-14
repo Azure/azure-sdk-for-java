@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.SubvolumeModel;
@@ -21,27 +21,28 @@ public final class SubvolumesGetMetadataMockTests {
     @Test
     public void testGetMetadata() throws Exception {
         String responseStr
-            = "{\"id\":\"dphtv\",\"name\":\"lajv\",\"type\":\"jchcsrlzknmzla\",\"properties\":{\"path\":\"pdwvnphcn\",\"parentPath\":\"tpjhm\",\"size\":5508989168713615858,\"bytesUsed\":6447183236703446242,\"permissions\":\"iwdcxsmlzzhzd\",\"creationTimeStamp\":\"2021-11-09T09:45:39Z\",\"accessedTimeStamp\":\"2021-07-29T14:49:37Z\",\"modifiedTimeStamp\":\"2021-06-28T09:26:46Z\",\"changedTimeStamp\":\"2021-09-17T08:33:19Z\",\"provisioningState\":\"Succeeded\"}}";
+            = "{\"id\":\"qboshbra\",\"name\":\"pyyrmfs\",\"type\":\"pavbo\",\"properties\":{\"path\":\"pdbwnupgahxkum\",\"parentPath\":\"jcaacfdmmcpugm\",\"size\":2799453974287418624,\"bytesUsed\":5289288139576843863,\"permissions\":\"hbzehewho\",\"creationTimeStamp\":\"2021-08-24T10:40:17Z\",\"accessedTimeStamp\":\"2021-07-22T20:31:39Z\",\"modifiedTimeStamp\":\"2021-02-23T10:26:16Z\",\"changedTimeStamp\":\"2021-07-12T10:48:01Z\",\"provisioningState\":\"Succeeded\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SubvolumeModel response = manager.subvolumes()
-            .getMetadata("chl", "mltx", "whmozusgzvlnsnnj", "fpafolpymwamxq", "rag", com.azure.core.util.Context.NONE);
+            .getMetadata("ybww", "bdvibidmhmwffpl", "muvapc", "ccrrvweyoxoyyu", "phaimmoi",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pdwvnphcn", response.path());
-        Assertions.assertEquals("tpjhm", response.parentPath());
-        Assertions.assertEquals(5508989168713615858L, response.size());
-        Assertions.assertEquals(6447183236703446242L, response.bytesUsed());
-        Assertions.assertEquals("iwdcxsmlzzhzd", response.permissions());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T09:45:39Z"), response.creationTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T14:49:37Z"), response.accessedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T09:26:46Z"), response.modifiedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T08:33:19Z"), response.changedTimestamp());
+        Assertions.assertEquals("pdbwnupgahxkum", response.path());
+        Assertions.assertEquals("jcaacfdmmcpugm", response.parentPath());
+        Assertions.assertEquals(2799453974287418624L, response.size());
+        Assertions.assertEquals(5289288139576843863L, response.bytesUsed());
+        Assertions.assertEquals("hbzehewho", response.permissions());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-24T10:40:17Z"), response.creationTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T20:31:39Z"), response.accessedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T10:26:16Z"), response.modifiedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-12T10:48:01Z"), response.changedTimestamp());
         Assertions.assertEquals("Succeeded", response.provisioningState());
     }
 }

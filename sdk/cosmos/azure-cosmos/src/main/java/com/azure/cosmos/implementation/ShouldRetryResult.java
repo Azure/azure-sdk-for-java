@@ -41,7 +41,7 @@ public class ShouldRetryResult {
         return new ShouldRetryResult(null, null, false, null, true);
     }
 
-    public static ShouldRetryResult noRetryOnNonRelatedException(Exception e) {
+    public static ShouldRetryResult errorOnNonRelatedException(Exception e) {
         return new ShouldRetryResult(null, e, false, null, true);
     }
 

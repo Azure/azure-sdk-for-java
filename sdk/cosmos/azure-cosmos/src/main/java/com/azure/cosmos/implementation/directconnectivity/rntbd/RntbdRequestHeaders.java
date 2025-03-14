@@ -68,6 +68,7 @@ public final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHead
         final byte[] content = request.getContentAsByteArray();
 
         this.getPayloadPresent().setValue(content != null && content.length > 0);
+
         RntbdToken replicaPathToken = this.getReplicaPath();
         if (replicaPathToken != null) {
             replicaPathToken.setValue(args.replicaPath());

@@ -6,9 +6,9 @@ package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
 import java.nio.charset.StandardCharsets;
@@ -19,17 +19,17 @@ import reactor.core.publisher.Mono;
 public final class GroupQuotaSubscriptionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        String responseStr = "{\"id\":\"gvpgy\",\"name\":\"gqgitxmedjvcsl\",\"type\":\"n\"}";
+        String responseStr = "{\"id\":\"klwndnhjdauwhv\",\"name\":\"l\",\"type\":\"zbtd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         QuotaManager manager = QuotaManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProxyResource response = manager.groupQuotaSubscriptions()
-            .createOrUpdate("xknalaulppg", "dtpnapnyiropuhp", com.azure.core.util.Context.NONE);
+            .createOrUpdate("nrjawgqwg", "hniskxfbkpyc", com.azure.core.util.Context.NONE);
 
     }
 }

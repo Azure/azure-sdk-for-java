@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-eventgrid</artifactId>
-    <version>1.2.0-beta.7</version>
+    <version>1.2.0-beta.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -101,4 +101,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-resourcemanager-eventgrid%2FREADME.png)
+

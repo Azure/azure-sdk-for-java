@@ -16,109 +16,88 @@ public final class AttachedDatabaseConfigurationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AttachedDatabaseConfigurationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"sexso\",\"properties\":{\"provisioningState\":\"Deleting\",\"databaseName\":\"uqhhahhxvrh\",\"clusterResourceId\":\"zkw\",\"attachedDatabaseNames\":[\"wws\"],\"defaultPrincipalsModificationKind\":\"None\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"tqs\",\"hqxujxukndxdi\",\"rjguufzdmsyqtf\",\"hwhbotzingamv\"],\"tablesToExclude\":[\"o\"],\"externalTablesToInclude\":[\"zudphqamvdkfw\",\"nwcvtbvkayhmtnv\"],\"externalTablesToExclude\":[\"atkzwpcnpw\",\"cjaesgvvs\",\"cyajguqf\"],\"materializedViewsToInclude\":[\"gzlvdnkfxu\"],\"materializedViewsToExclude\":[\"dwzrmuh\",\"pfcqdp\",\"qxqvpsvuoymgc\",\"elvezrypq\"],\"functionsToInclude\":[\"eokerqwkyhkobopg\"],\"functionsToExclude\":[\"k\"]},\"databaseNameOverride\":\"epbqpcrfkbw\",\"databaseNamePrefix\":\"snjvcdwxlpqekftn\"},\"id\":\"htjsying\",\"name\":\"fq\",\"type\":\"tmtdhtmdvypgik\"},{\"location\":\"szywkbirryu\",\"properties\":{\"provisioningState\":\"Creating\",\"databaseName\":\"kj\",\"clusterResourceId\":\"qrvqq\",\"attachedDatabaseNames\":[\"jinrvgoupmfiibfg\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"lvrwxkvtkk\",\"llqwjygvjayvblmh\"],\"tablesToExclude\":[\"uhbxvvy\",\"gsopbyrqufegxu\",\"wz\",\"bnhlmc\"],\"externalTablesToInclude\":[\"dn\"],\"externalTablesToExclude\":[\"vgbmhr\",\"xkw\",\"yijejvegrhbpnaix\",\"xccbdreaxhcex\"],\"materializedViewsToInclude\":[\"vqahqkghtpwi\",\"nhyjsv\",\"ycxzbfvoo\",\"vrvmtgjqppyost\"],\"materializedViewsToExclude\":[\"zm\"],\"functionsToInclude\":[\"fipns\",\"kmcwaekrrjreafx\"],\"functionsToExclude\":[\"umh\",\"glikkxwslolb\",\"pvuzlmv\",\"elfk\"]},\"databaseNameOverride\":\"plcrpwjxeznoig\",\"databaseNamePrefix\":\"njwmwkpnbsazejj\"},\"id\":\"qkagfhsxt\",\"name\":\"augzxnfaazpxdtn\",\"type\":\"dm\"},{\"location\":\"j\",\"properties\":{\"provisioningState\":\"Deleting\",\"databaseName\":\"envrkpyouaibrebq\",\"clusterResourceId\":\"aysjkixqtnqttez\",\"attachedDatabaseNames\":[\"ffiakp\",\"pqqmted\"],\"defaultPrincipalsModificationKind\":\"None\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"ihyeozphvw\"],\"tablesToExclude\":[\"qncygupkvi\"],\"externalTablesToInclude\":[\"scw\",\"qupevzh\",\"stotxh\",\"jujbypelmcuvhixb\"],\"externalTablesToExclude\":[\"fw\",\"yl\"],\"materializedViewsToInclude\":[\"o\"],\"materializedViewsToExclude\":[\"tpkiwkkbnujry\",\"vtylbfpncu\",\"doiwi\",\"thtywub\"],\"functionsToInclude\":[\"ihwqknfdntwjchr\",\"goihx\",\"mwctondzjluudfd\"],\"functionsToExclude\":[\"gytsbwtovv\"]},\"databaseNameOverride\":\"seinqfiuf\",\"databaseNamePrefix\":\"knpirgnepttwq\"},\"id\":\"sniffc\",\"name\":\"mqnrojlpijnkr\",\"type\":\"frddhcrati\"}]}")
+            "{\"value\":[{\"location\":\"svfycxzbfv\",\"properties\":{\"provisioningState\":\"Moving\",\"databaseName\":\"rvmtgjq\",\"clusterResourceId\":\"pyostronzmyhgfi\",\"attachedDatabaseNames\":[\"xkmcwaekrrjre\"],\"defaultPrincipalsModificationKind\":\"Replace\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"gumhjglikkxws\",\"olbq\",\"vuzlm\",\"felfktg\"],\"tablesToExclude\":[\"rpw\"],\"externalTablesToInclude\":[\"znoigbrn\",\"w\"],\"externalTablesToExclude\":[\"pn\"],\"materializedViewsToInclude\":[\"zejjoqk\"],\"materializedViewsToExclude\":[\"hsxttaugzxnf\",\"azpxdtnkdmkqjjl\",\"uenvrkp\"],\"functionsToInclude\":[\"aibrebqaaysjkixq\",\"nqttezl\",\"fffiak\",\"jpqqmted\"],\"functionsToExclude\":[\"mjihyeozphv\"]},\"databaseNameOverride\":\"uyqncygupkvipmd\",\"databaseNamePrefix\":\"wx\"},\"id\":\"upev\",\"name\":\"hfstotxhojujbyp\",\"type\":\"lmcuvhixb\"},{\"location\":\"yfwnylr\",\"properties\":{\"provisioningState\":\"Running\",\"databaseName\":\"sttp\",\"clusterResourceId\":\"iwkkbn\",\"attachedDatabaseNames\":[\"ywvtylbfpnc\",\"rd\",\"iwii\"],\"defaultPrincipalsModificationKind\":\"Replace\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"ubxcbihw\",\"knfd\"],\"tablesToExclude\":[\"jchrdgoihxumw\",\"ton\"],\"externalTablesToInclude\":[\"luudfdlwggytsb\"],\"externalTablesToExclude\":[\"vvt\",\"seinqfiuf\",\"qknp\",\"rgnepttwqmsniffc\"],\"materializedViewsToInclude\":[\"nrojlpijnkr\",\"frddhcrati\",\"zronasxift\",\"zq\"],\"materializedViewsToExclude\":[\"f\",\"wesgogczh\",\"nnxk\"],\"functionsToInclude\":[\"nyhmossxkkgthr\",\"gh\",\"jbdhqxvc\"],\"functionsToExclude\":[\"rpdsof\",\"shrnsvbuswdvz\",\"ybycnunvj\",\"rtkfawnopq\"]},\"databaseNameOverride\":\"kyzirtxdyux\",\"databaseNamePrefix\":\"jntpsewgioilqu\"},\"id\":\"rydxtqm\",\"name\":\"eoxorggufhyao\",\"type\":\"tbghhavgrvkf\"}]}")
             .toObject(AttachedDatabaseConfigurationListResult.class);
-        Assertions.assertEquals("sexso", model.value().get(0).location());
-        Assertions.assertEquals("uqhhahhxvrh", model.value().get(0).databaseName());
-        Assertions.assertEquals("zkw", model.value().get(0).clusterResourceId());
-        Assertions.assertEquals(DefaultPrincipalsModificationKind.NONE,
+        Assertions.assertEquals("svfycxzbfv", model.value().get(0).location());
+        Assertions.assertEquals("rvmtgjq", model.value().get(0).databaseName());
+        Assertions.assertEquals("pyostronzmyhgfi", model.value().get(0).clusterResourceId());
+        Assertions.assertEquals(DefaultPrincipalsModificationKind.REPLACE,
             model.value().get(0).defaultPrincipalsModificationKind());
-        Assertions.assertEquals("tqs", model.value().get(0).tableLevelSharingProperties().tablesToInclude().get(0));
-        Assertions.assertEquals("o", model.value().get(0).tableLevelSharingProperties().tablesToExclude().get(0));
-        Assertions.assertEquals("zudphqamvdkfw",
+        Assertions.assertEquals("gumhjglikkxws",
+            model.value().get(0).tableLevelSharingProperties().tablesToInclude().get(0));
+        Assertions.assertEquals("rpw", model.value().get(0).tableLevelSharingProperties().tablesToExclude().get(0));
+        Assertions.assertEquals("znoigbrn",
             model.value().get(0).tableLevelSharingProperties().externalTablesToInclude().get(0));
-        Assertions.assertEquals("atkzwpcnpw",
+        Assertions.assertEquals("pn",
             model.value().get(0).tableLevelSharingProperties().externalTablesToExclude().get(0));
-        Assertions.assertEquals("gzlvdnkfxu",
+        Assertions.assertEquals("zejjoqk",
             model.value().get(0).tableLevelSharingProperties().materializedViewsToInclude().get(0));
-        Assertions.assertEquals("dwzrmuh",
+        Assertions.assertEquals("hsxttaugzxnf",
             model.value().get(0).tableLevelSharingProperties().materializedViewsToExclude().get(0));
-        Assertions.assertEquals("eokerqwkyhkobopg",
+        Assertions.assertEquals("aibrebqaaysjkixq",
             model.value().get(0).tableLevelSharingProperties().functionsToInclude().get(0));
-        Assertions.assertEquals("k", model.value().get(0).tableLevelSharingProperties().functionsToExclude().get(0));
-        Assertions.assertEquals("epbqpcrfkbw", model.value().get(0).databaseNameOverride());
-        Assertions.assertEquals("snjvcdwxlpqekftn", model.value().get(0).databaseNamePrefix());
+        Assertions.assertEquals("mjihyeozphv",
+            model.value().get(0).tableLevelSharingProperties().functionsToExclude().get(0));
+        Assertions.assertEquals("uyqncygupkvipmd", model.value().get(0).databaseNameOverride());
+        Assertions.assertEquals("wx", model.value().get(0).databaseNamePrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AttachedDatabaseConfigurationListResult model
-            = new AttachedDatabaseConfigurationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AttachedDatabaseConfigurationInner().withLocation("sexso")
-                                .withDatabaseName("uqhhahhxvrh")
-                                .withClusterResourceId("zkw")
-                                .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.NONE)
-                                .withTableLevelSharingProperties(new TableLevelSharingProperties()
-                                    .withTablesToInclude(
-                                        Arrays.asList("tqs", "hqxujxukndxdi", "rjguufzdmsyqtf", "hwhbotzingamv"))
-                                    .withTablesToExclude(Arrays.asList("o"))
-                                    .withExternalTablesToInclude(Arrays.asList("zudphqamvdkfw", "nwcvtbvkayhmtnv"))
-                                    .withExternalTablesToExclude(Arrays.asList("atkzwpcnpw", "cjaesgvvs", "cyajguqf"))
-                                    .withMaterializedViewsToInclude(Arrays.asList("gzlvdnkfxu"))
-                                    .withMaterializedViewsToExclude(
-                                        Arrays.asList("dwzrmuh", "pfcqdp", "qxqvpsvuoymgc", "elvezrypq"))
-                                    .withFunctionsToInclude(Arrays.asList("eokerqwkyhkobopg"))
-                                    .withFunctionsToExclude(Arrays.asList("k")))
-                                .withDatabaseNameOverride("epbqpcrfkbw")
-                                .withDatabaseNamePrefix("snjvcdwxlpqekftn"),
-                            new AttachedDatabaseConfigurationInner().withLocation("szywkbirryu")
-                                .withDatabaseName("kj")
-                                .withClusterResourceId("qrvqq")
-                                .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)
-                                .withTableLevelSharingProperties(new TableLevelSharingProperties()
-                                    .withTablesToInclude(Arrays.asList("lvrwxkvtkk", "llqwjygvjayvblmh"))
-                                    .withTablesToExclude(Arrays.asList("uhbxvvy", "gsopbyrqufegxu", "wz", "bnhlmc"))
-                                    .withExternalTablesToInclude(Arrays.asList("dn"))
-                                    .withExternalTablesToExclude(
-                                        Arrays.asList("vgbmhr", "xkw", "yijejvegrhbpnaix", "xccbdreaxhcex"))
-                                    .withMaterializedViewsToInclude(
-                                        Arrays.asList("vqahqkghtpwi", "nhyjsv", "ycxzbfvoo", "vrvmtgjqppyost"))
-                                    .withMaterializedViewsToExclude(Arrays.asList("zm"))
-                                    .withFunctionsToInclude(Arrays.asList("fipns", "kmcwaekrrjreafx"))
-                                    .withFunctionsToExclude(Arrays.asList("umh", "glikkxwslolb", "pvuzlmv", "elfk")))
-                                .withDatabaseNameOverride("plcrpwjxeznoig")
-                                .withDatabaseNamePrefix("njwmwkpnbsazejj"),
-                            new AttachedDatabaseConfigurationInner().withLocation("j")
-                                .withDatabaseName("envrkpyouaibrebq")
-                                .withClusterResourceId("aysjkixqtnqttez")
-                                .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.NONE)
-                                .withTableLevelSharingProperties(
-                                    new TableLevelSharingProperties().withTablesToInclude(Arrays.asList("ihyeozphvw"))
-                                        .withTablesToExclude(Arrays.asList("qncygupkvi"))
-                                        .withExternalTablesToInclude(
-                                            Arrays.asList("scw", "qupevzh", "stotxh", "jujbypelmcuvhixb"))
-                                        .withExternalTablesToExclude(Arrays.asList("fw", "yl"))
-                                        .withMaterializedViewsToInclude(Arrays.asList("o"))
-                                        .withMaterializedViewsToExclude(
-                                            Arrays.asList("tpkiwkkbnujry", "vtylbfpncu", "doiwi", "thtywub"))
-                                        .withFunctionsToInclude(
-                                            Arrays.asList("ihwqknfdntwjchr", "goihx", "mwctondzjluudfd"))
-                                        .withFunctionsToExclude(Arrays.asList("gytsbwtovv")))
-                                .withDatabaseNameOverride("seinqfiuf")
-                                .withDatabaseNamePrefix("knpirgnepttwq")));
+            = new AttachedDatabaseConfigurationListResult().withValue(Arrays.asList(
+                new AttachedDatabaseConfigurationInner().withLocation("svfycxzbfv")
+                    .withDatabaseName("rvmtgjq")
+                    .withClusterResourceId("pyostronzmyhgfi")
+                    .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.REPLACE)
+                    .withTableLevelSharingProperties(new TableLevelSharingProperties()
+                        .withTablesToInclude(Arrays.asList("gumhjglikkxws", "olbq", "vuzlm", "felfktg"))
+                        .withTablesToExclude(Arrays.asList("rpw"))
+                        .withExternalTablesToInclude(Arrays.asList("znoigbrn", "w"))
+                        .withExternalTablesToExclude(Arrays.asList("pn"))
+                        .withMaterializedViewsToInclude(Arrays.asList("zejjoqk"))
+                        .withMaterializedViewsToExclude(Arrays.asList("hsxttaugzxnf", "azpxdtnkdmkqjjl", "uenvrkp"))
+                        .withFunctionsToInclude(Arrays.asList("aibrebqaaysjkixq", "nqttezl", "fffiak", "jpqqmted"))
+                        .withFunctionsToExclude(Arrays.asList("mjihyeozphv")))
+                    .withDatabaseNameOverride("uyqncygupkvipmd")
+                    .withDatabaseNamePrefix("wx"),
+                new AttachedDatabaseConfigurationInner().withLocation("yfwnylr")
+                    .withDatabaseName("sttp")
+                    .withClusterResourceId("iwkkbn")
+                    .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.REPLACE)
+                    .withTableLevelSharingProperties(new TableLevelSharingProperties()
+                        .withTablesToInclude(Arrays.asList("ubxcbihw", "knfd"))
+                        .withTablesToExclude(Arrays.asList("jchrdgoihxumw", "ton"))
+                        .withExternalTablesToInclude(Arrays.asList("luudfdlwggytsb"))
+                        .withExternalTablesToExclude(Arrays.asList("vvt", "seinqfiuf", "qknp", "rgnepttwqmsniffc"))
+                        .withMaterializedViewsToInclude(Arrays.asList("nrojlpijnkr", "frddhcrati", "zronasxift", "zq"))
+                        .withMaterializedViewsToExclude(Arrays.asList("f", "wesgogczh", "nnxk"))
+                        .withFunctionsToInclude(Arrays.asList("nyhmossxkkgthr", "gh", "jbdhqxvc"))
+                        .withFunctionsToExclude(Arrays.asList("rpdsof", "shrnsvbuswdvz", "ybycnunvj", "rtkfawnopq")))
+                    .withDatabaseNameOverride("kyzirtxdyux")
+                    .withDatabaseNamePrefix("jntpsewgioilqu")));
         model = BinaryData.fromObject(model).toObject(AttachedDatabaseConfigurationListResult.class);
-        Assertions.assertEquals("sexso", model.value().get(0).location());
-        Assertions.assertEquals("uqhhahhxvrh", model.value().get(0).databaseName());
-        Assertions.assertEquals("zkw", model.value().get(0).clusterResourceId());
-        Assertions.assertEquals(DefaultPrincipalsModificationKind.NONE,
+        Assertions.assertEquals("svfycxzbfv", model.value().get(0).location());
+        Assertions.assertEquals("rvmtgjq", model.value().get(0).databaseName());
+        Assertions.assertEquals("pyostronzmyhgfi", model.value().get(0).clusterResourceId());
+        Assertions.assertEquals(DefaultPrincipalsModificationKind.REPLACE,
             model.value().get(0).defaultPrincipalsModificationKind());
-        Assertions.assertEquals("tqs", model.value().get(0).tableLevelSharingProperties().tablesToInclude().get(0));
-        Assertions.assertEquals("o", model.value().get(0).tableLevelSharingProperties().tablesToExclude().get(0));
-        Assertions.assertEquals("zudphqamvdkfw",
+        Assertions.assertEquals("gumhjglikkxws",
+            model.value().get(0).tableLevelSharingProperties().tablesToInclude().get(0));
+        Assertions.assertEquals("rpw", model.value().get(0).tableLevelSharingProperties().tablesToExclude().get(0));
+        Assertions.assertEquals("znoigbrn",
             model.value().get(0).tableLevelSharingProperties().externalTablesToInclude().get(0));
-        Assertions.assertEquals("atkzwpcnpw",
+        Assertions.assertEquals("pn",
             model.value().get(0).tableLevelSharingProperties().externalTablesToExclude().get(0));
-        Assertions.assertEquals("gzlvdnkfxu",
+        Assertions.assertEquals("zejjoqk",
             model.value().get(0).tableLevelSharingProperties().materializedViewsToInclude().get(0));
-        Assertions.assertEquals("dwzrmuh",
+        Assertions.assertEquals("hsxttaugzxnf",
             model.value().get(0).tableLevelSharingProperties().materializedViewsToExclude().get(0));
-        Assertions.assertEquals("eokerqwkyhkobopg",
+        Assertions.assertEquals("aibrebqaaysjkixq",
             model.value().get(0).tableLevelSharingProperties().functionsToInclude().get(0));
-        Assertions.assertEquals("k", model.value().get(0).tableLevelSharingProperties().functionsToExclude().get(0));
-        Assertions.assertEquals("epbqpcrfkbw", model.value().get(0).databaseNameOverride());
-        Assertions.assertEquals("snjvcdwxlpqekftn", model.value().get(0).databaseNamePrefix());
+        Assertions.assertEquals("mjihyeozphv",
+            model.value().get(0).tableLevelSharingProperties().functionsToExclude().get(0));
+        Assertions.assertEquals("uyqncygupkvipmd", model.value().get(0).databaseNameOverride());
+        Assertions.assertEquals("wx", model.value().get(0).databaseNamePrefix());
     }
 }

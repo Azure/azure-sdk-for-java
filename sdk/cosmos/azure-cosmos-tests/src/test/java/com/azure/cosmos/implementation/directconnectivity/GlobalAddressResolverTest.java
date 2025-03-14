@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
@@ -28,6 +27,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -79,17 +79,17 @@ public class GlobalAddressResolverTest {
         httpClient = Mockito.mock(HttpClient.class);
         endpointManager = Mockito.mock(GlobalEndpointManager.class);
 
-        List<LocationCache.ConsolidatedRegionalEndpoint> readEndPointList = new ArrayList<>();
-        readEndPointList.add(new LocationCache.ConsolidatedRegionalEndpoint(urlforRead1, null));
-        readEndPointList.add(new LocationCache.ConsolidatedRegionalEndpoint(urlforRead2, null));
-        readEndPointList.add(new LocationCache.ConsolidatedRegionalEndpoint(urlforRead3, null));
-        UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> readList = new UnmodifiableList<>(readEndPointList);
+        List<RegionalRoutingContext> readEndPointList = new ArrayList<>();
+        readEndPointList.add(new RegionalRoutingContext(urlforRead1));
+        readEndPointList.add(new RegionalRoutingContext(urlforRead2));
+        readEndPointList.add(new RegionalRoutingContext(urlforRead3));
+        UnmodifiableList<RegionalRoutingContext> readList = new UnmodifiableList<>(readEndPointList);
 
-        List<LocationCache.ConsolidatedRegionalEndpoint> writeEndPointList = new ArrayList<>();
-        writeEndPointList.add(new LocationCache.ConsolidatedRegionalEndpoint(urlforWrite1, null));
-        writeEndPointList.add(new LocationCache.ConsolidatedRegionalEndpoint(urlforWrite2, null));
-        writeEndPointList.add(new LocationCache.ConsolidatedRegionalEndpoint(urlforWrite3, null));
-        UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> writeList = new UnmodifiableList<>(writeEndPointList);
+        List<RegionalRoutingContext> writeEndPointList = new ArrayList<>();
+        writeEndPointList.add(new RegionalRoutingContext(urlforWrite1));
+        writeEndPointList.add(new RegionalRoutingContext(urlforWrite2));
+        writeEndPointList.add(new RegionalRoutingContext(urlforWrite3));
+        UnmodifiableList<RegionalRoutingContext> writeList = new UnmodifiableList<>(writeEndPointList);
 
         Mockito.when(endpointManager.getReadEndpoints()).thenReturn(readList);
         Mockito.when(endpointManager.getWriteEndpoints()).thenReturn(writeList);
@@ -123,13 +123,13 @@ public class GlobalAddressResolverTest {
         assertThat(urlsBeforeResolve.contains(urlforRead3)).isFalse();//Last read will be removed from addressCacheByEndpoint after 5 endpoints
         assertThat(urlsBeforeResolve.contains(urlforRead2)).isTrue();
 
-        LocationCache.ConsolidatedRegionalEndpoint testUrl = new LocationCache.ConsolidatedRegionalEndpoint(new URI("http://Test.com/"), null);
+        RegionalRoutingContext testUrl = new RegionalRoutingContext(new URI("http://Test.com/"));
         Mockito.when(endpointManager.resolveServiceEndpoint(ArgumentMatchers.any())).thenReturn(testUrl);
         globalAddressResolver.resolveAsync(request, true);
         Set<URI> urlsAfterResolve = globalAddressResolver.addressCacheByEndpoint.keySet();
         assertThat(urlsAfterResolve.size()).isEqualTo(5);
         assertThat(urlsAfterResolve.contains(urlforRead2)).isFalse();//Last read will be removed from addressCacheByEndpoint after 5 endpoints
-        assertThat(urlsBeforeResolve.contains(testUrl.getGatewayLocationEndpoint())).isTrue();//New endpoint will be added in addressCacheByEndpoint
+        assertThat(urlsBeforeResolve.contains(testUrl.getGatewayRegionalEndpoint())).isTrue();//New endpoint will be added in addressCacheByEndpoint
     }
 
     @Test(groups = "unit")
@@ -159,7 +159,7 @@ public class GlobalAddressResolverTest {
         Mockito
             .when(endpointManager.getReadEndpoints())
             .thenReturn(new UnmodifiableList<>(
-                Arrays.asList(new LocationCache.ConsolidatedRegionalEndpoint(urlforRead1, null), new LocationCache.ConsolidatedRegionalEndpoint(urlforRead2, null))));
+                Arrays.asList(new RegionalRoutingContext(urlforRead1), new RegionalRoutingContext(urlforRead2))));
 
         DocumentCollection documentCollection = new DocumentCollection();
         documentCollection.setId("TestColl");

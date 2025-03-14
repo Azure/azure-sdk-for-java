@@ -14,21 +14,19 @@ public final class AllocatedQuotaToSubscriptionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AllocatedQuotaToSubscriptionList model = BinaryData.fromString(
-            "{\"value\":[{\"subscriptionId\":\"qw\",\"quotaAllocated\":1046762399333359388},{\"subscriptionId\":\"bbjfddgmbmbexp\",\"quotaAllocated\":313278106119438402},{\"subscriptionId\":\"qrolfpf\",\"quotaAllocated\":5108229152426032776},{\"subscriptionId\":\"bquxigjy\",\"quotaAllocated\":3662129632751771998}]}")
+            "{\"value\":[{\"subscriptionId\":\"dfvzwdzuhty\",\"quotaAllocated\":7933168556425721476},{\"subscriptionId\":\"kfthwxmntei\",\"quotaAllocated\":320495050152534005}]}")
             .toObject(AllocatedQuotaToSubscriptionList.class);
-        Assertions.assertEquals("qw", model.value().get(0).subscriptionId());
-        Assertions.assertEquals(1046762399333359388L, model.value().get(0).quotaAllocated());
+        Assertions.assertEquals("dfvzwdzuhty", model.value().get(0).subscriptionId());
+        Assertions.assertEquals(7933168556425721476L, model.value().get(0).quotaAllocated());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AllocatedQuotaToSubscriptionList model = new AllocatedQuotaToSubscriptionList().withValue(Arrays.asList(
-            new AllocatedToSubscription().withSubscriptionId("qw").withQuotaAllocated(1046762399333359388L),
-            new AllocatedToSubscription().withSubscriptionId("bbjfddgmbmbexp").withQuotaAllocated(313278106119438402L),
-            new AllocatedToSubscription().withSubscriptionId("qrolfpf").withQuotaAllocated(5108229152426032776L),
-            new AllocatedToSubscription().withSubscriptionId("bquxigjy").withQuotaAllocated(3662129632751771998L)));
+            new AllocatedToSubscription().withSubscriptionId("dfvzwdzuhty").withQuotaAllocated(7933168556425721476L),
+            new AllocatedToSubscription().withSubscriptionId("kfthwxmntei").withQuotaAllocated(320495050152534005L)));
         model = BinaryData.fromObject(model).toObject(AllocatedQuotaToSubscriptionList.class);
-        Assertions.assertEquals("qw", model.value().get(0).subscriptionId());
-        Assertions.assertEquals(1046762399333359388L, model.value().get(0).quotaAllocated());
+        Assertions.assertEquals("dfvzwdzuhty", model.value().get(0).subscriptionId());
+        Assertions.assertEquals(7933168556425721476L, model.value().get(0).quotaAllocated());
     }
 }

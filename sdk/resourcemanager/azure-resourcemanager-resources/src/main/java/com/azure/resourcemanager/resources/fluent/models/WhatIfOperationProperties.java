@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.resources.models.DeploymentDiagnosticsDefinition;
 import com.azure.resourcemanager.resources.models.WhatIfChange;
 import java.io.IOException;
 import java.util.List;
@@ -22,6 +23,16 @@ public final class WhatIfOperationProperties implements JsonSerializable<WhatIfO
      * List of resource changes predicted by What-If operation.
      */
     private List<WhatIfChange> changes;
+
+    /*
+     * List of resource changes predicted by What-If operation.
+     */
+    private List<WhatIfChange> potentialChanges;
+
+    /*
+     * List of resource diagnostics detected by What-If operation.
+     */
+    private List<DeploymentDiagnosticsDefinition> diagnostics;
 
     /**
      * Creates an instance of WhatIfOperationProperties class.
@@ -50,6 +61,35 @@ public final class WhatIfOperationProperties implements JsonSerializable<WhatIfO
     }
 
     /**
+     * Get the potentialChanges property: List of resource changes predicted by What-If operation.
+     * 
+     * @return the potentialChanges value.
+     */
+    public List<WhatIfChange> potentialChanges() {
+        return this.potentialChanges;
+    }
+
+    /**
+     * Set the potentialChanges property: List of resource changes predicted by What-If operation.
+     * 
+     * @param potentialChanges the potentialChanges value to set.
+     * @return the WhatIfOperationProperties object itself.
+     */
+    public WhatIfOperationProperties withPotentialChanges(List<WhatIfChange> potentialChanges) {
+        this.potentialChanges = potentialChanges;
+        return this;
+    }
+
+    /**
+     * Get the diagnostics property: List of resource diagnostics detected by What-If operation.
+     * 
+     * @return the diagnostics value.
+     */
+    public List<DeploymentDiagnosticsDefinition> diagnostics() {
+        return this.diagnostics;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -57,6 +97,12 @@ public final class WhatIfOperationProperties implements JsonSerializable<WhatIfO
     public void validate() {
         if (changes() != null) {
             changes().forEach(e -> e.validate());
+        }
+        if (potentialChanges() != null) {
+            potentialChanges().forEach(e -> e.validate());
+        }
+        if (diagnostics() != null) {
+            diagnostics().forEach(e -> e.validate());
         }
     }
 
@@ -67,6 +113,8 @@ public final class WhatIfOperationProperties implements JsonSerializable<WhatIfO
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("changes", this.changes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("potentialChanges", this.potentialChanges,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -88,6 +136,13 @@ public final class WhatIfOperationProperties implements JsonSerializable<WhatIfO
                 if ("changes".equals(fieldName)) {
                     List<WhatIfChange> changes = reader.readArray(reader1 -> WhatIfChange.fromJson(reader1));
                     deserializedWhatIfOperationProperties.changes = changes;
+                } else if ("potentialChanges".equals(fieldName)) {
+                    List<WhatIfChange> potentialChanges = reader.readArray(reader1 -> WhatIfChange.fromJson(reader1));
+                    deserializedWhatIfOperationProperties.potentialChanges = potentialChanges;
+                } else if ("diagnostics".equals(fieldName)) {
+                    List<DeploymentDiagnosticsDefinition> diagnostics
+                        = reader.readArray(reader1 -> DeploymentDiagnosticsDefinition.fromJson(reader1));
+                    deserializedWhatIfOperationProperties.diagnostics = diagnostics;
                 } else {
                     reader.skipChildren();
                 }

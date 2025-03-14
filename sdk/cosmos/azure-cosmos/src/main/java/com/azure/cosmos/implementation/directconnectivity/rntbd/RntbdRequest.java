@@ -16,7 +16,6 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdCons
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public final class RntbdRequest {
-    private final static Logger logger = LoggerFactory.getLogger(RntbdRequest.class);
     private static final byte[] EMPTY_BYTE_ARRAY = {};
 
     private final RntbdRequestFrame frame;
@@ -45,6 +44,7 @@ public final class RntbdRequest {
 
     @JsonIgnore
     @SuppressWarnings("unchecked")
+    // Returns true if set successfully - false if the header does not exist
     public boolean setHeaderValue(final RntbdRequestHeader header, Object value) {
         RntbdToken token = this.headers.get(header);
         if (token == null) {
@@ -89,22 +89,18 @@ public final class RntbdRequest {
         return new RntbdRequest(header, metadata, payload);
     }
 
-    public RntbdRequestHeaders getHeaders() {
-        return this.headers;
-    }
     public void encode(final ByteBuf out, boolean forThinClient) {
 
+        // If payload exists it is encoded as prefix length (32-bit) + the raw payload
         final int effectivePayloadSize = this.payload != null && this.payload.length > 0 ? this.payload.length + 4 : 0;
         final int expectedLength = RntbdRequestFrame.LENGTH + this.headers.computeLength(forThinClient);
-        final int start = out.writerIndex();
 
-        logger.error("RntbdRequest.encode Start {}, ExpectedLength {} + payload length {}", start, expectedLength, effectivePayloadSize);
+        final int start = out.writerIndex();
         out.writeIntLE(expectedLength);
         this.frame.encode(out);
-        logger.error("After frame WriteIndex {}", out.writerIndex());
         this.headers.encode(out, forThinClient);
-        logger.error("After headers WriteIndex {}", out.writerIndex());
-        final int observedLength = out.writerIndex() - start;
+
+        int observedLength = out.writerIndex() - start;
 
         /*checkState(observedLength == expectedLength,
             "encoding error: {\"expectedLength\": %s, \"observedLength\": %s}",
@@ -114,9 +110,13 @@ public final class RntbdRequest {
         if (this.payload.length > 0) {
             out.writeIntLE(this.payload.length);
             out.writeBytes(this.payload);
-            logger.error("After payload of length {} WriteIndex {}", this.payload.length, out.writerIndex());
-        } else {
-            logger.error("NO PAYLOAD");
+
+            observedLength = out.writerIndex() - start;
+
+            checkState(observedLength == expectedLength + effectivePayloadSize,
+                "payload encoding error: {\"expectedLength\": %s, \"observedLength\": %s}",
+                expectedLength + effectivePayloadSize,
+                observedLength);
         }
 
 

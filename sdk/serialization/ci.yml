@@ -45,36 +45,14 @@ extends:
         groupId: com.azure
         safeName: azurexml
         releaseInBatch: ${{ parameters.release_azurexml }}
-    AdditionalStagesAfterBuild:
-      - stage: AzureJsonReflectVersionSupport
-        displayName: 'azure-json-reflect Version Support'
-        dependsOn: []
-        jobs:
-          - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
-            parameters:
-              Artifacts:
-                - name: azure-json-reflect
-                  groupId: com.azure
-                  safeName: azurejsonreflect
-              VersionOverrides:
-                - gson_2.4
-                - gson_2.5
-                - gson_2.6
-                - gson_2.7
-                - gson_2.8
-                - gson_2.9
-                - gson_2.10
-                - gson_2.11
-                - jackson_2.10
-                - jackson_2.11
-                - jackson_2.12
-                - jackson_2.13
-                - jackson_2.14
-                - jackson_2.15
-                - jackson_2.16
-                - jackson_2.17
-                - jackson_2.18
-              TestGoals: surefire:test
+
+    # This needs to be temporarily here for the PR pipeline.
+    MatrixConfigs:
+      - Name: Java_ci_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
 
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml

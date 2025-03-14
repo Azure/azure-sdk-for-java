@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-phonenumbers</artifactId>
-  <version>1.1.4</version>
+  <version>1.3.0-beta.1</version>
 </dependency>
 ```
 
@@ -332,4 +332,4 @@ Check out other client libraries for Azure communication service
 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-phonenumbers%2FREADME.png)
+

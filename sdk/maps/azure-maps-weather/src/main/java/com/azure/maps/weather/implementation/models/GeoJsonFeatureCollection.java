@@ -18,7 +18,8 @@ import java.util.List;
 @Fluent
 public final class GeoJsonFeatureCollection extends GeoJsonObject {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
     private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_FEATURE_COLLECTION;
 

@@ -44,20 +44,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     private static final Logger logger = LoggerFactory.getLogger(ThinClientStoreModel.class);
 
-    private static final List<RntbdConstants.RntbdRequestHeader> thinClientHeadersInOrder = Arrays.asList(
-        RntbdConstants.RntbdRequestHeader.EffectivePartitionKey,
-        RntbdConstants.RntbdRequestHeader.GlobalDatabaseAccountName,
-        RntbdConstants.RntbdRequestHeader.DatabaseName,
-        RntbdConstants.RntbdRequestHeader.CollectionName,
-        RntbdConstants.RntbdRequestHeader.CollectionRid,
-        //RntbdConstants.RntbdRequestHeader.ResourceId,
-        RntbdConstants.RntbdRequestHeader.PayloadPresent,
-        RntbdConstants.RntbdRequestHeader.DocumentName,
-        RntbdConstants.RntbdRequestHeader.AuthorizationToken,
-        RntbdConstants.RntbdRequestHeader.Date);
-
-
-
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
         ISessionContainer sessionContainer,
@@ -107,8 +93,10 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public URI getRootUri(RxDocumentServiceRequest request) {
-        //var uri = this.globalEndpointManager.resolveServiceEndpoint(request).getThinClientLocationEndpoint();
-        return URI.create("https://57.155.105.105:10650/"); // https://chukangzhongstagesignoff-eastus2.documents-staging.windows-ppe.net:10650/
+        // need to have thin client endpoint here
+        var uri = this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
+        // TODO: @nehrao1 remove before check-in, leaving here for now for context
+        // return URI.create("https://57.155.105.105:10650/"); // https://chukangzhongstagesignoff-eastus2.documents-staging.windows-ppe.net:10650/
     }
 
     @Override

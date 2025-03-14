@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnosti
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -35,6 +36,9 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
@@ -164,7 +168,7 @@ public class ClientSideRequestStatistics {
             this.requestPayloadSizeInBytes = 0;
         }
 
-        LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = null;
+        RegionalRoutingContext regionalRoutingContext = null;
         URI locationEndPoint = null;
 
         if (request.requestContext != null) {
@@ -178,8 +182,7 @@ public class ClientSideRequestStatistics {
                     request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
             }
 
-            locationEndPoint = request.requestContext.locationEndpointToRoute;
-            consolidatedRegionalEndpoint = request.requestContext.consolidatedRegionalEndpointToRoute;
+            regionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
 
             List<String> excludedRegions = request.requestContext.getExcludeRegions();
             if (excludedRegions != null && !excludedRegions.isEmpty()) {
@@ -193,12 +196,12 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            if (consolidatedRegionalEndpoint != null) {
+            if (regionalRoutingContext != null) {
                 storeResponseStatistics.regionName =
-                    globalEndpointManager.getRegionName(consolidatedRegionalEndpoint.getGatewayLocationEndpoint(), request.getOperationType());
+                    globalEndpointManager.getRegionName(regionalRoutingContext.getGatewayRegionalEndpoint(), request.getOperationType());
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
-                this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, consolidatedRegionalEndpoint));
+                this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, regionalRoutingContext));
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
@@ -222,26 +225,29 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = null;
-            URI locationEndPoint = null;
+            RegionalRoutingContext regionalRoutingContext = null;
+
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
 
-                consolidatedRegionalEndpoint = rxDocumentServiceRequest.requestContext.consolidatedRegionalEndpointToRoute;
-                locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
+                if (rxDocumentServiceRequest.requestContext.regionalRoutingContextToRoute != null) {
+                    regionalRoutingContext = rxDocumentServiceRequest.requestContext.regionalRoutingContextToRoute;
+                }
 
                 this.approximateInsertionCountInBloomFilter = rxDocumentServiceRequest.requestContext.getApproximateBloomFilterInsertionCount();
                 this.keywordIdentifiers = rxDocumentServiceRequest.requestContext.getKeywordIdentifiers();
             }
+
             this.recordRetryContextEndTime();
 
-            if (locationEndPoint != null) {
+            if (regionalRoutingContext != null) {
 
-                String regionName = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType());
+                URI locationEndpoint = regionalRoutingContext.getGatewayRegionalEndpoint();
+                String regionName = globalEndpointManager.getRegionName(locationEndpoint, rxDocumentServiceRequest.getOperationType());
 
                 this.regionsContacted.add(regionName);
-                this.locationEndpointsContacted.add(locationEndPoint);
+                this.locationEndpointsContacted.add(locationEndpoint);
 
-                this.regionsContactedWithContext.add(new RegionWithContext(regionName, consolidatedRegionalEndpoint));
+                this.regionsContactedWithContext.add(new RegionWithContext(regionName, regionalRoutingContext));
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();
@@ -659,7 +665,11 @@ public class ClientSideRequestStatistics {
         return this.regionsContactedWithContext.first().regionContacted;
     }
 
+<<<<<<< HEAD
     public LocationCache.ConsolidatedRegionalEndpoint getFirstContactedLocationEndpoint() {
+=======
+    public RegionalRoutingContext getFirstContactedLocationEndpoint() {
+>>>>>>> ed5ac4b1504d6210aa0933d876ff3b938d834412
         if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
             return null;
         }
@@ -1056,10 +1066,10 @@ public class ClientSideRequestStatistics {
     static class RegionWithContext implements Comparable<RegionWithContext> {
 
         private final String regionContacted;
-        private final LocationCache.ConsolidatedRegionalEndpoint locationEndpointsContacted;
+        private final RegionalRoutingContext locationEndpointsContacted;
         private final long recordedTimestamp;
 
-        RegionWithContext(String regionContacted, LocationCache.ConsolidatedRegionalEndpoint locationEndpointsContacted) {
+        RegionWithContext(String regionContacted, RegionalRoutingContext locationEndpointsContacted) {
             this.regionContacted = regionContacted;
             this.locationEndpointsContacted = locationEndpointsContacted;
             this.recordedTimestamp = System.currentTimeMillis();

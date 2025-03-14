@@ -28,7 +28,7 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
     private Resources resources;
 
     /*
-     * Correlationid item
+     * CorrelationId item
      */
     private String correlationid;
 
@@ -79,7 +79,7 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
     }
 
     /**
-     * Get the correlationid property: Correlationid item.
+     * Get the correlationid property: CorrelationId item.
      * 
      * @return the correlationid value.
      */
@@ -88,7 +88,7 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
     }
 
     /**
-     * Set the correlationid property: Correlationid item.
+     * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
      * @return the ExecuteHibernateRequest object itself.

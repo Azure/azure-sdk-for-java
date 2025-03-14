@@ -19,4 +19,4 @@ To get started with a specific library, see the **README.md** file located in th
 - The [Azure Key Vault Administration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md) library clients support administrative tasks such as full backup/restore and key-level role-based access control (RBAC) for Azure Key Vault Managed HSM.
 - [Azure Key Vault JCA](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-jca/README.md)  is a Java Cryptography Architecture provider for certificates in Azure Key Vault.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2FREADME.png)
+

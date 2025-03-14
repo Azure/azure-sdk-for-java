@@ -65,6 +65,10 @@ public abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implemen
             }
 
             if (token.isPresent()) {
+                if (isThinClientRequest
+                    && RntbdConstants.RntbdRequestHeader.thinClientProxyExcludedSet.contains(token.getId())) {
+                    continue;
+                }
                 ++count;
             }
         }
@@ -81,7 +85,6 @@ public abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implemen
                 && RntbdConstants.RntbdRequestHeader.thinClientProxyExcludedSet.contains(token.getId())) {
                 continue;
             }
-
             total += token.computeLength();
         }
 
@@ -120,18 +123,18 @@ public abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implemen
         if (isThinClientRequest) {
             for (RntbdConstants.RntbdRequestHeader header : RntbdConstants.RntbdRequestHeader.thinClientHeadersInOrderList) {
                 RntbdToken token = this.tokens.get(header);
-                if (token != null) {
+                if (token != null && token.isPresent()) {
                     token.encode(out);
                 }
             }
         }
 
         for (final RntbdToken token : this.tokens.values()) {
-            if (isThinClientRequest
-                && RntbdConstants.RntbdRequestHeader.thinClientProxyOrderedOrExcludedSet.contains(token.getId())) {
+            if (!token.isPresent()
+                || (isThinClientRequest && RntbdConstants.RntbdRequestHeader.thinClientProxyOrderedOrExcludedSet.contains(token.getId()))) {
+
                 continue;
             }
-
             token.encode(out);
         }
     }
