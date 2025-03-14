@@ -3,7 +3,7 @@
 
 package io.clientcore.annotation.processor.test.http.client;
 
-import io.clientcore.core.shared.LocalTestServer;
+import io.clientcore.annotation.processor.test.shared.LocalTestServer;
 
 import javax.servlet.ServletException;
 import java.util.Base64;

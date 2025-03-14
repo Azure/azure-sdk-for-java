@@ -3,6 +3,8 @@
 
 package io.clientcore.annotation.processor.test.implementation.client;
 
+import io.clientcore.annotation.processor.test.shared.InsecureTrustManager;
+import io.clientcore.annotation.processor.test.shared.LocalTestServer;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.HttpHeader;
@@ -13,9 +15,8 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.ContentType;
+import io.clientcore.core.implementation.http.client.JdkHttpClient;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.shared.InsecureTrustManager;
-import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.TestUtils;
 import org.conscrypt.Conscrypt;

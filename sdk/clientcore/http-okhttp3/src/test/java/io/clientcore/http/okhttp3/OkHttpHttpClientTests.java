@@ -3,6 +3,8 @@
 
 package io.clientcore.http.okhttp3;
 
+import io.clientcore.annotation.processor.test.shared.InsecureTrustManager;
+import io.clientcore.annotation.processor.test.shared.LocalTestServer;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -11,8 +13,6 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.shared.InsecureTrustManager;
-import io.clientcore.core.shared.LocalTestServer;
 import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
