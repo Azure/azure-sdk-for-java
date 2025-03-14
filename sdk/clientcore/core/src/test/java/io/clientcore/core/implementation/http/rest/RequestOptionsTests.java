@@ -44,10 +44,9 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions()
-            .addRequestCallback(r -> r.getHeaders()
-                .add(new HttpHeader(X_MS_FOO, "bar"))
-                .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")));
+        RequestOptions options = new RequestOptions().addRequestCallback(r -> r.getHeaders()
+            .add(new HttpHeader(X_MS_FOO, "bar"))
+            .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")));
         options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
@@ -60,12 +59,12 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions()
-            .addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
-            .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
-            .addRequestCallback(r -> r.setUri("https://request.uri"))
-            .addQueryParam("$skipToken", "1")
-            .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"));
+        RequestOptions options
+            = new RequestOptions().addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
+                .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
+                .addRequestCallback(r -> r.setUri("https://request.uri"))
+                .addQueryParam("$skipToken", "1")
+                .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"));
 
         options.getRequestCallback().accept(request);
 
@@ -77,49 +76,50 @@ public class RequestOptionsTests {
 
     @Test
     public void simpleContext() {
-        Object complexObject = ProgressReporter.withProgressListener(value -> { });
-        RequestOptions options = new RequestOptions()
-            .addContext("stringKey", "value")
-            .addContext("longKey", 10L)
-            .addContext("booleanKey", true)
-            .addContext("doubleKey", 42.0)
-            .addContext("complexObject", complexObject);
+        Object complexObject = ProgressReporter.withProgressListener(value -> {
+        });
+        RequestOptions options = new RequestOptions().putData("stringKey", "value")
+            .putData("longKey", 10L)
+            .putData("booleanKey", true)
+            .putData("doubleKey", 42.0)
+            .putData("complexObject", complexObject);
 
-        assertEquals("value", options.getContext("stringKey", String.class));
-        assertEquals("value", options.getContext("stringKey", Object.class));
-        assertEquals(10L, options.getContext("longKey", Long.class));
-        assertEquals(true, options.getContext("booleanKey", Boolean.class));
-        assertEquals(42.0, options.getContext("doubleKey", Double.class));
-        assertSame(options.getContext("complexObject", Object.class), complexObject);
-        assertSame(options.getContext("complexObject", ProgressReporter.class), complexObject);
+        assertEquals("value", options.getData("stringKey", String.class));
+        assertEquals("value", options.getData("stringKey", Object.class));
+        assertEquals(10L, options.getData("longKey", Long.class));
+        assertEquals(true, options.getData("booleanKey", Boolean.class));
+        assertEquals(42.0, options.getData("doubleKey", Double.class));
+        assertSame(options.getData("complexObject", Object.class), complexObject);
+        assertSame(options.getData("complexObject", ProgressReporter.class), complexObject);
 
-        assertNull(options.getContext("fakeKey", String.class));
+        assertNull(options.getData("fakeKey", String.class));
     }
 
     @Test
-    public void invalidGetContextParams() {
-        Object complexObject = ProgressReporter.withProgressListener(value -> { });
-        RequestOptions options = new RequestOptions().addContext("stringKey", "value").addContext("intKey", 10);
+    public void invalidGetDataParams() {
+        Object complexObject = ProgressReporter.withProgressListener(value -> {
+        });
+        RequestOptions options = new RequestOptions().putData("stringKey", "value").putData("intKey", 10);
 
-        assertThrows(NullPointerException.class, () -> options.getContext("stringKey", null));
-        assertThrows(IllegalArgumentException.class, () -> options.getContext("stringKey", Long.class));
-        assertThrows(IllegalArgumentException.class, () -> options.getContext("intKey", Long.class));
+        assertThrows(NullPointerException.class, () -> options.getData("stringKey", null));
+        assertThrows(IllegalArgumentException.class, () -> options.getData("stringKey", Long.class));
+        assertThrows(IllegalArgumentException.class, () -> options.getData("intKey", Long.class));
     }
 
     @Test
     public void keysCannotBeNull() {
         RequestOptions options = new RequestOptions();
-        assertThrows(NullPointerException.class, () -> options.addContext(null, null));
-        assertThrows(NullPointerException.class, () -> options.addContext(null, "value"));
+        assertThrows(NullPointerException.class, () -> options.putData(null, null));
+        assertThrows(NullPointerException.class, () -> options.putData(null, "value"));
     }
 
     @ParameterizedTest
     @MethodSource("addDataSupplier")
     public void addContext(String key, String value, String expectedOriginalValue) {
-        RequestOptions options = new RequestOptions().addContext("key", "value").addContext(key, value);
+        RequestOptions options = new RequestOptions().putData("key", "value").putData(key, value);
 
-        assertEquals(value, options.getContext(key, String.class));
-        assertEquals(expectedOriginalValue, options.getContext("key", String.class));
+        assertEquals(value, options.getData(key, String.class));
+        assertEquals(expectedOriginalValue, options.getData("key", String.class));
     }
 
     private static Stream<Arguments> addDataSupplier() {
@@ -133,13 +133,13 @@ public class RequestOptionsTests {
 
     @Test
     public void putValueCanBeNull() {
-        RequestOptions options = new RequestOptions().addContext("key", null);
+        RequestOptions options = new RequestOptions().putData("key", null);
 
-        assertNull(options.getContext("key", String.class));
+        assertNull(options.getData("key", String.class));
     }
 
     @Test
     public void getValueKeyCannotBeNull() {
-        assertThrows(NullPointerException.class, () -> RequestOptions.none().getContext(null, String.class));
+        assertThrows(NullPointerException.class, () -> RequestOptions.none().getData(null, String.class));
     }
 }
