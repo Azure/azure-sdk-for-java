@@ -38,7 +38,7 @@ public class OpenAIServerSentEventsTest {
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testFile.toFluxByteBuffer());
 
         StepVerifier.create(openAIServerSentEvents.getEvents().doOnNext(AzureResponsesTestBase::assertStreamUpdate))
-            .expectNextCount(1)
+            .expectNextCount(17)
             .verifyComplete();
     }
 

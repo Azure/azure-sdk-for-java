@@ -76,10 +76,11 @@ public final class OpenAIServerSentEvents {
                             lineBreakCharsEncountered = 0;
                         }
                     } else if (!isByteCarriageReturn(currentByte)) {
+                        // If the current byte is not a CR, reset our counter as it is not part of a CRLF sequence.
                         lineBreakCharsEncountered = 0;
                     }
                 }
-
+                // Process any remaining bytes that might form a complete event.
                 processRemainingBytes(values);
             } catch (IOException e) {
                 return Flux.error(LOGGER.atError().log(e));
@@ -95,7 +96,7 @@ public final class OpenAIServerSentEvents {
 
     private void processRemainingBytes(List<ResponsesStreamEvent> values) throws UnsupportedEncodingException {
         String remainingBytes = outStream.toString(StandardCharsets.UTF_8.name());
-        if (remainingBytes.endsWith("\n\n") || remainingBytes.endsWith("\r\n\r\n")) {
+        if (remainingBytes.endsWith("\n\n")) {
             handleCurrentEvent(remainingBytes, values);
         }
     }
@@ -131,15 +132,28 @@ public final class OpenAIServerSentEvents {
             return;
         }
 
-        String[] lines = currentEvent.split("\n", 2);
-        if (lines.length != 2 || lines[0].isEmpty() || lines[1].isEmpty()) {
-            return;
+        // The delimiter according to the spec is always `\n\n`
+        // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format
+        String[] eventLines = currentEvent.trim().split("\n\n");
+
+        for (String event : eventLines) {
+            if (event.isEmpty()) {
+                continue;
+            }
+
+            String[] lines = event.split("\n", 2);
+            if (lines.length != 2 || lines[0].isEmpty() || lines[1].isEmpty()) {
+                continue;
+            }
+
+            if (!lines[0].startsWith("event:") || !lines[1].startsWith("data:")) {
+                continue;
+            }
+
+            // We don't need the event name, leaving this here for clarity.
+            //        String eventName = lines[0].substring(6).trim();
+            String eventJson = lines[1].substring(5).trim();
+            outputValues.add(BinaryData.fromString(eventJson).toObject(ResponsesStreamEvent.class));
         }
-
-        // We don't need the event name, leaving this here for clarity.
-        //        String eventName = lines[0].substring(6).trim();
-        String eventJson = lines[1].substring(5).trim();
-
-        outputValues.add(BinaryData.fromString(eventJson).toObject(ResponsesStreamEvent.class));
     }
 }
