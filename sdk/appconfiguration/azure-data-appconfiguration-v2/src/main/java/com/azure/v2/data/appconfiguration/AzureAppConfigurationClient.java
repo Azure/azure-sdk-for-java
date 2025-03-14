@@ -120,6 +120,7 @@ public final class AzureAppConfigurationClient {
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeysWithResponse(String name, String after, String syncToken, String acceptDatetime,
         RequestOptions requestOptions) {
         return this.serviceClient.checkKeysWithResponse(name, after, syncToken, acceptDatetime, requestOptions);
@@ -139,6 +140,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeys(String name, String after, String syncToken, String acceptDatetime) {
         this.serviceClient.checkKeys(name, after, syncToken, acceptDatetime);
     }
@@ -150,6 +152,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeys() {
         this.serviceClient.checkKeys();
     }
@@ -270,6 +273,7 @@ public final class AzureAppConfigurationClient {
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeyValuesWithResponse(String key, String label, String syncToken, String after,
         String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
         List<String> tags, RequestOptions requestOptions) {
@@ -303,6 +307,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValues(String key, String label, String syncToken, String after, String acceptDatetime,
         List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
         this.serviceClient.checkKeyValues(key, label, syncToken, after, acceptDatetime, select, snapshot, ifMatch,
@@ -316,6 +321,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValues() {
         this.serviceClient.checkKeyValues();
     }
@@ -341,6 +347,7 @@ public final class AzureAppConfigurationClient {
      * @return a single key-value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> getKeyValueWithResponse(String key, String accept, String label,
         List<KeyValueFields> select, String syncToken, String acceptDatetime, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
@@ -368,6 +375,7 @@ public final class AzureAppConfigurationClient {
      * @return a single key-value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue getKeyValue(String key, String accept, String label, List<KeyValueFields> select, String syncToken,
         String acceptDatetime, String ifMatch, String ifNoneMatch) {
         return this.serviceClient.getKeyValue(key, accept, label, select, syncToken, acceptDatetime, ifMatch,
@@ -385,6 +393,7 @@ public final class AzureAppConfigurationClient {
      * @return a single key-value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue getKeyValue(String key, String accept) {
         return this.serviceClient.getKeyValue(key, accept);
     }
@@ -408,6 +417,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> putKeyValueWithResponse(String key, String accept, String label, String syncToken,
         String ifMatch, String ifNoneMatch, KeyValue entity, RequestOptions requestOptions) {
         // Operation 'putKeyValue' can be invoked with multiple content-type. It is difficult to form a correct method
@@ -434,6 +444,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue putKeyValue(String key, String accept, String label, String syncToken, String ifMatch,
         String ifNoneMatch, KeyValue entity) {
         // Operation 'putKeyValue' can be invoked with multiple content-type. It is difficult to form a correct method
@@ -452,6 +463,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue putKeyValue(String key, String accept) {
         // Operation 'putKeyValue' can be invoked with multiple content-type. It is difficult to form a correct method
         // signature for convenience API, and hence the convenience API is not generated.
@@ -474,6 +486,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> deleteKeyValueWithResponse(String key, String accept, String label, String syncToken,
         String ifMatch, RequestOptions requestOptions) {
         return this.serviceClient.deleteKeyValueWithResponse(key, accept, label, syncToken, ifMatch, requestOptions);
@@ -494,6 +507,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue deleteKeyValue(String key, String accept, String label, String syncToken, String ifMatch) {
         return this.serviceClient.deleteKeyValue(key, accept, label, syncToken, ifMatch);
     }
@@ -509,6 +523,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue deleteKeyValue(String key, String accept) {
         return this.serviceClient.deleteKeyValue(key, accept);
     }
@@ -533,6 +548,7 @@ public final class AzureAppConfigurationClient {
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeyValueWithResponse(String key, String label, String syncToken, String acceptDatetime,
         String ifMatch, String ifNoneMatch, List<KeyValueFields> select, RequestOptions requestOptions) {
         return this.serviceClient.checkKeyValueWithResponse(key, label, syncToken, acceptDatetime, ifMatch, ifNoneMatch,
@@ -557,6 +573,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValue(String key, String label, String syncToken, String acceptDatetime, String ifMatch,
         String ifNoneMatch, List<KeyValueFields> select) {
         this.serviceClient.checkKeyValue(key, label, syncToken, acceptDatetime, ifMatch, ifNoneMatch, select);
@@ -571,6 +588,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValue(String key) {
         this.serviceClient.checkKeyValue(key);
     }
@@ -648,6 +666,7 @@ public final class AzureAppConfigurationClient {
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkSnapshotsWithResponse(String syncToken, String after, RequestOptions requestOptions) {
         return this.serviceClient.checkSnapshotsWithResponse(syncToken, after, requestOptions);
     }
@@ -663,6 +682,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshots(String syncToken, String after) {
         this.serviceClient.checkSnapshots(syncToken, after);
     }
@@ -674,6 +694,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshots() {
         this.serviceClient.checkSnapshots();
     }
@@ -696,6 +717,7 @@ public final class AzureAppConfigurationClient {
      * @return a single key-value snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Snapshot> getSnapshotWithResponse(String name, String accept, List<SnapshotFields> select,
         String syncToken, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
         return this.serviceClient.getSnapshotWithResponse(name, accept, select, syncToken, ifMatch, ifNoneMatch,
@@ -719,6 +741,7 @@ public final class AzureAppConfigurationClient {
      * @return a single key-value snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Snapshot getSnapshot(String name, String accept, List<SnapshotFields> select, String syncToken,
         String ifMatch, String ifNoneMatch) {
         return this.serviceClient.getSnapshot(name, accept, select, syncToken, ifMatch, ifNoneMatch);
@@ -735,6 +758,7 @@ public final class AzureAppConfigurationClient {
      * @return a single key-value snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Snapshot getSnapshot(String name, String accept) {
         return this.serviceClient.getSnapshot(name, accept);
     }
@@ -758,6 +782,7 @@ public final class AzureAppConfigurationClient {
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Snapshot> updateSnapshotWithResponse(UpdateSnapshotRequestContentType contentType, String name,
         String accept, SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
@@ -785,6 +810,7 @@ public final class AzureAppConfigurationClient {
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Snapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name, String accept,
         SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch) {
         // Operation 'updateSnapshot' can be invoked with multiple content-type. It is difficult to form a correct
@@ -805,6 +831,7 @@ public final class AzureAppConfigurationClient {
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Snapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name, String accept,
         SnapshotUpdateParameters entity) {
         // Operation 'updateSnapshot' can be invoked with multiple content-type. It is difficult to form a correct
@@ -828,6 +855,7 @@ public final class AzureAppConfigurationClient {
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkSnapshotWithResponse(String name, String syncToken, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
         return this.serviceClient.checkSnapshotWithResponse(name, syncToken, ifMatch, ifNoneMatch, requestOptions);
@@ -847,6 +875,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshot(String name, String syncToken, String ifMatch, String ifNoneMatch) {
         this.serviceClient.checkSnapshot(name, syncToken, ifMatch, ifNoneMatch);
     }
@@ -860,6 +889,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshot(String name) {
         this.serviceClient.checkSnapshot(name);
     }
@@ -943,6 +973,7 @@ public final class AzureAppConfigurationClient {
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkLabelsWithResponse(String name, String syncToken, String after, String acceptDatetime,
         List<LabelFields> select, RequestOptions requestOptions) {
         return this.serviceClient.checkLabelsWithResponse(name, syncToken, after, acceptDatetime, select,
@@ -964,6 +995,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkLabels(String name, String syncToken, String after, String acceptDatetime,
         List<LabelFields> select) {
         this.serviceClient.checkLabels(name, syncToken, after, acceptDatetime, select);
@@ -976,6 +1008,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkLabels() {
         this.serviceClient.checkLabels();
     }
@@ -998,6 +1031,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> putLockWithResponse(String key, String accept, String label, String syncToken,
         String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
         return this.serviceClient.putLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch,
@@ -1021,6 +1055,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue putLock(String key, String accept, String label, String syncToken, String ifMatch,
         String ifNoneMatch) {
         return this.serviceClient.putLock(key, accept, label, syncToken, ifMatch, ifNoneMatch);
@@ -1037,6 +1072,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue putLock(String key, String accept) {
         return this.serviceClient.putLock(key, accept);
     }
@@ -1059,6 +1095,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> deleteLockWithResponse(String key, String accept, String label, String syncToken,
         String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
         return this.serviceClient.deleteLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch,
@@ -1082,6 +1119,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue deleteLock(String key, String accept, String label, String syncToken, String ifMatch,
         String ifNoneMatch) {
         return this.serviceClient.deleteLock(key, accept, label, syncToken, ifMatch, ifNoneMatch);
@@ -1098,6 +1136,7 @@ public final class AzureAppConfigurationClient {
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue deleteLock(String key, String accept) {
         return this.serviceClient.deleteLock(key, accept);
     }
@@ -1197,6 +1236,7 @@ public final class AzureAppConfigurationClient {
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkRevisionsWithResponse(String key, String label, String syncToken, String after,
         String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestOptions requestOptions) {
         return this.serviceClient.checkRevisionsWithResponse(key, label, syncToken, after, acceptDatetime, select, tags,
@@ -1223,6 +1263,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkRevisions(String key, String label, String syncToken, String after, String acceptDatetime,
         List<KeyValueFields> select, List<String> tags) {
         this.serviceClient.checkRevisions(key, label, syncToken, after, acceptDatetime, select, tags);
@@ -1235,6 +1276,7 @@ public final class AzureAppConfigurationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkRevisions() {
         this.serviceClient.checkRevisions();
     }

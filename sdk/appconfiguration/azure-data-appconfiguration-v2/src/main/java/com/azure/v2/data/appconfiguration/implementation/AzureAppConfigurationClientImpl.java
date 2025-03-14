@@ -20,7 +20,9 @@ import com.azure.v2.data.appconfiguration.models.SnapshotFields;
 import com.azure.v2.data.appconfiguration.models.SnapshotStatus;
 import com.azure.v2.data.appconfiguration.models.SnapshotUpdateParameters;
 import com.azure.v2.data.appconfiguration.models.UpdateSnapshotRequestContentType;
+import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -340,6 +342,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysSinglePage(String accept, String name, String after, String syncToken,
         String acceptDatetime) {
         Response<KeyListResult> res = service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
@@ -364,6 +367,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysSinglePage(String accept, String name, String after, String syncToken,
         String acceptDatetime, RequestOptions requestOptions) {
         Response<KeyListResult> res = service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
@@ -387,6 +391,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Key> getKeys(String accept, String name, String after, String syncToken,
         String acceptDatetime) {
         return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(accept, name, after, syncToken, acceptDatetime),
@@ -402,6 +407,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Key> getKeys(String accept) {
         final String name = null;
         final String after = null;
@@ -427,6 +433,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Key> getKeys(String accept, String name, String after, String syncToken, String acceptDatetime,
         RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
@@ -454,6 +461,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeysWithResponse(String name, String after, String syncToken, String acceptDatetime,
         RequestOptions requestOptions) {
         final String accept = "application/json";
@@ -474,6 +482,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeys(String name, String after, String syncToken, String acceptDatetime) {
         checkKeysWithResponse(name, after, syncToken, acceptDatetime, RequestOptions.none());
     }
@@ -484,6 +493,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeys() {
         final String name = null;
         final String after = null;
@@ -519,6 +529,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getKeyValuesSinglePage(String accept, String key, String label, String syncToken,
         String after, String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch,
         String ifNoneMatch, List<String> tags) {
@@ -565,6 +576,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getKeyValuesSinglePage(String accept, String key, String label, String syncToken,
         String after, String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch,
         String ifNoneMatch, List<String> tags, RequestOptions requestOptions) {
@@ -610,6 +622,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
         String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
         List<String> tags) {
@@ -629,6 +642,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getKeyValues(String accept) {
         final String key = null;
         final String label = null;
@@ -675,6 +689,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
         String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
         List<String> tags, RequestOptions requestOptions) {
@@ -716,6 +731,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeyValuesWithResponse(String key, String label, String syncToken, String after,
         String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
         List<String> tags, RequestOptions requestOptions) {
@@ -758,6 +774,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValues(String key, String label, String syncToken, String after, String acceptDatetime,
         List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
         checkKeyValuesWithResponse(key, label, syncToken, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch,
@@ -770,6 +787,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValues() {
         final String key = null;
         final String label = null;
@@ -805,6 +823,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> getKeyValueWithResponse(String key, String accept, String label,
         List<KeyValueFields> select, String syncToken, String acceptDatetime, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
@@ -836,6 +855,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue getKeyValue(String key, String accept, String label, List<KeyValueFields> select, String syncToken,
         String acceptDatetime, String ifMatch, String ifNoneMatch) {
         return getKeyValueWithResponse(key, accept, label, select, syncToken, acceptDatetime, ifMatch, ifNoneMatch,
@@ -852,6 +872,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue getKeyValue(String key, String accept) {
         final String label = null;
         final List<KeyValueFields> select = null;
@@ -881,6 +902,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> putKeyValueWithResponse(String key, String accept, String label, String syncToken,
         String ifMatch, String ifNoneMatch, KeyValue entity, RequestOptions requestOptions) {
         return service.putKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
@@ -904,6 +926,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue putKeyValue(String key, String accept, String label, String syncToken, String ifMatch,
         String ifNoneMatch, KeyValue entity) {
         return putKeyValueWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, entity,
@@ -920,6 +943,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue putKeyValue(String key, String accept) {
         final String label = null;
         final String syncToken = null;
@@ -945,6 +969,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> deleteKeyValueWithResponse(String key, String accept, String label, String syncToken,
         String ifMatch, RequestOptions requestOptions) {
         return service.deleteKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
@@ -965,6 +990,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue deleteKeyValue(String key, String accept, String label, String syncToken, String ifMatch) {
         return deleteKeyValueWithResponse(key, accept, label, syncToken, ifMatch, RequestOptions.none()).getValue();
     }
@@ -979,6 +1005,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue deleteKeyValue(String key, String accept) {
         final String label = null;
         final String syncToken = null;
@@ -1005,6 +1032,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeyValueWithResponse(String key, String label, String syncToken, String acceptDatetime,
         String ifMatch, String ifNoneMatch, List<KeyValueFields> select, RequestOptions requestOptions) {
         final String accept = "application/json";
@@ -1034,6 +1062,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValue(String key, String label, String syncToken, String acceptDatetime, String ifMatch,
         String ifNoneMatch, List<KeyValueFields> select) {
         checkKeyValueWithResponse(key, label, syncToken, acceptDatetime, ifMatch, ifNoneMatch, select,
@@ -1048,6 +1077,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValue(String key) {
         final String label = null;
         final String syncToken = null;
@@ -1074,6 +1104,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Snapshot> getSnapshotsSinglePage(String accept, String name, String after,
         List<SnapshotFields> select, List<SnapshotStatus> status, String syncToken) {
         String selectConverted = (select == null)
@@ -1109,6 +1140,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Snapshot> getSnapshotsSinglePage(String accept, String name, String after,
         List<SnapshotFields> select, List<SnapshotStatus> status, String syncToken, RequestOptions requestOptions) {
         String selectConverted = (select == null)
@@ -1143,6 +1175,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Snapshot> getSnapshots(String accept, String name, String after, List<SnapshotFields> select,
         List<SnapshotStatus> status, String syncToken) {
         return new PagedIterable<>(
@@ -1159,6 +1192,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Snapshot> getSnapshots(String accept) {
         final String name = null;
         final String after = null;
@@ -1186,6 +1220,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Snapshot> getSnapshots(String accept, String name, String after, List<SnapshotFields> select,
         List<SnapshotStatus> status, String syncToken, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
@@ -1210,6 +1245,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkSnapshotsWithResponse(String syncToken, String after, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.checkSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), syncToken, after,
@@ -1226,6 +1262,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshots(String syncToken, String after) {
         checkSnapshotsWithResponse(syncToken, after, RequestOptions.none());
     }
@@ -1236,6 +1273,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshots() {
         final String syncToken = null;
         final String after = null;
@@ -1259,6 +1297,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Snapshot> getSnapshotWithResponse(String name, String accept, List<SnapshotFields> select,
         String syncToken, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
         String selectConverted = (select == null)
@@ -1286,6 +1325,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Snapshot getSnapshot(String name, String accept, List<SnapshotFields> select, String syncToken,
         String ifMatch, String ifNoneMatch) {
         return getSnapshotWithResponse(name, accept, select, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
@@ -1302,6 +1342,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Snapshot getSnapshot(String name, String accept) {
         final List<SnapshotFields> select = null;
         final String syncToken = null;
@@ -1329,6 +1370,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Snapshot> updateSnapshotWithResponse(UpdateSnapshotRequestContentType contentType, String name,
         String accept, SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
@@ -1353,6 +1395,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Snapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name, String accept,
         SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch) {
         return updateSnapshotWithResponse(contentType, name, accept, entity, syncToken, ifMatch, ifNoneMatch,
@@ -1371,6 +1414,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Snapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name, String accept,
         SnapshotUpdateParameters entity) {
         final String syncToken = null;
@@ -1395,6 +1439,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkSnapshotWithResponse(String name, String syncToken, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
         final String accept = "application/json";
@@ -1415,6 +1460,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshot(String name, String syncToken, String ifMatch, String ifNoneMatch) {
         checkSnapshotWithResponse(name, syncToken, ifMatch, ifNoneMatch, RequestOptions.none());
     }
@@ -1427,6 +1473,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshot(String name) {
         final String syncToken = null;
         final String ifMatch = null;
@@ -1450,6 +1497,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Label> getLabelsSinglePage(String accept, String name, String syncToken, String after,
         String acceptDatetime, List<LabelFields> select) {
         String selectConverted = (select == null)
@@ -1480,6 +1528,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Label> getLabelsSinglePage(String accept, String name, String syncToken, String after,
         String acceptDatetime, List<LabelFields> select, RequestOptions requestOptions) {
         String selectConverted = (select == null)
@@ -1509,6 +1558,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Label> getLabels(String accept, String name, String syncToken, String after,
         String acceptDatetime, List<LabelFields> select) {
         return new PagedIterable<>(
@@ -1525,6 +1575,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Label> getLabels(String accept) {
         final String name = null;
         final String syncToken = null;
@@ -1553,6 +1604,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Label> getLabels(String accept, String name, String syncToken, String after,
         String acceptDatetime, List<LabelFields> select, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
@@ -1582,6 +1634,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkLabelsWithResponse(String name, String syncToken, String after, String acceptDatetime,
         List<LabelFields> select, RequestOptions requestOptions) {
         final String accept = "application/json";
@@ -1608,6 +1661,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkLabels(String name, String syncToken, String after, String acceptDatetime,
         List<LabelFields> select) {
         checkLabelsWithResponse(name, syncToken, after, acceptDatetime, select, RequestOptions.none());
@@ -1619,6 +1673,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkLabels() {
         final String name = null;
         final String syncToken = null;
@@ -1645,6 +1700,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> putLockWithResponse(String key, String accept, String label, String syncToken,
         String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
         return service.putLock(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
@@ -1667,6 +1723,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue putLock(String key, String accept, String label, String syncToken, String ifMatch,
         String ifNoneMatch) {
         return putLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
@@ -1683,6 +1740,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue putLock(String key, String accept) {
         final String label = null;
         final String syncToken = null;
@@ -1709,6 +1767,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> deleteLockWithResponse(String key, String accept, String label, String syncToken,
         String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
         return service.deleteLock(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
@@ -1731,6 +1790,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue deleteLock(String key, String accept, String label, String syncToken, String ifMatch,
         String ifNoneMatch) {
         return deleteLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
@@ -1747,6 +1807,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue deleteLock(String key, String accept) {
         final String label = null;
         final String syncToken = null;
@@ -1777,6 +1838,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsSinglePage(String accept, String key, String label, String syncToken,
         String after, String acceptDatetime, List<KeyValueFields> select, List<String> tags) {
         String selectConverted = (select == null)
@@ -1816,6 +1878,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsSinglePage(String accept, String key, String label, String syncToken,
         String after, String acceptDatetime, List<KeyValueFields> select, List<String> tags,
         RequestOptions requestOptions) {
@@ -1855,6 +1918,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
         String acceptDatetime, List<KeyValueFields> select, List<String> tags) {
         return new PagedIterable<>(
@@ -1872,6 +1936,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getRevisions(String accept) {
         final String key = null;
         final String label = null;
@@ -1908,6 +1973,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
         String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
@@ -1942,6 +2008,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkRevisionsWithResponse(String key, String label, String syncToken, String after,
         String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestOptions requestOptions) {
         final String accept = "application/json";
@@ -1976,6 +2043,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkRevisions(String key, String label, String syncToken, String after, String acceptDatetime,
         List<KeyValueFields> select, List<String> tags) {
         checkRevisionsWithResponse(key, label, syncToken, after, acceptDatetime, select, tags, RequestOptions.none());
@@ -1987,6 +2055,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkRevisions() {
         final String key = null;
         final String label = null;
@@ -2013,6 +2082,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime) {
         Response<KeyListResult> res = service.getKeysNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime,
@@ -2037,6 +2107,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, RequestOptions requestOptions) {
         Response<KeyListResult> res
@@ -2064,6 +2135,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, String ifMatch, String ifNoneMatch) {
         Response<KeyValueListResult> res = service.getKeyValuesNext(nextLink, this.getEndpoint(), syncToken,
@@ -2092,6 +2164,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
         Response<KeyValueListResult> res = service.getKeyValuesNext(nextLink, this.getEndpoint(), syncToken,
@@ -2113,6 +2186,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a snapshot list request.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Snapshot> getSnapshotsNextSinglePage(String nextLink, String accept, String syncToken) {
         Response<SnapshotListResult> res
             = service.getSnapshotsNext(nextLink, this.getEndpoint(), syncToken, accept, RequestOptions.none());
@@ -2134,6 +2208,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a snapshot list request.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Snapshot> getSnapshotsNextSinglePage(String nextLink, String accept, String syncToken,
         RequestOptions requestOptions) {
         Response<SnapshotListResult> res
@@ -2157,6 +2232,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime) {
         Response<LabelListResult> res = service.getLabelsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime,
@@ -2181,6 +2257,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, RequestOptions requestOptions) {
         Response<LabelListResult> res
@@ -2204,6 +2281,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime) {
         Response<KeyValueListResult> res = service.getRevisionsNext(nextLink, this.getEndpoint(), syncToken,
@@ -2228,6 +2306,7 @@ public final class AzureAppConfigurationClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, RequestOptions requestOptions) {
         Response<KeyValueListResult> res
