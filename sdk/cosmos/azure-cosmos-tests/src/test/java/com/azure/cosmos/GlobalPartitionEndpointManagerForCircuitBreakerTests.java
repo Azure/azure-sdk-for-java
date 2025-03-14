@@ -423,7 +423,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()));
-
         }
 
         Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();

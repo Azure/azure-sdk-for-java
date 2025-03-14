@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.RMResources;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Collection;
 import java.util.List;
 
 public class PartitionKeyInternalHelper {

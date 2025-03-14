@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
-import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
@@ -49,7 +47,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private int staleContainerRetryCount;
     private boolean isReadRequest;
     private boolean canUseMultipleWriteLocations;
-    private URI locationEndpoint;
     private RegionalRoutingContext regionalRoutingContext;
     private RetryContext retryContext;
     private CosmosDiagnostics cosmosDiagnostics;

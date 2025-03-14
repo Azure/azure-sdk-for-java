@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
-import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -36,9 +35,6 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
@@ -665,11 +661,7 @@ public class ClientSideRequestStatistics {
         return this.regionsContactedWithContext.first().regionContacted;
     }
 
-<<<<<<< HEAD
-    public LocationCache.ConsolidatedRegionalEndpoint getFirstContactedLocationEndpoint() {
-=======
     public RegionalRoutingContext getFirstContactedLocationEndpoint() {
->>>>>>> ed5ac4b1504d6210aa0933d876ff3b938d834412
         if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
             return null;
         }

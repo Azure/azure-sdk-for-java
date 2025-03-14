@@ -262,9 +262,7 @@ public class GlobalEndPointManagerTest {
 
         LocationCache locationCache = this.getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 1);
-
         Map<String, RegionalRoutingContext> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
-
         Assert.assertEquals(availableReadEndpointByLocation.size(), 1);
         Assert.assertTrue(availableReadEndpointByLocation.keySet().iterator().next().equalsIgnoreCase("East Asia"));
 

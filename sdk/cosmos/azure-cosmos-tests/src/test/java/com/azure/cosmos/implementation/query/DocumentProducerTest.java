@@ -27,7 +27,6 @@ import com.azure.cosmos.implementation.guava25.collect.Iterables;
 import com.azure.cosmos.implementation.guava25.collect.LinkedListMultimap;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
-import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
