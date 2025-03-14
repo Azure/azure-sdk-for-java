@@ -182,7 +182,7 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
                 regionalEndpointWithFailure);
 
             boolean canOpOrchestrateFailover
-                = globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request);
+                = globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request, false);
 
             assertThat(canOpOrchestrateFailover).isEqualTo(expectedCanOpOrchestrateFailover);
 
@@ -367,7 +367,7 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
         List<URI> applicableReadWriteLocations) throws NoSuchFieldException, IllegalAccessException {
 
         logger.warn("Handling exception for {}", locationWithFailure.getPath());
-        globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request);
+        globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request, false);
 
         Field failedLocationsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
 

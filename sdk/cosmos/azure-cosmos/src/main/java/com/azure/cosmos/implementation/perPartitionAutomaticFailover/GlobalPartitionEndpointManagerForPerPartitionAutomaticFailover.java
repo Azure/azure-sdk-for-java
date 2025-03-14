@@ -23,7 +23,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
-    private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelFailoverInfo> partitionKeyRangeToLocation;
+    private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelFailoverInfo> partitionKeyRangeToFailoverInfo;
+    private final ConcurrentHashMap<PartitionKeyRangeWrapper, Integer> partitionKeyRangeToConsecutiveEndToEndTimeoutCount;
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean isPerPartitionAutomaticFailoverEnabled;
 
@@ -32,8 +33,55 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         boolean isPerPartitionAutomaticFailoverEnabled) {
 
         this.globalEndpointManager = globalEndpointManager;
-        this.partitionKeyRangeToLocation = new ConcurrentHashMap<>();
+        this.partitionKeyRangeToFailoverInfo = new ConcurrentHashMap<>();
+        this.partitionKeyRangeToConsecutiveEndToEndTimeoutCount = new ConcurrentHashMap<>();
         this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
+    }
+
+    public boolean resetEndToEndTimeoutErrorCountIfPossible(RxDocumentServiceRequest request) {
+
+        if (!this.isPerPartitionAutomaticFailoverEnabled) {
+            return false;
+        }
+
+        checkNotNull(request, "Argument 'request' cannot be null!");
+        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+
+
+        if (request.getResourceType() != ResourceType.Document) {
+            return false;
+        }
+
+        if (request.getOperationType() == OperationType.QueryPlan) {
+            return false;
+        }
+
+        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
+        String resolvedCollectionRid = request.requestContext.resolvedCollectionRid;
+
+        boolean isEndToEndOperationLatencyPolicyApplicableForRequest = false;
+
+        if (!isEndToEndOperationLatencyPolicyApplicableForRequest) {
+            return false;
+        }
+
+        if (partitionKeyRange == null) {
+            return false;
+        }
+
+        if (StringUtils.isEmpty(resolvedCollectionRid)) {
+            return false;
+        }
+
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resolvedCollectionRid);
+
+        if (!partitionKeyRangeToConsecutiveEndToEndTimeoutCount.containsKey(partitionKeyRangeWrapper)) {
+            return true;
+        }
+
+        partitionKeyRangeToConsecutiveEndToEndTimeoutCount.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapper1, integer) -> 0);
+
+        return true;
     }
 
     public boolean tryAddPartitionLevelLocationOverride(RxDocumentServiceRequest request) {
@@ -82,7 +130,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resolvedCollectionRid);
-        PartitionLevelFailoverInfo partitionLevelFailoverInfo = this.partitionKeyRangeToLocation.get(partitionKeyRangeWrapper);
+        PartitionLevelFailoverInfo partitionLevelFailoverInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRangeWrapper);
 
         if (partitionLevelFailoverInfo != null) {
 
@@ -104,7 +152,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         return false;
     }
 
-    public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request) {
+    public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, boolean isEndToEndTimeoutHit) {
 
         if (!this.isPerPartitionAutomaticFailoverEnabled) {
             return false;
@@ -140,12 +188,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         PartitionLevelFailoverInfo partitionLevelFailoverInfo
-            = this.partitionKeyRangeToLocation.computeIfAbsent(partitionKeyRangeWrapper, partitionKeyRangeWrapper1 -> new PartitionLevelFailoverInfo(failedRegionalRoutingContext, this.globalEndpointManager));
+            = this.partitionKeyRangeToFailoverInfo.computeIfAbsent(partitionKeyRangeWrapper, partitionKeyRangeWrapper1 -> new PartitionLevelFailoverInfo(failedRegionalRoutingContext, this.globalEndpointManager));
 
         // Rely on account-level read endpoints for new write region discovery
         List<RegionalRoutingContext> accountLevelReadRoutingContexts = this.globalEndpointManager.getAvailableReadRoutingContexts();
 
-        if (partitionLevelFailoverInfo.tryMoveToNextLocation(accountLevelReadRoutingContexts, failedRegionalRoutingContext)) {
+        if (partitionLevelFailoverInfo.tryMoveToNextLocation(accountLevelReadRoutingContexts, failedRegionalRoutingContext, request)) {
 
             if (logger.isWarnEnabled()) {
                 logger.warn("Marking region {} as failed for partition key range {} and collection rid {}",
@@ -158,7 +206,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return true;
         }
 
-        this.partitionKeyRangeToLocation.remove(partitionKeyRangeWrapper);
+        this.partitionKeyRangeToFailoverInfo.remove(partitionKeyRangeWrapper);
         return false;
     }
 

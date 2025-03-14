@@ -792,7 +792,7 @@ public class ApplicableRegionEvaluatorTest {
                 writeOpRequest.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountEastUsEndpoint));
 
                 request.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountEastUsEndpoint));
-                globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request.isReadOnlyRequest() ? writeOpRequest : request);
+                globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request.isReadOnlyRequest() ? writeOpRequest : request, false);
                 return true;
             case PER_PARTITION_AUTOMATIC_FAILOVER_BOTH_PRIMARY_AND_SECONDARY_REGION_UNAVAILABLE:
                 if (databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION ||
@@ -811,12 +811,12 @@ public class ApplicableRegionEvaluatorTest {
                 writeOpRequest.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountEastUsEndpoint));
                 request.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountEastUsEndpoint));
 
-                globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request.isReadOnly() ? writeOpRequest : request);
+                globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request.isReadOnly() ? writeOpRequest : request, false);
 
                 request.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountWestUsEndpoint));
                 writeOpRequest.requestContext.routeToLocation(new RegionalRoutingContext(TestAccountWestUsEndpoint));
 
-                globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request.isReadOnly() ? writeOpRequest : request);
+                globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request.isReadOnly() ? writeOpRequest : request, false);
 
                 return true;
             default:

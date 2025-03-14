@@ -2498,6 +2498,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     pointOperationContextForCircuitBreaker.setHasOperationSeenSuccess();
 
                     this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationSuccessForPartitionKeyRange(succeededRequest);
+                    this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetEndToEndTimeoutErrorCountIfPossible(succeededRequest);
                 }
             })
             .doOnError(throwable -> {
@@ -7357,6 +7358,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void handleLocationCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
+
+        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+            .tryMarkEndpointAsUnavailableForPartitionKeyRange(failedRequest, true);
 
         RegionalRoutingContext firstContactedLocationEndpoint = diagnosticsAccessor
             .getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);

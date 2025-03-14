@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.perPartitionAutomaticFailover;
 
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -13,9 +14,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 @JsonSerialize(using = PartitionLevelFailoverInfo.PartitionLevelFailoverInfoSerializer.class)
 public class PartitionLevelFailoverInfo implements Serializable {
@@ -32,7 +36,10 @@ public class PartitionLevelFailoverInfo implements Serializable {
         this.globalEndpointManager = globalEndpointManager;
     }
 
-    synchronized boolean tryMoveToNextLocation(List<RegionalRoutingContext> readRegionalRoutingContexts, RegionalRoutingContext failedRegionalRoutingContext) {
+    synchronized boolean tryMoveToNextLocation(
+        List<RegionalRoutingContext> readRegionalRoutingContexts,
+        RegionalRoutingContext failedRegionalRoutingContext,
+        RxDocumentServiceRequest request) {
 
         if (!failedRegionalRoutingContext.equals(this.current)) {
             return true;
@@ -50,6 +57,7 @@ public class PartitionLevelFailoverInfo implements Serializable {
 
             this.failedRegionalRoutingContexts.add(failedRegionalRoutingContext);
             this.current = regionalRoutingContext;
+
             return true;
         }
 

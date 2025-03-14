@@ -75,6 +75,8 @@ public class DocumentServiceRequestContext implements Cloneable {
     private volatile PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
     private volatile PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
+    public volatile boolean isEndToEndOperationLatencyPolicyApplicableForRequest = false;
+
     public DocumentServiceRequestContext() {}
 
     /**
