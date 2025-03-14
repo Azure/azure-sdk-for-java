@@ -10,7 +10,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
@@ -57,7 +57,11 @@ public class PagingOperationTests {
         TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline);
 
         // Retrieve initial response
+<<<<<<< HEAD
         Response<List<Foo>> initialResponse = testInterface.listFoo(uri, RequestOptions.none());
+=======
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, RequestContext.none());
+>>>>>>> a84c1f5b37a (update annotation processor)
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -69,7 +73,7 @@ public class PagingOperationTests {
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
             pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
-                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, RequestOptions.none());
+                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, RequestContext.none());
                 return toPagedResponse(nextResponse, nextLink);
             }
         );
@@ -107,8 +111,8 @@ public class PagingOperationTests {
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
-            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, RequestOptions.none()), nextLinkUri),
-            (pagingOptions, nextLink) -> toPagedResponse(testInterface.listNextFooListResult(nextLink, RequestOptions.none()), null)
+            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, RequestContext.none()), nextLinkUri),
+            (pagingOptions, nextLink) -> toPagedResponse(testInterface.listNextFooListResult(nextLink, RequestContext.none()), null)
         );
 
         assertNotNull(pagedIterable);
