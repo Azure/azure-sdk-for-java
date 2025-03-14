@@ -17,10 +17,8 @@ import io.clientcore.core.utils.CoreUtils;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.SimpleTypeVisitor8;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -43,7 +41,10 @@ public final class ResponseBodyModeGeneration {
     public static void generateResponseHandling(BlockStmt body, TypeMirror returnType, HttpRequestContext method,
         boolean serializationFormatSet) {
         if (isVoidReturnType(returnType)) {
-            handleVoidResponse(body, returnType);
+            closeResponse(body);
+            if (returnType.toString().equals("java.lang.Void")) {
+                body.addStatement(new ReturnStmt("null"));
+            }
         } else if (TypeConverter.isResponseType(returnType)) {
             handleResponseType(body, returnType, method, serializationFormatSet);
         } else {
@@ -53,13 +54,6 @@ public final class ResponseBodyModeGeneration {
 
     private static boolean isVoidReturnType(TypeMirror returnType) {
         return returnType.getKind() == TypeKind.VOID || returnType.toString().equals("java.lang.Void");
-    }
-
-    private static void handleVoidResponse(BlockStmt body, TypeMirror returnType) {
-        closeResponse(body);
-        if (returnType.toString().equals("java.lang.Void")) {
-            body.addStatement(new ReturnStmt("null"));
-        }
     }
 
     private static void handleResponseType(BlockStmt body, TypeMirror returnType, HttpRequestContext method,
@@ -77,11 +71,12 @@ public final class ResponseBodyModeGeneration {
 
     private static void handleResponseBody(BlockStmt body, TypeMirror returnType, java.lang.reflect.Type entityType,
         HttpRequestContext method, boolean serializationFormatSet) {
+
         String typeCast = determineTypeCast(returnType, entityType, method, body);
+
         body.addStatement("Object result = " + determineResultExpression(entityType, method));
 
         if (returnType instanceof DeclaredType) {
-            // handle Response Declared Types
             handleDeclaredTypeResponse(body, (DeclaredType) returnType, serializationFormatSet);
             if (!((DeclaredType) returnType).getTypeArguments().isEmpty()) {
                 body.addStatement(StaticJavaParser.parseStatement("return new Response<>("
@@ -92,7 +87,6 @@ public final class ResponseBodyModeGeneration {
                 CastExpr castExpr
                     = new CastExpr(StaticJavaParser.parseType(returnType.toString()), new NameExpr("result"));
 
-                // Add the cast statement to the method body
                 body.addStatement(new ReturnStmt(castExpr));
             }
         }
@@ -113,7 +107,6 @@ public final class ResponseBodyModeGeneration {
             TypeElement typeElement = (TypeElement) declaredType.asElement();
             body.tryAddImportToParentCompilationUnit(CoreUtils.class);
 
-            // Ensure type arguments exist before accessing them
             if (!declaredType.getTypeArguments().isEmpty()) {
                 TypeMirror firstGenericType = declaredType.getTypeArguments().get(0);
                 DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
@@ -121,8 +114,6 @@ public final class ResponseBodyModeGeneration {
                 body.findCompilationUnit()
                     .ifPresent(
                         compilationUnit -> compilationUnit.addImport(genericTypeElement.getQualifiedName().toString()));
-
-                // Check if it's specifically a List<T>
                 if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
                     String typeArgs = genericDeclaredType.getTypeArguments()
                         .stream()
@@ -167,7 +158,6 @@ public final class ResponseBodyModeGeneration {
         TypeElement typeElement = (TypeElement) returnType.asElement();
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
 
-        // Ensure type arguments exist before accessing them
         if (!returnType.getTypeArguments().isEmpty()) {
             TypeMirror firstGenericType = returnType.getTypeArguments().get(0);
 
@@ -179,7 +169,6 @@ public final class ResponseBodyModeGeneration {
                     .ifPresent(
                         compilationUnit -> compilationUnit.addImport(genericTypeElement.getQualifiedName().toString()));
 
-                // Check if it's specifically a List<T>
                 if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
                     if (!genericDeclaredType.getTypeArguments().isEmpty()) {
                         String innerType = ((DeclaredType) genericDeclaredType.getTypeArguments().get(0)).asElement()
@@ -222,8 +211,8 @@ public final class ResponseBodyModeGeneration {
 
     private static void handleNonResponseType(BlockStmt body, TypeMirror returnType, HttpRequestContext method,
         boolean serializationFormatSet) {
-        java.lang.reflect.Type bodyType = determineEntityType(returnType);
-        processEntityReturnType(body, returnType, bodyType, method, serializationFormatSet);
+        java.lang.reflect.Type entityType = TypeConverter.getEntityType(returnType);
+        processEntityReturnType(body, returnType, entityType, method, serializationFormatSet);
         if (!returnType.getKind().isPrimitive()
             && returnType.getKind() != TypeKind.ARRAY
             && returnType.getKind() != TypeKind.DECLARED) {
@@ -231,38 +220,6 @@ public final class ResponseBodyModeGeneration {
             CastExpr castExpr = new CastExpr(StaticJavaParser.parseType(returnType.toString()), new NameExpr("result"));
             body.addStatement(new ReturnStmt(castExpr));
         }
-    }
-
-    private static java.lang.reflect.Type determineEntityType(TypeMirror returnType) {
-        if (returnType.getKind().isPrimitive()) {
-            return returnType.accept(new SimpleTypeVisitor8<java.lang.reflect.Type, Void>() {
-                @Override
-                public java.lang.reflect.Type visitPrimitive(PrimitiveType t, Void p) {
-                    return TypeConverter.getPrimitiveClass(t);
-                }
-            }, null);
-        } else {
-            return TypeConverter.getEntityType(returnType);
-        }
-    }
-
-    private static void closeResponse(BlockStmt body) {
-        body.tryAddImportToParentCompilationUnit(IOException.class);
-        body.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
-        body.addStatement(StaticJavaParser.parseStatement("try { networkResponse.close(); } catch (IOException e) { "
-            + "throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }"));
-    }
-
-    /**
-     * Adds a return statement for response handling when necessary.
-     *
-     * @param body the method builder to append generated code.
-     */
-    private static void createResponseIfNecessary(BlockStmt body) {
-        if (body.getStatements().get(body.getStatements().size() - 1).toString().contains("return")) {
-            return;
-        }
-        body.addStatement(StaticJavaParser.parseStatement("return response;"));
     }
 
     private static void processEntityReturnType(BlockStmt body, TypeMirror returnType,
@@ -301,6 +258,25 @@ public final class ResponseBodyModeGeneration {
     private static void handleInputStreamResponse(BlockStmt body) {
         body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getValue();"));
         body.addStatement(StaticJavaParser.parseStatement("return responseBody.toStream();"));
+    }
+
+    private static void closeResponse(BlockStmt body) {
+        body.tryAddImportToParentCompilationUnit(IOException.class);
+        body.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
+        body.addStatement(StaticJavaParser.parseStatement("try { networkResponse.close(); } catch (IOException e) { "
+            + "throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }"));
+    }
+
+    /**
+     * Adds a return statement for response handling when necessary.
+     *
+     * @param body the method builder to append generated code.
+     */
+    private static void createResponseIfNecessary(BlockStmt body) {
+        if (body.getStatements().get(body.getStatements().size() - 1).toString().contains("return")) {
+            return;
+        }
+        body.addStatement(StaticJavaParser.parseStatement("return response;"));
     }
 
     private ResponseBodyModeGeneration() {
