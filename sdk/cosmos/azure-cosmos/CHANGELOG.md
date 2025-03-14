@@ -1,5 +1,10 @@
 ## Release History
 
+### 4.66.2-beta.1 (2025-03-14)
+
+#### Other Changes
+* Added additional logs during ChangeFeedProcessor initialization - See [44648](https://github.com/Azure/azure-sdk-for-java/pull/44648)
+
 ### 4.66.1 (2025-02-08)
 
 #### Bugs Fixed
