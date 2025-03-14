@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package io.clientcore.core.utils;
 
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.IOException;
