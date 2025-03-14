@@ -101,6 +101,14 @@ public final class Configuration {
 
     private final List<ConfigurationSource> sources;
 
+    private Configuration(ConfigurationSource... sources) {
+        if (sources == null || sources.length == 0) {
+            this.sources = null;
+        } else {
+            this.sources = Arrays.asList(Arrays.copyOf(sources, sources.length));
+        }
+    }
+
     /**
      * Creates an instance of {@link Configuration} with the given {@link ConfigurationSource}.
      * <p>
@@ -110,12 +118,8 @@ public final class Configuration {
      *
      * @param sources The configuration sources to use.
      */
-    public Configuration(ConfigurationSource... sources) {
-        if (sources == null || sources.length == 0) {
-            this.sources = null;
-        } else {
-            this.sources = Arrays.asList(Arrays.copyOf(sources, sources.length));
-        }
+    public static Configuration from(ConfigurationSource... sources) {
+        return new Configuration(sources);
     }
 
     /**
