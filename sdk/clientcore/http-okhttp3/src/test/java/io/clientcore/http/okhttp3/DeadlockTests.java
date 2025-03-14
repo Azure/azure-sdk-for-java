@@ -3,7 +3,7 @@
 
 package io.clientcore.http.okhttp3;
 
-import io.clientcore.core.shared.LocalTestServer;
+import io.clientcore.annotation.processor.test.shared.LocalTestServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,12 +49,12 @@ public class DeadlockTests {
     public void attemptToDeadlock() {
         // TODO (vcolin7): Figure out how to attempt a deadlock without using Reactor.
         /*HttpClient httpClient = new OkHttpHttpClientProvider().createInstance();
-        
+
         String endpoint = server.getHttpUri() + GET_ENDPOINT;
-        
+
         Mono<Tuple2<byte[], Integer>> request = Mono.just(httpClient.send(new HttpRequest(HttpMethod.GET, endpoint)))
             .map(response -> Tuples.of(response.getBody().toBytes(), response.getStatusCode()));
-        
+
         List<Tuple2<byte[], Integer>> results = Flux.range(0, 100)
             .parallel()
             .runOn(Schedulers.boundedElastic())
@@ -62,10 +62,10 @@ public class DeadlockTests {
             .sequential()
             .collectList()
             .block();
-        
+
         for (Tuple2<byte[], Integer> result : results) {
             assertEquals(200, result.getT2());
-        
+
             TestUtils.assertArraysEqual(expectedGetBytes, result.getT1());
         }*/
     }

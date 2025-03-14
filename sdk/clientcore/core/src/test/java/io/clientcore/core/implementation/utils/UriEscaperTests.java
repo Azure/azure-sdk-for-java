@@ -3,8 +3,6 @@
 
 package io.clientcore.core.implementation.utils;
 
-import io.clientcore.core.implementation.http.rest.PercentEscaper;
-import io.clientcore.core.implementation.http.rest.UriEscapers;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
