@@ -15,6 +15,7 @@
     <module>azure-security-keyvault-jca</module>
     <module>azure-security-keyvault-keys</module>
     <module>azure-security-keyvault-secrets</module>
+    <module>azure-security-keyvault-secrets-v2</module>
     <module>azure-security-keyvault-perf</module>
   </modules>
 </project>
