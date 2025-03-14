@@ -70,7 +70,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * }
  * </pre>
  */
-public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, AutoCloseable {
+public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor {
     private static final String PK_RANGE_ID_SEPARATOR = ":";
     private static final String SEGMENT_SEPARATOR = "#";
     private static final String PROPERTY_NAME_LSN = "_lsn";

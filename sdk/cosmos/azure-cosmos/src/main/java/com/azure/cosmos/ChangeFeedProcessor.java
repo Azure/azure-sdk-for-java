@@ -60,7 +60,7 @@ import java.util.Map;
  * </pre>
  * <!-- end com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.builder -->
  */
-public interface ChangeFeedProcessor {
+public interface ChangeFeedProcessor extends AutoCloseable {
 
     /**
      * Start listening for changes asynchronously.
