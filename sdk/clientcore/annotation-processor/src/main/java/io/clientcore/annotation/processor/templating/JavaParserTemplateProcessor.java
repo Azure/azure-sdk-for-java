@@ -330,7 +330,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             ExpressionStmt statement = new ExpressionStmt(new MethodCallExpr(new NameExpr("httpRequest"),
                 "setRequestOptions", NodeList.nodeList(new NameExpr("options"))));
 
-            statement.setComment(new LineComment("\n Set the Request Options"));
+            statement.setComment(new LineComment("\n Set the Request Context"));
             body.addStatement(statement);
         }
 

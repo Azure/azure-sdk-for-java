@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.otel;
 
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopAttributes;
@@ -219,23 +219,23 @@ public class OTelInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<RequestOptions, TResponse> operation) {
+    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestContext requestContext,
+        Function<RequestContext, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
         if (!shouldInstrument(SpanKind.CLIENT,
-            requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
-            return operation.apply(requestOptions);
+            requestContext == null ? null : requestContext.getInstrumentationContext())) {
+            return operation.apply(requestContext);
         }
 
-        if (requestOptions == null) {
-            requestOptions = new RequestOptions();
+        if (requestContext == null) {
+            requestContext = new RequestContext();
         }
 
         long startTimeNs = callDurationMetric.isEnabled() ? System.nanoTime() : 0;
         InstrumentationAttributes commonAttributes = getOrCreateCommonAttributes(operationName);
-        Span span = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestOptions.getInstrumentationContext())
+        Span span = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestContext.getInstrumentationContext())
             .setAllAttributes(commonAttributes)
             .startSpan();
 
@@ -243,9 +243,9 @@ public class OTelInstrumentation implements Instrumentation {
         RuntimeException error = null;
         try {
             if (span.getInstrumentationContext().isValid()) {
-                requestOptions = requestOptions.setInstrumentationContext(span.getInstrumentationContext());
+                requestContext = requestContext.setInstrumentationContext(span.getInstrumentationContext());
             }
-            return operation.apply(requestOptions);
+            return operation.apply(requestContext);
         } catch (RuntimeException t) {
             error = t;
             throw t;
@@ -255,7 +255,7 @@ public class OTelInstrumentation implements Instrumentation {
                     ? commonAttributes
                     : commonAttributes.put(ERROR_TYPE_KEY, error.getClass().getCanonicalName());
                 callDurationMetric.record((System.nanoTime() - startTimeNs) / 1e9, attributes,
-                    requestOptions.getInstrumentationContext());
+                    requestContext.getInstrumentationContext());
             }
             span.end(error);
             scope.close();

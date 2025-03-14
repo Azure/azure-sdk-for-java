@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.instrumentation.Instrumentation;
@@ -95,22 +95,22 @@ public class FallbackInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<RequestOptions, TResponse> operation) {
+    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestContext requestContext,
+        Function<RequestContext, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
         if (!shouldInstrument(SpanKind.CLIENT,
-            requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
-            return operation.apply(requestOptions);
+            requestContext == null ? null : requestContext.getInstrumentationContext())) {
+            return operation.apply(requestContext);
         }
 
-        if (requestOptions == null) {
-            requestOptions = new RequestOptions();
+        if (requestContext == null) {
+            requestContext = new RequestContext();
         }
 
         SpanBuilder builder
-            = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestOptions.getInstrumentationContext())
+            = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestContext.getInstrumentationContext())
                 .setAttribute(SERVER_ADDRESS_KEY, serviceHost);
 
         if (servicePort > 0) {
@@ -119,12 +119,12 @@ public class FallbackInstrumentation implements Instrumentation {
 
         Span span = builder.startSpan();
         if (span.getInstrumentationContext().isValid()) {
-            requestOptions = requestOptions.setInstrumentationContext(span.getInstrumentationContext());
+            requestContext = requestContext.setInstrumentationContext(span.getInstrumentationContext());
         }
 
         TracingScope scope = span.makeCurrent();
         try {
-            TResponse response = operation.apply(requestOptions);
+            TResponse response = operation.apply(requestContext);
             span.end();
             return response;
         } catch (RuntimeException t) {
