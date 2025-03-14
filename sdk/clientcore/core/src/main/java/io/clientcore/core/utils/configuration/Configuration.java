@@ -5,9 +5,13 @@ package io.clientcore.core.utils.configuration;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.HttpClientProvider;
+import io.clientcore.core.http.models.HttpHeaders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Contains configuration information that is used during construction of client libraries.
@@ -92,21 +96,17 @@ public final class Configuration {
      * The global configuration shared by all client libraries.
      */
     private static final Configuration GLOBAL_CONFIGURATION
-        = new Configuration(new SystemPropertiesConfigurationSource(), new EnvironmentVariableConfigurationSource());
+        = Configuration.from(new SystemPropertiesConfigurationSource(), new EnvironmentVariableConfigurationSource());
 
     /*
      * The configuration that never returns any configuration values.
      */
-    private static final Configuration NONE = new Configuration();
+    private static final Configuration NONE = new Configuration(Collections.emptyList());
 
     private final List<ConfigurationSource> sources;
 
-    private Configuration(ConfigurationSource... sources) {
-        if (sources == null || sources.length == 0) {
-            this.sources = null;
-        } else {
-            this.sources = Arrays.asList(Arrays.copyOf(sources, sources.length));
-        }
+    private Configuration(List<ConfigurationSource> sources) {
+        this.sources = sources;
     }
 
     /**
@@ -114,12 +114,28 @@ public final class Configuration {
      * <p>
      * The {@code sources} will be queried in the order they are provided.
      * <p>
-     * If no {@code sources} are provided all calls to get configurations will return null.
+     * If {@code sources} are empty, all calls to get configurations will return null.
      *
      * @param sources The configuration sources to use.
+     * @throws IllegalArgumentException If the sources are <code>null</code> or any entry in the sources array is <code>null</code>.
      */
     public static Configuration from(ConfigurationSource... sources) {
-        return new Configuration(sources);
+        if (sources == null) {
+            throw new IllegalArgumentException("Sources cannot be null");
+        }
+
+        if (sources.length == 0) {
+            return NONE;
+        }
+
+        List<ConfigurationSource> sourceList = new ArrayList<>(sources.length);
+        for (ConfigurationSource source : sources) {
+            if (source == null) {
+                throw new IllegalArgumentException("Source cannot be null");
+            }
+            sourceList.add(source);
+        }
+        return new Configuration(sourceList);
     }
 
     /**
