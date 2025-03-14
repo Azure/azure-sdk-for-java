@@ -33,7 +33,6 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.UriBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
@@ -312,20 +311,20 @@ public abstract class HttpClientTests {
             getProtocol(ECHO_RESPONSE),
             new Headers(),
             requestBody);
-    
+
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
             .setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
-    
+
         Response<?> response = createHttpClient()
             .send(request);
-    
+
         byte[] responseBytes = response
             .getBodyAsByteArray()
             .block();
-    
+
         assertArrayEquals(expectedResponseBody, responseBytes);
         assertEquals(expectedResponseBody.length, progress.intValue());
     }*/
@@ -1350,20 +1349,20 @@ public abstract class HttpClientTests {
             .putBodyAndHeaders(getRequestUri(), "body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        
+
         assertEquals(Headers.class, response.getHeaders().getClass());
-        
+
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);
         assertMatchWithHttpOrHttps("localhost/put", body.uri());
         assertEquals("body string", body.data());
-        
+
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
         assertNotNull(headers.date());
         assertNotEquals(0, (Object) headers.xProcessedTime());
-        
+
          */
     }
 
@@ -1425,13 +1424,13 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "DownloadService", host = "{uri}")
     interface DownloadService {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/30720")
-        Response<InputStream> getBytes(@HostParam("uri") String uri, Context context);
+        Response<InputStream> getBytes(@HostParam("uri") String uri, RequestOptions options);
     }
 
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
-    public void simpleDownloadTest(Context context) throws IOException {
-        Response<InputStream> response = createService(DownloadService.class).getBytes(getRequestUri(), context);
+    public void simpleDownloadTest(RequestOptions options) throws IOException {
+        Response<InputStream> response = createService(DownloadService.class).getBytes(getRequestUri(), options);
 
         InputStream inputStream = response.getValue();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -1440,7 +1439,7 @@ public abstract class HttpClientTests {
 
         assertEquals(30720, byteArrayOutputStream.toByteArray().length);
 
-        Response<InputStream> otherResponse = createService(DownloadService.class).getBytes(getRequestUri(), context);
+        Response<InputStream> otherResponse = createService(DownloadService.class).getBytes(getRequestUri(), options);
 
         InputStream otherInputStream = otherResponse.getValue();
         ByteArrayOutputStream otherByteArrayOutputStream = new ByteArrayOutputStream();
@@ -1456,7 +1455,7 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<Arguments> downloadTestArgumentProvider() {
-        return Stream.of(Arguments.of(Named.named("default", Context.none())));
+        return Stream.of(Arguments.of(Named.named("default", RequestOptions.none())));
     }
 
     @ServiceInterface(name = "BinaryDataUploadServ", host = "{uri}")
@@ -1544,13 +1543,13 @@ public abstract class HttpClientTests {
         HttpBinFormDataJSON postForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam("custemail") String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
-    
+
         @Post("post")
         HttpBinFormDataJSON postEncodedForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam(value = "custemail", encoded = true) String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
     }
-    
+
     @Test
     public void postUriForm() {
         Service26 service = createService(Service26.class);
@@ -1562,12 +1561,12 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo%40bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-    
+
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
     }
-    
+
     @Test
     public void postUriFormEncoded() {
         Service26 service = createService(Service26.class);
@@ -1579,7 +1578,7 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo@bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-    
+
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
@@ -1597,6 +1596,32 @@ public abstract class HttpClientTests {
         HttpBinJSON putBodyAndContentLength(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
             @HeaderParam("Content-Length") long contentLength, RequestOptions requestOptions);
+    }
+
+    @Test
+    public void requestOptionsChangesBody() {
+        Service27 service = createService(Service27.class);
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
+            new RequestOptions().addRequestCallback(r -> r.setBody(BinaryData.fromString("24"))));
+
+        assertNotNull(response);
+        assertNotNull(response.data());
+        assertInstanceOf(String.class, response.data());
+        assertEquals("24", response.data());
+    }
+
+    @Test
+    public void requestOptionsChangesBodyAndContentLength() {
+        Service27 service = createService(Service27.class);
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
+            new RequestOptions().addRequestCallback(r -> r.setBody(BinaryData.fromString("4242")))
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, "4"));
+
+        assertNotNull(response);
+        assertNotNull(response.data());
+        assertInstanceOf(String.class, response.data());
+        assertEquals("4242", response.data());
+        assertEquals("4", response.getHeaderValue("Content-Length"));
     }
 
     private static final HttpHeaderName RANDOM_HEADER = HttpHeaderName.fromString("randomHeader");

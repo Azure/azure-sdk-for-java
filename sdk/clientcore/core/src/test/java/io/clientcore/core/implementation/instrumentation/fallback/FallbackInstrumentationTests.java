@@ -3,6 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
@@ -19,7 +20,6 @@ import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
-import io.clientcore.core.utils.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -729,7 +729,7 @@ public class FallbackInstrumentationTests {
     }*/
 
     public static Stream<Object> notSupportedContexts() {
-        return Stream.of(null, new Object(), "this is not a valid context", Context.none(), Context.of("key", "value"));
+        return Stream.of(null, new Object(), "this is not a valid context", RequestOptions.none());
     }
 
     private static void assertValidSpan(Span span, boolean isRecording) {
