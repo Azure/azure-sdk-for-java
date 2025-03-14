@@ -160,7 +160,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         return this.leaseContainer.getAllLeases()
             .map(lease -> {
                 if (lease != null) {
-                    logger.debug("Found an existing lease document for partition {}", lease.getLeaseToken());
+                    logger.info("Found an existing lease document for partition {}", lease.getLeaseToken());
                     // Get leases after getting ranges, to make sure that no other hosts checked in continuation for
                     //   split partition after we got leases.
                     addedLeaseTokens.remove(lease.getLeaseToken());
@@ -170,7 +170,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             })
             .thenMany(Flux.fromIterable(addedLeaseTokens)
                 .flatMap( addedRangeId -> {
-                    logger.debug("Adding a new lease document for partition {}", addedRangeId);
+                    logger.info("Adding a new lease document for partition {}", addedRangeId);
 
                     return this.leaseManager.createLeaseIfNotExist(addedRangeId, null);
                 }, this.degreeOfParallelism)
