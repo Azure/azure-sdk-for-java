@@ -6,6 +6,7 @@ package io.clientcore.core.http.models;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.models.JsonArray;
 import io.clientcore.core.serialization.json.models.JsonObject;
+import io.clientcore.core.utils.ProgressReporter;
 
 /**
  * JavaDoc code snippets for {@link RequestOptions}.
@@ -63,5 +64,34 @@ public class RequestOptionsJavaDocCodeSnippets {
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
         // END: io.clientcore.core.http.rest.requestoptions.postrequest
         return options;
+    }
+
+
+    /**
+     * Code snippet for {@link RequestOptions#putData(String, Object)}
+     */
+    public void putDataContext() {
+        // BEGIN: io.clientcore.core.http.rest.requestoptions.putData
+
+        RequestOptions options = new RequestOptions()
+            .putData("stringKey", "value")
+            .putData("complexObject", ProgressReporter.withProgressListener(value -> System.out.printf("Got %s bytes", value)));
+
+        // END: io.clientcore.core.http.rest.requestoptions.putData
+
+        // BEGIN: io.clientcore.core.http.rest.requestoptions.getData
+
+        // Get the string value
+        String stringValue = options.getData("stringKey", String.class);
+        System.out.printf("Key1 value: %s%n", stringValue);
+
+        // Get the complex object
+        ProgressReporter progressReporter = options.getData("complexObject", ProgressReporter.class);
+        if (progressReporter != null) {
+            // Use the progress reporter
+            progressReporter.reportProgress(42);
+        }
+
+        // END: io.clientcore.core.http.rest.requestoptions.getData
     }
 }

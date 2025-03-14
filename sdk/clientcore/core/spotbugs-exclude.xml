@@ -91,6 +91,10 @@
     </Or>
   </Match>
   <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED" />
+    <Class name="io.clientcore.core.implementation.http.rest.RequestOptionsTests" />
+  </Match>
+  <Match>
     <Bug pattern="DMI_RANDOM_USED_ONLY_ONCE" />
     <Class name="io.clientcore.core.utils.TestUtils" />
   </Match>
@@ -241,6 +245,7 @@
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
       <Class name="io.clientcore.core.serialization.json.JsonWriterTests" />
       <Class name="io.clientcore.core.serialization.json.models.JsonPatchDocumentTests" />
+      <Class name="io.clientcore.core.implementation.http.rest.RequestOptionsTests" />
     </Or>
   </Match>
   <Match>

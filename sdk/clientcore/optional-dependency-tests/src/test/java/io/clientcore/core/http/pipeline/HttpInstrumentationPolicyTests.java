@@ -498,8 +498,8 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
             .build();
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan));
+        RequestOptions requestOptions
+            = new RequestOptions().setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan));
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri("https://localhost:8080/path/to/resource?query=param")
@@ -538,12 +538,11 @@ public class HttpInstrumentationPolicyTests {
         io.clientcore.core.instrumentation.tracing.Tracer tracer
             = Instrumentation.create(otelOptions, new LibraryInstrumentationOptions("test-library")).getTracer();
 
-
         io.clientcore.core.instrumentation.tracing.Span parent
             = tracer.spanBuilder("parent", INTERNAL, null).startSpan();
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setInstrumentationContext(parent.getInstrumentationContext());
+        RequestOptions requestOptions
+            = new RequestOptions().setInstrumentationContext(parent.getInstrumentationContext());
 
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(otelOptions))
             .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))

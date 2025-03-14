@@ -3,7 +3,6 @@
 
 package io.clientcore.core.instrumentation;
 
-import com.sun.net.httpserver.Request;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.opentelemetry.api.OpenTelemetry;

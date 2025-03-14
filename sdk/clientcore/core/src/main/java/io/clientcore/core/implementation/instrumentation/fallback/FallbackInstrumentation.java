@@ -105,7 +105,7 @@ public class FallbackInstrumentation implements Instrumentation {
             return operation.apply(requestOptions);
         }
 
-        if (requestOptions == null || requestOptions == RequestOptions.none()) {
+        if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
 
@@ -119,7 +119,7 @@ public class FallbackInstrumentation implements Instrumentation {
 
         Span span = builder.startSpan();
         if (span.getInstrumentationContext().isValid()) {
-            requestOptions.setInstrumentationContext(span.getInstrumentationContext());
+            requestOptions = requestOptions.setInstrumentationContext(span.getInstrumentationContext());
         }
 
         TracingScope scope = span.makeCurrent();

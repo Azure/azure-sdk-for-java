@@ -162,10 +162,10 @@ public class SuppressionTests {
         Tracer outerTracer = tracer;
         Tracer innerTracer = Instrumentation.create(otelOptions, libOptions.disableSpanSuppression(true)).getTracer();
 
-
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, null).startSpan();
 
-        Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
+        Span innerSpan
+            = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
         innerSpan.end();
         outerSpan.end();
 
@@ -187,7 +187,8 @@ public class SuppressionTests {
 
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, null).startSpan();
 
-        Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
+        Span innerSpan
+            = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
         innerSpan.end();
         outerSpan.end();
 
@@ -236,9 +237,7 @@ public class SuppressionTests {
     @MethodSource("suppressionTestCases")
     @SuppressWarnings("try")
     public void testSuppressionExplicitContext(SpanKind outerKind, SpanKind innerKind, int expectedSpanCount) {
-        Span outerSpan = tracer.spanBuilder("outerSpan", outerKind, null)
-            .setAttribute("key", "valueOuter")
-            .startSpan();
+        Span outerSpan = tracer.spanBuilder("outerSpan", outerKind, null).setAttribute("key", "valueOuter").startSpan();
 
         Span innerSpan = tracer.spanBuilder("innerSpan", innerKind, outerSpan.getInstrumentationContext())
             .setAttribute("key", "valueInner")
@@ -368,8 +367,6 @@ public class SuppressionTests {
         @SuppressWarnings("try")
         public void protocolMethod(RequestOptions options) {
             Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
-
-            options = options.setInstrumentationContext(span.getInstrumentationContext());
 
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response
