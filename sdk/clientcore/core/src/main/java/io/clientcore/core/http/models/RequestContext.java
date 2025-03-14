@@ -16,9 +16,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * This class contains the options to customize an {@link HttpRequest}. {@link RequestContext} can be used to configure
- * the request headers, query params, the request body, or add a callback to modify all aspects of the
- * {@link HttpRequest}.
+ * This class contains the request metadata that flows along with the {@link HttpRequest} as it goes through HTTP pipeline.
+ * and could be used to customize the pipeline behavior or modify the request itself.
  *
  * <p>An instance of fully configured {@link RequestContext} can be passed to a service method that preconfigures known
  * components of the request like URI, path params etc, further modifying both un-configured, or preconfigured
