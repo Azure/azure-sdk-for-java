@@ -296,6 +296,14 @@ public class Configs {
     private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED = "COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED";
     private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED_VARIABLE = "COSMOS_IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED";
 
+    private static final int DEFAULT_E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF = 10;
+    private static final String E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF = "COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF";
+    private static final String E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF_VARIABLE = "COSMOS_E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF";
+
+    private static final int DEFAULT_E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF = 60;
+    private static final String E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF = "COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF";
+    private static final String E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF_VARIABLE = "COSMOS_E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF";
+
     private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
     private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
     private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
@@ -923,6 +931,28 @@ public class Configs {
                     String.valueOf(DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED)));
 
         return Boolean.parseBoolean(isSessionTokenFalseProgressMergeDisabledAsString);
+    }
+
+    public static int getAllowedE2ETimeoutHitCountForPPAF() {
+        String allowedE2ETimeoutHitCountForPPAF =
+            System.getProperty(
+                E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF_VARIABLE)),
+                    String.valueOf(DEFAULT_E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF)));
+
+        return Integer.parseInt(allowedE2ETimeoutHitCountForPPAF);
+    }
+
+    public static int getAllowedTimeWindowForE2ETimeoutHitCountTrackingInSecsForPPAF() {
+        String timeWindowForE2ETimeoutHitCountTrackingInSecsForPPAF =
+            System.getProperty(
+                E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF_VARIABLE)),
+                    String.valueOf(DEFAULT_E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF)));
+
+        return Integer.parseInt(timeWindowForE2ETimeoutHitCountTrackingInSecsForPPAF);
     }
 
     public static CosmosMicrometerMetricsConfig getMetricsConfig() {
