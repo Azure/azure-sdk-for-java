@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.Lists;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
@@ -17,6 +18,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.apachecommons.collections.map.CaseInsensitiveMap;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,7 +112,6 @@ public class LocationCache {
         return this.locationInfo.writeEndpoints;
     }
 
-
     /***
      * Get the list of available read endpoints.
      * The list will not be filtered by preferred region list.
@@ -173,7 +174,7 @@ public class LocationCache {
 
     void onLocationPreferenceChanged(UnmodifiableList<String> preferredLocations) {
         this.updateLocationCache(
-                null, null , preferredLocations, null);
+                null, null, preferredLocations, null);
     }
 
     /**
@@ -288,7 +289,7 @@ public class LocationCache {
         return this.getApplicableEndpoints(
             readEndpoints,
             this.locationInfo.regionNameByReadEndpoint,
-            this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
+            this.locationInfo.writeEndpoints.get(0).getGatewayLocationEndpoint(), // match the fallback region used in getPreferredAvailableEndpoints
             effectiveExcludedRegionsWithPartitionUnavailableRegions);
     }
 
@@ -703,7 +704,6 @@ public class LocationCache {
 
                         parsedLocations.add(gatewayDbAccountLocation.getName());
                     } catch (Exception e) {
-
                         logger.warn("Skipping add for location = [{}] and endpoint = [{}] due to exception [{}]",
                             gatewayDbAccountLocation.getName(),
                             gatewayDbAccountLocation.getEndpoint(),

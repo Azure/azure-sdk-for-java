@@ -47,7 +47,7 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdCons
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonFilter("RntbdToken")
-final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
+public final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     // region Fields
 
@@ -291,9 +291,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getPriorityLevel() { return this.get(RntbdRequestHeader.PriorityLevel); }
 
-    private RntbdToken getGlobalDatabaseAccountName() {
-        return this.get(RntbdRequestHeader.GlobalDatabaseAccountName);
-    }
+    private RntbdToken getGlobalDatabaseAccountName() { return this.get(RntbdRequestHeader.GlobalDatabaseAccountName); }
 
     private RntbdToken getDatabaseName() {
         return this.get(RntbdRequestHeader.DatabaseName);
@@ -1355,8 +1353,11 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     token.setValue(Boolean.parseBoolean(value));
                     break;
                 }
+                case Bytes: {
+                    token.setValue(value.getBytes());
+                    break;
+                }
                 case Double: {
-
                     token.setValue(parseDouble(name, value));
                     break;
                 }
