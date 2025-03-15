@@ -283,7 +283,7 @@ sipRoutingClient.setRoutes(asList(
 
 ```java readme-sample-getTrunk
 String fqdn = "<trunk fqdn>";
-SipTrunk trunk = sipRoutingClient.getTrunk(fqdn);
+SipTrunk trunk = sipRoutingClient.getTrunk(fqdn, ExpandEnum.TRUNKS_HEALTH);
 if (trunk != null) {
     System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
 } else {

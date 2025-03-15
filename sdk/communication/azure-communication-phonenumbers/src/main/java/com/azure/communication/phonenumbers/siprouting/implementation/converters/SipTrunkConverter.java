@@ -3,12 +3,12 @@
 
 package com.azure.communication.phonenumbers.siprouting.implementation.converters;
 
-import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 
 /**
  * A converter between {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk} and

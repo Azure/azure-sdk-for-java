@@ -25,10 +25,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.azure.communication.phonenumbers.siprouting.implementation.converters.ExpandEnumConverter;
+import com.azure.communication.phonenumbers.siprouting.implementation.converters.SipConfigurationConverter;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipTrunkConverter.convertFromApi;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipTrunkConverter.convertToApi;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipTrunkRouteConverter.convertFromApi;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipTrunkRouteConverter.convertToApi;
+import com.azure.communication.phonenumbers.siprouting.implementation.models.RoutesForNumber;
+import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
+import com.azure.communication.phonenumbers.siprouting.models.SipConfigurationModel;
 
 /**
  * Synchronous SIP Routing Client.
@@ -61,17 +66,18 @@ public final class SipRoutingClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.getTrunk -->
      * <pre>
-     * SipTrunk trunk = sipRoutingClient.getTrunk&#40;&quot;&lt;trunk fqdn&gt;&quot;&#41;;
+     * SipTrunk trunk = sipRoutingClient.getTrunk&#40;&quot;&lt;trunk fqdn&gt;&quot;, ExpandEnum.TRUNKS_HEALTH&#41;;
      * System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.communication.phonenumbers.siprouting.client.getTrunk -->
      *
      * @param fqdn SIP Trunk FQDN.
+     * @param expand Sip configuration expand. Optional.
      * @return SIP Trunk if exists, null otherwise.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SipTrunk getTrunk(String fqdn) {
-        return convertFromApi(getSipConfiguration().getTrunks()).stream()
+    public SipTrunk getTrunk(String fqdn, ExpandEnum expand) {
+        return convertFromApi(getSipConfiguration(expand).getTrunks()).stream()
             .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn()))
             .findAny()
             .orElse(null);
@@ -84,20 +90,21 @@ public final class SipRoutingClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.getTrunkWithResponse -->
      * <pre>
-     * Response&lt;SipTrunk&gt; response = sipRoutingClient.getTrunkWithResponse&#40;&quot;&lt;trunk fqdn&gt;&quot;, Context.NONE&#41;;
+     * Response&lt;SipTrunk&gt; response = sipRoutingClient.getTrunkWithResponse&#40;&quot;&lt;trunk fqdn&gt;&quot;, ExpandEnum.TRUNKS_HEALTH, Context.NONE&#41;;
      * SipTrunk trunk = response.getValue&#40;&#41;;
      * System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.communication.phonenumbers.siprouting.client.getTrunkWithResponse -->
      *
      * @param fqdn SIP Trunk FQDN.
+     * @param expand Sip configuration expand. Optional.
      * @param context the context of the request. Can also be null or Context.NONE.
      * @return Response object with the SIP Trunk if exists, with null otherwise.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SipTrunk> getTrunkWithResponse(String fqdn, Context context) {
+    public Response<SipTrunk> getTrunkWithResponse(String fqdn, ExpandEnum expand, Context context) {
         return client.getSipRoutings()
-            .getWithResponseAsync(context)
+            .getWithResponseAsync(ExpandEnumConverter.convertExpandEnum(expand), context)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .map(result -> new SimpleResponse<>(result,
                 convertFromApi(result.getValue().getTrunks()).stream()
@@ -130,7 +137,7 @@ public final class SipRoutingClient {
 
     private PagedResponse<SipTrunk> getOnePageTrunk() {
         return client.getSipRoutings()
-            .getWithResponseAsync()
+            .getWithResponseAsync(null)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .map(result -> new PagedResponseBase<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
                 convertFromApi(result.getValue().getTrunks()), null, null))
@@ -163,7 +170,7 @@ public final class SipRoutingClient {
 
     private PagedResponse<SipTrunkRoute> getOnePageRoute() {
         return client.getSipRoutings()
-            .getWithResponseAsync()
+            .getWithResponseAsync(null)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .map(result -> new PagedResponseBase<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
                 convertFromApi(result.getValue().getRoutes()), null, null))
@@ -379,9 +386,36 @@ public final class SipRoutingClient {
         return new SimpleResponse<>(null, 200, null, null);
     }
 
-    private SipConfiguration getSipConfiguration() {
+    /**
+    * Gets the list of routes matching the target phone number, ordered by priority.
+    * 
+    * @param targetPhoneNumber Phone number to test routing patterns against.
+    * @param sipConfigurationModel Sip configuration object to test with targetPhoneNumber.
+    * @param context The context to associate with this operation.
+    * @return the list of routes matching the target phone number, ordered by priority along with {@link Response}.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RoutesForNumber> testRoutesWithNumberWithResponse(String targetPhoneNumber,
+        SipConfigurationModel sipConfigurationModel, Context context) {
+        SipConfiguration sipConfiguration = SipConfigurationConverter.convertSipConfiguration(sipConfigurationModel);
+        return client.getSipRoutings().testRoutesWithNumberWithResponse(targetPhoneNumber, sipConfiguration, context);
+    }
+
+    /**
+    * Gets the list of routes matching the target phone number, ordered by priority.
+    * 
+    * @param targetPhoneNumber Phone number to test routing patterns against.
+    * @param sipConfigurationModel Sip configuration object to test with targetPhoneNumber.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void testRoutesWithNumber(String targetPhoneNumber, SipConfigurationModel sipConfigurationModel) {
+        SipConfiguration sipConfiguration = SipConfigurationConverter.convertSipConfiguration(sipConfigurationModel);
+        client.getSipRoutings().testRoutesWithNumber(targetPhoneNumber, sipConfiguration);
+    }
+
+    private SipConfiguration getSipConfiguration(ExpandEnum expand) {
         return client.getSipRoutings()
-            .getAsync()
+            .getAsync(ExpandEnumConverter.convertExpandEnum(expand))
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .block();
     }
