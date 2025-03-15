@@ -14,19 +14,17 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.paging.PagedIterable;
-import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
+import io.clientcore.core.http.paging.PagedIterable;
+import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.serializer.Foo;
-import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.utils.Context;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -209,7 +207,7 @@ public class RestProxyTests {
         private volatile boolean closeCalledOnResponse;
 
         @Override
-        public Response<?> send(HttpRequest request) {
+        public Response<BinaryData> send(HttpRequest request) {
             lastHttpRequest = request;
             boolean success = request.getUri().getPath().equals("/my/uri/path");
 
@@ -220,7 +218,7 @@ public class RestProxyTests {
                     || request.getHttpMethod().equals(HttpMethod.HEAD);
             }
 
-            return new MockHttpResponse(request, success ? 200 : 400) {
+            return new Response<BinaryData>(request, success ? 200 : 400, new HttpHeaders(), BinaryData.empty()) {
                 @Override
                 public void close() throws IOException {
                     closeCalledOnResponse = true;
@@ -242,7 +240,7 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient((request) -> {
             assertEquals(nextLinkUri, request.getUri().toString());
 
-            return new MockHttpResponse(null, 200);
+            return new Response<>(null, 200, new HttpHeaders(), BinaryData.empty());
         }).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
@@ -251,25 +249,28 @@ public class RestProxyTests {
     }
 
     @Test
-    @Disabled("TODO: Confirm the data if using wrapper FooListResult since the deserializer fromJson expects it to be an object and not an array")
     public void testListFooListResult() {
         String uri = "https://somecloud.com";
         String firstPageUri = uri + "/foos";
         String nextLinkUri = uri + "/foos?page=2";
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             String requestUri = request.getUri().toString();
-            request.setRequestOptions(requestOptions);
             if (firstPageUri.equals(requestUri)) {
-                return createMockResponse(request, 200, BinaryData.fromString(
-                    "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}"),
+                return createMockResponse(request,
+                    BinaryData.fromString(
+                        "{\"items\":[{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a"
+                            + ".b\":\"c.d\","
+                            + "\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}], \"nextLink\":\""
+                            + nextLinkUri + "\"}"),
                     nextLinkUri);
             } else if (nextLinkUri.equals(requestUri)) {
-                return createMockResponse(request, 200, BinaryData.fromString(
-                    "{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}"),
+                return createMockResponse(request,
+                    BinaryData.fromString(
+                        "{\"items\":[{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a"
+                            + ".b\":\"c.d\",\"properties.bar\":\"barbar\"}}]"),
                     null);
             }
-            return new MockHttpResponse(request, 404);
+            return new Response<>(request, 404, new HttpHeaders(), BinaryData.empty());
         }).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
@@ -289,14 +290,13 @@ public class RestProxyTests {
     /**
      * Creates a mock HTTP response with JSON body and optional nextLink header.
      */
-    private MockHttpResponse createMockResponse(HttpRequest request, int statusCode, BinaryData jsonBody,
-        String nextLink) {
+    private Response<BinaryData> createMockResponse(HttpRequest request, BinaryData jsonBody, String nextLink) {
         HttpHeaders headers = new HttpHeaders();
         if (nextLink != null) {
             headers.set(HttpHeaderName.fromString("nextLink"), nextLink);
         }
 
-        return new MockHttpResponse(request, statusCode, headers, jsonBody);
+        return new Response<>(request, 200, headers, jsonBody);
     }
 
     /**
@@ -307,17 +307,15 @@ public class RestProxyTests {
         String uri = "https://somecloud.com";
         String firstPageUri = uri + "/foos";
         String nextLinkUri = uri + "/foos?page=2";
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             String requestUri = request.getUri().toString();
-            request.setRequestOptions(requestOptions);
             if (firstPageUri.equals(requestUri)) {
-                return createMockResponse(request, 200, BinaryData.fromString(FIRST_PAGE_RESPONSE), nextLinkUri);
+                return createMockResponse(request, BinaryData.fromString(FIRST_PAGE_RESPONSE), nextLinkUri);
             } else if (nextLinkUri.equals(requestUri)) {
-                return createMockResponse(request, 200, BinaryData.fromString(NEXTLINK_RESPONSE), null);
+                return createMockResponse(request, BinaryData.fromString(NEXTLINK_RESPONSE), null);
             }
 
-            return new MockHttpResponse(request, 404);
+            return new Response<>(request, 404, new HttpHeaders(), BinaryData.empty());
         }).build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
@@ -354,9 +352,7 @@ public class RestProxyTests {
                 response != null
                     ? response.getRequest()
                     : new HttpRequest().setMethod(HttpMethod.GET).setUri("https://somecloud.com"),
-                200, response != null ? response.getHeaders() : new HttpHeaders(),
-                response != null ? response.getBody() : null, Collections.emptyList()  // Return an empty list when null
-            );
+                200, response != null ? response.getHeaders() : new HttpHeaders(), Collections.emptyList());  // Return an empty list when null
         }
 
         List<Foo> items;
@@ -370,7 +366,7 @@ public class RestProxyTests {
                 "Unsupported response type: " + response.getValue().getClass().getName());
         }
 
-        return new PagedResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            response.getBody(), items, nextLink, null, null, null, null);
+        return new PagedResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), items,
+            nextLink, null, null, null, null);
     }
 }

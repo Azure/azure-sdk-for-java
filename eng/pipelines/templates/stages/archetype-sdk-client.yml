@@ -156,7 +156,6 @@ extends:
                     - ${{ if ne(artifact.releaseInBatch, 'false') }}:
                         - ${{ artifact }}
               TestPipeline: ${{ parameters.TestPipeline }}
-              ArtifactName: packages
               # This where the MavenBreakGlassApprovers is set for the release tasks.
               ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
                 Environment: 'MavenBreakGlassApprovers'

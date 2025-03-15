@@ -23,7 +23,7 @@ import java.util.UUID;
 public final class VaultsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/updateVault.json
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/updateVault.json
      */
     /**
      * Sample code: Update an existing vault.

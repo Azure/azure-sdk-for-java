@@ -3,6 +3,8 @@
 
 package io.clientcore.core.utils;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.nio.charset.StandardCharsets;
@@ -21,6 +23,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>
  * This only supports the format {@code EEE, dd MMM yyyy HH:mm:ss GMT}.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class DateTimeRfc1123 {
     private static final ClientLogger LOGGER = new ClientLogger(DateTimeRfc1123.class);
 

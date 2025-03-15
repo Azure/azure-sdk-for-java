@@ -5,13 +5,11 @@ package io.clientcore.core.implementation.utils;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
-import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -24,7 +22,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,7 +41,6 @@ public final class ImplUtils {
     private static final byte FF = (byte) 0xFF;
     private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
 
-    private static final Duration MINIMUM_HTTP_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_HTTP_CONNECT_TIMEOUT;
     private static final Duration DEFAULT_HTTP_WRITE_TIMEOUT;
     private static final Duration DEFAULT_HTTP_RESPONSE_TIMEOUT;
@@ -61,11 +57,6 @@ public final class ImplUtils {
         DEFAULT_HTTP_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
             Configuration.REQUEST_READ_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
     }
-
-    /**
-     * Default sanitizer for a value, where it is simply replaced with "REDACTED".
-     */
-    public static final Function<String, String> DEFAULT_SANITIZER = value -> "REDACTED";
 
     private ImplUtils() {
         // Exists only to defeat instantiation.
@@ -167,46 +158,6 @@ public final class ImplUtils {
         byte[] byteArray = new byte[length];
         byteBuffer.get(byteArray);
         return byteArray;
-    }
-
-    /**
-     * Utility method for parsing a {@link URI} into a {@link UriBuilder}.
-     *
-     * @param uri The URI being parsed.
-     * @param includeQuery Whether the query string should be excluded.
-     * @return The UriBuilder that represents the parsed URI.
-     */
-    public static UriBuilder parseUri(URI uri, boolean includeQuery) {
-        final UriBuilder result = new UriBuilder();
-
-        if (uri != null) {
-            final String scheme = uri.getScheme();
-            if (scheme != null && !scheme.isEmpty()) {
-                result.setScheme(scheme);
-            }
-
-            final String host = uri.getHost();
-            if (host != null && !host.isEmpty()) {
-                result.setHost(host);
-            }
-
-            final int port = uri.getPort();
-            if (port != -1) {
-                result.setPort(port);
-            }
-
-            final String path = uri.getPath();
-            if (path != null && !path.isEmpty()) {
-                result.setPath(path);
-            }
-
-            final String query = uri.getQuery();
-            if (query != null && !query.isEmpty() && includeQuery) {
-                result.setQuery(query);
-            }
-        }
-
-        return result;
     }
 
     public static final class QueryParameterIterable implements Iterable<Map.Entry<String, String>> {
@@ -365,45 +316,6 @@ public final class ImplUtils {
     }
 
     /**
-     * Gets either the system property or environment variable configuration for the passed environment.
-     * <p>
-     * The system property is checked first, then the environment variable. If neither are found, null is returned.
-     *
-     * @param environmentConfiguration The environment to search.
-     * @param systemProperty The system property name.
-     * @param envVar The environment variable name.
-     * @param valueSanitizer The function to sanitize the value.
-     * @param logger The logger to log the property retrieval.
-     * @return The value of the property if found, otherwise null.
-     */
-    public static String getFromEnvironment(EnvironmentConfiguration environmentConfiguration, String systemProperty,
-        String envVar, Function<String, String> valueSanitizer, ClientLogger logger) {
-        if (systemProperty != null) {
-            final String value = environmentConfiguration.getSystemProperty(systemProperty);
-            if (value != null) {
-                logger.atVerbose()
-                    .addKeyValue("systemProperty", systemProperty)
-                    .addKeyValue("value", () -> valueSanitizer.apply(value))
-                    .log("Got property from system property.");
-                return value;
-            }
-        }
-
-        if (envVar != null) {
-            final String value = environmentConfiguration.getEnvironmentVariable(envVar);
-            if (value != null) {
-                logger.atVerbose()
-                    .addKeyValue("envVar", envVar)
-                    .addKeyValue("value", () -> valueSanitizer.apply(value))
-                    .log("Got property from environment variable.");
-                return value;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Creates a {@link Thread} that will shut down the passed {@link ExecutorService} when ran.
      * <p>
      * There are two phases to shut down, each will use half of the shutdown timeout. The first phase uses
@@ -552,32 +464,4 @@ public final class ImplUtils {
         return DEFAULT_HTTP_READ_TIMEOUT;
     }
 
-    /**
-     * Returns the timeout Duration to use based on the configured timeout and the default timeout.
-     * <p>
-     * If the configured timeout is null the default timeout will be used. If the timeout is less than or equal to zero
-     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
-     *
-     * @param configuredTimeout The configured timeout.
-     * @param defaultTimeout The default timeout.
-     * @return The timeout to use.
-     */
-    public static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
-        // Timeout is null, use the default timeout.
-        if (configuredTimeout == null) {
-            return defaultTimeout;
-        }
-
-        // Timeout is less than or equal to zero, return no timeout.
-        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
-            return Duration.ZERO;
-        }
-
-        // Return the maximum of the timeout period and the minimum allowed timeout period.
-        if (configuredTimeout.compareTo(MINIMUM_HTTP_TIMEOUT) < 0) {
-            return MINIMUM_HTTP_TIMEOUT;
-        } else {
-            return configuredTimeout;
-        }
-    }
 }

@@ -17,13 +17,14 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonReader;
 
 import java.io.IOException;
 
 /**
  * The {@link AzurePipelinesCredential} acquires a token using the Azure Pipelines service connection.
- *
+ * <p>
  * To construct an instance of this credential, use the {@link AzurePipelinesCredentialBuilder}:
  * <pre>
  * &#47;&#47; serviceConnectionId is retrieved from the portal.
@@ -60,8 +61,8 @@ public class AzurePipelinesCredential implements TokenCredential {
                 httpHeaders.add(HttpHeaderName.CONTENT_TYPE, "application/json");
                 // Prevents the service from responding with a redirect HTTP status code (useful for automation).
                 httpHeaders.add(IdentityUtil.X_TFS_FED_AUTH_REDIRECT, "Suppress");
-                try (Response<?> response = httpPipeline.send(request)) {
-                    String responseBody = response.getBody().toString();
+                try (Response<BinaryData> response = httpPipeline.send(request)) {
+                    String responseBody = response.getValue().toString();
                     if (response.getStatusCode() != 200) {
                         String xVssHeader = response.getHeaders().getValue(IdentityUtil.X_VSS_E2EID);
                         String xMsEdgeRefHeader = response.getHeaders().getValue(IdentityUtil.X_MSEDGE_REF);

@@ -8,8 +8,6 @@ import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.utils.configuration.Configuration;
-import io.clientcore.core.utils.configuration.ConfigurationProperty;
-import io.clientcore.core.utils.configuration.ConfigurationPropertyBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -323,15 +321,11 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
         private static final String BODY_VALUE = "body";
         private static final String BODY_AND_HEADERS_VALUE = "body_and_headers";
 
-        private static final ConfigurationProperty<String> HTTP_LOG_LEVEL
-            = ConfigurationPropertyBuilder.ofString("http.log.level")
-                .shared(true)
-                .environmentVariableName(Configuration.HTTP_LOG_LEVEL)
-                .defaultValue("none")
-                .build();
-
         static HttpLogLevel fromConfiguration(Configuration configuration) {
-            String logLevel = configuration.get(HTTP_LOG_LEVEL);
+            String logLevel = configuration.get(Configuration.HTTP_LOG_LEVEL);
+            if (logLevel == null) {
+                logLevel = configuration.get("http.log.level");
+            }
 
             if (HEADERS_VALUE.equalsIgnoreCase(logLevel)) {
                 return HEADERS;

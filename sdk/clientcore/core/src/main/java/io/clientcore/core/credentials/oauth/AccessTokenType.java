@@ -3,9 +3,10 @@
 
 package io.clientcore.core.credentials.oauth;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.utils.ExpandableEnum;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Represents Access Token types.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class AccessTokenType implements ExpandableEnum<String> {
     private static final Map<String, AccessTokenType> VALUES = new ConcurrentHashMap<>();
     private final String caseSensitive;
@@ -70,15 +72,6 @@ public final class AccessTokenType implements ExpandableEnum<String> {
         return VALUES.computeIfAbsent(name, AccessTokenType::new);
     }
 
-    /**
-     * Gets all known {@link AccessTokenType} values.
-     *
-     * @return The known {@link AccessTokenType} values.
-     */
-    public static Collection<AccessTokenType> values() {
-        return VALUES.values();
-    }
-
     @Override
     public String toString() {
         return caseSensitive;
@@ -100,7 +93,6 @@ public final class AccessTokenType implements ExpandableEnum<String> {
         }
 
         AccessTokenType other = (AccessTokenType) obj;
-
         return Objects.equals(caseInsensitive, other.caseInsensitive);
     }
 

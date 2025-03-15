@@ -3,6 +3,8 @@
 
 package io.clientcore.core.serialization.json.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.implementation.utils.Option;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -31,6 +33,7 @@ import java.util.Objects;
  * @see JsonPatchOperation
  * @see JsonPatchOperationKind
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class JsonPatchDocument implements JsonSerializable<JsonPatchDocument> {
     private final JsonSerializer serializer;
     private final List<JsonPatchOperation> operations;
