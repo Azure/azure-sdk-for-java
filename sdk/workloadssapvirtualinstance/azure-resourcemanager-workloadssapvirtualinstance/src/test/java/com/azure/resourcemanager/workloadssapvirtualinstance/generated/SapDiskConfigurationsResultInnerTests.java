@@ -13,35 +13,35 @@ public final class SapDiskConfigurationsResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapDiskConfigurationsResultInner model = BinaryData.fromString(
-            "{\"volumeConfigurations\":{\"wlrbqtkoievseo\":{\"recommendedConfiguration\":{\"count\":1517331756853567290,\"sizeGB\":6976835290112306722,\"sku\":{\"name\":\"PremiumV2_LRS\"}},\"supportedConfigurations\":[{\"sku\":{\"name\":\"UltraSSD_LRS\"},\"sizeGB\":877746656530607911,\"minimumSupportedDiskCount\":7788102211141342561,\"maximumSupportedDiskCount\":8569515423946010786,\"iopsReadWrite\":5133856705294312052,\"mbpsReadWrite\":8524134273016778092,\"diskTier\":\"dltfz\"},{\"sku\":{\"name\":\"StandardSSD_LRS\"},\"sizeGB\":4664695938466420383,\"minimumSupportedDiskCount\":290569327537915175,\"maximumSupportedDiskCount\":820800207830190162,\"iopsReadWrite\":5369174747362686105,\"mbpsReadWrite\":5443627856554259872,\"diskTier\":\"tibqdxbxwakb\"},{\"sku\":{\"name\":\"UltraSSD_LRS\"},\"sizeGB\":1899793527406427487,\"minimumSupportedDiskCount\":2563222478811216223,\"maximumSupportedDiskCount\":4023269480991866859,\"iopsReadWrite\":8267760773772711252,\"mbpsReadWrite\":4682291687998834787,\"diskTier\":\"dxunkbebxmubyyn\"}]},\"mnzb\":{\"recommendedConfiguration\":{\"count\":7788361757675898982,\"sizeGB\":1749523019713817498,\"sku\":{\"name\":\"Standard_LRS\"}},\"supportedConfigurations\":[{\"sku\":{\"name\":\"Premium_ZRS\"},\"sizeGB\":4446594511223845918,\"minimumSupportedDiskCount\":4578052563947171687,\"maximumSupportedDiskCount\":8518549902129986259,\"iopsReadWrite\":367607290034890001,\"mbpsReadWrite\":4123846884146341556,\"diskTier\":\"bttdumorppxe\"}]}}}")
+            "{\"volumeConfigurations\":{\"mdnbbglzpswiy\":{\"recommendedConfiguration\":{\"count\":649396762028121762,\"sizeGB\":2254410049311132941,\"sku\":{\"name\":\"Premium_LRS\"}},\"supportedConfigurations\":[{\"sku\":{\"name\":\"UltraSSD_LRS\"},\"sizeGB\":2844407552586736400,\"minimumSupportedDiskCount\":1213698298627967983,\"maximumSupportedDiskCount\":6355558270413458656,\"iopsReadWrite\":7426738628868732160,\"mbpsReadWrite\":1771287073255058648,\"diskTier\":\"thnzd\"},{\"sku\":{\"name\":\"StandardSSD_ZRS\"},\"sizeGB\":5495593791333238978,\"minimumSupportedDiskCount\":3359106947946927785,\"maximumSupportedDiskCount\":6807110880939555009,\"iopsReadWrite\":7110253066335366033,\"mbpsReadWrite\":3972584781562834775,\"diskTier\":\"lkthu\"},{\"sku\":{\"name\":\"StandardSSD_LRS\"},\"sizeGB\":7247562094166892999,\"minimumSupportedDiskCount\":3818900650513527353,\"maximumSupportedDiskCount\":6036876067964758853,\"iopsReadWrite\":4762733948592023559,\"mbpsReadWrite\":2689162209131114224,\"diskTier\":\"vaolpsslqlf\"}]}}}")
             .toObject(SapDiskConfigurationsResultInner.class);
-        Assertions.assertEquals(1517331756853567290L,
-            model.volumeConfigurations().get("wlrbqtkoievseo").recommendedConfiguration().count());
-        Assertions.assertEquals(6976835290112306722L,
-            model.volumeConfigurations().get("wlrbqtkoievseo").recommendedConfiguration().sizeGB());
-        Assertions.assertEquals(DiskSkuName.PREMIUM_V2_LRS,
-            model.volumeConfigurations().get("wlrbqtkoievseo").recommendedConfiguration().sku().name());
+        Assertions.assertEquals(649396762028121762L,
+            model.volumeConfigurations().get("mdnbbglzpswiy").recommendedConfiguration().count());
+        Assertions.assertEquals(2254410049311132941L,
+            model.volumeConfigurations().get("mdnbbglzpswiy").recommendedConfiguration().sizeGB());
+        Assertions.assertEquals(DiskSkuName.PREMIUM_LRS,
+            model.volumeConfigurations().get("mdnbbglzpswiy").recommendedConfiguration().sku().name());
         Assertions.assertEquals(DiskSkuName.ULTRA_SSD_LRS,
-            model.volumeConfigurations().get("wlrbqtkoievseo").supportedConfigurations().get(0).sku().name());
-        Assertions.assertEquals(877746656530607911L,
-            model.volumeConfigurations().get("wlrbqtkoievseo").supportedConfigurations().get(0).sizeGB());
-        Assertions.assertEquals(7788102211141342561L,
+            model.volumeConfigurations().get("mdnbbglzpswiy").supportedConfigurations().get(0).sku().name());
+        Assertions.assertEquals(2844407552586736400L,
+            model.volumeConfigurations().get("mdnbbglzpswiy").supportedConfigurations().get(0).sizeGB());
+        Assertions.assertEquals(1213698298627967983L,
             model.volumeConfigurations()
-                .get("wlrbqtkoievseo")
+                .get("mdnbbglzpswiy")
                 .supportedConfigurations()
                 .get(0)
                 .minimumSupportedDiskCount());
-        Assertions.assertEquals(8569515423946010786L,
+        Assertions.assertEquals(6355558270413458656L,
             model.volumeConfigurations()
-                .get("wlrbqtkoievseo")
+                .get("mdnbbglzpswiy")
                 .supportedConfigurations()
                 .get(0)
                 .maximumSupportedDiskCount());
-        Assertions.assertEquals(5133856705294312052L,
-            model.volumeConfigurations().get("wlrbqtkoievseo").supportedConfigurations().get(0).iopsReadWrite());
-        Assertions.assertEquals(8524134273016778092L,
-            model.volumeConfigurations().get("wlrbqtkoievseo").supportedConfigurations().get(0).mbpsReadWrite());
-        Assertions.assertEquals("dltfz",
-            model.volumeConfigurations().get("wlrbqtkoievseo").supportedConfigurations().get(0).diskTier());
+        Assertions.assertEquals(7426738628868732160L,
+            model.volumeConfigurations().get("mdnbbglzpswiy").supportedConfigurations().get(0).iopsReadWrite());
+        Assertions.assertEquals(1771287073255058648L,
+            model.volumeConfigurations().get("mdnbbglzpswiy").supportedConfigurations().get(0).mbpsReadWrite());
+        Assertions.assertEquals("thnzd",
+            model.volumeConfigurations().get("mdnbbglzpswiy").supportedConfigurations().get(0).diskTier());
     }
 }
