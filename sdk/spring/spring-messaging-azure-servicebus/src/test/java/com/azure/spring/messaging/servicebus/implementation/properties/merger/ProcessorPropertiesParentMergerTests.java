@@ -9,9 +9,12 @@ import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProcessorPropertiesParentMergerTests {
     private final ProcessorPropertiesParentMerger merger = new ProcessorPropertiesParentMerger();
@@ -19,6 +22,8 @@ public class ProcessorPropertiesParentMergerTests {
     @Test
     void childNotProvidedShouldUseParent() {
         ProcessorProperties child = new ProcessorProperties();
+        child.setSessionEnabled(true);
+        child.setSessionIdleTimeout(Duration.ofSeconds(10));
 
         String customEndpoint = "https://test.address.com:443";
         NamespaceProperties parent = new NamespaceProperties();
@@ -39,6 +44,8 @@ public class ProcessorPropertiesParentMergerTests {
         assertEquals("parent-domain", result.getDomainName());
         assertEquals(customEndpoint, result.getCustomEndpointAddress());
         assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, result.getClient().getTransportType());
+        assertTrue(result.getSessionEnabled());
+        assertEquals(Duration.ofSeconds(10), result.getSessionIdleTimeout());
     }
 
     @Test

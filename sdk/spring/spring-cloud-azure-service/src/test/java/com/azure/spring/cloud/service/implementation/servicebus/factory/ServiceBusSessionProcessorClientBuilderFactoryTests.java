@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -28,18 +30,30 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
     ServiceBusProcessorClientTestProperties,
     ServiceBusSessionProcessorClientBuilderFactory> {
 
+    @Override
+    public PropertiesIntegrityParameters getParametersForPropertiesIntegrity() {
+        Map<String, String> namingFromBinderToProperties = new HashMap<>();
+        namingFromBinderToProperties.put("queuename", "entityname");
+        namingFromBinderToProperties.put("topicname", "entityname");
+        namingFromBinderToProperties.put("disableautocomplete", "autocomplete");
+        return new PropertiesIntegrityParameters(ServiceBusProcessorClientTestProperties.class,
+            ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class, namingFromBinderToProperties);
+    }
+
     @Test
-    void queueConfigured() {
+    void configured() {
         ServiceBusProcessorClientTestProperties properties = new ServiceBusProcessorClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityType(ServiceBusEntityType.QUEUE);
         properties.setEntityName("test-queue");
+        properties.setSessionIdleTimeout(Duration.ofSeconds(10));
 
         final ServiceBusSessionProcessorClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
         final ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = factory.build();
         builder.buildProcessorClient();
 
         verify(builder, times(1)).queueName("test-queue");
+        verify(builder, times(1)).sessionIdleTimeout(Duration.ofSeconds(10));
     }
 
     @Test
