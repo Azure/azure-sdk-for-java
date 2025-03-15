@@ -32,15 +32,7 @@ public final class ResourceParser {
     }
 
     // visible for testing
-    public void updateRoleNameAndInstance(AbstractTelemetryBuilder builder, Resource resource) {
-
-        // update AKS role name and role instance
-        if (AksResourceAttributes.isAks(resource)) {
-            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), AksResourceAttributes.getAksRoleName(resource));
-            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(),
-                AksResourceAttributes.getAksRoleInstance(resource));
-            return;
-        }
+    public void updateRoleNameAndInstanceAndVersion(AbstractTelemetryBuilder builder, Resource resource) {
 
         Map<String, String> tags = builder.build().getTags();
         if (tags == null || !tags.containsKey(ContextTagKeys.AI_CLOUD_ROLE.toString())) {
@@ -50,9 +42,20 @@ public final class ResourceParser {
         if (tags == null || !tags.containsKey(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())) {
             builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), getRoleInstance(resource));
         }
+
+        if (tags == null || !tags.containsKey(ContextTagKeys.AI_APPLICATION_VER.toString())) {
+            String applicationVersion = resource.getAttribute(ServiceAttributes.SERVICE_VERSION);
+            if (applicationVersion != null) {
+                builder.addTag(ContextTagKeys.AI_APPLICATION_VER.toString(), applicationVersion);
+            }
+        }
     }
 
     private String getRoleName(Resource resource) {
+        if (AksResourceAttributes.isAks(resource)) {
+            return AksResourceAttributes.getAksRoleName(resource);
+        }
+
         String serviceName = resource.getAttribute(ServiceAttributes.SERVICE_NAME);
         if (serviceName == null || DEFAULT_SERVICE_NAME.equals(serviceName)) {
             if (websiteSiteName != null) {
@@ -71,6 +74,10 @@ public final class ResourceParser {
     }
 
     private String getRoleInstance(Resource resource) {
+        if (AksResourceAttributes.isAks(resource)) {
+            return AksResourceAttributes.getAksRoleInstance(resource);
+        }
+
         String roleInstance = resource.getAttribute(ServiceIncubatingAttributes.SERVICE_INSTANCE_ID);
         if (roleInstance != null) {
             return roleInstance;
@@ -79,7 +86,11 @@ public final class ResourceParser {
         if (roleInstance != null) {
             return roleInstance;
         }
-        return HostName.get(); // default hostname
+        roleInstance = HostName.get(); // default hostname
+        if (roleInstance != null) {
+            return roleInstance;
+        }
+        return "unknown"; // this is for backwards compatibility in the Java agent
     }
 
     public static String getWebsiteSiteNameEnvVar(Function<String, String> envVars) {
