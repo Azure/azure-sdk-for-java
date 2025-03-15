@@ -244,8 +244,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         return Mono.just(1)
             .delayElement(Duration.ofSeconds(Configs.getStalePartitionUnavailabilityRefreshIntervalInSeconds()))
             .repeat(() -> !this.isClosed.get())
-            .flatMap(ignore -> Flux.fromIterable(this.partitionKeyRangesWithPossibleUnavailableRegions.entrySet()))
-            .publishOn(this.partitionRecoveryScheduler)
+            .flatMap(ignore -> Flux.fromIterable(this.partitionKeyRangesWithPossibleUnavailableRegions.entrySet()), 1, 1)
             .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
 
                 logger.debug("Background updateStaleLocationInfo kicking in...");
@@ -292,7 +291,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
                     return Flux.empty();
                 }
-            })
+            }, 1, 1)
             .flatMap(locationToLocationSpecificHealthContextPair -> {
 
                 try {
@@ -313,7 +312,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
                                 return gatewayAddressCache
                                     .submitOpenConnectionTasks(partitionKeyRangeWrapper.getPartitionKeyRange(), partitionKeyRangeWrapper.getCollectionResourceId())
-                                    .publishOn(this.partitionRecoveryScheduler)
                                     .timeout(Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()))
                                     .doOnComplete(() -> {
 
@@ -371,7 +369,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 }
 
                 return Flux.empty();
-            })
+            }, 1, 1)
             .onErrorResume(throwable -> {
                 if (logger.isWarnEnabled()) {
                     logger.warn("An exception : {} was thrown trying to recover an Unavailable partition key range!, fail-back flow won't be executed!", throwable.getMessage());
