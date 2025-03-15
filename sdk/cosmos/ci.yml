@@ -11,7 +11,6 @@ trigger:
       - sdk/cosmos/ci.yml
       - sdk/cosmos/azure-cosmos/
       - sdk/cosmos/azure-cosmos-benchmark/
-      - sdk/cosmos/azure-cosmos-dotnet-benchmark/
       - sdk/cosmos/azure-cosmos-encryption/
       - sdk/cosmos/azure-cosmos-examples/
       - sdk/cosmos/azure-cosmos-spark_3_2-12/
@@ -29,7 +28,6 @@ trigger:
       - sdk/cosmos/azure-cosmos/pom.xml
       - sdk/cosmos/azure-cosmos-tests/pom.xml
       - sdk/cosmos/azure-cosmos-benchmark/pom.xml
-      - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
       - sdk/cosmos/azure-cosmos-encryption/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
@@ -52,7 +50,6 @@ pr:
       - sdk/cosmos/ci.yml
       - sdk/cosmos/azure-cosmos/
       - sdk/cosmos/azure-cosmos-benchmark/
-      - sdk/cosmos/azure-cosmos-dotnet-benchmark/
       - sdk/cosmos/azure-cosmos-encryption/
       - sdk/cosmos/azure-cosmos-examples/
       - sdk/cosmos/azure-cosmos-test/
@@ -69,7 +66,6 @@ pr:
       - sdk/cosmos/pom.xml
       - sdk/cosmos/azure-cosmos/pom.xml
       - sdk/cosmos/azure-cosmos-benchmark/pom.xml
-      - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
       - sdk/cosmos/azure-cosmos-encryption/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml

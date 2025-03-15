@@ -23,7 +23,6 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
@@ -98,11 +97,8 @@ public final class CosmosAsyncClient implements Closeable {
     private final DiagnosticsProvider diagnosticsProvider;
     private final Tag clientCorrelationTag;
     private final String accountTagValue;
-    private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
     private final CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
-    private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
-            ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
     private final List<CosmosOperationPolicy> requestPolicies;
@@ -128,14 +124,9 @@ public final class CosmosAsyncClient implements Closeable {
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
         SessionRetryOptions sessionRetryOptions = builder.getSessionRetryOptions();
 
-        CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
-            .createSnapshot(
-                builder.getClientTelemetryConfig(),
-                builder.isClientTelemetryEnabled());
+        CosmosClientTelemetryConfig effectiveTelemetryConfig = builder.getClientTelemetryConfig();
 
         this.clientTelemetryConfig = effectiveTelemetryConfig;
-        this.isSendClientTelemetryToServiceEnabled = telemetryConfigAccessor
-            .isSendClientTelemetryToServiceEnabled(effectiveTelemetryConfig);
         boolean contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         ApiType apiType = builder.apiType();
         String clientCorrelationId = telemetryConfigAccessor
@@ -223,18 +214,6 @@ public final class CosmosAsyncClient implements Closeable {
             telemetryConfigAccessor.addDiagnosticsHandler(
                 effectiveTelemetryConfig,
                 new ClientMetricsDiagnosticsHandler(this)
-            );
-        }
-
-        if (this.isSendClientTelemetryToServiceEnabled) {
-            telemetryConfigAccessor.setClientTelemetry(
-                effectiveTelemetryConfig,
-                asyncDocumentClient.getClientTelemetry()
-            );
-
-            telemetryConfigAccessor.addDiagnosticsHandler(
-                effectiveTelemetryConfig,
-                new ClientTelemetryDiagnosticsHandler(effectiveTelemetryConfig)
             );
         }
 
@@ -841,11 +820,6 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public boolean shouldEnableEmptyPageDiagnostics(CosmosAsyncClient client) {
                     return client.clientMetricRegistrySnapshot != null || client.isTransportLevelTracingEnabled();
-                }
-
-                @Override
-                public boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client) {
-                    return client.isSendClientTelemetryToServiceEnabled;
                 }
 
                 @Override
