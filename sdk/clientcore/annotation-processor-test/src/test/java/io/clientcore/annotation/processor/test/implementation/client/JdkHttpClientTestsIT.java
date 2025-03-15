@@ -1,25 +1,32 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.http.okhttp3;
+package io.clientcore.annotation.processor.test.implementation.client;
 
 import io.clientcore.annotation.processor.test.shared.HttpClientTests;
 import io.clientcore.annotation.processor.test.shared.HttpClientTestsServer;
 import io.clientcore.annotation.processor.test.shared.LocalTestServer;
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.implementation.http.client.GlobalJdkHttpClient;
+import io.clientcore.core.implementation.http.client.JdkHttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 
-@Execution(ExecutionMode.SAME_THREAD)
-public class OkHttpHttpClientHttpClientTests extends HttpClientTests {
+/**
+ * Tests for the {@link JdkHttpClient} class.
+ * <p>
+ * Now that the default HttpClient, and related code, are using multi-release JARs this must be an integration test as
+ * the full JAR must be available to use the multi-release code.
+ */
+@DisabledForJreRange(max = JRE.JAVA_11)
+public class JdkHttpClientTestsIT extends HttpClientTests {
     private static LocalTestServer server;
 
     @BeforeAll
     public static void startTestServer() {
         server = HttpClientTestsServer.getHttpClientTestsServer();
-
         server.start();
     }
 
@@ -31,9 +38,8 @@ public class OkHttpHttpClientHttpClientTests extends HttpClientTests {
     }
 
     @Override
-    @Deprecated
-    protected int getPort() {
-        return server.getHttpPort();
+    protected HttpClient getHttpClient() {
+        return GlobalJdkHttpClient.HTTP_CLIENT.getHttpClient();
     }
 
     @Override
@@ -42,7 +48,7 @@ public class OkHttpHttpClientHttpClientTests extends HttpClientTests {
     }
 
     @Override
-    protected HttpClient getHttpClient() {
-        return new OkHttpHttpClientProvider().getSharedInstance();
+    protected int getPort() {
+        return server.getHttpPort();
     }
 }
