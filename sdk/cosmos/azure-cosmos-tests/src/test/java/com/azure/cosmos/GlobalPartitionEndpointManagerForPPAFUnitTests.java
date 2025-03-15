@@ -163,13 +163,13 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
             failedRegionalRoutingContextsField.setAccessible(true);
             currentRegionalContextField.setAccessible(true);
 
-            Field partitionKeyRangeToLocationField
-                = GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class.getDeclaredField("partitionKeyRangeToLocation");
+            Field partitionKeyRangeToFailoverInfoField
+                = GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class.getDeclaredField("partitionKeyRangeToFailoverInfo");
 
-            partitionKeyRangeToLocationField.setAccessible(true);
+            partitionKeyRangeToFailoverInfoField.setAccessible(true);
 
-            ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocation
-                = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationField.get(globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToFailoverInfo
+                = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToFailoverInfoField.get(globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
             RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
                 operationType,
@@ -187,7 +187,7 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
             assertThat(canOpOrchestrateFailover).isEqualTo(expectedCanOpOrchestrateFailover);
 
             Object partitionLevelFailoverInfo
-                = partitionKeyRangeToLocation.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
+                = partitionKeyRangeToFailoverInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
             if (canOpOrchestrateFailover) {
                 Set<RegionalRoutingContext> failedRegionalRoutingContexts = (Set<RegionalRoutingContext>) failedRegionalRoutingContextsField.get(partitionLevelFailoverInfo);
@@ -380,15 +380,15 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
         failedLocationsField.setAccessible(true);
         currentField.setAccessible(true);
 
-        Field partitionKeyRangeToLocationField
-            = GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class.getDeclaredField("partitionKeyRangeToLocation");
+        Field partitionKeyRangeToFailoverInfoField
+            = GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class.getDeclaredField("partitionKeyRangeToFailoverInfo");
 
-        partitionKeyRangeToLocationField.setAccessible(true);
+        partitionKeyRangeToFailoverInfoField.setAccessible(true);
 
-        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocation
-            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationField.get(globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToFailoverInfo
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToFailoverInfoField.get(globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
-        Object partitionLevelFailoverInfo = partitionKeyRangeToLocation.get(new PartitionKeyRangeWrapper(partitionKeyRange, collectionResourceId));
+        Object partitionLevelFailoverInfo = partitionKeyRangeToFailoverInfo.get(new PartitionKeyRangeWrapper(partitionKeyRange, collectionResourceId));
 
         if (partitionLevelFailoverInfo != null) {
             Set<RegionalRoutingContext> failedRegionalRoutingContexts = (Set<RegionalRoutingContext>) failedLocationsField.get(partitionLevelFailoverInfo);
