@@ -6,6 +6,7 @@ package com.azure.core.http.okhttp;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.SharedExecutorService;
@@ -19,6 +20,7 @@ import okhttp3.Dispatcher;
 import okhttp3.EventListener;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -33,6 +35,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -47,6 +50,7 @@ import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.REDIRECT_PA
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link OkHttpAsyncHttpClientBuilder}.
@@ -626,6 +630,35 @@ public class OkHttpAsyncHttpClientBuilderTests {
                 return thread;
             })))
             .build();
+    }
+
+    @Test
+    public void noHttpProtocolResultsInJustHttp11() {
+        OkHttpAsyncHttpClient client = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder().build();
+
+        List<Protocol> protocols = client.httpClient.protocols();
+        assertEquals(1, protocols.size());
+        assertEquals(Protocol.HTTP_1_1, protocols.get(0));
+    }
+
+    @Test
+    public void missingHttp11InHttpProtocolsThrows() {
+        assertThrows(IllegalArgumentException.class,
+            () -> new OkHttpAsyncHttpClientBuilder().setProtocolVersions(EnumSet.noneOf(HttpProtocolVersion.class)));
+        assertThrows(IllegalArgumentException.class,
+            () -> new OkHttpAsyncHttpClientBuilder().setProtocolVersions(EnumSet.of(HttpProtocolVersion.HTTP_2)));
+    }
+
+    @Test
+    public void settingHttp2InHttpProtocolsAllowsHttp2() {
+        OkHttpAsyncHttpClient client = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder()
+            .setProtocolVersions(EnumSet.of(HttpProtocolVersion.HTTP_2, HttpProtocolVersion.HTTP_1_1))
+            .build();
+
+        List<Protocol> protocols = client.httpClient.protocols();
+        assertEquals(2, protocols.size());
+        assertTrue(protocols.contains(Protocol.HTTP_2), "Expected HTTP/2 to be in the protocols");
+        assertTrue(protocols.contains(Protocol.HTTP_1_1), "Expected HTTP/1.1 to be in the protocols");
     }
 
     private static final class TestEventListenerValidator extends EventListener {
