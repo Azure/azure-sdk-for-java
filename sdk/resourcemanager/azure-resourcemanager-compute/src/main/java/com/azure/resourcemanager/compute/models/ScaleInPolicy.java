@@ -38,6 +38,12 @@ public final class ScaleInPolicy implements JsonSerializable<ScaleInPolicy> {
      */
     private Boolean forceDeletion;
 
+    /*
+     * This property allows you to prioritize the deletion of unhealthy and inactive VMs when a virtual machine scale
+     * set is being scaled-in.(Feature in Preview)
+     */
+    private Boolean prioritizeUnhealthyVMs;
+
     /**
      * Creates an instance of ScaleInPolicy class.
      */
@@ -109,6 +115,28 @@ public final class ScaleInPolicy implements JsonSerializable<ScaleInPolicy> {
     }
 
     /**
+     * Get the prioritizeUnhealthyVMs property: This property allows you to prioritize the deletion of unhealthy and
+     * inactive VMs when a virtual machine scale set is being scaled-in.(Feature in Preview).
+     * 
+     * @return the prioritizeUnhealthyVMs value.
+     */
+    public Boolean prioritizeUnhealthyVMs() {
+        return this.prioritizeUnhealthyVMs;
+    }
+
+    /**
+     * Set the prioritizeUnhealthyVMs property: This property allows you to prioritize the deletion of unhealthy and
+     * inactive VMs when a virtual machine scale set is being scaled-in.(Feature in Preview).
+     * 
+     * @param prioritizeUnhealthyVMs the prioritizeUnhealthyVMs value to set.
+     * @return the ScaleInPolicy object itself.
+     */
+    public ScaleInPolicy withPrioritizeUnhealthyVMs(Boolean prioritizeUnhealthyVMs) {
+        this.prioritizeUnhealthyVMs = prioritizeUnhealthyVMs;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -125,6 +153,7 @@ public final class ScaleInPolicy implements JsonSerializable<ScaleInPolicy> {
         jsonWriter.writeArrayField("rules", this.rules,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeBooleanField("forceDeletion", this.forceDeletion);
+        jsonWriter.writeBooleanField("prioritizeUnhealthyVMs", this.prioritizeUnhealthyVMs);
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +178,8 @@ public final class ScaleInPolicy implements JsonSerializable<ScaleInPolicy> {
                     deserializedScaleInPolicy.rules = rules;
                 } else if ("forceDeletion".equals(fieldName)) {
                     deserializedScaleInPolicy.forceDeletion = reader.getNullable(JsonReader::getBoolean);
+                } else if ("prioritizeUnhealthyVMs".equals(fieldName)) {
+                    deserializedScaleInPolicy.prioritizeUnhealthyVMs = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

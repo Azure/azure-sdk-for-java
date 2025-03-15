@@ -22,6 +22,11 @@ public final class AllocationStrategy extends ExpandableStringEnum<AllocationStr
     public static final AllocationStrategy CAPACITY_OPTIMIZED = fromString("CapacityOptimized");
 
     /**
+     * Static value Prioritized for AllocationStrategy.
+     */
+    public static final AllocationStrategy PRIORITIZED = fromString("Prioritized");
+
+    /**
      * Creates a new instance of AllocationStrategy value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

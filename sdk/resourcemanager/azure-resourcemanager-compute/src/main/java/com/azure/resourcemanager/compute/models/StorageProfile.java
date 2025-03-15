@@ -47,6 +47,12 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
      */
     private DiskControllerTypes diskControllerType;
 
+    /*
+     * Specifies whether the regional disks should be aligned/moved to the VM zone. This is applicable only for VMs with
+     * placement property set. Please note that this change is irreversible. Minimum api-version: 2024-11-01.
+     */
+    private Boolean alignRegionalDisksToVMZone;
+
     /**
      * Creates an instance of StorageProfile class.
      */
@@ -156,6 +162,30 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
     }
 
     /**
+     * Get the alignRegionalDisksToVMZone property: Specifies whether the regional disks should be aligned/moved to the
+     * VM zone. This is applicable only for VMs with placement property set. Please note that this change is
+     * irreversible. Minimum api-version: 2024-11-01.
+     * 
+     * @return the alignRegionalDisksToVMZone value.
+     */
+    public Boolean alignRegionalDisksToVMZone() {
+        return this.alignRegionalDisksToVMZone;
+    }
+
+    /**
+     * Set the alignRegionalDisksToVMZone property: Specifies whether the regional disks should be aligned/moved to the
+     * VM zone. This is applicable only for VMs with placement property set. Please note that this change is
+     * irreversible. Minimum api-version: 2024-11-01.
+     * 
+     * @param alignRegionalDisksToVMZone the alignRegionalDisksToVMZone value to set.
+     * @return the StorageProfile object itself.
+     */
+    public StorageProfile withAlignRegionalDisksToVMZone(Boolean alignRegionalDisksToVMZone) {
+        this.alignRegionalDisksToVMZone = alignRegionalDisksToVMZone;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -183,6 +213,7 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
         jsonWriter.writeArrayField("dataDisks", this.dataDisks, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("diskControllerType",
             this.diskControllerType == null ? null : this.diskControllerType.toString());
+        jsonWriter.writeBooleanField("alignRegionalDisksToVMZone", this.alignRegionalDisksToVMZone);
         return jsonWriter.writeEndObject();
     }
 
@@ -210,6 +241,8 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
                     deserializedStorageProfile.dataDisks = dataDisks;
                 } else if ("diskControllerType".equals(fieldName)) {
                     deserializedStorageProfile.diskControllerType = DiskControllerTypes.fromString(reader.getString());
+                } else if ("alignRegionalDisksToVMZone".equals(fieldName)) {
+                    deserializedStorageProfile.alignRegionalDisksToVMZone = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

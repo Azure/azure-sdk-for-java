@@ -16,6 +16,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -25,6 +29,8 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageResourceInner;
 import com.azure.resourcemanager.compute.fluent.models.VmImagesInEdgeZoneListResultInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
+import com.azure.resourcemanager.compute.models.Expand;
+import com.azure.resourcemanager.compute.models.VirtualMachineImagesWithPropertiesListResult;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -115,6 +121,25 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             @PathParam("location") String location, @PathParam("edgeZone") String edgeZone,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<VirtualMachineImagesWithPropertiesListResult>> listWithProperties(
+            @HostParam("$host") String endpoint, @PathParam("location") String location,
+            @PathParam("publisherName") String publisherName, @PathParam("offer") String offer,
+            @PathParam("skus") String skus, @QueryParam("$expand") Expand expand, @QueryParam("$top") Integer top,
+            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<VirtualMachineImagesWithPropertiesListResult>> listWithPropertiesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -156,7 +181,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), location, publisherName, offer, skus,
@@ -204,7 +229,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), location, publisherName, offer, skus, version, apiVersion,
@@ -309,7 +334,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), location, publisherName, offer, skus,
@@ -357,7 +382,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), location, publisherName, offer, skus, expand, top, orderby,
@@ -459,7 +484,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOffers(this.client.getEndpoint(), location, publisherName, apiVersion,
@@ -496,7 +521,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listOffers(this.client.getEndpoint(), location, publisherName, apiVersion,
@@ -575,7 +600,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPublishers(this.client.getEndpoint(), location, apiVersion,
@@ -608,7 +633,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listPublishers(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(),
@@ -692,7 +717,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkus(this.client.getEndpoint(), location, publisherName, offer,
@@ -733,7 +758,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listSkus(this.client.getEndpoint(), location, publisherName, offer, apiVersion,
@@ -822,7 +847,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByEdgeZone(this.client.getEndpoint(), location, edgeZone, apiVersion,
@@ -859,7 +884,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByEdgeZone(this.client.getEndpoint(), location, edgeZone, apiVersion,
@@ -912,5 +937,279 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VmImagesInEdgeZoneListResultInner listByEdgeZone(String location, String edgeZone) {
         return listByEdgeZoneWithResponse(location, edgeZone, Context.NONE).getValue();
+    }
+
+    /**
+     * The listWithProperties operation.
+     * 
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param expand The expand expression to apply on the operation.
+     * @param top The top parameter.
+     * @param orderby The orderby parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine Images operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<VirtualMachineImageInner>> listWithPropertiesSinglePageAsync(String location,
+        String publisherName, String offer, String skus, Expand expand, Integer top, String orderby) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (publisherName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+        }
+        if (offer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
+        }
+        if (skus == null) {
+            return Mono.error(new IllegalArgumentException("Parameter skus is required and cannot be null."));
+        }
+        if (expand == null) {
+            return Mono.error(new IllegalArgumentException("Parameter expand is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listWithProperties(this.client.getEndpoint(), location, publisherName,
+                offer, skus, expand, top, orderby, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<VirtualMachineImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * The listWithProperties operation.
+     * 
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param expand The expand expression to apply on the operation.
+     * @param top The top parameter.
+     * @param orderby The orderby parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine Images operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<VirtualMachineImageInner>> listWithPropertiesSinglePageAsync(String location,
+        String publisherName, String offer, String skus, Expand expand, Integer top, String orderby, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (publisherName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+        }
+        if (offer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
+        }
+        if (skus == null) {
+            return Mono.error(new IllegalArgumentException("Parameter skus is required and cannot be null."));
+        }
+        if (expand == null) {
+            return Mono.error(new IllegalArgumentException("Parameter expand is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listWithProperties(this.client.getEndpoint(), location, publisherName, offer, skus, expand, top, orderby,
+                apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * The listWithProperties operation.
+     * 
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param expand The expand expression to apply on the operation.
+     * @param top The top parameter.
+     * @param orderby The orderby parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine Images operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<VirtualMachineImageInner> listWithPropertiesAsync(String location, String publisherName,
+        String offer, String skus, Expand expand, Integer top, String orderby) {
+        return new PagedFlux<>(
+            () -> listWithPropertiesSinglePageAsync(location, publisherName, offer, skus, expand, top, orderby),
+            nextLink -> listWithPropertiesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * The listWithProperties operation.
+     * 
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param expand The expand expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine Images operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<VirtualMachineImageInner> listWithPropertiesAsync(String location, String publisherName,
+        String offer, String skus, Expand expand) {
+        final Integer top = null;
+        final String orderby = null;
+        return new PagedFlux<>(
+            () -> listWithPropertiesSinglePageAsync(location, publisherName, offer, skus, expand, top, orderby),
+            nextLink -> listWithPropertiesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * The listWithProperties operation.
+     * 
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param expand The expand expression to apply on the operation.
+     * @param top The top parameter.
+     * @param orderby The orderby parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine Images operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<VirtualMachineImageInner> listWithPropertiesAsync(String location, String publisherName,
+        String offer, String skus, Expand expand, Integer top, String orderby, Context context) {
+        return new PagedFlux<>(() -> listWithPropertiesSinglePageAsync(location, publisherName, offer, skus, expand,
+            top, orderby, context), nextLink -> listWithPropertiesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * The listWithProperties operation.
+     * 
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param expand The expand expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine Images operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<VirtualMachineImageInner> listWithProperties(String location, String publisherName,
+        String offer, String skus, Expand expand) {
+        final Integer top = null;
+        final String orderby = null;
+        return new PagedIterable<>(listWithPropertiesAsync(location, publisherName, offer, skus, expand, top, orderby));
+    }
+
+    /**
+     * The listWithProperties operation.
+     * 
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param expand The expand expression to apply on the operation.
+     * @param top The top parameter.
+     * @param orderby The orderby parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine Images operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<VirtualMachineImageInner> listWithProperties(String location, String publisherName,
+        String offer, String skus, Expand expand, Integer top, String orderby, Context context) {
+        return new PagedIterable<>(
+            listWithPropertiesAsync(location, publisherName, offer, skus, expand, top, orderby, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine Images operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<VirtualMachineImageInner>> listWithPropertiesNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listWithPropertiesNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<VirtualMachineImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine Images operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<VirtualMachineImageInner>> listWithPropertiesNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listWithPropertiesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

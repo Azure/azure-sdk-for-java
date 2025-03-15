@@ -804,7 +804,8 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of
-     * the virtual machine. 'UserData' will retrieve the UserData of the virtual machine.
+     * the virtual machine. 'UserData' will retrieve the UserData of the virtual machine. 'resiliencyView' will retrieve
+     * the instance view of the Virtual machine (if applicable) and include 'resilientVMDeletionStatus' as part of it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -836,7 +837,8 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of
-     * the virtual machine. 'UserData' will retrieve the UserData of the virtual machine.
+     * the virtual machine. 'UserData' will retrieve the UserData of the virtual machine. 'resiliencyView' will retrieve
+     * the instance view of the Virtual machine (if applicable) and include 'resilientVMDeletionStatus' as part of it.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.

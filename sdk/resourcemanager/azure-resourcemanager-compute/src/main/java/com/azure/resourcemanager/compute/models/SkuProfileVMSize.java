@@ -21,6 +21,11 @@ public final class SkuProfileVMSize implements JsonSerializable<SkuProfileVMSize
      */
     private String name;
 
+    /*
+     * Specifies the rank (a.k.a priority) associated with the VM Size.
+     */
+    private Integer rank;
+
     /**
      * Creates an instance of SkuProfileVMSize class.
      */
@@ -48,6 +53,26 @@ public final class SkuProfileVMSize implements JsonSerializable<SkuProfileVMSize
     }
 
     /**
+     * Get the rank property: Specifies the rank (a.k.a priority) associated with the VM Size.
+     * 
+     * @return the rank value.
+     */
+    public Integer rank() {
+        return this.rank;
+    }
+
+    /**
+     * Set the rank property: Specifies the rank (a.k.a priority) associated with the VM Size.
+     * 
+     * @param rank the rank value to set.
+     * @return the SkuProfileVMSize object itself.
+     */
+    public SkuProfileVMSize withRank(Integer rank) {
+        this.rank = rank;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -62,6 +87,7 @@ public final class SkuProfileVMSize implements JsonSerializable<SkuProfileVMSize
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("rank", this.rank);
         return jsonWriter.writeEndObject();
     }
 
@@ -82,6 +108,8 @@ public final class SkuProfileVMSize implements JsonSerializable<SkuProfileVMSize
 
                 if ("name".equals(fieldName)) {
                     deserializedSkuProfileVMSize.name = reader.getString();
+                } else if ("rank".equals(fieldName)) {
+                    deserializedSkuProfileVMSize.rank = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

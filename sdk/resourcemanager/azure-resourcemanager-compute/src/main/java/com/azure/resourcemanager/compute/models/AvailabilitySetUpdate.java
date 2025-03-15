@@ -203,6 +203,15 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     }
 
     /**
+     * Get the virtualMachineScaleSetMigrationInfo property: Describes the migration properties on the Availability Set.
+     * 
+     * @return the virtualMachineScaleSetMigrationInfo value.
+     */
+    public VirtualMachineScaleSetMigrationInfo virtualMachineScaleSetMigrationInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachineScaleSetMigrationInfo();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
