@@ -10,7 +10,6 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.serialization.json.JsonSerializer;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,8 +38,7 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline,
-            new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         byte[] bytes = "hello".getBytes();
         try (Response<Void> response
             = testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
@@ -56,7 +54,7 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         StreamResponse streamResponse = testInterface.testDownload();
 
         streamResponse.close();
@@ -72,7 +70,7 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -102,7 +100,7 @@ public class RestProxyTests {
         Class<? extends BinaryData> expectedContentClazz = data.getClass();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         Response<Void> response = testInterface.testMethod(data, ContentType.APPLICATION_JSON, contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -118,7 +116,7 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
         testInterface.testMethodReturnsVoid();
 
@@ -155,7 +153,7 @@ public class RestProxyTests {
         }).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
         testInterface.testListNext(nextLinkUri).close();
     }
