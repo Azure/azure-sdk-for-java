@@ -8,6 +8,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.SpanDataMapp
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryItemExporter;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulse;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.FeatureStatsbeat;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule;
 import io.opentelemetry.sdk.common.CompletableResultCode;
@@ -33,16 +34,18 @@ final class AzureMonitorTraceExporter implements SpanExporter {
     private final TelemetryItemExporter telemetryItemExporter;
     private final SpanDataMapper mapper;
     private final StatsbeatModule statsbeatModule;
+    private final QuickPulse quickPulse;
 
     /**
      * Creates an instance of exporter that is configured with given exporter client that sends
      * telemetry events to Application Insights resource identified by the instrumentation key.
      */
     AzureMonitorTraceExporter(SpanDataMapper mapper, TelemetryItemExporter telemetryItemExporter,
-        StatsbeatModule statsbeatModule) {
+        StatsbeatModule statsbeatModule, QuickPulse quickPulse) {
         this.mapper = mapper;
         this.telemetryItemExporter = telemetryItemExporter;
         this.statsbeatModule = statsbeatModule;
+        this.quickPulse = quickPulse;
     }
 
     /**
@@ -57,7 +60,10 @@ final class AzureMonitorTraceExporter implements SpanExporter {
             FeatureStatsbeat instrumentationStatsbeat = statsbeatModule.getInstrumentationStatsbeat();
             instrumentationStatsbeat.addInstrumentation(span);
             try {
-                mapper.map(span, telemetryItems::add);
+                TelemetryItem telemetryItem = mapper.map(span, telemetryItems::add);
+                if (quickPulse.isEnabled()) {
+                    quickPulse.add(telemetryItem);
+                }
                 OPERATION_LOGGER.recordSuccess();
             } catch (Throwable t) {
                 OPERATION_LOGGER.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
