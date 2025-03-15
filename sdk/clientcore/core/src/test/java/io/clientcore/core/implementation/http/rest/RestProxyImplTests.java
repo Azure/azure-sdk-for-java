@@ -13,11 +13,11 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.utils.Context;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -52,10 +52,10 @@ public class RestProxyImplTests {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength,
-            Context context);
+            RequestContext options);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        void testVoidMethod(Context context);
+        void testVoidMethod(RequestContext options);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class RestProxyImplTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
-        testInterface.testVoidMethod(Context.none());
+        testInterface.testVoidMethod(RequestContext.none());
 
         assertTrue(client.lastResponseClosed);
     }
@@ -77,7 +77,7 @@ public class RestProxyImplTests {
         byte[] bytes = "hello".getBytes();
         Response<Void> response
             = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
-                "application/json", (long) bytes.length, Context.none());
+                "application/json", (long) bytes.length, RequestContext.none());
 
         assertEquals(200, response.getStatusCode());
     }

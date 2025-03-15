@@ -18,7 +18,6 @@ import java.util.function.LongConsumer;
  * reporting tree can have arbitrary level of nesting.
  */
 public final class ProgressReporter {
-
     private final LongConsumer progressListener;
     private final Lock listenerLock;
     private final ProgressReporter parent;

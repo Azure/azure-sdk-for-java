@@ -312,25 +312,25 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         initializeHttpRequest(body, method);
         addHeadersToRequest(body, method);
         addRequestBody(body, method);
-        addRequestOptionsToRequestIfPresent(body, method);
+        addRequestContextToRequestIfPresent(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method);
 
         internalMethod.setBody(body);
     }
 
-    private void addRequestOptionsToRequestIfPresent(BlockStmt body, HttpRequestContext method) {
-        // Check if any parameter in the method is of type RequestOptions
-        boolean hasRequestOptions = method.getParameters()
+    private void addRequestContextToRequestIfPresent(BlockStmt body, HttpRequestContext method) {
+        // Check if any parameter in the method is of type RequestContext
+        boolean hasRequestContext = method.getParameters()
             .stream()
-            .anyMatch(parameter -> "options".equals(parameter.getName())
-                && "RequestOptions".equals(parameter.getShortTypeName()));
+            .anyMatch(parameter -> "context".equals(parameter.getName())
+                && "RequestContext".equals(parameter.getShortTypeName()));
 
-        if (hasRequestOptions) {
-            // Create a statement for setting request options
+        if (hasRequestContext) {
+            // Create a statement for setting request context
             ExpressionStmt statement = new ExpressionStmt(new MethodCallExpr(new NameExpr("httpRequest"),
-                "setRequestOptions", NodeList.nodeList(new NameExpr("options"))));
+                "setRequestContext", NodeList.nodeList(new NameExpr("context"))));
 
-            statement.setComment(new LineComment("\n Set the Request Options"));
+            statement.setComment(new LineComment("\n Set the Request Context"));
             body.addStatement(statement);
         }
 

@@ -6,7 +6,7 @@ package io.clientcore.core.instrumentation;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
@@ -90,7 +90,7 @@ public class SuppressionTests {
             .build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
-        client.protocolMethod(new RequestOptions());
+        client.protocolMethod(new RequestContext());
 
         // test that one span is created for simple method
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -105,7 +105,7 @@ public class SuppressionTests {
             .build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
-        client.convenienceMethod(new RequestOptions());
+        client.convenienceMethod(new RequestContext());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData span = exporter.getFinishedSpanItems().get(0);
         assertEquals("convenienceMethod", span.getName());
@@ -123,7 +123,7 @@ public class SuppressionTests {
         SampleClientCallInstrumentation client
             = new SampleClientCallInstrumentation(pipeline, otelOptions, libraryInstrumentationOptions);
 
-        client.convenienceMethod(new RequestOptions());
+        client.convenienceMethod(new RequestContext());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData span = exporter.getFinishedSpanItems().get(0);
         assertEquals("convenience", span.getName());
@@ -144,7 +144,7 @@ public class SuppressionTests {
             = new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true);
         SampleClientCallInstrumentation client = new SampleClientCallInstrumentation(pipeline, otelOptions, libOptions);
 
-        client.convenienceMethod(new RequestOptions());
+        client.convenienceMethod(new RequestContext());
         assertEquals(2, exporter.getFinishedSpanItems().size());
         assertEquals("protocol", exporter.getFinishedSpanItems().get(0).getName());
         assertEquals("convenience", exporter.getFinishedSpanItems().get(1).getName());
@@ -162,12 +162,10 @@ public class SuppressionTests {
         Tracer outerTracer = tracer;
         Tracer innerTracer = Instrumentation.create(otelOptions, libOptions.disableSpanSuppression(true)).getTracer();
 
-        RequestOptions options = new RequestOptions();
-        Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
+        Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, null).startSpan();
 
-        options.setInstrumentationContext(outerSpan.getInstrumentationContext());
-
-        Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
+        Span innerSpan
+            = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
         innerSpan.end();
         outerSpan.end();
 
@@ -187,11 +185,10 @@ public class SuppressionTests {
             .getTracer();
         Tracer innerTracer = tracer;
 
-        RequestOptions options = new RequestOptions();
-        Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
+        Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, null).startSpan();
 
-        options.setInstrumentationContext(outerSpan.getInstrumentationContext());
-        Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
+        Span innerSpan
+            = innerTracer.spanBuilder("innerSpan", CLIENT, outerSpan.getInstrumentationContext()).startSpan();
         innerSpan.end();
         outerSpan.end();
 
@@ -219,15 +216,9 @@ public class SuppressionTests {
     public void multipleLayers() {
         Tracer tracer = Instrumentation.create(otelOptions, libOptions).getTracer();
 
-        RequestOptions options = new RequestOptions();
-
-        Span outer = tracer.spanBuilder("outer", PRODUCER, options.getInstrumentationContext()).startSpan();
-        options.setInstrumentationContext(outer.getInstrumentationContext());
-
-        Span inner = tracer.spanBuilder("inner", CLIENT, options.getInstrumentationContext()).startSpan();
-        options.setInstrumentationContext(inner.getInstrumentationContext());
-
-        Span suppressed = tracer.spanBuilder("suppressed", CLIENT, options.getInstrumentationContext()).startSpan();
+        Span outer = tracer.spanBuilder("outer", PRODUCER, null).startSpan();
+        Span inner = tracer.spanBuilder("inner", CLIENT, outer.getInstrumentationContext()).startSpan();
+        Span suppressed = tracer.spanBuilder("suppressed", CLIENT, inner.getInstrumentationContext()).startSpan();
         suppressed.end();
         inner.end();
         outer.end();
@@ -246,14 +237,9 @@ public class SuppressionTests {
     @MethodSource("suppressionTestCases")
     @SuppressWarnings("try")
     public void testSuppressionExplicitContext(SpanKind outerKind, SpanKind innerKind, int expectedSpanCount) {
-        RequestOptions options = new RequestOptions();
-        Span outerSpan = tracer.spanBuilder("outerSpan", outerKind, options.getInstrumentationContext())
-            .setAttribute("key", "valueOuter")
-            .startSpan();
+        Span outerSpan = tracer.spanBuilder("outerSpan", outerKind, null).setAttribute("key", "valueOuter").startSpan();
 
-        options.setInstrumentationContext(outerSpan.getInstrumentationContext());
-
-        Span innerSpan = tracer.spanBuilder("innerSpan", innerKind, options.getInstrumentationContext())
+        Span innerSpan = tracer.spanBuilder("innerSpan", innerKind, outerSpan.getInstrumentationContext())
             .setAttribute("key", "valueInner")
             .startSpan();
         // sanity check - this should not throw
@@ -379,10 +365,8 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void protocolMethod(RequestOptions options) {
+        public void protocolMethod(RequestContext options) {
             Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
-
-            options.setInstrumentationContext(span.getInstrumentationContext());
 
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response
@@ -398,11 +382,11 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void convenienceMethod(RequestOptions options) {
+        public void convenienceMethod(RequestContext options) {
             Span span
                 = tracer.spanBuilder("convenienceMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
 
-            options.setInstrumentationContext(span.getInstrumentationContext());
+            options = options.setInstrumentationContext(span.getInstrumentationContext());
 
             try (TracingScope scope = span.makeCurrent()) {
                 protocolMethod(options);
@@ -423,15 +407,15 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public Response<?> protocolMethod(RequestOptions options) {
+        public Response<?> protocolMethod(RequestContext options) {
             return instrumentation.instrumentWithResponse("protocol", options,
                 updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
-                    .setRequestOptions(updatedOptions)));
+                    .setRequestContext(updatedOptions)));
         }
 
         @SuppressWarnings("try")
-        public Response<?> convenienceMethod(RequestOptions options) throws IOException {
+        public Response<?> convenienceMethod(RequestContext options) throws IOException {
             return instrumentation.instrumentWithResponse("convenience", options, this::protocolMethod);
         }
     }
