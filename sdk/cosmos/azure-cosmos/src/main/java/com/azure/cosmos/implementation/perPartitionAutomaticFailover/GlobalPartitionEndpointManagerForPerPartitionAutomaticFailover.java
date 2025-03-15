@@ -187,6 +187,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
                 }
             } else {
                 this.partitionKeyRangeToEndToEndTimeoutErrorTracker.put(partitionKeyRangeWrapper, new EndToEndTimeoutErrorTracker(Instant.now(), 1));
+                return false;
             }
         }
 

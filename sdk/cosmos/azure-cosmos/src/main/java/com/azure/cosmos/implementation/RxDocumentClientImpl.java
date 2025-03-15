@@ -2484,8 +2484,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return response
             .doOnSuccess(ignore -> {
 
+                RxDocumentServiceRequest succeededRequest = requestReference.get();
+
                 if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
-                    RxDocumentServiceRequest succeededRequest = requestReference.get();
+
                     checkNotNull(succeededRequest.requestContext, "Argument 'succeededRequest.requestContext' must not be null!");
 
                     CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext = succeededRequest.requestContext.getCrossRegionAvailabilityContext();
@@ -2498,13 +2500,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     pointOperationContextForCircuitBreaker.setHasOperationSeenSuccess();
 
                     this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationSuccessForPartitionKeyRange(succeededRequest);
-                    this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetEndToEndTimeoutErrorCountIfPossible(succeededRequest);
                 }
+
+                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetEndToEndTimeoutErrorCountIfPossible(succeededRequest);
             })
             .doOnError(throwable -> {
                 if (throwable instanceof OperationCancelledException) {
+
+                    RxDocumentServiceRequest failedRequest = requestReference.get();
+
                     if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
-                        RxDocumentServiceRequest failedRequest = requestReference.get();
+
                         checkNotNull(failedRequest.requestContext, "Argument 'failedRequest.requestContext' must not be null!");
 
                         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext = failedRequest.requestContext.getCrossRegionAvailabilityContext();
@@ -2522,6 +2528,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             this.handleLocationCancellationExceptionForPartitionKeyRange(failedRequest);
                         }
                     }
+
+                    // Trigger PPAF flow iff an OperationCanceledException is intercepted here
+                    this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+                        .tryMarkEndpointAsUnavailableForPartitionKeyRange(failedRequest, true);
                 }
             })
             .doFinally(signalType -> {
@@ -7358,9 +7368,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void handleLocationCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
-
-        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-            .tryMarkEndpointAsUnavailableForPartitionKeyRange(failedRequest, true);
 
         RegionalRoutingContext firstContactedLocationEndpoint = diagnosticsAccessor
             .getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
