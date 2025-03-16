@@ -46,6 +46,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -2096,6 +2097,45 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .buildAsyncClient();
 
         StepVerifier.create(aadContainer.exists()).expectNext(true);
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        BlobServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(containerName);
+
+        Mono<Void> testMono = containerClient.exists().flatMap(exists -> {
+            if (!exists) {
+                return containerClient.create();
+            }
+            return Mono.empty();
+        })
+            .then(containerClient.getAccessPolicy())
+            .flatMap(
+                response -> containerClient.setAccessPolicy(PublicAccessType.CONTAINER, response.getIdentifiers()));
+
+        // Act & Assert
+        StepVerifier.create(testMono).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void getAccountInfo_OAuth() {
+        // Arrange
+        BlobServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(containerName);
+
+        Mono<Void> testMono = containerClient.exists().flatMap(exists -> {
+            if (!exists) {
+                return containerClient.create();
+            }
+            return Mono.empty();
+        }).then(containerClient.getAccountInfo()).doOnSuccess(accountInfo -> assertNotNull(accountInfo)).then();
+
+        // Act & Assert
+        StepVerifier.create(testMono).verifyComplete();
     }
 
 }

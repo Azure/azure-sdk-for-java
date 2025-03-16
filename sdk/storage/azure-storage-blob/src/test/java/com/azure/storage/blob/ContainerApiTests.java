@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
@@ -1974,6 +1975,35 @@ public class ContainerApiTests extends BlobTestBase {
             = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl()).audience(audience).buildClient();
 
         assertTrue(aadContainer.exists());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        BlobServiceClient serviceClient = getOAuthServiceClient();
+
+        if (!cc.exists()) {
+            cc.create();
+        }
+        cc = serviceClient.getBlobContainerClient(containerName);
+
+        // Act
+        BlobContainerAccessPolicies response = cc.getAccessPolicy();
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, response.getIdentifiers());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void getAccountInfo_OAuth() {
+        // Arrange
+        BlobServiceClient serviceClient = getOAuthServiceClient();
+
+        if (!cc.exists()) {
+            cc.create();
+        }
+        cc = serviceClient.getBlobContainerClient(containerName);
+        assertDoesNotThrow(() -> cc.getAccountInfo(null));
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.

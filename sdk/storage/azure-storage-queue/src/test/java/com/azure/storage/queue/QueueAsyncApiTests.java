@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -14,6 +15,7 @@ import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,6 +36,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static com.azure.storage.queue.QueueApiTests.CREATE_METADATA;
@@ -882,5 +885,20 @@ public class QueueAsyncApiTests extends QueueTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadQueue.getProperties()).assertNext(r -> assertNotNull(r)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-05-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        QueueServiceAsyncClient service = getOAuthQueueAsyncServiceClient();
+        Mono<Boolean> createQueue = queueAsyncClient.createIfNotExists();
+        queueAsyncClient = service.getQueueAsyncClient(queueName);
+
+        StepVerifier
+            .create(createQueue.then(queueAsyncClient.getAccessPolicy()
+                .collectList()
+                .flatMap(identifiers -> queueAsyncClient.setAccessPolicy(identifiers).then(Mono.just(identifiers)))))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
     }
 }
