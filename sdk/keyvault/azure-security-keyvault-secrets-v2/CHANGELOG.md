@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.1 (Unreleased)
 
-- Azure KeyVault client library for Java. This package contains Microsoft Azure KeyVault client library.
+- First release of the new Azure Key Vault Secrets client library for Java.
 
 ### Features Added
 
