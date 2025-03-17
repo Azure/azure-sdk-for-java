@@ -1,10 +1,10 @@
 ## Quick Start Guide for Cosmos DB Spark Connector
 
-This tutorial is a quick start guide to show how to use Cosmos DB Spark Connector to read from or write to Cosmos DB. Cosmos DB Spark Connector is based on Spark 3.1.x.
+This tutorial is a quick start guide to show how to use Cosmos DB Spark Connector to read from or write to Cosmos DB. Cosmos DB Spark Connector is based on Spark 3.5.x.
 
-Throughout this quick tutorial we rely on [Azure Databricks Runtime 8.0 with Spark 3.1.1](https://docs.microsoft.com/azure/databricks/release-notes/runtime/8.0) and a Jupyter Notebook to show how to use the Cosmos DB Spark Connector.
+Throughout this quick tutorial we rely on [Azure Databricks Runtime 15.4 LTS with Spark 3.5.0](https://learn.microsoft.com/azure/databricks/release-notes/runtime/15.4lts) and a Jupyter Notebook to show how to use the Cosmos DB Spark Connector.
 
-You can use any other Spark 3.1.1 spark offering as well, also you should be able to use any language supported by Spark (PySpark, Scala, Java, etc), or any Spark interface you are familiar with (Jupyter Notebook, Livy, etc).
+You can use any other Spark 3.5 spark offering as well, also you should be able to use any language supported by Spark (PySpark, Scala, Java, etc), or any Spark interface you are familiar with (Jupyter Notebook, Livy, etc).
 
 ### Prerequisites
 
