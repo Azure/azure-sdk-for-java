@@ -560,7 +560,7 @@ public final class SecretClientImpl {
      * </pre>
      *
      * @param secretName The name of the secret.
-     * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
+     * @param secretVersion The version of the secret. This URL fragment is optional. If not specified, the latest
      * version of the secret is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.

@@ -11,8 +11,8 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -200,8 +200,8 @@ public final class SecretsModelsUtils {
         }
 
         try {
-            URL url = new URL(id);
-            String[] tokens = url.getPath().split("/");
+            URI uri = new URI(id);
+            String[] tokens = uri.getPath().split("/");
 
             if (tokens.length >= 3) {
                 nameConsumer.accept(tokens[2]);
@@ -210,14 +210,15 @@ public final class SecretsModelsUtils {
             if (tokens.length >= 4) {
                 versionConsumer.accept(tokens[3]);
             }
-        } catch (MalformedURLException e) {
+        } catch (URISyntaxException e) {
             // Should never come here.
-            LOGGER.atError().log("Received Malformed Secret Id URL from KV Service");
+            LOGGER.atError().log("Received malformed secret id URL from Key Vault Service.");
         }
     }
 
     public static OffsetDateTime epochToOffsetDateTime(JsonReader epochReader) throws IOException {
         Instant instant = Instant.ofEpochMilli(epochReader.getLong() * 1000L);
+
         return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
     }
 
