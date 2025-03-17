@@ -8,7 +8,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.Base64Url;
+import io.clientcore.core.utils.Base64Uri;
 import java.io.IOException;
 
 /**
@@ -26,25 +26,25 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
      * The result of the operation.
      */
     @Metadata(generated = true)
-    private Base64Url result;
+    private Base64Uri result;
 
     /*
      * Cryptographically random, non-repeating initialization vector for symmetric algorithms.
      */
     @Metadata(generated = true)
-    private Base64Url iv;
+    private Base64Uri iv;
 
     /*
      * The tag to authenticate when performing decryption with an authenticated algorithm.
      */
     @Metadata(generated = true)
-    private Base64Url authenticationTag;
+    private Base64Uri authenticationTag;
 
     /*
      * Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
      */
     @Metadata(generated = true)
-    private Base64Url additionalAuthenticatedData;
+    private Base64Uri additionalAuthenticatedData;
 
     /**
      * Creates an instance of KeyOperationResult class.
@@ -55,7 +55,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
 
     /**
      * Get the kid property: Key identifier.
-     * 
+     *
      * @return the kid value.
      */
     @Metadata(generated = true)
@@ -65,7 +65,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
 
     /**
      * Get the result property: The result of the operation.
-     * 
+     *
      * @return the result value.
      */
     @Metadata(generated = true)
@@ -78,7 +78,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
 
     /**
      * Get the iv property: Cryptographically random, non-repeating initialization vector for symmetric algorithms.
-     * 
+     *
      * @return the iv value.
      */
     @Metadata(generated = true)
@@ -92,7 +92,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
     /**
      * Get the authenticationTag property: The tag to authenticate when performing decryption with an authenticated
      * algorithm.
-     * 
+     *
      * @return the authenticationTag value.
      */
     @Metadata(generated = true)
@@ -106,7 +106,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
     /**
      * Get the additionalAuthenticatedData property: Additional data to authenticate but not encrypt/decrypt when using
      * authenticated crypto algorithms.
-     * 
+     *
      * @return the additionalAuthenticatedData value.
      */
     @Metadata(generated = true)
@@ -129,7 +129,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
 
     /**
      * Reads an instance of KeyOperationResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyOperationResult if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -147,16 +147,16 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
                     deserializedKeyOperationResult.kid = reader.getString();
                 } else if ("value".equals(fieldName)) {
                     deserializedKeyOperationResult.result
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("iv".equals(fieldName)) {
                     deserializedKeyOperationResult.iv
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("tag".equals(fieldName)) {
                     deserializedKeyOperationResult.authenticationTag
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("aad".equals(fieldName)) {
                     deserializedKeyOperationResult.additionalAuthenticatedData
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

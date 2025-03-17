@@ -8,7 +8,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.Base64Url;
+import io.clientcore.core.utils.Base64Uri;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -34,7 +34,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
      * Blob encoding the policy rules under which the key can be released. Blob must be base64 URL encoded.
      */
     @Metadata(generated = true)
-    private Base64Url encodedPolicy;
+    private Base64Uri encodedPolicy;
 
     /**
      * Creates an instance of KeyReleasePolicy class.
@@ -45,7 +45,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
 
     /**
      * Get the contentType property: Content type and version of key release policy.
-     * 
+     *
      * @return the contentType value.
      */
     @Metadata(generated = true)
@@ -55,7 +55,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
 
     /**
      * Set the contentType property: Content type and version of key release policy.
-     * 
+     *
      * @param contentType the contentType value to set.
      * @return the KeyReleasePolicy object itself.
      */
@@ -68,7 +68,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
     /**
      * Get the immutable property: Defines the mutability state of the policy. Once marked immutable, this flag cannot
      * be reset and the policy cannot be changed under any circumstances.
-     * 
+     *
      * @return the immutable value.
      */
     @Metadata(generated = true)
@@ -79,7 +79,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
     /**
      * Set the immutable property: Defines the mutability state of the policy. Once marked immutable, this flag cannot
      * be reset and the policy cannot be changed under any circumstances.
-     * 
+     *
      * @param immutable the immutable value to set.
      * @return the KeyReleasePolicy object itself.
      */
@@ -92,7 +92,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
     /**
      * Get the encodedPolicy property: Blob encoding the policy rules under which the key can be released. Blob must be
      * base64 URL encoded.
-     * 
+     *
      * @return the encodedPolicy value.
      */
     @Metadata(generated = true)
@@ -106,7 +106,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
     /**
      * Set the encodedPolicy property: Blob encoding the policy rules under which the key can be released. Blob must be
      * base64 URL encoded.
-     * 
+     *
      * @param encodedPolicy the encodedPolicy value to set.
      * @return the KeyReleasePolicy object itself.
      */
@@ -115,7 +115,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
         if (encodedPolicy == null) {
             this.encodedPolicy = null;
         } else {
-            this.encodedPolicy = Base64Url.encode(encodedPolicy);
+            this.encodedPolicy = Base64Uri.encode(encodedPolicy);
         }
         return this;
     }
@@ -135,7 +135,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
 
     /**
      * Reads an instance of KeyReleasePolicy from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyReleasePolicy if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -155,7 +155,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
                     deserializedKeyReleasePolicy.immutable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("data".equals(fieldName)) {
                     deserializedKeyReleasePolicy.encodedPolicy
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

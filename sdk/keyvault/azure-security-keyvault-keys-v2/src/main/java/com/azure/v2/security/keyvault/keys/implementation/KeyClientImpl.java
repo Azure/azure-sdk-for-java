@@ -237,7 +237,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         default KeyListResult getKeyVersions(@QueryParam("api-version") String apiVersion,
             @PathParam("key-name") String keyName) {
-            return getKeyVersions(apiVersion, keyName, null, null).getValue();
+            return getKeyVersions(apiVersion, keyName, null).getValue();
         }
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/keys", expectedStatusCodes = { 200 })
@@ -247,7 +247,7 @@ public final class KeyClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/keys", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         default KeyListResult getKeys(@QueryParam("api-version") String apiVersion) {
-            return getKeys(apiVersion, null, null).getValue();
+            return getKeys(apiVersion, null).getValue();
         }
 
         @HttpRequestInformation(
@@ -436,7 +436,7 @@ public final class KeyClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/deletedkeys", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         default DeletedKeyListResult getDeletedKeys(@QueryParam("api-version") String apiVersion) {
-            return getDeletedKeys(apiVersion, null, null).getValue();
+            return getDeletedKeys(apiVersion, null).getValue();
         }
 
         @HttpRequestInformation(
@@ -613,7 +613,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      * }
      * }
@@ -630,19 +630,19 @@ public final class KeyClientImpl {
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
+     *         n: Base64Uri (Optional)
+     *         e: Base64Uri (Optional)
+     *         d: Base64Uri (Optional)
+     *         dp: Base64Uri (Optional)
+     *         dq: Base64Uri (Optional)
+     *         qi: Base64Uri (Optional)
+     *         p: Base64Uri (Optional)
+     *         q: Base64Uri (Optional)
+     *         k: Base64Uri (Optional)
+     *         key_hsm: Base64Uri (Optional)
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
+     *         x: Base64Uri (Optional)
+     *         y: Base64Uri (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -662,7 +662,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      * }
      * }
@@ -698,19 +698,19 @@ public final class KeyClientImpl {
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
+     *         n: Base64Uri (Optional)
+     *         e: Base64Uri (Optional)
+     *         d: Base64Uri (Optional)
+     *         dp: Base64Uri (Optional)
+     *         dq: Base64Uri (Optional)
+     *         qi: Base64Uri (Optional)
+     *         p: Base64Uri (Optional)
+     *         q: Base64Uri (Optional)
+     *         k: Base64Uri (Optional)
+     *         key_hsm: Base64Uri (Optional)
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
+     *         x: Base64Uri (Optional)
+     *         y: Base64Uri (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -730,7 +730,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      * }
      * }
@@ -762,19 +762,19 @@ public final class KeyClientImpl {
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
+     *         n: Base64Uri (Optional)
+     *         e: Base64Uri (Optional)
+     *         d: Base64Uri (Optional)
+     *         dp: Base64Uri (Optional)
+     *         dq: Base64Uri (Optional)
+     *         qi: Base64Uri (Optional)
+     *         p: Base64Uri (Optional)
+     *         q: Base64Uri (Optional)
+     *         k: Base64Uri (Optional)
+     *         key_hsm: Base64Uri (Optional)
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
+     *         x: Base64Uri (Optional)
+     *         y: Base64Uri (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -793,7 +793,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      * }
      * }
@@ -810,19 +810,19 @@ public final class KeyClientImpl {
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
+     *         n: Base64Uri (Optional)
+     *         e: Base64Uri (Optional)
+     *         d: Base64Uri (Optional)
+     *         dp: Base64Uri (Optional)
+     *         dq: Base64Uri (Optional)
+     *         qi: Base64Uri (Optional)
+     *         p: Base64Uri (Optional)
+     *         q: Base64Uri (Optional)
+     *         k: Base64Uri (Optional)
+     *         key_hsm: Base64Uri (Optional)
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
+     *         x: Base64Uri (Optional)
+     *         y: Base64Uri (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -842,7 +842,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      * }
      * }
@@ -879,19 +879,19 @@ public final class KeyClientImpl {
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
+     *         n: Base64Uri (Optional)
+     *         e: Base64Uri (Optional)
+     *         d: Base64Uri (Optional)
+     *         dp: Base64Uri (Optional)
+     *         dq: Base64Uri (Optional)
+     *         qi: Base64Uri (Optional)
+     *         p: Base64Uri (Optional)
+     *         q: Base64Uri (Optional)
+     *         k: Base64Uri (Optional)
+     *         key_hsm: Base64Uri (Optional)
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
+     *         x: Base64Uri (Optional)
+     *         y: Base64Uri (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -911,7 +911,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
@@ -960,7 +960,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      * }
      * }
@@ -977,19 +977,19 @@ public final class KeyClientImpl {
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
+     *         n: Base64Uri (Optional)
+     *         e: Base64Uri (Optional)
+     *         d: Base64Uri (Optional)
+     *         dp: Base64Uri (Optional)
+     *         dq: Base64Uri (Optional)
+     *         qi: Base64Uri (Optional)
+     *         p: Base64Uri (Optional)
+     *         q: Base64Uri (Optional)
+     *         k: Base64Uri (Optional)
+     *         key_hsm: Base64Uri (Optional)
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
+     *         x: Base64Uri (Optional)
+     *         y: Base64Uri (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1009,7 +1009,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      * }
      * }
@@ -1045,19 +1045,19 @@ public final class KeyClientImpl {
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
+     *         n: Base64Uri (Optional)
+     *         e: Base64Uri (Optional)
+     *         d: Base64Uri (Optional)
+     *         dp: Base64Uri (Optional)
+     *         dq: Base64Uri (Optional)
+     *         qi: Base64Uri (Optional)
+     *         p: Base64Uri (Optional)
+     *         q: Base64Uri (Optional)
+     *         k: Base64Uri (Optional)
+     *         key_hsm: Base64Uri (Optional)
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
+     *         x: Base64Uri (Optional)
+     *         y: Base64Uri (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1077,7 +1077,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      * }
      * }
@@ -1338,7 +1338,7 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     value: Base64Url (Optional)
+     *     value: Base64Uri (Optional)
      * }
      * }
      * </pre>
@@ -1369,7 +1369,7 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     value: Base64Url (Required)
+     *     value: Base64Uri (Required)
      * }
      * }
      * </pre>
@@ -1385,19 +1385,19 @@ public final class KeyClientImpl {
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
+     *         n: Base64Uri (Optional)
+     *         e: Base64Uri (Optional)
+     *         d: Base64Uri (Optional)
+     *         dp: Base64Uri (Optional)
+     *         dq: Base64Uri (Optional)
+     *         qi: Base64Uri (Optional)
+     *         p: Base64Uri (Optional)
+     *         q: Base64Uri (Optional)
+     *         k: Base64Uri (Optional)
+     *         key_hsm: Base64Uri (Optional)
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
+     *         x: Base64Uri (Optional)
+     *         y: Base64Uri (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1417,7 +1417,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      * }
      * }
@@ -1449,10 +1449,10 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     alg: String(RSA-OAEP/RSA-OAEP-256/RSA1_5/A128GCM/A192GCM/A256GCM/A128KW/A192KW/A256KW/A128CBC/A192CBC/A256CBC/A128CBCPAD/A192CBCPAD/A256CBCPAD) (Required)
-     *     value: Base64Url (Required)
-     *     iv: Base64Url (Optional)
-     *     aad: Base64Url (Optional)
-     *     tag: Base64Url (Optional)
+     *     value: Base64Uri (Required)
+     *     iv: Base64Uri (Optional)
+     *     aad: Base64Uri (Optional)
+     *     tag: Base64Uri (Optional)
      * }
      * }
      * </pre>
@@ -1463,10 +1463,10 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     kid: String (Optional)
-     *     value: Base64Url (Optional)
-     *     iv: Base64Url (Optional)
-     *     tag: Base64Url (Optional)
-     *     aad: Base64Url (Optional)
+     *     value: Base64Uri (Optional)
+     *     iv: Base64Uri (Optional)
+     *     tag: Base64Uri (Optional)
+     *     aad: Base64Uri (Optional)
      * }
      * }
      * </pre>
@@ -1501,10 +1501,10 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     alg: String(RSA-OAEP/RSA-OAEP-256/RSA1_5/A128GCM/A192GCM/A256GCM/A128KW/A192KW/A256KW/A128CBC/A192CBC/A256CBC/A128CBCPAD/A192CBCPAD/A256CBCPAD) (Required)
-     *     value: Base64Url (Required)
-     *     iv: Base64Url (Optional)
-     *     aad: Base64Url (Optional)
-     *     tag: Base64Url (Optional)
+     *     value: Base64Uri (Required)
+     *     iv: Base64Uri (Optional)
+     *     aad: Base64Uri (Optional)
+     *     tag: Base64Uri (Optional)
      * }
      * }
      * </pre>
@@ -1515,10 +1515,10 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     kid: String (Optional)
-     *     value: Base64Url (Optional)
-     *     iv: Base64Url (Optional)
-     *     tag: Base64Url (Optional)
-     *     aad: Base64Url (Optional)
+     *     value: Base64Uri (Optional)
+     *     iv: Base64Uri (Optional)
+     *     tag: Base64Uri (Optional)
+     *     aad: Base64Uri (Optional)
      * }
      * }
      * </pre>
@@ -1548,7 +1548,7 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
-     *     value: Base64Url (Required)
+     *     value: Base64Uri (Required)
      * }
      * }
      * </pre>
@@ -1559,10 +1559,10 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     kid: String (Optional)
-     *     value: Base64Url (Optional)
-     *     iv: Base64Url (Optional)
-     *     tag: Base64Url (Optional)
-     *     aad: Base64Url (Optional)
+     *     value: Base64Uri (Optional)
+     *     iv: Base64Uri (Optional)
+     *     tag: Base64Uri (Optional)
+     *     aad: Base64Uri (Optional)
      * }
      * }
      * </pre>
@@ -1594,8 +1594,8 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
-     *     digest: Base64Url (Required)
-     *     value: Base64Url (Required)
+     *     digest: Base64Uri (Required)
+     *     value: Base64Uri (Required)
      * }
      * }
      * </pre>
@@ -1638,10 +1638,10 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     alg: String(RSA-OAEP/RSA-OAEP-256/RSA1_5/A128GCM/A192GCM/A256GCM/A128KW/A192KW/A256KW/A128CBC/A192CBC/A256CBC/A128CBCPAD/A192CBCPAD/A256CBCPAD) (Required)
-     *     value: Base64Url (Required)
-     *     iv: Base64Url (Optional)
-     *     aad: Base64Url (Optional)
-     *     tag: Base64Url (Optional)
+     *     value: Base64Uri (Required)
+     *     iv: Base64Uri (Optional)
+     *     aad: Base64Uri (Optional)
+     *     tag: Base64Uri (Optional)
      * }
      * }
      * </pre>
@@ -1652,10 +1652,10 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     kid: String (Optional)
-     *     value: Base64Url (Optional)
-     *     iv: Base64Url (Optional)
-     *     tag: Base64Url (Optional)
-     *     aad: Base64Url (Optional)
+     *     value: Base64Uri (Optional)
+     *     iv: Base64Uri (Optional)
+     *     tag: Base64Uri (Optional)
+     *     aad: Base64Uri (Optional)
      * }
      * }
      * </pre>
@@ -1687,10 +1687,10 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     alg: String(RSA-OAEP/RSA-OAEP-256/RSA1_5/A128GCM/A192GCM/A256GCM/A128KW/A192KW/A256KW/A128CBC/A192CBC/A256CBC/A128CBCPAD/A192CBCPAD/A256CBCPAD) (Required)
-     *     value: Base64Url (Required)
-     *     iv: Base64Url (Optional)
-     *     aad: Base64Url (Optional)
-     *     tag: Base64Url (Optional)
+     *     value: Base64Uri (Required)
+     *     iv: Base64Uri (Optional)
+     *     aad: Base64Uri (Optional)
+     *     tag: Base64Uri (Optional)
      * }
      * }
      * </pre>
@@ -1701,10 +1701,10 @@ public final class KeyClientImpl {
      * {@code
      * {
      *     kid: String (Optional)
-     *     value: Base64Url (Optional)
-     *     iv: Base64Url (Optional)
-     *     tag: Base64Url (Optional)
-     *     aad: Base64Url (Optional)
+     *     value: Base64Uri (Optional)
+     *     iv: Base64Uri (Optional)
+     *     tag: Base64Uri (Optional)
+     *     aad: Base64Uri (Optional)
      * }
      * }
      * </pre>
@@ -1901,19 +1901,19 @@ public final class KeyClientImpl {
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
+     *         n: Base64Uri (Optional)
+     *         e: Base64Uri (Optional)
+     *         d: Base64Uri (Optional)
+     *         dp: Base64Uri (Optional)
+     *         dq: Base64Uri (Optional)
+     *         qi: Base64Uri (Optional)
+     *         p: Base64Uri (Optional)
+     *         q: Base64Uri (Optional)
+     *         k: Base64Uri (Optional)
+     *         key_hsm: Base64Uri (Optional)
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
+     *         x: Base64Uri (Optional)
+     *         y: Base64Uri (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1933,7 +1933,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
@@ -1987,19 +1987,19 @@ public final class KeyClientImpl {
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
+     *         n: Base64Uri (Optional)
+     *         e: Base64Uri (Optional)
+     *         d: Base64Uri (Optional)
+     *         dp: Base64Uri (Optional)
+     *         dq: Base64Uri (Optional)
+     *         qi: Base64Uri (Optional)
+     *         p: Base64Uri (Optional)
+     *         q: Base64Uri (Optional)
+     *         k: Base64Uri (Optional)
+     *         key_hsm: Base64Uri (Optional)
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
+     *         x: Base64Uri (Optional)
+     *         y: Base64Uri (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -2019,7 +2019,7 @@ public final class KeyClientImpl {
      *     release_policy (Optional): {
      *         contentType: String (Optional)
      *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
+     *         data: Base64Uri (Optional)
      *     }
      * }
      * }
@@ -2163,7 +2163,7 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     value: Base64Url (Required)
+     *     value: Base64Uri (Required)
      * }
      * }
      * </pre>
