@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerorchestratorruntime.fluent.BgpPeersClient;
@@ -78,10 +80,29 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam("bgpPeerName") String bgpPeerName, @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BgpPeerInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("bgpPeerName") String bgpPeerName, @HeaderParam("Accept") String accept, Context context);
+
         @Put("/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("bgpPeerName") String bgpPeerName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BgpPeerInner resource,
+            Context context);
+
+        @Put("/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam("bgpPeerName") String bgpPeerName, @HeaderParam("Content-Type") String contentType,
@@ -98,6 +119,14 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
             @PathParam("bgpPeerName") String bgpPeerName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("bgpPeerName") String bgpPeerName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -107,10 +136,26 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BgpPeerListResult> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BgpPeerListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BgpPeerListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -127,14 +172,17 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BgpPeerInner>> getWithResponseAsync(String resourceUri, String bgpPeerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         if (bgpPeerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -157,14 +205,17 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BgpPeerInner>> getWithResponseAsync(String resourceUri, String bgpPeerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         if (bgpPeerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -200,7 +251,22 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BgpPeerInner> getWithResponse(String resourceUri, String bgpPeerName, Context context) {
-        return getWithResponseAsync(resourceUri, bgpPeerName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (bgpPeerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, bgpPeerName, accept,
+            context);
     }
 
     /**
@@ -234,17 +300,21 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceUri, String bgpPeerName,
         BgpPeerInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         if (bgpPeerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -273,17 +343,21 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceUri, String bgpPeerName,
         BgpPeerInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         if (bgpPeerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -292,6 +366,87 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, bgpPeerName,
             contentType, accept, resource, context);
+    }
+
+    /**
+     * Create a BgpPeer.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param bgpPeerName The name of the BgpPeer.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a BgpPeer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters) along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String bgpPeerName,
+        BgpPeerInner resource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (bgpPeerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            bgpPeerName, contentType, accept, resource, Context.NONE);
+    }
+
+    /**
+     * Create a BgpPeer.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param bgpPeerName The name of the BgpPeer.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a BgpPeer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters) along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String bgpPeerName,
+        BgpPeerInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (bgpPeerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            bgpPeerName, contentType, accept, resource, context);
     }
 
     /**
@@ -352,7 +507,9 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpPeerInner>, BgpPeerInner> beginCreateOrUpdate(String resourceUri,
         String bgpPeerName, BgpPeerInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceUri, bgpPeerName, resource).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, bgpPeerName, resource);
+        return this.client.<BgpPeerInner, BgpPeerInner>getLroResult(response, BgpPeerInner.class, BgpPeerInner.class,
+            Context.NONE);
     }
 
     /**
@@ -371,7 +528,9 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpPeerInner>, BgpPeerInner> beginCreateOrUpdate(String resourceUri,
         String bgpPeerName, BgpPeerInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceUri, bgpPeerName, resource, context).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, bgpPeerName, resource, context);
+        return this.client.<BgpPeerInner, BgpPeerInner>getLroResult(response, BgpPeerInner.class, BgpPeerInner.class,
+            context);
     }
 
     /**
@@ -425,7 +584,7 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BgpPeerInner createOrUpdate(String resourceUri, String bgpPeerName, BgpPeerInner resource) {
-        return createOrUpdateAsync(resourceUri, bgpPeerName, resource).block();
+        return beginCreateOrUpdate(resourceUri, bgpPeerName, resource).getFinalResult();
     }
 
     /**
@@ -442,7 +601,7 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BgpPeerInner createOrUpdate(String resourceUri, String bgpPeerName, BgpPeerInner resource, Context context) {
-        return createOrUpdateAsync(resourceUri, bgpPeerName, resource, context).block();
+        return beginCreateOrUpdate(resourceUri, bgpPeerName, resource, context).getFinalResult();
     }
 
     /**
@@ -458,14 +617,17 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String bgpPeerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         if (bgpPeerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -488,14 +650,17 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String bgpPeerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         if (bgpPeerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -531,7 +696,22 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String bgpPeerName, Context context) {
-        return deleteWithResponseAsync(resourceUri, bgpPeerName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (bgpPeerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, bgpPeerName,
+            accept, context);
     }
 
     /**
@@ -561,11 +741,13 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BgpPeerInner>> listSinglePageAsync(String resourceUri) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -590,11 +772,13 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BgpPeerInner>> listSinglePageAsync(String resourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -640,11 +824,67 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a BgpPeer list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BgpPeerInner> listSinglePage(String resourceUri) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BgpPeerListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            resourceUri, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List BgpPeer resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a BgpPeer list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BgpPeerInner> listSinglePage(String resourceUri, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BgpPeerListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List BgpPeer resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a BgpPeer list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BgpPeerInner> list(String resourceUri) {
-        return new PagedIterable<>(listAsync(resourceUri));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, Context.NONE),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -659,7 +899,8 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BgpPeerInner> list(String resourceUri, Context context) {
-        return new PagedIterable<>(listAsync(resourceUri, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -675,11 +916,13 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BgpPeerInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -702,11 +945,13 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BgpPeerInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -714,4 +959,60 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a BgpPeer list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BgpPeerInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BgpPeerListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a BgpPeer list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BgpPeerInner> listNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BgpPeerListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BgpPeersClientImpl.class);
 }

@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databasewatcher.fluent.WatchersClient;
@@ -81,6 +83,15 @@ public final class WatchersClientImpl implements WatchersClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<WatcherInner> getByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -90,10 +101,28 @@ public final class WatchersClientImpl implements WatchersClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") WatcherInner resource, Context context);
 
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") WatcherInner resource, Context context);
+
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") WatcherUpdate properties, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -109,10 +138,28 @@ public final class WatchersClientImpl implements WatchersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WatcherListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<WatcherListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -126,6 +173,14 @@ public final class WatchersClientImpl implements WatchersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DatabaseWatcher/watchers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<WatcherListResult> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/start")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -135,10 +190,28 @@ public final class WatchersClientImpl implements WatchersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/start")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> startSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/stop")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/stop")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> stopSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("watcherName") String watcherName,
             @HeaderParam("Accept") String accept, Context context);
@@ -155,7 +228,23 @@ public final class WatchersClientImpl implements WatchersClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<WatcherListResult> listByResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WatcherListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<WatcherListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -174,19 +263,22 @@ public final class WatchersClientImpl implements WatchersClient {
     private Mono<Response<WatcherInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String watcherName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -210,19 +302,22 @@ public final class WatchersClientImpl implements WatchersClient {
     private Mono<Response<WatcherInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String watcherName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -260,7 +355,27 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WatcherInner> getByResourceGroupWithResponse(String resourceGroupName, String watcherName,
         Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, watcherName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, context);
     }
 
     /**
@@ -294,22 +409,26 @@ public final class WatchersClientImpl implements WatchersClient {
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String watcherName, WatcherInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -339,22 +458,26 @@ public final class WatchersClientImpl implements WatchersClient {
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String watcherName, WatcherInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -362,6 +485,96 @@ public final class WatchersClientImpl implements WatchersClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, watcherName, contentType, accept, resource, context);
+    }
+
+    /**
+     * Create a Watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the DatabaseWatcherProviderHub resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String watcherName,
+        WatcherInner resource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, watcherName, contentType, accept, resource,
+            Context.NONE);
+    }
+
+    /**
+     * Create a Watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the DatabaseWatcherProviderHub resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String watcherName,
+        WatcherInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, watcherName, contentType, accept, resource, context);
     }
 
@@ -421,7 +634,9 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginCreateOrUpdate(String resourceGroupName,
         String watcherName, WatcherInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, watcherName, resource).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, watcherName, resource);
+        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
+            Context.NONE);
     }
 
     /**
@@ -439,7 +654,9 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginCreateOrUpdate(String resourceGroupName,
         String watcherName, WatcherInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, watcherName, resource, context).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, watcherName, resource, context);
+        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
+            context);
     }
 
     /**
@@ -492,7 +709,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner createOrUpdate(String resourceGroupName, String watcherName, WatcherInner resource) {
-        return createOrUpdateAsync(resourceGroupName, watcherName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, watcherName, resource).getFinalResult();
     }
 
     /**
@@ -510,7 +727,7 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner createOrUpdate(String resourceGroupName, String watcherName, WatcherInner resource,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, watcherName, resource, context).block();
+        return beginCreateOrUpdate(resourceGroupName, watcherName, resource, context).getFinalResult();
     }
 
     /**
@@ -529,22 +746,26 @@ public final class WatchersClientImpl implements WatchersClient {
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String watcherName,
         WatcherUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
@@ -572,22 +793,26 @@ public final class WatchersClientImpl implements WatchersClient {
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String watcherName,
         WatcherUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
@@ -596,6 +821,96 @@ public final class WatchersClientImpl implements WatchersClient {
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, watcherName, contentType, accept, properties, context);
+    }
+
+    /**
+     * Update a Watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the DatabaseWatcherProviderHub resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String watcherName,
+        WatcherUpdate properties) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, watcherName, contentType, accept, properties,
+            Context.NONE);
+    }
+
+    /**
+     * Update a Watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the DatabaseWatcherProviderHub resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String watcherName,
+        WatcherUpdate properties, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, watcherName, contentType, accept, properties, context);
     }
 
     /**
@@ -653,7 +968,9 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginUpdate(String resourceGroupName, String watcherName,
         WatcherUpdate properties) {
-        return this.beginUpdateAsync(resourceGroupName, watcherName, properties).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, watcherName, properties);
+        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
+            Context.NONE);
     }
 
     /**
@@ -671,7 +988,9 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginUpdate(String resourceGroupName, String watcherName,
         WatcherUpdate properties, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, watcherName, properties, context).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, watcherName, properties, context);
+        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
+            context);
     }
 
     /**
@@ -723,7 +1042,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner update(String resourceGroupName, String watcherName, WatcherUpdate properties) {
-        return updateAsync(resourceGroupName, watcherName, properties).block();
+        return beginUpdate(resourceGroupName, watcherName, properties).getFinalResult();
     }
 
     /**
@@ -741,7 +1060,7 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner update(String resourceGroupName, String watcherName, WatcherUpdate properties,
         Context context) {
-        return updateAsync(resourceGroupName, watcherName, properties, context).block();
+        return beginUpdate(resourceGroupName, watcherName, properties, context).getFinalResult();
     }
 
     /**
@@ -757,19 +1076,22 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String watcherName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -793,24 +1115,98 @@ public final class WatchersClientImpl implements WatchersClient {
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String watcherName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, watcherName, accept, context);
+    }
+
+    /**
+     * Delete a Watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String watcherName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, Context.NONE);
+    }
+
+    /**
+     * Delete a Watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String watcherName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, context);
     }
 
     /**
@@ -862,7 +1258,8 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String watcherName) {
-        return this.beginDeleteAsync(resourceGroupName, watcherName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, watcherName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -879,7 +1276,8 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String watcherName,
         Context context) {
-        return this.beginDeleteAsync(resourceGroupName, watcherName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, watcherName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -925,7 +1323,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String watcherName) {
-        deleteAsync(resourceGroupName, watcherName).block();
+        beginDelete(resourceGroupName, watcherName).getFinalResult();
     }
 
     /**
@@ -940,7 +1338,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String watcherName, Context context) {
-        deleteAsync(resourceGroupName, watcherName, context).block();
+        beginDelete(resourceGroupName, watcherName, context).getFinalResult();
     }
 
     /**
@@ -956,16 +1354,18 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatcherInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -991,16 +1391,18 @@ public final class WatchersClientImpl implements WatchersClient {
     private Mono<PagedResponse<WatcherInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1049,11 +1451,77 @@ public final class WatchersClientImpl implements WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Watcher list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WatcherInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WatcherListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Watcher resources by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Watcher list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WatcherInner> listByResourceGroupSinglePage(String resourceGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WatcherListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Watcher resources by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Watcher list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatcherInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, Context.NONE),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -1068,7 +1536,8 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatcherInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1082,12 +1551,14 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatcherInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1111,12 +1582,14 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatcherInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1160,11 +1633,66 @@ public final class WatchersClientImpl implements WatchersClient {
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Watcher list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WatcherInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WatcherListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Watcher resources by subscription ID.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Watcher list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WatcherInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WatcherListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Watcher resources by subscription ID.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Watcher list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatcherInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(Context.NONE),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1178,7 +1706,8 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatcherInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1194,19 +1723,22 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String watcherName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1230,24 +1762,98 @@ public final class WatchersClientImpl implements WatchersClient {
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String watcherName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, watcherName, accept, context);
+    }
+
+    /**
+     * The action to start monitoring all targets configured for a database watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startWithResponse(String resourceGroupName, String watcherName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, Context.NONE);
+    }
+
+    /**
+     * The action to start monitoring all targets configured for a database watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startWithResponse(String resourceGroupName, String watcherName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, context);
     }
 
     /**
@@ -1300,7 +1906,9 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStart(String resourceGroupName, String watcherName) {
-        return this.beginStartAsync(resourceGroupName, watcherName).getSyncPoller();
+        Response<BinaryData> response = startWithResponse(resourceGroupName, watcherName);
+        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
+            Context.NONE);
     }
 
     /**
@@ -1317,7 +1925,9 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStart(String resourceGroupName, String watcherName,
         Context context) {
-        return this.beginStartAsync(resourceGroupName, watcherName, context).getSyncPoller();
+        Response<BinaryData> response = startWithResponse(resourceGroupName, watcherName, context);
+        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
+            context);
     }
 
     /**
@@ -1364,7 +1974,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner start(String resourceGroupName, String watcherName) {
-        return startAsync(resourceGroupName, watcherName).block();
+        return beginStart(resourceGroupName, watcherName).getFinalResult();
     }
 
     /**
@@ -1380,7 +1990,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner start(String resourceGroupName, String watcherName, Context context) {
-        return startAsync(resourceGroupName, watcherName, context).block();
+        return beginStart(resourceGroupName, watcherName, context).getFinalResult();
     }
 
     /**
@@ -1396,19 +2006,22 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String watcherName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1432,23 +2045,97 @@ public final class WatchersClientImpl implements WatchersClient {
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String watcherName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, watcherName, accept, context);
+    }
+
+    /**
+     * The action to stop monitoring all targets configured for a database watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> stopWithResponse(String resourceGroupName, String watcherName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, watcherName, accept, Context.NONE);
+    }
+
+    /**
+     * The action to stop monitoring all targets configured for a database watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param watcherName The database watcher name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> stopWithResponse(String resourceGroupName, String watcherName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (watcherName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, watcherName, accept, context);
     }
 
@@ -1502,7 +2189,9 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStop(String resourceGroupName, String watcherName) {
-        return this.beginStopAsync(resourceGroupName, watcherName).getSyncPoller();
+        Response<BinaryData> response = stopWithResponse(resourceGroupName, watcherName);
+        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
+            Context.NONE);
     }
 
     /**
@@ -1519,7 +2208,9 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStop(String resourceGroupName, String watcherName,
         Context context) {
-        return this.beginStopAsync(resourceGroupName, watcherName, context).getSyncPoller();
+        Response<BinaryData> response = stopWithResponse(resourceGroupName, watcherName, context);
+        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
+            context);
     }
 
     /**
@@ -1566,7 +2257,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner stop(String resourceGroupName, String watcherName) {
-        return stopAsync(resourceGroupName, watcherName).block();
+        return beginStop(resourceGroupName, watcherName).getFinalResult();
     }
 
     /**
@@ -1582,7 +2273,7 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner stop(String resourceGroupName, String watcherName, Context context) {
-        return stopAsync(resourceGroupName, watcherName, context).block();
+        return beginStop(resourceGroupName, watcherName, context).getFinalResult();
     }
 
     /**
@@ -1598,11 +2289,13 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatcherInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1627,11 +2320,13 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatcherInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1647,17 +2342,74 @@ public final class WatchersClientImpl implements WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Watcher list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WatcherInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WatcherListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Watcher list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WatcherInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WatcherListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Watcher list operation along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatcherInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1682,11 +2434,13 @@ public final class WatchersClientImpl implements WatchersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatcherInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1694,4 +2448,61 @@ public final class WatchersClientImpl implements WatchersClient {
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Watcher list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WatcherInner> listBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WatcherListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Watcher list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WatcherInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WatcherListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WatchersClientImpl.class);
 }

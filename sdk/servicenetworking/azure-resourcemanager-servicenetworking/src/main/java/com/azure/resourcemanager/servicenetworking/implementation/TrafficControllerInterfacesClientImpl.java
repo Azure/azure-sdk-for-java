@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicenetworking.fluent.TrafficControllerInterfacesClient;
@@ -82,6 +84,16 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             @PathParam("trafficControllerName") String trafficControllerName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TrafficControllerInner> getByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -92,10 +104,30 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") TrafficControllerInner resource, Context context);
 
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TrafficControllerInner resource, Context context);
+
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrafficControllerInner>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TrafficControllerUpdate properties, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TrafficControllerInner> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
@@ -113,6 +145,16 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -122,10 +164,27 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TrafficControllerListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ServiceNetworking/trafficControllers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrafficControllerListResult>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ServiceNetworking/trafficControllers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TrafficControllerListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -141,7 +200,23 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TrafficControllerListResult> listByResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrafficControllerListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TrafficControllerListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -160,20 +235,22 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<Response<TrafficControllerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String trafficControllerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -197,20 +274,22 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<Response<TrafficControllerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String trafficControllerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -249,7 +328,27 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrafficControllerInner> getByResourceGroupWithResponse(String resourceGroupName,
         String trafficControllerName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, trafficControllerName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, context);
     }
 
     /**
@@ -283,23 +382,26 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String trafficControllerName, TrafficControllerInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -329,23 +431,26 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String trafficControllerName, TrafficControllerInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -353,6 +458,99 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, contentType, accept, resource,
+            context);
+    }
+
+    /**
+     * Create a TrafficController.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
+        TrafficControllerInner resource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, contentType, accept, resource,
+            Context.NONE);
+    }
+
+    /**
+     * Create a TrafficController.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
+        TrafficControllerInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, contentType, accept, resource,
             context);
     }
@@ -417,7 +615,9 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrafficControllerInner>, TrafficControllerInner>
         beginCreateOrUpdate(String resourceGroupName, String trafficControllerName, TrafficControllerInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, resource).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, trafficControllerName, resource);
+        return this.client.<TrafficControllerInner, TrafficControllerInner>getLroResult(response,
+            TrafficControllerInner.class, TrafficControllerInner.class, Context.NONE);
     }
 
     /**
@@ -436,8 +636,10 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrafficControllerInner>, TrafficControllerInner> beginCreateOrUpdate(
         String resourceGroupName, String trafficControllerName, TrafficControllerInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, trafficControllerName, resource, context);
+        return this.client.<TrafficControllerInner, TrafficControllerInner>getLroResult(response,
+            TrafficControllerInner.class, TrafficControllerInner.class, context);
     }
 
     /**
@@ -493,7 +695,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrafficControllerInner createOrUpdate(String resourceGroupName, String trafficControllerName,
         TrafficControllerInner resource) {
-        return createOrUpdateAsync(resourceGroupName, trafficControllerName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, resource).getFinalResult();
     }
 
     /**
@@ -511,7 +713,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrafficControllerInner createOrUpdate(String resourceGroupName, String trafficControllerName,
         TrafficControllerInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, trafficControllerName, resource, context).block();
+        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, resource, context).getFinalResult();
     }
 
     /**
@@ -530,23 +732,26 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<Response<TrafficControllerInner>> updateWithResponseAsync(String resourceGroupName,
         String trafficControllerName, TrafficControllerUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
@@ -576,23 +781,26 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<Response<TrafficControllerInner>> updateWithResponseAsync(String resourceGroupName,
         String trafficControllerName, TrafficControllerUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
@@ -638,7 +846,35 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrafficControllerInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
         TrafficControllerUpdate properties, Context context) {
-        return updateWithResponseAsync(resourceGroupName, trafficControllerName, properties, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, contentType, accept, properties,
+            context);
     }
 
     /**
@@ -672,20 +908,22 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String trafficControllerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -709,25 +947,99 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String trafficControllerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, trafficControllerName, accept, context);
+    }
+
+    /**
+     * Delete a TrafficController.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, Context.NONE);
+    }
+
+    /**
+     * Delete a TrafficController.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, context);
     }
 
     /**
@@ -781,7 +1093,8 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName) {
-        return this.beginDeleteAsync(resourceGroupName, trafficControllerName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, trafficControllerName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -798,7 +1111,8 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         Context context) {
-        return this.beginDeleteAsync(resourceGroupName, trafficControllerName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, trafficControllerName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -845,7 +1159,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName) {
-        deleteAsync(resourceGroupName, trafficControllerName).block();
+        beginDelete(resourceGroupName, trafficControllerName).getFinalResult();
     }
 
     /**
@@ -860,7 +1174,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, Context context) {
-        deleteAsync(resourceGroupName, trafficControllerName, context).block();
+        beginDelete(resourceGroupName, trafficControllerName, context).getFinalResult();
     }
 
     /**
@@ -876,16 +1190,18 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrafficControllerInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -911,16 +1227,18 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<PagedResponse<TrafficControllerInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -969,11 +1287,78 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a TrafficController list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TrafficControllerInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TrafficControllerListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List TrafficController resources by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a TrafficController list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TrafficControllerInner> listByResourceGroupSinglePage(String resourceGroupName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TrafficControllerListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List TrafficController resources by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TrafficController list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrafficControllerInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, Context.NONE),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -988,7 +1373,8 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrafficControllerInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1002,12 +1388,14 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrafficControllerInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1031,12 +1419,14 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrafficControllerInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1080,11 +1470,66 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a TrafficController list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TrafficControllerInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TrafficControllerListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List TrafficController resources by subscription ID.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a TrafficController list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TrafficControllerInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TrafficControllerListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List TrafficController resources by subscription ID.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TrafficController list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrafficControllerInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(Context.NONE),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1098,7 +1543,8 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrafficControllerInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1114,11 +1560,13 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrafficControllerInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1144,11 +1592,13 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<PagedResponse<TrafficControllerInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1164,17 +1614,74 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a TrafficController list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TrafficControllerInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TrafficControllerListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a TrafficController list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TrafficControllerInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TrafficControllerListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TrafficController list operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrafficControllerInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1200,11 +1707,13 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     private Mono<PagedResponse<TrafficControllerInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1212,4 +1721,61 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a TrafficController list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TrafficControllerInner> listBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TrafficControllerListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a TrafficController list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TrafficControllerInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TrafficControllerListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TrafficControllerInterfacesClientImpl.class);
 }

@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.connectedcache.fluent.CacheNodesOperationsClient;
@@ -82,10 +84,30 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
             @PathParam("customerResourceName") String customerResourceName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/cacheNodes/{customerResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CacheNodePreviewResourceInner> getByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/cacheNodes/{customerResourceName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createorUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") CacheNodePreviewResourceInner resource, Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/cacheNodes/{customerResourceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createorUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customerResourceName") String customerResourceName,
@@ -102,10 +124,30 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
             @PathParam("customerResourceName") String customerResourceName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/cacheNodes/{customerResourceName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/cacheNodes/{customerResourceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CacheNodePreviewResourceInner>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConnectedCachePatchResource properties, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/cacheNodes/{customerResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CacheNodePreviewResourceInner> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customerResourceName") String customerResourceName,
@@ -122,10 +164,27 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/cacheNodes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CacheNodePreviewResourceListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedCache/cacheNodes")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CacheNodePreviewResourceListResult>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedCache/cacheNodes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CacheNodePreviewResourceListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -141,7 +200,23 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CacheNodePreviewResourceListResult> listByResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CacheNodePreviewResourceListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CacheNodePreviewResourceListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -161,20 +236,22 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<Response<CacheNodePreviewResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String customerResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -199,20 +276,22 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<Response<CacheNodePreviewResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String customerResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -253,7 +332,27 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CacheNodePreviewResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String customerResourceName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, customerResourceName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, context);
     }
 
     /**
@@ -287,23 +386,26 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<Response<Flux<ByteBuffer>>> createorUpdateWithResponseAsync(String resourceGroupName,
         String customerResourceName, CacheNodePreviewResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -333,23 +435,26 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<Response<Flux<ByteBuffer>>> createorUpdateWithResponseAsync(String resourceGroupName,
         String customerResourceName, CacheNodePreviewResourceInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -357,6 +462,99 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createorUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, contentType, accept, resource,
+            context);
+    }
+
+    /**
+     * Creates a cacheNodes with the specified create parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createorUpdateWithResponse(String resourceGroupName, String customerResourceName,
+        CacheNodePreviewResourceInner resource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createorUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, contentType, accept, resource,
+            Context.NONE);
+    }
+
+    /**
+     * Creates a cacheNodes with the specified create parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createorUpdateWithResponse(String resourceGroupName, String customerResourceName,
+        CacheNodePreviewResourceInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createorUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, customerResourceName, contentType, accept, resource,
             context);
     }
@@ -424,7 +622,9 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheNodePreviewResourceInner>, CacheNodePreviewResourceInner> beginCreateorUpdate(
         String resourceGroupName, String customerResourceName, CacheNodePreviewResourceInner resource) {
-        return this.beginCreateorUpdateAsync(resourceGroupName, customerResourceName, resource).getSyncPoller();
+        Response<BinaryData> response = createorUpdateWithResponse(resourceGroupName, customerResourceName, resource);
+        return this.client.<CacheNodePreviewResourceInner, CacheNodePreviewResourceInner>getLroResult(response,
+            CacheNodePreviewResourceInner.class, CacheNodePreviewResourceInner.class, Context.NONE);
     }
 
     /**
@@ -444,8 +644,10 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     public SyncPoller<PollResult<CacheNodePreviewResourceInner>, CacheNodePreviewResourceInner> beginCreateorUpdate(
         String resourceGroupName, String customerResourceName, CacheNodePreviewResourceInner resource,
         Context context) {
-        return this.beginCreateorUpdateAsync(resourceGroupName, customerResourceName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createorUpdateWithResponse(resourceGroupName, customerResourceName, resource, context);
+        return this.client.<CacheNodePreviewResourceInner, CacheNodePreviewResourceInner>getLroResult(response,
+            CacheNodePreviewResourceInner.class, CacheNodePreviewResourceInner.class, context);
     }
 
     /**
@@ -501,7 +703,7 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheNodePreviewResourceInner createorUpdate(String resourceGroupName, String customerResourceName,
         CacheNodePreviewResourceInner resource) {
-        return createorUpdateAsync(resourceGroupName, customerResourceName, resource).block();
+        return beginCreateorUpdate(resourceGroupName, customerResourceName, resource).getFinalResult();
     }
 
     /**
@@ -519,7 +721,7 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheNodePreviewResourceInner createorUpdate(String resourceGroupName, String customerResourceName,
         CacheNodePreviewResourceInner resource, Context context) {
-        return createorUpdateAsync(resourceGroupName, customerResourceName, resource, context).block();
+        return beginCreateorUpdate(resourceGroupName, customerResourceName, resource, context).getFinalResult();
     }
 
     /**
@@ -535,20 +737,22 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String customerResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -572,20 +776,22 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String customerResourceName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -621,7 +827,27 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String customerResourceName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, customerResourceName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, context);
     }
 
     /**
@@ -654,23 +880,26 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<Response<CacheNodePreviewResourceInner>> updateWithResponseAsync(String resourceGroupName,
         String customerResourceName, ConnectedCachePatchResource properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
@@ -700,23 +929,26 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<Response<CacheNodePreviewResourceInner>> updateWithResponseAsync(String resourceGroupName,
         String customerResourceName, ConnectedCachePatchResource properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
@@ -762,7 +994,35 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CacheNodePreviewResourceInner> updateWithResponse(String resourceGroupName,
         String customerResourceName, ConnectedCachePatchResource properties, Context context) {
-        return updateWithResponseAsync(resourceGroupName, customerResourceName, properties, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, contentType, accept, properties,
+            context);
     }
 
     /**
@@ -796,16 +1056,18 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<PagedResponse<CacheNodePreviewResourceInner>>
         listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -831,16 +1093,18 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<PagedResponse<CacheNodePreviewResourceInner>>
         listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -890,12 +1154,79 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CacheNodePreviewResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheNodePreviewResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CacheNodePreviewResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Retrieves the properties of all ConnectedCache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CacheNodePreviewResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheNodePreviewResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CacheNodePreviewResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Retrieves the properties of all ConnectedCache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CacheNodePreviewResource list operation as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheNodePreviewResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, Context.NONE),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -911,7 +1242,8 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheNodePreviewResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -925,12 +1257,14 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheNodePreviewResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -954,12 +1288,14 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheNodePreviewResourceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1003,12 +1339,67 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CacheNodePreviewResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheNodePreviewResourceInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CacheNodePreviewResourceListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Retrieves the properties of all ConnectedCaches.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CacheNodePreviewResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheNodePreviewResourceInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CacheNodePreviewResourceListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Retrieves the properties of all ConnectedCaches.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CacheNodePreviewResource list operation as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheNodePreviewResourceInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(Context.NONE),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1023,7 +1414,8 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheNodePreviewResourceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1039,11 +1431,13 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheNodePreviewResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1069,11 +1463,13 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<PagedResponse<CacheNodePreviewResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1089,17 +1485,75 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CacheNodePreviewResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheNodePreviewResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CacheNodePreviewResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CacheNodePreviewResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheNodePreviewResourceInner> listByResourceGroupNextSinglePage(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CacheNodePreviewResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CacheNodePreviewResource list operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheNodePreviewResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1125,11 +1579,13 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
     private Mono<PagedResponse<CacheNodePreviewResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1137,4 +1593,62 @@ public final class CacheNodesOperationsClientImpl implements CacheNodesOperation
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CacheNodePreviewResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheNodePreviewResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CacheNodePreviewResourceListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CacheNodePreviewResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheNodePreviewResourceInner> listBySubscriptionNextSinglePage(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CacheNodePreviewResourceListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CacheNodesOperationsClientImpl.class);
 }

@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationStatusClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.OperationStatusResultInner;
 import reactor.core.publisher.Mono;
@@ -65,6 +66,15 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("operationId") String operationId,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DeviceRegistry/locations/{location}/operationStatuses/{operationId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<OperationStatusResultInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -81,18 +91,22 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(String location, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (operationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -117,18 +131,22 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
     private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(String location, String operationId,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (operationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -164,7 +182,27 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getWithResponse(String location, String operationId, Context context) {
-        return getWithResponseAsync(location, operationId, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (operationId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            location, operationId, accept, context);
     }
 
     /**
@@ -181,4 +219,6 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
     public OperationStatusResultInner get(String location, String operationId) {
         return getWithResponse(location, operationId, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationStatusClientImpl.class);
 }

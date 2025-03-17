@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.trustedsigning.fluent.CertificateProfilesClient;
@@ -81,10 +83,29 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("profileName") String profileName, @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CertificateProfileInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("profileName") String profileName, @HeaderParam("Accept") String accept, Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("profileName") String profileName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CertificateProfileInner resource,
+            Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("profileName") String profileName, @HeaderParam("Content-Type") String contentType,
@@ -101,10 +122,28 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             @PathParam("profileName") String profileName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("profileName") String profileName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateProfileListResult>> listByCodeSigningAccount(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CertificateProfileListResult> listByCodeSigningAccountSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @HeaderParam("Accept") String accept, Context context);
@@ -119,11 +158,29 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             @HeaderParam("Accept") String accept, @BodyParam("application/json") RevokeCertificate body,
             Context context);
 
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}/revokeCertificate")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> revokeCertificateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("profileName") String profileName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") RevokeCertificate body,
+            Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateProfileListResult>> listByCodeSigningAccountNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CertificateProfileListResult> listByCodeSigningAccountNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -143,22 +200,26 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<Response<CertificateProfileInner>> getWithResponseAsync(String resourceGroupName, String accountName,
         String profileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (profileName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -183,22 +244,26 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<Response<CertificateProfileInner>> getWithResponseAsync(String resourceGroupName, String accountName,
         String profileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (profileName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -238,7 +303,31 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateProfileInner> getWithResponse(String resourceGroupName, String accountName,
         String profileName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, profileName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, profileName, accept, context);
     }
 
     /**
@@ -273,25 +362,30 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
         String profileName, CertificateProfileInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (profileName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -321,25 +415,30 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
         String profileName, CertificateProfileInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (profileName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -348,6 +447,107 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, profileName, contentType, accept, resource, context);
+    }
+
+    /**
+     * Create a certificate profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Trusted Signing account name.
+     * @param profileName Certificate profile name.
+     * @param resource Parameters to create the certificate profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate profile resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName, String profileName,
+        CertificateProfileInner resource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, accept, resource,
+            Context.NONE);
+    }
+
+    /**
+     * Create a certificate profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Trusted Signing account name.
+     * @param profileName Certificate profile name.
+     * @param resource Parameters to create the certificate profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate profile resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName, String profileName,
+        CertificateProfileInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, accept, resource,
+            context);
     }
 
     /**
@@ -411,7 +611,9 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CertificateProfileInner>, CertificateProfileInner> beginCreate(
         String resourceGroupName, String accountName, String profileName, CertificateProfileInner resource) {
-        return this.beginCreateAsync(resourceGroupName, accountName, profileName, resource).getSyncPoller();
+        Response<BinaryData> response = createWithResponse(resourceGroupName, accountName, profileName, resource);
+        return this.client.<CertificateProfileInner, CertificateProfileInner>getLroResult(response,
+            CertificateProfileInner.class, CertificateProfileInner.class, Context.NONE);
     }
 
     /**
@@ -431,7 +633,10 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     public SyncPoller<PollResult<CertificateProfileInner>, CertificateProfileInner> beginCreate(
         String resourceGroupName, String accountName, String profileName, CertificateProfileInner resource,
         Context context) {
-        return this.beginCreateAsync(resourceGroupName, accountName, profileName, resource, context).getSyncPoller();
+        Response<BinaryData> response
+            = createWithResponse(resourceGroupName, accountName, profileName, resource, context);
+        return this.client.<CertificateProfileInner, CertificateProfileInner>getLroResult(response,
+            CertificateProfileInner.class, CertificateProfileInner.class, context);
     }
 
     /**
@@ -488,7 +693,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateProfileInner create(String resourceGroupName, String accountName, String profileName,
         CertificateProfileInner resource) {
-        return createAsync(resourceGroupName, accountName, profileName, resource).block();
+        return beginCreate(resourceGroupName, accountName, profileName, resource).getFinalResult();
     }
 
     /**
@@ -507,7 +712,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateProfileInner create(String resourceGroupName, String accountName, String profileName,
         CertificateProfileInner resource, Context context) {
-        return createAsync(resourceGroupName, accountName, profileName, resource, context).block();
+        return beginCreate(resourceGroupName, accountName, profileName, resource, context).getFinalResult();
     }
 
     /**
@@ -525,22 +730,26 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
         String profileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (profileName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -565,27 +774,113 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
         String profileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (profileName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, profileName, accept, context);
+    }
+
+    /**
+     * Delete a certificate profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Trusted Signing account name.
+     * @param profileName Certificate profile name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String profileName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, accept, Context.NONE);
+    }
+
+    /**
+     * Delete a certificate profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Trusted Signing account name.
+     * @param profileName Certificate profile name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String profileName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, accept, context);
     }
 
     /**
@@ -643,7 +938,8 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String profileName) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, profileName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, profileName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -661,7 +957,8 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String profileName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, profileName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, profileName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -711,7 +1008,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String profileName) {
-        deleteAsync(resourceGroupName, accountName, profileName).block();
+        beginDelete(resourceGroupName, accountName, profileName).getFinalResult();
     }
 
     /**
@@ -727,7 +1024,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String profileName, Context context) {
-        deleteAsync(resourceGroupName, accountName, profileName, context).block();
+        beginDelete(resourceGroupName, accountName, profileName, context).getFinalResult();
     }
 
     /**
@@ -745,19 +1042,22 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<PagedResponse<CertificateProfileInner>>
         listByCodeSigningAccountSinglePageAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -785,19 +1085,22 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<PagedResponse<CertificateProfileInner>>
         listByCodeSigningAccountSinglePageAsync(String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -851,12 +1154,93 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CertificateProfile list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CertificateProfileInner> listByCodeSigningAccountSinglePage(String resourceGroupName,
+        String accountName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CertificateProfileListResult> res
+            = service.listByCodeSigningAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List certificate profiles under a trusted signing account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Trusted Signing account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CertificateProfile list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CertificateProfileInner> listByCodeSigningAccountSinglePage(String resourceGroupName,
+        String accountName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CertificateProfileListResult> res
+            = service.listByCodeSigningAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List certificate profiles under a trusted signing account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Trusted Signing account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateProfile list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProfileInner> listByCodeSigningAccount(String resourceGroupName,
         String accountName) {
-        return new PagedIterable<>(listByCodeSigningAccountAsync(resourceGroupName, accountName));
+        return new PagedIterable<>(
+            () -> listByCodeSigningAccountSinglePage(resourceGroupName, accountName, Context.NONE),
+            nextLink -> listByCodeSigningAccountNextSinglePage(nextLink));
     }
 
     /**
@@ -873,7 +1257,8 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProfileInner> listByCodeSigningAccount(String resourceGroupName, String accountName,
         Context context) {
-        return new PagedIterable<>(listByCodeSigningAccountAsync(resourceGroupName, accountName, context));
+        return new PagedIterable<>(() -> listByCodeSigningAccountSinglePage(resourceGroupName, accountName, context),
+            nextLink -> listByCodeSigningAccountNextSinglePage(nextLink, context));
     }
 
     /**
@@ -892,25 +1277,29 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<Response<Void>> revokeCertificateWithResponseAsync(String resourceGroupName, String accountName,
         String profileName, RevokeCertificate body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (profileName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
@@ -940,25 +1329,29 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<Response<Void>> revokeCertificateWithResponseAsync(String resourceGroupName, String accountName,
         String profileName, RevokeCertificate body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (profileName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
@@ -1005,7 +1398,38 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeCertificateWithResponse(String resourceGroupName, String accountName,
         String profileName, RevokeCertificate body, Context context) {
-        return revokeCertificateWithResponseAsync(resourceGroupName, accountName, profileName, body, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.revokeCertificateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, accept, body,
+            context);
     }
 
     /**
@@ -1038,11 +1462,13 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateProfileInner>> listByCodeSigningAccountNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1068,11 +1494,13 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     private Mono<PagedResponse<CertificateProfileInner>> listByCodeSigningAccountNextSinglePageAsync(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1080,4 +1508,62 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CertificateProfile list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CertificateProfileInner> listByCodeSigningAccountNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CertificateProfileListResult> res
+            = service.listByCodeSigningAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a CertificateProfile list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CertificateProfileInner> listByCodeSigningAccountNextSinglePage(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CertificateProfileListResult> res
+            = service.listByCodeSigningAccountNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateProfilesClientImpl.class);
 }

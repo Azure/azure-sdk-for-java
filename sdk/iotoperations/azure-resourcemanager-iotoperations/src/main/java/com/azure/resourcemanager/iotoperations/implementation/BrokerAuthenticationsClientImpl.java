@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.iotoperations.fluent.BrokerAuthenticationsClient;
@@ -80,10 +82,30 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
             @PathParam("brokerName") String brokerName, @PathParam("authenticationName") String authenticationName,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BrokerAuthenticationResourceInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
+            @PathParam("brokerName") String brokerName, @PathParam("authenticationName") String authenticationName,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
+            @PathParam("brokerName") String brokerName, @PathParam("authenticationName") String authenticationName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BrokerAuthenticationResourceInner resource, Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
             @PathParam("brokerName") String brokerName, @PathParam("authenticationName") String authenticationName,
@@ -101,6 +123,16 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
+            @PathParam("brokerName") String brokerName, @PathParam("authenticationName") String authenticationName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -111,10 +143,27 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
             @PathParam("brokerName") String brokerName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BrokerAuthenticationResourceListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
+            @PathParam("brokerName") String brokerName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BrokerAuthenticationResourceListResult>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BrokerAuthenticationResourceListResult> listByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -135,26 +184,30 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     private Mono<Response<BrokerAuthenticationResourceInner>> getWithResponseAsync(String resourceGroupName,
         String instanceName, String brokerName, String authenticationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
         }
         if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
         if (authenticationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -181,26 +234,30 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     private Mono<Response<BrokerAuthenticationResourceInner>> getWithResponseAsync(String resourceGroupName,
         String instanceName, String brokerName, String authenticationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
         }
         if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
         if (authenticationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -243,7 +300,35 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BrokerAuthenticationResourceInner> getWithResponse(String resourceGroupName, String instanceName,
         String brokerName, String authenticationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, instanceName, brokerName, authenticationName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        if (brokerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+        }
+        if (authenticationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, instanceName, brokerName, authenticationName, accept, context);
     }
 
     /**
@@ -283,29 +368,34 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String instanceName, String brokerName, String authenticationName, BrokerAuthenticationResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
         }
         if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
         if (authenticationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -338,29 +428,34 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
         String instanceName, String brokerName, String authenticationName, BrokerAuthenticationResourceInner resource,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
         }
         if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
         if (authenticationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -368,6 +463,117 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName,
+            contentType, accept, resource, context);
+    }
+
+    /**
+     * Create a BrokerAuthenticationResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param instanceName Name of instance.
+     * @param brokerName Name of broker.
+     * @param authenticationName Name of Instance broker authentication resource.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return instance broker authentication resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
+        String brokerName, String authenticationName, BrokerAuthenticationResourceInner resource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        if (brokerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+        }
+        if (authenticationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName,
+            contentType, accept, resource, Context.NONE);
+    }
+
+    /**
+     * Create a BrokerAuthenticationResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param instanceName Name of instance.
+     * @param brokerName Name of broker.
+     * @param authenticationName Name of Instance broker authentication resource.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return instance broker authentication resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
+        String brokerName, String authenticationName, BrokerAuthenticationResourceInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        if (brokerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+        }
+        if (authenticationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName,
             contentType, accept, resource, context);
     }
@@ -439,8 +645,10 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     public SyncPoller<PollResult<BrokerAuthenticationResourceInner>, BrokerAuthenticationResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String instanceName, String brokerName, String authenticationName,
             BrokerAuthenticationResourceInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, instanceName, brokerName, authenticationName, resource)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, instanceName, brokerName, authenticationName, resource);
+        return this.client.<BrokerAuthenticationResourceInner, BrokerAuthenticationResourceInner>getLroResult(response,
+            BrokerAuthenticationResourceInner.class, BrokerAuthenticationResourceInner.class, Context.NONE);
     }
 
     /**
@@ -461,10 +669,10 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     public SyncPoller<PollResult<BrokerAuthenticationResourceInner>, BrokerAuthenticationResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String instanceName, String brokerName, String authenticationName,
             BrokerAuthenticationResourceInner resource, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, instanceName, brokerName, authenticationName, resource,
-                context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, instanceName, brokerName,
+            authenticationName, resource, context);
+        return this.client.<BrokerAuthenticationResourceInner, BrokerAuthenticationResourceInner>getLroResult(response,
+            BrokerAuthenticationResourceInner.class, BrokerAuthenticationResourceInner.class, context);
     }
 
     /**
@@ -525,7 +733,8 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BrokerAuthenticationResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String brokerName, String authenticationName, BrokerAuthenticationResourceInner resource) {
-        return createOrUpdateAsync(resourceGroupName, instanceName, brokerName, authenticationName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, instanceName, brokerName, authenticationName, resource)
+            .getFinalResult();
     }
 
     /**
@@ -545,8 +754,8 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BrokerAuthenticationResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String brokerName, String authenticationName, BrokerAuthenticationResourceInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, instanceName, brokerName, authenticationName, resource, context)
-            .block();
+        return beginCreateOrUpdate(resourceGroupName, instanceName, brokerName, authenticationName, resource, context)
+            .getFinalResult();
     }
 
     /**
@@ -565,26 +774,30 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String instanceName,
         String brokerName, String authenticationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
         }
         if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
         if (authenticationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -611,31 +824,130 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String instanceName,
         String brokerName, String authenticationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
         }
         if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
         if (authenticationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, instanceName, brokerName, authenticationName, accept, context);
+    }
+
+    /**
+     * Delete a BrokerAuthenticationResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param instanceName Name of instance.
+     * @param brokerName Name of broker.
+     * @param authenticationName Name of Instance broker authentication resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName, String brokerName,
+        String authenticationName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        if (brokerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+        }
+        if (authenticationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Delete a BrokerAuthenticationResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param instanceName Name of instance.
+     * @param brokerName Name of broker.
+     * @param authenticationName Name of Instance broker authentication resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName, String brokerName,
+        String authenticationName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        if (brokerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+        }
+        if (authenticationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName, accept,
+            context);
     }
 
     /**
@@ -697,7 +1009,9 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String brokerName, String authenticationName) {
-        return this.beginDeleteAsync(resourceGroupName, instanceName, brokerName, authenticationName).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, instanceName, brokerName, authenticationName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -716,8 +1030,9 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String brokerName, String authenticationName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, instanceName, brokerName, authenticationName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, instanceName, brokerName, authenticationName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -772,7 +1087,7 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String brokerName, String authenticationName) {
-        deleteAsync(resourceGroupName, instanceName, brokerName, authenticationName).block();
+        beginDelete(resourceGroupName, instanceName, brokerName, authenticationName).getFinalResult();
     }
 
     /**
@@ -790,7 +1105,7 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String brokerName, String authenticationName,
         Context context) {
-        deleteAsync(resourceGroupName, instanceName, brokerName, authenticationName, context).block();
+        beginDelete(resourceGroupName, instanceName, brokerName, authenticationName, context).getFinalResult();
     }
 
     /**
@@ -809,22 +1124,26 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     private Mono<PagedResponse<BrokerAuthenticationResourceInner>>
         listByResourceGroupSinglePageAsync(String resourceGroupName, String instanceName, String brokerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
         }
         if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -852,22 +1171,26 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     private Mono<PagedResponse<BrokerAuthenticationResourceInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, String instanceName, String brokerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
         }
         if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -927,13 +1250,104 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a BrokerAuthenticationResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BrokerAuthenticationResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
+        String instanceName, String brokerName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        if (brokerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BrokerAuthenticationResourceListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List BrokerAuthenticationResource resources by BrokerResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param instanceName Name of instance.
+     * @param brokerName Name of broker.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a BrokerAuthenticationResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BrokerAuthenticationResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
+        String instanceName, String brokerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        if (brokerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BrokerAuthenticationResourceListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List BrokerAuthenticationResource resources by BrokerResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param instanceName Name of instance.
+     * @param brokerName Name of broker.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a BrokerAuthenticationResource list operation as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BrokerAuthenticationResourceInner> listByResourceGroup(String resourceGroupName,
         String instanceName, String brokerName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, instanceName, brokerName));
+        return new PagedIterable<>(
+            () -> listByResourceGroupSinglePage(resourceGroupName, instanceName, brokerName, Context.NONE),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -952,7 +1366,9 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BrokerAuthenticationResourceInner> listByResourceGroup(String resourceGroupName,
         String instanceName, String brokerName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, instanceName, brokerName, context));
+        return new PagedIterable<>(
+            () -> listByResourceGroupSinglePage(resourceGroupName, instanceName, brokerName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -969,11 +1385,13 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     private Mono<PagedResponse<BrokerAuthenticationResourceInner>>
         listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -999,11 +1417,13 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
     private Mono<PagedResponse<BrokerAuthenticationResourceInner>>
         listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1011,4 +1431,62 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a BrokerAuthenticationResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BrokerAuthenticationResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BrokerAuthenticationResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a BrokerAuthenticationResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BrokerAuthenticationResourceInner> listByResourceGroupNextSinglePage(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BrokerAuthenticationResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BrokerAuthenticationsClientImpl.class);
 }

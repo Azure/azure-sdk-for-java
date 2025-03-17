@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mongocluster.fluent.FirewallRulesClient;
@@ -81,10 +83,32 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<FirewallRuleInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("mongoClusterName") String mongoClusterName,
+            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("mongoClusterName") String mongoClusterName,
+            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") FirewallRuleInner resource,
+            Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName,
@@ -104,6 +128,17 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("mongoClusterName") String mongoClusterName,
+            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -114,10 +149,28 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<FirewallRuleListResult> listByMongoClusterSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FirewallRuleListResult>> listByMongoClusterNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<FirewallRuleListResult> listByMongoClusterNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -138,24 +191,26 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     private Mono<Response<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String mongoClusterName,
         String firewallRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mongoClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
         if (firewallRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -180,24 +235,26 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     private Mono<Response<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String mongoClusterName,
         String firewallRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mongoClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
         if (firewallRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -238,7 +295,31 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String mongoClusterName,
         String firewallRuleName, Context context) {
-        return getWithResponseAsync(resourceGroupName, mongoClusterName, firewallRuleName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mongoClusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, mongoClusterName, firewallRuleName, accept, context);
     }
 
     /**
@@ -274,27 +355,30 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String mongoClusterName, String firewallRuleName, FirewallRuleInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mongoClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
         if (firewallRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -325,27 +409,30 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String mongoClusterName, String firewallRuleName, FirewallRuleInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mongoClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
         if (firewallRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
@@ -353,6 +440,107 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, contentType, accept,
+            resource, context);
+    }
+
+    /**
+     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a mongo cluster firewall rule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mongoClusterName,
+        String firewallRuleName, FirewallRuleInner resource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mongoClusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, contentType, accept,
+            resource, Context.NONE);
+    }
+
+    /**
+     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a mongo cluster firewall rule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mongoClusterName,
+        String firewallRuleName, FirewallRuleInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mongoClusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, contentType, accept,
             resource, context);
     }
@@ -417,8 +605,10 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String mongoClusterName, String firewallRuleName, FirewallRuleInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, mongoClusterName, firewallRuleName, resource)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, mongoClusterName, firewallRuleName, resource);
+        return this.client.<FirewallRuleInner, FirewallRuleInner>getLroResult(response, FirewallRuleInner.class,
+            FirewallRuleInner.class, Context.NONE);
     }
 
     /**
@@ -437,8 +627,10 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String mongoClusterName, String firewallRuleName, FirewallRuleInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, mongoClusterName, firewallRuleName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, mongoClusterName, firewallRuleName, resource, context);
+        return this.client.<FirewallRuleInner, FirewallRuleInner>getLroResult(response, FirewallRuleInner.class,
+            FirewallRuleInner.class, context);
     }
 
     /**
@@ -495,7 +687,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner createOrUpdate(String resourceGroupName, String mongoClusterName, String firewallRuleName,
         FirewallRuleInner resource) {
-        return createOrUpdateAsync(resourceGroupName, mongoClusterName, firewallRuleName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, mongoClusterName, firewallRuleName, resource).getFinalResult();
     }
 
     /**
@@ -514,7 +706,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner createOrUpdate(String resourceGroupName, String mongoClusterName, String firewallRuleName,
         FirewallRuleInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, mongoClusterName, firewallRuleName, resource, context).block();
+        return beginCreateOrUpdate(resourceGroupName, mongoClusterName, firewallRuleName, resource, context)
+            .getFinalResult();
     }
 
     /**
@@ -532,24 +725,26 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mongoClusterName,
         String firewallRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mongoClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
         if (firewallRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -573,29 +768,115 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mongoClusterName,
         String firewallRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mongoClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
         if (firewallRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, mongoClusterName, firewallRuleName, accept, context);
+    }
+
+    /**
+     * Deletes a mongo cluster firewall rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mongoClusterName,
+        String firewallRuleName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mongoClusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Deletes a mongo cluster firewall rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mongoClusterName,
+        String firewallRuleName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mongoClusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, accept, context);
     }
 
     /**
@@ -654,7 +935,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mongoClusterName,
         String firewallRuleName) {
-        return this.beginDeleteAsync(resourceGroupName, mongoClusterName, firewallRuleName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, mongoClusterName, firewallRuleName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -672,7 +954,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mongoClusterName,
         String firewallRuleName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, mongoClusterName, firewallRuleName, context).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, mongoClusterName, firewallRuleName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -723,7 +1007,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mongoClusterName, String firewallRuleName) {
-        deleteAsync(resourceGroupName, mongoClusterName, firewallRuleName).block();
+        beginDelete(resourceGroupName, mongoClusterName, firewallRuleName).getFinalResult();
     }
 
     /**
@@ -739,7 +1023,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mongoClusterName, String firewallRuleName, Context context) {
-        deleteAsync(resourceGroupName, mongoClusterName, firewallRuleName, context).block();
+        beginDelete(resourceGroupName, mongoClusterName, firewallRuleName, context).getFinalResult();
     }
 
     /**
@@ -757,20 +1041,22 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     private Mono<PagedResponse<FirewallRuleInner>> listByMongoClusterSinglePageAsync(String resourceGroupName,
         String mongoClusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mongoClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -797,20 +1083,22 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     private Mono<PagedResponse<FirewallRuleInner>> listByMongoClusterSinglePageAsync(String resourceGroupName,
         String mongoClusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mongoClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -863,11 +1151,92 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a FirewallRule list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FirewallRuleInner> listByMongoClusterSinglePage(String resourceGroupName,
+        String mongoClusterName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mongoClusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FirewallRuleListResult> res
+            = service.listByMongoClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all the firewall rules in a given mongo cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a FirewallRule list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FirewallRuleInner> listByMongoClusterSinglePage(String resourceGroupName,
+        String mongoClusterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mongoClusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FirewallRuleListResult> res
+            = service.listByMongoClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all the firewall rules in a given mongo cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByMongoCluster(String resourceGroupName, String mongoClusterName) {
-        return new PagedIterable<>(listByMongoClusterAsync(resourceGroupName, mongoClusterName));
+        return new PagedIterable<>(
+            () -> listByMongoClusterSinglePage(resourceGroupName, mongoClusterName, Context.NONE),
+            nextLink -> listByMongoClusterNextSinglePage(nextLink));
     }
 
     /**
@@ -884,7 +1253,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByMongoCluster(String resourceGroupName, String mongoClusterName,
         Context context) {
-        return new PagedIterable<>(listByMongoClusterAsync(resourceGroupName, mongoClusterName, context));
+        return new PagedIterable<>(() -> listByMongoClusterSinglePage(resourceGroupName, mongoClusterName, context),
+            nextLink -> listByMongoClusterNextSinglePage(nextLink, context));
     }
 
     /**
@@ -900,11 +1270,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallRuleInner>> listByMongoClusterNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -930,11 +1302,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     private Mono<PagedResponse<FirewallRuleInner>> listByMongoClusterNextSinglePageAsync(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -942,4 +1316,61 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a FirewallRule list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FirewallRuleInner> listByMongoClusterNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FirewallRuleListResult> res
+            = service.listByMongoClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a FirewallRule list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FirewallRuleInner> listByMongoClusterNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FirewallRuleListResult> res
+            = service.listByMongoClusterNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallRulesClientImpl.class);
 }
