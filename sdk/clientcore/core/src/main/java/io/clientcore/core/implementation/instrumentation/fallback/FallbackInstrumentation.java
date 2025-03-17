@@ -119,7 +119,7 @@ public class FallbackInstrumentation implements Instrumentation {
 
         Span span = builder.startSpan();
         if (span.getInstrumentationContext().isValid()) {
-            requestContext = requestContext.setInstrumentationContext(span.getInstrumentationContext());
+            requestContext = requestContext.clone().setInstrumentationContext(span.getInstrumentationContext());
         }
 
         TracingScope scope = span.makeCurrent();

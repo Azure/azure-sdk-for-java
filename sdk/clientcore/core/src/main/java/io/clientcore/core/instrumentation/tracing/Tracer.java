@@ -30,7 +30,7 @@ public interface Tracer {
      *     if &#40;requestContext == null&#41; &#123;
      *         requestContext = new RequestContext&#40;&#41;;
      *     &#125;
-     *     requestContext = requestContext.setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;;
+     *     requestContext = requestContext.clone&#40;&#41;.setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;;
      * &#125;
      *
      * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
