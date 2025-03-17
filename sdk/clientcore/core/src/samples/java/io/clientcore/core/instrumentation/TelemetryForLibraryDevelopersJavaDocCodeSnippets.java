@@ -210,7 +210,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             if (requestContext == null) {
                 requestContext = new RequestContext();
             }
-            requestContext = requestContext.setInstrumentationContext(span.getInstrumentationContext());
+            requestContext = requestContext.clone().setInstrumentationContext(span.getInstrumentationContext());
         }
 
         try (TracingScope scope = span.makeCurrent()) {

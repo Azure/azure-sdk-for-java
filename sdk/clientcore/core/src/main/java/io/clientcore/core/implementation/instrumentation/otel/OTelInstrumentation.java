@@ -243,7 +243,7 @@ public class OTelInstrumentation implements Instrumentation {
         RuntimeException error = null;
         try {
             if (span.getInstrumentationContext().isValid()) {
-                requestContext = requestContext.setInstrumentationContext(span.getInstrumentationContext());
+                requestContext = requestContext.clone().setInstrumentationContext(span.getInstrumentationContext());
             }
             return operation.apply(requestContext);
         } catch (RuntimeException t) {

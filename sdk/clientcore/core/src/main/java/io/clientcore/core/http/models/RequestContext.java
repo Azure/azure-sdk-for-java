@@ -23,7 +23,11 @@ import java.util.function.Consumer;
  * components of the request like URI, path params etc, further modifying both un-configured, or preconfigured
  * components.</p>
  *
- * <p>To demonstrate how this class can be used to construct a request, let's use a Pet Store service as an example.
+ * <p>A {@link RequestContext} can be shared across multiple requests and must not be modified after initial setup.
+ * Client libraries are not expected to modify context instance provided by the caller and, when modification is necessary,
+ * must clone provided instance.</p>
+ *
+ * <p>To demonstrate how this class can be used to customize a request, let's use a Pet Store service as an example.
  * The
  * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger
  * definition.</a></p>
@@ -108,14 +112,17 @@ import java.util.function.Consumer;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestcontext.postrequest -->
  */
-@Metadata(properties = { MetadataProperties.IMMUTABLE, MetadataProperties.FLUENT })
-public final class RequestContext {
-    private static final RequestContext NONE = new RequestContext();
+@Metadata(properties = MetadataProperties.FLUENT)
+public final class RequestContext implements Cloneable {
+    // RequestContext is a highly used, short-lived class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(RequestContext.class);
+    private static final RequestContext NONE = new RequestContext().lock();
 
-    private final Consumer<HttpRequest> requestCallback;
-    private final InternalContext context;
-    private final ClientLogger logger;
-    private final InstrumentationContext instrumentationContext;
+    private Consumer<HttpRequest> requestCallback;
+    private InternalContext context;
+    private ClientLogger logger;
+    private InstrumentationContext instrumentationContext;
+    private boolean locked;
 
     /**
      * Creates a new instance of {@link RequestContext}.
@@ -162,14 +169,15 @@ public final class RequestContext {
      * otherwise a new header will be created.</p>
      *
      * @param header The header key.
-     * @return A new instance of the {@link RequestContext}.
+     * @return The updated {@link RequestContext} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
      * @throws NullPointerException If {@code header} is null.
      */
     public RequestContext addHeader(HttpHeader header) {
+        checkLocked("Cannot add header.");
         Objects.requireNonNull(header, "'header' cannot be null.");
-        Consumer<HttpRequest> requestCallback
-            = this.requestCallback.andThen(request -> request.getHeaders().add(header));
-        return new RequestContext(requestCallback, logger, context, instrumentationContext);
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
+        return this;
     }
 
     /**
@@ -179,13 +187,14 @@ public final class RequestContext {
      *
      * @param header The header key.
      * @param value The header value.
-     * @return A new instance of the {@link RequestContext}.
+     * @return The updated {@link RequestContext} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
      */
     public RequestContext setHeader(HttpHeaderName header, String value) {
+        checkLocked("Cannot set header.");
         Objects.requireNonNull(header, "'header' cannot be null.");
-        Consumer<HttpRequest> requestCallback
-            = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
-        return new RequestContext(requestCallback, logger, context, instrumentationContext);
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
+        return this;
     }
 
     /**
@@ -194,7 +203,8 @@ public final class RequestContext {
      *
      * @param parameterName The name of the query parameter.
      * @param value The value of the query parameter.
-     * @return A new instance of the {@link RequestContext}.
+     * @return The updated {@link RequestContext} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
      */
     public RequestContext addQueryParam(String parameterName, String value) {
         return addQueryParam(parameterName, value, false);
@@ -208,20 +218,21 @@ public final class RequestContext {
      * @param parameterName The name of the query parameter.
      * @param value The value of the query parameter.
      * @param encoded Whether this query parameter is already encoded.
-     * @return A new instance of the {@link RequestContext}.
+     * @return The updated {@link RequestContext} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
      */
     public RequestContext addQueryParam(String parameterName, String value, boolean encoded) {
+        checkLocked("Cannot add query param.");
         Objects.requireNonNull(parameterName, "'parameterName' cannot be null.");
 
-        Consumer<HttpRequest> requestCallback = this.requestCallback.andThen(request -> {
+        this.requestCallback = this.requestCallback.andThen(request -> {
             String uri = request.getUri().toString();
             String encodedParameterName = encoded ? parameterName : UriEscapers.QUERY_ESCAPER.escape(parameterName);
             String encodedParameterValue = encoded ? value : UriEscapers.QUERY_ESCAPER.escape(value);
 
             request.setUri(uri + (uri.contains("?") ? "&" : "?") + encodedParameterName + "=" + encodedParameterValue);
         });
-
-        return new RequestContext(requestCallback, logger, context, instrumentationContext);
+        return this;
     }
 
     /**
@@ -229,23 +240,29 @@ public final class RequestContext {
      * modifications made on a {@link RequestContext} object are applied in order on the request.
      *
      * @param requestCallback The request callback.
-     * @return A new instance of the {@link RequestContext}.
+     * @return The updated {@link RequestContext} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
      * @throws NullPointerException If {@code requestCallback} is null.
      */
     public RequestContext addRequestCallback(Consumer<HttpRequest> requestCallback) {
+        checkLocked("Cannot add request callback.");
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
-        return new RequestContext(this.requestCallback.andThen(requestCallback), logger, context,
-            instrumentationContext);
+
+        this.requestCallback = this.requestCallback.andThen(requestCallback);
+        return this;
     }
 
     /**
      * Sets the {@link ClientLogger} used to log the request and response.
      *
      * @param logger The {@link ClientLogger} used to log the request and response.
-     * @return A new instance of the {@link RequestContext}.
+     * @return The updated {@link RequestContext} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
      */
     public RequestContext setLogger(ClientLogger logger) {
-        return new RequestContext(requestCallback, logger, context, instrumentationContext);
+        checkLocked("Cannot set logger.");
+        this.logger = logger;
+        return this;
     }
 
     /**
@@ -271,10 +288,13 @@ public final class RequestContext {
      * Sets the {@link InstrumentationContext} used to instrument the request.
      *
      * @param instrumentationContext The {@link InstrumentationContext} used to instrument the request.
-     * @return A new instance of the {@link RequestContext}.
+     * @return The updated {@link RequestContext} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
      */
     public RequestContext setInstrumentationContext(InstrumentationContext instrumentationContext) {
-        return new RequestContext(requestCallback, logger, context, instrumentationContext);
+        checkLocked("Cannot set instrumentation context.");
+        this.instrumentationContext = instrumentationContext;
+        return this;
     }
 
     /**
@@ -283,12 +303,15 @@ public final class RequestContext {
      *
      * @param key The key to be added.
      * @param value The value to be added.
-     * @return A new instance of the {@link RequestContext}.
+     * @return The updated {@link RequestContext} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
      * @throws NullPointerException If {@code key} is null.
      */
     public RequestContext putData(String key, Object value) {
+        checkLocked("Cannot put data.");
         Objects.requireNonNull(key, "'key' cannot be null.");
-        return new RequestContext(requestCallback, logger, context.put(key, value), instrumentationContext);
+        this.context = this.context.put(key, value);
+        return this;
     }
 
     /**
@@ -302,5 +325,28 @@ public final class RequestContext {
     public Object getData(String key) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         return context.get(key);
+    }
+
+    @Override
+    public RequestContext clone() {
+        return new RequestContext(requestCallback, logger, context, instrumentationContext);
+    }
+
+    /**
+     * Locks this {@link RequestContext} to prevent further modifications.
+     *
+     * @return This {@link RequestContext} instance.
+     */
+    private RequestContext lock() {
+        locked = true;
+
+        return this;
+    }
+
+    private void checkLocked(String setterMessage) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("This instance of RequestContext is immutable. " + setterMessage));
+        }
     }
 }
