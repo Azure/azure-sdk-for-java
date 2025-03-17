@@ -6,6 +6,7 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -45,6 +46,26 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     }
 
     /**
+     * Get the stringContent property: The content of the message.
+     * If the result of this method is `null`, it means that the content could be a list or null altogether.
+     *
+     * @return the content value when it's a string.
+     */
+    public String getStringContent() {
+        return this.stringContent;
+    }
+
+    /**
+     * Get the chatMessageContentItem property: The content of the message.
+     * If the result of this method is `null`, it means that the content could be a string or null altogether.
+     *
+     * @return the content value when it's a list.
+     */
+    public List<ChatMessageContentItem> getListContent() {
+        return this.chatMessageContentItem;
+    }
+
+    /**
      * Get the toolCallId property: The ID of the tool call resolved by the provided content.
      *
      * @return the toolCallId value.
@@ -81,6 +102,8 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
             jsonWriter.writeStringField("content", stringContent);
         } else if (chatMessageContentItem != null) {
             jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
+        } else {
+            jsonWriter.writeNullField("content");
         }
         jsonWriter.writeStringField("tool_call_id", this.toolCallId);
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
@@ -99,6 +122,8 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     public static ChatRequestToolMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BinaryData content = null;
+            String stringContent = null;
+            List<ChatMessageContentItem> chatMessageContentItem = null;
             String toolCallId = null;
             ChatRole role = ChatRole.TOOL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -106,10 +131,15 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
                     if (reader.currentToken() == JsonToken.STRING) {
-                        content = BinaryData.fromString(reader.getString());
+                        stringContent = reader.getString();
+//                        content = BinaryData.fromString(reader.getString());
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
-                        content = BinaryData.fromObject(
-                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
+                        chatMessageContentItem = reader.readArray(
+                                arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
+//                        content = BinaryData.fromObject(
+//                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
+                    } else if (reader.currentToken() == JsonToken.NULL) {
+                        content = null;
                     } else {
                         throw new IllegalStateException("Unexpected 'content' type found when deserializing"
                             + " ChatRequestToolMessage JSON object: " + reader.currentToken());
@@ -122,7 +152,13 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
                     reader.skipChildren();
                 }
             }
-            ChatRequestToolMessage deserializedChatRequestToolMessage = new ChatRequestToolMessage(content, toolCallId);
+            ChatRequestToolMessage deserializedChatRequestToolMessage = null;
+            if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItem == null) {
+                deserializedChatRequestToolMessage = new ChatRequestToolMessage(content, toolCallId);
+            } else {
+                deserializedChatRequestToolMessage = CoreUtils.isNullOrEmpty(stringContent) ?
+                        new ChatRequestToolMessage(chatMessageContentItem, toolCallId) : new ChatRequestToolMessage(stringContent, toolCallId);
+            }
             deserializedChatRequestToolMessage.role = role;
             return deserializedChatRequestToolMessage;
         });

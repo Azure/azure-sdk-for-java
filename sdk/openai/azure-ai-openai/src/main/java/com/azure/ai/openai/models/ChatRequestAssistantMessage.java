@@ -6,6 +6,7 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -155,10 +156,12 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        if (stringContent != null) {
+        if (!CoreUtils.isNullOrEmpty(stringContent)) {
             jsonWriter.writeStringField("content", stringContent);
         } else if (chatMessageContentItem != null) {
             jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
+        } else {
+            jsonWriter.writeNullField("content");
         }
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("refusal", this.refusal);
