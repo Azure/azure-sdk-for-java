@@ -28,7 +28,9 @@ module com.azure.monitor.opentelemetry.autoconfigure {
     provides io.opentelemetry.sdk.autoconfigure.spi.metrics.ConfigurableMetricExporterProvider
         with com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorMetricExporterProvider;
     provides io.opentelemetry.sdk.autoconfigure.spi.traces.ConfigurableSpanExporterProvider
-        with com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorSpanExporterProvider;
+            with com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorSpanExporterProvider;
+    provides io.opentelemetry.sdk.autoconfigure.spi.traces.ConfigurableSamplerProvider
+            with com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorConfigurableSamplerProvider;
 
     exports com.azure.monitor.opentelemetry.autoconfigure;
 
