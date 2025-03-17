@@ -27,10 +27,8 @@ import io.clientcore.core.traits.EndpointTrait;
 import io.clientcore.core.traits.HttpTrait;
 import io.clientcore.core.utils.configuration.Configuration;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,9 +50,8 @@ import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
  * <!-- src_embed com.v2.azure.security.keyvault.SecretClient.instantiation -->
  * <!-- end com.azure.v2.security.keyvault.SecretClient.instantiation -->
  *
- * <p>The {@link HttpInstrumentationOptions.HttpLogLevel log level},
- * {@link HttpInstrumentationOptions instrumentation policy} and custom {@link HttpClient HTTP client} can be optionally
- * configured in the {@link SecretClientBuilder}.</p>
+ * <p>The {@link HttpInstrumentationOptions.HttpLogLevel log level}, multiple custom {@link HttpPipelinePolicy policies}
+ * and custom {@link HttpClient HTTP client} can be optionally configured in the {@link SecretClientBuilder}.</p>
  *
  * <!-- src_embed com.azure.v2.security.keyvault.secrets.SecretClient.instantiation.withHttpClient -->
  * <!-- end com.azure.v2.security.keyvault.secrets.SecretClient.instantiation.withHttpClient -->
@@ -102,7 +99,7 @@ public final class SecretClientBuilder
      * <p>If {@link SecretClientBuilder#httpPipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link SecretClientBuilder#endpoint(String) endpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set, then
-     * the {@link SecretClientBuilder#credential(TokenCredential) credential}, and
+     * a {@link SecretClientBuilder#credential(TokenCredential) credential} and
      * {@link SecretClientBuilder#endpoint(String) endpoint} are required to build the {@link SecretClient client}.</p>
      *
      * @return A {@link SecretClient} based on the options set in this builder.
@@ -114,10 +111,10 @@ public final class SecretClientBuilder
      * {@link #httpRetryPolicy(HttpRetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(getClientImpl(), endpoint);
+        return new SecretClient(buildImplClient(), endpoint);
     }
 
-    private SecretClientImpl getClientImpl() {
+    private SecretClientImpl buildImplClient() {
         Configuration configuration = this.configuration == null
             ? Configuration.getGlobalConfiguration()
             : this.configuration;
@@ -125,8 +122,9 @@ public final class SecretClientBuilder
         String endpoint = getEndpoint(configuration);
 
         if (endpoint == null) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("An Azure Key Vault of Managed HSM endpoint url is required."));
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "An Azure Key Vault endpoint is required. You can set one by using the KeyClientBuilder.endpoint()"
+                    + "method or by setting the environment variable 'AZURE_KEYVAULT_ENDPOINT'."));
         }
 
         SecretServiceVersion version = this.version == null ? SecretServiceVersion.getLatest() : this.version;
@@ -136,7 +134,8 @@ public final class SecretClientBuilder
         }
 
         if (credential == null) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("Azure Key Vault credentials are required."));
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "A credential object is required. You can set one by using the KeyClientBuilder.credential() method."));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -194,8 +193,8 @@ public final class SecretClientBuilder
      * other information via {@link KeyVaultSecretIdentifier#getEndpoint()}.
      * @return The updated {@link SecretClientBuilder} object.
      *
-     * @throws IllegalArgumentException If {@code endpoint} isn't a valid URI.
-     * @throws NullPointerException If {@code endpoint} is null.
+     * @throws IllegalArgumentException If {@code endpoint} cannot be parsed into a valid URI.
+     * @throws NullPointerException If {@code endpoint} is {@code null}.
      */
     @Override
     public SecretClientBuilder endpoint(String endpoint) {
@@ -216,8 +215,8 @@ public final class SecretClientBuilder
 
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
-     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
-     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a> documentation for more details
+     * on proper usage of the {@link TokenCredential} type.
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated {@link SecretClientBuilder} object.
@@ -248,7 +247,7 @@ public final class SecretClientBuilder
      *     If OpenTelemetry is not found on the classpath, the same information is captured in logs.
      *     HTTP request spans contain basic information about the request, such as the HTTP method, URL, status code and
      *     duration.
-     *     See {@link io.clientcore.core.http.pipeline.HttpInstrumentationPolicy} for
+     *     See {@link HttpInstrumentationPolicy} for
      *     the details.</li>
      * </ul>
      *
@@ -288,7 +287,7 @@ public final class SecretClientBuilder
     @Override
     public SecretClientBuilder addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
         if (pipelinePolicy == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'policy' cannot be null."));
+            throw LOGGER.logThrowableAsError(new NullPointerException("'pipelinePolicy' cannot be null."));
         }
 
         policies.add(pipelinePolicy);
@@ -469,10 +468,10 @@ public final class SecretClientBuilder
         }
 
         try {
-            URL url = new URL(configEndpoint);
+            URI uri = new URI(configEndpoint);
 
-            return url.toString();
-        } catch (MalformedURLException ex) {
+            return uri.toString();
+        } catch (URISyntaxException ex) {
             return null;
         }
     }
