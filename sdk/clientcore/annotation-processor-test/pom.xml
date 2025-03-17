@@ -130,7 +130,7 @@
                 <annotationProcessorPath>
                   <groupId>io.clientcore</groupId>
                   <artifactId>annotation-processor</artifactId>
-                  <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
+                  <version>1.0.0-beta.2</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
                 </annotationProcessorPath>
               </annotationProcessorPaths>
               <annotationProcessors>
@@ -148,7 +148,7 @@
           <dependency>
             <groupId>io.clientcore</groupId>
             <artifactId>annotation-processor</artifactId>
-            <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
+            <version>1.0.0-beta.2</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
           </dependency>
         </dependencies>
       </plugin>

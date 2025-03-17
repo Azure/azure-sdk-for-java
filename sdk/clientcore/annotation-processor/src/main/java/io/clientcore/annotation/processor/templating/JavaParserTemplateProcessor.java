@@ -133,8 +133,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     void createClass(String serviceInterfaceImplShortName, String serviceInterfaceShortName,
         TemplateInput templateInput) {
         classBuilder = compilationUnit.addClass(serviceInterfaceImplShortName, Modifier.Keyword.PUBLIC);
-        classBuilder
-            .setJavadocComment("Initializes a new instance of the " + serviceInterfaceImplShortName + " type.");
+        classBuilder.setJavadocComment("Initializes a new instance of the " + serviceInterfaceImplShortName + " type.");
         String serviceInterfacePackage = templateInput.getServiceInterfaceFQN()
             .substring(0, templateInput.getServiceInterfaceFQN().lastIndexOf('.'));
 
