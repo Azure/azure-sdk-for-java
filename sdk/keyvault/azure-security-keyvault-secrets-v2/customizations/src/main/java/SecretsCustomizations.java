@@ -14,6 +14,7 @@ public class SecretsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         // Remove unnecessary files.
         removeFiles(libraryCustomization.getRawEditor());
+
         // Rename KeyVaultServiceVersion to SecretServiceVersion.
         libraryCustomization.getPackage("com.azure.v2.security.keyvault.secrets")
             .getClass("KeyVaultServiceVersion")
@@ -21,8 +22,6 @@ public class SecretsCustomizations extends Customization {
     }
 
     private static void removeFiles(Editor editor) {
-        // Remove the next line in favor of renaming to SecretServiceVersion once the TSP spec includes all service
-        // versions.
         editor.removeFile("src/main/java/com/azure/security/keyvault/secrets/SecretAsyncClient.java");
         editor.removeFile("src/main/java/com/azure/security/keyvault/secrets/SecretClient.java");
         editor.removeFile("src/main/java/com/azure/security/keyvault/secrets/SecretClientBuilder.java");
