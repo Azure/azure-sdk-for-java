@@ -289,7 +289,7 @@ public class LocationCache {
         return this.getApplicableEndpoints(
             readEndpoints,
             this.locationInfo.regionNameByReadEndpoint,
-            this.locationInfo.writeEndpoints.get(0).getGatewayLocationEndpoint(), // match the fallback region used in getPreferredAvailableEndpoints
+            this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
             effectiveExcludedRegionsWithPartitionUnavailableRegions);
     }
 

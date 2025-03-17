@@ -99,6 +99,8 @@ final class RntbdToken {
             this.value = codec.convert(this.value);
             this.hasConvertedValue = true;
         }
+
+        return this.value;
     }
 
     public <T> T getValue(final Class<T> cls) {

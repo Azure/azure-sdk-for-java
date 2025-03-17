@@ -268,7 +268,7 @@ public final class DatabaseAccount extends Resource {
      * @param locations the list of thin client readable locations.
      */
     public void setThinClientReadableLocations(Iterable<DatabaseAccountLocation> locations) {
-        this.set(Constants.Properties.THINCLIENT_READABLE_LOCATIONS, locations, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.THINCLIENT_READABLE_LOCATIONS, locations);
     }
 
     /**
@@ -288,7 +288,7 @@ public final class DatabaseAccount extends Resource {
      * @param locations the list of thin clientwritable locations.
      */
     public void setThinClientWritableLocations(Iterable<DatabaseAccountLocation> locations) {
-        this.set(Constants.Properties.THINCLIENT_WRITABLE_LOCATIONS, locations, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.THINCLIENT_WRITABLE_LOCATIONS, locations);
     }
 
     /**

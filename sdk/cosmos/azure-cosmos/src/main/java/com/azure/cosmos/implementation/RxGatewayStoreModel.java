@@ -316,7 +316,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     }
 
     public URI getRootUri(RxDocumentServiceRequest request) {
-        return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayLocationEndpoint();
+        return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
     }
 
     private URI getUri(RxDocumentServiceRequest request) throws URISyntaxException {

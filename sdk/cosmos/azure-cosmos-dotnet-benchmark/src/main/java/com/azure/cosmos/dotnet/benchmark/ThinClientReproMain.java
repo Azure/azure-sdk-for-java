@@ -20,8 +20,6 @@ public class ThinClientReproMain {
             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             CosmosAsyncClient client = new CosmosClientBuilder()
-                .key(System.getProperty("COSMOS.KEY"))
-                .endpoint(System.getProperty("COSMOS.ENDPOINT"))
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .userAgentSuffix("fabianmThinClientProxyTest")

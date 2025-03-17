@@ -94,9 +94,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     @Override
     public URI getRootUri(RxDocumentServiceRequest request) {
         // need to have thin client endpoint here
-        var uri = this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
-        // TODO: @nehrao1 remove before check-in, leaving here for now for context
-        // return URI.create("https://57.155.105.105:10650/"); // https://chukangzhongstagesignoff-eastus2.documents-staging.windows-ppe.net:10650/
+        return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
     }
 
     @Override
@@ -163,7 +161,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
 
-        logger.error("HEADERS: {}", rntbdRequest.getHeaders().dumpTokens());
+        // logger.error("HEADERS: {}", rntbdRequest.getHeaders().dumpTokens());
 
         // todo: lifting the logic from there to encode the RntbdRequest instance into a ByteBuf (ByteBuf is a network compatible format)
         // todo: double-check with fabianm to see if RntbdRequest across RNTBD over TCP (Direct connectivity mode) is same as that when using ThinClient proxy
