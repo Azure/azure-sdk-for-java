@@ -385,7 +385,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     private void performOperation() {
     }
 
-    private Response<?> clientCall(RequestContext options) {
+    private Response<?> clientCall(RequestContext context) {
         return null;
     }
 

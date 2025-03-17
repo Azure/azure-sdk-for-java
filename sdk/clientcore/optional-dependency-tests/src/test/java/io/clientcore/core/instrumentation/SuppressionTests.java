@@ -365,8 +365,8 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void protocolMethod(RequestContext options) {
-            Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
+        public void protocolMethod(RequestContext context) {
+            Span span = tracer.spanBuilder("protocolMethod", INTERNAL, context.getInstrumentationContext()).startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response
@@ -382,14 +382,14 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void convenienceMethod(RequestContext options) {
+        public void convenienceMethod(RequestContext context) {
             Span span
-                = tracer.spanBuilder("convenienceMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
+                = tracer.spanBuilder("convenienceMethod", INTERNAL, context.getInstrumentationContext()).startSpan();
 
-            options = options.setInstrumentationContext(span.getInstrumentationContext());
+            context = context.setInstrumentationContext(span.getInstrumentationContext());
 
             try (TracingScope scope = span.makeCurrent()) {
-                protocolMethod(options);
+                protocolMethod(context);
             } finally {
                 span.end();
             }
@@ -407,16 +407,16 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public Response<?> protocolMethod(RequestContext options) {
-            return instrumentation.instrumentWithResponse("protocol", options,
+        public Response<?> protocolMethod(RequestContext context) {
+            return instrumentation.instrumentWithResponse("protocol", context,
                 updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
                     .setRequestContext(updatedOptions)));
         }
 
         @SuppressWarnings("try")
-        public Response<?> convenienceMethod(RequestContext options) throws IOException {
-            return instrumentation.instrumentWithResponse("convenience", options, this::protocolMethod);
+        public Response<?> convenienceMethod(RequestContext context) throws IOException {
+            return instrumentation.instrumentWithResponse("convenience", context, this::protocolMethod);
         }
     }
 }

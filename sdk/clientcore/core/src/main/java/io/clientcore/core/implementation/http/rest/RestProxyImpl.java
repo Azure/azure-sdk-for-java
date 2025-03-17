@@ -66,7 +66,7 @@ public class RestProxyImpl {
      * Invokes the provided method using the provided arguments.
      *
      * @param proxy The proxy object to invoke the method on.
-     * @param options The RequestContext to use for the request.
+     * @param context The RequestContext to use for the request.
      * @param methodParser The SwaggerMethodParser that contains information about the method to invoke.
      * @param args The arguments to use when invoking the method.
      * @return The result of invoking the method.
@@ -74,9 +74,9 @@ public class RestProxyImpl {
      * @throws RuntimeException When a URI syntax error occurs.
      */
     @SuppressWarnings({ "try", "unused" })
-    public final Object invoke(Object proxy, RequestContext options, SwaggerMethodParser methodParser, Object[] args) {
+    public final Object invoke(Object proxy, RequestContext context, SwaggerMethodParser methodParser, Object[] args) {
         try {
-            HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestContext(options)
+            HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestContext(context)
                 .setServerSentEventListener(methodParser.setServerSentEventListener(args));
 
             // If there is 'RequestContext' apply its request callback operations before validating the body.

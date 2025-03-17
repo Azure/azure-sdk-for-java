@@ -56,9 +56,9 @@ public final class RestProxy implements InvocationHandler {
         // Note: RequestContext need to be evaluated here, as it is a public class with package private methods.
         // Evaluating here allows the package private methods to be invoked here for downstream use.
         final SwaggerMethodParser methodParser = getMethodParser(method);
-        RequestContext options = methodParser.setRequestContext(args);
+        RequestContext context = methodParser.setRequestContext(args);
 
-        return restProxyImpl.invoke(proxy, options, methodParser, args);
+        return restProxyImpl.invoke(proxy, context, methodParser, args);
     }
 
     /**

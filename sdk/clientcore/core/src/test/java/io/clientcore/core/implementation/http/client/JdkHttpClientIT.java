@@ -266,10 +266,10 @@ public class JdkHttpClientIT {
         }
     }
 
-    private static Response<BinaryData> getResponse(HttpClient client, String path, RequestContext options)
+    private static Response<BinaryData> getResponse(HttpClient client, String path, RequestContext context)
         throws IOException {
         HttpRequest request
-            = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path)).setRequestContext(options);
+            = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path)).setRequestContext(context);
 
         return client.send(request);
     }
