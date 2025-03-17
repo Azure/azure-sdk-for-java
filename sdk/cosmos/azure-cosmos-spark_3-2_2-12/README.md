@@ -1,7 +1,7 @@
 # Azure Cosmos DB OLTP Spark 3 connector
 
 ## Azure Cosmos DB OLTP Spark 3 connector for Spark 3.2
-**Azure Databricks**, **Azure Synapse** and **Azure HDInsights** don't provide supported runtime for Spark 3.2 anymore. So, we have stopped releasing new version for the **Azure Cosmos DB OLTP Spark connector** targeting Spark 3.2 - please move to Spark 3.5 instead.
+**Azure Databricks**, **Azure Synapse** and **Azure HDInsights** don't provide any supported runtime for Spark 3.2 anymore. So, we have stopped releasing new versions for the **Azure Cosmos DB OLTP Spark connector** targeting Spark 3.2 - please move to Spark 3.5 instead.
 
 The last published **Azure Cosmos DB OLTP Spark connector** for Spark 3.2 is version **4.37.1**
 
