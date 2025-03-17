@@ -112,13 +112,12 @@ public final class SpanDataMapper {
         return map(span, sampleRate);
     }
 
-    public TelemetryItem map(SpanData span, Consumer<TelemetryItem> consumer) {
+    public void map(SpanData span, Consumer<TelemetryItem> consumer) {
         Double sampleRate = getSampleRate(span);
         TelemetryItem telemetryItem = map(span, sampleRate);
         consumer.accept(telemetryItem);
         exportEvents(span, telemetryItem.getTags().get(ContextTagKeys.AI_OPERATION_NAME.toString()), sampleRate,
             consumer);
-        return telemetryItem;
     }
 
     // TODO looks like this method can be private

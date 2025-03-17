@@ -13,6 +13,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.LiveMetricsSpanProcessor;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.LogDataMapper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.MetricDataMapper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer;
@@ -37,6 +38,7 @@ import io.opentelemetry.sdk.extension.incubator.resources.ServiceInstanceIdResou
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentelemetry.semconv.ServiceAttributes;
 
@@ -75,6 +77,8 @@ class AzureMonitorExporterBuilder {
 
     private QuickPulse quickPulse;
 
+    private SpanDataMapper spanDataMapper;
+
     private boolean initialized;
 
     void initializeIfNot(AzureMonitorAutoConfigureOptions exporterOptions, ConfigProperties configProperties,
@@ -87,6 +91,7 @@ class AzureMonitorExporterBuilder {
         this.configProperties = configProperties;
         this.httpPipeline = createHttpPipeline();
         this.statsbeatModule = initStatsbeatModule(configProperties);
+        this.spanDataMapper = createSpanDataMapper();
         File tempDir = TempDirs.getApplicationInsightsTempDir(LOGGER,
             "Telemetry will not be stored to disk and retried on sporadic network failures");
         // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
@@ -105,8 +110,7 @@ class AzureMonitorExporterBuilder {
     }
 
     SpanExporter buildSpanExporter() {
-        return new AzureMonitorTraceExporter(createSpanDataMapper(), builtTelemetryItemExporter, statsbeatModule,
-            quickPulse);
+        return new AzureMonitorTraceExporter(spanDataMapper, builtTelemetryItemExporter, statsbeatModule);
     }
 
     LogRecordExporter buildLogRecordExporter() {
@@ -118,6 +122,10 @@ class AzureMonitorExporterBuilder {
         HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(), builtTelemetryItemExporter::send);
         return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(), true),
             builtTelemetryItemExporter);
+    }
+
+    public SpanProcessor buildLiveMetricsSpanProcesor() {
+        return new LiveMetricsSpanProcessor(quickPulse, spanDataMapper);
     }
 
     private Set<Feature> initStatsbeatFeatures() {

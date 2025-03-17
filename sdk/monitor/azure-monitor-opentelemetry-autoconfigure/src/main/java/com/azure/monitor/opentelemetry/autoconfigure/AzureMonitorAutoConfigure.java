@@ -3,9 +3,9 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure;
 
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorLogRecordExporterProvider;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorMetricExporterProvider;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorSpanExporterProvider;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizer;
 import io.opentelemetry.sdk.metrics.Aggregation;
@@ -87,6 +87,11 @@ public final class AzureMonitorAutoConfigure {
                 logRecordExporter = azureMonitorExporterBuilder.buildLogRecordExporter();
             }
             return logRecordExporter;
+        });
+        autoConfigurationCustomizer.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
+            azureMonitorExporterBuilder.initializeIfNot(autoConfigureOptions, configProperties, otelResource.get());
+            return sdkTracerProviderBuilder
+                .addSpanProcessor(azureMonitorExporterBuilder.buildLiveMetricsSpanProcesor());
         });
         autoConfigurationCustomizer
             .addMeterProviderCustomizer((sdkMeterProviderBuilder, config) -> sdkMeterProviderBuilder

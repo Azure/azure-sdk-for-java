@@ -85,6 +85,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorLogRecordExporterProvider.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorMetricExporterProvider.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorSpanExporterProvider.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.LiveMetricsSpanProcessor.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.LogDataMapper.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.Mappings.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.java" checks="IllegalImportCheck" />
@@ -124,6 +125,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.LocalStorageTelemetryPipelineListenerTest.java" checks="MethodNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseDataCollectorTests.java" checks="MethodNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.ApplicationInsightsClientImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.LiveMetricsSpanProcessor.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.LogDataMapper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.MetricDataMapper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer.java" checks="MissingJavadocMethodCheck" />
@@ -195,6 +197,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorLogRecordExporterProvider.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorMetricExporterProvider.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorSpanExporterProvider.java" checks="MissingJavadocTypeCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.LiveMetricsSpanProcessor.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.LogDataMapper.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.MetricDataMapper.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer.java" checks="MissingJavadocTypeCheck" />

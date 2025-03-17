@@ -44,6 +44,7 @@
     <Bug pattern="EI_EXPOSE_REP2" />
     <Or>
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.ApplicationInsightsClientImplBuilder" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.LiveMetricsSpanProcessor" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.AvailabilityData" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ExportResult" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData" />
