@@ -2077,4 +2077,52 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
         StepVerifier.create(uploadFileMono).expectError(HttpResponseException.class).verify();
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranscriptionTextPlain2(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        // copy of testGetAudioTranscriptionTextPlain
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
+            // transcriptionOptions.setFilename(translationOptions.getFilename()); // Or appropriate mock file data
+            // client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
+            StepVerifier.create(client.getAudioTranscriptionAsPlainText(deploymentName, transcriptionOptions))
+                .assertNext(transcription ->
+                    // A plain/text request adds a line break as an artifact. Also observed for translations
+                    assertEquals(BATMAN_TRANSCRIPTION + "\n", transcription)).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationJson2(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        // copy of testGetAudioTranslationJson
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
+            translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
+            translationOptions.setFilename(translationOptions.getFilename());
+
+            // Create request options without manually adding headers
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.setHeader("Content-Type", "multipart/form-data");
+
+            // Now call the method with the modified request options
+            Mono<String> audioTranslationAsPlainTextMono = client.getAudioTranslationAsPlainTextWithResponse(deploymentName,
+                    BinaryData.fromObject(translationOptions), requestOptions)
+                .flatMap(response -> Mono.just(response.getValue().toString()));
+
+            StepVerifier
+                .create(audioTranslationAsPlainTextMono)
+                .assertNext(translation -> {
+                    assertNotNull(translation);
+                    assertEquals("It's raining today.", translation);
+                })
+                .verifyComplete();
+        });
+    }
 }
