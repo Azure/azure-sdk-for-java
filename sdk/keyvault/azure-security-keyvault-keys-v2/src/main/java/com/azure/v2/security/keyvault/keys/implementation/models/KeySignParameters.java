@@ -8,7 +8,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.Base64Url;
+import io.clientcore.core.utils.Base64Uri;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -28,11 +28,11 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
      * The value to operate on.
      */
     @Metadata(generated = true)
-    private final Base64Url value;
+    private final Base64Uri value;
 
     /**
      * Creates an instance of KeySignParameters class.
-     * 
+     *
      * @param algorithm the algorithm value to set.
      * @param value the value value to set.
      */
@@ -42,14 +42,14 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
         if (value == null) {
             this.value = null;
         } else {
-            this.value = Base64Url.encode(value);
+            this.value = Base64Uri.encode(value);
         }
     }
 
     /**
      * Get the algorithm property: The signing/verification algorithm identifier. For more information on possible
      * algorithm types, see JsonWebKeySignatureAlgorithm.
-     * 
+     *
      * @return the algorithm value.
      */
     @Metadata(generated = true)
@@ -59,7 +59,7 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
 
     /**
      * Get the value property: The value to operate on.
-     * 
+     *
      * @return the value value.
      */
     @Metadata(generated = true)
@@ -84,7 +84,7 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
 
     /**
      * Reads an instance of KeySignParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeySignParameters if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -103,8 +103,8 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
                 if ("alg".equals(fieldName)) {
                     algorithm = JsonWebKeySignatureAlgorithm.fromValue(reader.getString());
                 } else if ("value".equals(fieldName)) {
-                    Base64Url valueHolder
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    Base64Uri valueHolder
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                     if (valueHolder != null) {
                         value = valueHolder.decodedBytes();
                     }

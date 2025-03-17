@@ -10,7 +10,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.Base64Url;
+import io.clientcore.core.utils.Base64Uri;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -42,61 +42,61 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * RSA modulus.
      */
     @Metadata(generated = true)
-    private Base64Url n;
+    private Base64Uri n;
 
     /*
      * RSA public exponent.
      */
     @Metadata(generated = true)
-    private Base64Url e;
+    private Base64Uri e;
 
     /*
      * RSA private exponent, or the D component of an EC private key.
      */
     @Metadata(generated = true)
-    private Base64Url d;
+    private Base64Uri d;
 
     /*
      * RSA private key parameter.
      */
     @Metadata(generated = true)
-    private Base64Url dp;
+    private Base64Uri dp;
 
     /*
      * RSA private key parameter.
      */
     @Metadata(generated = true)
-    private Base64Url dq;
+    private Base64Uri dq;
 
     /*
      * RSA private key parameter.
      */
     @Metadata(generated = true)
-    private Base64Url qi;
+    private Base64Uri qi;
 
     /*
      * RSA secret prime.
      */
     @Metadata(generated = true)
-    private Base64Url p;
+    private Base64Uri p;
 
     /*
      * RSA secret prime, with p < q.
      */
     @Metadata(generated = true)
-    private Base64Url q;
+    private Base64Uri q;
 
     /*
      * Symmetric key.
      */
     @Metadata(generated = true)
-    private Base64Url k;
+    private Base64Uri k;
 
     /*
      * Protected Key, used with 'Bring Your Own Key'.
      */
     @Metadata(generated = true)
-    private Base64Url t;
+    private Base64Uri t;
 
     /*
      * Elliptic curve name. For valid values, see JsonWebKeyCurveName.
@@ -108,13 +108,13 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * X component of an EC public key.
      */
     @Metadata(generated = true)
-    private Base64Url x;
+    private Base64Uri x;
 
     /*
      * Y component of an EC public key.
      */
     @Metadata(generated = true)
-    private Base64Url y;
+    private Base64Uri y;
 
     /**
      * Creates an instance of JsonWebKey class.
@@ -125,7 +125,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the kid property: Key identifier.
-     * 
+     *
      * @return the kid value.
      */
     @Metadata(generated = true)
@@ -135,7 +135,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the kid property: Key identifier.
-     * 
+     *
      * @param kid the kid value to set.
      * @return the JsonWebKey object itself.
      */
@@ -148,7 +148,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     /**
      * Get the kty property: JsonWebKey Key Type (kty), as defined in
      * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-     * 
+     *
      * @return the kty value.
      */
     @Metadata(generated = true)
@@ -159,7 +159,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     /**
      * Set the kty property: JsonWebKey Key Type (kty), as defined in
      * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-     * 
+     *
      * @param kty the kty value to set.
      * @return the JsonWebKey object itself.
      */
@@ -172,7 +172,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     /**
      * Get the keyOps property: Json web key operations. For more information on possible key operations, see
      * JsonWebKeyOperation.
-     * 
+     *
      * @return the keyOps value.
      */
     @Metadata(generated = true)
@@ -183,7 +183,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     /**
      * Set the keyOps property: Json web key operations. For more information on possible key operations, see
      * JsonWebKeyOperation.
-     * 
+     *
      * @param keyOps the keyOps value to set.
      * @return the JsonWebKey object itself.
      */
@@ -195,7 +195,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the n property: RSA modulus.
-     * 
+     *
      * @return the n value.
      */
     @Metadata(generated = true)
@@ -208,7 +208,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the n property: RSA modulus.
-     * 
+     *
      * @param n the n value to set.
      * @return the JsonWebKey object itself.
      */
@@ -217,14 +217,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (n == null) {
             this.n = null;
         } else {
-            this.n = Base64Url.encode(n);
+            this.n = Base64Uri.encode(n);
         }
         return this;
     }
 
     /**
      * Get the e property: RSA public exponent.
-     * 
+     *
      * @return the e value.
      */
     @Metadata(generated = true)
@@ -237,7 +237,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the e property: RSA public exponent.
-     * 
+     *
      * @param e the e value to set.
      * @return the JsonWebKey object itself.
      */
@@ -246,14 +246,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (e == null) {
             this.e = null;
         } else {
-            this.e = Base64Url.encode(e);
+            this.e = Base64Uri.encode(e);
         }
         return this;
     }
 
     /**
      * Get the d property: RSA private exponent, or the D component of an EC private key.
-     * 
+     *
      * @return the d value.
      */
     @Metadata(generated = true)
@@ -266,7 +266,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the d property: RSA private exponent, or the D component of an EC private key.
-     * 
+     *
      * @param d the d value to set.
      * @return the JsonWebKey object itself.
      */
@@ -275,14 +275,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (d == null) {
             this.d = null;
         } else {
-            this.d = Base64Url.encode(d);
+            this.d = Base64Uri.encode(d);
         }
         return this;
     }
 
     /**
      * Get the dp property: RSA private key parameter.
-     * 
+     *
      * @return the dp value.
      */
     @Metadata(generated = true)
@@ -295,7 +295,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the dp property: RSA private key parameter.
-     * 
+     *
      * @param dp the dp value to set.
      * @return the JsonWebKey object itself.
      */
@@ -304,14 +304,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (dp == null) {
             this.dp = null;
         } else {
-            this.dp = Base64Url.encode(dp);
+            this.dp = Base64Uri.encode(dp);
         }
         return this;
     }
 
     /**
      * Get the dq property: RSA private key parameter.
-     * 
+     *
      * @return the dq value.
      */
     @Metadata(generated = true)
@@ -324,7 +324,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the dq property: RSA private key parameter.
-     * 
+     *
      * @param dq the dq value to set.
      * @return the JsonWebKey object itself.
      */
@@ -333,14 +333,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (dq == null) {
             this.dq = null;
         } else {
-            this.dq = Base64Url.encode(dq);
+            this.dq = Base64Uri.encode(dq);
         }
         return this;
     }
 
     /**
      * Get the qi property: RSA private key parameter.
-     * 
+     *
      * @return the qi value.
      */
     @Metadata(generated = true)
@@ -353,7 +353,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the qi property: RSA private key parameter.
-     * 
+     *
      * @param qi the qi value to set.
      * @return the JsonWebKey object itself.
      */
@@ -362,14 +362,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (qi == null) {
             this.qi = null;
         } else {
-            this.qi = Base64Url.encode(qi);
+            this.qi = Base64Uri.encode(qi);
         }
         return this;
     }
 
     /**
      * Get the p property: RSA secret prime.
-     * 
+     *
      * @return the p value.
      */
     @Metadata(generated = true)
@@ -382,7 +382,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the p property: RSA secret prime.
-     * 
+     *
      * @param p the p value to set.
      * @return the JsonWebKey object itself.
      */
@@ -391,14 +391,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (p == null) {
             this.p = null;
         } else {
-            this.p = Base64Url.encode(p);
+            this.p = Base64Uri.encode(p);
         }
         return this;
     }
 
     /**
      * Get the q property: RSA secret prime, with p &lt; q.
-     * 
+     *
      * @return the q value.
      */
     @Metadata(generated = true)
@@ -411,7 +411,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the q property: RSA secret prime, with p &lt; q.
-     * 
+     *
      * @param q the q value to set.
      * @return the JsonWebKey object itself.
      */
@@ -420,14 +420,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (q == null) {
             this.q = null;
         } else {
-            this.q = Base64Url.encode(q);
+            this.q = Base64Uri.encode(q);
         }
         return this;
     }
 
     /**
      * Get the k property: Symmetric key.
-     * 
+     *
      * @return the k value.
      */
     @Metadata(generated = true)
@@ -440,7 +440,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the k property: Symmetric key.
-     * 
+     *
      * @param k the k value to set.
      * @return the JsonWebKey object itself.
      */
@@ -449,14 +449,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (k == null) {
             this.k = null;
         } else {
-            this.k = Base64Url.encode(k);
+            this.k = Base64Uri.encode(k);
         }
         return this;
     }
 
     /**
      * Get the t property: Protected Key, used with 'Bring Your Own Key'.
-     * 
+     *
      * @return the t value.
      */
     @Metadata(generated = true)
@@ -469,7 +469,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the t property: Protected Key, used with 'Bring Your Own Key'.
-     * 
+     *
      * @param t the t value to set.
      * @return the JsonWebKey object itself.
      */
@@ -478,14 +478,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (t == null) {
             this.t = null;
         } else {
-            this.t = Base64Url.encode(t);
+            this.t = Base64Uri.encode(t);
         }
         return this;
     }
 
     /**
      * Get the crv property: Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-     * 
+     *
      * @return the crv value.
      */
     @Metadata(generated = true)
@@ -495,7 +495,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the crv property: Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-     * 
+     *
      * @param crv the crv value to set.
      * @return the JsonWebKey object itself.
      */
@@ -507,7 +507,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the x property: X component of an EC public key.
-     * 
+     *
      * @return the x value.
      */
     @Metadata(generated = true)
@@ -520,7 +520,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the x property: X component of an EC public key.
-     * 
+     *
      * @param x the x value to set.
      * @return the JsonWebKey object itself.
      */
@@ -529,14 +529,14 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (x == null) {
             this.x = null;
         } else {
-            this.x = Base64Url.encode(x);
+            this.x = Base64Uri.encode(x);
         }
         return this;
     }
 
     /**
      * Get the y property: Y component of an EC public key.
-     * 
+     *
      * @return the y value.
      */
     @Metadata(generated = true)
@@ -549,7 +549,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the y property: Y component of an EC public key.
-     * 
+     *
      * @param y the y value to set.
      * @return the JsonWebKey object itself.
      */
@@ -558,7 +558,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (y == null) {
             this.y = null;
         } else {
-            this.y = Base64Url.encode(y);
+            this.y = Base64Uri.encode(y);
         }
         return this;
     }
@@ -591,7 +591,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Reads an instance of JsonWebKey from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of JsonWebKey if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
@@ -614,42 +614,42 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
                     deserializedJsonWebKey.keyOps = keyOps;
                 } else if ("n".equals(fieldName)) {
                     deserializedJsonWebKey.n
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("e".equals(fieldName)) {
                     deserializedJsonWebKey.e
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("d".equals(fieldName)) {
                     deserializedJsonWebKey.d
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("dp".equals(fieldName)) {
                     deserializedJsonWebKey.dp
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("dq".equals(fieldName)) {
                     deserializedJsonWebKey.dq
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("qi".equals(fieldName)) {
                     deserializedJsonWebKey.qi
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("p".equals(fieldName)) {
                     deserializedJsonWebKey.p
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("q".equals(fieldName)) {
                     deserializedJsonWebKey.q
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("k".equals(fieldName)) {
                     deserializedJsonWebKey.k
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("key_hsm".equals(fieldName)) {
                     deserializedJsonWebKey.t
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("crv".equals(fieldName)) {
                     deserializedJsonWebKey.crv = KeyCurveName.fromValue(reader.getString());
                 } else if ("x".equals(fieldName)) {
                     deserializedJsonWebKey.x
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("y".equals(fieldName)) {
                     deserializedJsonWebKey.y
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
