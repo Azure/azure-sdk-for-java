@@ -16,10 +16,10 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * This class contains the request metadata that flows along with the {@link HttpRequest} as it goes through HTTP pipeline.
- * and could be used to customize the pipeline behavior or modify the request itself.
+ * This class contains the request metadata that flows along with the {@link HttpRequest} as it goes through HTTP pipeline,
+ * and it can be used to customize the pipeline behavior or modify the request itself.
  *
- * <p>An instance of fully configured {@link RequestContext} can be passed to a service method that preconfigures known
+ * <p>A {@link RequestContext} instance can be passed to a service method that preconfigures known
  * components of the request like URI, path params etc, further modifying both un-configured, or preconfigured
  * components.</p>
  *
@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  * <p><strong>Creating an instance of RequestContext</strong></p>
  * <!-- src_embed io.clientcore.core.http.rest.requestcontext.instantiation -->
  * <pre>
- * RequestContext options = new RequestContext&#40;&#41;
+ * RequestContext context = new RequestContext&#40;&#41;
  *     .addHeader&#40;new HttpHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestcontext.instantiation -->
@@ -98,7 +98,7 @@ import java.util.function.Consumer;
  *
  * <!-- src_embed io.clientcore.core.http.rest.requestcontext.postrequest -->
  * <pre>
- * RequestContext options = new RequestContext&#40;&#41;
+ * RequestContext context = new RequestContext&#40;&#41;
  *     .addRequestCallback&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
@@ -110,7 +110,6 @@ import java.util.function.Consumer;
  */
 @Metadata(properties = { MetadataProperties.IMMUTABLE, MetadataProperties.FLUENT })
 public final class RequestContext {
-    private static final ClientLogger LOGGER = new ClientLogger(RequestContext.class);
     private static final RequestContext NONE = new RequestContext();
 
     private final Consumer<HttpRequest> requestCallback;
@@ -163,9 +162,8 @@ public final class RequestContext {
      * otherwise a new header will be created.</p>
      *
      * @param header The header key.
-     * @return The updated {@link RequestContext} object.
+     * @return A new instance of the {@link RequestContext}.
      * @throws NullPointerException If {@code header} is null.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
      */
     public RequestContext addHeader(HttpHeader header) {
         Objects.requireNonNull(header, "'header' cannot be null.");
@@ -181,8 +179,7 @@ public final class RequestContext {
      *
      * @param header The header key.
      * @param value The header value.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return A new instance of the {@link RequestContext}.
      */
     public RequestContext setHeader(HttpHeaderName header, String value) {
         Objects.requireNonNull(header, "'header' cannot be null.");
@@ -197,8 +194,7 @@ public final class RequestContext {
      *
      * @param parameterName The name of the query parameter.
      * @param value The value of the query parameter.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return A new instance of the {@link RequestContext}.
      */
     public RequestContext addQueryParam(String parameterName, String value) {
         return addQueryParam(parameterName, value, false);
@@ -212,8 +208,7 @@ public final class RequestContext {
      * @param parameterName The name of the query parameter.
      * @param value The value of the query parameter.
      * @param encoded Whether this query parameter is already encoded.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return A new instance of the {@link RequestContext}.
      */
     public RequestContext addQueryParam(String parameterName, String value, boolean encoded) {
         Objects.requireNonNull(parameterName, "'parameterName' cannot be null.");
@@ -234,9 +229,8 @@ public final class RequestContext {
      * modifications made on a {@link RequestContext} object are applied in order on the request.
      *
      * @param requestCallback The request callback.
-     * @return The updated {@link RequestContext} object.
+     * @return A new instance of the {@link RequestContext}.
      * @throws NullPointerException If {@code requestCallback} is null.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
      */
     public RequestContext addRequestCallback(Consumer<HttpRequest> requestCallback) {
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
@@ -248,17 +242,15 @@ public final class RequestContext {
      * Sets the {@link ClientLogger} used to log the request and response.
      *
      * @param logger The {@link ClientLogger} used to log the request and response.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return A new instance of the {@link RequestContext}.
      */
     public RequestContext setLogger(ClientLogger logger) {
         return new RequestContext(requestCallback, logger, context, instrumentationContext);
     }
 
     /**
-     * An empty {@link RequestContext} that is immutable, used in situations where there is no request-specific
-     * configuration to pass into the request. Modifications to the {@link RequestContext} will result in an
-     * {@link IllegalStateException}.
+     * An empty {@link RequestContext} used in situations where there is no request-specific
+     * configuration to pass into the request.
      *
      * @return The singleton instance of an empty {@link RequestContext}.
      */
@@ -279,8 +271,7 @@ public final class RequestContext {
      * Sets the {@link InstrumentationContext} used to instrument the request.
      *
      * @param instrumentationContext The {@link InstrumentationContext} used to instrument the request.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return A new instance of the {@link RequestContext}.
      */
     public RequestContext setInstrumentationContext(InstrumentationContext instrumentationContext) {
         return new RequestContext(requestCallback, logger, context, instrumentationContext);
@@ -292,12 +283,11 @@ public final class RequestContext {
      *
      * @param key The key to be added.
      * @param value The value to be added.
-     * @return The new {@link RequestContext} object.
+     * @return A new instance of the {@link RequestContext}.
      * @throws NullPointerException If {@code key} is null.
      */
     public RequestContext putData(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
-
         return new RequestContext(requestCallback, logger, context.put(key, value), instrumentationContext);
     }
 
@@ -306,22 +296,11 @@ public final class RequestContext {
      * given class type.
      *
      * @param key The key to be retrieved.
-     * @param clazz The class type to cast the value to.
-     * @return The value associated with the given key, cast to the given class type.
-     * @param <T> The type of the value to be retrieved.
+     * @return The value associated with the given key or {@code null}.
      * @throws NullPointerException If {@code key} is null.
-     * @throws IllegalArgumentException If the value associated with the key is not of the expected type.
      */
-    public <T> T getData(String key, Class<T> clazz) {
+    public Object getData(String key) {
         Objects.requireNonNull(key, "'key' cannot be null.");
-        Object value = context.get(key);
-        if (clazz.isInstance(value)) {
-            return clazz.cast(value);
-        } else if (value != null) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("Value for key '" + key + "' is not of type " + clazz.getName()));
-        }
-
-        return null;
+        return context.get(key);
     }
 }

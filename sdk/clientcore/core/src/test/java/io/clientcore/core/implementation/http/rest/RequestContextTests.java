@@ -32,9 +32,9 @@ public class RequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestContext options = new RequestContext().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
+        RequestContext context = new RequestContext().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
 
-        options.getRequestCallback().accept(request);
+        context.getRequestCallback().accept(request);
 
         assertTrue(request.getUri().toString().contains("?foo=bar&%24skipToken=1"));
     }
@@ -44,10 +44,10 @@ public class RequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestContext options = new RequestContext().addRequestCallback(r -> r.getHeaders()
+        RequestContext context = new RequestContext().addRequestCallback(r -> r.getHeaders()
             .add(new HttpHeader(X_MS_FOO, "bar"))
             .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")));
-        options.getRequestCallback().accept(request);
+        context.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
         assertEquals("bar", headers.getValue(X_MS_FOO));
@@ -59,14 +59,14 @@ public class RequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestContext options
+        RequestContext context
             = new RequestContext().addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
                 .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
                 .addRequestCallback(r -> r.setUri("https://request.uri"))
                 .addQueryParam("$skipToken", "1")
                 .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"));
 
-        options.getRequestCallback().accept(request);
+        context.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
         assertEquals("baz", headers.getValue(X_MS_FOO));
@@ -78,48 +78,35 @@ public class RequestContextTests {
     public void simpleContext() {
         Object complexObject = ProgressReporter.withProgressListener(value -> {
         });
-        RequestContext options = new RequestContext().putData("stringKey", "value")
+        RequestContext context = new RequestContext().putData("stringKey", "value")
             .putData("longKey", 10L)
             .putData("booleanKey", true)
             .putData("doubleKey", 42.0)
             .putData("complexObject", complexObject);
 
-        assertEquals("value", options.getData("stringKey", String.class));
-        assertEquals("value", options.getData("stringKey", Object.class));
-        assertEquals(10L, options.getData("longKey", Long.class));
-        assertEquals(true, options.getData("booleanKey", Boolean.class));
-        assertEquals(42.0, options.getData("doubleKey", Double.class));
-        assertSame(options.getData("complexObject", Object.class), complexObject);
-        assertSame(options.getData("complexObject", ProgressReporter.class), complexObject);
-
-        assertNull(options.getData("fakeKey", String.class));
-    }
-
-    @Test
-    public void invalidGetDataParams() {
-        Object complexObject = ProgressReporter.withProgressListener(value -> {
-        });
-        RequestContext options = new RequestContext().putData("stringKey", "value").putData("intKey", 10);
-
-        assertThrows(NullPointerException.class, () -> options.getData("stringKey", null));
-        assertThrows(IllegalArgumentException.class, () -> options.getData("stringKey", Long.class));
-        assertThrows(IllegalArgumentException.class, () -> options.getData("intKey", Long.class));
+        assertEquals("value", context.getData("stringKey"));
+        assertEquals("value", context.getData("stringKey"));
+        assertEquals(10L, context.getData("longKey"));
+        assertEquals(true, context.getData("booleanKey"));
+        assertEquals(42.0, context.getData("doubleKey"));
+        assertSame(complexObject, context.getData("complexObject"));
+        assertNull(context.getData("fakeKey"));
     }
 
     @Test
     public void keysCannotBeNull() {
-        RequestContext options = new RequestContext();
-        assertThrows(NullPointerException.class, () -> options.putData(null, null));
-        assertThrows(NullPointerException.class, () -> options.putData(null, "value"));
+        RequestContext context = new RequestContext();
+        assertThrows(NullPointerException.class, () -> context.putData(null, null));
+        assertThrows(NullPointerException.class, () -> context.putData(null, "value"));
     }
 
     @ParameterizedTest
     @MethodSource("addDataSupplier")
     public void addContext(String key, String value, String expectedOriginalValue) {
-        RequestContext options = new RequestContext().putData("key", "value").putData(key, value);
+        RequestContext context = new RequestContext().putData("key", "value").putData(key, value);
 
-        assertEquals(value, options.getData(key, String.class));
-        assertEquals(expectedOriginalValue, options.getData("key", String.class));
+        assertEquals(value, context.getData(key));
+        assertEquals(expectedOriginalValue, context.getData("key"));
     }
 
     private static Stream<Arguments> addDataSupplier() {
@@ -133,13 +120,13 @@ public class RequestContextTests {
 
     @Test
     public void putValueCanBeNull() {
-        RequestContext options = new RequestContext().putData("key", null);
+        RequestContext context = new RequestContext().putData("key", null);
 
-        assertNull(options.getData("key", String.class));
+        assertNull(context.getData("key"));
     }
 
     @Test
     public void getValueKeyCannotBeNull() {
-        assertThrows(NullPointerException.class, () -> RequestContext.none().getData(null, String.class));
+        assertThrows(NullPointerException.class, () -> RequestContext.none().getData(null));
     }
 }

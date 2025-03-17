@@ -216,15 +216,15 @@ public class OperationInstrumentationTests {
             .setAttribute("operation.name", "call1")
             .startSpan();
 
-        RequestContext options = new RequestContext().setInstrumentationContext(span.getInstrumentationContext());
+        RequestContext context = new RequestContext().setInstrumentationContext(span.getInstrumentationContext());
 
-        instrumentation2.instrument("call2", options, o2 -> {
+        instrumentation2.instrument("call2", context, o2 -> {
             assertTrue(o2.getInstrumentationContext().isValid());
-            assertNotSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
+            assertNotSame(o2.getInstrumentationContext(), context.getInstrumentationContext());
             instrumentation2.instrument("call3", o2, o3 -> {
                 // this call is suppressed
                 assertSame(o2.getInstrumentationContext(), o3.getInstrumentationContext());
-                assertNotSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
+                assertNotSame(o3.getInstrumentationContext(), context.getInstrumentationContext());
             });
         });
         span.end();
@@ -256,16 +256,16 @@ public class OperationInstrumentationTests {
             .startSpan();
 
         parent.set(span.getInstrumentationContext());
-        RequestContext options = new RequestContext().setInstrumentationContext(span.getInstrumentationContext());
+        RequestContext context = new RequestContext().setInstrumentationContext(span.getInstrumentationContext());
 
-        instrumentation.instrument("call2", options, o2 -> {
+        instrumentation.instrument("call2", context, o2 -> {
             assertTrue(o2.getInstrumentationContext().isValid());
-            assertNotSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
+            assertNotSame(o2.getInstrumentationContext(), context.getInstrumentationContext());
         });
 
-        instrumentation.instrument("call3", options, o3 -> {
+        instrumentation.instrument("call3", context, o3 -> {
             assertTrue(o3.getInstrumentationContext().isValid());
-            assertNotSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
+            assertNotSame(o3.getInstrumentationContext(), context.getInstrumentationContext());
             assertNotSame(o3.getInstrumentationContext(), parent.get());
         });
 

@@ -52,10 +52,10 @@ public class RestProxyImplTests {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength,
-            RequestContext options);
+            RequestContext context);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        void testVoidMethod(RequestContext options);
+        void testVoidMethod(RequestContext context);
     }
 
     @Test

@@ -155,11 +155,11 @@ public class TelemetryJavaDocCodeSnippets {
         // However, in asynchronous code, context may need to be propagated explicitly using RequestContext
         // and explicit io.clientcore.core.util.Context.
 
-        RequestContext options = new RequestContext()
+        RequestContext context = new RequestContext()
             .setInstrumentationContext(Instrumentation.createInstrumentationContext(span));
 
         // run on another thread - all telemetry will be correlated with the span created above
-        client.clientCall(options);
+        client.clientCall(context);
 
         // END: io.clientcore.core.telemetry.correlationwithexplicitcontext
     }
@@ -197,21 +197,21 @@ public class TelemetryJavaDocCodeSnippets {
         }
 
         @SuppressWarnings("try")
-        public Response<?> clientCallWithResponse(RequestContext options) {
-            return instrumentation.instrumentWithResponse("Sample.call", options, this::clientCallWithResponseImpl);
+        public Response<?> clientCallWithResponse(RequestContext context) {
+            return instrumentation.instrumentWithResponse("Sample.call", context, this::clientCallWithResponseImpl);
         }
 
         @SuppressWarnings("try")
-        public void clientCall(RequestContext options) {
-            instrumentation.instrument("Sample.call", options, this::clientCallImpl);
+        public void clientCall(RequestContext context) {
+            instrumentation.instrument("Sample.call", context, this::clientCallImpl);
         }
 
-        private Response<?> clientCallWithResponseImpl(RequestContext options) {
-            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(options));
+        private Response<?> clientCallWithResponseImpl(RequestContext context) {
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(context));
         }
 
-        private void clientCallImpl(RequestContext options) {
-            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(options));
+        private void clientCallImpl(RequestContext context) {
+            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(context));
         }
     }
 }
