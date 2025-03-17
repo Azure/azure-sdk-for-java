@@ -1995,7 +1995,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
     @Test
-    public void getAccountInfo_OAuth() {
+    public void getAccountInfoOAuth() {
         // Arrange
         BlobServiceClient serviceClient = getOAuthServiceClient();
 

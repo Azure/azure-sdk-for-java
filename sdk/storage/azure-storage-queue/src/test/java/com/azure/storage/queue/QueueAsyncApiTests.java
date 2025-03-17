@@ -887,6 +887,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
         StepVerifier.create(aadQueue.getProperties()).assertNext(r -> assertNotNull(r)).verifyComplete();
     }
 
+    @Test
     @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-05-05")
     public void getSetAccessPolicyOAuth() {
         // Arrange
