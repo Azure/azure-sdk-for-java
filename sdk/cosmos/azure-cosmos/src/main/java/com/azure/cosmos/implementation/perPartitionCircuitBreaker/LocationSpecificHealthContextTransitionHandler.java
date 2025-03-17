@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class LocationSpecificHealthContextTransitionHandler {
 
@@ -69,8 +68,8 @@ public class LocationSpecificHealthContextTransitionHandler {
 
                     if (this.consecutiveExceptionBasedCircuitBreaker.canHealthStatusBeUpgraded(locationSpecificHealthContextInner, isReadOnlyRequest)) {
 
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Partition {}-{} of collection : {} marked as Healthy from HealthyTentative for region : {}",
+                        if (logger.isWarnEnabled()) {
+                            logger.warn("Partition {}-{} of collection : {} marked as Healthy from HealthyTentative for region : {}",
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                                 partitionKeyRangeWrapper.getCollectionResourceId(),
@@ -88,8 +87,8 @@ public class LocationSpecificHealthContextTransitionHandler {
                 if (!forceStatusChange) {
                     if (Duration.between(unavailableSinceActual, Instant.now()).compareTo(Duration.ofSeconds(Configs.getAllowedPartitionUnavailabilityDurationInSeconds())) > 0) {
 
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
+                        if (logger.isWarnEnabled()) {
+                            logger.warn("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                                 partitionKeyRangeWrapper.getCollectionResourceId(),
@@ -100,8 +99,8 @@ public class LocationSpecificHealthContextTransitionHandler {
                     }
                 } else {
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
+                    if (logger.isWarnEnabled()) {
+                        logger.warn("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                             partitionKeyRangeWrapper.getCollectionResourceId(),
@@ -121,7 +120,6 @@ public class LocationSpecificHealthContextTransitionHandler {
     public LocationSpecificHealthContext handleException(
         LocationSpecificHealthContext locationSpecificHealthContext,
         PartitionKeyRangeWrapper partitionKeyRangeWrapper,
-        ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithPossibleUnavailableRegions,
         String regionWithException,
         boolean isReadOnlyRequest) {
 
@@ -161,10 +159,9 @@ public class LocationSpecificHealthContextTransitionHandler {
 
                     return locationSpecificHealthContextInner;
                 } else {
-                    partitionKeyRangesWithPossibleUnavailableRegions.put(partitionKeyRangeWrapper, partitionKeyRangeWrapper);
 
-                    if (logger.isDebugEnabled()) {
-                        logger.info("Partition {}-{} of collection : {} marked as Unavailable from HealthyWithFailures for region : {}",
+                    if (logger.isWarnEnabled()) {
+                        logger.warn("Partition {}-{} of collection : {} marked as Unavailable from HealthyWithFailures for region : {}",
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange(),
@@ -183,8 +180,8 @@ public class LocationSpecificHealthContextTransitionHandler {
                             isReadOnlyRequest);
                 } else {
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Partition {}-{} of collection : {} marked as Unavailable from HealthyTentative for region : {}",
+                    if (logger.isWarnEnabled()) {
+                        logger.warn("Partition {}-{} of collection : {} marked as Unavailable from HealthyTentative for region : {}",
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                             partitionKeyRangeWrapper.getCollectionResourceId(),
