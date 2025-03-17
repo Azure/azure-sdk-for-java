@@ -39,7 +39,7 @@ public final class SecretClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final KeyVaultClientService service;
+    private final SecretClientService service;
 
     /**
      */
@@ -93,20 +93,20 @@ public final class SecretClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(KeyVaultClientService.class, this.httpPipeline);
+        this.service = RestProxy.create(SecretClientService.class, this.httpPipeline);
     }
 
     /**
      * The interface defining all the services for KeyVaultClient to be used by the proxy service to perform REST calls.
      */
     @ServiceInterface(name = "KeyVaultClient", host = "{vaultBaseUrl}")
-    public interface KeyVaultClientService {
-        static KeyVaultClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer,
+    public interface SecretClientService {
+        static SecretClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept) {
             try {
                 Class<?> clazz
                     = Class.forName("com.azure.v2.security.keyvault.secrets.implementation.KeyVaultClientServiceImpl");
-                return (KeyVaultClientService) clazz
+                return (SecretClientService) clazz
                     .getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class, String.class, String.class)
                     .invoke(null, pipeline, serializer, vaultBaseUrl, accept);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
@@ -620,7 +620,7 @@ public final class SecretClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the secret list result.
      */
-    private PagedResponse<SecretItem> getSecretsSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<SecretItem> getSecretsSinglePage(RequestOptions requestOptions) {
         Response<SecretListResult> res = service.getSecrets(this.getServiceVersion().getVersion(), requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getValue(), null, res.getValue().getNextLink(), null, null, null);
@@ -729,7 +729,7 @@ public final class SecretClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the secret list result.
      */
-    private PagedResponse<SecretItem> getSecretVersionsSinglePage(String secretName, RequestOptions requestOptions) {
+    public PagedResponse<SecretItem> getSecretVersionsSinglePage(String secretName, RequestOptions requestOptions) {
         Response<SecretListResult> res
             = service.getSecretVersions(this.getServiceVersion().getVersion(), secretName, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
@@ -841,7 +841,7 @@ public final class SecretClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the deleted secret list result.
      */
-    private PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(RequestOptions requestOptions) {
         Response<DeletedSecretListResult> res
             = service.getDeletedSecrets(this.getServiceVersion().getVersion(), requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
@@ -1121,7 +1121,7 @@ public final class SecretClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the secret list result.
      */
-    private PagedResponse<SecretItem> getSecretsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<SecretItem> getSecretsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         Response<SecretListResult> res = service.getSecretsNext(nextLink, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getValue(), null, res.getValue().getNextLink(), null, null, null);
@@ -1165,7 +1165,7 @@ public final class SecretClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the secret list result.
      */
-    private PagedResponse<SecretItem> getSecretVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<SecretItem> getSecretVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         Response<SecretListResult> res = service.getSecretVersionsNext(nextLink, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getValue(), null, res.getValue().getNextLink(), null, null, null);
@@ -1212,7 +1212,7 @@ public final class SecretClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the deleted secret list result.
      */
-    private PagedResponse<DeletedSecretItem> getDeletedSecretsNextSinglePage(String nextLink,
+    public PagedResponse<DeletedSecretItem> getDeletedSecretsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         Response<DeletedSecretListResult> res = service.getDeletedSecretsNext(nextLink, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),

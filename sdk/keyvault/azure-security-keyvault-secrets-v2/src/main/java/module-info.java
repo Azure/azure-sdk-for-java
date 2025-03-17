@@ -2,6 +2,7 @@
 
 module com.azure.v2.security.keyvault.secrets {
     requires transitive io.clientcore.core;
+    requires com.azure.v2.core;
 
     exports com.azure.v2.security.keyvault.secrets;
     exports com.azure.v2.security.keyvault.secrets.models;
