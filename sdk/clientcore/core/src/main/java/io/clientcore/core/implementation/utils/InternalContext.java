@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Internal representation of
+ * Immutable property bag optimized for small number of key-value pairs.
  */
 public abstract class InternalContext {
     /**

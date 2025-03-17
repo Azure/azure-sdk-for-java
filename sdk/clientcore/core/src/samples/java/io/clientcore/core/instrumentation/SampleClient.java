@@ -25,31 +25,31 @@ class SampleClient {
         return this.downloadContent(null);
     }
 
-    public Response<?> downloadContent(RequestContext options) {
+    public Response<?> downloadContent(RequestContext context) {
         // BEGIN: io.clientcore.core.instrumentation.instrumentwithresponse
-        return instrumentation.instrumentWithResponse("Sample.download", options, this::downloadImpl);
+        return instrumentation.instrumentWithResponse("Sample.download", context, this::downloadImpl);
         // END: io.clientcore.core.instrumentation.instrumentwithresponse
     }
 
-    public void create(RequestContext options) {
+    public void create(RequestContext context) {
         // BEGIN: io.clientcore.core.instrumentation.instrument
-        instrumentation.instrument("Sample.create", options, this::createImpl);
+        instrumentation.instrument("Sample.create", context, this::createImpl);
         // END: io.clientcore.core.instrumentation.instrument
     }
 
-    public Response<?> createWithResponse(RequestContext options) {
-        return instrumentation.instrumentWithResponse("create", options, this::createWithResponseImpl);
+    public Response<?> createWithResponse(RequestContext context) {
+        return instrumentation.instrumentWithResponse("create", context, this::createWithResponseImpl);
     }
 
-    private Response<?> downloadImpl(RequestContext options) {
-        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestContext(options));
+    private Response<?> downloadImpl(RequestContext context) {
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestContext(context));
     }
 
-    private Response<?> createWithResponseImpl(RequestContext options) {
-        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(options));
+    private Response<?> createWithResponseImpl(RequestContext context) {
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(context));
     }
 
-    private void createImpl(RequestContext options) {
-        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(options));
+    private void createImpl(RequestContext context) {
+        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(context));
     }
 }

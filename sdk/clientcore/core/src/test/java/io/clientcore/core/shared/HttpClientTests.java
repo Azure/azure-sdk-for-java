@@ -1424,13 +1424,13 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "DownloadService", host = "{uri}")
     interface DownloadService {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/30720")
-        Response<InputStream> getBytes(@HostParam("uri") String uri, RequestContext options);
+        Response<InputStream> getBytes(@HostParam("uri") String uri, RequestContext context);
     }
 
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
-    public void simpleDownloadTest(RequestContext options) throws IOException {
-        Response<InputStream> response = createService(DownloadService.class).getBytes(getRequestUri(), options);
+    public void simpleDownloadTest(RequestContext context) throws IOException {
+        Response<InputStream> response = createService(DownloadService.class).getBytes(getRequestUri(), context);
 
         InputStream inputStream = response.getValue();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -1439,7 +1439,7 @@ public abstract class HttpClientTests {
 
         assertEquals(30720, byteArrayOutputStream.toByteArray().length);
 
-        Response<InputStream> otherResponse = createService(DownloadService.class).getBytes(getRequestUri(), options);
+        Response<InputStream> otherResponse = createService(DownloadService.class).getBytes(getRequestUri(), context);
 
         InputStream otherInputStream = otherResponse.getValue();
         ByteArrayOutputStream otherByteArrayOutputStream = new ByteArrayOutputStream();

@@ -19,10 +19,10 @@ public class RequestContextJavaDocCodeSnippets {
      */
     public RequestContext createInstance() {
         // BEGIN: io.clientcore.core.http.rest.requestcontext.instantiation
-        RequestContext options = new RequestContext()
+        RequestContext context = new RequestContext()
             .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"));
         // END: io.clientcore.core.http.rest.requestcontext.instantiation
-        return options;
+        return context;
     }
 
     /**
@@ -55,7 +55,7 @@ public class RequestContextJavaDocCodeSnippets {
         // END: io.clientcore.core.http.rest.requestcontext.createjsonrequest
 
         // BEGIN: io.clientcore.core.http.rest.requestcontext.postrequest
-        RequestContext options = new RequestContext()
+        RequestContext context = new RequestContext()
             .addRequestCallback(request -> request
                 // may already be set if request is created from a client
                 .setUri("https://petstore.example.com/pet")
@@ -63,7 +63,7 @@ public class RequestContextJavaDocCodeSnippets {
                 .setBody(requestBodyData)
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
         // END: io.clientcore.core.http.rest.requestcontext.postrequest
-        return options;
+        return context;
     }
 
 
@@ -73,7 +73,7 @@ public class RequestContextJavaDocCodeSnippets {
     public void putDataContext() {
         // BEGIN: io.clientcore.core.http.rest.requestcontext.putData
 
-        RequestContext options = new RequestContext()
+        RequestContext context = new RequestContext()
             .putData("stringKey", "value")
             .putData("complexObject", ProgressReporter.withProgressListener(value -> System.out.printf("Got %s bytes", value)));
 
@@ -82,11 +82,15 @@ public class RequestContextJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.http.rest.requestcontext.getData
 
         // Get the string value
-        String stringValue = options.getData("stringKey", String.class);
+        Object stringKeyValue = context.getData("stringKey");
+        String stringValue = stringKeyValue instanceof String ? (String) stringKeyValue : null;
         System.out.printf("Key1 value: %s%n", stringValue);
 
         // Get the complex object
-        ProgressReporter progressReporter = options.getData("complexObject", ProgressReporter.class);
+        Object complexObjectValue = context.getData("complexObject");
+        ProgressReporter progressReporter = complexObjectValue instanceof ProgressReporter
+            ? (ProgressReporter) complexObjectValue
+            : null;
         if (progressReporter != null) {
             // Use the progress reporter
             progressReporter.reportProgress(42);
