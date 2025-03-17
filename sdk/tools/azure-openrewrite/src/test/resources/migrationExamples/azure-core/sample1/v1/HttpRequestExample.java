@@ -3,7 +3,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 
 
 public class HttpRequestExample {

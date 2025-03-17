@@ -28,6 +28,19 @@ recipeList:
   # --------------------------------------------------------------------
   # HttpClient
   # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.azure.core.http.HttpClient#createDefault()
+      newMethodName: getSharedInstance
+
+  - org.openrewrite.java.DeleteMethodArgument:
+        methodPattern: com.azure.core.http.HttpClient sendSync(..)
+        argumentIndex: 1
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.azure.core.http.HttpClient#sendSync(..)
+      newMethodName: send
+
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpClient
       newFullyQualifiedTypeName: io.clientcore.core.http.client.HttpClient
@@ -146,6 +159,8 @@ recipeList:
   # HttpRequest
   # --------------------------------------------------------------------
 
+  - com.azure.openrewrite.core.HttpRequestFluentRecipe
+
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpRequest
       newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpRequest
@@ -158,7 +173,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpResponse
-      newFullyQualifiedTypeName: io.clientcore.core.implementation.http.HttpResponse
+      newFullyQualifiedTypeName: io.clientcore.core.http.Response
 
   # TODO: Migrate Methods and Fields
 
