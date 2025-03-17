@@ -152,7 +152,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         classBuilder.addConstructor(Modifier.Keyword.PRIVATE)
             .addParameter(HttpPipeline.class, "httpPipeline")
             .setBody(StaticJavaParser.parseBlock(
-                "{ this.httpPipeline = httpPipeline; this.jsonSerializer = new JsonSerializer(); this.xmlSerializer = new XmlSerializer(); }"));
+                "{ this.httpPipeline = httpPipeline; this.jsonSerializer = JsonSerializer.getInstance(); this.xmlSerializer = XmlSerializer.getInstance(); }"));
 
         classBuilder.addMethod("getNewInstance", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
             .setType(serviceInterfaceShortName)
