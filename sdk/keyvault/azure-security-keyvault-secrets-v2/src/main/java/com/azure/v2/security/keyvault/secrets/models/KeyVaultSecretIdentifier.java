@@ -6,8 +6,8 @@ package com.azure.v2.security.keyvault.secrets.models;
 import com.azure.v2.security.keyvault.secrets.SecretClient;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Information about a {@link KeyVaultSecret} parsed from the secret URL. You can use this information when calling
@@ -45,9 +45,9 @@ public final class KeyVaultSecretIdentifier {
         }
 
         try {
-            final URL url = new URL(sourceId);
+            final URI uri = new URI(sourceId);
             // We expect an sourceId with either 3 or 4 path segments: key vault + collection + name + "pending"/version
-            final String[] pathSegments = url.getPath().split("/");
+            final String[] pathSegments = uri.getPath().split("/");
 
             // More or less segments in the URI than expected.
             if (pathSegments.length != 3 && pathSegments.length != 4) {
@@ -56,10 +56,10 @@ public final class KeyVaultSecretIdentifier {
             }
 
             this.sourceId = sourceId;
-            this.endpoint = url.getProtocol() + "://" + url.getHost();
+            this.endpoint = uri.getScheme() + "://" + uri.getHost();
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
-        } catch (MalformedURLException e) {
+        } catch (URISyntaxException e) {
             throw LOGGER.logThrowableAsError(
                 new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.", e));
         }

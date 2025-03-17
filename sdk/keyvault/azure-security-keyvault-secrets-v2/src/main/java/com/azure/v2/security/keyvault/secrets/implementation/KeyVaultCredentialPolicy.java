@@ -324,9 +324,9 @@ public class KeyVaultCredentialPolicy extends AzureBearerTokenAuthenticationPoli
      * @return The host name and port of the Key Vault or Managed HSM endpoint.
      */
     private static String getRequestAuthority(HttpRequest request) {
-        URI url = request.getUri();
-        String authority = url.getAuthority();
-        int port = url.getPort();
+        URI uri = request.getUri();
+        String authority = uri.getAuthority();
+        int port = uri.getPort();
 
         // Append port for complete authority.
         if (!authority.contains(":") && port > 0) {
