@@ -327,7 +327,7 @@ public final class RequestContext implements Cloneable {
         return context.get(key);
     }
 
-    @Override
+    @SuppressWarnings("CloneDoesntCallSuperClone")
     public RequestContext clone() {
         return new RequestContext(requestCallback, logger, context, instrumentationContext);
     }
