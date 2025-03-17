@@ -29,13 +29,13 @@ public abstract class AzureGenericServiceClientBuilderFactoryBaseTests<P extends
 
     protected abstract F createClientBuilderFactoryWithMockBuilder(P properties);
 
-    static Set<Class<?>> IGNORED_CLASS = Set.of(Object.class, Class.class, Enum.class, String.class, Boolean.class,
-        Integer.class, Long.class, Duration.class);
-    static Set<String> IGNORED_METHOD_NAMES =
+    private static final Set<Class<?>> IGNORED_CLASS = Set.of(Object.class, Class.class, Enum.class, String.class,
+        Boolean.class, Integer.class, Long.class, Duration.class);
+    private static final Set<String> IGNORED_METHOD_NAMES =
         Arrays.stream(Object.class.getMethods()).map(Method::getName).collect(Collectors.toSet());
-    static Set<Class<?>> BUILDER_IGNORED_PARAMETER_TYPES = Set.of(Consumer.class);
-    static Set<String> BUILDER_IGNORED_METHOD_NAME_PREFIX = Set.of("build", "process");
-    static Function<String, String> EXTRACT_METHOD_NAME = methodName -> {
+    private static final Set<Class<?>> BUILDER_IGNORED_PARAMETER_TYPES = Set.of(Consumer.class);
+    private static final Set<String> BUILDER_IGNORED_METHOD_NAME_PREFIX = Set.of("build", "process");
+    private static final Function<String, String> EXTRACT_METHOD_NAME = methodName -> {
         if (methodName.startsWith("is")) {
             return methodName.substring(2);
         } else {
@@ -43,7 +43,7 @@ public abstract class AzureGenericServiceClientBuilderFactoryBaseTests<P extends
         }
     };
 
-    static Set<String> listSupportedProperties(Class<?> propertiesClass) {
+    public static Set<String> listSupportedProperties(Class<?> propertiesClass) {
         Set<Method> classMethodSet = new HashSet<>();
         listClassMethods(classMethodSet, method -> Set.of(method.getReturnType()), propertiesClass,
             method -> method.getName().startsWith("is") || method.getName().startsWith("get"));
@@ -53,7 +53,7 @@ public abstract class AzureGenericServiceClientBuilderFactoryBaseTests<P extends
                              .collect(Collectors.toSet());
     }
 
-    static Set<String> listBuilderProperties(Class<?> builderClass) {
+    public static Set<String> listBuilderProperties(Class<?> builderClass) {
         Set<Method> classMethodSet = new HashSet<>();
         listClassMethods(classMethodSet,
             method -> Arrays.stream(method.getParameters())
@@ -65,7 +65,7 @@ public abstract class AzureGenericServiceClientBuilderFactoryBaseTests<P extends
         return classMethodSet.stream().map(Method::getName).collect(Collectors.toSet());
     }
 
-    static void listClassMethods(Set<Method> classMethodSet, Function<Method, Set<Class<?>>> iterationType,
+    public static void listClassMethods(Set<Method> classMethodSet, Function<Method, Set<Class<?>>> iterationType,
                                  Class<?> propertiesClass, Predicate<Method> filter) {
         if (isPrimitive(propertiesClass) || propertiesClass.isEnum() || IGNORED_CLASS.contains(propertiesClass)) {
             return;
