@@ -8,6 +8,8 @@ import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.http.pipeline.BearerTokenAuthenticationPolicy;
 import com.azure.v2.core.traits.TokenCredentialTrait;
 import com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientImpl;
+import com.azure.v2.data.appconfiguration.implementation.ConfigurationClientCredentials;
+import com.azure.v2.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.annotations.ServiceClientBuilder;
@@ -61,6 +63,8 @@ public final class AzureAppConfigurationClientBuilder
 
     @Metadata(properties = { MetadataProperties.GENERATED })
     private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    private String connectionString;
 
     /**
      * Create an instance of the AzureAppConfigurationClientBuilder.
@@ -220,6 +224,19 @@ public final class AzureAppConfigurationClientBuilder
     private KeyCredential keyCredential;
 
     /**
+     * Sets the credential to use when authenticating HTTP requests. Also, sets the {@link #endpoint(String) endpoint}
+     * for this ConfigurationClientBuilder.
+     *
+     * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
+     * secret={secret_value}"
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public AzureAppConfigurationClientBuilder connectionString(String connectionString) {
+        this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -265,13 +282,21 @@ public final class AzureAppConfigurationClientBuilder
 
     /**
      * Builds an instance of AzureAppConfigurationClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of AzureAppConfigurationClientImpl.
      */
-    @Metadata(properties = { MetadataProperties.GENERATED })
+    // @Metadata(properties = { MetadataProperties.GENERATED })
     private AzureAppConfigurationClientImpl buildInnerClient() {
+        // Manual changes start
+        if (connectionString.isEmpty()) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'connectionString' cannot be an empty string."));
+        }
+        ConfigurationClientCredentials credentialsLocal = new ConfigurationClientCredentials(connectionString);
+        this.endpoint = credentialsLocal.getBaseUri();
+        // Manual changes end
         this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline(credentialsLocal);
         AzureAppConfigurationServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AzureAppConfigurationServiceVersion.getLatest();
         AzureAppConfigurationClientImpl client
@@ -286,8 +311,8 @@ public final class AzureAppConfigurationClientBuilder
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    private HttpPipeline createHttpPipeline() {
+    // @Metadata(properties = { MetadataProperties.GENERATED })
+    private HttpPipeline createHttpPipeline(ConfigurationClientCredentials credentials) {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpInstrumentationOptions localHttpInstrumentationOptions = this.httpInstrumentationOptions == null
@@ -307,6 +332,18 @@ public final class AzureAppConfigurationClientBuilder
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
+
+        // Manual changes start
+        if (credentials != null) {
+            // Use credentialS based policy
+            policies.add(new ConfigurationCredentialsPolicy(credentials));
+        } else {
+            // Throw exception that credentials and tokenCredential cannot be null
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
+        }
+        // Manual changes end
+
         policies.add(new HttpInstrumentationPolicy(localHttpInstrumentationOptions));
         policies.forEach(httpPipelineBuilder::addPolicy);
         return httpPipelineBuilder.httpClient(httpClient).build();

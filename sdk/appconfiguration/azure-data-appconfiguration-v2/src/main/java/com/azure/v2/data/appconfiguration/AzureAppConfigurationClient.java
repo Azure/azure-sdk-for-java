@@ -958,7 +958,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
