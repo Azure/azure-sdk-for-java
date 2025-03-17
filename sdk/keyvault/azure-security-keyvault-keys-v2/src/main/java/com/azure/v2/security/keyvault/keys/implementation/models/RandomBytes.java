@@ -8,7 +8,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.Base64Url;
+import io.clientcore.core.utils.Base64Uri;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -18,14 +18,14 @@ import java.util.Objects;
 @Metadata(conditions = { TypeConditions.IMMUTABLE })
 public final class RandomBytes implements JsonSerializable<RandomBytes> {
     /*
-     * The bytes encoded as a base64url string.
+     * The bytes encoded as a Base64Uri string.
      */
     @Metadata(generated = true)
-    private final Base64Url value;
+    private final Base64Uri value;
 
     /**
      * Creates an instance of RandomBytes class.
-     * 
+     *
      * @param value the value value to set.
      */
     @Metadata(generated = true)
@@ -33,13 +33,13 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
         if (value == null) {
             this.value = null;
         } else {
-            this.value = Base64Url.encode(value);
+            this.value = Base64Uri.encode(value);
         }
     }
 
     /**
-     * Get the value property: The bytes encoded as a base64url string.
-     * 
+     * Get the value property: The bytes encoded as a Base64Uri string.
+     *
      * @return the value value.
      */
     @Metadata(generated = true)
@@ -63,7 +63,7 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
 
     /**
      * Reads an instance of RandomBytes from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RandomBytes if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -79,8 +79,8 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    Base64Url valueHolder
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    Base64Uri valueHolder
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                     if (valueHolder != null) {
                         value = valueHolder.decodedBytes();
                     }

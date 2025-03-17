@@ -8,7 +8,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.Base64Url;
+import io.clientcore.core.utils.Base64Uri;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -28,17 +28,17 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
      * The digest used for signing.
      */
     @Metadata(generated = true)
-    private final Base64Url digest;
+    private final Base64Uri digest;
 
     /*
      * The signature to be verified.
      */
     @Metadata(generated = true)
-    private final Base64Url signature;
+    private final Base64Uri signature;
 
     /**
      * Creates an instance of KeyVerifyParameters class.
-     * 
+     *
      * @param algorithm the algorithm value to set.
      * @param digest the digest value to set.
      * @param signature the signature value to set.
@@ -49,19 +49,19 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
         if (digest == null) {
             this.digest = null;
         } else {
-            this.digest = Base64Url.encode(digest);
+            this.digest = Base64Uri.encode(digest);
         }
         if (signature == null) {
             this.signature = null;
         } else {
-            this.signature = Base64Url.encode(signature);
+            this.signature = Base64Uri.encode(signature);
         }
     }
 
     /**
      * Get the algorithm property: The signing/verification algorithm. For more information on possible algorithm types,
      * see JsonWebKeySignatureAlgorithm.
-     * 
+     *
      * @return the algorithm value.
      */
     @Metadata(generated = true)
@@ -71,7 +71,7 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
 
     /**
      * Get the digest property: The digest used for signing.
-     * 
+     *
      * @return the digest value.
      */
     @Metadata(generated = true)
@@ -84,7 +84,7 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
 
     /**
      * Get the signature property: The signature to be verified.
-     * 
+     *
      * @return the signature value.
      */
     @Metadata(generated = true)
@@ -110,7 +110,7 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
 
     /**
      * Reads an instance of KeyVerifyParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyVerifyParameters if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -130,14 +130,14 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
                 if ("alg".equals(fieldName)) {
                     algorithm = JsonWebKeySignatureAlgorithm.fromValue(reader.getString());
                 } else if ("digest".equals(fieldName)) {
-                    Base64Url digestHolder
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    Base64Uri digestHolder
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                     if (digestHolder != null) {
                         digest = digestHolder.decodedBytes();
                     }
                 } else if ("value".equals(fieldName)) {
-                    Base64Url signatureHolder
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    Base64Uri signatureHolder
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                     if (signatureHolder != null) {
                         signature = signatureHolder.decodedBytes();
                     }

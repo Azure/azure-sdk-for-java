@@ -8,7 +8,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.Base64Url;
+import io.clientcore.core.utils.Base64Uri;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -27,29 +27,29 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
      * The value to operate on.
      */
     @Metadata(generated = true)
-    private final Base64Url value;
+    private final Base64Uri value;
 
     /*
      * Cryptographically random, non-repeating initialization vector for symmetric algorithms.
      */
     @Metadata(generated = true)
-    private Base64Url iv;
+    private Base64Uri iv;
 
     /*
      * Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
      */
     @Metadata(generated = true)
-    private Base64Url aad;
+    private Base64Uri aad;
 
     /*
      * The tag to authenticate when performing decryption with an authenticated algorithm.
      */
     @Metadata(generated = true)
-    private Base64Url tag;
+    private Base64Uri tag;
 
     /**
      * Creates an instance of KeyOperationsParameters class.
-     * 
+     *
      * @param algorithm the algorithm value to set.
      * @param value the value value to set.
      */
@@ -59,13 +59,13 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
         if (value == null) {
             this.value = null;
         } else {
-            this.value = Base64Url.encode(value);
+            this.value = Base64Uri.encode(value);
         }
     }
 
     /**
      * Get the algorithm property: algorithm identifier.
-     * 
+     *
      * @return the algorithm value.
      */
     @Metadata(generated = true)
@@ -75,7 +75,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Get the value property: The value to operate on.
-     * 
+     *
      * @return the value value.
      */
     @Metadata(generated = true)
@@ -88,7 +88,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Get the iv property: Cryptographically random, non-repeating initialization vector for symmetric algorithms.
-     * 
+     *
      * @return the iv value.
      */
     @Metadata(generated = true)
@@ -101,7 +101,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Set the iv property: Cryptographically random, non-repeating initialization vector for symmetric algorithms.
-     * 
+     *
      * @param iv the iv value to set.
      * @return the KeyOperationsParameters object itself.
      */
@@ -110,7 +110,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
         if (iv == null) {
             this.iv = null;
         } else {
-            this.iv = Base64Url.encode(iv);
+            this.iv = Base64Uri.encode(iv);
         }
         return this;
     }
@@ -118,7 +118,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
     /**
      * Get the aad property: Additional data to authenticate but not encrypt/decrypt when using authenticated crypto
      * algorithms.
-     * 
+     *
      * @return the aad value.
      */
     @Metadata(generated = true)
@@ -132,7 +132,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
     /**
      * Set the aad property: Additional data to authenticate but not encrypt/decrypt when using authenticated crypto
      * algorithms.
-     * 
+     *
      * @param aad the aad value to set.
      * @return the KeyOperationsParameters object itself.
      */
@@ -141,14 +141,14 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
         if (aad == null) {
             this.aad = null;
         } else {
-            this.aad = Base64Url.encode(aad);
+            this.aad = Base64Uri.encode(aad);
         }
         return this;
     }
 
     /**
      * Get the tag property: The tag to authenticate when performing decryption with an authenticated algorithm.
-     * 
+     *
      * @return the tag value.
      */
     @Metadata(generated = true)
@@ -161,7 +161,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Set the tag property: The tag to authenticate when performing decryption with an authenticated algorithm.
-     * 
+     *
      * @param tag the tag value to set.
      * @return the KeyOperationsParameters object itself.
      */
@@ -170,7 +170,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
         if (tag == null) {
             this.tag = null;
         } else {
-            this.tag = Base64Url.encode(tag);
+            this.tag = Base64Uri.encode(tag);
         }
         return this;
     }
@@ -192,7 +192,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Reads an instance of KeyOperationsParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyOperationsParameters if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -204,9 +204,9 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
         return jsonReader.readObject(reader -> {
             JsonWebKeyEncryptionAlgorithm algorithm = null;
             byte[] value = null;
-            Base64Url iv = null;
-            Base64Url aad = null;
-            Base64Url tag = null;
+            Base64Uri iv = null;
+            Base64Uri aad = null;
+            Base64Uri tag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -214,17 +214,17 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
                 if ("alg".equals(fieldName)) {
                     algorithm = JsonWebKeyEncryptionAlgorithm.fromValue(reader.getString());
                 } else if ("value".equals(fieldName)) {
-                    Base64Url valueHolder
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    Base64Uri valueHolder
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                     if (valueHolder != null) {
                         value = valueHolder.decodedBytes();
                     }
                 } else if ("iv".equals(fieldName)) {
-                    iv = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    iv = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("aad".equals(fieldName)) {
-                    aad = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    aad = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else if ("tag".equals(fieldName)) {
-                    tag = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    tag = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

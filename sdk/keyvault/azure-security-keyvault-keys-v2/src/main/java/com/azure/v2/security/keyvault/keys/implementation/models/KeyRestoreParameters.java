@@ -8,7 +8,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.Base64Url;
+import io.clientcore.core.utils.Base64Uri;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -21,11 +21,11 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
      * The backup blob associated with a key bundle.
      */
     @Metadata(generated = true)
-    private final Base64Url keyBundleBackup;
+    private final Base64Uri keyBundleBackup;
 
     /**
      * Creates an instance of KeyRestoreParameters class.
-     * 
+     *
      * @param keyBundleBackup the keyBundleBackup value to set.
      */
     @Metadata(generated = true)
@@ -33,13 +33,13 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
         if (keyBundleBackup == null) {
             this.keyBundleBackup = null;
         } else {
-            this.keyBundleBackup = Base64Url.encode(keyBundleBackup);
+            this.keyBundleBackup = Base64Uri.encode(keyBundleBackup);
         }
     }
 
     /**
      * Get the keyBundleBackup property: The backup blob associated with a key bundle.
-     * 
+     *
      * @return the keyBundleBackup value.
      */
     @Metadata(generated = true)
@@ -63,7 +63,7 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
 
     /**
      * Reads an instance of KeyRestoreParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyRestoreParameters if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -79,8 +79,8 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    Base64Url keyBundleBackupHolder
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    Base64Uri keyBundleBackupHolder
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                     if (keyBundleBackupHolder != null) {
                         keyBundleBackup = keyBundleBackupHolder.decodedBytes();
                     }

@@ -8,7 +8,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.Base64Url;
+import io.clientcore.core.utils.Base64Uri;
 import java.io.IOException;
 
 /**
@@ -20,7 +20,7 @@ public final class BackupKeyResult implements JsonSerializable<BackupKeyResult> 
      * The backup blob containing the backed up key.
      */
     @Metadata(generated = true)
-    private Base64Url value;
+    private Base64Uri value;
 
     /**
      * Creates an instance of BackupKeyResult class.
@@ -31,7 +31,7 @@ public final class BackupKeyResult implements JsonSerializable<BackupKeyResult> 
 
     /**
      * Get the value property: The backup blob containing the backed up key.
-     * 
+     *
      * @return the value value.
      */
     @Metadata(generated = true)
@@ -54,7 +54,7 @@ public final class BackupKeyResult implements JsonSerializable<BackupKeyResult> 
 
     /**
      * Reads an instance of BackupKeyResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of BackupKeyResult if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -70,7 +70,7 @@ public final class BackupKeyResult implements JsonSerializable<BackupKeyResult> 
 
                 if ("value".equals(fieldName)) {
                     deserializedBackupKeyResult.value
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
