@@ -33,8 +33,8 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Proper
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.VersionGenerator;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
-import io.opentelemetry.sdk.extension.incubator.resources.ServiceInstanceIdResourceProvider;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
@@ -103,7 +103,7 @@ class AzureMonitorExporterBuilder {
 
     private QuickPulse createQuickPulse(Resource resource) {
         String roleName = resource.getAttribute(ServiceAttributes.SERVICE_NAME);
-        String roleInstance = resource.getAttribute(ServiceInstanceIdResourceProvider.SERVICE_INSTANCE_ID);
+        String roleInstance = resource.getAttribute(AttributeKey.stringKey("service.instance.id"));
         ConnectionString connectionString = getConnectionString();
         return QuickPulse.create(httpPipeline, () -> connectionString.getLiveEndpoint(),
             () -> connectionString.getInstrumentationKey(), roleName, roleInstance, VersionGenerator.getSdkVersion());
