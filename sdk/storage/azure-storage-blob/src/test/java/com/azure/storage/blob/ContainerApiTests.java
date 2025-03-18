@@ -1990,7 +1990,7 @@ public class ContainerApiTests extends BlobTestBase {
 
         // Act
         BlobContainerAccessPolicies response = cc.getAccessPolicy();
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, response.getIdentifiers());
+        cc.setAccessPolicy(null, response.getIdentifiers());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")

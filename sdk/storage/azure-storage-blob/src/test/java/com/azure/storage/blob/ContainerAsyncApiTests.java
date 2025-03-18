@@ -2113,8 +2113,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             return Mono.empty();
         })
             .then(containerClient.getAccessPolicy())
-            .flatMap(
-                response -> containerClient.setAccessPolicy(PublicAccessType.CONTAINER, response.getIdentifiers()));
+            .flatMap(response -> containerClient.setAccessPolicy(null, response.getIdentifiers()));
 
         // Act & Assert
         StepVerifier.create(testMono).verifyComplete();
