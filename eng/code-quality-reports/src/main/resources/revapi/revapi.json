@@ -737,6 +737,64 @@
           "code" : "java.method.removed",
           "old" : "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
           "justification": "The property is a constant, which should not be changed."
+        },
+        {
+          "regex": true,
+          "ignore": true,
+          "code" : "java.class.nowFinal",
+          "old" : "class com\\.azure\\.resourcemanager\\.eventgrid\\.models\\.(DeadLetterWithResourceIdentity|DeliveryWithResourceIdentity|EventSubscriptionIdentity)",
+          "justification": "Class is now final."
+        },
+        {
+          "regex": true,
+          "ignore": true,
+          "code" : "java.class.noLongerImplementsInterface",
+          "old" : "interface com\\.azure\\.resourcemanager\\.eventgrid\\.models\\.EventSubscription\\.(Definition|DefinitionStages.Blank)",
+          "justification" : "Class no longer implements interface."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "interface com.azure.resourcemanager.eventgrid.models.EventSubscription.DefinitionStages.WithScope",
+          "justification": "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.eventgrid.models.EventSubscription.DefinitionStages.Blank com.azure.resourcemanager.eventgrid.models.EventSubscriptions::define(java.lang.String)",
+          "justification": "Method was removed."
+        },
+        {
+          "regex": true,
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method void com\\.azure\\.resourcemanager\\.eventgrid\\.models\\.(EventSubscriptions::deleteById(java.lang.String)|EventSubscriptions::deleteByIdWithResponse(java.lang.String, com.azure.core.util.Context))",
+          "justification": "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.eventgrid.models.EventSubscription com.azure.resourcemanager.eventgrid.models.EventSubscriptions::getById(java.lang.String)",
+          "justification": "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.Response<com.azure.resourcemanager.eventgrid.models.EventSubscription> com.azure.resourcemanager.eventgrid.models.EventSubscriptions::getByIdWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "justification": "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method java.util.List<com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem> com.azure.resourcemanager.eventgrid.models.TopicTypeInfo::supportedScopesForSource()",
+          "new" : "method java.util.List<com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope> com.azure.resourcemanager.eventgrid.models.TopicTypeInfo::supportedScopesForSource()",
+          "justification": "Return type changed type parameter."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem",
+          "justification": "Class was removed."
         }
       ]
     }
