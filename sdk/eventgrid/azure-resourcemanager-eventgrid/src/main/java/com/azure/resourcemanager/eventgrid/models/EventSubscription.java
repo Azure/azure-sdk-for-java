@@ -37,7 +37,7 @@ public interface EventSubscription {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to Event Subscription resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
