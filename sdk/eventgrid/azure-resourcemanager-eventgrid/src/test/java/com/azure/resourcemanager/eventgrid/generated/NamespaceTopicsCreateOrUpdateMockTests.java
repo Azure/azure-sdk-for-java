@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.EventInputSchema;
@@ -23,25 +23,25 @@ public final class NamespaceTopicsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":1223455688},\"id\":\"kjgpjeuxsphlokfp\",\"name\":\"ijpdvzvfbhwbdquf\",\"type\":\"cgnrglaqrwy\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":829869098},\"id\":\"yybzoxlvoc\",\"name\":\"tvdxxhe\",\"type\":\"gmlilwzghjhjvmab\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NamespaceTopic response = manager.namespaceTopics()
-            .define("ftsaebwfwh")
-            .withExistingNamespace("pcwybsz", "ncnpat")
+            .define("h")
+            .withExistingNamespace("iflikyypzkgxfx", "myrqsdbpokszan")
             .withPublisherType(PublisherType.CUSTOM)
             .withInputSchema(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0)
-            .withEventRetentionInDays(809458754)
+            .withEventRetentionInDays(566598489)
             .create();
 
         Assertions.assertEquals(PublisherType.CUSTOM, response.publisherType());
         Assertions.assertEquals(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0, response.inputSchema());
-        Assertions.assertEquals(1223455688, response.eventRetentionInDays());
+        Assertions.assertEquals(829869098, response.eventRetentionInDays());
     }
 }

@@ -26,7 +26,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
     private PartnerConfigurationProperties innerProperties;
 
     /*
-     * The system metadata relating to partner configuration resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -71,7 +71,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to partner configuration resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

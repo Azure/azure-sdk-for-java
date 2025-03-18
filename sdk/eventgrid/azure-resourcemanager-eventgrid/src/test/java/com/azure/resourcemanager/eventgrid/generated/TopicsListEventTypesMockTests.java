@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.EventType;
@@ -22,22 +22,21 @@ public final class TopicsListEventTypesMockTests {
     @Test
     public void testListEventTypes() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"sftqkrvmhv\",\"description\":\"vcpwtqsuspnh\",\"schemaUrl\":\"ydff\",\"isInDefaultSet\":false},\"id\":\"vrntfk\",\"name\":\"wacycsyotctkhf\",\"type\":\"fsatvcsx\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"zshxzezbzuz\",\"description\":\"l\",\"schemaUrl\":\"zskejcgwfsgqksty\",\"isInDefaultSet\":false},\"id\":\"pyuijp\",\"name\":\"rdavsjcfmazpzdq\",\"type\":\"uzvcmcok\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EventType> response = manager.topics()
-            .listEventTypes("ojoevzzufytdx", "lynzlyvap", "krbuoggtdltlcuha", "zijvaylzeo",
-                com.azure.core.util.Context.NONE);
+            .listEventTypes("rdlhvdvmiphbe", "eqjzm", "kdclacroczf", "unerke", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sftqkrvmhv", response.iterator().next().displayName());
-        Assertions.assertEquals("vcpwtqsuspnh", response.iterator().next().description());
-        Assertions.assertEquals("ydff", response.iterator().next().schemaUrl());
+        Assertions.assertEquals("zshxzezbzuz", response.iterator().next().displayName());
+        Assertions.assertEquals("l", response.iterator().next().description());
+        Assertions.assertEquals("zskejcgwfsgqksty", response.iterator().next().schemaUrl());
         Assertions.assertEquals(false, response.iterator().next().isInDefaultSet());
     }
 }
