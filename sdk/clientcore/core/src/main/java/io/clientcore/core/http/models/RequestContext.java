@@ -327,6 +327,10 @@ public final class RequestContext implements Cloneable {
         return context.get(key);
     }
 
+    /**
+     * Creates a new instance of {@link RequestContext} with the same properties as this instance.
+     * @return A new instance of {@link RequestContext}.
+     */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public RequestContext clone() {
         return new RequestContext(requestCallback, logger, context, instrumentationContext);
