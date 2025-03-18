@@ -86,7 +86,7 @@ class AzureMonitorExporterBuilder {
         if (initialized) {
             return;
         }
-        initialized = true;
+        this.initialized = true;
         this.exporterOptions = exporterOptions;
         this.configProperties = configProperties;
         this.httpPipeline = createHttpPipeline();
@@ -97,7 +97,9 @@ class AzureMonitorExporterBuilder {
         // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
         this.builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule,
             tempDir, LocalStorageStats.noop());
-        this.quickPulse = createQuickPulse(resource);
+        if (LiveMetrics.isEnabled(configProperties)) {
+            this.quickPulse = createQuickPulse(resource);
+        }
         startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
     }
 

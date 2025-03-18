@@ -67,7 +67,7 @@ class AzureMonitorLogRecordExporter implements LogRecordExporter {
                 String stack = log.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
                 TelemetryItem telemetryItem = mapper.map(log, stack, null);
                 telemetryItems.add(telemetryItem);
-                if (quickPulse.isEnabled()) {
+                if (quickPulse != null && quickPulse.isEnabled()) {
                     quickPulse.add(telemetryItem);
                 }
                 OPERATION_LOGGER.recordSuccess();

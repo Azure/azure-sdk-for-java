@@ -90,8 +90,10 @@ public final class AzureMonitorAutoConfigure {
         });
         autoConfigurationCustomizer.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
             azureMonitorExporterBuilder.initializeIfNot(autoConfigureOptions, configProperties, otelResource.get());
-            return sdkTracerProviderBuilder
-                .addSpanProcessor(azureMonitorExporterBuilder.buildLiveMetricsSpanProcesor());
+            if (LiveMetrics.isEnabled(configProperties)) {
+                sdkTracerProviderBuilder.addSpanProcessor(azureMonitorExporterBuilder.buildLiveMetricsSpanProcesor());
+            }
+            return sdkTracerProviderBuilder;
         });
         autoConfigurationCustomizer
             .addMeterProviderCustomizer((sdkMeterProviderBuilder, config) -> sdkMeterProviderBuilder
