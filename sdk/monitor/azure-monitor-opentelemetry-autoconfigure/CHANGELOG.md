@@ -3,12 +3,7 @@
 ## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
-
-* Enabled support for emitting Application Insights Custom Events from
-  OpenTelemetry LogRecords when the `microsoft.custom_event.name` attribute is
-  present. 
-  ([#44262](https://github.com/Azure/azure-sdk-for-java/pull/44262))
-
+- Support for parsing AAD Audience from the connection string ([#44482](https://github.com/Azure/azure-sdk-for-java/pull/44482))
 ### Breaking Changes
 
 ### Bugs Fixed

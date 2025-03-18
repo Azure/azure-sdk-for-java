@@ -5,6 +5,7 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 /**
  * A policy within the {@link HttpPipeline}.
@@ -20,7 +21,7 @@ public interface HttpPipelinePolicy {
      * @param next The next policy to invoke.
      * @return The {@link Response} from the next policy or the HTTP client if there are no more policies.
      */
-    Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
+    Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
 
     /**
      * Gets the position in the {@link HttpPipelineBuilder} the policy will be placed when added.

@@ -111,11 +111,15 @@ def sdk_automation(input_file: str, output_file: str):
     with open(input_file, "r") as fin:
         config = json.load(fin)
 
-    # typespec
-    packages = sdk_automation_typespec(config)
-    # autorest
-    if not packages:
-        packages = sdk_automation_autorest(config)
+    packages = []
+    try:
+        # typespec
+        packages = sdk_automation_typespec(config)
+        # autorest
+        if not packages:
+            packages = sdk_automation_autorest(config)
+    except Exception:
+        logging.error("[GENERATE] Code generation failed. Unknown exception", exc_info=True)
 
     with open(output_file, "w", encoding="utf-8") as fout:
         output = {

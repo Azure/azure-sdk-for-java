@@ -731,6 +731,12 @@
           "code": "java.field.addedStaticField",
           "new": "field com.azure.messaging.webpubsub.models.WebPubSubClientProtocol.SOCKETIO",
           "justification": "Additional protocols are supported by Web PubSub."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
+          "justification": "The property is a constant, which should not be changed."
         }
       ]
     }

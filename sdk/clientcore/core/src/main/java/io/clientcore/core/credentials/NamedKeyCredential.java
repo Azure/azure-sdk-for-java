@@ -3,6 +3,8 @@
 
 package io.clientcore.core.credentials;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Objects;
@@ -43,6 +45,7 @@ import java.util.Objects;
  *
  * @see io.clientcore.core.credentials
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class NamedKeyCredential {
     // NamedKeyCredential is a commonly used credential type, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(NamedKeyCredential.class);

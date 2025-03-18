@@ -563,7 +563,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         String defaultValue = "/.default";
         if (audience == null || audience.toString().isEmpty()) {
             if (endpoint.endsWith("azconfig.azure.us") || endpoint.endsWith("appconfig.azure.us")) {
-                return ConfigurationAudience.AZURE_US_GOVERNMENT + defaultValue;
+                return ConfigurationAudience.AZURE_GOVERNMENT + defaultValue;
             } else if (endpoint.endsWith("azconfig.azure.cn") || endpoint.endsWith("appconfig.azure.cn")) {
                 return ConfigurationAudience.AZURE_CHINA + defaultValue;
             } else {

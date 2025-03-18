@@ -13,7 +13,6 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
-import com.github.javaparser.ast.expr.CastExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NameExpr;
@@ -23,16 +22,13 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.annotation.processor.utils.TypeConverter;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -40,8 +36,6 @@ import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -178,9 +172,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
 
         addDeserializeHelperMethod(
-            classBuilder.addMethod("decodeByteArray", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC));
-        addDefaultResponseHandlingMethod(
-            classBuilder.addMethod("getOrDefaultResponseBodyMode", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC));
+            classBuilder.addMethod("decodeNetworkResponse", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC));
     }
 
     /**
@@ -191,23 +183,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         return this.compilationUnit;
     }
 
-    private void addDefaultResponseHandlingMethod(MethodDeclaration defaultResponseHandlingMethod) {
-        defaultResponseHandlingMethod.setType(ResponseBodyMode.class)
-            .addParameter(RequestOptions.class, "requestOptions");
-        defaultResponseHandlingMethod
-            .setJavadocComment("Retrieve the ResponseBodyMode from RequestOptions or use the default "
-                + "ResponseBodyMode.BUFFER.\n" + "@param requestOptions the request options set on the HttpRequest\n"
-                + "@return the ResponseBodyMode from RequestOptions or ResponseBodyMode.BUFFER");
-        defaultResponseHandlingMethod.setBody(StaticJavaParser.parseBlock("{ ResponseBodyMode responseBodyMode;"
-            + " if (requestOptions != null && requestOptions.getResponseBodyMode() != null) {"
-            + " responseBodyMode = requestOptions.getResponseBodyMode();" + " } else {"
-            + " responseBodyMode = ResponseBodyMode.BUFFER;" + " }" + " return responseBodyMode; }"));
-
-    }
-
     private void addDeserializeHelperMethod(MethodDeclaration deserializeHelperMethod) {
         deserializeHelperMethod.setType("Object")
-            .addParameter("byte[]", "bytes")
+            .addParameter("BinaryData", "data")
             .addParameter(ObjectSerializer.class, "serializer")
             .addParameter("ParameterizedType", "returnType");
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(IOException.class);
@@ -217,17 +195,19 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(List.class);
         deserializeHelperMethod
             .setJavadocComment("Decodes the body of an {@link Response} into the type returned by the called API.\n"
-                + "@param bytes The bytes to decode.\n" + "@param serializer The serializer to use.\n"
+                + "@param data The BinaryData to decode.\n" + "@param serializer The serializer to use.\n"
                 + "@param returnType The type of the ParameterizedType return value.\n" + "@return The decoded value.\n"
                 + "@throws IOException If the deserialization fails.");
 
-        deserializeHelperMethod.setBody(new BlockStmt().addStatement(StaticJavaParser
-            .parseStatement("try { " + "if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) { "
-                + "    return serializer.deserializeFromBytes(bytes, returnType); " + "} "
-                + "Type token = returnType.getRawType(); " + "if (Response.class.isAssignableFrom((Class<?>) token)) { "
-                + "    token = returnType.getActualTypeArguments()[0]; " + "} "
-                + "return serializer.deserializeFromBytes(bytes, token); " + "} catch (IOException e) { "
-                + "    throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); " + "}")));
+        deserializeHelperMethod.setBody(new BlockStmt()
+            .addStatement(StaticJavaParser.parseStatement("if (data == null) { return null; }"))
+            .addStatement(StaticJavaParser
+                .parseStatement("try { if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) { "
+                    + " return serializer.deserializeFromBytes(data.toBytes(), returnType); } "
+                    + "Type token = returnType.getRawType(); if (Response.class.isAssignableFrom((Class<?>) token)) { "
+                    + " token = returnType.getActualTypeArguments()[0]; } "
+                    + "return serializer.deserializeFromBytes(data.toBytes(), token); } catch (IOException e) { "
+                    + "    throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }")));
 
     }
 
@@ -428,62 +408,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
-        Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
-
-        // Check if the return type is Response
-        if (TypeConverter.isResponseType(returnTypeName)) {
-            DeclaredType declaredType = (DeclaredType) returnTypeName;
-            TypeElement typeElement = (TypeElement) declaredType.asElement();
-
-            // Extract the variable declaration
-            if (statement.isExpressionStmt()) {
-                statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
-                    variableDeclarationExpr.getVariables().forEach(variable -> {
-                        // Set the new type for the variable with generic type
-                        ClassOrInterfaceType responseType
-                            = new ClassOrInterfaceType(null, typeElement.getSimpleName().toString());
-                        NodeList<com.github.javaparser.ast.type.Type> typeArguments = new NodeList<>();
-                        for (TypeMirror typeArg : declaredType.getTypeArguments()) {
-                            if (typeArg instanceof DeclaredType) {
-                                DeclaredType declaredTypeArg = (DeclaredType) typeArg;
-                                TypeElement typeArgElement = (TypeElement) declaredTypeArg.asElement();
-                                ClassOrInterfaceType argumentType
-                                    = new ClassOrInterfaceType(null, typeArgElement.getSimpleName().toString());
-
-                                // Add import for the type argument element
-                                compilationUnit.addImport(typeArgElement.getQualifiedName().toString());
-
-                                // Handle nested type arguments
-                                if (!declaredTypeArg.getTypeArguments().isEmpty()) {
-                                    NodeList<com.github.javaparser.ast.type.Type> nestedTypeArguments
-                                        = new NodeList<>();
-                                    for (TypeMirror nestedTypeArg : declaredTypeArg.getTypeArguments()) {
-                                        TypeElement nestedTypeArgElement
-                                            = (TypeElement) ((DeclaredType) nestedTypeArg).asElement();
-                                        nestedTypeArguments.add(StaticJavaParser.parseClassOrInterfaceType(
-                                            nestedTypeArgElement.getSimpleName().toString()));
-                                    }
-                                    argumentType.setTypeArguments(
-                                        nestedTypeArguments.toArray(new com.github.javaparser.ast.type.Type[0]));
-                                }
-
-                                typeArguments.add(argumentType);
-                            } else {
-                                typeArguments.add(StaticJavaParser.parseType(typeArg.toString()));
-                            }
-                        }
-                        responseType
-                            .setTypeArguments(typeArguments.toArray(new com.github.javaparser.ast.type.Type[0]));
-                        variable.setType(responseType);
-                        // Ensure the initializer is correctly casted
-                        variable.getInitializer().ifPresent(initializer -> {
-                            CastExpr castExpression = new CastExpr(responseType, initializer);
-                            variable.setInitializer(castExpression);
-                        });
-                    });
-                });
-            }
-        }
+        Statement statement
+            = StaticJavaParser.parseStatement("Response<BinaryData> networkResponse = pipeline.send(httpRequest);");
         statement.setLineComment("\n Send the request through the pipeline");
         body.addStatement(statement);
 
@@ -499,7 +425,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             return;
         }
 
-        body.addStatement(StaticJavaParser.parseStatement("int responseCode = response.getStatusCode();"));
+        body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
         String expectedResponseCheck;
         if (method.getExpectedStatusCodes().size() == 1) {
             expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0) + ";";
