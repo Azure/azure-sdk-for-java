@@ -3208,11 +3208,13 @@ public class ShareFileClient {
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
 
+        String fileCreationTimeString = FileSmbProperties.parseFileSMBDate(options.getFileCreationTime());
+        String fileLastWriteTimeString = FileSmbProperties.parseFileSMBDate(options.getFileLastWriteTime());
         Callable<ResponseBase<FilesCreateSymbolicLinkHeaders, Void>> operation
             = () -> this.azureFileStorageClient.getFiles()
                 .createSymbolicLinkWithResponse(shareName, filePath, options.getLinkText(), null, options.getMetadata(),
-                    options.getFileCreationTime().toString(), options.getFileLastWriteTime().toString(), null,
-                    requestConditions.getLeaseId(), options.getOwner(), options.getGroup(), finalContext);
+                    fileCreationTimeString, fileLastWriteTimeString, null, requestConditions.getLeaseId(),
+                    options.getOwner(), options.getGroup(), finalContext);
 
         return ModelHelper.createSymbolicLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
 

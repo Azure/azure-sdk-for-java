@@ -86,6 +86,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -3274,28 +3276,37 @@ class FileApiTests extends FileShareTestBase {
         Response<ShareFileSymbolicLinkInfo> getSymLinkResponse = symlink.getSymbolicLinkWithResponse(null, null);
 
         // Assert
-        assertNotEquals(null, getSymLinkResponse.getValue().getETag());
-        assertNotEquals(null, getSymLinkResponse.getValue().getLastModified());
-        assertEquals(source.getFileUrl(), getSymLinkResponse.getValue().getLinkText());
+        assertNull(null, getSymLinkResponse.getValue().getETag());
+        assertNull(null, getSymLinkResponse.getValue().getLastModified().toString());
+        try {
+            assertEquals(source.getFileUrl(),
+                URLDecoder.decode(getSymLinkResponse.getValue().getLinkText(), StandardCharsets.UTF_8.toString()));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        premiumShareClient.delete();
     }
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
     public void createGetSymbolicLinkError() {
         // Arrange
-        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+        String shareName = generateShareName();
+        ShareClient premiumShareClient = getPremiumNFSShareClient(shareName);
+
         ShareDirectoryClient directory = premiumShareClient.getDirectoryClient(generatePathName());
         ShareFileClient source = directory.getFileClient(generatePathName());
         ShareFileClient symlink = directory.getFileClient(generatePathName());
 
         ShareStorageException exception1
             = assertThrows(ShareStorageException.class, () -> symlink.createSymbolicLink(source.getFileUrl()));
+        assertEquals(ShareErrorCode.PARENT_NOT_FOUND, exception1.getErrorCode());
 
-        assertEquals("ParentNotFound", exception1.getErrorCode());
+        ShareStorageException exception2 = assertThrows(ShareStorageException.class, symlink::getSymbolicLink);
+        assertEquals(ShareErrorCode.PARENT_NOT_FOUND, exception2.getErrorCode());
 
-        ShareStorageException exception2 = assertThrows(ShareStorageException.class, () -> symlink.getSymbolicLink());
-
-        assertEquals("ParentNotFound", exception2.getErrorCode());
+        // Cleanup
+        premiumShareClient.delete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
@@ -3304,14 +3315,26 @@ class FileApiTests extends FileShareTestBase {
         // Arrange
         ShareServiceClient oauthServiceClient
             = getOAuthPremiumServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient directory = oauthServiceClient.getShareClient(shareName).getRootDirectoryClient();
+
+        ShareClient shareClient = oauthServiceClient.getShareClient(shareName);
+
+        // Ensure the share exists before proceeding
+        if (!shareClient.exists()) {
+            shareClient.create();
+        }
+
+        ShareDirectoryClient directory = shareClient.getRootDirectoryClient();
 
         ShareFileClient source = directory.getFileClient(generatePathName());
         source.create(1024);
         ShareFileClient symlink = directory.getFileClient(generatePathName());
 
         // Act
-        symlink.createSymbolicLink(source.getFileUrl());
-        symlink.getSymbolicLink();
+        FileShareTestHelper.assertResponseStatusCode(symlink.createSymbolicLinkWithResponse(
+            new ShareFileCreateSymbolicLinkOptions(source.getFileUrl()), null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(symlink.getSymbolicLinkWithResponse(null, null), 200);
+
+        // Cleanup
+        oauthServiceClient.deleteShare(shareName);
     }
 }

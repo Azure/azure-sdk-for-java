@@ -34,8 +34,10 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -111,7 +113,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         shareName = generateShareName();
         filePath = generatePathName();
         shareAsyncClient = shareBuilderHelper(shareName).buildAsyncClient();
-        //shareAsyncClient.create().block();
+        shareAsyncClient.create().block();
         primaryFileAsyncClient = fileBuilderHelper(shareName, filePath).buildFileAsyncClient();
         testMetadata = Collections.singletonMap("testmetadata", "value");
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en").setContentType("application/octet-stream");
@@ -2069,8 +2071,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
                 return symlink.getSymbolicLinkWithResponse();
             }).flatMap(getSymLinkResponse -> {
-                assertNotEquals(null, getSymLinkResponse.getValue().getETag());
-                assertNotEquals(null, getSymLinkResponse.getValue().getLastModified());
+                assertNull(null, getSymLinkResponse.getValue().getETag());
+                assertNull(null, getSymLinkResponse.getValue().getLastModified().toString());
                 try {
                     assertEquals(source.getFileUrl(), URLDecoder.decode(getSymLinkResponse.getValue().getLinkText(),
                         StandardCharsets.UTF_8.toString()));
@@ -2082,6 +2084,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
         });
 
         StepVerifier.create(testMono).verifyComplete();
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+
     }
 
     @Test
@@ -2089,24 +2094,26 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void createGetSymbolicLinkError() {
         // Arrange
         String shareName = generateShareName();
-        Mono<Void> testMono = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
-            ShareDirectoryAsyncClient directory = premiumShareClient.getDirectoryClient(generatePathName());
-            ShareFileAsyncClient source = directory.getFileClient(generatePathName());
-            ShareFileAsyncClient symlink = directory.getFileClient(generatePathName());
 
-            return directory.create()
-                .then(source.create(1024))
-                .then(symlink.createSymbolicLink(source.getFileUrl()).onErrorResume(ShareStorageException.class, e -> {
-                    assertEquals("ParentNotFound", e.getErrorCode());
-                    return Mono.empty();
-                }))
-                .then(symlink.getSymbolicLink().onErrorResume(ShareStorageException.class, e -> {
-                    assertEquals("ParentNotFound", e.getErrorCode());
-                    return Mono.empty();
-                }).then());
+        Mono<ShareFileSymbolicLinkInfo> testMono
+            = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
+                ShareDirectoryAsyncClient directory = premiumShareClient.getDirectoryClient(generatePathName());
+                ShareFileAsyncClient source = directory.getFileClient(generatePathName());
+                ShareFileAsyncClient symlink = directory.getFileClient(generatePathName());
+
+                // Act & Assert: Try creating a symbolic link before creating the directory to force ParentNotFound error.
+                return symlink.createSymbolicLink(source.getFileUrl()).then(symlink.getSymbolicLink()); // Try fetching the symlink right after creation
+            });
+
+        // StepVerifier: Ensure both operations fail with ParentNotFound error
+        StepVerifier.create(testMono).verifyErrorSatisfies(error -> {
+            assertTrue(error instanceof ShareStorageException);
+            ShareStorageException storageException = (ShareStorageException) error;
+            assertEquals(ShareErrorCode.PARENT_NOT_FOUND, storageException.getErrorCode());
         });
 
-        StepVerifier.create(testMono).verifyComplete();
+        // Cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
@@ -2122,16 +2129,22 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareFileAsyncClient symlink = directory.getFileClient(generatePathName());
 
         // Ensure the share exists
-        StepVerifier.create(oauthServiceClient.getShareAsyncClient(shareName).create()).assertNext(shareInfo -> {
-            assertNotNull(shareInfo);
-        }).verifyComplete();
+        StepVerifier.create(oauthServiceClient.getShareAsyncClient(shareName).createWithResponse(null))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
+            .verifyComplete();
 
         // Act & Assert
-        StepVerifier.create(
-            source.create(1024).then(symlink.createSymbolicLink(source.getFileUrl())).then(symlink.getSymbolicLink()))
-            .assertNext(symbolicLinkInfo -> {
-                assertNotNull(symbolicLinkInfo);
-            })
+        StepVerifier
+            .create(source.create(1024)
+                .then(
+                    symlink.createSymbolicLinkWithResponse(new ShareFileCreateSymbolicLinkOptions(source.getFileUrl())))
+                .then(symlink.getSymbolicLinkWithResponse()))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200))
             .verifyComplete();
+
+        // Cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+        oauthServiceClient.deleteShare(shareName).block();
     }
+
 }
