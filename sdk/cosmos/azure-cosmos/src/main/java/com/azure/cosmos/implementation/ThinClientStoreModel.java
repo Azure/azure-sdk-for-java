@@ -94,7 +94,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     @Override
     public URI getRootUri(RxDocumentServiceRequest request) {
         // need to have thin client endpoint here
-        return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
+        return this.globalEndpointManager.resolveServiceEndpoint(request).getThinclientRegionalEndpoint();
     }
 
     @Override
@@ -137,15 +137,9 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         if (request.properties == null) {
             request.properties = new HashMap<>();
         }
-        //request.properties.put(EFFECTIVE_PARTITION_KEY, epk);
-        //request.properties.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
-        request.getHeaders().put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "tiagonapoli-cdb-test"); // "chukangzhongstagesignoff"
-        request.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, "cLklAJU8SN0=");
-        // todo - neharao1: no concept of a replica / service endpoint that can be passed
+
         RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
 
-        // todo - neharao1: validate what HTTP headers are needed - for now have put default ThinClient HTTP headers
-        // todo - based on fabianm comment - thinClient also takes op type and resource type headers as HTTP headers
         HttpHeaders headers = this.getHttpHeaders();
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
@@ -161,8 +155,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
 
-        // logger.error("HEADERS: {}", rntbdRequest.getHeaders().dumpTokens());
-
         // todo: lifting the logic from there to encode the RntbdRequest instance into a ByteBuf (ByteBuf is a network compatible format)
         // todo: double-check with fabianm to see if RntbdRequest across RNTBD over TCP (Direct connectivity mode) is same as that when using ThinClient proxy
         // todo: need to conditionally add some headers (userAgent, replicaId/endpoint, etc)
@@ -171,21 +163,9 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         byte[] contentAsByteArray = new byte[byteBuf.writerIndex()];
         byteBuf.getBytes(0, contentAsByteArray, 0, byteBuf.writerIndex());
 
-        try {
-            Files.write(java.nio.file.Paths.get("E:\\Temp\\java" + UUID.randomUUID() + ".bin"), contentAsByteArray);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         return new HttpRequest(
             HttpMethod.POST,
-            //requestUri,
-            //https://thinclient-performancetests-eastus2.documents-staging.windows-ppe.net:10650
-            //https://cdb-ms-stage-eastus2-fe2-sql.eastus2.cloudapp.azure.com:10650
-            //https://57.155.105.105:10650/
-            // https://tiagonapoli-cdb-test-westus3.documents.azure.com:10650
-            URI.create("https://57.155.105.105:10650/"), // https://127.0.0.1:10650/ //https://chukangzhongstagesignoff-eastus2.documents-staging.windows-ppe.net:10650/ // thinclient-performancetests-eastus2.documents-staging.windows-ppe.net  cdb-ms-stage-eastus2-fe2-sql.eastus2.cloudapp.azure.com
-            //requestUri.getPort(),
+            requestUri,
             10650,
             headers,
             Flux.just(contentAsByteArray));
