@@ -37,9 +37,9 @@ public abstract class AzureGenericServiceClientBuilderFactoryBaseTests<P extends
     private static final Set<String> BUILDER_IGNORED_METHOD_NAME_PREFIX = Set.of("build", "process");
     private static final Function<String, String> EXTRACT_METHOD_NAME = methodName -> {
         if (methodName.startsWith("is")) {
-            return methodName.substring(2);
+            return methodName.substring("is".length());
         } else {
-            return methodName.substring(3);
+            return methodName.substring("set".length());
         }
     };
 
