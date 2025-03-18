@@ -5,6 +5,8 @@ package com.azure.communication.phonenumbers.siprouting;
 
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
+import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
+
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -12,8 +14,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import static java.util.Arrays.asList;
-
-import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
 
 public class ReadmeSamples {
 

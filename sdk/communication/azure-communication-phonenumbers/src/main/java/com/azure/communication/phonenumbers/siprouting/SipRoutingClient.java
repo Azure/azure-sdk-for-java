@@ -76,7 +76,7 @@ public final class SipRoutingClient {
      * <!-- end com.azure.communication.phonenumbers.siprouting.client.getTrunk -->
      *
      * @param fqdn SIP Trunk FQDN.
-     * @param expand Sip configuration expand enum. Optional.
+     * @param expand Option to retrieve detailed configuration. Optional.
      * @return SIP Trunk if exists, null otherwise.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -102,7 +102,7 @@ public final class SipRoutingClient {
      * <!-- end com.azure.communication.phonenumbers.siprouting.client.getTrunkWithResponse -->
      *
      * @param fqdn SIP Trunk FQDN.
-     * @param expand Sip configuration expand enum. Optional.
+     * @param expand Option to retrieve detailed configuration. Optional
      * @param context the context of the request. Can also be null or
      * Context.NONE.
      * @return Response object with the SIP Trunk if exists, with null
@@ -136,7 +136,7 @@ public final class SipRoutingClient {
      * </pre>
      * <!-- end com.azure.communication.phonenumbers.siprouting.client.listTrunks -->
      *
-     * @param expand Sip configuration expand enum. Optional.
+     * @param expand Option to retrieve detailed configuration. Optional
      * @return SIP Trunks.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
