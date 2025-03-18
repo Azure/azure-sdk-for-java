@@ -27,7 +27,6 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -498,10 +497,5 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     public IdentityClientOptions getIdentityClientOptions() {
         return options;
-    }
-
-    @Override
-    Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext) {
-        return null;
     }
 }
