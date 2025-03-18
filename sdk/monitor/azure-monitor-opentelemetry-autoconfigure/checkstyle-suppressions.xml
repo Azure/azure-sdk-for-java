@@ -70,9 +70,9 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigureTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporterBuilder.java" checks="IllegalImportCheck" />
-  <suppress files="com.azuremonitor.opentelemetry.autoconfigure.implementation.AzureMonitorConfigurableSamplerProvider.java" checks="IllegalImportCheck" />
-  <suppress files="com.azuremonitor.opentelemetry.autoconfigure.implementation.AzureMonitorConfigurableSamplerProvider.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azuremonitor.opentelemetry.autoconfigure.implementation.AzureMonitorConfigurableSamplerProvider.java" checks="MissingJavadocTypeCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorConfigurableSamplerProvider.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorConfigurableSamplerProvider.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorConfigurableSamplerProvider.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.ApplicationInsightsSampler.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.ApplicationInsightsSampler.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.ApplicationInsightsSampler.java" checks="MissingJavadocTypeCheck" />
