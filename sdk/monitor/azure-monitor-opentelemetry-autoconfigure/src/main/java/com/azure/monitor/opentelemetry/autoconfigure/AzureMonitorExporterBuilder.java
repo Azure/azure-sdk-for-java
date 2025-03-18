@@ -40,7 +40,6 @@ import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
-import io.opentelemetry.semconv.ServiceAttributes;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -104,7 +103,7 @@ class AzureMonitorExporterBuilder {
     }
 
     private QuickPulse createQuickPulse(Resource resource) {
-        String roleName = resource.getAttribute(ServiceAttributes.SERVICE_NAME);
+        String roleName = resource.getAttribute(AttributeKey.stringKey("service.name"));
         String roleInstance = resource.getAttribute(AttributeKey.stringKey("service.instance.id"));
         ConnectionString connectionString = getConnectionString();
         return QuickPulse.create(httpPipeline, () -> connectionString.getLiveEndpoint(),
