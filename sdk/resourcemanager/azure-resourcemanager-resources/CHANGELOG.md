@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Updated `api-version` of policy to `2023-04-01`.
+
 ## 2.48.0 (2025-02-28)
 
 ### Other Changes
