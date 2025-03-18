@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- `managementGroupId` is moved to the 1st parameter in APIs in `PolicyDefinitionsClient`.
+
 ### Bugs Fixed
 
 ### Other Changes
