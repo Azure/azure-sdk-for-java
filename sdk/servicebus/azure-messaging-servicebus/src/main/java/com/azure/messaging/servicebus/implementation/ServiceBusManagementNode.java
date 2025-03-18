@@ -148,6 +148,20 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      */
     Flux<RuleProperties> listRules();
 
+    /**
+     * Deletes up to {@code messageCount} number of messages from the entity. Only messages that were added to the queue
+     * prior to {@code beforeEnqueueTimeUtc} will be deleted. The actual number of deleted messages may be less if there
+     * are fewer eligible messages in the entity.
+     *
+     * @param messageCount the desired number of messages to delete.
+     * @param beforeEnqueueTimeUtc representing the cutoff time for deletion. Only messages that were enqueued before this time will be deleted.
+     * @param associatedLinkName the name of the associated link.
+     * @param sessionId Identifier for the session.
+     * @return Mono the number of messages that were deleted.
+     */
+    Mono<Integer> deleteMessages(int messageCount, OffsetDateTime beforeEnqueueTimeUtc,
+        String associatedLinkName, String sessionId);
+
     @Override
     void close();
 }
