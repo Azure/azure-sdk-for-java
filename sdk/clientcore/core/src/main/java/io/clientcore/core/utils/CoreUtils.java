@@ -432,16 +432,21 @@ public final class CoreUtils {
      * If a query string exists, the new parameter is added with an '&' separator.
      * If no query string exists, the new parameter is added with a '?' separator.
      *
-     * @param host the base URL to which the query parameter will be appended.
+     * @param url the base URL to which the query parameter will be appended.
      * @param key the name of the query parameter (e.g., "api-version", "name", "After").
-     * @param value the value of the query parameter.
+     * @param value the value of the query parameter
      * @return the updated URL with the appended query parameter.
      */
-    public static String appendQueryParam(String host, String key, String value) {
-        if (host.contains("?")) {
-            return host + "&" + key + "=" + value;
+    public static String appendQueryParam(String url, String key, String value) {
+        if (value == null) {
+            return url;
+        }
+
+        // Append query parameter to URL
+        if (url.contains("?")) {
+            return url + "&" + key + "=" + value;
         } else {
-            return host + "?" + key + "=" + value;
+            return url + "?" + key + "=" + value;
         }
     }
 

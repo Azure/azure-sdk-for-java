@@ -8,13 +8,10 @@ import io.clientcore.core.http.models.HttpMethod;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests the request formation in codegen
+ * Verify the formation of the HTTP request URL in the code generation.
  */
 public class HttpRequestInitializerTest {
 
@@ -22,18 +19,15 @@ public class HttpRequestInitializerTest {
     @CsvSource({
         "GET, \"/my/uri/path\", key1, value1, key2, value2",
         "POST, \"/my/uri/path2\", key3, value3, key4, value4" })
-    public void testInitializeHttpRequestWithParameterizedQueryParams(String httpMethod, String host, String queryKey1,
+    public void testInitializeHttpRequestWithParameterizedQueryParams(String httpMethod, String url, String queryKey1,
         String queryValue1, String queryKey2, String queryValue2) {
-        com.github.javaparser.ast.stmt.BlockStmt body = new com.github.javaparser.ast.stmt.BlockStmt(); // Directly using the BlockStmt class
-        HttpRequestContext method = new HttpRequestContext(); // Create a new instance of HttpRequestContext
+
+        com.github.javaparser.ast.stmt.BlockStmt body = new com.github.javaparser.ast.stmt.BlockStmt();
+        HttpRequestContext method = new HttpRequestContext();
         JavaParserTemplateProcessor processor = new JavaParserTemplateProcessor();
 
-        // Arrange: Set up method with query params and various HTTP methods
-        Map<String, String> queryParams = new HashMap<>();
-        queryParams.put(queryKey1, queryValue1);
-        queryParams.put(queryKey2, queryValue2);
-
-        method.setHost(host);
+        // Arrange: Set up method with query params
+        method.setHost(url);
         method.setHttpMethod(HttpMethod.valueOf(httpMethod));
         method.addQueryParam(queryKey1, queryValue1);
         method.addQueryParam(queryKey2, queryValue2);
@@ -41,21 +35,29 @@ public class HttpRequestInitializerTest {
         // Act: Call the method
         processor.initializeHttpRequest(body, method);
 
-        // Assert: Check if URI and query parameters are set properly
+        // Assert: Check if the generated code matches expectations
         String normalizedBody = body.toString().replaceAll("\\s+", " ").trim();
-        String expectedHostStatement = "String host = " + host;
-        assertTrue(normalizedBody.contains(expectedHostStatement));
 
-        String expectedQueryStatement1 = "if (" + queryValue1 + " != null) { host = CoreUtils.appendQueryParam(host, \""
-            + queryKey1 + "\", " + queryValue1 + "); }";
-        String expectedQueryStatement2 = "if (" + queryValue2 + " != null) { host = CoreUtils.appendQueryParam(host, \""
-            + queryKey2 + "\", " + queryValue2 + "); }";
+        // Ensure URL initialization is present
+        String expectedUrlStatement = "String url = " + url + ";";
+        assertTrue(normalizedBody.contains(expectedUrlStatement));
+
+        // Ensure newUrl is declared only once
+        assertTrue(normalizedBody.contains("String newUrl;"));
+
+        // Ensure each query parameter is appended correctly
+        String expectedQueryStatement1 = "newUrl = CoreUtils.appendQueryParam(url, \"" + queryKey1 + "\", "
+            + queryValue1 + "); if (newUrl != null) { url = newUrl; }";
+        String expectedQueryStatement2 = "newUrl = CoreUtils.appendQueryParam(url, \"" + queryKey2 + "\", "
+            + queryValue2 + "); if (newUrl != null) { url = newUrl; }";
 
         assertTrue(normalizedBody.contains(expectedQueryStatement1));
         assertTrue(normalizedBody.contains(expectedQueryStatement2));
 
+        // Ensure the final HttpRequest construction is correct
         String expectedHttpRequestStatement
-            = "HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod." + httpMethod + ").setUri(host);";
+            = "HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod." + httpMethod + ").setUri(url);";
         assertTrue(normalizedBody.contains(expectedHttpRequestStatement));
     }
+
 }

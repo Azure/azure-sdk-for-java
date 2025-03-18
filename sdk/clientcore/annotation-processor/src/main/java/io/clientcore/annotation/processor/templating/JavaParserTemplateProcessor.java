@@ -347,20 +347,27 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         if (useProvidedUri) {
             body.addStatement(
-                StaticJavaParser.parseStatement("String host = uri + \"/\" + \"" + method.getPath() + "\";"));
+                StaticJavaParser.parseStatement("String url = uri + \"/\" + \"" + method.getPath() + "\";"));
         } else {
-            body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
+            body.addStatement(StaticJavaParser.parseStatement("String url = " + method.getHost() + ";"));
         }
 
-        // Iterate through the query parameters and append them to the host string if they are not null
-        method.getQueryParams().forEach((key, value) -> {
-            body.addStatement("if (" + value + " != null) {" + "    host = CoreUtils.appendQueryParam(host, \"" + key
-                + "\", " + value + ");}");
-        });
+        // Iterate through the query parameters and append them to the url string if they are not null
+        if (!method.getQueryParams().isEmpty()) {
+            // Declare newUrl once
+            Statement newUrlDeclaration = StaticJavaParser.parseStatement("String newUrl;");
+            newUrlDeclaration.setComment(new LineComment("\n Append non-null query parameters"));
+            body.addStatement(newUrlDeclaration);
+
+            method.getQueryParams().forEach((key, value) -> {
+                body.addStatement(String.format("newUrl = CoreUtils.appendQueryParam(url, \"%s\", %s);", key, value));
+                body.addStatement("if (newUrl != null) { url = newUrl; }");
+            });
+        }
 
         Statement statement
             = StaticJavaParser.parseStatement("HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod."
-                + method.getHttpMethod() + ").setUri(host);");
+                + method.getHttpMethod() + ").setUri(url);");
 
         statement.setLineComment("\n Create the HTTP request");
         body.addStatement(statement);
