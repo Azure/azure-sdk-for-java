@@ -37,8 +37,6 @@ public final class PathBuilder {
             throw new NullPointerException("method cannot be null");
         }
 
-        boolean hasQueryParams = !method.getQueryParams().isEmpty();
-
         // Pattern for substitution placeholders
         Pattern pattern = Pattern.compile("\\{(.+?)}");
         Matcher matcher = pattern.matcher(rawHost);
@@ -50,17 +48,13 @@ public final class PathBuilder {
 
             if (substitution != null) {
                 String substitutionValue = substitution.getParameterVariableName();
+                String replacementValue = substitutionValue != null ? Objects.toString(substitutionValue, "null") : "";
 
-                if (substitutionValue != null) {
-                    matcher.appendReplacement(buffer, "");
-                    if (buffer.length() != 0) {
-                        buffer.append("\" + ");
-                    }
-                    buffer.append(substitutionValue).append(" + \"");
-                } else {
-                    throw new MissingSubstitutionException("Could not find a valid substitution for '" + paramName
-                        + "' in method '" + method.getMethodName() + "'");
+                matcher.appendReplacement(buffer, "");
+                if (buffer.length() != 0) {
+                    buffer.append("\" + ");
                 }
+                buffer.append(replacementValue).append(" + \"");
             } else {
                 throw new MissingSubstitutionException(
                     "Could not find substitution for '" + paramName + "' in method '" + method.getMethodName() + "'");
@@ -68,32 +62,6 @@ public final class PathBuilder {
         }
 
         matcher.appendTail(buffer);
-
-        if (hasQueryParams) {
-            buffer.append("?");
-
-            method.getQueryParams().forEach((key, value) -> {
-                // Only append if both key and value are non-null and non-empty
-
-                if (key == null || key.isEmpty()) {
-                    throw new IllegalArgumentException("Query parameter key must not be null or empty");
-                }
-
-                if (value != null && !value.isEmpty()) {
-                    buffer.append(key).append("=\" + ").append(value).append(" + \"&");
-                }
-            });
-
-            // Remove the trailing '&' if present
-            if (buffer.length() > 0 && buffer.charAt(buffer.length() - 1) == '&') {
-                buffer.setLength(buffer.length() - 1);
-            }
-
-            // Remove the trailing '?' if no valid query parameters were appended
-            if (buffer.length() > 0 && buffer.charAt(buffer.length() - 1) == '?') {
-                buffer.setLength(buffer.length() - 1);
-            }
-        }
 
         // Ensure the output is properly quoted
         if (buffer.charAt(0) != '"' && !rawHost.startsWith("{")) {

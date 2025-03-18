@@ -107,15 +107,10 @@ public class TemplateInputTest {
         HttpRequestContext method = new HttpRequestContext();
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            if (pathParam != null) {
-                if (pathParam.encoded()) {
-                    // Encoding logic here if needed
-                }
-                if (pathParam.value() == null) {
-                    throw new IllegalArgumentException("Path parameter '" + paramName + "' must not be null.");
-                }
-                method.addSubstitution(new Substitution(pathParam.value(), paramName, pathParam.encoded()));
+            if (pathParam.value() == null) {
+                throw new IllegalArgumentException("Path parameter '" + paramName + "' must not be null.");
             }
+            method.addSubstitution(new Substitution(pathParam.value(), paramName, pathParam.encoded()));
         });
 
         assertEquals("Path parameter 'testParam' must not be null.", exception.getMessage());
