@@ -52,7 +52,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static io.clientcore.annotation.processor.utils.ResponseBodyModeGeneration.generateResponseHandling;
+import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
 
 /**
  * This class generates the implementation of the service interface.

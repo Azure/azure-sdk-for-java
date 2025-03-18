@@ -50,13 +50,17 @@ public final class PathBuilder {
 
             if (substitution != null) {
                 String substitutionValue = substitution.getParameterVariableName();
-                String replacementValue = substitutionValue != null ? Objects.toString(substitutionValue, "null") : "";
 
-                matcher.appendReplacement(buffer, "");
-                if (buffer.length() != 0) {
-                    buffer.append("\" + ");
+                if (substitutionValue != null) {
+                    matcher.appendReplacement(buffer, "");
+                    if (buffer.length() != 0) {
+                        buffer.append("\" + ");
+                    }
+                    buffer.append(substitutionValue).append(" + \"");
+                } else {
+                    throw new MissingSubstitutionException("Could not find a valid substitution for '" + paramName
+                        + "' in method '" + method.getMethodName() + "'");
                 }
-                buffer.append(replacementValue).append(" + \"");
             } else {
                 throw new MissingSubstitutionException(
                     "Could not find substitution for '" + paramName + "' in method '" + method.getMethodName() + "'");
