@@ -143,13 +143,15 @@ public interface PolicySetDefinitionsClient {
      * This operation retrieves the policy set definition in the given subscription with the given name.
      * 
      * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicySetDefinitionInner>> getWithResponseAsync(String policySetDefinitionName);
+    Mono<Response<PolicySetDefinitionInner>> getWithResponseAsync(String policySetDefinitionName, String expand);
 
     /**
      * Retrieves a policy set definition.
@@ -171,6 +173,8 @@ public interface PolicySetDefinitionsClient {
      * This operation retrieves the policy set definition in the given subscription with the given name.
      * 
      * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -178,7 +182,7 @@ public interface PolicySetDefinitionsClient {
      * @return the policy set definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicySetDefinitionInner> getWithResponse(String policySetDefinitionName, Context context);
+    Response<PolicySetDefinitionInner> getWithResponse(String policySetDefinitionName, String expand, Context context);
 
     /**
      * Retrieves a policy set definition.
@@ -200,13 +204,15 @@ public interface PolicySetDefinitionsClient {
      * This operation retrieves the built-in policy set definition with the given name.
      * 
      * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicySetDefinitionInner>> getBuiltInWithResponseAsync(String policySetDefinitionName);
+    Mono<Response<PolicySetDefinitionInner>> getBuiltInWithResponseAsync(String policySetDefinitionName, String expand);
 
     /**
      * Retrieves a built in policy set definition.
@@ -228,6 +234,8 @@ public interface PolicySetDefinitionsClient {
      * This operation retrieves the built-in policy set definition with the given name.
      * 
      * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -235,7 +243,8 @@ public interface PolicySetDefinitionsClient {
      * @return the policy set definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicySetDefinitionInner> getBuiltInWithResponse(String policySetDefinitionName, Context context);
+    Response<PolicySetDefinitionInner> getBuiltInWithResponse(String policySetDefinitionName, String expand,
+        Context context);
 
     /**
      * Retrieves a built in policy set definition.
@@ -271,6 +280,8 @@ public interface PolicySetDefinitionsClient {
      * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
      * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
      * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -278,7 +289,7 @@ public interface PolicySetDefinitionsClient {
      * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicySetDefinitionInner> listAsync(String filter, Integer top);
+    PagedFlux<PolicySetDefinitionInner> listAsync(String filter, String expand, Integer top);
 
     /**
      * Retrieves the policy set definitions for a subscription.
@@ -340,6 +351,8 @@ public interface PolicySetDefinitionsClient {
      * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
      * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
      * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,7 +361,7 @@ public interface PolicySetDefinitionsClient {
      * @return list of policy set definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicySetDefinitionInner> list(String filter, Integer top, Context context);
+    PagedIterable<PolicySetDefinitionInner> list(String filter, String expand, Integer top, Context context);
 
     /**
      * Retrieves built-in policy set definitions.
@@ -364,6 +377,8 @@ public interface PolicySetDefinitionsClient {
      * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
      * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
      * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -371,7 +386,7 @@ public interface PolicySetDefinitionsClient {
      * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(String filter, Integer top);
+    PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(String filter, String expand, Integer top);
 
     /**
      * Retrieves built-in policy set definitions.
@@ -415,6 +430,8 @@ public interface PolicySetDefinitionsClient {
      * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
      * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
      * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,15 +440,15 @@ public interface PolicySetDefinitionsClient {
      * @return list of policy set definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicySetDefinitionInner> listBuiltIn(String filter, Integer top, Context context);
+    PagedIterable<PolicySetDefinitionInner> listBuiltIn(String filter, String expand, Integer top, Context context);
 
     /**
      * Creates or updates a policy set definition.
      * 
      * This operation creates or updates a policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to create.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to create.
      * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -439,16 +456,16 @@ public interface PolicySetDefinitionsClient {
      * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicySetDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
-        String policySetDefinitionName, String managementGroupId, PolicySetDefinitionInner parameters);
+    Mono<Response<PolicySetDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policySetDefinitionName, PolicySetDefinitionInner parameters);
 
     /**
      * Creates or updates a policy set definition.
      * 
      * This operation creates or updates a policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to create.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to create.
      * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -456,16 +473,16 @@ public interface PolicySetDefinitionsClient {
      * @return the policy set definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicySetDefinitionInner> createOrUpdateAtManagementGroupAsync(String policySetDefinitionName,
-        String managementGroupId, PolicySetDefinitionInner parameters);
+    Mono<PolicySetDefinitionInner> createOrUpdateAtManagementGroupAsync(String managementGroupId,
+        String policySetDefinitionName, PolicySetDefinitionInner parameters);
 
     /**
      * Creates or updates a policy set definition.
      * 
      * This operation creates or updates a policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to create.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to create.
      * @param parameters The policy set definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -474,16 +491,16 @@ public interface PolicySetDefinitionsClient {
      * @return the policy set definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicySetDefinitionInner> createOrUpdateAtManagementGroupWithResponse(String policySetDefinitionName,
-        String managementGroupId, PolicySetDefinitionInner parameters, Context context);
+    Response<PolicySetDefinitionInner> createOrUpdateAtManagementGroupWithResponse(String managementGroupId,
+        String policySetDefinitionName, PolicySetDefinitionInner parameters, Context context);
 
     /**
      * Creates or updates a policy set definition.
      * 
      * This operation creates or updates a policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to create.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to create.
      * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -491,7 +508,7 @@ public interface PolicySetDefinitionsClient {
      * @return the policy set definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicySetDefinitionInner createOrUpdateAtManagementGroup(String policySetDefinitionName, String managementGroupId,
+    PolicySetDefinitionInner createOrUpdateAtManagementGroup(String managementGroupId, String policySetDefinitionName,
         PolicySetDefinitionInner parameters);
 
     /**
@@ -499,39 +516,39 @@ public interface PolicySetDefinitionsClient {
      * 
      * This operation deletes the policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to delete.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(String policySetDefinitionName,
-        String managementGroupId);
+    Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policySetDefinitionName);
 
     /**
      * Deletes a policy set definition.
      * 
      * This operation deletes the policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to delete.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAtManagementGroupAsync(String policySetDefinitionName, String managementGroupId);
+    Mono<Void> deleteAtManagementGroupAsync(String managementGroupId, String policySetDefinitionName);
 
     /**
      * Deletes a policy set definition.
      * 
      * This operation deletes the policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to delete.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -539,7 +556,7 @@ public interface PolicySetDefinitionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteAtManagementGroupWithResponse(String policySetDefinitionName, String managementGroupId,
+    Response<Void> deleteAtManagementGroupWithResponse(String managementGroupId, String policySetDefinitionName,
         Context context);
 
     /**
@@ -547,53 +564,57 @@ public interface PolicySetDefinitionsClient {
      * 
      * This operation deletes the policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to delete.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteAtManagementGroup(String policySetDefinitionName, String managementGroupId);
+    void deleteAtManagementGroup(String managementGroupId, String policySetDefinitionName);
 
     /**
      * Retrieves a policy set definition.
      * 
      * This operation retrieves the policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicySetDefinitionInner>> getAtManagementGroupWithResponseAsync(String policySetDefinitionName,
-        String managementGroupId);
+    Mono<Response<PolicySetDefinitionInner>> getAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policySetDefinitionName, String expand);
 
     /**
      * Retrieves a policy set definition.
      * 
      * This operation retrieves the policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy set definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicySetDefinitionInner> getAtManagementGroupAsync(String policySetDefinitionName, String managementGroupId);
+    Mono<PolicySetDefinitionInner> getAtManagementGroupAsync(String managementGroupId, String policySetDefinitionName);
 
     /**
      * Retrieves a policy set definition.
      * 
      * This operation retrieves the policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -601,23 +622,23 @@ public interface PolicySetDefinitionsClient {
      * @return the policy set definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicySetDefinitionInner> getAtManagementGroupWithResponse(String policySetDefinitionName,
-        String managementGroupId, Context context);
+    Response<PolicySetDefinitionInner> getAtManagementGroupWithResponse(String managementGroupId,
+        String policySetDefinitionName, String expand, Context context);
 
     /**
      * Retrieves a policy set definition.
      * 
      * This operation retrieves the policy set definition in the given management group with the given name.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy set definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicySetDefinitionInner getAtManagementGroup(String policySetDefinitionName, String managementGroupId);
+    PolicySetDefinitionInner getAtManagementGroup(String managementGroupId, String policySetDefinitionName);
 
     /**
      * Retrieves all policy set definitions in management group.
@@ -640,6 +661,8 @@ public interface PolicySetDefinitionsClient {
      * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
      * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
      * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -648,7 +671,7 @@ public interface PolicySetDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId, String filter,
-        Integer top);
+        String expand, Integer top);
 
     /**
      * Retrieves all policy set definitions in management group.
@@ -715,6 +738,8 @@ public interface PolicySetDefinitionsClient {
      * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
      * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
      * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -723,6 +748,6 @@ public interface PolicySetDefinitionsClient {
      * @return list of policy set definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicySetDefinitionInner> listByManagementGroup(String managementGroupId, String filter, Integer top,
-        Context context);
+    PagedIterable<PolicySetDefinitionInner> listByManagementGroup(String managementGroupId, String filter,
+        String expand, Integer top, Context context);
 }
