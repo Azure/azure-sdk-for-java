@@ -11,16 +11,15 @@ import com.azure.communication.phonenumbers.siprouting.implementation.models.Exp
 public final class ExpandEnumConverter {
 
     /**
-     * Maps from {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk} to {@link SipTrunk}.
+     * Maps from {@link ExpandEnum} to {@link com.azure.communication.phonenumbers.siprouting.implementation.models.ExpandEnum}.
      * @param obj Sip configuration expand. Optional.
-     * @return Expand enum
+     * @return com.azure.communication.phonenumbers.siprouting.implementation.models.ExpandEnum enum
      */
     public static ExpandEnum convertExpandEnum(com.azure.communication.phonenumbers.siprouting.models.ExpandEnum obj) {
         if (obj == null) {
             return null;
         }
-        ExpandEnum expandEnum = ExpandEnum.TRUNKS_HEALTH;
-        return expandEnum;
+        return ExpandEnum.fromString(obj.toString());
     }
 
     private ExpandEnumConverter() {

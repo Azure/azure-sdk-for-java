@@ -73,7 +73,7 @@ public final class SipRoutingAsyncClient {
      * <!-- end com.azure.communication.phonenumbers.siprouting.asyncclient.getTrunk -->
      *
      * @param fqdn SIP Trunk FQDN.
-     * @param expand Sip configuration expand. Optional.
+     * @param expand Sip configuration expand enum. Optional.
      * @return SIP Trunk if exists, null otherwise.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -103,7 +103,7 @@ public final class SipRoutingAsyncClient {
      * <!-- end com.azure.communication.phonenumbers.siprouting.asyncclient.getTrunkWithResponse -->
      *
      * @param fqdn SIP Trunk FQDN.
-     * @param expand Sip configuration expand. Optional.
+     * @param expand Sip configuration expand enum. Optional.
      * @return Response object with the SIP Trunk if exists, with null otherwise.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -124,22 +124,23 @@ public final class SipRoutingAsyncClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.siprouting.asyncclient.listTrunks -->
      * <pre>
-     * sipRoutingAsyncClient.listTrunks&#40;&#41;
+     * sipRoutingAsyncClient.listTrunks&#40;ExpandEnum.TRUNKS_HEALTH&#41;
      *     .subscribe&#40;trunk -&gt;
      *         System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.communication.phonenumbers.siprouting.asyncclient.listTrunks -->
      *
+     * @param expand Sip configuration expand enum. Optional.
      * @return SIP Trunks.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SipTrunk> listTrunks() {
-        return new PagedFlux<SipTrunk>(() -> getOnePageTrunks());
+    public PagedFlux<SipTrunk> listTrunks(ExpandEnum expand) {
+        return new PagedFlux<SipTrunk>(() -> getOnePageTrunks(expand));
     }
 
-    private Mono<PagedResponse<SipTrunk>> getOnePageTrunks() {
+    private Mono<PagedResponse<SipTrunk>> getOnePageTrunks(ExpandEnum expand) {
         return client.getSipRoutings()
-            .getWithResponseAsync(null)
+            .getWithResponseAsync(ExpandEnumConverter.convertExpandEnum(expand))
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .map(result -> new PagedResponseBase<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
                 convertFromApi(result.getValue().getTrunks()), null, null));

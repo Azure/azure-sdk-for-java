@@ -5,13 +5,13 @@ package com.azure.communication.phonenumbers.siprouting;
 
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
+import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
+
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 import static java.util.Arrays.asList;
-
-import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
 
 public class SyncClientJavaDocCodeSnippets {
 
@@ -40,7 +40,7 @@ public class SyncClientJavaDocCodeSnippets {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.client.listTrunks
-        PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks();
+        PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks(ExpandEnum.TRUNKS_HEALTH);
         for (SipTrunk trunk : trunks) {
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
         }

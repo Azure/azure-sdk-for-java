@@ -251,7 +251,7 @@ if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
 Get the list of currently configured trunks or routes.
 
 ```java readme-sample-listTrunksAndRoutes
-PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks();
+PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks(ExpandEnum.TRUNKS_HEALTH);
 PagedIterable<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
 for (SipTrunk trunk : trunks) {
     System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
