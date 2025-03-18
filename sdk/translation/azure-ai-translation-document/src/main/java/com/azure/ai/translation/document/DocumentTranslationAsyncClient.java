@@ -110,6 +110,9 @@ public final class DocumentTranslationAsyncClient {
      *             storageType: String(Folder/File) (Optional)
      *         }
      *     ]
+     *     options (Optional): {
+     *         translateTextWithinImage: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -260,6 +263,8 @@ public final class DocumentTranslationAsyncClient {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
      *     }
      * }
      * }
@@ -308,6 +313,8 @@ public final class DocumentTranslationAsyncClient {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
      * }
      * }
      * </pre>
@@ -363,6 +370,8 @@ public final class DocumentTranslationAsyncClient {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
      *     }
      * }
      * }
@@ -422,6 +431,8 @@ public final class DocumentTranslationAsyncClient {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
      *     }
      * }
      * }
@@ -565,6 +576,8 @@ public final class DocumentTranslationAsyncClient {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
      * }
      * }
      * </pre>

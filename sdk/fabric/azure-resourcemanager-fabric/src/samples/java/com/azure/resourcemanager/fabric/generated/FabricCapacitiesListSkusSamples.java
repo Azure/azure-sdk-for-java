@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fabric.generated;
  */
 public final class FabricCapacitiesListSkusSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_ListSkus.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_ListSkus.json
      */
     /**
      * Sample code: List eligible SKUs for a new capacity.

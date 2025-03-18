@@ -161,6 +161,7 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
     @Generated
     public static BatchPoolReplaceContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            List<BatchCertificateReference> certificateReferences = null;
             List<BatchApplicationPackageReference> applicationPackageReferences = null;
             List<MetadataItem> metadata = null;
             BatchStartTask startTask = null;
@@ -168,7 +169,9 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("applicationPackageReferences".equals(fieldName)) {
+                if ("certificateReferences".equals(fieldName)) {
+                    certificateReferences = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
+                } else if ("applicationPackageReferences".equals(fieldName)) {
                     applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
                 } else if ("metadata".equals(fieldName)) {
@@ -182,23 +185,58 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
                 }
             }
             BatchPoolReplaceContent deserializedBatchPoolReplaceContent
-                = new BatchPoolReplaceContent(applicationPackageReferences, metadata);
+                = new BatchPoolReplaceContent(certificateReferences, applicationPackageReferences, metadata);
             deserializedBatchPoolReplaceContent.startTask = startTask;
             deserializedBatchPoolReplaceContent.targetNodeCommunicationMode = targetNodeCommunicationMode;
             return deserializedBatchPoolReplaceContent;
         });
     }
 
+    /*
+     * This list replaces any existing Certificate references configured on the Pool.
+     * If you specify an empty collection, any existing Certificate references are removed from the Pool.
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     */
+    @Generated
+    private final List<BatchCertificateReference> certificateReferences;
+
     /**
      * Creates an instance of BatchPoolReplaceContent class.
      *
+     * @param certificateReferences the certificateReferences value to set.
      * @param applicationPackageReferences the applicationPackageReferences value to set.
      * @param metadata the metadata value to set.
      */
     @Generated
-    public BatchPoolReplaceContent(List<BatchApplicationPackageReference> applicationPackageReferences,
-        List<MetadataItem> metadata) {
+    public BatchPoolReplaceContent(List<BatchCertificateReference> certificateReferences,
+        List<BatchApplicationPackageReference> applicationPackageReferences, List<MetadataItem> metadata) {
+        this.certificateReferences = certificateReferences;
         this.applicationPackageReferences = applicationPackageReferences;
         this.metadata = metadata;
+    }
+
+    /**
+     * Get the certificateReferences property: This list replaces any existing Certificate references configured on the
+     * Pool.
+     * If you specify an empty collection, any existing Certificate references are removed from the Pool.
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @return the certificateReferences value.
+     */
+    @Generated
+    public List<BatchCertificateReference> getCertificateReferences() {
+        return this.certificateReferences;
     }
 }

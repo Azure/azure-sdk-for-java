@@ -798,6 +798,116 @@ public final class BatchClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
+        @Post("/certificates")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> createCertificateInternal(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData certificate, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/certificates")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> createCertificateInternalSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData certificate, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/certificates")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listCertificatesInternal(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/certificates")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCertificatesInternalSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> cancelCertificateDeletionInternal(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> cancelCertificateDeletionInternalSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteCertificateInternal(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteCertificateInternalSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getCertificateInternal(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCertificateInternalSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
         @Head("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200, 404 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -1890,6 +2000,26 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listCertificatesInternalNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCertificatesInternalNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobSchedulesInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -2864,6 +2994,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -3165,6 +3306,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -3505,6 +3657,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -3883,6 +4046,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -4279,6 +4453,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -4655,6 +4840,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -5301,6 +5497,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -5693,6 +5900,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -5923,6 +6141,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -6241,6 +6470,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -7120,6 +7360,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Required): [
+     *          (Required){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Required): [
      *          (Required){
      *             applicationId: String (Required)
@@ -7223,6 +7474,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Required): [
+     *          (Required){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Required): [
      *          (Required){
      *             applicationId: String (Required)
@@ -8431,6 +8693,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -8903,6 +9176,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -9278,6 +9562,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                      (Optional){
      *                         applicationId: String (Required)
@@ -9625,6 +9920,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                      (Optional){
      *                         applicationId: String (Required)
@@ -10068,6 +10374,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -10543,6 +10860,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -11395,6 +11723,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -11811,6 +12150,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -12235,6 +12585,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -12694,6 +13055,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -13171,6 +13543,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -13628,6 +14011,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -14105,6 +14499,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -14566,6 +14971,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -15045,6 +15461,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -15504,6 +15931,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -16207,6 +16645,690 @@ public final class BatchClientImpl {
     }
 
     /**
+     * Creates a Certificate to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param certificate The Certificate to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createCertificateInternalWithResponseAsync(BinaryData certificate,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createCertificateInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, accept, certificate, requestOptions, context));
+    }
+
+    /**
+     * Creates a Certificate to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param certificate The Certificate to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createCertificateInternalWithResponse(BinaryData certificate, RequestOptions requestOptions) {
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.createCertificateInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, accept, certificate, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listCertificatesInternalSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listCertificatesInternal(this.getEndpoint(),
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listCertificatesInternalAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>((pageSize) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listCertificatesInternalSinglePageAsync(requestOptionsLocal);
+        }, (nextLink, pageSize) -> {
+            RequestOptions requestOptionsLocal = new RequestOptions();
+            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listCertificatesInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCertificatesInternalSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listCertificatesInternalSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listCertificatesInternal(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>((pageSize) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listCertificatesInternalSinglePage(requestOptionsLocal);
+        }, (nextLink, pageSize) -> {
+            RequestOptions requestOptionsLocal = new RequestOptions();
+            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listCertificatesInternalNextSinglePage(nextLink, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * Cancels a failed deletion of a Certificate from the specified Account.
+     * 
+     * If you try to delete a Certificate that is being used by a Pool or Compute
+     * Node, the status of the Certificate changes to deleteFailed. If you decide that
+     * you want to continue using the Certificate, you can use this operation to set
+     * the status of the Certificate back to active. If you intend to delete the
+     * Certificate, you do not need to run this operation after the deletion failed.
+     * You must make sure that the Certificate is not being used by any resources, and
+     * then you can try again to delete the Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate being deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelCertificateDeletionInternalWithResponseAsync(String thumbprintAlgorithm,
+        String thumbprint, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.cancelCertificateDeletionInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
+    }
+
+    /**
+     * Cancels a failed deletion of a Certificate from the specified Account.
+     * 
+     * If you try to delete a Certificate that is being used by a Pool or Compute
+     * Node, the status of the Certificate changes to deleteFailed. If you decide that
+     * you want to continue using the Certificate, you can use this operation to set
+     * the status of the Certificate back to active. If you intend to delete the
+     * Certificate, you do not need to run this operation after the deletion failed.
+     * You must make sure that the Certificate is not being used by any resources, and
+     * then you can try again to delete the Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate being deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelCertificateDeletionInternalWithResponse(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelCertificateDeletionInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Deletes a Certificate from the specified Account.
+     * 
+     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
+     * it. Before you can delete a Certificate, you must therefore make sure that the
+     * Certificate is not associated with any existing Pools, the Certificate is not
+     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
+     * removed from existing Compute Nodes in that Pool until they restart), and no
+     * running Tasks depend on the Certificate. If you try to delete a Certificate
+     * that is in use, the deletion fails. The Certificate status changes to
+     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
+     * active if you decide that you want to continue using the Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteCertificateInternalWithResponseAsync(String thumbprintAlgorithm,
+        String thumbprint, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteCertificateInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
+    }
+
+    /**
+     * Deletes a Certificate from the specified Account.
+     * 
+     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
+     * it. Before you can delete a Certificate, you must therefore make sure that the
+     * Certificate is not associated with any existing Pools, the Certificate is not
+     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
+     * removed from existing Compute Nodes in that Pool until they restart), and no
+     * running Tasks depend on the Certificate. If you try to delete a Certificate
+     * that is in use, the deletion fails. The Certificate status changes to
+     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
+     * active if you decide that you want to continue using the Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteCertificateInternalWithResponse(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteCertificateInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets information about the specified Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to get.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about the specified Certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getCertificateInternalWithResponseAsync(String thumbprintAlgorithm,
+        String thumbprint, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getCertificateInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets information about the specified Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to get.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about the specified Certificate along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getCertificateInternalWithResponse(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getCertificateInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
+    }
+
+    /**
      * Checks the specified Job Schedule exists.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -16780,6 +17902,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -17257,6 +18390,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -17725,6 +18869,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -18172,6 +19327,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -18628,6 +19794,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -19109,6 +20286,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -19859,6 +21047,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -20278,6 +21477,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -20714,6 +21924,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -21176,6 +22397,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -21656,6 +22888,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -22116,6 +23359,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -26564,6 +27818,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -26751,6 +28016,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -27723,6 +28999,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -27918,6 +29205,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -28130,6 +29428,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -28322,6 +29631,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -29807,6 +31127,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -30170,6 +31501,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -30809,6 +32151,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -31253,6 +32606,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -31694,6 +33058,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -32138,6 +33513,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -32425,6 +33811,112 @@ public final class BatchClientImpl {
         final String accept = "application/json";
         Response<BinaryData> res = service.listJobPreparationAndReleaseTaskStatusInternalNextSync(nextLink,
             this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listCertificatesInternalNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listCertificatesInternalNext(nextLink, this.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCertificatesInternalNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listCertificatesInternalNextSync(nextLink, this.getEndpoint(), accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -32743,6 +34235,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -33190,6 +34693,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -34078,6 +35592,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -34258,6 +35783,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)

@@ -240,6 +240,8 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeNumberField("characterCharged", this.characterCharged);
+        jsonWriter.writeNumberField("totalImageScansSucceeded", this.totalImageScansSucceeded);
+        jsonWriter.writeNumberField("totalImageScansFailed", this.totalImageScansFailed);
         return jsonWriter.writeEndObject();
     }
 
@@ -265,6 +267,8 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
             String path = null;
             TranslationError error = null;
             Integer characterCharged = null;
+            Integer totalImageScansSucceeded = null;
+            Integer totalImageScansFailed = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -290,6 +294,10 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
                     error = TranslationError.fromJson(reader);
                 } else if ("characterCharged".equals(fieldName)) {
                     characterCharged = reader.getNullable(JsonReader::getInt);
+                } else if ("totalImageScansSucceeded".equals(fieldName)) {
+                    totalImageScansSucceeded = reader.getNullable(JsonReader::getInt);
+                } else if ("totalImageScansFailed".equals(fieldName)) {
+                    totalImageScansFailed = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -299,7 +307,41 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
             deserializedDocumentStatusResult.path = path;
             deserializedDocumentStatusResult.error = error;
             deserializedDocumentStatusResult.characterCharged = characterCharged;
+            deserializedDocumentStatusResult.totalImageScansSucceeded = totalImageScansSucceeded;
+            deserializedDocumentStatusResult.totalImageScansFailed = totalImageScansFailed;
             return deserializedDocumentStatusResult;
         });
+    }
+
+    /*
+     * Total image scans charged by the API
+     */
+    @Generated
+    private Integer totalImageScansSucceeded;
+
+    /*
+     * Total image scans failed
+     */
+    @Generated
+    private Integer totalImageScansFailed;
+
+    /**
+     * Get the totalImageScansSucceeded property: Total image scans charged by the API.
+     *
+     * @return the totalImageScansSucceeded value.
+     */
+    @Generated
+    public Integer getTotalImageScansSucceeded() {
+        return this.totalImageScansSucceeded;
+    }
+
+    /**
+     * Get the totalImageScansFailed property: Total image scans failed.
+     *
+     * @return the totalImageScansFailed value.
+     */
+    @Generated
+    public Integer getTotalImageScansFailed() {
+        return this.totalImageScansFailed;
     }
 }

@@ -197,6 +197,8 @@ public final class SingleDocumentTranslationClientImpl {
      * <tr><td>allowFallback</td><td>Boolean</td><td>No</td><td>Specifies that the service is allowed to fall back to a
      * general system when a custom system doesn't exist.
      * Possible values are: true (default) or false.</td></tr>
+     * <tr><td>translateTextWithinImage</td><td>Boolean</td><td>No</td><td>Optional boolean parameter to translate text
+     * within an image in the document</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -246,6 +248,8 @@ public final class SingleDocumentTranslationClientImpl {
      * <tr><td>allowFallback</td><td>Boolean</td><td>No</td><td>Specifies that the service is allowed to fall back to a
      * general system when a custom system doesn't exist.
      * Possible values are: true (default) or false.</td></tr>
+     * <tr><td>translateTextWithinImage</td><td>Boolean</td><td>No</td><td>Optional boolean parameter to translate text
+     * within an image in the document</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>

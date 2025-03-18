@@ -47,6 +47,13 @@ public interface WorkloadsSapVirtualInstanceMgmtClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
      * Gets the SapVirtualInstancesClient object to access its operations.
      * 
      * @return the SapVirtualInstancesClient object.

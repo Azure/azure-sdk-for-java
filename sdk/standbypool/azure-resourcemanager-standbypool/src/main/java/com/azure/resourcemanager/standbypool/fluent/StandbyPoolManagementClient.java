@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for StandbyPoolClient class.
+ * The interface for StandbyPoolManagementClient class.
  */
-public interface StandbyPoolClient {
+public interface StandbyPoolManagementClient {
     /**
      * Gets Service host.
      * 

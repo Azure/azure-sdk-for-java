@@ -4,11 +4,13 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.models.GetCertificateResponse;
 import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
 import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchApplication;
+import com.azure.compute.batch.models.BatchCertificate;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateContent;
@@ -3817,6 +3819,17 @@ public final class BatchAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -4426,6 +4439,17 @@ public final class BatchAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -5508,6 +5532,17 @@ public final class BatchAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -6134,6 +6169,17 @@ public final class BatchAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -7286,6 +7332,17 @@ public final class BatchAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Required): [
+     *          (Required){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Required): [
      *          (Required){
      *             applicationId: String (Required)
@@ -8359,6 +8416,17 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -9210,6 +9278,17 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                      (Optional){
      *                         applicationId: String (Required)
@@ -9990,6 +10069,17 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -11229,6 +11319,17 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -12036,6 +12137,17 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -12960,6 +13072,17 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -14543,6 +14666,17 @@ public final class BatchAsyncClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -15491,6 +15625,17 @@ public final class BatchAsyncClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -16388,6 +16533,17 @@ public final class BatchAsyncClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -17713,6 +17869,17 @@ public final class BatchAsyncClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -18536,6 +18703,17 @@ public final class BatchAsyncClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -22769,6 +22947,17 @@ public final class BatchAsyncClient {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -23469,6 +23658,17 @@ public final class BatchAsyncClient {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -30770,5 +30970,577 @@ public final class BatchAsyncClient {
         // Generated convenience method for deallocateNodeInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deallocateNodeInternalWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Certificate to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param certificate The Certificate to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> createCertificateInternalWithResponse(BinaryData certificate, RequestOptions requestOptions) {
+        return this.serviceClient.createCertificateInternalWithResponseAsync(certificate, requestOptions);
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BinaryData> listCertificatesInternal(RequestOptions requestOptions) {
+        return this.serviceClient.listCertificatesInternalAsync(requestOptions);
+    }
+
+    /**
+     * Cancels a failed deletion of a Certificate from the specified Account.
+     *
+     * If you try to delete a Certificate that is being used by a Pool or Compute
+     * Node, the status of the Certificate changes to deleteFailed. If you decide that
+     * you want to continue using the Certificate, you can use this operation to set
+     * the status of the Certificate back to active. If you intend to delete the
+     * Certificate, you do not need to run this operation after the deletion failed.
+     * You must make sure that the Certificate is not being used by any resources, and
+     * then you can try again to delete the Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate being deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> cancelCertificateDeletionInternalWithResponse(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        return this.serviceClient.cancelCertificateDeletionInternalWithResponseAsync(thumbprintAlgorithm, thumbprint,
+            requestOptions);
+    }
+
+    /**
+     * Deletes a Certificate from the specified Account.
+     *
+     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
+     * it. Before you can delete a Certificate, you must therefore make sure that the
+     * Certificate is not associated with any existing Pools, the Certificate is not
+     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
+     * removed from existing Compute Nodes in that Pool until they restart), and no
+     * running Tasks depend on the Certificate. If you try to delete a Certificate
+     * that is in use, the deletion fails. The Certificate status changes to
+     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
+     * active if you decide that you want to continue using the Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteCertificateInternalWithResponse(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteCertificateInternalWithResponseAsync(thumbprintAlgorithm, thumbprint,
+            requestOptions);
+    }
+
+    /**
+     * Gets information about the specified Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to get.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about the specified Certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> getCertificateInternalWithResponse(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getCertificateInternalWithResponseAsync(thumbprintAlgorithm, thumbprint,
+            requestOptions);
+    }
+
+    /**
+     * Creates a Certificate to the specified Account.
+     *
+     * @param certificate The Certificate to be created.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> createCertificateInternal(BatchCertificate certificate, Integer timeOutInSeconds) {
+        // Generated convenience method for createCertificateInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return createCertificateInternalWithResponse(BinaryData.fromObject(certificate), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Certificate to the specified Account.
+     *
+     * @param certificate The Certificate to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> createCertificateInternal(BatchCertificate certificate) {
+        // Generated convenience method for createCertificateInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createCertificateInternalWithResponse(BinaryData.fromObject(certificate), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     *
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BatchCertificate> listCertificatesInternal(Integer timeOutInSeconds, String filter, List<String> select) {
+        // Generated convenience method for listCertificatesInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listCertificatesInternal(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchCertificate>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BatchCertificate> listCertificatesInternal() {
+        // Generated convenience method for listCertificatesInternal
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listCertificatesInternal(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchCertificate>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Cancels a failed deletion of a Certificate from the specified Account.
+     *
+     * If you try to delete a Certificate that is being used by a Pool or Compute
+     * Node, the status of the Certificate changes to deleteFailed. If you decide that
+     * you want to continue using the Certificate, you can use this operation to set
+     * the status of the Certificate back to active. If you intend to delete the
+     * Certificate, you do not need to run this operation after the deletion failed.
+     * You must make sure that the Certificate is not being used by any resources, and
+     * then you can try again to delete the Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate being deleted.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> cancelCertificateDeletionInternal(String thumbprintAlgorithm, String thumbprint,
+        Integer timeOutInSeconds) {
+        // Generated convenience method for cancelCertificateDeletionInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return cancelCertificateDeletionInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Cancels a failed deletion of a Certificate from the specified Account.
+     *
+     * If you try to delete a Certificate that is being used by a Pool or Compute
+     * Node, the status of the Certificate changes to deleteFailed. If you decide that
+     * you want to continue using the Certificate, you can use this operation to set
+     * the status of the Certificate back to active. If you intend to delete the
+     * Certificate, you do not need to run this operation after the deletion failed.
+     * You must make sure that the Certificate is not being used by any resources, and
+     * then you can try again to delete the Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate being deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> cancelCertificateDeletionInternal(String thumbprintAlgorithm, String thumbprint) {
+        // Generated convenience method for cancelCertificateDeletionInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return cancelCertificateDeletionInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes a Certificate from the specified Account.
+     *
+     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
+     * it. Before you can delete a Certificate, you must therefore make sure that the
+     * Certificate is not associated with any existing Pools, the Certificate is not
+     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
+     * removed from existing Compute Nodes in that Pool until they restart), and no
+     * running Tasks depend on the Certificate. If you try to delete a Certificate
+     * that is in use, the deletion fails. The Certificate status changes to
+     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
+     * active if you decide that you want to continue using the Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteCertificateInternal(String thumbprintAlgorithm, String thumbprint, Integer timeOutInSeconds) {
+        // Generated convenience method for deleteCertificateInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return deleteCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes a Certificate from the specified Account.
+     *
+     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
+     * it. Before you can delete a Certificate, you must therefore make sure that the
+     * Certificate is not associated with any existing Pools, the Certificate is not
+     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
+     * removed from existing Compute Nodes in that Pool until they restart), and no
+     * running Tasks depend on the Certificate. If you try to delete a Certificate
+     * that is in use, the deletion fails. The Certificate status changes to
+     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
+     * active if you decide that you want to continue using the Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteCertificateInternal(String thumbprintAlgorithm, String thumbprint) {
+        // Generated convenience method for deleteCertificateInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets information about the specified Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to get.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Certificate on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GetCertificateResponse> getCertificateInternal(String thumbprintAlgorithm, String thumbprint,
+        Integer timeOutInSeconds, List<String> select) {
+        // Generated convenience method for getCertificateInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(GetCertificateResponse.class));
+    }
+
+    /**
+     * Gets information about the specified Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Certificate on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GetCertificateResponse> getCertificateInternal(String thumbprintAlgorithm, String thumbprint) {
+        // Generated convenience method for getCertificateInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(GetCertificateResponse.class));
     }
 }

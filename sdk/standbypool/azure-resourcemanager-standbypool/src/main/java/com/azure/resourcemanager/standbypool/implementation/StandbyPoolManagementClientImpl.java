@@ -26,7 +26,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.standbypool.fluent.OperationsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyContainerGroupPoolRuntimeViewsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyContainerGroupPoolsClient;
-import com.azure.resourcemanager.standbypool.fluent.StandbyPoolClient;
+import com.azure.resourcemanager.standbypool.fluent.StandbyPoolManagementClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinePoolRuntimeViewsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinePoolsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinesClient;
@@ -40,10 +40,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the StandbyPoolClientImpl type.
+ * Initializes a new instance of the StandbyPoolManagementClientImpl type.
  */
-@ServiceClient(builder = StandbyPoolClientBuilder.class)
-public final class StandbyPoolClientImpl implements StandbyPoolClient {
+@ServiceClient(builder = StandbyPoolManagementClientBuilder.class)
+public final class StandbyPoolManagementClientImpl implements StandbyPoolManagementClient {
     /**
      * Service host.
      */
@@ -213,7 +213,7 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
     }
 
     /**
-     * Initializes an instance of StandbyPoolClient client.
+     * Initializes an instance of StandbyPoolManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -222,14 +222,14 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
      * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
-    StandbyPoolClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
-        AzureEnvironment environment, String endpoint, String subscriptionId) {
+    StandbyPoolManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-03-01";
+        this.apiVersion = "2025-03-01";
         this.operations = new OperationsClientImpl(this);
         this.standbyVirtualMachinePools = new StandbyVirtualMachinePoolsClientImpl(this);
         this.standbyVirtualMachines = new StandbyVirtualMachinesClientImpl(this);
@@ -364,5 +364,5 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(StandbyPoolClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StandbyPoolManagementClientImpl.class);
 }

@@ -24,15 +24,6 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
     private final LivenessOperationMode livenessOperationMode;
 
     /*
-     * Whether or not to allow a '200 - Success' response body to be sent to the client, which may be undesirable for
-     * security reasons. Default is false, clients will receive a '204 - NoContent' empty body response. Regardless of
-     * selection, calling Session GetResult will always contain a response body enabling business logic to be
-     * implemented.
-     */
-    @Generated
-    private Boolean sendResultsToClient;
-
-    /*
      * Whether or not to allow client to set their own 'deviceCorrelationId' via the Vision SDK. Default is false, and
      * 'deviceCorrelationId' must be set in this request body.
      */
@@ -70,34 +61,6 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
     @Generated
     public LivenessOperationMode getLivenessOperationMode() {
         return this.livenessOperationMode;
-    }
-
-    /**
-     * Get the sendResultsToClient property: Whether or not to allow a '200 - Success' response body to be sent to the
-     * client, which may be undesirable for security reasons. Default is false, clients will receive a '204 - NoContent'
-     * empty body response. Regardless of selection, calling Session GetResult will always contain a response body
-     * enabling business logic to be implemented.
-     *
-     * @return the sendResultsToClient value.
-     */
-    @Generated
-    public Boolean isSendResultsToClient() {
-        return this.sendResultsToClient;
-    }
-
-    /**
-     * Set the sendResultsToClient property: Whether or not to allow a '200 - Success' response body to be sent to the
-     * client, which may be undesirable for security reasons. Default is false, clients will receive a '204 - NoContent'
-     * empty body response. Regardless of selection, calling Session GetResult will always contain a response body
-     * enabling business logic to be implemented.
-     *
-     * @param sendResultsToClient the sendResultsToClient value to set.
-     * @return the CreateLivenessSessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessSessionContent setSendResultsToClient(Boolean sendResultsToClient) {
-        this.sendResultsToClient = sendResultsToClient;
-        return this;
     }
 
     /**
@@ -185,11 +148,10 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("livenessOperationMode",
             this.livenessOperationMode == null ? null : this.livenessOperationMode.toString());
-        jsonWriter.writeBooleanField("sendResultsToClient", this.sendResultsToClient);
         jsonWriter.writeBooleanField("deviceCorrelationIdSetInClient", this.deviceCorrelationIdSetInClient);
         jsonWriter.writeBooleanField("enableSessionImage", this.enableSessionImage);
-        jsonWriter.writeStringField("livenessSingleModalModel",
-            this.livenessSingleModalModel == null ? null : this.livenessSingleModalModel.toString());
+        jsonWriter.writeStringField("livenessModelVersion",
+            this.livenessModelVersion == null ? null : this.livenessModelVersion.toString());
         jsonWriter.writeStringField("deviceCorrelationId", this.deviceCorrelationId);
         jsonWriter.writeNumberField("authTokenTimeToLiveInSeconds", this.authTokenTimeToLiveInSeconds);
         return jsonWriter.writeEndObject();
@@ -208,10 +170,9 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
     public static CreateLivenessSessionContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LivenessOperationMode livenessOperationMode = null;
-            Boolean sendResultsToClient = null;
             Boolean deviceCorrelationIdSetInClient = null;
             Boolean enableSessionImage = null;
-            LivenessModel livenessSingleModalModel = null;
+            LivenessModel livenessModelVersion = null;
             String deviceCorrelationId = null;
             Integer authTokenTimeToLiveInSeconds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -219,14 +180,12 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
                 reader.nextToken();
                 if ("livenessOperationMode".equals(fieldName)) {
                     livenessOperationMode = LivenessOperationMode.fromString(reader.getString());
-                } else if ("sendResultsToClient".equals(fieldName)) {
-                    sendResultsToClient = reader.getNullable(JsonReader::getBoolean);
                 } else if ("deviceCorrelationIdSetInClient".equals(fieldName)) {
                     deviceCorrelationIdSetInClient = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableSessionImage".equals(fieldName)) {
                     enableSessionImage = reader.getNullable(JsonReader::getBoolean);
-                } else if ("livenessSingleModalModel".equals(fieldName)) {
-                    livenessSingleModalModel = LivenessModel.fromString(reader.getString());
+                } else if ("livenessModelVersion".equals(fieldName)) {
+                    livenessModelVersion = LivenessModel.fromString(reader.getString());
                 } else if ("deviceCorrelationId".equals(fieldName)) {
                     deviceCorrelationId = reader.getString();
                 } else if ("authTokenTimeToLiveInSeconds".equals(fieldName)) {
@@ -237,10 +196,9 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
             }
             CreateLivenessSessionContent deserializedCreateLivenessSessionContent
                 = new CreateLivenessSessionContent(livenessOperationMode);
-            deserializedCreateLivenessSessionContent.sendResultsToClient = sendResultsToClient;
             deserializedCreateLivenessSessionContent.deviceCorrelationIdSetInClient = deviceCorrelationIdSetInClient;
             deserializedCreateLivenessSessionContent.enableSessionImage = enableSessionImage;
-            deserializedCreateLivenessSessionContent.livenessSingleModalModel = livenessSingleModalModel;
+            deserializedCreateLivenessSessionContent.livenessModelVersion = livenessModelVersion;
             deserializedCreateLivenessSessionContent.deviceCorrelationId = deviceCorrelationId;
             deserializedCreateLivenessSessionContent.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
             return deserializedCreateLivenessSessionContent;
@@ -252,13 +210,6 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      */
     @Generated
     private Boolean enableSessionImage;
-
-    /*
-     * The model version used for liveness classification. This is an optional parameter, and if this is not specified,
-     * then the latest supported model version will be chosen
-     */
-    @Generated
-    private LivenessModel livenessSingleModalModel;
 
     /**
      * Get the enableSessionImage property: Whether or not store the session image.
@@ -282,27 +233,34 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
         return this;
     }
 
-    /**
-     * Get the livenessSingleModalModel property: The model version used for liveness classification. This is an
-     * optional parameter, and if this is not specified, then the latest supported model version will be chosen.
-     *
-     * @return the livenessSingleModalModel value.
+    /*
+     * The model version used for liveness classification. This is an optional parameter, and if this is not specified,
+     * then the latest supported model version will be chosen
      */
     @Generated
-    public LivenessModel getLivenessSingleModalModel() {
-        return this.livenessSingleModalModel;
+    private LivenessModel livenessModelVersion;
+
+    /**
+     * Get the livenessModelVersion property: The model version used for liveness classification. This is an optional
+     * parameter, and if this is not specified, then the latest supported model version will be chosen.
+     *
+     * @return the livenessModelVersion value.
+     */
+    @Generated
+    public LivenessModel getLivenessModelVersion() {
+        return this.livenessModelVersion;
     }
 
     /**
-     * Set the livenessSingleModalModel property: The model version used for liveness classification. This is an
-     * optional parameter, and if this is not specified, then the latest supported model version will be chosen.
+     * Set the livenessModelVersion property: The model version used for liveness classification. This is an optional
+     * parameter, and if this is not specified, then the latest supported model version will be chosen.
      *
-     * @param livenessSingleModalModel the livenessSingleModalModel value to set.
+     * @param livenessModelVersion the livenessModelVersion value to set.
      * @return the CreateLivenessSessionContent object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setLivenessSingleModalModel(LivenessModel livenessSingleModalModel) {
-        this.livenessSingleModalModel = livenessSingleModalModel;
+    public CreateLivenessSessionContent setLivenessModelVersion(LivenessModel livenessModelVersion) {
+        this.livenessModelVersion = livenessModelVersion;
         return this;
     }
 }

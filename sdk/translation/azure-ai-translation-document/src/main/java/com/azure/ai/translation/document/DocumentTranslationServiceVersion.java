@@ -13,7 +13,12 @@ public enum DocumentTranslationServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-05-01.
      */
-    V2024_05_01("2024-05-01");
+    V2024_05_01("2024-05-01"),
+
+    /**
+     * Enum value 2024-11-01-preview.
+     */
+    V2024_11_01_PREVIEW("2024-11-01-preview");
 
     private final String version;
 
@@ -35,6 +40,6 @@ public enum DocumentTranslationServiceVersion implements ServiceVersion {
      * @return The latest {@link DocumentTranslationServiceVersion}.
      */
     public static DocumentTranslationServiceVersion getLatest() {
-        return V2024_05_01;
+        return V2024_11_01_PREVIEW;
     }
 }

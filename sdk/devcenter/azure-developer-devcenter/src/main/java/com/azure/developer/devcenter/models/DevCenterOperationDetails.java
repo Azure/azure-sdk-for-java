@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 /**
  * The current status of an async operation.
@@ -67,7 +68,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
      * Custom operation properties, populated only for a successful operation.
      */
     @Generated
-    private Object properties;
+    private Map<String, Object> properties;
 
     /*
      * Operation Error message.
@@ -161,7 +162,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
      * @return the properties value.
      */
     @Generated
-    public Object getProperties() {
+    public Map<String, Object> getProperties() {
         return this.properties;
     }
 
@@ -189,7 +190,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
         jsonWriter.writeStringField("endTime",
             this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         jsonWriter.writeNumberField("percentComplete", this.percentComplete);
-        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
     }
@@ -213,7 +214,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
             OffsetDateTime startTime = null;
             OffsetDateTime endTime = null;
             Double percentComplete = null;
-            Object properties = null;
+            Map<String, Object> properties = null;
             ResponseError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -235,7 +236,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
                 } else if ("percentComplete".equals(fieldName)) {
                     percentComplete = reader.getNullable(JsonReader::getDouble);
                 } else if ("properties".equals(fieldName)) {
-                    properties = reader.readUntyped();
+                    properties = reader.readMap(reader1 -> reader1.readUntyped());
                 } else if ("error".equals(fieldName)) {
                     error = ResponseError.fromJson(reader);
                 } else {

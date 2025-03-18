@@ -17,9 +17,16 @@ import java.io.IOException;
 @Fluent
 public final class SecurityPolicyUpdateProperties implements JsonSerializable<SecurityPolicyUpdateProperties> {
     /*
-     * Web Application Firewall Policy of the Traffic Controller Security Policy
+     * Web Application Firewall Policy of the Traffic Controller Security Policy. Single Security Policy can have only
+     * one policy type set.
      */
     private WafPolicy wafPolicy;
+
+    /*
+     * Ip Access Policy of the Traffic Controller Security Policy. Single Security Policy can have only one policy type
+     * set.
+     */
+    private IpAccessRulesPolicy ipAccessRulesPolicy;
 
     /**
      * Creates an instance of SecurityPolicyUpdateProperties class.
@@ -28,7 +35,8 @@ public final class SecurityPolicyUpdateProperties implements JsonSerializable<Se
     }
 
     /**
-     * Get the wafPolicy property: Web Application Firewall Policy of the Traffic Controller Security Policy.
+     * Get the wafPolicy property: Web Application Firewall Policy of the Traffic Controller Security Policy. Single
+     * Security Policy can have only one policy type set.
      * 
      * @return the wafPolicy value.
      */
@@ -37,13 +45,36 @@ public final class SecurityPolicyUpdateProperties implements JsonSerializable<Se
     }
 
     /**
-     * Set the wafPolicy property: Web Application Firewall Policy of the Traffic Controller Security Policy.
+     * Set the wafPolicy property: Web Application Firewall Policy of the Traffic Controller Security Policy. Single
+     * Security Policy can have only one policy type set.
      * 
      * @param wafPolicy the wafPolicy value to set.
      * @return the SecurityPolicyUpdateProperties object itself.
      */
     public SecurityPolicyUpdateProperties withWafPolicy(WafPolicy wafPolicy) {
         this.wafPolicy = wafPolicy;
+        return this;
+    }
+
+    /**
+     * Get the ipAccessRulesPolicy property: Ip Access Policy of the Traffic Controller Security Policy. Single Security
+     * Policy can have only one policy type set.
+     * 
+     * @return the ipAccessRulesPolicy value.
+     */
+    public IpAccessRulesPolicy ipAccessRulesPolicy() {
+        return this.ipAccessRulesPolicy;
+    }
+
+    /**
+     * Set the ipAccessRulesPolicy property: Ip Access Policy of the Traffic Controller Security Policy. Single Security
+     * Policy can have only one policy type set.
+     * 
+     * @param ipAccessRulesPolicy the ipAccessRulesPolicy value to set.
+     * @return the SecurityPolicyUpdateProperties object itself.
+     */
+    public SecurityPolicyUpdateProperties withIpAccessRulesPolicy(IpAccessRulesPolicy ipAccessRulesPolicy) {
+        this.ipAccessRulesPolicy = ipAccessRulesPolicy;
         return this;
     }
 
@@ -56,6 +87,9 @@ public final class SecurityPolicyUpdateProperties implements JsonSerializable<Se
         if (wafPolicy() != null) {
             wafPolicy().validate();
         }
+        if (ipAccessRulesPolicy() != null) {
+            ipAccessRulesPolicy().validate();
+        }
     }
 
     /**
@@ -65,6 +99,7 @@ public final class SecurityPolicyUpdateProperties implements JsonSerializable<Se
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("wafPolicy", this.wafPolicy);
+        jsonWriter.writeJsonField("ipAccessRulesPolicy", this.ipAccessRulesPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -86,6 +121,9 @@ public final class SecurityPolicyUpdateProperties implements JsonSerializable<Se
 
                 if ("wafPolicy".equals(fieldName)) {
                     deserializedSecurityPolicyUpdateProperties.wafPolicy = WafPolicy.fromJson(reader);
+                } else if ("ipAccessRulesPolicy".equals(fieldName)) {
+                    deserializedSecurityPolicyUpdateProperties.ipAccessRulesPolicy
+                        = IpAccessRulesPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
