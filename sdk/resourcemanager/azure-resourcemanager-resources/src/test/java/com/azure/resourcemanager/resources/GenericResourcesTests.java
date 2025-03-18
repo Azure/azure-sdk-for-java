@@ -238,13 +238,15 @@ public class GenericResourcesTests extends ResourceManagementTest {
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, storageResource.identity().type());
         Assertions.assertNotNull(storageResource.identity().principalId());
         Assertions.assertNotNull(storageResource.identity().tenantId());
-        Assertions.assertFalse((boolean) ((Map<String, Object>) storageResource.properties()).get("allowSharedKeyAccess"));
+        Assertions
+            .assertFalse((boolean) ((Map<String, Object>) storageResource.properties()).get("allowSharedKeyAccess"));
 
         storageResource.update().withKind("StorageV2").withoutIdentity().withApiVersion(apiVersion).apply();
         Assertions.assertEquals("StorageV2", storageResource.kind());
         Assertions.assertEquals(ResourceIdentityType.NONE, storageResource.identity().type());
         // verify property not modified
-        Assertions.assertFalse((boolean) ((Map<String, Object>) storageResource.properties()).get("allowSharedKeyAccess"));
+        Assertions
+            .assertFalse((boolean) ((Map<String, Object>) storageResource.properties()).get("allowSharedKeyAccess"));
 
         storageResource.update().withSku(new Sku().withName("Standard_RAGRS")).withApiVersion(apiVersion).apply();
         Assertions.assertEquals("Standard_RAGRS", storageResource.sku().name());
