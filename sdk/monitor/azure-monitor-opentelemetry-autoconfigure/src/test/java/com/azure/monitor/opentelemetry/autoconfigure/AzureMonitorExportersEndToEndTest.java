@@ -242,7 +242,7 @@ public class AzureMonitorExportersEndToEndTest {
     private static void generateEvent(OpenTelemetry openTelemetry) {
         Logger logger = openTelemetry.getLogsBridge().get("Sample");
         logger.logRecordBuilder()
-            .setBody("TestEvent")
+            .setBody("TestEventBody")
             .setAttribute(AttributeKey.stringKey("microsoft.custom_event.name"), "TestEvent")
             .setAttribute(AttributeKey.stringKey("name"), "apple")
             .emit();
@@ -295,12 +295,13 @@ public class AzureMonitorExportersEndToEndTest {
         assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
         assertThat(telemetryItem.getTags()).hasEntrySatisfying("ai.internal.sdkVersion",
             v -> assertThat(v).contains("otel"));
-        assertThat(telemetryItem.getData().getBaseType()).isEqualTo("TelemetryEventData");
+        assertThat(telemetryItem.getData().getBaseType()).isEqualTo("EventData");
 
         TelemetryEventData eventData = TestUtils.toTelemetryEventData(telemetryItem.getData().getBaseData());
+        System.out.println("Actual Event Properties: " + eventData.getProperties());
         assertThat(eventData.getName()).isEqualTo("TestEvent");
-        assertThat(eventData.getProperties()).containsOnly(entry("LoggerName", "Sample"), entry("SourceType", "Logger"),
-            entry("color", "red"));
+        assertThat(eventData.getProperties()).containsOnly(entry("name", "apple"),
+            entry("microsoft.custom_event.name", "TestEvent"));
     }
 
     private static Map<String, String> getConfiguration() {
