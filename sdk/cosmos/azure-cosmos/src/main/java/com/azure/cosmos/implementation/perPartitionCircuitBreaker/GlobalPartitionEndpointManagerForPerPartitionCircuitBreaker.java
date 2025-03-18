@@ -245,7 +245,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             .flatMap(ignore -> Flux.fromIterable(this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.entrySet()), 1, 1)
             .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
 
-                logger.warn("Background updateStaleLocationInfo kicking in...");
+                logger.debug("Background updateStaleLocationInfo kicking in...");
 
                 try {
                     PartitionKeyRangeWrapper partitionKeyRangeWrapper = partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair.getKey();
@@ -281,8 +281,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                     }
                 } catch (Exception e) {
 
-                    if (logger.isWarnEnabled()) {
-                        logger.warn("An exception : {} was thrown trying to recover an Unavailable partition key range!", e.getMessage());
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("An exception : {} was thrown trying to recover an Unavailable partition key range!", e.getMessage());
                     }
 
                     return Flux.empty();
@@ -311,11 +311,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                                     .timeout(Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()))
                                     .doOnComplete(() -> {
 
-                                        if (logger.isWarnEnabled()) {
-                                            logger.warn("Partition health recovery query for partition key range : {}-{} and " +
+                                        if (logger.isDebugEnabled()) {
+                                            logger.debug("Partition health recovery query for partition key range : {} and " +
                                                     "collection rid : {} has succeeded...",
-                                                partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
-                                                partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
+                                                partitionKeyRangeWrapper.getPartitionKeyRange(),
                                                 partitionKeyRangeWrapper.getCollectionResourceId());
                                         }
 
@@ -334,8 +333,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                                         });
                                     })
                                     .onErrorResume(throwable -> {
-                                        if (logger.isWarnEnabled()) {
-                                            logger.warn("An exception : {} was thrown trying to recover an Unavailable partition key range!", throwable.getMessage());
+                                        if (logger.isDebugEnabled()) {
+                                            logger.debug("An exception : {} was thrown trying to recover an Unavailable partition key range!", throwable.getMessage());
                                         }
 
                                         return Mono.empty();
