@@ -2,9 +2,13 @@
 // Licensed under the MIT License.
 package io.clientcore.core.utils;
 
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.serialization.SerializationFormat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.charset.StandardCharsets;
@@ -25,6 +29,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
+import static io.clientcore.core.utils.CoreUtils.serializationFormatFromContentType;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -258,6 +263,23 @@ public class CoreUtilsTests {
     @MethodSource("stringJoinSupplier")
     public void stringJoin(String delimiter, List<String> strings, String expected) {
         assertEquals(expected, CoreUtils.stringJoin(delimiter, strings));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "null, JSON",
+        "application/json, JSON",
+        "application/xml, XML",
+        "text/plain, TEXT",
+        "text/html, TEXT",
+        "application/json; charset=utf-8, JSON",
+        "application/unknown, JSON",
+        "application/vnd.example+xml, XML",
+        "application/vnd.example+json, JSON" })
+    public void testSerializationFormatFromContentType(String contentType, SerializationFormat expected) {
+        HttpHeaders headers
+            = (contentType == null) ? null : new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);
+        assertEquals(expected, serializationFormatFromContentType(headers));
     }
 
     private static Stream<Arguments> stringJoinSupplier() {
