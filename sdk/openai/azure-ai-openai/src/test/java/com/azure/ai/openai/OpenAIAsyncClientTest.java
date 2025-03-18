@@ -2058,9 +2058,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
         FilePurpose purpose = FilePurpose.ASSISTANTS;
 
-        Mono<OpenAIFile> uploadFileMono = client.uploadFile(fileDetails, purpose);
-
-        StepVerifier.create(uploadFileMono).assertNext(openAIFile -> {
+        StepVerifier.create(client.uploadFile(fileDetails, purpose)).assertNext(openAIFile -> {
             assertNotNull(openAIFile);
             assertEquals("test-file.txt", openAIFile.getFilename());
         }).verifyComplete();
@@ -2073,9 +2071,25 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
         FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
 
-        Mono<OpenAIFile> uploadFileMono = client.uploadFile(fileDetails, null);
+        StepVerifier.create(client.uploadFile(fileDetails, null)).expectError(HttpResponseException.class).verify();
+    }
 
-        StepVerifier.create(uploadFileMono).expectError(HttpResponseException.class).verify();
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationAsResponseObject(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
+            translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
+
+            StepVerifier.create(client.getAudioTranslationAsResponseObject(deploymentName, translationOptions))
+                .assertNext(translation -> {
+                    assertNotNull(translation);
+                    assertEquals("It's raining today.", translation.getText());
+                })
+                .verifyComplete();
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
