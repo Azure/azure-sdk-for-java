@@ -426,6 +426,25 @@ public final class CoreUtils {
         return SerializationFormat.JSON;
     }
 
+    /**
+     * Appends a query parameter to the given host URL.
+     * This method checks if the URL already contains a query string (i.e., a '?').
+     * If a query string exists, the new parameter is added with an '&' separator.
+     * If no query string exists, the new parameter is added with a '?' separator.
+     *
+     * @param host the base URL to which the query parameter will be appended.
+     * @param key the name of the query parameter (e.g., "api-version", "name", "After").
+     * @param value the value of the query parameter.
+     * @return the updated URL with the appended query parameter.
+     */
+    public static String appendQueryParam(String host, String key, String value) {
+        if (host.contains("?")) {
+            return host + "&" + key + "=" + value;
+        } else {
+            return host + "?" + key + "=" + value;
+        }
+    }
+
     /*
      * There is a limited set of serialization encodings that are known ahead of time. Instead of using a TreeMap with
      * a case-insensitive comparator, use an optimized search specifically for the known encodings.

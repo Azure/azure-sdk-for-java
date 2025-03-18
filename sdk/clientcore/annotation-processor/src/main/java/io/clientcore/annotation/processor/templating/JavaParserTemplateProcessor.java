@@ -50,7 +50,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
@@ -337,7 +336,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
     }
 
-    private void initializeHttpRequest(BlockStmt body, HttpRequestContext method) {
+    void initializeHttpRequest(BlockStmt body, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(HttpRequest.class);
         body.tryAddImportToParentCompilationUnit(HttpMethod.class);
 
@@ -353,22 +352,10 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
         }
 
-        // Flag to track if it's the first query parameter
-        final boolean[] isFirstQueryParam = { true };
-
         // Iterate through the query parameters and append them to the host string if they are not null
         method.getQueryParams().forEach((key, value) -> {
-            if (isFirstQueryParam[0]) {
-                // For the first parameter, we just add "?" and the parameter
-                body.addStatement("if (" + value + " != null) {" + "    host = host + \"?\" + \"" + key + "=\" + "
-                    + value + ";" + "}");
-                isFirstQueryParam[0] = false; // Set the flag to false after the first param
-            } else {
-                // For subsequent parameters, we check if "?" already exists and append accordingly
-                body.addStatement("if (" + value + " != null) {" + "    if (host.contains(\"?\")) {"
-                    + "        host = host + \"&\" + \"" + key + "=\" + " + value + ";" + "    } else {"
-                    + "        host = host + \"?\" + \"" + key + "=\" + " + value + ";" + "    }" + "}");
-            }
+            body.addStatement("if (" + value + " != null) {" + "    host = CoreUtils.appendQueryParam(host, \"" + key
+                + "\", " + value + ");}");
         });
 
         Statement statement
