@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyType;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -263,6 +264,52 @@ public final class PolicyDefinitionInner extends ProxyResource {
             this.innerProperties = new PolicyDefinitionProperties();
         }
         this.innerProperties().withParameters(parameters);
+        return this;
+    }
+
+    /**
+     * Get the version property: The policy definition version in #.#.# format.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Set the version property: The policy definition version in #.#.# format.
+     * 
+     * @param version the version value to set.
+     * @return the PolicyDefinitionInner object itself.
+     */
+    public PolicyDefinitionInner withVersion(String version) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withVersion(version);
+        return this;
+    }
+
+    /**
+     * Get the versions property: A list of available versions for this policy definition.
+     * 
+     * @return the versions value.
+     */
+    public List<String> versions() {
+        return this.innerProperties() == null ? null : this.innerProperties().versions();
+    }
+
+    /**
+     * Set the versions property: A list of available versions for this policy definition.
+     * 
+     * @param versions the versions value to set.
+     * @return the PolicyDefinitionInner object itself.
+     */
+    public PolicyDefinitionInner withVersions(List<String> versions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withVersions(versions);
         return this;
     }
 

@@ -209,13 +209,16 @@ public interface PolicyAssignmentsClient
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param policyAssignmentName The name of the policy assignment to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyAssignmentInner>> getWithResponseAsync(String scope, String policyAssignmentName);
+    Mono<Response<PolicyAssignmentInner>> getWithResponseAsync(String scope, String policyAssignmentName,
+        String expand);
 
     /**
      * Retrieves a policy assignment.
@@ -247,6 +250,8 @@ public interface PolicyAssignmentsClient
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param policyAssignmentName The name of the policy assignment to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -254,7 +259,8 @@ public interface PolicyAssignmentsClient
      * @return the policy assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyAssignmentInner> getWithResponse(String scope, String policyAssignmentName, Context context);
+    Response<PolicyAssignmentInner> getWithResponse(String scope, String policyAssignmentName, String expand,
+        Context context);
 
     /**
      * Retrieves a policy assignment.
@@ -389,6 +395,8 @@ public interface PolicyAssignmentsClient
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -396,7 +404,8 @@ public interface PolicyAssignmentsClient
      * @return list of policy assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter, Integer top);
+    PagedFlux<PolicyAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter, String expand,
+        Integer top);
 
     /**
      * Retrieves all policy assignments that apply to a resource group.
@@ -466,6 +475,8 @@ public interface PolicyAssignmentsClient
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -474,8 +485,8 @@ public interface PolicyAssignmentsClient
      * @return list of policy assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyAssignmentInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
-        Context context);
+    PagedIterable<PolicyAssignmentInner> listByResourceGroup(String resourceGroupName, String filter, String expand,
+        Integer top, Context context);
 
     /**
      * Retrieves all policy assignments that apply to a resource.
@@ -514,6 +525,8 @@ public interface PolicyAssignmentsClient
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -522,7 +535,7 @@ public interface PolicyAssignmentsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PolicyAssignmentInner> listForResourceAsync(String resourceGroupName, String resourceProviderNamespace,
-        String parentResourcePath, String resourceType, String resourceName, String filter, Integer top);
+        String parentResourcePath, String resourceType, String resourceName, String filter, String expand, Integer top);
 
     /**
      * Retrieves all policy assignments that apply to a resource.
@@ -639,6 +652,8 @@ public interface PolicyAssignmentsClient
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -648,7 +663,7 @@ public interface PolicyAssignmentsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PolicyAssignmentInner> listForResource(String resourceGroupName, String resourceProviderNamespace,
-        String parentResourcePath, String resourceType, String resourceName, String filter, Integer top,
+        String parentResourcePath, String resourceType, String resourceName, String filter, String expand, Integer top,
         Context context);
 
     /**
@@ -670,6 +685,8 @@ public interface PolicyAssignmentsClient
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -677,7 +694,8 @@ public interface PolicyAssignmentsClient
      * @return list of policy assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyAssignmentInner> listForManagementGroupAsync(String managementGroupId, String filter, Integer top);
+    PagedFlux<PolicyAssignmentInner> listForManagementGroupAsync(String managementGroupId, String filter, String expand,
+        Integer top);
 
     /**
      * Retrieves all policy assignments that apply to a management group.
@@ -738,6 +756,8 @@ public interface PolicyAssignmentsClient
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -746,8 +766,8 @@ public interface PolicyAssignmentsClient
      * @return list of policy assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyAssignmentInner> listForManagementGroup(String managementGroupId, String filter, Integer top,
-        Context context);
+    PagedIterable<PolicyAssignmentInner> listForManagementGroup(String managementGroupId, String filter, String expand,
+        Integer top, Context context);
 
     /**
      * Retrieves all policy assignments that apply to a subscription.
@@ -770,6 +790,8 @@ public interface PolicyAssignmentsClient
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -777,7 +799,7 @@ public interface PolicyAssignmentsClient
      * @return list of policy assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyAssignmentInner> listAsync(String filter, Integer top);
+    PagedFlux<PolicyAssignmentInner> listAsync(String filter, String expand, Integer top);
 
     /**
      * Retrieves all policy assignments that apply to a subscription.
@@ -842,6 +864,8 @@ public interface PolicyAssignmentsClient
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -850,7 +874,7 @@ public interface PolicyAssignmentsClient
      * @return list of policy assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyAssignmentInner> list(String filter, Integer top, Context context);
+    PagedIterable<PolicyAssignmentInner> list(String filter, String expand, Integer top, Context context);
 
     /**
      * Deletes a policy assignment.
@@ -1044,13 +1068,15 @@ public interface PolicyAssignmentsClient
      * 
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId);
+    Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId, String expand);
 
     /**
      * Retrieves the policy assignment with the given ID.
@@ -1084,6 +1110,8 @@ public interface PolicyAssignmentsClient
      * 
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1091,7 +1119,7 @@ public interface PolicyAssignmentsClient
      * @return the policy assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyAssignmentInner> getByIdWithResponse(String policyAssignmentId, Context context);
+    Response<PolicyAssignmentInner> getByIdWithResponse(String policyAssignmentId, String expand, Context context);
 
     /**
      * Retrieves the policy assignment with the given ID.
