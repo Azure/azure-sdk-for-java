@@ -18,6 +18,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Support new property `sessionIdleTimeout` for `ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder` [#44414](https://github.com/Azure/azure-sdk-for-java/issues/44414).
+- Enable annotation `@EnableAzureMessaging` automatically.
 
 ### Spring Cloud Azure Starter Key Vault
 This section includes changes in `spring-cloud-azure-starter-keyvault` module.
