@@ -29,12 +29,6 @@ public final class RecognitionChoice implements JsonSerializable<RecognitionChoi
     private DtmfTone tone;
 
     /**
-     * Creates an instance of {@link RecognitionChoice}.
-     */
-    public RecognitionChoice() {
-    }
-
-    /**
      * Get the label property: Identifier for a given choice.
      *
      * @return the label value.
