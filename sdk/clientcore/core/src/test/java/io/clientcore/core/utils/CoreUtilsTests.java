@@ -289,11 +289,20 @@ public class CoreUtilsTests {
     @CsvSource({
         "https://example.com, api-version, 1.0, https://example.com?api-version=1.0",  // No query string
         "https://example.com?existingParam=value, api-version, 1.0, https://example.com?existingParam=value&api-version=1.0",  // Query string exists
-        "https://example.com, name, null, https://example.com",  // Null value for parameter
         "'', api-version, 1.0, '?api-version=1.0'"  // Empty URL
     })
-    void testAppendQueryParam(String host, String key, String value, String expected) {
-        String result = CoreUtils.appendQueryParam(host, key, value);
+    void testAppendQueryParam(String url, String key, String value, String expected) {
+        String result = CoreUtils.appendQueryParam(url, key, value);
+        assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
+    }
+
+    @Test
+    void testAppendNullQueryParam() {
+        String url = "https://example.com";
+        String key = "name";
+        String expected = "https://example.com";
+        // Null value for parameter
+        String result = CoreUtils.appendQueryParam(url, key, null);
         assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
     }
 
