@@ -17,34 +17,14 @@ import java.util.UUID;
 @Fluent
 public final class AzureSQLConnectionStringCredential extends DataSourceCredential {
     /*
-     * Type of data source credential
-     */
-    private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.AZURE_SQLCONNECTION_STRING;
-
-    /*
      * The parameters property.
      */
     private AzureSQLConnectionStringParam parameters;
-
-    /*
-     * Unique id of data source credential
-     */
-    private UUID dataSourceCredentialId;
 
     /**
      * Creates an instance of AzureSQLConnectionStringCredential class.
      */
     public AzureSQLConnectionStringCredential() {
-    }
-
-    /**
-     * Get the dataSourceCredentialType property: Type of data source credential.
-     * 
-     * @return the dataSourceCredentialType value.
-     */
-    @Override
-    public DataSourceCredentialType getDataSourceCredentialType() {
-        return this.dataSourceCredentialType;
     }
 
     /**
@@ -68,16 +48,6 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
     }
 
     /**
-     * Get the dataSourceCredentialId property: Unique id of data source credential.
-     * 
-     * @return the dataSourceCredentialId value.
-     */
-    @Override
-    public UUID getDataSourceCredentialId() {
-        return this.dataSourceCredentialId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -96,17 +66,16 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceCredentialType",
+            DataSourceCredentialType.AZURE_SQLCONNECTION_STRING == null
+                ? null
+                : DataSourceCredentialType.AZURE_SQLCONNECTION_STRING.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
         jsonWriter.writeJsonField("parameters", this.parameters);
-        jsonWriter.writeStringField("dataSourceCredentialType",
-            this.dataSourceCredentialType == null ? null : this.dataSourceCredentialType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -116,7 +85,8 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureSQLConnectionStringCredential if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureSQLConnectionStringCredential.
      */
     public static AzureSQLConnectionStringCredential fromJson(JsonReader jsonReader) throws IOException {
@@ -127,20 +97,24 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceCredentialName".equals(fieldName)) {
+                if ("dataSourceCredentialType".equals(fieldName)) {
+                    String dataSourceCredentialType = reader.getString();
+                    if (!"AzureSQLConnectionString".equals(dataSourceCredentialType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceCredentialType' was expected to be non-null and equal to 'AzureSQLConnectionString'. The found 'dataSourceCredentialType' was '"
+                                + dataSourceCredentialType + "'.");
+                    }
+                } else if ("dataSourceCredentialName".equals(fieldName)) {
                     deserializedAzureSQLConnectionStringCredential.setDataSourceCredentialName(reader.getString());
                 } else if ("dataSourceCredentialId".equals(fieldName)) {
-                    deserializedAzureSQLConnectionStringCredential.dataSourceCredentialId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedAzureSQLConnectionStringCredential.setDataSourceCredentialId(
+                        reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("dataSourceCredentialDescription".equals(fieldName)) {
                     deserializedAzureSQLConnectionStringCredential
                         .setDataSourceCredentialDescription(reader.getString());
                 } else if ("parameters".equals(fieldName)) {
                     deserializedAzureSQLConnectionStringCredential.parameters
                         = AzureSQLConnectionStringParam.fromJson(reader);
-                } else if ("dataSourceCredentialType".equals(fieldName)) {
-                    deserializedAzureSQLConnectionStringCredential.dataSourceCredentialType
-                        = DataSourceCredentialType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
