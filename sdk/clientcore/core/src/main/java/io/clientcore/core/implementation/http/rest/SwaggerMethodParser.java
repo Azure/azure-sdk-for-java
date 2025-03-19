@@ -12,7 +12,7 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -279,7 +279,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
             // Check for the RequestContext position.
             // To retain previous behavior, only track the first instance found.
-            if (parameterType == RequestContext.class && requestContextPosition == -1) {
+            if (parameterType == SdkRequestContext.class && requestContextPosition == -1) {
                 requestContextPosition = i;
             } else if (parameterType == ServerSentEventListener.class) {
                 serverSentEventListenerPosition = i;
@@ -460,14 +460,14 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link RequestContext} passed into the proxy method.
+     * Get the {@link SdkRequestContext} passed into the proxy method.
      *
      * @param swaggerMethodArguments The arguments passed to the proxy method.
      *
      * @return The request context.
      */
-    public RequestContext setRequestContext(Object[] swaggerMethodArguments) {
-        return requestContextPosition < 0 ? null : (RequestContext) swaggerMethodArguments[requestContextPosition];
+    public SdkRequestContext setRequestContext(Object[] swaggerMethodArguments) {
+        return requestContextPosition < 0 ? null : (SdkRequestContext) swaggerMethodArguments[requestContextPosition];
     }
 
     /**

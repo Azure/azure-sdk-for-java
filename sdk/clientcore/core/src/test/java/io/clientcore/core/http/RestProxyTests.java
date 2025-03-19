@@ -14,8 +14,8 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -82,18 +82,18 @@ public class RestProxyTests {
         Response<InputStream> testDownload();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
-        Response<FooListResult> listFooListResult(@HostParam("uri") String uri, RequestContext requestContext);
+        Response<FooListResult> listFooListResult(@HostParam("uri") String uri, SdkRequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<FooListResult> listNextFooListResult(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            RequestContext requestContext);
+            SdkRequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
-        Response<List<Foo>> listFoo(@HostParam("uri") String uri, RequestContext requestContext);
+        Response<List<Foo>> listFoo(@HostParam("uri") String uri, SdkRequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            RequestContext requestContext);
+            SdkRequestContext requestContext);
     }
 
     @Test
@@ -118,9 +118,9 @@ public class RestProxyTests {
             .build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
-    
+
         streamResponse.close();
-    
+
         // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/
@@ -275,9 +275,9 @@ public class RestProxyTests {
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
-            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, RequestContext.none()), null),
+            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, new SdkRequestContext()), null),
             (pagingOptions, nextLink) -> toPagedResponse(
-                testInterface.listNextFooListResult(nextLink, RequestContext.none()), nextLink));
+                testInterface.listNextFooListResult(nextLink, new SdkRequestContext()), nextLink));
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());
@@ -317,7 +317,7 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, RequestContext.none());
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, new SdkRequestContext());
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -328,7 +328,7 @@ public class RestProxyTests {
 
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
-                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, RequestContext.none());
+                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, new SdkRequestContext());
                 return toPagedResponse(nextResponse, nextLink);
             });
 

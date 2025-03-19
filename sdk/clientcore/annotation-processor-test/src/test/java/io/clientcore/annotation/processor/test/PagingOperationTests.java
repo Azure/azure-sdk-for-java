@@ -10,8 +10,8 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -70,7 +70,7 @@ public class PagingOperationTests {
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
             pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
-                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, RequestContext.none());
+                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, new SdkRequestContext());
                 return toPagedResponse(nextResponse, nextLink);
             }
         );
@@ -108,8 +108,8 @@ public class PagingOperationTests {
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
-            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, RequestContext.none()), nextLinkUri),
-            (pagingOptions, nextLink) -> toPagedResponse(testInterface.listNextFooListResult(nextLink, RequestContext.none()), null)
+            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, new SdkRequestContext()), nextLinkUri),
+            (pagingOptions, nextLink) -> toPagedResponse(testInterface.listNextFooListResult(nextLink, new SdkRequestContext()), null)
         );
 
         assertNotNull(pagedIterable);

@@ -8,8 +8,8 @@ import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.instrumentation.Instrumentation;
@@ -247,7 +247,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         Map<String, Object> metricAttributes = isMetricsEnabled ? new HashMap<>(8) : null;
         if (request.getRequestContext() == null) {
-            request.setRequestContext(RequestContext.none());
+            request.setRequestContext(new SdkRequestContext());
         }
 
         InstrumentationContext parentContext = request.getRequestContext().getInstrumentationContext();
@@ -256,17 +256,17 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         setStartAttributes(request, redactedUrl, spanBuilder, metricAttributes);
         Span span = spanBuilder.startSpan();
 
-        InstrumentationContext context
+        InstrumentationContext currentContext
             = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parentContext;
 
-        if (context != null && context.isValid()) {
-            request.setRequestContext(request.getRequestContext().clone().setInstrumentationContext(context));
+        if (currentContext != null && currentContext.isValid()) {
+            request.setRequestContext(request.getRequestContext().setInstrumentationContext(currentContext));
             // even if tracing is disabled, we could have a valid context to propagate
             // if it was provided by the application explicitly.
-            traceContextPropagator.inject(context, request.getHeaders(), SETTER);
+            traceContextPropagator.inject(currentContext, request.getHeaders(), SETTER);
         }
 
-        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, context);
+        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, currentContext);
 
         try (TracingScope scope = span.makeCurrent()) {
             Response<BinaryData> response = next.process();
@@ -283,7 +283,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             }
 
             addDetails(request, response.getStatusCode(), tryCount, span, metricAttributes);
-            response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount, context);
+            response
+                = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount, currentContext);
             span.end();
             return response;
         } catch (RuntimeException t) {
@@ -293,11 +294,11 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             }
             span.end(cause);
             throw logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount,
-                context);
+                currentContext);
         } finally {
             if (isMetricsEnabled) {
                 httpRequestDuration.record((System.nanoTime() - startNs) / 1_000_000_000.0,
-                    instrumentation.createAttributes(metricAttributes), context);
+                    instrumentation.createAttributes(metricAttributes), currentContext);
             }
         }
     }

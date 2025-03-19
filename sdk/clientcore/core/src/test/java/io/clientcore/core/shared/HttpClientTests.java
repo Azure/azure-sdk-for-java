@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;

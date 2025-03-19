@@ -10,8 +10,8 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.InsecureTrustManager;
@@ -222,7 +222,7 @@ public class JdkHttpClientIT {
     public void testBufferedResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<BinaryData> response = getResponse(client, "/short", RequestContext.none())) {
+        try (Response<BinaryData> response = getResponse(client, "/short", new SdkRequestContext())) {
             assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
@@ -231,7 +231,7 @@ public class JdkHttpClientIT {
     public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<BinaryData> response = getResponse(client, "/empty", RequestContext.none())) {
+        try (Response<BinaryData> response = getResponse(client, "/empty", new SdkRequestContext())) {
             assertEquals(0L, response.getValue().toBytes().length);
         }
     }
@@ -266,7 +266,7 @@ public class JdkHttpClientIT {
         }
     }
 
-    private static Response<BinaryData> getResponse(HttpClient client, String path, RequestContext context)
+    private static Response<BinaryData> getResponse(HttpClient client, String path, SdkRequestContext context)
         throws IOException {
         HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path)).setRequestContext(context);

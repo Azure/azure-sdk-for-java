@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
-import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.instrumentation.Instrumentation;
@@ -95,23 +95,18 @@ public class FallbackInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestContext requestContext,
-        Function<RequestContext, TResponse> operation) {
+    public <TResponse> TResponse instrumentWithResponse(String operationName, SdkRequestContext requestContext,
+        Function<SdkRequestContext, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
+        Objects.requireNonNull(requestContext, "'requestContext' cannot be null");
 
-        if (!shouldInstrument(SpanKind.CLIENT,
-            requestContext == null ? null : requestContext.getInstrumentationContext())) {
+        if (!shouldInstrument(SpanKind.CLIENT, requestContext.getInstrumentationContext())) {
             return operation.apply(requestContext);
         }
 
-        if (requestContext == null) {
-            requestContext = new RequestContext();
-        }
-
-        SpanBuilder builder
-            = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestContext.getInstrumentationContext())
-                .setAttribute(SERVER_ADDRESS_KEY, serviceHost);
+        SpanBuilder builder = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestContext.getInstrumentationContext())
+            .setAttribute(SERVER_ADDRESS_KEY, serviceHost);
 
         if (servicePort > 0) {
             builder.setAttribute(SERVER_PORT_KEY, servicePort);
@@ -119,7 +114,7 @@ public class FallbackInstrumentation implements Instrumentation {
 
         Span span = builder.startSpan();
         if (span.getInstrumentationContext().isValid()) {
-            requestContext = requestContext.clone().setInstrumentationContext(span.getInstrumentationContext());
+            requestContext = requestContext.setInstrumentationContext(span.getInstrumentationContext());
         }
 
         TracingScope scope = span.makeCurrent();

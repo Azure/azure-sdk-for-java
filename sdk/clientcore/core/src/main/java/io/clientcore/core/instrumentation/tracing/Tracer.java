@@ -20,17 +20,14 @@ public interface Tracer {
      * <!-- src_embed io.clientcore.core.instrumentation.tracecall -->
      * <pre>
      *
-     * InstrumentationContext context = requestContext == null ? null : requestContext.getInstrumentationContext&#40;&#41;;
-     * Span span = tracer.spanBuilder&#40;&quot;&#123;operationName&#125;&quot;, SpanKind.CLIENT, context&#41;
+     * InstrumentationContext instrumentationContext = requestContext.getInstrumentationContext&#40;&#41;;
+     * Span span = tracer.spanBuilder&#40;&quot;&#123;operationName&#125;&quot;, SpanKind.CLIENT, instrumentationContext&#41;
      *     .startSpan&#40;&#41;;
      *
      * &#47;&#47; we'll propagate context implicitly using span.makeCurrent&#40;&#41; as shown later.
      * &#47;&#47; Libraries that write async code should propagate context explicitly in addition to implicit propagation.
      * if &#40;tracer.isEnabled&#40;&#41;&#41; &#123;
-     *     if &#40;requestContext == null&#41; &#123;
-     *         requestContext = new RequestContext&#40;&#41;;
-     *     &#125;
-     *     requestContext = requestContext.clone&#40;&#41;.setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;;
+     *     requestContext = new SdkRequestContext&#40;requestContext, span.getInstrumentationContext&#40;&#41;&#41;;
      * &#125;
      *
      * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
@@ -52,7 +49,7 @@ public interface Tracer {
      * <!-- src_embed io.clientcore.core.instrumentation.tracewithattributes -->
      * <pre>
      *
-     * Span sendSpan = tracer.spanBuilder&#40;&quot;send &#123;queue-name&#125;&quot;, SpanKind.PRODUCER, null&#41;
+     * Span sendSpan = tracer.spanBuilder&#40;&quot;send &#123;queue-name&#125;&quot;, SpanKind.PRODUCER, requestContext.getInstrumentationContext&#40;&#41;&#41;
      *     &#47;&#47; Some of the attributes should be provided at the start time &#40;as documented in semantic conventions&#41; -
      *     &#47;&#47; they can be used by client apps to sample spans.
      *     .setAttribute&#40;&quot;messaging.system&quot;, &quot;servicebus&quot;&#41;
