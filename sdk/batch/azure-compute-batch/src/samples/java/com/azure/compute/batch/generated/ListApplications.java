@@ -11,13 +11,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+// CUSTOM IMPORT
+import com.azure.compute.batch.models.ListBatchApplicationsOptions;
+
 public class ListApplications {
     public static void main(String[] args) {
         BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
             .buildClient();
         // BEGIN:com.azure.compute.batch.generated.listapplications.listapplications
-        PagedIterable<BatchApplication> response = batchClient.listApplications(null);
+        // CUSTOM OVERRIDE - Specify Parameter Type
+        PagedIterable<BatchApplication> response = batchClient.listApplications((ListBatchApplicationsOptions) null);
         // END:com.azure.compute.batch.generated.listapplications.listapplications
     }
 }

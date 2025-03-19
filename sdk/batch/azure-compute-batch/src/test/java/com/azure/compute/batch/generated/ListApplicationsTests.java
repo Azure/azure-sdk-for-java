@@ -11,13 +11,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+// CUSTOM IMPORT
+import com.azure.compute.batch.models.ListBatchApplicationsOptions;
+
 @Disabled
 public final class ListApplicationsTests extends BatchClientTestBase {
     @Test
     @Disabled
     public void testListApplicationsTests() {
         // method invocation
-        PagedIterable<BatchApplication> response = batchClient.listApplications(null);
+        // CUSTOM OVERRIDE - Specify Parameter Type
+        PagedIterable<BatchApplication> response = batchClient.listApplications((ListBatchApplicationsOptions) null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
