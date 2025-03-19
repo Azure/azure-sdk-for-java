@@ -1,5 +1,16 @@
 # Release History
 
+## 1.4.2 (2025-03-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.7` to version `1.5.8`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
+
 ## 1.4.1 (2025-02-28)
 
 ### Other Changes
