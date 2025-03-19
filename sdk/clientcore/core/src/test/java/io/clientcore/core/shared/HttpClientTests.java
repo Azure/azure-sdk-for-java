@@ -19,7 +19,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.models.ServerSentEvent;
@@ -1456,7 +1456,7 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<Arguments> downloadTestArgumentProvider() {
-        return Stream.of(Arguments.of(Named.named("default", RequestContext.none())));
+        return Stream.of(Arguments.of(Named.named("default", RequestOptions.none())));
     }
 
     @ServiceInterface(name = "BinaryDataUploadServ", host = "{uri}")
@@ -1603,9 +1603,9 @@ public abstract class HttpClientTests {
     public void requestContextChangesBody() {
         Service27 service = createService(Service27.class);
 
-        RequestContext options = new RequestContext().addRequestCallback(r -> r.setBody(BinaryData.fromString("24")));
+        RequestOptions options = new RequestOptions().addRequestCallback(r -> r.setBody(BinaryData.fromString("24")));
 
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.fromRequestOptions(options));
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.create(options));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1617,9 +1617,9 @@ public abstract class HttpClientTests {
     public void requestContextChangesBodyAndContentLength() {
         Service27 service = createService(Service27.class);
 
-        RequestContext options = new RequestContext().addRequestCallback(r -> r.setBody(BinaryData.fromString("4242")))
+        RequestOptions options = new RequestOptions().addRequestCallback(r -> r.setBody(BinaryData.fromString("4242")))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, "4");
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.fromRequestOptions(options));
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.create(options));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1632,9 +1632,9 @@ public abstract class HttpClientTests {
 
     @Test
     public void requestContextAddAHeader() {
-        RequestContext options = new RequestContext().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"));
+        RequestOptions options = new RequestOptions().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"));
         Service27 service = createService(Service27.class);
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.fromRequestOptions(options));
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.create(options));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1645,10 +1645,10 @@ public abstract class HttpClientTests {
 
     @Test
     public void requestContextSetsAHeader() {
-        RequestContext options = new RequestContext().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"))
+        RequestOptions options = new RequestOptions().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"))
             .setHeader(RANDOM_HEADER, "randomValue2");
         Service27 service = createService(Service27.class);
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.fromRequestOptions(options));
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.create(options));
 
         assertNotNull(response);
         assertNotNull(response.data());

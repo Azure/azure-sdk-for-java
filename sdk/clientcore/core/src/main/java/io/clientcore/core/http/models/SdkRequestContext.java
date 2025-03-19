@@ -1,39 +1,36 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.ProgressReporter;
 
-public class SdkRequestContext extends RequestContext {
-    private InstrumentationContext childInstrumentationContext;
+public class SdkRequestContext extends RequestOptions {
+    private final InstrumentationContext childInstrumentationContext;
 
-    public SdkRequestContext() {
-
-    }
-
-    private SdkRequestContext(RequestContext options) {
+    private SdkRequestContext(RequestOptions options, InstrumentationContext instrumentationContext) {
         super(options);
 
-        this.childInstrumentationContext = options == null ? null : options.getInstrumentationContext();
+        this.childInstrumentationContext = instrumentationContext;
     }
 
-    public static SdkRequestContext fromRequestOptions(RequestContext options) {
+    public static SdkRequestContext create(RequestOptions options, InstrumentationContext instrumentationContext) {
+        if (options instanceof SdkRequestContext && (instrumentationContext == null || !instrumentationContext.isValid())) {
+            return (SdkRequestContext) options;
+        }
+
+        return new SdkRequestContext(options, instrumentationContext);
+    }
+
+    public static SdkRequestContext create(RequestOptions options) {
         if (options instanceof SdkRequestContext) {
             return (SdkRequestContext) options;
         }
 
-        return new SdkRequestContext(options);
-    }
-
-    public SdkRequestContext setInstrumentationContext(InstrumentationContext instrumentationContext) {
-        SdkRequestContext cloned = (SdkRequestContext) super.clone();
-        cloned.childInstrumentationContext = instrumentationContext;
-        return cloned;
+        return new SdkRequestContext(options, null);
     }
 
     @Override
     public InstrumentationContext getInstrumentationContext() {
-        if (childInstrumentationContext != null) {
+        if (childInstrumentationContext != null && childInstrumentationContext.isValid()) {
             return childInstrumentationContext;
         }
 

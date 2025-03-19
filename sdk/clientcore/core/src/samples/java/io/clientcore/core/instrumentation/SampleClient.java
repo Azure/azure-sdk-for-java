@@ -5,7 +5,7 @@ package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -26,22 +26,22 @@ class SampleClient {
         return this.downloadContent(null);
     }
 
-    public Response<?> downloadContent(RequestContext options) {
+    public Response<?> downloadContent(RequestOptions options) {
         // BEGIN: io.clientcore.core.instrumentation.instrumentwithresponse
         return instrumentation.instrumentWithResponse("Sample.download",
-            SdkRequestContext.fromRequestOptions(options),
+            options,
             this::downloadImpl);
         // END: io.clientcore.core.instrumentation.instrumentwithresponse
     }
 
-    public void create(RequestContext options) {
+    public void create(RequestOptions options) {
         // BEGIN: io.clientcore.core.instrumentation.instrument
-        instrumentation.instrument("Sample.create", SdkRequestContext.fromRequestOptions(options), this::createImpl);
+        instrumentation.instrument("Sample.create", options, this::createImpl);
         // END: io.clientcore.core.instrumentation.instrument
     }
 
-    public Response<?> createWithResponse(RequestContext options) {
-        return instrumentation.instrumentWithResponse("create", SdkRequestContext.fromRequestOptions(options), this::createWithResponseImpl);
+    public Response<?> createWithResponse(RequestOptions options) {
+        return instrumentation.instrumentWithResponse("create", SdkRequestContext.create(options), this::createWithResponseImpl);
     }
 
     private Response<?> downloadImpl(SdkRequestContext context) {

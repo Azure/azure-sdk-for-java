@@ -19,11 +19,11 @@ import java.util.function.Consumer;
  * This class contains the request metadata that flows along with the {@link HttpRequest} as it goes through HTTP pipeline,
  * and it can be used to customize the pipeline behavior or modify the request itself.
  *
- * <p>A {@link RequestContext} instance can be passed to a service method that preconfigures known
+ * <p>A {@link RequestOptions} instance can be passed to a service method that preconfigures known
  * components of the request like URI, path params etc, further modifying both un-configured, or preconfigured
  * components.</p>
  *
- * <p>A {@link RequestContext} can be shared across multiple requests and must not be modified after initial setup.
+ * <p>A {@link RequestOptions} can be shared across multiple requests and must not be modified after initial setup.
  * Client libraries are not expected to modify context instance provided by the caller and, when modification is necessary,
  * must clone provided instance.</p>
  *
@@ -32,10 +32,10 @@ import java.util.function.Consumer;
  * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger
  * definition.</a></p>
  *
- * <p><strong>Creating an instance of RequestContext</strong></p>
+ * <p><strong>Creating an instance of RequestOptions</strong></p>
  * <!-- src_embed io.clientcore.core.http.rest.requestcontext.instantiation -->
  * <pre>
- * RequestContext context = new RequestContext&#40;&#41;
+ * RequestOptions context = new RequestOptions&#40;&#41;
  *     .addHeader&#40;new HttpHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestcontext.instantiation -->
@@ -98,11 +98,11 @@ import java.util.function.Consumer;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestcontext.createjsonrequest -->
  *
- * Now, this string representation of the JSON request can be set as body of {@link RequestContext}.
+ * Now, this string representation of the JSON request can be set as body of {@link RequestOptions}.
  *
  * <!-- src_embed io.clientcore.core.http.rest.requestcontext.postrequest -->
  * <pre>
- * RequestContext context = new RequestContext&#40;&#41;
+ * RequestOptions context = new RequestOptions&#40;&#41;
  *     .addRequestCallback&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
@@ -113,10 +113,10 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestcontext.postrequest -->
  */
 @Metadata(properties = MetadataProperties.FLUENT)
-public class RequestContext implements Cloneable {
-    // RequestContext is a highly used, short-lived class, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(RequestContext.class);
-    private static final RequestContext NONE = new RequestContext().lock();
+public class RequestOptions {
+    // RequestOptions is a highly used, short-lived class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
+    private static final RequestOptions NONE = new RequestOptions().lock();
 
     private Consumer<HttpRequest> requestCallback;
     private InternalContext context;
@@ -126,9 +126,9 @@ public class RequestContext implements Cloneable {
 
 
     /**
-     * Creates a new instance of {@link RequestContext}.
+     * Creates a new instance of {@link RequestOptions}.
      */
-    public RequestContext() {
+    public RequestOptions() {
         this.context = InternalContext.empty();
         this.logger = null;
         this.instrumentationContext = null;
@@ -137,7 +137,7 @@ public class RequestContext implements Cloneable {
         };
     }
 
-    protected RequestContext(RequestContext options) {
+    protected RequestOptions(RequestOptions options) {
         if (options != null) {
             this.requestCallback = options.requestCallback;
             this.context = options.context;
@@ -148,7 +148,7 @@ public class RequestContext implements Cloneable {
     }
 
     /**
-     * Gets the request callback, applying all the configurations set on this instance of {@link RequestContext}.
+     * Gets the request callback, applying all the configurations set on this instance of {@link RequestOptions}.
      *
      * @return The request callback.
      */
@@ -172,11 +172,11 @@ public class RequestContext implements Cloneable {
      * otherwise a new header will be created.</p>
      *
      * @param header The header key.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return The updated {@link RequestOptions} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      * @throws NullPointerException If {@code header} is null.
      */
-    public RequestContext addHeader(HttpHeader header) {
+    public RequestOptions addHeader(HttpHeader header) {
         checkLocked("Cannot add header.");
         Objects.requireNonNull(header, "'header' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
@@ -190,10 +190,10 @@ public class RequestContext implements Cloneable {
      *
      * @param header The header key.
      * @param value The header value.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return The updated {@link RequestOptions} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
-    public RequestContext setHeader(HttpHeaderName header, String value) {
+    public RequestOptions setHeader(HttpHeaderName header, String value) {
         checkLocked("Cannot set header.");
         Objects.requireNonNull(header, "'header' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
@@ -206,10 +206,10 @@ public class RequestContext implements Cloneable {
      *
      * @param parameterName The name of the query parameter.
      * @param value The value of the query parameter.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return The updated {@link RequestOptions} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
-    public RequestContext addQueryParam(String parameterName, String value) {
+    public RequestOptions addQueryParam(String parameterName, String value) {
         return addQueryParam(parameterName, value, false);
     }
 
@@ -221,10 +221,10 @@ public class RequestContext implements Cloneable {
      * @param parameterName The name of the query parameter.
      * @param value The value of the query parameter.
      * @param encoded Whether this query parameter is already encoded.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return The updated {@link RequestOptions} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
-    public RequestContext addQueryParam(String parameterName, String value, boolean encoded) {
+    public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
         checkLocked("Cannot add query param.");
         Objects.requireNonNull(parameterName, "'parameterName' cannot be null.");
 
@@ -240,14 +240,14 @@ public class RequestContext implements Cloneable {
 
     /**
      * Adds a custom request callback to modify the {@link HttpRequest} before it's sent by the {@link HttpClient}. The
-     * modifications made on a {@link RequestContext} object are applied in order on the request.
+     * modifications made on a {@link RequestOptions} object are applied in order on the request.
      *
      * @param requestCallback The request callback.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return The updated {@link RequestOptions} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      * @throws NullPointerException If {@code requestCallback} is null.
      */
-    public RequestContext addRequestCallback(Consumer<HttpRequest> requestCallback) {
+    public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
         checkLocked("Cannot add request callback.");
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
 
@@ -259,22 +259,22 @@ public class RequestContext implements Cloneable {
      * Sets the {@link ClientLogger} used to log the request and response.
      *
      * @param logger The {@link ClientLogger} used to log the request and response.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return The updated {@link RequestOptions} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
-    public RequestContext setLogger(ClientLogger logger) {
+    public RequestOptions setLogger(ClientLogger logger) {
         checkLocked("Cannot set logger.");
         this.logger = logger;
         return this;
     }
 
     /**
-     * An empty {@link RequestContext} used in situations where there is no request-specific
+     * An empty {@link RequestOptions} used in situations where there is no request-specific
      * configuration to pass into the request.
      *
-     * @return The singleton instance of an empty {@link RequestContext}.
+     * @return The singleton instance of an empty {@link RequestOptions}.
      */
-    public static RequestContext none() {
+    public static RequestOptions none() {
         return NONE;
     }
 
@@ -291,26 +291,26 @@ public class RequestContext implements Cloneable {
      * Sets the {@link InstrumentationContext} used to instrument the request.
      *
      * @param instrumentationContext The {@link InstrumentationContext} used to instrument the request.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return The updated {@link RequestOptions} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
-    public RequestContext setInstrumentationContext(InstrumentationContext instrumentationContext) {
+    public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
         checkLocked("Cannot set instrumentation context.");
         this.instrumentationContext = instrumentationContext;
         return this;
     }
 
     /**
-     * Adds a key-value pair to the {@link RequestContext} that can be used to pass additional data to the
+     * Adds a key-value pair to the {@link RequestOptions} that can be used to pass additional data to the
      * components of HTTP pipeline.
      *
      * @param key The key to be added.
      * @param value The value to be added.
-     * @return The updated {@link RequestContext} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestContext#none()}.
+     * @return The updated {@link RequestOptions} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      * @throws NullPointerException If {@code key} is null.
      */
-    public RequestContext putData(String key, Object value) {
+    public RequestOptions putData(String key, Object value) {
         checkLocked("Cannot put data.");
         Objects.requireNonNull(key, "'key' cannot be null.");
         this.context = this.context.put(key, value);
@@ -318,7 +318,7 @@ public class RequestContext implements Cloneable {
     }
 
     /**
-     * Gets the value associated with the given key in the {@link RequestContext} object. The value is cast to the
+     * Gets the value associated with the given key in the {@link RequestOptions} object. The value is cast to the
      * given class type.
      *
      * @param key The key to be retrieved.
@@ -331,30 +331,11 @@ public class RequestContext implements Cloneable {
     }
 
     /**
-     * Creates a new instance of {@link RequestContext} with the same properties as this instance.
-     * @return A new instance of {@link RequestContext}.
-     */
-    public RequestContext clone() {
-        try {
-            RequestContext cloned = (RequestContext) super.clone();
-            cloned.requestCallback = this.requestCallback;
-            cloned.logger = this.logger;
-            cloned.context = this.context;
-            cloned.instrumentationContext = this.instrumentationContext;
-
-            return cloned;
-
-        } catch (CloneNotSupportedException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException("Failed to clone RequestContext", e));
-        }
-    }
-
-    /**
-     * Locks this {@link RequestContext} to prevent further modifications.
+     * Locks this {@link RequestOptions} to prevent further modifications.
      *
-     * @return This {@link RequestContext} instance.
+     * @return This {@link RequestOptions} instance.
      */
-    private RequestContext lock() {
+    private RequestOptions lock() {
         locked = true;
 
         return this;
@@ -363,7 +344,7 @@ public class RequestContext implements Cloneable {
     private void checkLocked(String setterMessage) {
         if (locked) {
             throw LOGGER.logThrowableAsError(
-                new IllegalStateException("This instance of RequestContext is immutable. " + setterMessage));
+                new IllegalStateException("This instance of RequestOptions is immutable. " + setterMessage));
         }
     }
 }
