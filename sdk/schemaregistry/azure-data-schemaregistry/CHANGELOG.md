@@ -1,5 +1,15 @@
 # Release History
 
+## 1.5.4 (2025-03-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
+
 ## 1.5.3 (2025-02-25)
 
 ### Other Changes
