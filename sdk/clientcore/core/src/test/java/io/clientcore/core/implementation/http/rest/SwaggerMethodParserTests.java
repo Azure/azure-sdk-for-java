@@ -18,6 +18,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.models.SimpleClass;
@@ -66,7 +67,7 @@ public class SwaggerMethodParserTests {
         void getMethod();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        void getMethodWithRequestContext(RequestContext requestContext);
+        void getMethodWithRequestContext(SdkRequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "test")
         void putMethod();
@@ -512,22 +513,22 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("setRequestContextSupplier")
     public void setRequestContext(SwaggerMethodParser swaggerMethodParser, Object[] arguments,
-        RequestContext expectedRequestContext) {
+        SdkRequestContext expectedRequestContext) {
         assertEquals(expectedRequestContext, swaggerMethodParser.setRequestContext(arguments));
     }
 
     private static Stream<Arguments> setRequestContextSupplier() throws NoSuchMethodException {
-        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestContext", RequestContext.class);
+        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestContext", SdkRequestContext.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        RequestContext emptyOptions = new RequestContext();
+        SdkRequestContext emptyOptions = new SdkRequestContext();
 
-        RequestContext headerQueryOptions
-            = new RequestContext().addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
-                .addQueryParam("foo", "bar");
+        SdkRequestContext headerQueryOptions
+            = SdkRequestContext.fromRequestOptions(new RequestContext().addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
+                .addQueryParam("foo", "bar"));
 
-        RequestContext uriOptions
-            = new RequestContext().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com"));
+        SdkRequestContext uriOptions
+            = SdkRequestContext.fromRequestOptions(new RequestContext().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com")));
 
         // Add this test back if error options is ever made public.
         // RequestContext statusOptionOptions = new RequestContext().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));

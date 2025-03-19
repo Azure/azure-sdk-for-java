@@ -21,6 +21,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
@@ -311,20 +312,20 @@ public abstract class HttpClientTests {
             getProtocol(ECHO_RESPONSE),
             new Headers(),
             requestBody);
-    
+
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
             .setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
-    
+
         Response<?> response = createHttpClient()
             .send(request);
-    
+
         byte[] responseBytes = response
             .getBodyAsByteArray()
             .block();
-    
+
         assertArrayEquals(expectedResponseBody, responseBytes);
         assertEquals(expectedResponseBody.length, progress.intValue());
     }*/
@@ -1349,20 +1350,20 @@ public abstract class HttpClientTests {
             .putBodyAndHeaders(getRequestUri(), "body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        
+
         assertEquals(Headers.class, response.getHeaders().getClass());
-        
+
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);
         assertMatchWithHttpOrHttps("localhost/put", body.uri());
         assertEquals("body string", body.data());
-        
+
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
         assertNotNull(headers.date());
         assertNotEquals(0, (Object) headers.xProcessedTime());
-        
+
          */
     }
 
@@ -1424,12 +1425,12 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "DownloadService", host = "{uri}")
     interface DownloadService {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/30720")
-        Response<InputStream> getBytes(@HostParam("uri") String uri, RequestContext context);
+        Response<InputStream> getBytes(@HostParam("uri") String uri, SdkRequestContext context);
     }
 
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
-    public void simpleDownloadTest(RequestContext context) throws IOException {
+    public void simpleDownloadTest(SdkRequestContext context) throws IOException {
         Response<InputStream> response = createService(DownloadService.class).getBytes(getRequestUri(), context);
 
         InputStream inputStream = response.getValue();
@@ -1543,13 +1544,13 @@ public abstract class HttpClientTests {
         HttpBinFormDataJSON postForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam("custemail") String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
-    
+
         @Post("post")
         HttpBinFormDataJSON postEncodedForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam(value = "custemail", encoded = true) String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
     }
-    
+
     @Test
     public void postUriForm() {
         Service26 service = createService(Service26.class);
@@ -1561,12 +1562,12 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo%40bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-    
+
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
     }
-    
+
     @Test
     public void postUriFormEncoded() {
         Service26 service = createService(Service26.class);
@@ -1578,7 +1579,7 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo@bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-    
+
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
@@ -1589,20 +1590,22 @@ public abstract class HttpClientTests {
     interface Service27 {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         HttpBinJSON put(@HostParam("uri") String uri, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
-            RequestContext requestContext);
+            SdkRequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
-            @HeaderParam("Content-Length") long contentLength, RequestContext requestContext);
+            @HeaderParam("Content-Length") long contentLength, SdkRequestContext requestContext);
     }
 
     @Test
     public void requestContextChangesBody() {
         Service27 service = createService(Service27.class);
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestContext().addRequestCallback(r -> r.setBody(BinaryData.fromString("24"))));
+
+        RequestContext options = new RequestContext().addRequestCallback(r -> r.setBody(BinaryData.fromString("24")));
+
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.fromRequestOptions(options));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1613,9 +1616,10 @@ public abstract class HttpClientTests {
     @Test
     public void requestContextChangesBodyAndContentLength() {
         Service27 service = createService(Service27.class);
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestContext().addRequestCallback(r -> r.setBody(BinaryData.fromString("4242")))
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, "4"));
+
+        RequestContext options = new RequestContext().addRequestCallback(r -> r.setBody(BinaryData.fromString("4242")))
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, "4");
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.fromRequestOptions(options));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1628,9 +1632,9 @@ public abstract class HttpClientTests {
 
     @Test
     public void requestContextAddAHeader() {
+        RequestContext options = new RequestContext().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"));
         Service27 service = createService(Service27.class);
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestContext().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue")));
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.fromRequestOptions(options));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1641,10 +1645,10 @@ public abstract class HttpClientTests {
 
     @Test
     public void requestContextSetsAHeader() {
+        RequestContext options = new RequestContext().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"))
+            .setHeader(RANDOM_HEADER, "randomValue2");
         Service27 service = createService(Service27.class);
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestContext().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"))
-                .setHeader(RANDOM_HEADER, "randomValue2"));
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.fromRequestOptions(options));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1812,19 +1816,19 @@ public abstract class HttpClientTests {
     interface Service30 {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         HttpBinJSON put(@HostParam("uri") String uri, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
-            RequestContext requestContext);
+            SdkRequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         Response<HttpBinJSON> putResponse(@HostParam("uri") String uri,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestContext requestContext);
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, SdkRequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
         HttpBinJSON postStream(@HostParam("uri") String uri,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestContext requestContext);
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, SdkRequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
         Response<HttpBinJSON> postStreamResponse(@HostParam("uri") String uri,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestContext requestContext);
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, SdkRequestContext requestContext);
     }
 
     @ServiceInterface(name = "Service30", host = "{uri}")
@@ -1840,7 +1844,7 @@ public abstract class HttpClientTests {
         @HttpRequestInformation(method = HttpMethod.POST, path = "serversentevent", expectedStatusCodes = { 200 })
         Response<BinaryData> post(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData postBody,
-            ServerSentEventListener serverSentEventListener, RequestContext requestContext);
+            ServerSentEventListener serverSentEventListener, SdkRequestContext requestContext);
     }
 
     @Test

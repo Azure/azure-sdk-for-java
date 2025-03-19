@@ -323,7 +323,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         boolean hasRequestOptions = method.getParameters()
             .stream()
             .anyMatch(parameter -> "context".equals(parameter.getName())
-                && "RequestContext".equals(parameter.getShortTypeName()));
+                && "SdkRequestContext".equals(parameter.getShortTypeName()));
 
         if (hasRequestOptions) {
             // Create a statement for setting request context

@@ -8,8 +8,8 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.ReflectionSerializable;
 import io.clientcore.core.implementation.TypeUtil;
@@ -74,7 +74,8 @@ public class RestProxyImpl {
      * @throws RuntimeException When a URI syntax error occurs.
      */
     @SuppressWarnings({ "try", "unused" })
-    public final Object invoke(Object proxy, RequestContext context, SwaggerMethodParser methodParser, Object[] args) {
+    public final Object invoke(Object proxy, SdkRequestContext context, SwaggerMethodParser methodParser,
+        Object[] args) {
         try {
             HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestContext(context)
                 .setServerSentEventListener(methodParser.setServerSentEventListener(args));

@@ -113,7 +113,7 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestcontext.postrequest -->
  */
 @Metadata(properties = MetadataProperties.FLUENT)
-public final class RequestContext implements Cloneable {
+public class RequestContext implements Cloneable {
     // RequestContext is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(RequestContext.class);
     private static final RequestContext NONE = new RequestContext().lock();
@@ -123,6 +123,7 @@ public final class RequestContext implements Cloneable {
     private ClientLogger logger;
     private InstrumentationContext instrumentationContext;
     private boolean locked;
+
 
     /**
      * Creates a new instance of {@link RequestContext}.
@@ -136,12 +137,14 @@ public final class RequestContext implements Cloneable {
         };
     }
 
-    private RequestContext(Consumer<HttpRequest> requestCallback, ClientLogger logger, InternalContext context,
-        InstrumentationContext instrumentationContext) {
-        this.requestCallback = requestCallback;
-        this.logger = logger;
-        this.context = context;
-        this.instrumentationContext = instrumentationContext;
+    protected RequestContext(RequestContext options) {
+        if (options != null) {
+            this.requestCallback = options.requestCallback;
+            this.context = options.context;
+            this.logger = options.logger;
+            this.instrumentationContext = options.instrumentationContext;
+            this.locked = options.locked;
+        }
     }
 
     /**
@@ -331,9 +334,19 @@ public final class RequestContext implements Cloneable {
      * Creates a new instance of {@link RequestContext} with the same properties as this instance.
      * @return A new instance of {@link RequestContext}.
      */
-    @SuppressWarnings("CloneDoesntCallSuperClone")
     public RequestContext clone() {
-        return new RequestContext(requestCallback, logger, context, instrumentationContext);
+        try {
+            RequestContext cloned = (RequestContext) super.clone();
+            cloned.requestCallback = this.requestCallback;
+            cloned.logger = this.logger;
+            cloned.context = this.context;
+            cloned.instrumentationContext = this.instrumentationContext;
+
+            return cloned;
+
+        } catch (CloneNotSupportedException e) {
+            throw LOGGER.logThrowableAsError(new RuntimeException("Failed to clone RequestContext", e));
+        }
     }
 
     /**
