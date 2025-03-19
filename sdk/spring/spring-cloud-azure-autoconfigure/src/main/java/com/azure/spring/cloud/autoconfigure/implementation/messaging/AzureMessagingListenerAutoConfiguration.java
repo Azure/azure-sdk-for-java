@@ -11,12 +11,15 @@ import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServi
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
+import com.azure.spring.messaging.eventhubs.implementation.core.annotation.EventHubsListenerAnnotationBeanPostProcessor;
 import com.azure.spring.messaging.eventhubs.implementation.core.config.EventHubsMessageListenerContainerFactory;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
 import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
+import com.azure.spring.messaging.servicebus.implementation.core.annotation.ServiceBusListenerAnnotationBeanPostProcessor;
 import com.azure.spring.messaging.servicebus.implementation.core.config.ServiceBusMessageListenerContainerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -56,6 +59,15 @@ public class AzureMessagingListenerAutoConfiguration {
             return containerFactory;
         }
 
+        @Configuration(proxyBeanMethods = false)
+        @EnableAzureMessaging
+        @ConditionalOnMissingBean(name = {
+            EventHubsListenerAnnotationBeanPostProcessor.DEFAULT_EVENT_HUBS_LISTENER_ANNOTATION_BPP_BEAN_NAME,
+            AzureListenerAnnotationBeanPostProcessorAdapter.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME })
+        static class EnableEventHubsConfiguration {
+
+        }
+
     }
 
     @Configuration
@@ -70,6 +82,16 @@ public class AzureMessagingListenerAutoConfiguration {
             messageConverterProvider.ifAvailable(containerFactory::setMessageConverter);
             return containerFactory;
         }
+
+        @Configuration(proxyBeanMethods = false)
+        @EnableAzureMessaging
+        @ConditionalOnMissingBean(name = {
+            ServiceBusListenerAnnotationBeanPostProcessor.DEFAULT_SERVICE_BUS_LISTENER_ANNOTATION_BPP_BEAN_NAME,
+            AzureListenerAnnotationBeanPostProcessorAdapter.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME })
+        static class EnableServiceBusConfiguration {
+
+        }
+
     }
 
     static class MessagingListenerCondition extends AnyNestedCondition {

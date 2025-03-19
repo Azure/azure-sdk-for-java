@@ -11,6 +11,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryEventData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils;
 import io.opentelemetry.api.OpenTelemetry;
@@ -140,6 +141,33 @@ public class AzureMonitorExportersEndToEndTest {
     }
 
     @Test
+    public void testBuildLogExporterWithCustomEvent() throws Exception {
+        // create the OpenTelemetry SDK
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
+        OpenTelemetry openTelemetry
+            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
+
+        // generate a log
+        generateEvent(openTelemetry);
+
+        // wait for export
+        countDownLatch.await(10, SECONDS);
+        assertThat(customValidationPolicy.getUrl())
+            .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
+
+        // validate log
+        TelemetryItem eventTelemetryItem = customValidationPolicy.getActualTelemetryItems()
+            .stream()
+            .filter(item -> item.getName().equals("Event"))
+            .findFirst()
+            .get();
+
+        validateEvent(eventTelemetryItem);
+    }
+
+    @Test
     public void testBuildTraceMetricLogExportersConsecutively() throws Exception {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(3);
@@ -211,6 +239,15 @@ public class AzureMonitorExportersEndToEndTest {
             .emit();
     }
 
+    private static void generateEvent(OpenTelemetry openTelemetry) {
+        Logger logger = openTelemetry.getLogsBridge().get("Sample");
+        logger.logRecordBuilder()
+            .setBody("TestEventBody")
+            .setAttribute(AttributeKey.stringKey("microsoft.custom_event.name"), "TestEvent")
+            .setAttribute(AttributeKey.stringKey("name"), "apple")
+            .emit();
+    }
+
     private static void validateSpan(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getName()).isEqualTo("RemoteDependency");
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
@@ -250,6 +287,21 @@ public class AzureMonitorExportersEndToEndTest {
         assertThat(messageData.getMessage()).isEqualTo("test body");
         assertThat(messageData.getProperties()).containsOnly(entry("LoggerName", "Sample"),
             entry("SourceType", "Logger"), entry("color", "red"), entry("name", "apple"));
+    }
+
+    private static void validateEvent(TelemetryItem telemetryItem) {
+        assertThat(telemetryItem.getName()).isEqualTo("Event");
+        assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
+        assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
+        assertThat(telemetryItem.getTags()).hasEntrySatisfying("ai.internal.sdkVersion",
+            v -> assertThat(v).contains("otel"));
+        assertThat(telemetryItem.getData().getBaseType()).isEqualTo("EventData");
+
+        TelemetryEventData eventData = TestUtils.toTelemetryEventData(telemetryItem.getData().getBaseData());
+        System.out.println("Actual Event Properties: " + eventData.getProperties());
+        assertThat(eventData.getName()).isEqualTo("TestEvent");
+        assertThat(eventData.getProperties()).containsOnly(entry("name", "apple"),
+            entry("microsoft.custom_event.name", "TestEvent"));
     }
 
     private static Map<String, String> getConfiguration() {
