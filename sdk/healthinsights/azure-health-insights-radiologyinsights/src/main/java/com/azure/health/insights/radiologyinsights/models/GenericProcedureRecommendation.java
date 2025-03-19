@@ -77,6 +77,23 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
         return this.description;
     }
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -124,7 +141,7 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
             }
             GenericProcedureRecommendation deserializedGenericProcedureRecommendation
                 = new GenericProcedureRecommendation(code);
-            deserializedGenericProcedureRecommendation.setExtension(extension);
+            deserializedGenericProcedureRecommendation.extension = extension;
             deserializedGenericProcedureRecommendation.kind = kind;
             deserializedGenericProcedureRecommendation.description = description;
             return deserializedGenericProcedureRecommendation;
