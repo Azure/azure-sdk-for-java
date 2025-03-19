@@ -28,7 +28,7 @@ import java.util.Objects;
 
 import static com.azure.v2.core.implementation.polling.PollingUtils.getAbsolutePath;
 import static com.azure.v2.core.implementation.polling.PollingUtils.locationCanPoll;
-import static com.azure.v2.core.implementation.polling.PollingUtils.serializeResponseSync;
+import static com.azure.v2.core.implementation.polling.PollingUtils.serializeResponse;
 
 /**
  * Implements a Location polling strategy.
@@ -38,7 +38,6 @@ import static com.azure.v2.core.implementation.polling.PollingUtils.serializeRes
  * kept
  */
 public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
-    private static final ObjectSerializer DEFAULT_SERIALIZER = new JsonSerializer();
 
     private static final ClientLogger LOGGER = new ClientLogger(LocationPollingStrategy.class);
 
@@ -55,7 +54,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public LocationPollingStrategy(HttpPipeline httpPipeline) {
-        this(httpPipeline, DEFAULT_SERIALIZER, Context.none());
+        this(httpPipeline, JsonSerializer.getInstance(), Context.none());
     }
 
     /**
@@ -108,7 +107,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = (pollingStrategyOptions.getSerializer() == null)
-            ? DEFAULT_SERIALIZER
+            ? JsonSerializer.getInstance()
             : pollingStrategyOptions.getSerializer();
         this.serviceVersion = pollingStrategyOptions.getServiceVersion();
         this.context
@@ -137,12 +136,12 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
             || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType), retryAfter);
+                PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         }
 
         throw LOGGER.logThrowableAsError(new RuntimeException(String.format(
             "Operation failed or cancelled with status code %d, 'Location' header: %s, and response body: %s",
-            response.getStatusCode(), locationHeader, serializeResponseSync(response.getValue(), serializer))));
+            response.getStatusCode(), locationHeader, serializeResponse(response.getValue(), serializer))));
     }
 
     @Override
@@ -169,12 +168,12 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 status = LongRunningOperationStatus.FAILED;
             }
 
-            BinaryData responseBody = response.getValue();
+            BinaryData responseBody = response.getValue().toReplayableBinaryData();
             pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, responseBody.toString());
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
 
             return new PollResponse<>(status,
-                PollingUtils.deserializeResponseSync(responseBody, serializer, pollResponseType), retryAfter);
+                PollingUtils.deserializeResponse(responseBody, serializer, pollResponseType), retryAfter);
         } catch (Exception e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
@@ -201,7 +200,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
         if (finalGetUrl == null) {
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
-            return PollingUtils.deserializeResponseSync(BinaryData.fromString(latestResponseBody), serializer,
+            return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer,
                 resultType);
         }
 
@@ -212,7 +211,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
-            return PollingUtils.deserializeResponseSync(responseBody, serializer, resultType);
+            return PollingUtils.deserializeResponse(responseBody, serializer, resultType);
         } catch (Exception e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }

@@ -59,7 +59,7 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
             || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType), retryAfter);
+                PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         } else {
             throw LOGGER.logThrowableAsError(
                 new RuntimeException("Operation failed or cancelled: " + response.getStatusCode()));
@@ -75,6 +75,6 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public U getResult(PollingContext<T> pollingContext, Type resultType) {
         T activationResponse = pollingContext.getActivationResponse().getValue();
-        return PollingUtils.convertResponseSync(activationResponse, serializer, resultType);
+        return PollingUtils.convertResponse(activationResponse, serializer, resultType);
     }
 }

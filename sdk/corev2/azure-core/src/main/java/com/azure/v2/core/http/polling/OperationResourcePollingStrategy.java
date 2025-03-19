@@ -155,13 +155,13 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType), retryAfter);
+                PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         }
 
         throw LOGGER.logThrowableAsError(new RuntimeException(
             String.format("Operation failed or cancelled with status code %d, '%s' header: %s, and response body: %s",
                 response.getStatusCode(), operationLocationHeaderName, operationLocationHeader,
-                PollingUtils.serializeResponseSync(response.getValue(), serializer))));
+                PollingUtils.serializeResponse(response.getValue(), serializer))));
 
     }
 
@@ -176,7 +176,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
             PollResult pollResult
-                = PollingUtils.deserializeResponseSync(responseBody, serializer, POLL_RESULT_TYPE_REFERENCE);
+                = PollingUtils.deserializeResponse(responseBody, serializer, POLL_RESULT_TYPE_REFERENCE);
 
             String resourceLocation = pollResult.getResourceLocation();
             if (resourceLocation != null) {
@@ -188,7 +188,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
 
             return new PollResponse<>(pollResult.getStatus(),
-                PollingUtils.deserializeResponseSync(responseBody, serializer, pollResponseType), retryAfter);
+                PollingUtils.deserializeResponse(responseBody, serializer, pollResponseType), retryAfter);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
@@ -216,7 +216,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
         if (finalGetUrl == null) {
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
-            return PollingUtils.deserializeResponseSync(BinaryData.fromString(latestResponseBody), serializer,
+            return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer,
                 resultType);
         }
         finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
@@ -226,7 +226,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             .setRequestOptions(new RequestOptions().setContext(context));
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
-            return PollingUtils.deserializeResponseSync(responseBody, serializer, resultType);
+            return PollingUtils.deserializeResponse(responseBody, serializer, resultType);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }

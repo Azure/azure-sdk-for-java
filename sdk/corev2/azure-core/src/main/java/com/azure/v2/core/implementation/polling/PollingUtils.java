@@ -46,7 +46,7 @@ public final class PollingUtils {
      * @param serializer the object serializer to use
      * @return a {@link BinaryData} response
      */
-    public static BinaryData serializeResponseSync(Object response, ObjectSerializer serializer) {
+    public static BinaryData serializeResponse(Object response, ObjectSerializer serializer) {
         if (response instanceof BinaryData) {
             return (BinaryData) response;
         } else {
@@ -65,8 +65,8 @@ public final class PollingUtils {
      * @return the deserialized object
      */
     @SuppressWarnings("unchecked")
-    public static <T> T deserializeResponseSync(BinaryData binaryData, ObjectSerializer serializer,
-        Type typeReference) {
+    public static <T> T deserializeResponse(BinaryData binaryData, ObjectSerializer serializer,
+                                            Type typeReference) {
         if (typeReference instanceof Class<?> && BinaryData.class.isAssignableFrom((Class<?>) typeReference)) {
             return (T) binaryData.toReplayableBinaryData();
         } else {
@@ -86,21 +86,21 @@ public final class PollingUtils {
      * This is useful when an activation response needs to be converted to a polling response type, or a final result
      * type, if the long-running operation completes upon activation.
      *
-     * @param response      the response from an activation or polling call
-     * @param serializer    the object serializer to use
+     * @param response the response from an activation or polling call
+     * @param serializer the object serializer to use
      * @param typeReference the {@link Type} of the user requested type
-     * @param <T>           the generic parameter of the user requested type
+     * @param <T> the generic parameter of the user requested type
      * @return the converted object
      */
     @SuppressWarnings("unchecked")
-    public static <T> T convertResponseSync(Object response, ObjectSerializer serializer, Type typeReference) {
+    public static <T> T convertResponse(Object response, ObjectSerializer serializer, Type typeReference) {
         if (response == null) {
             return null;
         } else if (typeReference instanceof Class<?>
             && response.getClass().isAssignableFrom((Class<?>) typeReference)) {
             return (T) response;
         } else {
-            return deserializeResponseSync(serializeResponseSync(response, serializer), serializer, typeReference);
+            return deserializeResponse(serializeResponse(response, serializer), serializer, typeReference);
         }
     }
 
@@ -198,7 +198,7 @@ public final class PollingUtils {
     /**
      * Determines if the operation resource can poll.
      * <p>
-     * Shared functionality for  {@link OperationResourcePollingStrategy}.
+     * Shared functionality for {@link OperationResourcePollingStrategy}.
      *
      * @param initialResponse The initial response.
      * @param operationLocationHeader The operation location header.
