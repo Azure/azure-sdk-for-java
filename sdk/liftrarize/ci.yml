@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/liftrarize/ci.yml
+      - sdk/liftrarize/azure-resourcemanager-liftrarize/
+    exclude:
+      - sdk/liftrarize/pom.xml
+      - sdk/liftrarize/azure-resourcemanager-liftrarize/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/liftrarize/ci.yml
+      - sdk/liftrarize/azure-resourcemanager-liftrarize/
+    exclude:
+      - sdk/liftrarize/pom.xml
+      - sdk/liftrarize/azure-resourcemanager-liftrarize/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerliftrarize
+    displayName: azure-resourcemanager-liftrarize
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: liftrarize
+    Artifacts:
+      - name: azure-resourcemanager-liftrarize
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerliftrarize
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerliftrarize }}
