@@ -3,6 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.otel;
 
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
@@ -219,30 +220,28 @@ public class OTelInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrumentWithResponse(String operationName, SdkRequestContext requestContext,
+    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
         Function<SdkRequestContext, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
-        Objects.requireNonNull(requestContext, "'requestContext' cannot be null");
 
-        InstrumentationContext instrumentationContext
-            = requestContext == null ? null : requestContext.getInstrumentationContext();
-        if (!shouldInstrument(SpanKind.CLIENT, instrumentationContext)) {
-            return operation.apply(requestContext);
+        InstrumentationContext context
+            = requestOptions == null ? null : requestOptions.getInstrumentationContext();
+        if (!shouldInstrument(SpanKind.CLIENT, context)) {
+            return operation.apply(SdkRequestContext.create(requestOptions));
         }
 
         long startTimeNs = callDurationMetric.isEnabled() ? System.nanoTime() : 0;
         InstrumentationAttributes commonAttributes = getOrCreateCommonAttributes(operationName);
-        Span span = tracer.spanBuilder(operationName, SpanKind.CLIENT, instrumentationContext)
+        Span span = tracer.spanBuilder(operationName, SpanKind.CLIENT, context)
             .setAllAttributes(commonAttributes)
             .startSpan();
 
         TracingScope scope = span.makeCurrent();
         RuntimeException error = null;
+        SdkRequestContext requestContext = SdkRequestContext.create(requestOptions, span.getInstrumentationContext());
+
         try {
-            if (span.getInstrumentationContext().isValid()) {
-                requestContext = requestContext.setInstrumentationContext(span.getInstrumentationContext());
-            }
             return operation.apply(requestContext);
         } catch (RuntimeException t) {
             error = t;

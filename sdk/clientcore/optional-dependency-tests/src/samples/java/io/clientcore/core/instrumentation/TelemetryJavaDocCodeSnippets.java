@@ -3,7 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
@@ -153,10 +153,10 @@ public class TelemetryJavaDocCodeSnippets {
         SampleClient client = new SampleClientBuilder().build();
 
         // Propagating context implicitly is preferred way in synchronous code.
-        // However, in asynchronous code, context may need to be propagated explicitly using RequestContext
+        // However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
         // and explicit io.clientcore.core.util.Context.
 
-        RequestContext context = new RequestContext()
+        RequestOptions context = new RequestOptions()
             .setInstrumentationContext(Instrumentation.createInstrumentationContext(span));
 
         // run on another thread - all telemetry will be correlated with the span created above
@@ -198,13 +198,13 @@ public class TelemetryJavaDocCodeSnippets {
         }
 
         @SuppressWarnings("try")
-        public Response<?> clientCallWithResponse(RequestContext options) {
-            return instrumentation.instrumentWithResponse("Sample.call", SdkRequestContext.fromRequestOptions(options), this::clientCallWithResponseImpl);
+        public Response<?> clientCallWithResponse(RequestOptions options) {
+            return instrumentation.instrumentWithResponse("Sample.call", options, this::clientCallWithResponseImpl);
         }
 
         @SuppressWarnings("try")
-        public void clientCall(RequestContext options) {
-            instrumentation.instrument("Sample.call", SdkRequestContext.fromRequestOptions(options), this::clientCallImpl);
+        public void clientCall(RequestOptions options) {
+            instrumentation.instrument("Sample.call", options, this::clientCallImpl);
         }
 
         private Response<?> clientCallWithResponseImpl(SdkRequestContext context) {

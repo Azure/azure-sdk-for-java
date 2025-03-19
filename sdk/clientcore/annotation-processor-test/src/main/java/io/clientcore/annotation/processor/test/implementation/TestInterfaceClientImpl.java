@@ -82,7 +82,7 @@ public final class TestInterfaceClientImpl {
         Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
                                         SdkRequestContext context);
         // HttpClientTests
-        // Need to add RequestContext to specify ResponseBodyMode, which is otherwise provided by convenience methods
+        // Need to add RequestOptions to specify ResponseBodyMode, which is otherwise provided by convenience methods
         @SuppressWarnings({ "unchecked", "cast" })
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
         default HttpBinJSON putConvenience(String uri, int putBody, SdkRequestContext context) {

@@ -3,6 +3,7 @@
 
 package io.clientcore.core.http;
 
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.SdkRequestContext;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -32,10 +33,10 @@ public class RestProxySpecialParametersBenchmark {
     // Context is last as it's usually the last parameter in the generated interface.
     // There isn't an exact known size of parameters but 7 is a good rough estimate for the average.
     private static final Object[] REST_PROXY_PARAMETERS
-        = new Object[] { "a string", 1, 1.5D, "another string", new Object(), -7, new SdkRequestContext() };
+        = new Object[] { "a string", 1, 1.5D, "another string", new Object(), -7, SdkRequestContext.create(RequestOptions.none()) };
 
     /**
-     * Benchmarks retrieving @link RequestContext} from the parameters array passed into
+     * Benchmarks retrieving @link RequestOptions} from the parameters array passed into
      * {@link RestProxy} by using the predetermined index where the type would be located.
      * <p>
      * Benchmarking shows this as ~5x faster than the iterative approach and is the current implementation.

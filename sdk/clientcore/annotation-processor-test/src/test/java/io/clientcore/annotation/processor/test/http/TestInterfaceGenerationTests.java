@@ -11,6 +11,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.paging.PagedIterable;
@@ -243,7 +244,7 @@ public class TestInterfaceGenerationTests {
             pagingOptions -> toPagedResponse(
                 testInterface.listFooListResult(uri, RequestContext.none()), null),
             (pagingOptions, nextLink) -> toPagedResponse(
-                testInterface.listNextFooListResult(nextLink, new SdkRequestContext()), nextLink));
+                testInterface.listNextFooListResult(nextLink, SdkRequestContext.create(RequestOptions.none())), nextLink));
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());

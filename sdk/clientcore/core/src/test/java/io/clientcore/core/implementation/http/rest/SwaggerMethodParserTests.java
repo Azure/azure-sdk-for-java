@@ -16,7 +16,7 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.TypeUtil;
@@ -521,17 +521,17 @@ public class SwaggerMethodParserTests {
         Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestContext", SdkRequestContext.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        SdkRequestContext emptyOptions = new SdkRequestContext();
+        SdkRequestContext emptyOptions = SdkRequestContext.create(RequestOptions.none());
 
         SdkRequestContext headerQueryOptions
-            = SdkRequestContext.fromRequestOptions(new RequestContext().addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
+            = SdkRequestContext.create(new RequestOptions().addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
                 .addQueryParam("foo", "bar"));
 
         SdkRequestContext uriOptions
-            = SdkRequestContext.fromRequestOptions(new RequestContext().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com")));
+            = SdkRequestContext.create(new RequestOptions().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com")));
 
         // Add this test back if error options is ever made public.
-        // RequestContext statusOptionOptions = new RequestContext().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
+        // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
 
         return Stream.of(Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
             Arguments.of(swaggerMethodParser, toObjectArray(emptyOptions), emptyOptions),

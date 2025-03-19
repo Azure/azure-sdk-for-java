@@ -9,27 +9,27 @@ import io.clientcore.core.serialization.json.models.JsonObject;
 import io.clientcore.core.utils.ProgressReporter;
 
 /**
- * JavaDoc code snippets for {@link RequestContext}.
+ * JavaDoc code snippets for {@link RequestOptions}.
  */
 public class RequestContextJavaDocCodeSnippets {
 
     /**
-     * Sample to demonstrate how to create an instance of {@link RequestContext}.
-     * @return An instance of {@link RequestContext}.
+     * Sample to demonstrate how to create an instance of {@link RequestOptions}.
+     * @return An instance of {@link RequestOptions}.
      */
-    public RequestContext createInstance() {
+    public RequestOptions createInstance() {
         // BEGIN: io.clientcore.core.http.rest.requestcontext.instantiation
-        RequestContext context = new RequestContext()
+        RequestOptions context = new RequestOptions()
             .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"));
         // END: io.clientcore.core.http.rest.requestcontext.instantiation
         return context;
     }
 
     /**
-     * Sample to demonstrate setting the JSON request body in a {@link RequestContext}.
-     * @return An instance of {@link RequestContext}.
+     * Sample to demonstrate setting the JSON request body in a {@link RequestOptions}.
+     * @return An instance of {@link RequestOptions}.
      */
-    public RequestContext setJsonRequestBodyInRequestContext() {
+    public RequestOptions setJsonRequestBodyInRequestContext() {
         // BEGIN: io.clientcore.core.http.rest.requestcontext.createjsonrequest
         JsonArray photoUris = new JsonArray()
             .addElement("https://imgur.com/pet1")
@@ -55,7 +55,7 @@ public class RequestContextJavaDocCodeSnippets {
         // END: io.clientcore.core.http.rest.requestcontext.createjsonrequest
 
         // BEGIN: io.clientcore.core.http.rest.requestcontext.postrequest
-        RequestContext context = new RequestContext()
+        RequestOptions context = new RequestOptions()
             .addRequestCallback(request -> request
                 // may already be set if request is created from a client
                 .setUri("https://petstore.example.com/pet")
@@ -68,12 +68,12 @@ public class RequestContextJavaDocCodeSnippets {
 
 
     /**
-     * Code snippet for {@link RequestContext#putData(String, Object)}
+     * Code snippet for {@link RequestOptions#putData(String, Object)}
      */
     public void putDataContext() {
         // BEGIN: io.clientcore.core.http.rest.requestcontext.putData
 
-        RequestContext context = new RequestContext()
+        RequestOptions context = new RequestOptions()
             .putData("stringKey", "value")
             .putData("complexObject", ProgressReporter.withProgressListener(value -> System.out.printf("Got %s bytes", value)));
 

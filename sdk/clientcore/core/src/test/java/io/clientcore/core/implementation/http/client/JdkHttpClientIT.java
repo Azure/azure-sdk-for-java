@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.http.ContentType;
@@ -222,7 +223,7 @@ public class JdkHttpClientIT {
     public void testBufferedResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<BinaryData> response = getResponse(client, "/short", new SdkRequestContext())) {
+        try (Response<BinaryData> response = getResponse(client, "/short", SdkRequestContext.create(RequestOptions.none()))) {
             assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
@@ -231,7 +232,7 @@ public class JdkHttpClientIT {
     public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<BinaryData> response = getResponse(client, "/empty", new SdkRequestContext())) {
+        try (Response<BinaryData> response = getResponse(client, "/empty", SdkRequestContext.create(RequestOptions.none()))) {
             assertEquals(0L, response.getValue().toBytes().length);
         }
     }
