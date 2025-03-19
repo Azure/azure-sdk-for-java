@@ -65,8 +65,7 @@ public final class PollingUtils {
      * @return the deserialized object
      */
     @SuppressWarnings("unchecked")
-    public static <T> T deserializeResponse(BinaryData binaryData, ObjectSerializer serializer,
-                                            Type typeReference) {
+    public static <T> T deserializeResponse(BinaryData binaryData, ObjectSerializer serializer, Type typeReference) {
         if (typeReference instanceof Class<?> && BinaryData.class.isAssignableFrom((Class<?>) typeReference)) {
             return (T) binaryData.toReplayableBinaryData();
         } else {

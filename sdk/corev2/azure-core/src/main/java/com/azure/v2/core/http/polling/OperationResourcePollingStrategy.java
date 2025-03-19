@@ -216,8 +216,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
         if (finalGetUrl == null) {
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
-            return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer,
-                resultType);
+            return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         }
         finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
 
