@@ -31,6 +31,8 @@ public class HttpRequestInitializerTest {
         method.setHttpMethod(HttpMethod.valueOf(httpMethod));
         method.addQueryParam(queryKey1, queryValue1);
         method.addQueryParam(queryKey2, queryValue2);
+        method.addHeader("Content-Type", "application/json");
+        method.addHeader("Content-Length", String.valueOf(0));
 
         // Act: Call the method
         processor.initializeHttpRequest(body, method);
@@ -58,6 +60,10 @@ public class HttpRequestInitializerTest {
         String expectedHttpRequestStatement
             = "HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod." + httpMethod + ").setUri(url);";
         assertTrue(normalizedBody.contains(expectedHttpRequestStatement));
+
+        String expectedHttpRequestHeaderStatement
+            = "httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(0)).add(HttpHeaderName.CONTENT_TYPE, String.valueOf(application / json));";
+        assertTrue(normalizedBody.contains(expectedHttpRequestHeaderStatement));
     }
 
 }

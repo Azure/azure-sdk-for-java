@@ -428,9 +428,9 @@ public final class CoreUtils {
 
     /**
      * Appends a query parameter to the given host URL.
-     * This method checks if the URL already contains a query string (i.e., a '?').
-     * If a query string exists, the new parameter is added with an '&' separator.
-     * If no query string exists, the new parameter is added with a '?' separator.
+     * This method checks if the URL already contains a query string (i.e., a "?").
+     * If a query string exists, the new parameter is added with an "&" separator.
+     * If no query string exists, the new parameter is added with a "?" separator.
      *
      * @param url the base URL to which the query parameter will be appended.
      * @param key the name of the query parameter (e.g., "api-version", "name", "After").

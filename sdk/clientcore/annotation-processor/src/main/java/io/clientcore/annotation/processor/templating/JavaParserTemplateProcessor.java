@@ -310,7 +310,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         BlockStmt body = internalMethod.getBody().get();
 
         initializeHttpRequest(body, method);
-        addHeadersToRequest(body, method);
         boolean serializationFormatSet = addRequestBody(body, method);
         addRequestOptionsToRequestIfPresent(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
@@ -371,6 +370,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         statement.setLineComment("\n Create the HTTP request");
         body.addStatement(statement);
+        addHeadersToRequest(body, method);
     }
 
     private void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
@@ -379,25 +379,32 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
 
         body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
-
+        StringBuilder httpRequestBuilder = new StringBuilder("httpRequest.getHeaders()"); // Start the header chaining
         for (Map.Entry<String, String> header : method.getHeaders().entrySet()) {
             boolean isStringType = method.getParameters()
                 .stream()
                 .anyMatch(parameter -> parameter.getName().equals(header.getValue())
                     && "String".equals(parameter.getShortTypeName()));
             String value = isStringType ? header.getValue() : "String.valueOf(" + header.getValue() + ")";
-
             String constantName
                 = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(header.getKey().toLowerCase(Locale.ROOT));
             if (constantName != null) {
-                body.addStatement(StaticJavaParser.parseStatement(
-                    "httpRequest.getHeaders().add(HttpHeaderName." + constantName + ", " + value + ");"));
+                httpRequestBuilder.append(".add(HttpHeaderName.")
+                    .append(constantName)
+                    .append(", ")
+                    .append(value)
+                    .append(")");
             } else {
-                body.addStatement(
-                    StaticJavaParser.parseStatement("httpRequest.getHeaders().add(HttpHeaderName.fromString(\""
-                        + header.getKey() + "\"), " + value + ");"));
+                httpRequestBuilder.append(".add(HttpHeaderName.fromString(\"")
+                    .append(header.getKey())
+                    .append("\"), ")
+                    .append(value)
+                    .append(")");
+
             }
         }
+        // Finalize the statement
+        body.addStatement(StaticJavaParser.parseStatement(httpRequestBuilder.toString() + ";"));
     }
 
     private boolean addRequestBody(BlockStmt body, HttpRequestContext method) {
