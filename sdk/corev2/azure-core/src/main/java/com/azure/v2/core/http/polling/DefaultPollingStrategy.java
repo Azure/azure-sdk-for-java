@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * The default synchronous polling strategy to use with Azure data plane services. The default polling strategy will
+ * The default polling strategy to use with Azure data plane services. The default polling strategy will
  * attempt three known strategies, {@link OperationResourcePollingStrategy}, {@link LocationPollingStrategy},
  * and {@link StatusCheckPollingStrategy}, in this order. The first strategy that can poll on the initial response
  * will be used. The created chained polling strategy is capable of handling most of the polling scenarios in Azure.
@@ -27,7 +27,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
     private final ChainedPollingStrategy<T, U> chainedPollingStrategy;
 
     /**
-     * Creates a synchronous chained polling strategy with three known polling strategies,
+     * Creates a chained polling strategy with three known polling strategies,
      * {@link OperationResourcePollingStrategy}, {@link LocationPollingStrategy}, and
      * {@link StatusCheckPollingStrategy}, in this order, with a JSON serializer.
      *
@@ -39,7 +39,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
     }
 
     /**
-     * Creates a synchronous chained polling strategy with three known polling strategies,
+     * Creates a chained polling strategy with three known polling strategies,
      * {@link OperationResourcePollingStrategy}, {@link LocationPollingStrategy}, and
      * {@link StatusCheckPollingStrategy}, in this order, with a JSON serializer.
      *
@@ -52,7 +52,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
     }
 
     /**
-     * Creates a synchronous chained polling strategy with three known polling strategies,
+     * Creates a chained polling strategy with three known polling strategies,
      * {@link OperationResourcePollingStrategy}, {@link LocationPollingStrategy}, and
      * {@link StatusCheckPollingStrategy}, in this order, with a JSON serializer.
      *
@@ -66,7 +66,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
     }
 
     /**
-     * Creates a synchronous chained polling strategy with three known polling strategies,
+     * Creates a chained polling strategy with three known polling strategies,
      * {@link OperationResourcePollingStrategy}, {@link LocationPollingStrategy}, and
      * {@link StatusCheckPollingStrategy}, in this order, with a JSON serializer.
      *

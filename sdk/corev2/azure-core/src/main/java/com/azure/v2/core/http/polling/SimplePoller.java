@@ -26,18 +26,7 @@ import static com.azure.v2.core.implementation.polling.PollingUtils.validateTime
  * amount of time to complete. These operations are typically handled asynchronously, with the client initiating the
  * operation and then polling the service at intervals to determine whether the operation has completed.</p>
  *
- * <p><strong>Code Sample: Using a SimpleSyncPoller to poll until the operation is successfully completed</strong></p>
- *
- * <!-- src_embed com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll -->
- * <pre>
- * LongRunningOperationStatus operationStatus = syncPoller.poll&#40;&#41;.getStatus&#40;&#41;;
- * while &#40;operationStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
- *     System.out.println&#40;&quot;Polling status: &quot; + operationStatus.toString&#40;&#41;&#41;;
- *     System.out.println&#40;&quot;Polling response: &quot; + operationStatus.toString&#40;&#41;&#41;;
- *     operationStatus = syncPoller.poll&#40;&#41;.getStatus&#40;&#41;;
- * &#125;
- * </pre>
- * <!-- end com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll -->
+ * <p><strong>Code Sample: Using a SimplePoller to poll until the operation is successfully completed</strong></p>
  *
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of the long running operation

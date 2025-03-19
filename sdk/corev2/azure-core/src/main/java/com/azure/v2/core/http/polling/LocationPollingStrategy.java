@@ -31,7 +31,7 @@ import static com.azure.v2.core.implementation.polling.PollingUtils.locationCanP
 import static com.azure.v2.core.implementation.polling.PollingUtils.serializeResponseSync;
 
 /**
- * Implements a synchronous Location polling strategy.
+ * Implements a Location polling strategy.
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be

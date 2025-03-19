@@ -32,7 +32,7 @@ import static com.azure.v2.core.implementation.polling.PollingUtils.getAbsoluteP
 import static com.azure.v2.core.implementation.polling.PollingUtils.operationResourceCanPoll;
 
 /**
- * Implements a synchronous operation resource polling strategy, typically from Operation-Location.
+ * Implements a operation resource polling strategy, typically from Operation-Location.
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
