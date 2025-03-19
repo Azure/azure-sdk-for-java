@@ -12,7 +12,6 @@ import io.clientcore.core.implementation.http.rest.RestProxyImpl;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
-import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 
 import java.io.IOException;
@@ -178,11 +177,7 @@ public final class HttpResponseBodyDecoder {
     private static Type constructWireResponseType(Type resultType, Type wireType) {
         Objects.requireNonNull(wireType);
 
-        if (resultType == byte[].class) {
-            if (wireType == Base64Uri.class) {
-                return Base64Uri.class;
-            }
-        } else if (resultType == OffsetDateTime.class) {
+        if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
                 return DateTimeRfc1123.class;
             }
@@ -214,11 +209,7 @@ public final class HttpResponseBodyDecoder {
      * @return The converted object.
      */
     private static Object convertToResultType(final Object wireResponse, final Type resultType, final Type wireType) {
-        if (resultType == byte[].class) {
-            if (wireType == Base64Uri.class) {
-                return (new Base64Uri(wireResponse.toString())).decodedBytes();
-            }
-        } else if (resultType == OffsetDateTime.class) {
+        if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
                 return new DateTimeRfc1123(wireResponse.toString()).getDateTime();
             } else {

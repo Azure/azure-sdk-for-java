@@ -12,7 +12,6 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -21,16 +20,16 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.Base64Uri;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.ExpandableEnum;
 import io.clientcore.core.utils.UriBuilder;
-import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.serialization.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -195,7 +194,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         Class<?> returnValueWireType = httpRequestInformation.returnValueWireType();
 
-        if (returnValueWireType == Base64Uri.class || returnValueWireType == DateTimeRfc1123.class) {
+        if (returnValueWireType == DateTimeRfc1123.class) {
             this.returnValueWireType = returnValueWireType;
         } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
             this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];

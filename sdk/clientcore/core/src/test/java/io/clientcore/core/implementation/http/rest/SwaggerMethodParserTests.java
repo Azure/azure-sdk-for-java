@@ -23,7 +23,6 @@ import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.UriBuilder;
@@ -130,8 +129,8 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noWireType();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = Base64Uri.class)
-        void base64Uri();
+//        @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = Base64Uri.class)
+//        void base64Uri();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = DateTimeRfc1123.class)
         void dateTimeRfc1123();
@@ -152,7 +151,7 @@ public class SwaggerMethodParserTests {
         Class<WireTypesMethods> clazz = WireTypesMethods.class;
 
         return Stream.of(Arguments.of(clazz.getDeclaredMethod("noWireType"), null),
-            Arguments.of(clazz.getDeclaredMethod("base64Uri"), Base64Uri.class),
+//            Arguments.of(clazz.getDeclaredMethod("base64Uri"), Base64Uri.class),
             Arguments.of(clazz.getDeclaredMethod("dateTimeRfc1123"), DateTimeRfc1123.class),
             Arguments.of(clazz.getDeclaredMethod("unknownType"), null));
     }
