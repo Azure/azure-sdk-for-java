@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,54 +20,14 @@ import java.util.UUID;
 @Fluent
 public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
     /*
-     * data source type
-     */
-    private DataSourceType dataSourceType = DataSourceType.AZURE_APPLICATION_INSIGHTS;
-
-    /*
      * The dataSourceParameter property.
      */
     private AzureApplicationInsightsParameter dataSourceParameter;
-
-    /*
-     * data feed created time
-     */
-    private OffsetDateTime createdTime;
-
-    /*
-     * data feed status
-     */
-    private EntityStatus status;
-
-    /*
-     * data feed creator
-     */
-    private String creator;
-
-    /*
-     * the query user is one of data feed administrator or not
-     */
-    private Boolean isAdmin;
-
-    /*
-     * data feed unique id
-     */
-    private UUID dataFeedId;
 
     /**
      * Creates an instance of AzureApplicationInsightsDataFeed class.
      */
     public AzureApplicationInsightsDataFeed() {
-    }
-
-    /**
-     * Get the dataSourceType property: data source type.
-     * 
-     * @return the dataSourceType value.
-     */
-    @Override
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
     }
 
     /**
@@ -90,56 +49,6 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
         setDataSourceParameter(AzureApplicationInsightsParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
-    }
-
-    /**
-     * Get the createdTime property: data feed created time.
-     * 
-     * @return the createdTime value.
-     */
-    @Override
-    public OffsetDateTime getCreatedTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the status property: data feed status.
-     * 
-     * @return the status value.
-     */
-    @Override
-    public EntityStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Get the creator property: data feed creator.
-     * 
-     * @return the creator value.
-     */
-    @Override
-    public String getCreator() {
-        return this.creator;
-    }
-
-    /**
-     * Get the isAdmin property: the query user is one of data feed administrator or not.
-     * 
-     * @return the isAdmin value.
-     */
-    @Override
-    public Boolean isAdmin() {
-        return this.isAdmin;
-    }
-
-    /**
-     * Get the dataFeedId property: data feed unique id.
-     * 
-     * @return the dataFeedId value.
-     */
-    @Override
-    public UUID getDataFeedId() {
-        return this.dataFeedId;
     }
 
     /**
@@ -358,12 +267,13 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.AZURE_APPLICATION_INSIGHTS == null
+                ? null
+                : DataSourceType.AZURE_APPLICATION_INSIGHTS.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());
@@ -394,8 +304,6 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
-        jsonWriter.writeStringField("dataSourceType",
-            this.dataSourceType == null ? null : this.dataSourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -405,7 +313,8 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureApplicationInsightsDataFeed if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureApplicationInsightsDataFeed.
      */
     public static AzureApplicationInsightsDataFeed fromJson(JsonReader jsonReader) throws IOException {
@@ -416,7 +325,14 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    String dataSourceType = reader.getString();
+                    if (!"AzureApplicationInsights".equals(dataSourceType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceType' was expected to be non-null and equal to 'AzureApplicationInsights'. The found 'dataSourceType' was '"
+                                + dataSourceType + "'.");
+                    }
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeed.setDataFeedName(reader.getString());
                 } else if ("granularityName".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeed
@@ -425,11 +341,11 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedAzureApplicationInsightsDataFeed.setMetrics(metrics);
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsDataFeed.setDataStartFrom(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedAzureApplicationInsightsDataFeed.setDataStartFrom(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsDataFeed.dataFeedId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedAzureApplicationInsightsDataFeed
+                        .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeed.setDataFeedDescription(reader.getString());
                 } else if ("granularityAmount".equals(fieldName)) {
@@ -479,14 +395,14 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
                     List<String> viewers = reader.readArray(reader1 -> reader1.getString());
                     deserializedAzureApplicationInsightsDataFeed.setViewers(viewers);
                 } else if ("isAdmin".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsDataFeed.isAdmin = reader.getNullable(JsonReader::getBoolean);
+                    deserializedAzureApplicationInsightsDataFeed.setIsAdmin(reader.getNullable(JsonReader::getBoolean));
                 } else if ("creator".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsDataFeed.creator = reader.getString();
+                    deserializedAzureApplicationInsightsDataFeed.setCreator(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsDataFeed.status = EntityStatus.fromString(reader.getString());
+                    deserializedAzureApplicationInsightsDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsDataFeed.createdTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedAzureApplicationInsightsDataFeed.setCreatedTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {
@@ -497,9 +413,6 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeed.dataSourceParameter
                         = AzureApplicationInsightsParameter.fromJson(reader);
-                } else if ("dataSourceType".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsDataFeed.dataSourceType
-                        = DataSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -168,20 +168,6 @@ public final class SearchServiceClientImpl {
     }
 
     /**
-     * The AliasesImpl object to access its operations.
-     */
-    private final AliasesImpl aliases;
-
-    /**
-     * Gets the AliasesImpl object to access its operations.
-     * 
-     * @return the AliasesImpl object.
-     */
-    public AliasesImpl getAliases() {
-        return this.aliases;
-    }
-
-    /**
      * Initializes an instance of SearchServiceClient client.
      * 
      * @param endpoint The endpoint URL of the search service.
@@ -222,7 +208,6 @@ public final class SearchServiceClientImpl {
         this.skillsets = new SkillsetsImpl(this);
         this.synonymMaps = new SynonymMapsImpl(this);
         this.indexes = new IndexesImpl(this);
-        this.aliases = new AliasesImpl(this);
         this.service
             = RestProxy.create(SearchServiceClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -262,7 +247,14 @@ public final class SearchServiceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchServiceStatistics>>
         getServiceStatisticsWithResponseAsync(RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> getServiceStatisticsWithResponseAsync(requestOptions, context));
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(context -> service.getServiceStatistics(this.getEndpoint(), xMsClientRequestId,
+            this.getApiVersion(), accept, context));
     }
 
     /**

@@ -13,17 +13,13 @@ import org.slf4j.Logger;
 public class CallautomationCustomizations extends Customization {
     private static final String BASE_PACKAGE = "com.azure.communication.callautomation.";
     private static final String IMPLEMENTATION_MODELS_PACKAGE = BASE_PACKAGE + "implementation.models";
-    
-    // Enum class names
-    public static final String RECORDING_STORAGE_TYPE_INTERNAL_CLASS = "RecordingStorageTypeInternal";
-    public static final String AUDIO_FORMAT_INTERNAL_CLASS = "AudioFormatInternal";
-    public static final String MEDIA_STREAMING_STATUS_DETAILS_CLASS = "MediaStreamingStatusDetails";
+    public static final String CALL_AUTOMATION_CLASS_NAME = "RecordingStorageTypeInternal";
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
 
         try {
-            customizeCallAutomationEnumMembers(customization);
+            customizeCallAutomation(customization);
             encodePathParam(customization, logger);
         } catch (IllegalArgumentException e) {
             logger.info("Package Not Found: " + e.getMessage());
@@ -42,22 +38,11 @@ public class CallautomationCustomizations extends Customization {
         customization.getRawEditor().replaceFile("src/main/java/com/azure/communication/callautomation/implementation/CallConnectionsImpl.java", replace);
     }
 
-    private void customizeCallAutomationEnumMembers(LibraryCustomization customization) {
+    private void customizeCallAutomation(LibraryCustomization customization) {
         ClassCustomization recordingStorageTypeInternalConfigurationClass = customization.getPackage(IMPLEMENTATION_MODELS_PACKAGE)
-            .getClass(RECORDING_STORAGE_TYPE_INTERNAL_CLASS);
+            .getClass(CALL_AUTOMATION_CLASS_NAME);
         recordingStorageTypeInternalConfigurationClass
             .renameEnumMember("AZURE_COMMUNICATION_SERVICES", "ACS");
-
-        // As per azure board review renaming the PCM16KMONO to PCM_16K_MONO,PCM24KMONO to PCM_24K_MONO
-        ClassCustomization audioFormatInternalClass = customization.getPackage(IMPLEMENTATION_MODELS_PACKAGE)
-            .getClass(AUDIO_FORMAT_INTERNAL_CLASS);
-        audioFormatInternalClass
-            .renameEnumMember("PCM16KMONO", "PCM_16K_MONO")
-            .renameEnumMember("PCM24KMONO", "PCM_24K_MONO");
-
-        ClassCustomization mediaStreamingStatusDetailsClass = customization.getPackage(IMPLEMENTATION_MODELS_PACKAGE)
-            .getClass(MEDIA_STREAMING_STATUS_DETAILS_CLASS);
-        mediaStreamingStatusDetailsClass
-            .renameEnumMember("INITIAL_WEB_SOCKET_CONNECTION_FAILED", "INITIAL_WEBSOCKET_CONNECTION_FAILED");
     }
+
 }

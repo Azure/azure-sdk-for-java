@@ -59,12 +59,6 @@ public final class ChatThreadClientBuilder implements ConfigurationTrait<ChatThr
     private static final String SDK_VERSION = "version";
 
     /**
-     * Creates a new instance of {@link ChatThreadClientBuilder}.
-     */
-    public ChatThreadClientBuilder() {
-    }
-
-    /**
      * Set endpoint of the service
      *
      * @param endpoint url of the service

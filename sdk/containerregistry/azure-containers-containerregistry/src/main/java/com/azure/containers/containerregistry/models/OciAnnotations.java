@@ -5,20 +5,17 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
-/**
- * Additional information provided through arbitrary metadata.
- */
+/** Additional information provided through arbitrary metadata. */
 @Fluent
 public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     /*
@@ -48,8 +45,8 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     private String source;
 
     /*
-     * Version of the packaged software. The version MAY match a label or tag in the source code repository, may also be
-     * Semantic versioning-compatible
+     * Version of the packaged software. The version MAY match a label or tag in the source code repository, may also
+     * be Semantic versioning-compatible
      */
     private String version;
 
@@ -88,16 +85,14 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      */
     private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of OciAnnotations class.
-     */
+    /** Creates an instance of OciAnnotations class. */
     public OciAnnotations() {
     }
 
     /**
      * Get the createdOn property: Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6).
-     * 
+     *
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
@@ -107,7 +102,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     /**
      * Set the createdOn property: Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6).
-     * 
+     *
      * @param createdOn the createdOn value to set.
      * @return the OciAnnotations object itself.
      */
@@ -118,7 +113,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Get the authors property: Contact details of the people or organization responsible for the image.
-     * 
+     *
      * @return the authors value.
      */
     public String getAuthors() {
@@ -127,7 +122,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Set the authors property: Contact details of the people or organization responsible for the image.
-     * 
+     *
      * @param authors the authors value to set.
      * @return the OciAnnotations object itself.
      */
@@ -138,7 +133,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Get the url property: URL to find more information on the image.
-     * 
+     *
      * @return the url value.
      */
     public String getUrl() {
@@ -147,7 +142,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Set the url property: URL to find more information on the image.
-     * 
+     *
      * @param url the url value to set.
      * @return the OciAnnotations object itself.
      */
@@ -158,7 +153,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Get the documentation property: URL to get documentation on the image.
-     * 
+     *
      * @return the documentation value.
      */
     public String getDocumentation() {
@@ -167,7 +162,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Set the documentation property: URL to get documentation on the image.
-     * 
+     *
      * @param documentation the documentation value to set.
      * @return the OciAnnotations object itself.
      */
@@ -178,7 +173,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Get the source property: URL to get source code for building the image.
-     * 
+     *
      * @return the source value.
      */
     public String getSource() {
@@ -187,7 +182,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Set the source property: URL to get source code for building the image.
-     * 
+     *
      * @param source the source value to set.
      * @return the OciAnnotations object itself.
      */
@@ -199,7 +194,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     /**
      * Get the version property: Version of the packaged software. The version MAY match a label or tag in the source
      * code repository, may also be Semantic versioning-compatible.
-     * 
+     *
      * @return the version value.
      */
     public String getVersion() {
@@ -209,7 +204,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     /**
      * Set the version property: Version of the packaged software. The version MAY match a label or tag in the source
      * code repository, may also be Semantic versioning-compatible.
-     * 
+     *
      * @param version the version value to set.
      * @return the OciAnnotations object itself.
      */
@@ -220,7 +215,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Get the revision property: Source control revision identifier for the packaged software.
-     * 
+     *
      * @return the revision value.
      */
     public String getRevision() {
@@ -229,7 +224,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Set the revision property: Source control revision identifier for the packaged software.
-     * 
+     *
      * @param revision the revision value to set.
      * @return the OciAnnotations object itself.
      */
@@ -240,7 +235,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Get the vendor property: Name of the distributing entity, organization or individual.
-     * 
+     *
      * @return the vendor value.
      */
     public String getVendor() {
@@ -249,7 +244,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Set the vendor property: Name of the distributing entity, organization or individual.
-     * 
+     *
      * @param vendor the vendor value to set.
      * @return the OciAnnotations object itself.
      */
@@ -261,7 +256,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     /**
      * Get the licenses property: License(s) under which contained software is distributed as an SPDX License
      * Expression.
-     * 
+     *
      * @return the licenses value.
      */
     public String getLicenses() {
@@ -271,7 +266,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     /**
      * Set the licenses property: License(s) under which contained software is distributed as an SPDX License
      * Expression.
-     * 
+     *
      * @param licenses the licenses value to set.
      * @return the OciAnnotations object itself.
      */
@@ -282,7 +277,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Get the name property: Name of the reference for a target.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -291,7 +286,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Set the name property: Name of the reference for a target.
-     * 
+     *
      * @param name the name value to set.
      * @return the OciAnnotations object itself.
      */
@@ -302,7 +297,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Get the title property: Human-readable title of the image.
-     * 
+     *
      * @return the title value.
      */
     public String getTitle() {
@@ -311,7 +306,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Set the title property: Human-readable title of the image.
-     * 
+     *
      * @param title the title value to set.
      * @return the OciAnnotations object itself.
      */
@@ -322,7 +317,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Get the description property: Human-readable description of the software packaged in the image.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -331,7 +326,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Set the description property: Human-readable description of the software packaged in the image.
-     * 
+     *
      * @param description the description value to set.
      * @return the OciAnnotations object itself.
      */
@@ -342,7 +337,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Get the additionalProperties property: Additional information provided through arbitrary metadata.
-     * 
+     *
      * @return the additionalProperties value.
      */
     public Map<String, Object> getAdditionalProperties() {
@@ -351,7 +346,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Set the additionalProperties property: Additional information provided through arbitrary metadata.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the OciAnnotations object itself.
      */
@@ -360,14 +355,10 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("org.opencontainers.image.created",
-            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+        jsonWriter.writeStringField("org.opencontainers.image.created", Objects.toString(this.createdOn, null));
         jsonWriter.writeStringField("org.opencontainers.image.authors", this.authors);
         jsonWriter.writeStringField("org.opencontainers.image.url", this.url);
         jsonWriter.writeStringField("org.opencontainers.image.documentation", this.documentation);
@@ -389,10 +380,10 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
 
     /**
      * Reads an instance of OciAnnotations from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of OciAnnotations if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the OciAnnotations.
      */
     public static OciAnnotations fromJson(JsonReader jsonReader) throws IOException {
@@ -404,8 +395,8 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
                 reader.nextToken();
 
                 if ("org.opencontainers.image.created".equals(fieldName)) {
-                    deserializedOciAnnotations.createdOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedOciAnnotations.createdOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("org.opencontainers.image.authors".equals(fieldName)) {
                     deserializedOciAnnotations.authors = reader.getString();
                 } else if ("org.opencontainers.image.url".equals(fieldName)) {

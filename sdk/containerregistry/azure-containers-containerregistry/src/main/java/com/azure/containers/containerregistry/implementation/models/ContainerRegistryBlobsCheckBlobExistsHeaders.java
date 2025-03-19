@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The ContainerRegistryBlobsCheckBlobExistsHeaders model.
- */
+/** The ContainerRegistryBlobsCheckBlobExistsHeaders model. */
 @Fluent
 public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
     /*
@@ -33,7 +31,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainerRegistryBlobsCheckBlobExistsHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsCheckBlobExistsHeaders(HttpHeaders rawHeaders) {
@@ -47,7 +45,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
 
     /**
      * Get the contentLength property: The Content-Length property.
-     * 
+     *
      * @return the contentLength value.
      */
     public Long getContentLength() {
@@ -56,7 +54,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
 
     /**
      * Set the contentLength property: The Content-Length property.
-     * 
+     *
      * @param contentLength the contentLength value to set.
      * @return the ContainerRegistryBlobsCheckBlobExistsHeaders object itself.
      */
@@ -67,7 +65,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
 
     /**
      * Get the dockerContentDigest property: The Docker-Content-Digest property.
-     * 
+     *
      * @return the dockerContentDigest value.
      */
     public String getDockerContentDigest() {
@@ -76,7 +74,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
 
     /**
      * Set the dockerContentDigest property: The Docker-Content-Digest property.
-     * 
+     *
      * @param dockerContentDigest the dockerContentDigest value to set.
      * @return the ContainerRegistryBlobsCheckBlobExistsHeaders object itself.
      */
@@ -87,7 +85,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
 
     /**
      * Get the location property: The Location property.
-     * 
+     *
      * @return the location value.
      */
     public String getLocation() {
@@ -96,7 +94,7 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
 
     /**
      * Set the location property: The Location property.
-     * 
+     *
      * @param location the location value to set.
      * @return the ContainerRegistryBlobsCheckBlobExistsHeaders object itself.
      */

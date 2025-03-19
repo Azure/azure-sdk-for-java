@@ -36,16 +36,6 @@ public final class ConnectRequest implements JsonSerializable<ConnectRequest> {
      */
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
-    /*
-     * Media Streaming Options.
-     */
-    private MediaStreamingOptionsInternal mediaStreamingOptions;
-
-    /*
-     * Transcription Options.
-     */
-    private TranscriptionOptionsInternal transcriptionOptions;
-
     /**
      * Creates an instance of ConnectRequest class.
      */
@@ -133,46 +123,6 @@ public final class ConnectRequest implements JsonSerializable<ConnectRequest> {
     }
 
     /**
-     * Get the mediaStreamingOptions property: Media Streaming Options.
-     * 
-     * @return the mediaStreamingOptions value.
-     */
-    public MediaStreamingOptionsInternal getMediaStreamingOptions() {
-        return this.mediaStreamingOptions;
-    }
-
-    /**
-     * Set the mediaStreamingOptions property: Media Streaming Options.
-     * 
-     * @param mediaStreamingOptions the mediaStreamingOptions value to set.
-     * @return the ConnectRequest object itself.
-     */
-    public ConnectRequest setMediaStreamingOptions(MediaStreamingOptionsInternal mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionOptions property: Transcription Options.
-     * 
-     * @return the transcriptionOptions value.
-     */
-    public TranscriptionOptionsInternal getTranscriptionOptions() {
-        return this.transcriptionOptions;
-    }
-
-    /**
-     * Set the transcriptionOptions property: Transcription Options.
-     * 
-     * @param transcriptionOptions the transcriptionOptions value to set.
-     * @return the ConnectRequest object itself.
-     */
-    public ConnectRequest setTranscriptionOptions(TranscriptionOptionsInternal transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -182,8 +132,6 @@ public final class ConnectRequest implements JsonSerializable<ConnectRequest> {
         jsonWriter.writeStringField("callbackUri", this.callbackUri);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
-        jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
-        jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -212,10 +160,6 @@ public final class ConnectRequest implements JsonSerializable<ConnectRequest> {
                 } else if ("callIntelligenceOptions".equals(fieldName)) {
                     deserializedConnectRequest.callIntelligenceOptions
                         = CallIntelligenceOptionsInternal.fromJson(reader);
-                } else if ("mediaStreamingOptions".equals(fieldName)) {
-                    deserializedConnectRequest.mediaStreamingOptions = MediaStreamingOptionsInternal.fromJson(reader);
-                } else if ("transcriptionOptions".equals(fieldName)) {
-                    deserializedConnectRequest.transcriptionOptions = TranscriptionOptionsInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -11,14 +11,12 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The ManifestListAttributes model.
- */
+/** The ManifestListAttributes model. */
 @Fluent
 public final class ManifestListAttributes implements JsonSerializable<ManifestListAttributes> {
     /*
-     * The MIME type of the referenced object. This will generally be application/vnd.docker.image.manifest.v2+json, but
-     * it could also be application/vnd.docker.image.manifest.v1+json
+     * The MIME type of the referenced object. This will generally be application/vnd.docker.image.manifest.v2+json,
+     * but it could also be application/vnd.docker.image.manifest.v1+json
      */
     private String mediaType;
 
@@ -38,9 +36,7 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
      */
     private Platform platform;
 
-    /**
-     * Creates an instance of ManifestListAttributes class.
-     */
+    /** Creates an instance of ManifestListAttributes class. */
     public ManifestListAttributes() {
     }
 
@@ -48,7 +44,7 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
      * Get the mediaType property: The MIME type of the referenced object. This will generally be
      * application/vnd.docker.image.manifest.v2+json, but it could also be
      * application/vnd.docker.image.manifest.v1+json.
-     * 
+     *
      * @return the mediaType value.
      */
     public String getMediaType() {
@@ -59,7 +55,7 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
      * Set the mediaType property: The MIME type of the referenced object. This will generally be
      * application/vnd.docker.image.manifest.v2+json, but it could also be
      * application/vnd.docker.image.manifest.v1+json.
-     * 
+     *
      * @param mediaType the mediaType value to set.
      * @return the ManifestListAttributes object itself.
      */
@@ -70,7 +66,7 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
 
     /**
      * Get the size property: The size in bytes of the object.
-     * 
+     *
      * @return the size value.
      */
     public Long getSize() {
@@ -79,7 +75,7 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
 
     /**
      * Set the size property: The size in bytes of the object.
-     * 
+     *
      * @param size the size value to set.
      * @return the ManifestListAttributes object itself.
      */
@@ -90,7 +86,7 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
 
     /**
      * Get the digest property: The digest of the content, as defined by the Registry V2 HTTP API Specification.
-     * 
+     *
      * @return the digest value.
      */
     public String getDigest() {
@@ -99,7 +95,7 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
 
     /**
      * Set the digest property: The digest of the content, as defined by the Registry V2 HTTP API Specification.
-     * 
+     *
      * @param digest the digest value to set.
      * @return the ManifestListAttributes object itself.
      */
@@ -112,7 +108,7 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
      * Get the platform property: The platform object describes the platform which the image in the manifest runs on. A
      * full list of valid operating system and architecture values are listed in the Go language documentation for $GOOS
      * and $GOARCH.
-     * 
+     *
      * @return the platform value.
      */
     public Platform getPlatform() {
@@ -123,7 +119,7 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
      * Set the platform property: The platform object describes the platform which the image in the manifest runs on. A
      * full list of valid operating system and architecture values are listed in the Go language documentation for $GOOS
      * and $GOARCH.
-     * 
+     *
      * @param platform the platform value to set.
      * @return the ManifestListAttributes object itself.
      */
@@ -132,9 +128,6 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -147,10 +140,10 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
 
     /**
      * Reads an instance of ManifestListAttributes from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ManifestListAttributes if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManifestListAttributes.
      */
     public static ManifestListAttributes fromJson(JsonReader jsonReader) throws IOException {

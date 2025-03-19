@@ -52,9 +52,6 @@ public final class MetricSeriesItem implements JsonSerializable<MetricSeriesItem
         return this.dimension;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

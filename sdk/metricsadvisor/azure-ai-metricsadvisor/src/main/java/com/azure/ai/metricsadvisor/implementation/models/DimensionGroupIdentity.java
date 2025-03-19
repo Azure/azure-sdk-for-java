@@ -48,9 +48,6 @@ public final class DimensionGroupIdentity implements JsonSerializable<DimensionG
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

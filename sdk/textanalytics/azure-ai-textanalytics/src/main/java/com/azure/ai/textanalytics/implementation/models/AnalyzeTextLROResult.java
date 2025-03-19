@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,7 +20,7 @@ public class AnalyzeTextLROResult extends TaskState {
     /*
      * Enumeration of supported Text Analysis long-running operation task results.
      */
-    private AnalyzeTextLROResultsKind kind = AnalyzeTextLROResultsKind.fromString("AnalyzeTextLROResult");
+    private AnalyzeTextLROResultsKind kind;
 
     /*
      * The taskName property.
@@ -32,6 +31,7 @@ public class AnalyzeTextLROResult extends TaskState {
      * Creates an instance of AnalyzeTextLROResult class.
      */
     public AnalyzeTextLROResult() {
+        this.kind = AnalyzeTextLROResultsKind.fromString("AnalyzeTextLROResult");
     }
 
     /**
@@ -159,8 +159,8 @@ public class AnalyzeTextLROResult extends TaskState {
                 reader.nextToken();
 
                 if ("lastUpdateDateTime".equals(fieldName)) {
-                    deserializedAnalyzeTextLROResult.setLastUpdateDateTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedAnalyzeTextLROResult.setLastUpdateDateTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("status".equals(fieldName)) {
                     deserializedAnalyzeTextLROResult.setStatus(State.fromString(reader.getString()));
                 } else if ("kind".equals(fieldName)) {

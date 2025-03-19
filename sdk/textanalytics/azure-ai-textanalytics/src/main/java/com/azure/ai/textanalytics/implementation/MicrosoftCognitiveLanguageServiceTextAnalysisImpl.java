@@ -189,7 +189,9 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeTextTaskResult>> analyzeTextWithResponseAsync(AnalyzeTextTask body, Boolean showStats) {
-        return FluxUtil.withContext(context -> analyzeTextWithResponseAsync(body, showStats, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.analyzeText(this.getEndpoint(), this.getApiVersion(), showStats, body, accept, context));
     }
 
     /**

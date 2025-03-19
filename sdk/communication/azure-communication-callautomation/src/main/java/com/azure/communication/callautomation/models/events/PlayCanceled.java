@@ -14,12 +14,6 @@ import java.io.IOException;
 @Fluent
 public final class PlayCanceled extends CallAutomationEventBase {
     /**
-     * Creates an instance of {@link PlayCanceled}.
-     */
-    public PlayCanceled() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

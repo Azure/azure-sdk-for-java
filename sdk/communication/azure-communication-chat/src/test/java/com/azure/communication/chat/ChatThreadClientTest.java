@@ -25,6 +25,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -97,6 +98,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canUpdateThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canUpdateThread");
@@ -111,6 +113,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canUpdateThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canUpdateThreadWithResponse");
@@ -125,6 +128,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddListAndRemoveParticipants(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddListAndRemoveParticipants");
@@ -160,6 +164,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddListAndRemoveParticipantsWithOptions(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddListAndRemoveParticipantsWithOptions");
@@ -196,6 +201,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddListAndRemoveParticipantsWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddListAndRemoveParticipantsWithResponse");
@@ -215,6 +221,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddListAndRemoveMembersWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddListAndRemoveMembersWithResponse");
@@ -250,6 +257,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddSingleParticipant(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddSingleParticipant");
@@ -266,6 +274,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddSingleParticipantWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddSingleParticipantWithResponse");
@@ -283,6 +292,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendThenGetMessage(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendThenGetMessage");
@@ -299,6 +309,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendThenGetMessageWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendThenGetMessageWithResponse");
@@ -316,6 +327,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canDeleteExistingMessage(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteExistingMessage");
@@ -329,6 +341,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canDeleteExistingMessageWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteExistingMessageWithResponse");
@@ -342,6 +355,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canUpdateExistingMessage(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canUpdateExistingMessage");
@@ -366,6 +380,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canUpdateExistingMessageWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canUpdateExistingMessageWithResponse");
@@ -390,6 +405,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canListMessagesWithOptionsSync(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canListMessagesWithOptionsSync");
@@ -416,6 +432,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canListMessagesWithOptions(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canListMessagesWithOptions");
@@ -446,6 +463,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendTypingNotification(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendTypingNotification");
@@ -456,6 +474,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendTypingNotificationWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendTypingNotificationWithResponse");
@@ -466,6 +485,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendTypingNotificationWithResponseWithOptions(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendTypingNotificationWithResponseWithOptions");
@@ -480,6 +500,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_LIVE_TEST", matches = "(?i)(true)")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendThenListReadReceipts(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendThenListReadReceipts");
@@ -506,6 +527,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_LIVE_TEST", matches = "(?i)(true)")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendThenListReadReceiptsWithOptions(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendThenListReadReceiptsWithOptions");
@@ -533,6 +555,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_LIVE_TEST", matches = "(?i)(true)")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendThenListReadReceiptsWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendThenListReadReceiptsWithResponse");
@@ -558,6 +581,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendReadReceiptSync(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendReadReceiptSync");
@@ -571,6 +595,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendReadReceiptWithResponseSync(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendReadReceiptWithResponseSync");
@@ -585,6 +610,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canGetChatThreadProperties(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canGetChatThreadPropertiesSync");
@@ -596,6 +622,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canGetChatThreadPropertiesWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canGetChatThreadPropertiesWithResponseSync");

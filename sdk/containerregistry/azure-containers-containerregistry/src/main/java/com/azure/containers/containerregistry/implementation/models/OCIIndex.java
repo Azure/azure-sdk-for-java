@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Returns the requested OCI index file.
- */
+/** Returns the requested OCI index file. */
 @Fluent
 public final class OCIIndex extends Manifest {
     /*
@@ -27,15 +25,13 @@ public final class OCIIndex extends Manifest {
      */
     private OciAnnotations annotations;
 
-    /**
-     * Creates an instance of OCIIndex class.
-     */
+    /** Creates an instance of OCIIndex class. */
     public OCIIndex() {
     }
 
     /**
      * Get the manifests property: List of OCI image layer information.
-     * 
+     *
      * @return the manifests value.
      */
     public List<ManifestListAttributes> getManifests() {
@@ -44,7 +40,7 @@ public final class OCIIndex extends Manifest {
 
     /**
      * Set the manifests property: List of OCI image layer information.
-     * 
+     *
      * @param manifests the manifests value to set.
      * @return the OCIIndex object itself.
      */
@@ -55,7 +51,7 @@ public final class OCIIndex extends Manifest {
 
     /**
      * Get the annotations property: Additional information provided through arbitrary metadata.
-     * 
+     *
      * @return the annotations value.
      */
     public OciAnnotations getAnnotations() {
@@ -64,7 +60,7 @@ public final class OCIIndex extends Manifest {
 
     /**
      * Set the annotations property: Additional information provided through arbitrary metadata.
-     * 
+     *
      * @param annotations the annotations value to set.
      * @return the OCIIndex object itself.
      */
@@ -73,18 +69,13 @@ public final class OCIIndex extends Manifest {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OCIIndex setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,10 +87,10 @@ public final class OCIIndex extends Manifest {
 
     /**
      * Reads an instance of OCIIndex from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of OCIIndex if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IOException If an error occurs while reading the OCIIndex.
      */
     public static OCIIndex fromJson(JsonReader jsonReader) throws IOException {

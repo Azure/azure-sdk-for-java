@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.wus.attest.azure.net/.well-known/openid-configuration",
+    "Headers" : {
+      "x-ms-client-request-id" : "68677d96-b565-42be-9199-5438ba45046e",
+      "user-agent" : "azsdk-java-azure-security-attestation/1.2.0-beta.1 (17.0.5; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "Server" : "Kestrel",
+      "x-ms-maa-service-version" : "1.11.02336.1117",
+      "retry-after" : "0",
+      "Content-Length" : "573",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "00-d5b52b1e9511800a1ca3d85c65353a44-434c7c7d439f3fb1-01",
+      "Body" : "{\"response_types_supported\":[\"token\",\"none\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"revocation_endpoint\":\"https://sharedwus.wus.attest.azure.net/revoke\",\"issuer\":\"https://sharedwus.wus.attest.azure.net\",\"jwks_uri\":\"https://sharedwus.wus.attest.azure.net/certs\",\"claims_supported\":[\"cnf\",\"nonce\",\"x-ms-ver\",\"x-ms-attestation-type\",\"x-ms-policy-hash\",\"x-ms-policy-signer\",\"x-ms-sgx-is-debuggable\",\"x-ms-sgx-mrenclave\",\"x-ms-sgx-mrsigner\",\"x-ms-sgx-svn\",\"x-ms-sgx-ehd\",\"x-ms-sgx-collateral\",\"is-debuggable\",\"sgx-mrsigner\",\"sgx-mrenclave\",\"product-id\",\"svn\",\"tee\"]}",
+      "Date" : "Mon, 12 Jun 2023 18:02:18 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

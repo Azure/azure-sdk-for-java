@@ -62,6 +62,23 @@ public final class SexMismatchInference extends RadiologyInsightsInference {
         return this.sexIndication;
     }
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -104,7 +121,7 @@ public final class SexMismatchInference extends RadiologyInsightsInference {
                 }
             }
             SexMismatchInference deserializedSexMismatchInference = new SexMismatchInference(sexIndication);
-            deserializedSexMismatchInference.setExtension(extension);
+            deserializedSexMismatchInference.extension = extension;
             deserializedSexMismatchInference.kind = kind;
             return deserializedSexMismatchInference;
         });

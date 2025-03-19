@@ -48,9 +48,6 @@ public final class ChangePointFeedbackValue implements JsonSerializable<ChangePo
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

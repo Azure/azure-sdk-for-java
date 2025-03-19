@@ -1,13 +1,13 @@
 ## Generate autorest code
 
 ```yaml
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e64ad693df24b47d4009eece6663c8d95cf94be6/specification/communication/data-plane/Email/readme.md
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ac29c822ecd5f6054cd17c46839e7c04a1114c6d/specification/communication/data-plane/Email/readme.md
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 title: Azure Communication Email Service
 java: true
 use-extension:
-    "@autorest/java": "4.1.33"
+    "@autorest/java": "4.1.14"
 artifact-id: azure-communication-email
 namespace: com.azure.communication.email
 models-subpackage: implementation.models
@@ -22,7 +22,7 @@ required-fields-as-ctor-args: true
 generate-client-as-impl: true
 url-as-string: true
 service-versions:
-- 2024-07-01-preview
+- 2023-03-31
 polling:
   default:
     intermediate-type: EmailSendResult

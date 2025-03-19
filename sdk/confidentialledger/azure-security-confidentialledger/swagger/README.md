@@ -8,12 +8,13 @@ input-file:
 java: true
 output-folder: ../
 namespace: com.azure.security.confidentialledger
+generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 data-plane: true
 credential-types: tokencredential
 credential-scopes: https://confidential-ledger.azure.com/.default
 title: ConfidentialLedgerClient
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.0'
 generate-samples: true
 generate-tests: true
 ```
@@ -28,12 +29,13 @@ input-file:
 java: true
 output-folder: ../
 namespace: com.azure.security.confidentialledger.certificate
+generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 data-plane: true
 credential-types: tokencredential
 credential-scopes: https://confidential-ledger.azure.com/.default
 title: ConfidentialLedgerCertificateClient
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.0'
 generate-samples: true
 generate-tests: true
 ```

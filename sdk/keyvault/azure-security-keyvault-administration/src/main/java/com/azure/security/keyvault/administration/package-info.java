@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 /**
- * <!-- @formatter:off -->
  * <a href="https://learn.microsoft.com/azure/key-vault/managed-hsm/">Azure Key Vault Managed HSM</a> is a
  * fully-managed, highly-available, single-tenant, standards-compliant cloud service that enables you to safeguard
  * cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validated HSMs.
@@ -324,45 +323,6 @@
  * com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient}. <br>
  * <hr/>
  *
- * <h2>Run Pre-Backup Check for a Collection of Keys</h2>
- *
- * The {@link com.azure.security.keyvault.administration.KeyVaultBackupClient} can be used to check if it is possible to
- * back up the entire collection of keys from a key vault.
- *
- * <p>
- * <strong>Code Sample:</strong>
- *
- * <p>
- * The following code sample demonstrates how to synchronously check if it is possible to back up an entire collection
- * of keys, using the
- * {@link com.azure.security.keyvault.administration.KeyVaultBackupClient#beginPreBackup(String, String)} API.
- * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreBackup#String-String -->
- * <pre>
- * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;
- * String sasToken = &quot;&lt;sas-token&gt;&quot;;
- *
- * SyncPoller&lt;KeyVaultBackupOperation, String&gt; preBackupPoller = client.beginPreBackup&#40;blobStorageUrl, sasToken&#41;;
- * PollResponse&lt;KeyVaultBackupOperation&gt; pollResponse = preBackupPoller.poll&#40;&#41;;
- *
- * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
- *
- * PollResponse&lt;KeyVaultBackupOperation&gt; finalPollResponse = preBackupPoller.waitForCompletion&#40;&#41;;
- *
- * if &#40;finalPollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
- *     System.out.printf&#40;&quot;Pre-backup check completed successfully.%n&quot;&#41;;
- * &#125; else &#123;
- *     KeyVaultBackupOperation operation = preBackupPoller.poll&#40;&#41;.getValue&#40;&#41;;
- *
- *     System.out.printf&#40;&quot;Pre-backup check failed with error: %s.%n&quot;, operation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
- * &#125;
- * </pre>
- * <!-- end com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreBackup#String-String -->
- *
- * <p>
- * <strong>Note:</strong> For the asynchronous sample, refer to {@link
- * com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient}. <br>
- * <hr/>
- *
  * <h2>Back Up a Collection of Keys</h2>
  *
  * The {@link com.azure.security.keyvault.administration.KeyVaultBackupClient} can be used to back up the entire
@@ -397,46 +357,6 @@
  * &#125;
  * </pre>
  * <!-- end com.azure.security.keyvault.administration.KeyVaultBackupClient.beginBackup#String-String -->
- *
- * <p>
- * <strong>Note:</strong> For the asynchronous sample, refer to {@link
- * com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient}. <br>
- * <hr/>
- *
- * <h2>Run Pre-Restore Check for a Collection of Keys</h2>
- *
- * The {@link com.azure.security.keyvault.administration.KeyVaultBackupClient} can be used to check if it is possible to
- * restore an entire collection of keys from a backup.
- *
- * <p>
- * <strong>Code Sample:</strong>
- *
- * <p>
- * The following code sample demonstrates how to synchronously check if it is possible to restore an entire collection
- * of keys from a backup, using the
- * {@link com.azure.security.keyvault.administration.KeyVaultBackupClient#beginPreRestore(String, String)} API.
- * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreRestore#String-String -->
- * <pre>
- * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
- * String sasToken = &quot;&lt;sas-token&gt;&quot;;
- *
- * SyncPoller&lt;KeyVaultRestoreOperation, KeyVaultRestoreResult&gt; preRestorePoller =
- *     client.beginPreRestore&#40;folderUrl, sasToken&#41;;
- * PollResponse&lt;KeyVaultRestoreOperation&gt; pollResponse = preRestorePoller.poll&#40;&#41;;
- *
- * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
- *
- * PollResponse&lt;KeyVaultRestoreOperation&gt; finalPollResponse = preRestorePoller.waitForCompletion&#40;&#41;;
- *
- * if &#40;finalPollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
- *     System.out.printf&#40;&quot;Pre-restore check completed successfully.%n&quot;&#41;;
- * &#125; else &#123;
- *     KeyVaultRestoreOperation operation = preRestorePoller.poll&#40;&#41;.getValue&#40;&#41;;
- *
- *     System.out.printf&#40;&quot;Pre-restore check failed with error: %s.%n&quot;, operation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
- * &#125;
- * </pre>
- * <!-- end com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreRestore#String-String -->
  *
  * <p>
  * <strong>Note:</strong> For the asynchronous sample, refer to {@link

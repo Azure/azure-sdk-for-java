@@ -117,22 +117,14 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
-        // Act & Assert
-        StepVerifier.create(producer.send(events)).expectComplete().verify(TIMEOUT);
+        // Act
+        final Mono<Void> onComplete = Mono.when(producer.send(events), producer.send(Flux.just(events.get(0))),
+            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("3")),
+            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("4")),
+            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionKey("sandwiches")));
 
-        StepVerifier.create(producer.send(Flux.just(events.get(0)))).expectComplete().verify(TIMEOUT);
-
-        StepVerifier.create(producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("3")))
-            .expectComplete()
-            .verify(TIMEOUT);
-
-        StepVerifier.create(producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("4")))
-            .expectComplete()
-            .verify(TIMEOUT);
-
-        StepVerifier.create(producer.send(Flux.fromIterable(events), new SendOptions().setPartitionKey("sandwiches")))
-            .expectComplete()
-            .verify(TIMEOUT);
+        // Assert
+        StepVerifier.create(onComplete).expectComplete().verify(TIMEOUT);
     }
 
     @Test

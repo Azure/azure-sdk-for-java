@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -32,23 +31,6 @@ public final class CreateCallOptions {
     private String operationContext;
 
     /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-    /**
-     * Transcription Configuration.
-     */
-    private TranscriptionOptions transcriptionOptions;
-
-    /**
-     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     * Required for creating call with Teams resource account ID.
-     * This is per-operation setting and does not change the client's default source.
-     */
-    private MicrosoftTeamsAppIdentifier teamsAppSource;
-
-    /**
      * Constructor
      * @param callInvite Call invitee information.
      * @param callbackUrl The call back URI.
@@ -68,15 +50,6 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Get the Transcription configuration.
-     *
-     * @return the transcriptionOptions
-     */
-    public TranscriptionOptions getTranscriptionOptions() {
-        return transcriptionOptions;
-    }
-
-    /**
      * Set the operationContext: A customer set value used to track the answering of a call.
      *
      * @param operationContext A customer set value used to track the answering of a call.
@@ -84,17 +57,6 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Set the transcription configuration.
-     *
-     * @param transcriptionOptions The transcription options.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
         return this;
     }
 
@@ -132,48 +94,6 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
-        return this;
-    }
-
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingOptions.
-     */
-    public MediaStreamingOptions getMediaStreamingOptions() {
-        return mediaStreamingOptions;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming options.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     * Get the TeamsAppSource property: it overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     *
-     * @return the teamsAppSource.
-     */
-    public MicrosoftTeamsAppIdentifier getTeamsAppSource() {
-        return teamsAppSource;
-    }
-
-    /**
-     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     * Required for creating call with Teams resource account ID.
-     * This is per-operation setting and does not change the client's default source.
-     *
-     * @param teamsAppSource The MicrosoftTeamsAppIdentifier type source for overriding default client source.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setTeamsAppSource(MicrosoftTeamsAppIdentifier teamsAppSource) {
-        this.teamsAppSource = teamsAppSource;
         return this;
     }
 }

@@ -2,7 +2,7 @@
   "resources": {
     "includes": [
       {
-        "pattern": "azure-security-keyvault-keys.properties"
+        "pattern": "azure-key-vault-keys.properties"
       },
       {
         "pattern": "kvErrorStrings.properties"

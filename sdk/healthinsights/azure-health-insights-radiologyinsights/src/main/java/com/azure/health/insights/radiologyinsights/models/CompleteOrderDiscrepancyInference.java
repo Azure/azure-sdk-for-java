@@ -95,6 +95,23 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
         return this.missingBodyPartMeasurements;
     }
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -148,7 +165,7 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
             }
             CompleteOrderDiscrepancyInference deserializedCompleteOrderDiscrepancyInference
                 = new CompleteOrderDiscrepancyInference(orderType);
-            deserializedCompleteOrderDiscrepancyInference.setExtension(extension);
+            deserializedCompleteOrderDiscrepancyInference.extension = extension;
             deserializedCompleteOrderDiscrepancyInference.kind = kind;
             deserializedCompleteOrderDiscrepancyInference.missingBodyParts = missingBodyParts;
             deserializedCompleteOrderDiscrepancyInference.missingBodyPartMeasurements = missingBodyPartMeasurements;

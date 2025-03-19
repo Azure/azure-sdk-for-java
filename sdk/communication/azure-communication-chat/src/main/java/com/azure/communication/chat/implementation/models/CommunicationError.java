@@ -5,41 +5,42 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The Communication Services error.
  */
 @Fluent
-public final class CommunicationError implements JsonSerializable<CommunicationError> {
+public final class CommunicationError {
     /*
      * The error code.
      */
+    @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
      * The error message.
      */
+    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * The error target.
      */
+    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /*
      * Further details about specific errors that led to this error.
      */
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommunicationError> details;
 
     /*
      * The inner error if any.
      */
+    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private CommunicationError innerError;
 
     /**
@@ -113,53 +114,5 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
      */
     public CommunicationError getInnerError() {
         return this.innerError;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeStringField("message", this.message);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CommunicationError from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CommunicationError if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CommunicationError.
-     */
-    public static CommunicationError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CommunicationError deserializedCommunicationError = new CommunicationError();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("code".equals(fieldName)) {
-                    deserializedCommunicationError.code = reader.getString();
-                } else if ("message".equals(fieldName)) {
-                    deserializedCommunicationError.message = reader.getString();
-                } else if ("target".equals(fieldName)) {
-                    deserializedCommunicationError.target = reader.getString();
-                } else if ("details".equals(fieldName)) {
-                    List<CommunicationError> details
-                        = reader.readArray(reader1 -> CommunicationError.fromJson(reader1));
-                    deserializedCommunicationError.details = details;
-                } else if ("innererror".equals(fieldName)) {
-                    deserializedCommunicationError.innerError = CommunicationError.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCommunicationError;
-        });
     }
 }

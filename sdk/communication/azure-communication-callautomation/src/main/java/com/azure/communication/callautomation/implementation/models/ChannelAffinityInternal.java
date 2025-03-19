@@ -22,7 +22,7 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
     private Integer channel;
 
     /*
-     * The identifier for the participant whose bitstream will be written to the channel
+     * The identifier for the participant whose bitstream will be written to the channel 
      * represented by the channel number.
      */
     private CommunicationIdentifierModel participant;

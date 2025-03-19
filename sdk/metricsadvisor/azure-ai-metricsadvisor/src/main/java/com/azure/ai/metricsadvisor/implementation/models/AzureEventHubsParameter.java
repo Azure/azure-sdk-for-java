@@ -72,9 +72,6 @@ public final class AzureEventHubsParameter implements JsonSerializable<AzureEven
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

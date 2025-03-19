@@ -11,9 +11,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
-import org.junit.jupiter.api.condition.OS;
 import reactor.test.StepVerifier;
 
 import java.util.List;
@@ -38,7 +36,6 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     }
 
     @Test
-    @DisabledOnOs(OS.MAC)
     public void testUploadLogsInBatches() {
         List<Object> logs = getObjects(10000);
 
@@ -55,7 +52,6 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     }
 
     @Test
-    @DisabledOnOs(OS.MAC)
     public void testUploadLogsInBatchesConcurrently() {
         List<Object> logs = getObjects(10000);
 

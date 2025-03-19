@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -75,9 +74,6 @@ public final class IngestionProgressResetOptions implements JsonSerializable<Ing
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,11 +102,11 @@ public final class IngestionProgressResetOptions implements JsonSerializable<Ing
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedIngestionProgressResetOptions.startTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedIngestionProgressResetOptions.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedIngestionProgressResetOptions.endTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedIngestionProgressResetOptions.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

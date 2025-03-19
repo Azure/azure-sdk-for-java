@@ -75,17 +75,17 @@ variables have been set by the user:
 * ATTESTATION_LOCATION_SHORT_NAME - the short name for the region in which the
   sample should be run - used to interact with the shared endpoint for that
   region.
-* ISOLATED_SIGNING_CERTIFICATE - The DER encoded form of the signing
+* isolatedSigningCertificate - The DER encoded form of the signing
   certificate used to create an isolated attestation instance, Base64 encoded.
-* ISOLATED_SIGNING_KEY - The DER encoded of an RSA Private key,
+* isolatedSigningKey - The DER encoded of an RSA Private key,
   Base64 encoded, which was used to create an isolated attestation service instance.
-* POLICY_SIGNING_KEY0 - The DER encoded of an RSA Private key,
+* policySigningKey0 - The DER encoded of an RSA Private key,
   Base64 encoded.
-* POLICY_SIGNING_CERTIFICATE0 - The DER encoded form of a self-signed
-  certificate which contains the public key associated with POLICY_SIGNING_KEY0, Base64 encoded.
+* policySigningCertificate0 - The DER encoded form of a self-signed
+  certificate which contains the public key associated with policySigningKey0, Base64 encoded.
 
 The tests also assume that the currently logged on user is authorized to call
-into the attestation service instance because they use [DefaultAzureCredential](https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential) for authorization.
+into the attestation service instance because they use [DefaultAzureCredential](https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential) for authorization.
 
 This directory contains functional samples for the attestation service SDK.
 
@@ -138,11 +138,11 @@ the SGX enclave is configured as follows:
 Assuming a token is issued, this policy will cause a claim named `<custom-name>`
 to be issued with a value which matches the `x-ms-sgx-mrsigner` claim.
 
-For more information on authoring attestation policy documents, see: [Authoring an attestation policy](https://learn.microsoft.com/azure/attestation/author-sign-policy)
+For more information on authoring attestation policy documents, see: [Authoring an attestation policy](https://docs.microsoft.com/azure/attestation/author-sign-policy)
 
 ## Next Steps
 
-For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://learn.microsoft.com/azure/attestation/) .
+For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://docs.microsoft.com/azure/attestation/) .
 
 <!-- LINKS -->
 <!-- links are known to be broken, they will be fixed after this initial pull

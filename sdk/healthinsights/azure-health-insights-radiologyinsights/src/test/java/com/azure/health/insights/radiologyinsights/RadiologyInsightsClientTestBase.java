@@ -62,8 +62,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     }
 
     RadiologyInsightsClientBuilder getClientBuilder() {
-        String endpoint
-            = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080/");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080/");
         TokenCredential credential = null;
         if (interceptorManager.isPlaybackMode()) {
             credential = new MockTokenCredential();
@@ -72,10 +71,12 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         } else {
             credential = new AzurePowerShellCredentialBuilder().build();
         }
-        RadiologyInsightsClientBuilder builder
-            = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
+        RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder()
+                .endpoint(endpoint)
+                .credential(credential);
 
         System.out.println("Test mode: " + getTestMode());
+
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -167,8 +168,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     }
 
     private PatientDocument getPatientDocument() {
-        ClinicalDocumentContent documentContent
-            = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, this.getDocumentContent());
+        ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, this.getDocumentContent());
         return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
     }
 
@@ -221,8 +221,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         }
         if (offset > 0 && length > 0) {
             //System.out.println("Offset: " + offset + ", length: " + length);
-            evidence = this.getDocumentContent()
-                .substring(offset, Math.min(offset + length, this.getDocumentContent().length()));
+            evidence = this.getDocumentContent().substring(offset, Math.min(offset + length, this.getDocumentContent().length()));
         }
         return evidence;
     }
@@ -233,8 +232,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
             List<FhirR4Coding> codingList = codeableConcept.getCoding();
             if (codingList != null) {
                 for (FhirR4Coding fhirR4Coding : codingList) {
-                    rv.add("Coding: " + fhirR4Coding.getCode() + ", " + fhirR4Coding.getDisplay() + " ("
-                        + fhirR4Coding.getSystem() + ")");
+                    rv.add("Coding: " + fhirR4Coding.getCode() + ", " + fhirR4Coding.getDisplay() + " (" + fhirR4Coding.getSystem() + ")");
                 }
             }
         }
@@ -272,5 +270,6 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     public void setOrderDescription(String orderDescription) {
         this.orderDescription = orderDescription;
     }
+
 
 }

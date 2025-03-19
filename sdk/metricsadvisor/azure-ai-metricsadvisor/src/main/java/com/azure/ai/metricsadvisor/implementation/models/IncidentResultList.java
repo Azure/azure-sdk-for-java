@@ -34,7 +34,7 @@ public final class IncidentResultList implements JsonSerializable<IncidentResult
     }
 
     /**
-     * Get the nextLink property: The &#064;nextLink property.
+     * Get the nextLink property: The @nextLink property.
      * 
      * @return the nextLink value.
      */
@@ -62,9 +62,6 @@ public final class IncidentResultList implements JsonSerializable<IncidentResult
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

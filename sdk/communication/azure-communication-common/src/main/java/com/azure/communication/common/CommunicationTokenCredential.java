@@ -85,7 +85,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
 
     private boolean isTokenExpiringSoon() {
         return accessToken == null
-            || OffsetDateTime.now().isAfter(accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES));
+            || OffsetDateTime.now().compareTo(accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES))
+                > 0;
     }
 
     /**
@@ -187,7 +188,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             return host.tokenParser.parseJWTToken(freshTokenString).isExpired();
         }
 
-        private static class TokenExpiringTask extends TimerTask {
+        private class TokenExpiringTask extends TimerTask {
             private final ClientLogger logger = new ClientLogger(TokenExpiringTask.class);
             private final FetchingTask tokenCache;
 

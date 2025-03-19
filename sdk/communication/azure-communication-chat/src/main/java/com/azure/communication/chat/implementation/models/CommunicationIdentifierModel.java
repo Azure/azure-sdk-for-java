@@ -5,11 +5,7 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure
@@ -17,35 +13,41 @@ import java.io.IOException;
  * which must match the kind enum value.
  */
 @Fluent
-public final class CommunicationIdentifierModel implements JsonSerializable<CommunicationIdentifierModel> {
+public final class CommunicationIdentifierModel {
     /*
      * The identifier kind. Only required in responses.
      */
+    @JsonProperty(value = "kind")
     private CommunicationIdentifierModelKind kind;
 
     /*
      * Raw Id of the identifier. Optional in requests, required in responses.
      */
+    @JsonProperty(value = "rawId")
     private String rawId;
 
     /*
      * The communication user.
      */
+    @JsonProperty(value = "communicationUser")
     private CommunicationUserIdentifierModel communicationUser;
 
     /*
      * The phone number.
      */
+    @JsonProperty(value = "phoneNumber")
     private PhoneNumberIdentifierModel phoneNumber;
 
     /*
      * The Microsoft Teams user.
      */
+    @JsonProperty(value = "microsoftTeamsUser")
     private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
 
     /*
      * The Microsoft Teams application.
      */
+    @JsonProperty(value = "microsoftTeamsApp")
     private MicrosoftTeamsAppIdentifierModel microsoftTeamsApp;
 
     /**
@@ -172,60 +174,5 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
     public CommunicationIdentifierModel setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel microsoftTeamsApp) {
         this.microsoftTeamsApp = microsoftTeamsApp;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeStringField("rawId", this.rawId);
-        jsonWriter.writeJsonField("communicationUser", this.communicationUser);
-        jsonWriter.writeJsonField("phoneNumber", this.phoneNumber);
-        jsonWriter.writeJsonField("microsoftTeamsUser", this.microsoftTeamsUser);
-        jsonWriter.writeJsonField("microsoftTeamsApp", this.microsoftTeamsApp);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CommunicationIdentifierModel from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CommunicationIdentifierModel if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CommunicationIdentifierModel.
-     */
-    public static CommunicationIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CommunicationIdentifierModel deserializedCommunicationIdentifierModel = new CommunicationIdentifierModel();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("kind".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.kind
-                        = CommunicationIdentifierModelKind.fromString(reader.getString());
-                } else if ("rawId".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.rawId = reader.getString();
-                } else if ("communicationUser".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.communicationUser
-                        = CommunicationUserIdentifierModel.fromJson(reader);
-                } else if ("phoneNumber".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.phoneNumber = PhoneNumberIdentifierModel.fromJson(reader);
-                } else if ("microsoftTeamsUser".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.microsoftTeamsUser
-                        = MicrosoftTeamsUserIdentifierModel.fromJson(reader);
-                } else if ("microsoftTeamsApp".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.microsoftTeamsApp
-                        = MicrosoftTeamsAppIdentifierModel.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCommunicationIdentifierModel;
-        });
     }
 }

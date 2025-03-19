@@ -9,18 +9,18 @@ public final class CertificateIssuerHelper {
     private static CertificateIssuerAccessor accessor;
 
     public interface CertificateIssuerAccessor {
-        CertificateIssuer createCertificateIssuer(IssuerBundle issuerBundle);
+        CertificateIssuer createCertificateIssuer(IssuerBundle impl);
 
-        IssuerBundle getIssuerBundle(CertificateIssuer certificateIssuer);
+        IssuerBundle getImpl(CertificateIssuer certificateIssuer);
     }
 
-    public static CertificateIssuer createCertificateIssuer(IssuerBundle issuerBundle) {
+    public static CertificateIssuer createCertificateIssuer(IssuerBundle impl) {
         if (accessor == null) {
             new CertificateIssuer("");
         }
 
         assert accessor != null;
-        return accessor.createCertificateIssuer(issuerBundle);
+        return accessor.createCertificateIssuer(impl);
     }
 
     public static IssuerBundle getIssuerBundle(CertificateIssuer certificateIssuer) {
@@ -29,7 +29,7 @@ public final class CertificateIssuerHelper {
         }
 
         assert accessor != null;
-        return accessor.getIssuerBundle(certificateIssuer);
+        return accessor.getImpl(certificateIssuer);
     }
 
     public static void setAccessor(CertificateIssuerAccessor accessor) {

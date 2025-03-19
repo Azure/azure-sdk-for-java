@@ -181,7 +181,14 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Long>> countWithResponseAsync(RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> countWithResponseAsync(requestOptions, context));
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(context -> service.count(this.client.getEndpoint(), this.client.getIndexName(),
+            xMsClientRequestId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -285,7 +292,14 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(SearchRequest searchRequest,
         RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> searchPostWithResponseAsync(searchRequest, requestOptions, context));
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(context -> service.searchPost(this.client.getEndpoint(), this.client.getIndexName(),
+            this.client.getApiVersion(), xMsClientRequestId, accept, searchRequest, context));
     }
 
     /**
@@ -402,7 +416,19 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Map<String, Object>>> getWithResponseAsync(String key, List<String> selectedFields,
         RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> getWithResponseAsync(key, selectedFields, requestOptions, context));
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        String selectedFieldsConverted = (selectedFields == null)
+            ? null
+            : selectedFields.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getIndexName(), key,
+            selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, accept, context));
     }
 
     /**
@@ -537,7 +563,15 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(SuggestRequest suggestRequest,
         RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> suggestPostWithResponseAsync(suggestRequest, requestOptions, context));
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil
+            .withContext(context -> service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(),
+                this.client.getApiVersion(), xMsClientRequestId, accept, suggestRequest, context));
     }
 
     /**
@@ -652,7 +686,14 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(IndexBatch batch,
         RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> indexWithResponseAsync(batch, requestOptions, context));
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(context -> service.index(this.client.getEndpoint(), this.client.getIndexName(),
+            this.client.getApiVersion(), xMsClientRequestId, accept, batch, context));
     }
 
     /**
@@ -766,8 +807,15 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(AutocompleteRequest autocompleteRequest,
         RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return FluxUtil
-            .withContext(context -> autocompletePostWithResponseAsync(autocompleteRequest, requestOptions, context));
+            .withContext(context -> service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(),
+                xMsClientRequestId, this.client.getApiVersion(), accept, autocompleteRequest, context));
     }
 
     /**

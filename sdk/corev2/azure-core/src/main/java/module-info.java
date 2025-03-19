@@ -10,6 +10,7 @@ module com.azure.v2.core {
     // public API surface area
     exports com.azure.v2.core.credentials;
     exports com.azure.v2.core.http.pipeline;
+    exports com.azure.v2.core.http.polling;
     exports com.azure.v2.core.models;
     exports com.azure.v2.core.traits;
 }

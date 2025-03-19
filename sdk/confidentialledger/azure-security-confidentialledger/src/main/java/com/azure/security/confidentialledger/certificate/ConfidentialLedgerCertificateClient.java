@@ -15,39 +15,35 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.security.confidentialledger.certificate.implementation.ConfidentialLedgerCertificateClientImpl;
 
-/**
- * Initializes a new instance of the synchronous ConfidentialLedgerCertificateClient type.
- */
+/** Initializes a new instance of the synchronous ConfidentialLedgerCertificateClient type. */
 @ServiceClient(builder = ConfidentialLedgerCertificateClientBuilder.class)
 public final class ConfidentialLedgerCertificateClient {
     @Generated
-    private final ConfidentialLedgerCertificateClientImpl serviceClient;
+    private final ConfidentialLedgerCertificateAsyncClient client;
 
     /**
      * Initializes an instance of ConfidentialLedgerCertificateClient class.
-     * 
-     * @param serviceClient the service client implementation.
+     *
+     * @param client the async client.
      */
     @Generated
-    ConfidentialLedgerCertificateClient(ConfidentialLedgerCertificateClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    ConfidentialLedgerCertificateClient(ConfidentialLedgerCertificateAsyncClient client) {
+        this.client = client;
     }
 
     /**
      * Gets identity information for a Confidential Ledger instance.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     ledgerId: String (Optional)
      *     ledgerTlsCertificate: String (Required)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param ledgerId Id of the Confidential Ledger instance to get information for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -59,6 +55,6 @@ public final class ConfidentialLedgerCertificateClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLedgerIdentityWithResponse(String ledgerId, RequestOptions requestOptions) {
-        return this.serviceClient.getLedgerIdentityWithResponse(ledgerId, requestOptions);
+        return this.client.getLedgerIdentityWithResponse(ledgerId, requestOptions).block();
     }
 }
