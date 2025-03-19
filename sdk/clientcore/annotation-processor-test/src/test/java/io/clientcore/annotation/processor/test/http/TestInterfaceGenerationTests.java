@@ -19,13 +19,6 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.serialization.json.JsonSerializer;
-import org.junit.jupiter.api.Named;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -36,6 +29,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Named;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -57,7 +55,7 @@ public class TestInterfaceGenerationTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         byte[] bytes = "hello".getBytes();
         try (Response<Void> response
             = testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
@@ -73,7 +71,7 @@ public class TestInterfaceGenerationTests {
             .httpClient(client)
             .build();
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         StreamResponse streamResponse = testInterface.testDownload();
 
         streamResponse.close();
@@ -89,7 +87,7 @@ public class TestInterfaceGenerationTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -119,7 +117,7 @@ public class TestInterfaceGenerationTests {
         Class<? extends BinaryData> expectedContentClazz = data.getClass();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         Response<Void> response = testInterface.testMethod(data, ContentType.APPLICATION_JSON, contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -135,7 +133,7 @@ public class TestInterfaceGenerationTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
         testInterface.testMethodReturnsVoid();
 
@@ -202,7 +200,7 @@ public class TestInterfaceGenerationTests {
         }).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
         testInterface.testListNext(nextLinkUri).close();
     }
@@ -233,7 +231,7 @@ public class TestInterfaceGenerationTests {
         }).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
@@ -278,10 +276,10 @@ public class TestInterfaceGenerationTests {
             return new Response<>(request, 404, new HttpHeaders(), BinaryData.empty());
         }).build();
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, new JsonSerializer());
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, RequestOptions.none());
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, RequestOptions.none());
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
