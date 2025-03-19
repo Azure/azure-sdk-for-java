@@ -72,7 +72,9 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      * @return the content value if defined as an array
      */
     public ChatMessageContentItem[] getArrayContent() {
-        return this.chatMessageContentItems == null ? null : this.chatMessageContentItems.toArray(ChatMessageContentItem[]::new);
+        return this.chatMessageContentItems == null
+            ? null
+            : this.chatMessageContentItems.toArray(new ChatMessageContentItem[0]);
     }
 
     /**
@@ -143,8 +145,8 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
                     if (reader.currentToken() == JsonToken.STRING) {
                         stringContent = reader.getString();
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
-                        chatMessageContentItem = reader.readArray(
-                                arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
+                        chatMessageContentItem
+                            = reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
                     } else if (reader.currentToken() == JsonToken.NULL) {
                         content = null;
                     } else {
@@ -163,8 +165,9 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
             if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItem == null) {
                 deserializedChatRequestToolMessage = new ChatRequestToolMessage(content, toolCallId);
             } else {
-                deserializedChatRequestToolMessage = CoreUtils.isNullOrEmpty(stringContent) ?
-                        new ChatRequestToolMessage(chatMessageContentItem, toolCallId) : new ChatRequestToolMessage(stringContent, toolCallId);
+                deserializedChatRequestToolMessage = CoreUtils.isNullOrEmpty(stringContent)
+                    ? new ChatRequestToolMessage(chatMessageContentItem, toolCallId)
+                    : new ChatRequestToolMessage(stringContent, toolCallId);
             }
             deserializedChatRequestToolMessage.role = role;
             return deserializedChatRequestToolMessage;

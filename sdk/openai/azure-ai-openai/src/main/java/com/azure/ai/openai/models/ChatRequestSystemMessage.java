@@ -63,7 +63,9 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
      * @return the content value if defined as an array
      */
     public ChatMessageContentItem[] getArrayContent() {
-        return this.chatMessageContentItems == null ? null : this.chatMessageContentItems.toArray(ChatMessageContentItem[]::new);
+        return this.chatMessageContentItems == null
+            ? null
+            : this.chatMessageContentItems.toArray(new ChatMessageContentItem[0]);
     }
 
     /**
@@ -156,12 +158,13 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
                     if (reader.currentToken() == JsonToken.STRING) {
                         stringContent = reader.getString();
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
-                        chatMessageContentItems = reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
+                        chatMessageContentItems
+                            = reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
                     } else if (reader.currentToken() == JsonToken.NULL) {
                         content = null;
                     } else {
                         throw new IllegalStateException("Unexpected 'content' type found when deserializing"
-                                + " ChatRequestUserMessage JSON object: " + reader.currentToken());
+                            + " ChatRequestUserMessage JSON object: " + reader.currentToken());
                     }
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
@@ -175,8 +178,9 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
             if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItems == null) {
                 deserializedChatRequestSystemMessage = new ChatRequestSystemMessage(content);
             } else {
-                deserializedChatRequestSystemMessage = CoreUtils.isNullOrEmpty(stringContent) ?
-                        new ChatRequestSystemMessage(chatMessageContentItems) : new ChatRequestSystemMessage(stringContent);
+                deserializedChatRequestSystemMessage = CoreUtils.isNullOrEmpty(stringContent)
+                    ? new ChatRequestSystemMessage(chatMessageContentItems)
+                    : new ChatRequestSystemMessage(stringContent);
             }
             deserializedChatRequestSystemMessage.role = role;
             deserializedChatRequestSystemMessage.name = name;

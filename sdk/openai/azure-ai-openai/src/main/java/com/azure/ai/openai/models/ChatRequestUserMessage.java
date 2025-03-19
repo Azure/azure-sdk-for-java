@@ -107,7 +107,9 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @return the content value if defined as an array
      */
     public ChatMessageContentItem[] getArrayContent() {
-        return this.chatMessageContentItems == null ? null : this.chatMessageContentItems.toArray(ChatMessageContentItem[]::new);
+        return this.chatMessageContentItems == null
+            ? null
+            : this.chatMessageContentItems.toArray(new ChatMessageContentItem[0]);
     }
 
     /**
@@ -200,7 +202,8 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                     if (reader.currentToken() == JsonToken.STRING) {
                         stringContent = reader.getString();
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
-                        chatMessageContentItems = reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
+                        chatMessageContentItems
+                            = reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
                     } else if (reader.currentToken() == JsonToken.NULL) {
                         content = null;
                     } else {
@@ -219,8 +222,9 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
             if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItems == null) {
                 deserializedChatRequestUserMessage = new ChatRequestUserMessage(content);
             } else {
-                deserializedChatRequestUserMessage = CoreUtils.isNullOrEmpty(stringContent) ?
-                        new ChatRequestUserMessage(chatMessageContentItems) : new ChatRequestUserMessage(stringContent);
+                deserializedChatRequestUserMessage = CoreUtils.isNullOrEmpty(stringContent)
+                    ? new ChatRequestUserMessage(chatMessageContentItems)
+                    : new ChatRequestUserMessage(stringContent);
             }
             deserializedChatRequestUserMessage.role = role;
             deserializedChatRequestUserMessage.name = name;

@@ -195,13 +195,14 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestUserNullMessageJsonRoundTrip() {
         String userMessageJson = """
-                    {
-                        "role": "user",
-                        "content": null
-                    }
-                """;
+                {
+                    "role": "user",
+                    "content": null
+                }
+            """;
 
-        ChatRequestUserMessage userMessage = BinaryData.fromString(userMessageJson).toObject(ChatRequestUserMessage.class);
+        ChatRequestUserMessage userMessage
+            = BinaryData.fromString(userMessageJson).toObject(ChatRequestUserMessage.class);
 
         // Deserialization
         assertEquals(USER, userMessage.getRole());
@@ -219,13 +220,14 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestUserStringMessageJsonRoundTrip() {
         String userMessageJson = """
-                    {
-                        "role": "user",
-                        "content": "this is a test message."
-                    }
-                """;
+                {
+                    "role": "user",
+                    "content": "this is a test message."
+                }
+            """;
 
-        ChatRequestUserMessage userMessage = BinaryData.fromString(userMessageJson).toObject(ChatRequestUserMessage.class);
+        ChatRequestUserMessage userMessage
+            = BinaryData.fromString(userMessageJson).toObject(ChatRequestUserMessage.class);
 
         // Deserialization
         assertEquals(USER, userMessage.getRole());
@@ -245,19 +247,20 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestUserStructuredMessageJsonRoundTrip() {
         String userMessageJson = """
-                    {
-                        "role": "user",
-                        "content": [{
-                            "type": "text",
-                            "text": "this is a test message."
-                        },{
-                            "type": "image_url",
-                            "image_url": {"url": "https://example.com/image.png"}
-                        }]
-                    }
-                """;
+                {
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "this is a test message."
+                    },{
+                        "type": "image_url",
+                        "image_url": {"url": "https://example.com/image.png"}
+                    }]
+                }
+            """;
 
-        ChatRequestUserMessage userMessage = BinaryData.fromString(userMessageJson).toObject(ChatRequestUserMessage.class);
+        ChatRequestUserMessage userMessage
+            = BinaryData.fromString(userMessageJson).toObject(ChatRequestUserMessage.class);
 
         // Deserialization
         assertEquals(USER, userMessage.getRole());
@@ -272,14 +275,13 @@ public class ChatRequestMessageUnitTests {
         assertEquals("https://example.com/image.png",
             ((ChatMessageImageContentItem) listContent.get(1)).getImageUrl().getUrl());
 
-
         assertNotNull(arrayContent);
         assertEquals(2, arrayContent.length);
         assertInstanceOf(ChatMessageTextContentItem.class, arrayContent[0]);
         assertEquals("this is a test message.", ((ChatMessageTextContentItem) arrayContent[0]).getText());
         assertInstanceOf(ChatMessageImageContentItem.class, arrayContent[1]);
         assertEquals("https://example.com/image.png",
-                ((ChatMessageImageContentItem) arrayContent[1]).getImageUrl().getUrl());
+            ((ChatMessageImageContentItem) arrayContent[1]).getImageUrl().getUrl());
 
         // Serialization
         String userMessageInString = BinaryData.fromObject(userMessage).toString();
@@ -297,14 +299,15 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestToolNullMessageJsonRoundTrip() {
         String toolMessageJson = """
-                    {
-                        "tool_call_id": "tool_call_id_value",
-                        "role": "tool",
-                        "content": null
-                    }
-                """;
+                {
+                    "tool_call_id": "tool_call_id_value",
+                    "role": "tool",
+                    "content": null
+                }
+            """;
 
-        ChatRequestToolMessage toolMessage = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
+        ChatRequestToolMessage toolMessage
+            = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
 
         // Deserialization
         assertEquals(TOOL, toolMessage.getRole());
@@ -324,14 +327,15 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestToolStringMessageJsonRoundTrip() {
         String toolMessageJson = """
-                    {
-                        "tool_call_id": "tool_call_id_value",
-                        "role": "tool",
-                        "content": "this is a test message."
-                    }
-                """;
+                {
+                    "tool_call_id": "tool_call_id_value",
+                    "role": "tool",
+                    "content": "this is a test message."
+                }
+            """;
 
-        ChatRequestToolMessage toolMessage = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
+        ChatRequestToolMessage toolMessage
+            = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
 
         // Deserialization
         assertEquals(TOOL, toolMessage.getRole());
@@ -351,20 +355,21 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestToolStructuredMessageJsonRoundTrip() {
         String toolMessageJson = """
-                    {
-                        "tool_call_id": "tool_call_id_value",
-                        "role": "tool",
-                        "content": [{
-                            "type": "text",
-                            "text": "this is a test message."
-                        },{
-                            "type": "image_url",
-                            "image_url": {"url": "https://example.com/image.png"}
-                        }]
-                    }
-                """;
+                {
+                    "tool_call_id": "tool_call_id_value",
+                    "role": "tool",
+                    "content": [{
+                        "type": "text",
+                        "text": "this is a test message."
+                    },{
+                        "type": "image_url",
+                        "image_url": {"url": "https://example.com/image.png"}
+                    }]
+                }
+            """;
 
-        ChatRequestToolMessage toolMessage = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
+        ChatRequestToolMessage toolMessage
+            = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
 
         // Deserialization
         assertEquals(TOOL, toolMessage.getRole());
@@ -377,7 +382,7 @@ public class ChatRequestMessageUnitTests {
         assertEquals("this is a test message.", ((ChatMessageTextContentItem) listContent.get(0)).getText());
         assertInstanceOf(ChatMessageImageContentItem.class, listContent.get(1));
         assertEquals("https://example.com/image.png",
-                ((ChatMessageImageContentItem) listContent.get(1)).getImageUrl().getUrl());
+            ((ChatMessageImageContentItem) listContent.get(1)).getImageUrl().getUrl());
 
         assertNotNull(arrayContent);
         assertEquals(2, arrayContent.length);
@@ -385,7 +390,7 @@ public class ChatRequestMessageUnitTests {
         assertEquals("this is a test message.", ((ChatMessageTextContentItem) arrayContent[0]).getText());
         assertInstanceOf(ChatMessageImageContentItem.class, arrayContent[1]);
         assertEquals("https://example.com/image.png",
-                ((ChatMessageImageContentItem) arrayContent[1]).getImageUrl().getUrl());
+            ((ChatMessageImageContentItem) arrayContent[1]).getImageUrl().getUrl());
 
         // Serialization
         String toolMessageInString = BinaryData.fromObject(toolMessage).toString();
@@ -403,14 +408,15 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestAssistantNullMessageJsonRoundTrip() {
         String assistantMessageJson = """
-                    {
-                        "role": "assistant",
-                        "name": "Alice",
-                        "content": null
-                    }
-                """;
+                {
+                    "role": "assistant",
+                    "name": "Alice",
+                    "content": null
+                }
+            """;
 
-        ChatRequestAssistantMessage assistantMessage = BinaryData.fromString(assistantMessageJson).toObject(ChatRequestAssistantMessage.class);
+        ChatRequestAssistantMessage assistantMessage
+            = BinaryData.fromString(assistantMessageJson).toObject(ChatRequestAssistantMessage.class);
 
         // Deserialization
         assertEquals(ASSISTANT, assistantMessage.getRole());
@@ -432,14 +438,15 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestAssistantStringMessageJsonRoundTrip() {
         String assistantMessageJson = """
-                    {
-                        "role": "assistant",
-                        "name": "Alice",
-                        "content": "this is a test message."
-                    }
-                """;
+                {
+                    "role": "assistant",
+                    "name": "Alice",
+                    "content": "this is a test message."
+                }
+            """;
 
-        ChatRequestAssistantMessage assistantMessage = BinaryData.fromString(assistantMessageJson).toObject(ChatRequestAssistantMessage.class);
+        ChatRequestAssistantMessage assistantMessage
+            = BinaryData.fromString(assistantMessageJson).toObject(ChatRequestAssistantMessage.class);
 
         // Deserialization
         assertEquals(ASSISTANT, assistantMessage.getRole());
@@ -461,20 +468,21 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestAssistantStructuredMessageJsonRoundTrip() {
         String assistantMessageJson = """
-                    {
-                        "role": "assistant",
-                        "name": "Alice",
-                        "content": [{
-                            "type": "text",
-                            "text": "this is a test message."
-                        },{
-                            "type": "refusal",
-                            "refusal": "refusal message"
-                        }]
-                    }
-                """;
+                {
+                    "role": "assistant",
+                    "name": "Alice",
+                    "content": [{
+                        "type": "text",
+                        "text": "this is a test message."
+                    },{
+                        "type": "refusal",
+                        "refusal": "refusal message"
+                    }]
+                }
+            """;
 
-        ChatRequestAssistantMessage assistantMessage = BinaryData.fromString(assistantMessageJson).toObject(ChatRequestAssistantMessage.class);
+        ChatRequestAssistantMessage assistantMessage
+            = BinaryData.fromString(assistantMessageJson).toObject(ChatRequestAssistantMessage.class);
 
         // Deserialization
         assertEquals(ASSISTANT, assistantMessage.getRole());
@@ -486,16 +494,14 @@ public class ChatRequestMessageUnitTests {
         assertInstanceOf(ChatMessageTextContentItem.class, listContent.get(0));
         assertEquals("this is a test message.", ((ChatMessageTextContentItem) listContent.get(0)).getText());
         assertInstanceOf(ChatMessageRefusalContentItem.class, listContent.get(1));
-        assertEquals("refusal message",
-                ((ChatMessageRefusalContentItem) listContent.get(1)).getRefusal());
+        assertEquals("refusal message", ((ChatMessageRefusalContentItem) listContent.get(1)).getRefusal());
 
         assertNotNull(arrayContent);
         assertEquals(2, arrayContent.length);
         assertInstanceOf(ChatMessageTextContentItem.class, arrayContent[0]);
         assertEquals("this is a test message.", ((ChatMessageTextContentItem) arrayContent[0]).getText());
         assertInstanceOf(ChatMessageRefusalContentItem.class, arrayContent[1]);
-        assertEquals("refusal message",
-                ((ChatMessageRefusalContentItem) arrayContent[1]).getRefusal());
+        assertEquals("refusal message", ((ChatMessageRefusalContentItem) arrayContent[1]).getRefusal());
 
         // Serialization
         String assistantMessageInString = BinaryData.fromObject(assistantMessage).toString();
@@ -512,14 +518,15 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestDeveloperNullMessageJsonRoundTrip() {
         String developerMessageJson = """
-                    {
-                        "role": "developer",
-                        "name": "Bob",
-                        "content": null
-                    }
-                """;
+                {
+                    "role": "developer",
+                    "name": "Bob",
+                    "content": null
+                }
+            """;
 
-        ChatRequestDeveloperMessage developerMessage = BinaryData.fromString(developerMessageJson).toObject(ChatRequestDeveloperMessage.class);
+        ChatRequestDeveloperMessage developerMessage
+            = BinaryData.fromString(developerMessageJson).toObject(ChatRequestDeveloperMessage.class);
 
         // Deserialization
         assertEquals(DEVELOPER, developerMessage.getRole());
@@ -541,14 +548,15 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestDeveloperStringMessageJsonRoundTrip() {
         String developerMessageJson = """
-                    {
-                        "role": "developer",
-                        "name": "Bob",
-                        "content": "this is a test message."
-                    }
-                """;
+                {
+                    "role": "developer",
+                    "name": "Bob",
+                    "content": "this is a test message."
+                }
+            """;
 
-        ChatRequestDeveloperMessage developerMessage = BinaryData.fromString(developerMessageJson).toObject(ChatRequestDeveloperMessage.class);
+        ChatRequestDeveloperMessage developerMessage
+            = BinaryData.fromString(developerMessageJson).toObject(ChatRequestDeveloperMessage.class);
 
         // Deserialization
         assertEquals(DEVELOPER, developerMessage.getRole());
@@ -570,17 +578,18 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestDeveloperStructuredMessageJsonRoundTrip() {
         String developerMessageJson = """
-                    {
-                        "role": "developer",
-                        "name": "Bob",
-                        "content": [{
-                            "type": "text",
-                            "text": "this is a test message."
-                        }]
-                    }
-                """;
+                {
+                    "role": "developer",
+                    "name": "Bob",
+                    "content": [{
+                        "type": "text",
+                        "text": "this is a test message."
+                    }]
+                }
+            """;
 
-        ChatRequestAssistantMessage developerMessage = BinaryData.fromString(developerMessageJson).toObject(ChatRequestAssistantMessage.class);
+        ChatRequestAssistantMessage developerMessage
+            = BinaryData.fromString(developerMessageJson).toObject(ChatRequestAssistantMessage.class);
 
         // Deserialization
         assertEquals(DEVELOPER, developerMessage.getRole());
@@ -611,13 +620,14 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestFunctionNullMessageJsonRoundTrip() {
         String functionMessageJson = """
-                    {
-                        "role": "function",
-                        "content": null
-                    }
-                """;
+                {
+                    "role": "function",
+                    "content": null
+                }
+            """;
 
-        ChatRequestFunctionMessage functionMessage = BinaryData.fromString(functionMessageJson).toObject(ChatRequestFunctionMessage.class);
+        ChatRequestFunctionMessage functionMessage
+            = BinaryData.fromString(functionMessageJson).toObject(ChatRequestFunctionMessage.class);
 
         // Deserialization
         assertEquals(FUNCTION, functionMessage.getRole());
@@ -632,13 +642,14 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestFunctionStringMessageJsonRoundTrip() {
         String functionMessageJson = """
-                    {
-                        "role": "function",
-                        "content": "this is a test message."
-                    }
-                """;
+                {
+                    "role": "function",
+                    "content": "this is a test message."
+                }
+            """;
 
-        ChatRequestFunctionMessage functionMessage = BinaryData.fromString(functionMessageJson).toObject(ChatRequestFunctionMessage.class);
+        ChatRequestFunctionMessage functionMessage
+            = BinaryData.fromString(functionMessageJson).toObject(ChatRequestFunctionMessage.class);
 
         // Deserialization
         assertEquals(FUNCTION, functionMessage.getRole());
@@ -653,18 +664,18 @@ public class ChatRequestMessageUnitTests {
 
     }
 
-
     @Test
     public void chatRequestSystemNullMessageJsonRoundTrip() {
         String systemMessageJson = """
-                    {
-                        "role": "system",
-                        "name": "Carlos",
-                        "content": null
-                    }
-                """;
+                {
+                    "role": "system",
+                    "name": "Carlos",
+                    "content": null
+                }
+            """;
 
-        ChatRequestSystemMessage systemMessage = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
+        ChatRequestSystemMessage systemMessage
+            = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
 
         // Deserialization
         assertEquals(SYSTEM, systemMessage.getRole());
@@ -686,14 +697,15 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestSystemStringMessageJsonRoundTrip() {
         String systemMessageJson = """
-                    {
-                        "role": "system",
-                        "name": "Carlos",
-                        "content": "this is a test message."
-                    }
-                """;
+                {
+                    "role": "system",
+                    "name": "Carlos",
+                    "content": "this is a test message."
+                }
+            """;
 
-        ChatRequestSystemMessage systemMessage = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
+        ChatRequestSystemMessage systemMessage
+            = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
 
         // Deserialization
         assertEquals(SYSTEM, systemMessage.getRole());
@@ -715,17 +727,18 @@ public class ChatRequestMessageUnitTests {
     @Test
     public void chatRequestSystemStructuredMessageJsonRoundTrip() {
         String systemMessageJson = """
-                    {
-                        "role": "system",
-                        "name": "Carlos",
-                        "content": [{
-                            "type": "text",
-                            "text": "this is a test message."
-                        }]
-                    }
-                """;
+                {
+                    "role": "system",
+                    "name": "Carlos",
+                    "content": [{
+                        "type": "text",
+                        "text": "this is a test message."
+                    }]
+                }
+            """;
 
-        ChatRequestSystemMessage systemMessage = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
+        ChatRequestSystemMessage systemMessage
+            = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
 
         // Deserialization
         assertEquals(SYSTEM, systemMessage.getRole());
@@ -754,7 +767,6 @@ public class ChatRequestMessageUnitTests {
         assertTrue(systemMessageInString.contains("name"));
         assertTrue(systemMessageInString.contains("Carlos"));
     }
-
 
     private void assertChatRequestUserMessage(ChatRequestUserMessage userMessage) {
         String userMessageInString = BinaryData.fromObject(userMessage).toString();
