@@ -41,7 +41,6 @@ com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
 com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
 com.azure:azure-data-schemaregistry-jsonschema # Tests owner: conniey
-com.azure:azure-data-tables # Tests owner: jairmyree
 com.azure:azure-developer-devcenter # Tests owner: drielenr, leti367
 com.azure:azure-developer-loadtesting # Tests owner: Harshan01, prativen
 com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
@@ -53,7 +52,6 @@ com.azure:azure-messaging-eventgrid # Tests owner: billwert
 com.azure:azure-messaging-eventgrid-namespaces # Tests owner: billwert
 com.azure:azure-messaging-eventhubs # Tests owner: conniey
 com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
-com.azure:azure-messaging-servicebus # Tests owner: ki1729
 com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
 com.azure:azure-messaging-webpubsub-client # Tests owner: weidongxu-microsoft
 com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, RamonArguelles
