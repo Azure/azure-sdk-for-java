@@ -221,6 +221,11 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     @Generated
     private Boolean parallelToolCalls;
 
+    /*
+     * This field is not available in Azure OpenAI. Specifies the latency tier to use for processing the request.
+     */
+    private ServiceTierOptions serviceTierOptions;
+
     /**
      * Creates an instance of ChatCompletionsOptions class.
      *
@@ -904,6 +909,26 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /**
+     * Get the {@link ServiceTierOptions} for this request.
+     *
+     * @return the {@link ServiceTierOptions} value.
+     */
+    public ServiceTierOptions getServiceTierOptions() {
+        return this.serviceTierOptions;
+    }
+
+    /**
+     * Set the {@link ServiceTierOptions} for this request.
+     *
+     * @param serviceTierOptions the {@link ServiceTierOptions} value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    public ChatCompletionsOptions setServiceTierOptions(ServiceTierOptions serviceTierOptions) {
+        this.serviceTierOptions = serviceTierOptions;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -950,6 +975,9 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("prediction", this.prediction);
         jsonWriter.writeJsonField("audio", this.audio);
+        if (this.serviceTierOptions != null) {
+            jsonWriter.writeStringField("service_tier", this.serviceTierOptions.toString());
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -997,6 +1025,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             List<ChatCompletionModality> modalities = null;
             PredictionContent prediction = null;
             AudioOutputParameters audio = null;
+            ServiceTierOptions serviceTierOptions = null;
+
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -1066,6 +1096,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
                     prediction = PredictionContent.fromJson(reader);
                 } else if ("audio".equals(fieldName)) {
                     audio = AudioOutputParameters.fromJson(reader);
+                } else if ("service_tier".equals(fieldName)) {
+                    serviceTierOptions = ServiceTierOptions.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -1102,6 +1134,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             deserializedChatCompletionsOptions.modalities = modalities;
             deserializedChatCompletionsOptions.prediction = prediction;
             deserializedChatCompletionsOptions.audio = audio;
+            deserializedChatCompletionsOptions.serviceTierOptions = serviceTierOptions;
             return deserializedChatCompletionsOptions;
         });
     }
