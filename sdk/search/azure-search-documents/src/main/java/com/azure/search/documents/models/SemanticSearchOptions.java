@@ -29,15 +29,12 @@ public final class SemanticSearchOptions {
      * This parameter is only valid if the query type is 'semantic'. If set,
      * the query returns answers extracted from key passages in the highest
      * ranked documents. The number of answers returned can be configured by
-     * appending the pipe character '|' followed by the 'count-&lt;number of
-     * answers&gt;' option after the answers parameter value, such as
+     * appending the pipe character '|' followed by the 'count-<number of
+     * answers>' option after the answers parameter value, such as
      * 'extractive|count-3'. Default count is 1. The confidence threshold can
      * be configured by appending the pipe character '|' followed by the
-     * 'threshold-&lt;confidence threshold&gt;' option after the answers parameter
+     * 'threshold-<confidence threshold>' option after the answers parameter
      * value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
-     * The maximum character length of answers can be configured by appending
-     * the pipe character '|' followed by the 'count-&lt;number of maximum character length&gt;',
-     * such as 'extractive|maxcharlength-600'.
      */
     private QueryAnswer queryAnswer;
 
@@ -46,10 +43,8 @@ public final class SemanticSearchOptions {
      * the query returns captions extracted from key passages in the highest
      * ranked documents. When Captions is set to 'extractive', highlighting is
      * enabled by default, and can be configured by appending the pipe
-     * character '|' followed by the 'highlight-&lt;true/false&gt;' option, such as
-     * 'extractive|highlight-true'. Defaults to 'None'. The maximum character length
-     * of captions can be configured by appending the pipe character '|' followed by
-     * the 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
+     * character '|' followed by the 'highlight-<true/false>' option, such as
+     * 'extractive|highlight-true'. Defaults to 'None'.
      */
     private QueryCaption queryCaption;
 
@@ -59,14 +54,6 @@ public final class SemanticSearchOptions {
      * retrieval and ranking phase, and the L2 semantic phase.
      */
     private String semanticQuery;
-
-    /*
-     * When QueryRewrites is set to `generative`, the query terms are sent to a generate model which will produce 10
-     * (default) rewrites to help increase the recall of the request. The requested count can be configured by appending
-     * the pipe character `|` followed by the `count-&lt;number of rewrites&gt;` option, such as `generative|count-3`.
-     * Defaults to `None`. This parameter is only valid if the query type is `semantic`.
-     */
-    private QueryRewrites queryRewrites;
 
     /**
      * Creates a new instance of {@link SemanticSearchOptions}.
@@ -217,32 +204,6 @@ public final class SemanticSearchOptions {
      */
     public SemanticSearchOptions setSemanticQuery(String semanticQuery) {
         this.semanticQuery = semanticQuery;
-        return this;
-    }
-
-    /**
-     * Get the queryRewrites property: When QueryRewrites is set to `generative`, the query terms are sent to a generate
-     * model which will produce 10 (default) rewrites to help increase the recall of the request. The requested count
-     * can be configured by appending the pipe character `|` followed by the `count-&lt;number of rewrites&gt;` option, such
-     * as `generative|count-3`. Defaults to `None`. This parameter is only valid if the query type is `semantic`.
-     *
-     * @return the queryRewrites value.
-     */
-    public QueryRewrites getQueryRewrites() {
-        return this.queryRewrites;
-    }
-
-    /**
-     * Set the queryRewrites property: When QueryRewrites is set to `generative`, the query terms are sent to a generate
-     * model which will produce 10 (default) rewrites to help increase the recall of the request. The requested count
-     * can be configured by appending the pipe character `|` followed by the `count-&lt;number of rewrites&gt;` option, such
-     * as `generative|count-3`. Defaults to `None`. This parameter is only valid if the query type is `semantic`.
-     *
-     * @param queryRewrites the queryRewrites value to set.
-     * @return the SemanticSearchOptions object itself.
-     */
-    public SemanticSearchOptions setQueryRewrites(QueryRewrites queryRewrites) {
-        this.queryRewrites = queryRewrites;
         return this;
     }
 }
