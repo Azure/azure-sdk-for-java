@@ -44,7 +44,7 @@ public class TestInterfaceGenerationTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         assertNotNull(testInterface);
     }
 
@@ -58,7 +58,7 @@ public class TestInterfaceGenerationTests {
             new MockHttpResponse(request, 200, BinaryData.fromString(wireValue))).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         assertNotNull(testInterface);
 
         // test getFoo method
@@ -80,7 +80,7 @@ public class TestInterfaceGenerationTests {
     public void requestWithByteArrayReturnType() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         final byte[] result = testInterface.getByteArray(getServerUri(false));
 
         assertNotNull(result);
@@ -96,7 +96,7 @@ public class TestInterfaceGenerationTests {
         //https://github.com/Azure/azure-sdk-for-java/issues/44298
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         final byte[] result
             = testInterface.getByteArray("http", "localhost:" + server.getHttpPort(), 100);
 
@@ -111,7 +111,7 @@ public class TestInterfaceGenerationTests {
     public void getRequestWithNoReturn() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         assertDoesNotThrow(() -> testInterface.getNothing(getServerUri(false)));
     }
 

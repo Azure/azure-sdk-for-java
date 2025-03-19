@@ -175,6 +175,9 @@
     <!-- This property configures the location of the checkstyle-suppressions.xml file. -->
     <checkstyle.suppressionsLocation/>
 
+    <!-- Skips animal-sniffer-maven-plugin. -->
+    <animal.sniffer.skip>true</animal.sniffer.skip>
+
     <!-- The following properties configure the spotbugs-maven-plugin. -->
     <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
     <spotbugs.skip>false</spotbugs.skip>
@@ -283,6 +286,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
+              <skip>${animal.sniffer.skip}</skip>
               <signature>
                 <groupId>com.toasttab.android</groupId>
                 <artifactId>gummy-bears-api-26</artifactId>

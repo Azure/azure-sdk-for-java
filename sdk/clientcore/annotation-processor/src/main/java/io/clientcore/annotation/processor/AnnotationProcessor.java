@@ -150,8 +150,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setHttpMethod(httpRequestInfo.method());
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
 
-        // Add return type as an import
-        setReturnTypeForMethod(method, requestMethod, templateInput);
+        method.setMethodReturnType(requestMethod.getReturnType());
         boolean isEncoded = false;
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
@@ -169,6 +168,10 @@ public class AnnotationProcessor extends AbstractProcessor {
             } else if (pathParam != null) {
                 if (pathParam.encoded()) {
                     isEncoded = true;
+                }
+                if (pathParam.value() == null) {
+                    throw new IllegalArgumentException(
+                        "Path parameter '" + param.getSimpleName().toString() + "' must not be null.");
                 }
                 method.addSubstitution(
                     new Substitution(pathParam.value(), param.getSimpleName().toString(), pathParam.encoded()));
@@ -192,11 +195,6 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setHost(getHost(templateInput, method, isEncoded));
 
         return method;
-    }
-
-    private void setReturnTypeForMethod(HttpRequestContext method, ExecutableElement requestMethod,
-        TemplateInput templateInput) {
-        method.setMethodReturnType(requestMethod.getReturnType());
     }
 
     private static String getHost(TemplateInput templateInput, HttpRequestContext method, boolean isEncoded) {
