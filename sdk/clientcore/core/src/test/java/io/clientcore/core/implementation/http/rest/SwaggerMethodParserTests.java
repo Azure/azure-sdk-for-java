@@ -129,8 +129,8 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noWireType();
 
-//        @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = Base64Uri.class)
-//        void base64Uri();
+        // @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = Base64Uri.class)
+        // void base64Uri();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = DateTimeRfc1123.class)
         void dateTimeRfc1123();
@@ -151,7 +151,7 @@ public class SwaggerMethodParserTests {
         Class<WireTypesMethods> clazz = WireTypesMethods.class;
 
         return Stream.of(Arguments.of(clazz.getDeclaredMethod("noWireType"), null),
-//            Arguments.of(clazz.getDeclaredMethod("base64Uri"), Base64Uri.class),
+            // Arguments.of(clazz.getDeclaredMethod("base64Uri"), Base64Uri.class),
             Arguments.of(clazz.getDeclaredMethod("dateTimeRfc1123"), DateTimeRfc1123.class),
             Arguments.of(clazz.getDeclaredMethod("unknownType"), null));
     }

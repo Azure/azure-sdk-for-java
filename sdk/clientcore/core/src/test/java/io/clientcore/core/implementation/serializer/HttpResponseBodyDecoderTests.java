@@ -211,27 +211,27 @@ public class HttpResponseBodyDecoderTests {
             Arguments.of(mapStringStringResponse, mapStringStringDecodeData, map));
     }
 
-//    @Test
-//    public void decodeListBase64UriResponse() {
-//        ParameterizedType parameterizedType = CoreUtils.createParameterizedType(List.class, byte[].class);
-//        HttpResponseDecodeData decodeData
-//            = new MockHttpResponseDecodeData(200, parameterizedType, Base64Uri.class, true);
-//
-//        List<Base64Uri> base64Uris = Arrays.asList(new Base64Uri("base"), new Base64Uri("64"));
-//        Response<BinaryData> response
-//            = new Response<>(GET_REQUEST, 200, new HttpHeaders(), BinaryData.fromObject(base64Uris));
-//
-//        Object actual = HttpResponseBodyDecoder.decodeByteArray(null, response, SERIALIZER, decodeData);
-//
-//        assertInstanceOf(List.class, actual);
-//
-//        @SuppressWarnings("unchecked")
-//        List<byte[]> decoded = (List<byte[]>) actual;
-//
-//        assertEquals(2, decoded.size());
-//        assertArraysEqual(base64Uris.get(0).decodedBytes(), decoded.get(0));
-//        assertArraysEqual(base64Uris.get(1).decodedBytes(), decoded.get(1));
-//    }
+    // @Test
+    // public void decodeListBase64UriResponse() {
+    //     ParameterizedType parameterizedType = CoreUtils.createParameterizedType(List.class, byte[].class);
+    //     HttpResponseDecodeData decodeData
+    //         = new MockHttpResponseDecodeData(200, parameterizedType, Base64Uri.class, true);
+    //
+    //     List<Base64Uri> base64Uris = Arrays.asList(new Base64Uri("base"), new Base64Uri("64"));
+    //     Response<BinaryData> response
+    //         = new Response<>(GET_REQUEST, 200, new HttpHeaders(), BinaryData.fromObject(base64Uris));
+    //
+    //     Object actual = HttpResponseBodyDecoder.decodeByteArray(null, response, SERIALIZER, decodeData);
+    //
+    //     assertInstanceOf(List.class, actual);
+    //
+    //     @SuppressWarnings("unchecked")
+    //     List<byte[]> decoded = (List<byte[]>) actual;
+    //
+    //     assertEquals(2, decoded.size());
+    //     assertArraysEqual(base64Uris.get(0).decodedBytes(), decoded.get(0));
+    //     assertArraysEqual(base64Uris.get(1).decodedBytes(), decoded.get(1));
+    // }
 
     @Test
     public void malformedBodyReturnsError() throws IOException {

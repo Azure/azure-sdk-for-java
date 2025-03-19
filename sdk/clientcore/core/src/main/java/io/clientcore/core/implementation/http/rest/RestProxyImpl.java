@@ -376,9 +376,9 @@ public class RestProxyImpl {
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
 
-//            if (returnValueWireType == Base64Uri.class) {
-//                responseBodyBytes = new Base64Uri(responseBodyBytes).decodedBytes();
-//            }
+            // if (returnValueWireType == Base64Uri.class) {
+            //     responseBodyBytes = new Base64Uri(responseBodyBytes).decodedBytes();
+            // }
 
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
