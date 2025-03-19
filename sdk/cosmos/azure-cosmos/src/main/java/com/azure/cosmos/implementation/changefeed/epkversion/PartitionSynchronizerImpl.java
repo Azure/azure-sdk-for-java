@@ -87,7 +87,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 if (logger.isInfoEnabled()) {
                     StringBuilder sb = new StringBuilder();
                     for (PartitionKeyRange pkr : pkRangeList) {
-                        if (!sb.isEmpty()) {
+                        if (sb.length() > 0) {
                             sb.append(", ");
                         }
 
