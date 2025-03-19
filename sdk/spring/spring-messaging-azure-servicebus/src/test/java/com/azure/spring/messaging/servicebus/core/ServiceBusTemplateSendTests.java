@@ -5,11 +5,21 @@ package com.azure.spring.messaging.servicebus.core;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.core.SendOperationTests;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyIterable;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -35,7 +45,9 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
         when(this.producerFactory.createProducer(eq(this.destination), any())).thenReturn(this.mockSenderClient);
         when(this.mockSenderClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
 
+        ServiceBusEntityType entityType = ServiceBusEntityType.TOPIC;
         this.sendOperation = new ServiceBusTemplate(producerFactory);
+        this.sendOperation.setDefaultEntityType(entityType);
     }
 
     @Override
@@ -54,4 +66,40 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
         verify(this.producerFactory, times(times)).createProducer(anyString(), any());
     }
 
+    @Test
+    public void testScheduleMessage() {
+        OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(10);
+        when(this.mockSenderClient.scheduleMessage(isA(ServiceBusMessage.class), isA(OffsetDateTime.class))).thenReturn(Mono.just(1L));
+        Mono<Long> longMono = this.sendOperation.scheduleMessage(destination, null, message, offsetDateTime);
+
+        assertEquals(longMono.block(), 1L);
+        verify(this.mockSenderClient, times(1)).scheduleMessage(isA(ServiceBusMessage.class), isA(OffsetDateTime.class));
+    }
+    @Test
+    public void testCancelScheduledMessage() {
+        when(this.mockSenderClient.cancelScheduledMessage(anyLong())).thenReturn(Mono.empty());
+        Mono<Void> voidMono = this.sendOperation.cancelScheduledMessage(destination, null, 1);
+
+        assertNull(voidMono.block());
+        verify(this.mockSenderClient, times(1)).cancelScheduledMessage(anyLong());
+    }
+
+    @Test
+    public void testScheduleMessages() {
+        OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(10);
+        when(this.mockSenderClient.scheduleMessages(anyIterable(), isA(OffsetDateTime.class))).thenReturn(Flux.just(1L));
+        Flux<Long> longFlux = this.sendOperation.scheduleMessages(destination, null, List.of(message), offsetDateTime);
+
+        assertEquals(longFlux.next().block(), 1L);
+        verify(this.mockSenderClient, times(1)).scheduleMessages(anyIterable(), isA(OffsetDateTime.class));
+    }
+
+    @Test
+    public void testCancelScheduledMessages() {
+        when(this.mockSenderClient.cancelScheduledMessages(anyIterable())).thenReturn(Mono.empty());
+        Mono<Void> voidMono = this.sendOperation.cancelScheduledMessages(destination, null, List.of(1L, 2L));
+
+        assertNull(voidMono.block());
+        verify(this.mockSenderClient, times(1)).cancelScheduledMessages(anyIterable());
+    }
 }

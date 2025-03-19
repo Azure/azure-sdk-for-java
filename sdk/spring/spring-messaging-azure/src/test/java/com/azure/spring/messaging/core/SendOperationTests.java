@@ -25,10 +25,10 @@ public abstract class SendOperationTests<O extends SendOperation> {
     protected O sendOperation;
 
     public SendOperationTests() {
-        Map<String, Object> valueMap = new HashMap<>(2);
-        valueMap.put("key1", "value1");
-        valueMap.put("key2", "value2");
-        message = new GenericMessage<>("testPayload", valueMap);
+        Map<String, Object> headers = new HashMap<>(2);
+        headers.put("key1", "value1");
+        headers.put("key2", "value2");
+        message = new GenericMessage<>("testPayload", headers);
     }
 
     protected abstract void setupError(String errorMessage);
