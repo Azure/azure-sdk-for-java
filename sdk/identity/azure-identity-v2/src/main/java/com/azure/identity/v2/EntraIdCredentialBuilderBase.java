@@ -6,7 +6,6 @@ package com.azure.identity.v2;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.pipeline.HttpRedirectOptions;
