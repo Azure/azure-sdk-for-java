@@ -40,8 +40,7 @@ public class TableServiceClientBuilderTest {
     private static final String[] COSMOS_ENDPOINTS = {
         "https://myAccount.table.cosmos.azure.com",
         "https://myAccount.table.cosmos.azure.us",
-        "https://myAccount.table.cosmos.azure.cn"
-    };
+        "https://myAccount.table.cosmos.azure.cn" };
     private static final String CONNECTION_STRING
         = "DefaultEndpointsProtocol=https;AccountName=myAccount;AccountKey=myKey;EndpointSuffix=core.windows.net";
     private static final TokenCredential CREDENTIAL = new MockTokenCredential();
@@ -326,8 +325,7 @@ public class TableServiceClientBuilderTest {
     @Test
     public void cosmosEndpointsResultsInCosmosPatchPolicyAppliedToBuilder() {
         for (String endpoint : COSMOS_ENDPOINTS) {
-            TableServiceClient client = new TableServiceClientBuilder()
-                .endpoint(endpoint)
+            TableServiceClient client = new TableServiceClientBuilder().endpoint(endpoint)
                 .credential(CREDENTIAL)
                 .serviceVersion(serviceVersion)
                 .buildClient();
