@@ -194,12 +194,7 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestUserNullMessageJsonRoundTrip() {
-        String userMessageJson = """
-                {
-                    "role": "user",
-                    "content": null
-                }
-            """;
+        String userMessageJson = "{\"role\": \"user\",\"content\": null}";
 
         ChatRequestUserMessage userMessage
             = BinaryData.fromString(userMessageJson).toObject(ChatRequestUserMessage.class);
@@ -219,12 +214,7 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestUserStringMessageJsonRoundTrip() {
-        String userMessageJson = """
-                {
-                    "role": "user",
-                    "content": "this is a test message."
-                }
-            """;
+        String userMessageJson = "{\"role\": \"user\",\"content\": \"this is a test message.\"}";
 
         ChatRequestUserMessage userMessage
             = BinaryData.fromString(userMessageJson).toObject(ChatRequestUserMessage.class);
@@ -246,18 +236,9 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestUserStructuredMessageJsonRoundTrip() {
-        String userMessageJson = """
-                {
-                    "role": "user",
-                    "content": [{
-                        "type": "text",
-                        "text": "this is a test message."
-                    },{
-                        "type": "image_url",
-                        "image_url": {"url": "https://example.com/image.png"}
-                    }]
-                }
-            """;
+        String userMessageJson
+            = "{\"role\": \"user\",\"content\": [{\"type\": \"text\",\"text\": \"this is a test message.\"},{\n"
+                + "\"type\": \"image_url\", \"image_url\": {\"url\": \"https://example.com/image.png\"}}]}";
 
         ChatRequestUserMessage userMessage
             = BinaryData.fromString(userMessageJson).toObject(ChatRequestUserMessage.class);
@@ -298,13 +279,8 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestToolNullMessageJsonRoundTrip() {
-        String toolMessageJson = """
-                {
-                    "tool_call_id": "tool_call_id_value",
-                    "role": "tool",
-                    "content": null
-                }
-            """;
+        String toolMessageJson
+            = "{\n\"tool_call_id\": \"tool_call_id_value\"," + "\"role\": \"tool\",\"content\": null}";
 
         ChatRequestToolMessage toolMessage
             = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
@@ -326,13 +302,8 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestToolStringMessageJsonRoundTrip() {
-        String toolMessageJson = """
-                {
-                    "tool_call_id": "tool_call_id_value",
-                    "role": "tool",
-                    "content": "this is a test message."
-                }
-            """;
+        String toolMessageJson
+            = "{\"tool_call_id\": \"tool_call_id_value\",\"role\": \"tool\",\"content\": \"this is a test message.\"}";
 
         ChatRequestToolMessage toolMessage
             = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
@@ -354,19 +325,9 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestToolStructuredMessageJsonRoundTrip() {
-        String toolMessageJson = """
-                {
-                    "tool_call_id": "tool_call_id_value",
-                    "role": "tool",
-                    "content": [{
-                        "type": "text",
-                        "text": "this is a test message."
-                    },{
-                        "type": "image_url",
-                        "image_url": {"url": "https://example.com/image.png"}
-                    }]
-                }
-            """;
+        String toolMessageJson = "{\"tool_call_id\": \"tool_call_id_value\",\"role\": \"tool\",\n"
+            + "\"content\": [{\"type\": \"text\",\"text\": \"this is a test message.\"},{\n"
+            + "\"type\": \"image_url\",\"image_url\": {\"url\": \"https://example.com/image.png\"}}]}";
 
         ChatRequestToolMessage toolMessage
             = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
@@ -407,13 +368,7 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestAssistantNullMessageJsonRoundTrip() {
-        String assistantMessageJson = """
-                {
-                    "role": "assistant",
-                    "name": "Alice",
-                    "content": null
-                }
-            """;
+        String assistantMessageJson = "{\"role\": \"assistant\",\"name\": \"Alice\",\"content\": null}";
 
         ChatRequestAssistantMessage assistantMessage
             = BinaryData.fromString(assistantMessageJson).toObject(ChatRequestAssistantMessage.class);
@@ -437,13 +392,8 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestAssistantStringMessageJsonRoundTrip() {
-        String assistantMessageJson = """
-                {
-                    "role": "assistant",
-                    "name": "Alice",
-                    "content": "this is a test message."
-                }
-            """;
+        String assistantMessageJson
+            = "{\"role\": \"assistant\",\"name\": \"Alice\",\"content\": \"this is a test message.\"}";
 
         ChatRequestAssistantMessage assistantMessage
             = BinaryData.fromString(assistantMessageJson).toObject(ChatRequestAssistantMessage.class);
@@ -467,19 +417,8 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestAssistantStructuredMessageJsonRoundTrip() {
-        String assistantMessageJson = """
-                {
-                    "role": "assistant",
-                    "name": "Alice",
-                    "content": [{
-                        "type": "text",
-                        "text": "this is a test message."
-                    },{
-                        "type": "refusal",
-                        "refusal": "refusal message"
-                    }]
-                }
-            """;
+        String assistantMessageJson = "{\"role\": \"assistant\",\"name\": \"Alice\",\"content\": [{\"type\": \"text\","
+            + "\"text\": \"this is a test message.\"},{\"type\": \"refusal\",\"refusal\": \"refusal message\"}]}";
 
         ChatRequestAssistantMessage assistantMessage
             = BinaryData.fromString(assistantMessageJson).toObject(ChatRequestAssistantMessage.class);
@@ -517,13 +456,7 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestDeveloperNullMessageJsonRoundTrip() {
-        String developerMessageJson = """
-                {
-                    "role": "developer",
-                    "name": "Bob",
-                    "content": null
-                }
-            """;
+        String developerMessageJson = "{\"role\": \"developer\",\"name\": \"Bob\",\"content\": null}";
 
         ChatRequestDeveloperMessage developerMessage
             = BinaryData.fromString(developerMessageJson).toObject(ChatRequestDeveloperMessage.class);
@@ -547,13 +480,8 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestDeveloperStringMessageJsonRoundTrip() {
-        String developerMessageJson = """
-                {
-                    "role": "developer",
-                    "name": "Bob",
-                    "content": "this is a test message."
-                }
-            """;
+        String developerMessageJson
+            = "{\"role\": \"developer\",\"name\": \"Bob\",\"content\": \"this is a test message.\"}";
 
         ChatRequestDeveloperMessage developerMessage
             = BinaryData.fromString(developerMessageJson).toObject(ChatRequestDeveloperMessage.class);
@@ -577,16 +505,8 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestDeveloperStructuredMessageJsonRoundTrip() {
-        String developerMessageJson = """
-                {
-                    "role": "developer",
-                    "name": "Bob",
-                    "content": [{
-                        "type": "text",
-                        "text": "this is a test message."
-                    }]
-                }
-            """;
+        String developerMessageJson = "{\"role\": \"developer\",\"name\": \"Bob\",\"content\": [{\"type\": \"text\","
+            + "\"text\": \"this is a test message.\" }]}";
 
         ChatRequestAssistantMessage developerMessage
             = BinaryData.fromString(developerMessageJson).toObject(ChatRequestAssistantMessage.class);
@@ -619,12 +539,7 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestFunctionNullMessageJsonRoundTrip() {
-        String functionMessageJson = """
-                {
-                    "role": "function",
-                    "content": null
-                }
-            """;
+        String functionMessageJson = "{\"role\": \"function\",\"content\": null}";
 
         ChatRequestFunctionMessage functionMessage
             = BinaryData.fromString(functionMessageJson).toObject(ChatRequestFunctionMessage.class);
@@ -641,12 +556,7 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestFunctionStringMessageJsonRoundTrip() {
-        String functionMessageJson = """
-                {
-                    "role": "function",
-                    "content": "this is a test message."
-                }
-            """;
+        String functionMessageJson = " {\"role\": \"function\",\"content\": \"this is a test message.\"}";
 
         ChatRequestFunctionMessage functionMessage
             = BinaryData.fromString(functionMessageJson).toObject(ChatRequestFunctionMessage.class);
@@ -666,13 +576,7 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestSystemNullMessageJsonRoundTrip() {
-        String systemMessageJson = """
-                {
-                    "role": "system",
-                    "name": "Carlos",
-                    "content": null
-                }
-            """;
+        String systemMessageJson = "{\"role\": \"system\",\"name\": \"Carlos\",\"content\": null}";
 
         ChatRequestSystemMessage systemMessage
             = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
@@ -696,13 +600,8 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestSystemStringMessageJsonRoundTrip() {
-        String systemMessageJson = """
-                {
-                    "role": "system",
-                    "name": "Carlos",
-                    "content": "this is a test message."
-                }
-            """;
+        String systemMessageJson
+            = "{\"role\": \"system\",\"name\": \"Carlos\",\"content\": \"this is a test message.\"}";
 
         ChatRequestSystemMessage systemMessage
             = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
@@ -726,16 +625,8 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestSystemStructuredMessageJsonRoundTrip() {
-        String systemMessageJson = """
-                {
-                    "role": "system",
-                    "name": "Carlos",
-                    "content": [{
-                        "type": "text",
-                        "text": "this is a test message."
-                    }]
-                }
-            """;
+        String systemMessageJson = "{\"role\": \"system\",\"name\": \"Carlos\",\"content\": [{\"type\": \"text\","
+            + "\"text\": \"this is a test message.\"}]}";
 
         ChatRequestSystemMessage systemMessage
             = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
