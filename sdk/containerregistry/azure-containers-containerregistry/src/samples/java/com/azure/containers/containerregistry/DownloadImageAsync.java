@@ -9,6 +9,9 @@ import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,6 +27,7 @@ import java.nio.file.StandardOpenOption;
 public class DownloadImageAsync {
     private static final String ENDPOINT = "https://registryName.azurecr.io";
     private static final String REPOSITORY = "samples/nginx";
+    private static final ObjectMapper PRETTY_PRINT = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String OUT_DIRECTORY = getTempDirectory();
     private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
 
@@ -159,8 +163,8 @@ public class DownloadImageAsync {
 
     private static String prettyPrint(OciImageManifest manifest) {
         try {
-            return manifest.toJsonString();
-        } catch (IOException e) {
+            return PRETTY_PRINT.writeValueAsString(manifest);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }

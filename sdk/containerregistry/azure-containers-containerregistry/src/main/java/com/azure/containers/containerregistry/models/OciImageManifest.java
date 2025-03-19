@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Returns the requested OCI Manifest file.
- */
+/** Returns the requested OCI Manifest file. */
 @Fluent
 public final class OciImageManifest implements JsonSerializable<OciImageManifest> {
     /*
@@ -37,15 +35,13 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      */
     private int schemaVersion;
 
-    /**
-     * Creates an instance of OciImageManifest class.
-     */
+    /** Creates an instance of OciImageManifest class. */
     public OciImageManifest() {
     }
 
     /**
      * Get the configuration property: V2 image config descriptor.
-     * 
+     *
      * @return the configuration value.
      */
     public OciDescriptor getConfiguration() {
@@ -54,7 +50,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
 
     /**
      * Set the configuration property: V2 image config descriptor.
-     * 
+     *
      * @param configuration the configuration value to set.
      * @return the OciImageManifest object itself.
      */
@@ -65,7 +61,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
 
     /**
      * Get the layers property: List of V2 image layer information.
-     * 
+     *
      * @return the layers value.
      */
     public List<OciDescriptor> getLayers() {
@@ -74,7 +70,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
 
     /**
      * Set the layers property: List of V2 image layer information.
-     * 
+     *
      * @param layers the layers value to set.
      * @return the OciImageManifest object itself.
      */
@@ -85,7 +81,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
 
     /**
      * Get the annotations property: Additional information provided through arbitrary metadata.
-     * 
+     *
      * @return the annotations value.
      */
     public OciAnnotations getAnnotations() {
@@ -94,7 +90,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
 
     /**
      * Set the annotations property: Additional information provided through arbitrary metadata.
-     * 
+     *
      * @param annotations the annotations value to set.
      * @return the OciImageManifest object itself.
      */
@@ -105,7 +101,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
 
     /**
      * Get the schemaVersion property: Schema version.
-     * 
+     *
      * @return the schemaVersion value.
      */
     public int getSchemaVersion() {
@@ -114,7 +110,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
 
     /**
      * Set the schemaVersion property: Schema version.
-     * 
+     *
      * @param schemaVersion the schemaVersion value to set.
      * @return the OciImageManifest object itself.
      */
@@ -123,9 +119,6 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -138,10 +131,10 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
 
     /**
      * Reads an instance of OciImageManifest from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of OciImageManifest if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OciImageManifest.
      */
