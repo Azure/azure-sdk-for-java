@@ -4,16 +4,12 @@
 package io.clientcore.core.http.client;
 
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.client.GlobalJdkHttpClient;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.utils.SharedExecutorService;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutorService;
 
 /**
  * A generic interface for sending HTTP requests and getting responses.
@@ -31,32 +27,21 @@ public interface HttpClient {
     /**
      * Sends the provided request asynchronously.
      * <p>
-     * The asynchronous request will be sent using the {@link ExecutorService} provided in the
-     * {@link HttpRequest#getRequestOptions()} ({@link RequestOptions#getAsyncExecutor()}) if the {@link RequestOptions}
-     * and the {@link ExecutorService} is not null. If either is null, the request will be sent using a shared
-     * {@link SharedExecutorService}.
-     * <p>
-     * If an I/O error occurs while sending the request or receiving the response, the returned
-     * {@link CompletableFuture} will complete exceptionally.
+     * If an error occurs while sending the request or receiving the response, the returned {@link CompletableFuture}
+     * will complete exceptionally.
      *
      * @param request The HTTP request to send.
      * @return A CompletableFuture that will complete with the response or error.
      */
     default CompletableFuture<Response<BinaryData>> sendAsync(HttpRequest request) {
-        ExecutorService asyncExecutor
-            = (request.getRequestOptions() != null) ? request.getRequestOptions().getAsyncExecutor() : null;
-
-        if (asyncExecutor == null) {
-            asyncExecutor = SharedExecutorService.getInstance();
+        CompletableFuture<Response<BinaryData>> completableFuture = new CompletableFuture<>();
+        try {
+            completableFuture.complete(send(request));
+        } catch (Exception ex) {
+            completableFuture.completeExceptionally(ex);
         }
 
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return send(request);
-            } catch (IOException e) {
-                throw new CompletionException(e);
-            }
-        }, asyncExecutor);
+        return completableFuture;
     }
 
     /**

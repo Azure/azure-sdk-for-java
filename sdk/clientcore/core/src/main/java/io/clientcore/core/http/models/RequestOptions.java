@@ -13,10 +13,8 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.ProgressReporter;
-import io.clientcore.core.utils.SharedExecutorService;
 
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 /**
@@ -126,7 +124,6 @@ public final class RequestOptions {
     private boolean locked;
     private ClientLogger logger;
     private InstrumentationContext instrumentationContext;
-    private ExecutorService asyncExecutor;
     private ProgressReporter progressReporter;
 
     /**
@@ -288,36 +285,6 @@ public final class RequestOptions {
     public RequestOptions setLogger(ClientLogger logger) {
         checkLocked("Cannot set logger.");
         this.logger = logger;
-        return this;
-    }
-
-    /**
-     * Gets the {@link ExecutorService} used to execute async operations.
-     * <p>
-     * If null, the default {@link SharedExecutorService} will be used.
-     *
-     * @return The {@link ExecutorService} used to execute async operations.
-     */
-    public ExecutorService getAsyncExecutor() {
-        return asyncExecutor;
-    }
-
-    /**
-     * Sets the {@link ExecutorService} used to execute async operations.
-     * <p>
-     * If null, the default {@link SharedExecutorService} will be used.
-     *
-     * @param asyncExecutor The {@link ExecutorService} used to execute async operations.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setAsyncExecutor(ExecutorService asyncExecutor) {
-        if (locked) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set async executor."));
-        }
-
-        this.asyncExecutor = asyncExecutor;
         return this;
     }
 
