@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -898,13 +899,13 @@ public class CosmosClientBuilder implements
         }
 
         if (this.isPerPartitionAutomaticFailoverEnabled) {
-            System.setProperty(
-                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
-                    + "}");
+
+            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
+
+            if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
+                logger.warn("As Per-Partition Automatic Failover is enabled, Per-Partition Circuit Breaker is enabled too by default!");
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "true");
+            }
         }
     }
 
