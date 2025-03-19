@@ -29,6 +29,9 @@ public class SecretPropertiesHelper {
         void setRecoverableDays(SecretProperties properties, Integer recoverableDays);
     }
 
+    private SecretPropertiesHelper() {
+    }
+
     public static void setId(SecretProperties properties, String id) {
         if (accessor == null) {
             new SecretProperties();
