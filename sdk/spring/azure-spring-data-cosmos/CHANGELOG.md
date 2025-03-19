@@ -1,6 +1,6 @@
 ## Release History
 
-### 5.21.0-beta.1 (Unreleased)
+### 5.21.0 (2025-03-20)
 
 #### Features Added
 * Added `readMany()` API support to `findAllByIds()` - See [PR 43759](https://github.com/Azure/azure-sdk-for-java/pull/43759).
@@ -11,6 +11,7 @@
 * Fixing bug when the PartitionKey is on a parent entity that was introduced when bulk support was added - See [PR 43801](https://github.com/Azure/azure-sdk-for-java/pull/43801).
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.67.0`.
 
 ### 5.20.1 (2025-03-03)
 
