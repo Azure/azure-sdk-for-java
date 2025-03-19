@@ -1177,6 +1177,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .leaseContainer(createdLeaseCollection)
                 .options(new ChangeFeedProcessorOptions()
                     .setLeasePrefix(leasePrefix)
+                    .enableLeaseVerificationOnRestart()
                 )
                 .buildChangeFeedProcessor();
 
@@ -1199,6 +1200,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                     .setLeasePrefix(leasePrefix)
                     .setMaxItemCount(10)
                     .setMaxScaleCount(0) // unlimited
+                    .enableLeaseVerificationOnRestart()
                 )
                 .buildChangeFeedProcessor();
 
@@ -1323,6 +1325,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                     .setLeaseAcquireInterval(Duration.ofMillis(5 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .setLeaseExpirationInterval(Duration.ofMillis(6 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .setFeedPollDelay(Duration.ofSeconds(5))
+                    .enableLeaseVerificationOnRestart()
                 )
                 .buildChangeFeedProcessor();
 
