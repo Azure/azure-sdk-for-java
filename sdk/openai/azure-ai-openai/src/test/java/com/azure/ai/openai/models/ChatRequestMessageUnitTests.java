@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.azure.ai.openai.models.ChatRole.ASSISTANT;
 import static com.azure.ai.openai.models.ChatRole.DEVELOPER;
+import static com.azure.ai.openai.models.ChatRole.FUNCTION;
 import static com.azure.ai.openai.models.ChatRole.TOOL;
 import static com.azure.ai.openai.models.ChatRole.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -564,6 +565,52 @@ public class ChatRequestMessageUnitTests {
         assertTrue(developerMessageInString.contains("this is a test message."));
         assertTrue(developerMessageInString.contains("name"));
         assertTrue(developerMessageInString.contains("Bob"));
+    }
+
+
+    @Test
+    public void chatRequestFunctionNullMessageJsonRoundTrip() {
+        String functionMessageJson = """
+                    {
+                        "role": "function",
+                        "content": null
+                    }
+                """;
+
+        ChatRequestFunctionMessage functionMessage = BinaryData.fromString(functionMessageJson).toObject(ChatRequestFunctionMessage.class);
+
+        // Deserialization
+        assertEquals(FUNCTION, functionMessage.getRole());
+        assertNull(functionMessage.getContent());
+
+        // Serialization
+        String functionMessageInString = BinaryData.fromObject(functionMessage).toString();
+        assertTrue(functionMessageInString.contains("role"));
+        assertTrue(functionMessageInString.contains("function"));
+    }
+
+    @Test
+    public void chatRequestFunctionStringMessageJsonRoundTrip() {
+        String functionMessageJson = """
+                    {
+                        "role": "function",
+                        "content": "this is a test message."
+                    }
+                """;
+
+        ChatRequestFunctionMessage functionMessage = BinaryData.fromString(functionMessageJson).toObject(ChatRequestFunctionMessage.class);
+
+        // Deserialization
+        assertEquals(FUNCTION, functionMessage.getRole());
+        assertEquals("this is a test message.", functionMessage.getContent());
+
+        // Serialization
+        String functionMessageInString = BinaryData.fromObject(functionMessage).toString();
+        assertTrue(functionMessageInString.contains("role"));
+        assertTrue(functionMessageInString.contains("function"));
+        assertTrue(functionMessageInString.contains("content"));
+        assertTrue(functionMessageInString.contains("this is a test message."));
+
     }
 
     @Test
