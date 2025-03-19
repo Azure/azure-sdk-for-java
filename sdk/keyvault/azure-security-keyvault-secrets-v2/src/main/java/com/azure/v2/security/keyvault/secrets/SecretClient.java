@@ -136,10 +136,10 @@ public final class SecretClient {
     }
 
     /**
-     * Adds a secret to the key vault if it does not exist. If the named secret exists, a new version of the secret is
-     * created. This operation requires the {@code secrets/set} permission.
+     * Adds a secret to the key vault if it does not exist. If a secret with the provided name already exists, a new
+     * version of the secret is created. This operation requires the {@code secrets/set} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Creates a new secret in the key vault. Prints out the details of the newly created secret returned in the
      * response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.setSecret#string-string -->
@@ -175,7 +175,7 @@ public final class SecretClient {
      * and {@link SecretProperties#getNotBefore() notBefore} values in the provided {@link KeyVaultSecret secret object}
      * are optional. If not specified, {@link SecretProperties#isEnabled() enabled} is set to true by key vault.</p>
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Creates a new secret in the key vault. Prints out the details of the newly created secret returned in the
      * response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.setSecret#secret -->
@@ -215,11 +215,11 @@ public final class SecretClient {
      * and {@link SecretProperties#getNotBefore() notBefore} values in the provided {@link KeyVaultSecret secret object}
      * are optional. If not specified, {@link SecretProperties#isEnabled() enabled} is set to true by key vault.</p>
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Creates a new secret in the key vault. Prints out the details of the newly created secret returned in the
      * response.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.setSecretWithResponse#secret-Context -->
-     * <!-- end com.azure.v2.security.keyvault.SecretClient.setSecretWithResponse#secret-Context -->
+     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.setSecretWithResponse#secret-RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.SecretClient.setSecretWithResponse#secret-RequestOptions -->
      *
      * @param secret The {@link KeyVaultSecret secret object} containing information about the secret and its
      * properties. The properties {@link KeyVaultSecret#getName() name} and {@link KeyVaultSecret#getValue() value}
@@ -268,7 +268,7 @@ public final class SecretClient {
      * Gets the latest version of the specified secret from the key vault. This operation requires the
      * {@code secrets/get} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Gets the latest version of the secret in the key vault. Prints out the details of the secret returned in the
      * response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.getSecret#string -->
@@ -289,7 +289,7 @@ public final class SecretClient {
      * Gets the specified secret with specified version from the key vault. This operation requires the
      * {@code secrets/get} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Gets a specific version of the secret in the key vault. Prints out the details of the secret returned in the
      * response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.getSecret#string-string -->
@@ -300,7 +300,8 @@ public final class SecretClient {
      * equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @return The requested secret.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException If a secret with the given {@code name} and {@code version} doesn't exist in the
+     * key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -321,11 +322,11 @@ public final class SecretClient {
      * Gets the specified secret with specified version from the key vault. This operation requires the
      * {@code secrets/get} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Gets a specific version of the secret in the key vault. Prints out the details of the secret returned in the
      * response.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.getSecretWithResponse#string-string-Context -->
-     * <!-- end com.azure.v2.security.keyvault.SecretClient.getSecretWithResponse#string-string-Context -->
+     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.getSecretWithResponse#string-string-RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.SecretClient.getSecretWithResponse#string-string-RequestOptions -->
      *
      * @param name The name of the secret, cannot be {@code null}
      * @param version The version of the secret to retrieve. If this is an empty string or {@code null}, this call is
@@ -361,7 +362,7 @@ public final class SecretClient {
      * <p>The secret properties {@link SecretProperties#getName() name} and
      * {@link SecretProperties#getVersion() version} cannot be {@code null}.</p>
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Gets the latest version of the secret, changes its expiry time, and the updates the secret in the key
      * vault.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.updateSecretProperties#secretProperties -->
@@ -401,11 +402,11 @@ public final class SecretClient {
      * <p>The secret properties {@link SecretProperties#getName() name} and
      * {@link SecretProperties#getVersion() version} cannot be {@code null}.</p>
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Gets the latest version of the secret, changes its expiry time, and the updates the secret in the key vault.
      * </p>
-     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.updateSecretPropertiesWithResponse#secretProperties-Context -->
-     * <!-- end com.azure.v2.security.keyvault.SecretClient.updateSecretPropertiesWithResponse#secretProperties-Context -->
+     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.updateSecretPropertiesWithResponse#secretProperties-RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.SecretClient.updateSecretPropertiesWithResponse#secretProperties-RequestOptions -->
      *
      * @param secretProperties An object containing the secret properties to update.
      * @param requestOptions Additional {@link RequestOptions options} that are passed through the HTTP pipeline during
@@ -457,7 +458,7 @@ public final class SecretClient {
      * All versions of a secret are deleted. This cannot be applied to individual versions of a secret. This operation
      * requires the {@code secrets/delete} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Deletes the secret from a key vault <b>enabled for soft-delete</b>. Prints out the recovery id of the deleted
      * secret returned in the response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.deleteSecret#String -->
@@ -512,7 +513,7 @@ public final class SecretClient {
      * Gets a secret that has been deleted for a soft-delete enabled key vault. This operation requires the
      * {@code secrets/list} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Gets the deleted secret from the key vault <b>enabled for soft-delete</b>. Prints out the details of the
      * deleted secret returned in the response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.getDeletedSecret#string -->
@@ -541,11 +542,11 @@ public final class SecretClient {
      * Gets a secret that has been deleted for a soft-delete enabled key vault. This operation requires the
      * {@code secrets/list} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Gets the deleted secret from the key vault <b>enabled for soft-delete</b>. Prints out the details of the
      * deleted secret returned in the response.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.getDeletedSecretWithResponse#string-Context -->
-     * <!-- end com.azure.v2.security.keyvault.SecretClient.getDeletedSecretWithResponse#string-Context -->
+     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.getDeletedSecretWithResponse#string-RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.SecretClient.getDeletedSecretWithResponse#string-RequestOptions -->
      *
      * @param name The name of the deleted secret.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
@@ -574,7 +575,7 @@ public final class SecretClient {
      * Permanently removes a deleted secret, without the possibility of recovery. This operation can only be performed
      * on a <b>soft-delete enabled</b> key vault. This operation requires the {@code secrets/purge} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Purges the deleted secret from the key vault <b>enabled for soft-delete</b>. Prints out the status code from
      * the server response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.purgeDeletedSecret#string -->
@@ -587,18 +588,25 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedSecret(String name) {
-        purgeDeletedSecretWithResponse(name, RequestOptions.none());
+        // Using try-with-resources to ensure the response is closed.
+        try (Response<Void> response = purgeDeletedSecretWithResponse(name, RequestOptions.none())) {
+            // Ignored
+        } catch (RuntimeException e) {
+            throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        }
     }
 
     /**
      * Permanently removes a deleted secret, without the possibility of recovery. This operation can only be performed
      * on a <b>soft-delete enabled</b> key vault. This operation requires the {@code secrets/purge} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Purges the deleted secret from the key vault <b>enabled for soft-delete</b>. Prints out the status code from
      * the server response.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.purgeDeletedSecretWithResponse#string-Context -->
-     * <!-- end com.azure.v2.security.keyvault.SecretClient.purgeDeletedSecretWithResponse#string-Context -->
+     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.purgeDeletedSecretWithResponse#string-RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.SecretClient.purgeDeletedSecretWithResponse#string-RequestOptions -->
      *
      * @param name The name of the secret to purge.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
@@ -624,7 +632,7 @@ public final class SecretClient {
      * Recovers a deleted secret in the key vault to its latest version. Can only be performed on a <b>soft-delete
      * enabled</b> key vault. This operation requires the {@code secrets/recover} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recovers the deleted secret from a key vault enabled for <b>soft-delete</b>. Prints out the details of the
      * recovered secret returned in the response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.recoverDeletedSecret#String -->
@@ -677,7 +685,7 @@ public final class SecretClient {
      * Requests a backup of the secret be downloaded. All versions of the secret will be downloaded. This operation
      * requires the {@code secrets/backup} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Backs up the secret from the key vault and prints out the length of the secret's backup byte array returned in
      * the response</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.backupSecret#string -->
@@ -691,14 +699,17 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] backupSecret(String name) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
-            return implClient.backupSecretWithResponse(name, RequestOptions.none()).getValue().getValue();
+        // Using try-with-resources to ensure the response is closed.
+        try (Response<byte[]> response = backupSecretWithResponse(name, RequestOptions.none())) {
+            return response.getValue();
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -706,11 +717,11 @@ public final class SecretClient {
      * Requests a backup of the secret be downloaded. All versions of the secret will be downloaded. This operation
      * requires the {@code secrets/backup} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Backs up the secret from the key vault and prints out the length of the secret's backup byte array returned in
      * the response</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.backupSecretWithResponse#string-Context -->
-     * <!-- end com.azure.v2.security.keyvault.SecretClient.backupSecretWithResponse#string-Context -->
+     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.backupSecretWithResponse#string-RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.SecretClient.backupSecretWithResponse#string-RequestOptions -->
      *
      * @param name The name of the secret to back up.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
@@ -721,17 +732,18 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupSecretWithResponse(String name, RequestOptions requestOptions) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
-            Response<BackupSecretResult> response = implClient.backupSecretWithResponse(name, requestOptions);
-
+        // Using try-with-resources to ensure the response is closed.
+        try (Response<BackupSecretResult> response = implClient.backupSecretWithResponse(name, requestOptions)) {
             return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 response.getValue().getValue());
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -739,7 +751,7 @@ public final class SecretClient {
      * Restores a backed up secret and all its versions to a vault. This operation requires the {@code secrets/restore}
      * permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Restores a secret in the key vault from its backup byte array. Prints out the details of the restored secret
      * returned in the response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.restoreSecret#byte -->
@@ -765,11 +777,11 @@ public final class SecretClient {
      * Restores a backed up secret and all its versions to a vault. This operation requires the {@code secrets/restore}
      * permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Restores a secret in the key vault from its backup byte array. Prints out the details of the restored secret
      * returned in the response.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.restoreSecretWithResponse#byte-Context -->
-     * <!-- end com.azure.v2.security.keyvault.SecretClient.restoreSecretWithResponse#byte-Context -->
+     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.restoreSecretWithResponse#byte-RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.SecretClient.restoreSecretWithResponse#byte-RequestOptions -->
      *
      * @param backup The backup blob associated with the secret.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
@@ -809,9 +821,8 @@ public final class SecretClient {
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.listSecrets.iterableByPage -->
      * <!-- end com.azure.v2.security.keyvault.SecretClient.listSecrets.iterableByPage -->
      *
-     * @return A {@link PagedIterable} of {@link SecretProperties secret properties objects} of all the secrets in the
-     * vault. A {@link SecretProperties secret properties object} contains all the information about the secret, except
-     * its value.
+     * @return A {@link PagedIterable} of properties objects of all the secrets in the vault. A properties object
+     * contains all the information about the secret, except its value.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets() {
@@ -823,7 +834,7 @@ public final class SecretClient {
      * values and their versions are not listed in the response. This operation requires the {@code secrets/list}
      * permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>The snippet below loops over each {@link SecretProperties secret properties object} and calls
      * {@link #getSecret(String, String)}. This gets the corresponding {@link KeyVaultSecret secret object} and the
      * value of its latest version.</p>
@@ -831,9 +842,8 @@ public final class SecretClient {
      * <!-- end com.azure.v2.security.keyvault.SecretClient.listSecrets#Context -->
      *
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
-     * @return A {@link PagedIterable} of {@link SecretProperties secret properties objects} of all the secrets in the
-     * vault. A {@link SecretProperties secret properties object} contains all the information about the secret, except
-     * its value.
+     * @return A {@link PagedIterable} of properties objects of all the secrets in the vault. A properties object
+     * contains all the information about the secret, except its value.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets(RequestOptions requestOptions) {
@@ -866,7 +876,7 @@ public final class SecretClient {
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.listDeletedSecrets.iterableByPage -->
      * <!-- end com.azure.v2.security.keyvault.SecretClient.listDeletedSecrets.iterableByPage -->
      *
-     * @return A {@link PagedIterable} of {@link DeletedSecret deleted secret objects} in the vault.
+     * @return A {@link PagedIterable} of deleted secrets in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets() {
@@ -877,13 +887,13 @@ public final class SecretClient {
      * Lists deleted secrets of the key vault if it is <b>soft-delete enabled</b>. This operation requires the
      * {@code secrets/list} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Lists the deleted secrets in the key vault and prints out each one's recovery id.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.listDeletedSecrets#Context -->
      * <!-- end com.azure.v2.security.keyvault.SecretClient.listDeletedSecrets#Context -->
      *
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
-     * @return A {@link PagedIterable} of {@link DeletedSecret deleted secret objects} in the vault.
+     * @return A {@link PagedIterable} deleted secrets in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets(RequestOptions requestOptions) {
@@ -907,7 +917,7 @@ public final class SecretClient {
      * has its identifier and attributes populated. The secret values and secret versions are not listed in the
      * response. This operation requires the {@code secrets/list} permission.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>The sample below fetches all versions of a given secret. For each secret version retrieved, it makes a call to
      * {@link #getSecret(String, String)} to get the version's value, and then prints it out.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.listSecretVersions#string -->
@@ -934,14 +944,14 @@ public final class SecretClient {
      * <p><strong>Iterate through secret versions</strong></p>
      * <p>The sample below fetches all versions of a given secret. For each secret version retrieved, it makes a call to
      * {@link #getSecret(String, String)} to get the version's value, and then prints it out.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.listSecretVersions#string-Context -->
-     * <!-- end com.azure.v2.security.keyvault.SecretClient.listSecretVersions#string-Context -->
+     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.listSecretVersions#string-RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.SecretClient.listSecretVersions#string-RequestOptions -->
      *
      * <p><strong>Iterate through secret versions by page</strong></p>
      * <p>The sample below iterates over all versions of a given secret by page. For each secret version retrieved, it
      * makes a call to {@link #getSecret(String, String)} to get the version's value, and then prints it out.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.listSecretVersions#string-Context-iterableByPage -->
-     * <!-- end com.azure.v2.security.keyvault.SecretClient.listSecretVersions#string-Context-iterableByPage -->
+     * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.listSecretVersions#string-RequestOptions-iterableByPage -->
+     * <!-- end com.azure.v2.security.keyvault.SecretClient.listSecretVersions#string-RequestOptions-iterableByPage -->
      *
      * @param name The name of the secret.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
@@ -988,8 +998,10 @@ public final class SecretClient {
 
         return new PagedResponse<>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
             pagedResponse.getHeaders(), pagedResponse.getBody(),
-            pagedResponse.getValue().stream().map(mapper).collect(
-                Collectors.toCollection(() -> new ArrayList<>(pagedResponse.getValue().size()))),
+            pagedResponse.getValue()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toCollection(() -> new ArrayList<>(pagedResponse.getValue().size()))),
             pagedResponse.getContinuationToken(), null, null, null, null);
     }
 }
