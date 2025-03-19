@@ -13,6 +13,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
+// CUSTOM ADDITION - IMPORTS
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpResponse;
+import com.azure.json.JsonProviders;
+import java.io.StringReader;
+
 /**
  * An error response received from the Azure Batch service.
  */
@@ -38,7 +44,7 @@ public final class BatchError implements JsonSerializable<BatchError> {
 
     /**
      * Creates an instance of BatchError class.
-     * 
+     *
      * @param code the code value to set.
      */
     @Generated
@@ -49,7 +55,7 @@ public final class BatchError implements JsonSerializable<BatchError> {
     /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed
      * programmatically.
-     * 
+     *
      * @return the code value.
      */
     @Generated
@@ -60,7 +66,7 @@ public final class BatchError implements JsonSerializable<BatchError> {
     /**
      * Get the message property: A message describing the error, intended to be suitable for display in a user
      * interface.
-     * 
+     *
      * @return the message value.
      */
     @Generated
@@ -70,7 +76,7 @@ public final class BatchError implements JsonSerializable<BatchError> {
 
     /**
      * Get the values property: A collection of key-value pairs containing additional details about the error.
-     * 
+     *
      * @return the values value.
      */
     @Generated
@@ -93,7 +99,7 @@ public final class BatchError implements JsonSerializable<BatchError> {
 
     /**
      * Reads an instance of BatchError from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of BatchError if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
@@ -126,5 +132,37 @@ public final class BatchError implements JsonSerializable<BatchError> {
 
             return deserializedBatchError;
         });
+    }
+
+    // CUSTOM ADDITION - METHOD
+    /**
+     * Reads an instance of BatchError from an HttpResponseException.
+     *
+     * @param err The HttpResponseException based exception returned from an api
+     * call.
+     * @return An instance of BatchError if the HttpResponseException containted an
+     * instance of it, or null if it was pointing
+     * to an HttpResponseException with no BatchError.
+     */
+    public static BatchError fromException(HttpResponseException err) {
+        if (err == null) {
+            return null;
+        }
+        HttpResponse response = err.getResponse();
+        if (response == null) {
+            return null;
+        }
+        String bodyastring = response.getBodyAsString().block();
+        if (bodyastring == null) {
+            return null;
+        }
+        JsonReader jsonReader;
+        try {
+            jsonReader = JsonProviders.createReader(new StringReader(bodyastring));
+            return BatchError.fromJson(jsonReader);
+        } catch (IOException e) {
+            // If the body of the response is not a valid json, return null
+            return null;
+        }
     }
 }
