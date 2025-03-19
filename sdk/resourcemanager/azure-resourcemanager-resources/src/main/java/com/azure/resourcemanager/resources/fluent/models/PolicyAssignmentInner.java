@@ -201,6 +201,49 @@ public final class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
+     * Get the definitionVersion property: The version of the policy definition to use.
+     * 
+     * @return the definitionVersion value.
+     */
+    public String definitionVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().definitionVersion();
+    }
+
+    /**
+     * Set the definitionVersion property: The version of the policy definition to use.
+     * 
+     * @param definitionVersion the definitionVersion value to set.
+     * @return the PolicyAssignmentInner object itself.
+     */
+    public PolicyAssignmentInner withDefinitionVersion(String definitionVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withDefinitionVersion(definitionVersion);
+        return this;
+    }
+
+    /**
+     * Get the latestDefinitionVersion property: The latest version of the policy definition available. This is only
+     * present if requested via the $expand query parameter.
+     * 
+     * @return the latestDefinitionVersion value.
+     */
+    public String latestDefinitionVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().latestDefinitionVersion();
+    }
+
+    /**
+     * Get the effectiveDefinitionVersion property: The effective version of the policy definition in use. This is only
+     * present if requested via the $expand query parameter.
+     * 
+     * @return the effectiveDefinitionVersion value.
+     */
+    public String effectiveDefinitionVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().effectiveDefinitionVersion();
+    }
+
+    /**
      * Get the scope property: The scope for the policy assignment.
      * 
      * @return the scope value.
