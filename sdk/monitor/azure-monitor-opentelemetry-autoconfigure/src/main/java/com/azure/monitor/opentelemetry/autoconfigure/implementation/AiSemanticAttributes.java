@@ -46,7 +46,7 @@ public final class AiSemanticAttributes {
 
     public static final AttributeKey<String> OPERATION_NAME = stringKey("applicationinsights.internal.operation_name");
 
-    public static final AttributeKey<Double> SAMPLE_RATE = doubleKey("applicationinsights.internal.sample_rate");
+    public static final AttributeKey<Double> SAMPLE_RATE = doubleKey("microsoft.sample_rate");
 
     // marks whether a request is coming from a "real" user, or a "synthetic" user (e.g. a bot or
     // health check)
