@@ -426,6 +426,27 @@ public final class CoreUtils {
         return SerializationFormat.JSON;
     }
 
+    /**
+     * Appends a query parameter to the given host URL.
+     *
+     * @param url the base URL to which the query parameter will be appended.
+     * @param key the name of the query parameter (e.g., "api-version", "name", "After").
+     * @param value the value of the query parameter
+     * @return the updated URL with the appended query parameter.
+     */
+    public static String appendQueryParam(String url, String key, String value) {
+        if (value == null) {
+            return url;
+        }
+
+        // Append query parameter to URL
+        if (url.contains("?")) {
+            return url + "&" + key + "=" + value;
+        } else {
+            return url + "?" + key + "=" + value;
+        }
+    }
+
     /*
      * There is a limited set of serialization encodings that are known ahead of time. Instead of using a TreeMap with
      * a case-insensitive comparator, use an optimized search specifically for the known encodings.

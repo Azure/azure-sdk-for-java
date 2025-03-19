@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
  */
-public final class ResponseBodyModeGeneration {
+public final class ResponseHandler {
 
     /**
      * Handles the generation of the complete response processing flow based on the return type.
@@ -279,6 +279,6 @@ public final class ResponseBodyModeGeneration {
         body.addStatement(StaticJavaParser.parseStatement("return response;"));
     }
 
-    private ResponseBodyModeGeneration() {
+    private ResponseHandler() {
     }
 }

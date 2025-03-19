@@ -282,6 +282,30 @@ public class CoreUtilsTests {
         assertEquals(expected, serializationFormatFromContentType(headers));
     }
 
+    /**
+     * Test that appendQueryParam correctly appends a query parameter when no query string exists.
+     */
+    @ParameterizedTest
+    @CsvSource({
+        "https://example.com, api-version, 1.0, https://example.com?api-version=1.0",  // No query string
+        "https://example.com?existingParam=value, api-version, 1.0, https://example.com?existingParam=value&api-version=1.0",  // Query string exists
+        "'', api-version, 1.0, '?api-version=1.0'"  // Empty URL
+    })
+    void testAppendQueryParam(String url, String key, String value, String expected) {
+        String result = CoreUtils.appendQueryParam(url, key, value);
+        assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
+    }
+
+    @Test
+    void testAppendNullQueryParam() {
+        String url = "https://example.com";
+        String key = "name";
+        String expected = "https://example.com";
+        // Null value for parameter
+        String result = CoreUtils.appendQueryParam(url, key, null);
+        assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
+    }
+
     private static Stream<Arguments> stringJoinSupplier() {
         return Stream.of(Arguments.of(",", new ArrayList<>(), ""), Arguments.of(",", singletonList("red"), "red"),
             Arguments.of(",", Arrays.asList("red", "blue"), "red,blue"),

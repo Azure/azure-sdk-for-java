@@ -52,7 +52,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static io.clientcore.annotation.processor.utils.ResponseBodyModeGeneration.generateResponseHandling;
+import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
 
 /**
  * This class generates the implementation of the service interface.
@@ -310,7 +310,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         BlockStmt body = internalMethod.getBody().get();
 
         initializeHttpRequest(body, method);
-        addHeadersToRequest(body, method);
         boolean serializationFormatSet = addRequestBody(body, method);
         addRequestOptionsToRequestIfPresent(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
@@ -336,7 +335,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
     }
 
-    private void initializeHttpRequest(BlockStmt body, HttpRequestContext method) {
+    void initializeHttpRequest(BlockStmt body, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(HttpRequest.class);
         body.tryAddImportToParentCompilationUnit(HttpMethod.class);
 
@@ -347,17 +346,31 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         if (useProvidedUri) {
             body.addStatement(
-                StaticJavaParser.parseStatement("String host = uri + \"/\" + \"" + method.getPath() + "\";"));
+                StaticJavaParser.parseStatement("String url = uri + \"/\" + \"" + method.getPath() + "\";"));
         } else {
-            body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
+            body.addStatement(StaticJavaParser.parseStatement("String url = " + method.getHost() + ";"));
+        }
+
+        // Iterate through the query parameters and append them to the url string if they are not null
+        if (!method.getQueryParams().isEmpty()) {
+            // Declare newUrl once
+            Statement newUrlDeclaration = StaticJavaParser.parseStatement("String newUrl;");
+            newUrlDeclaration.setComment(new LineComment("\n Append non-null query parameters"));
+            body.addStatement(newUrlDeclaration);
+
+            method.getQueryParams().forEach((key, value) -> {
+                body.addStatement(String.format("newUrl = CoreUtils.appendQueryParam(url, \"%s\", %s);", key, value));
+                body.addStatement("if (newUrl != null) { url = newUrl; }");
+            });
         }
 
         Statement statement
             = StaticJavaParser.parseStatement("HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod."
-                + method.getHttpMethod() + ").setUri(host);");
+                + method.getHttpMethod() + ").setUri(url);");
 
         statement.setLineComment("\n Create the HTTP request");
         body.addStatement(statement);
+        addHeadersToRequest(body, method);
     }
 
     private void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
@@ -366,25 +379,32 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
 
         body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
-
+        StringBuilder httpRequestBuilder = new StringBuilder("httpRequest.getHeaders()"); // Start the header chaining
         for (Map.Entry<String, String> header : method.getHeaders().entrySet()) {
             boolean isStringType = method.getParameters()
                 .stream()
                 .anyMatch(parameter -> parameter.getName().equals(header.getValue())
                     && "String".equals(parameter.getShortTypeName()));
             String value = isStringType ? header.getValue() : "String.valueOf(" + header.getValue() + ")";
-
             String constantName
                 = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(header.getKey().toLowerCase(Locale.ROOT));
             if (constantName != null) {
-                body.addStatement(StaticJavaParser.parseStatement(
-                    "httpRequest.getHeaders().add(HttpHeaderName." + constantName + ", " + value + ");"));
+                httpRequestBuilder.append(".add(HttpHeaderName.")
+                    .append(constantName)
+                    .append(", ")
+                    .append(value)
+                    .append(")");
             } else {
-                body.addStatement(
-                    StaticJavaParser.parseStatement("httpRequest.getHeaders().add(HttpHeaderName.fromString(\""
-                        + header.getKey() + "\"), " + value + ");"));
+                httpRequestBuilder.append(".add(HttpHeaderName.fromString(\"")
+                    .append(header.getKey())
+                    .append("\"), ")
+                    .append(value)
+                    .append(")");
+
             }
         }
+        // Finalize the statement
+        body.addStatement(StaticJavaParser.parseStatement(httpRequestBuilder.toString() + ";"));
     }
 
     private boolean addRequestBody(BlockStmt body, HttpRequestContext method) {
