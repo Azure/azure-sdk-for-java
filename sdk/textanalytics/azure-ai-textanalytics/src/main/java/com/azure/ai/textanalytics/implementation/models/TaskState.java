@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -106,8 +105,8 @@ public class TaskState implements JsonSerializable<TaskState> {
                 reader.nextToken();
 
                 if ("lastUpdateDateTime".equals(fieldName)) {
-                    deserializedTaskState.lastUpdateDateTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedTaskState.lastUpdateDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
                     deserializedTaskState.status = State.fromString(reader.getString());
                 } else {
