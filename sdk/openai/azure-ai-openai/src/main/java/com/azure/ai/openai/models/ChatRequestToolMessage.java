@@ -27,7 +27,7 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
 
     private final String stringContent;
 
-    private final List<ChatMessageContentItem> chatMessageContentItem;
+    private final List<ChatMessageContentItem> chatMessageContentItems;
 
     /*
      * The ID of the tool call resolved by the provided content.
@@ -62,7 +62,17 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      * @return the content value when it's a list.
      */
     public List<ChatMessageContentItem> getListContent() {
-        return this.chatMessageContentItem;
+        return this.chatMessageContentItems;
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as an array
+     */
+    public ChatMessageContentItem[] getArrayContent() {
+        return this.chatMessageContentItems == null ? null : this.chatMessageContentItems.toArray(ChatMessageContentItem[]::new);
     }
 
     /**
@@ -100,8 +110,8 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
         jsonWriter.writeStartObject();
         if (stringContent != null) {
             jsonWriter.writeStringField("content", stringContent);
-        } else if (chatMessageContentItem != null) {
-            jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
+        } else if (chatMessageContentItems != null) {
+            jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
         } else {
             jsonWriter.writeNullField("content");
         }
@@ -132,12 +142,9 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
                 if ("content".equals(fieldName)) {
                     if (reader.currentToken() == JsonToken.STRING) {
                         stringContent = reader.getString();
-//                        content = BinaryData.fromString(reader.getString());
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
                         chatMessageContentItem = reader.readArray(
                                 arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
-//                        content = BinaryData.fromObject(
-//                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
                     } else if (reader.currentToken() == JsonToken.NULL) {
                         content = null;
                     } else {
@@ -152,7 +159,7 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
                     reader.skipChildren();
                 }
             }
-            ChatRequestToolMessage deserializedChatRequestToolMessage = null;
+            ChatRequestToolMessage deserializedChatRequestToolMessage;
             if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItem == null) {
                 deserializedChatRequestToolMessage = new ChatRequestToolMessage(content, toolCallId);
             } else {
@@ -174,7 +181,7 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
         this.content = content;
         this.toolCallId = toolCallId;
         this.stringContent = null;
-        this.chatMessageContentItem = null;
+        this.chatMessageContentItems = null;
     }
 
     /**
@@ -187,7 +194,7 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
         this.content = BinaryData.fromString(content);
         this.toolCallId = toolCallId;
         this.stringContent = content;
-        this.chatMessageContentItem = null;
+        this.chatMessageContentItems = null;
     }
 
     /**
@@ -200,6 +207,6 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
         this.content = BinaryData.fromObject(content);
         this.toolCallId = toolCallId;
         this.stringContent = null;
-        this.chatMessageContentItem = content;
+        this.chatMessageContentItems = content;
     }
 }

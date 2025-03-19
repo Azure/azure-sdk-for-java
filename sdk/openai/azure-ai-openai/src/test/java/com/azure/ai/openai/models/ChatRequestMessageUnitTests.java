@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.azure.ai.openai.models.ChatRole.ASSISTANT;
 import static com.azure.ai.openai.models.ChatRole.TOOL;
 import static com.azure.ai.openai.models.ChatRole.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -258,12 +260,23 @@ public class ChatRequestMessageUnitTests {
         assertEquals(USER, userMessage.getRole());
         assertNull(userMessage.getStringContent());
         List<ChatMessageContentItem> listContent = userMessage.getListContent();
+        ChatMessageContentItem[] arrayContent = userMessage.getArrayContent();
+
         assertEquals(2, listContent.size());
         assertInstanceOf(ChatMessageTextContentItem.class, listContent.get(0));
         assertEquals("this is a test message.", ((ChatMessageTextContentItem) listContent.get(0)).getText());
         assertInstanceOf(ChatMessageImageContentItem.class, listContent.get(1));
         assertEquals("https://example.com/image.png",
             ((ChatMessageImageContentItem) listContent.get(1)).getImageUrl().getUrl());
+
+
+        assertNotNull(arrayContent);
+        assertEquals(2, arrayContent.length);
+        assertInstanceOf(ChatMessageTextContentItem.class, arrayContent[0]);
+        assertEquals("this is a test message.", ((ChatMessageTextContentItem) arrayContent[0]).getText());
+        assertInstanceOf(ChatMessageImageContentItem.class, arrayContent[1]);
+        assertEquals("https://example.com/image.png",
+                ((ChatMessageImageContentItem) arrayContent[1]).getImageUrl().getUrl());
 
         // Serialization
         String userMessageInString = BinaryData.fromObject(userMessage).toString();
@@ -280,7 +293,7 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestToolNullMessageJsonRoundTrip() {
-        String userMessageJson = """
+        String toolMessageJson = """
                     {
                         "tool_call_id": "tool_call_id_value",
                         "role": "tool",
@@ -288,7 +301,7 @@ public class ChatRequestMessageUnitTests {
                     }
                 """;
 
-        ChatRequestToolMessage toolMessage = BinaryData.fromString(userMessageJson).toObject(ChatRequestToolMessage.class);
+        ChatRequestToolMessage toolMessage = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
 
         // Deserialization
         assertEquals(TOOL, toolMessage.getRole());
@@ -297,17 +310,17 @@ public class ChatRequestMessageUnitTests {
         assertNull(toolMessage.getListContent());
 
         // Serialization
-        String userMessageInString = BinaryData.fromObject(toolMessage).toString();
-        assertTrue(userMessageInString.contains("role"));
-        assertTrue(userMessageInString.contains("tool"));
-        assertTrue(userMessageInString.contains("content"));
-        assertTrue(userMessageInString.contains("null"));
+        String toolMessageInString = BinaryData.fromObject(toolMessage).toString();
+        assertTrue(toolMessageInString.contains("role"));
+        assertTrue(toolMessageInString.contains("tool"));
+        assertTrue(toolMessageInString.contains("content"));
+        assertTrue(toolMessageInString.contains("null"));
 
     }
 
     @Test
     public void chatRequestToolStringMessageJsonRoundTrip() {
-        String userMessageJson = """
+        String toolMessageJson = """
                     {
                         "tool_call_id": "tool_call_id_value",
                         "role": "tool",
@@ -315,7 +328,7 @@ public class ChatRequestMessageUnitTests {
                     }
                 """;
 
-        ChatRequestToolMessage toolMessage = BinaryData.fromString(userMessageJson).toObject(ChatRequestToolMessage.class);
+        ChatRequestToolMessage toolMessage = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
 
         // Deserialization
         assertEquals(TOOL, toolMessage.getRole());
@@ -324,17 +337,17 @@ public class ChatRequestMessageUnitTests {
         assertNull(toolMessage.getListContent());
 
         // Serialization
-        String userMessageInString = BinaryData.fromObject(toolMessage).toString();
-        assertTrue(userMessageInString.contains("role"));
-        assertTrue(userMessageInString.contains("tool"));
-        assertTrue(userMessageInString.contains("content"));
-        assertTrue(userMessageInString.contains("this is a test message."));
+        String toolMessageInString = BinaryData.fromObject(toolMessage).toString();
+        assertTrue(toolMessageInString.contains("role"));
+        assertTrue(toolMessageInString.contains("tool"));
+        assertTrue(toolMessageInString.contains("content"));
+        assertTrue(toolMessageInString.contains("this is a test message."));
 
     }
 
     @Test
     public void chatRequestToolStructuredMessageJsonRoundTrip() {
-        String userMessageJson = """
+        String toolMessageJson = """
                     {
                         "tool_call_id": "tool_call_id_value",
                         "role": "tool",
@@ -348,12 +361,14 @@ public class ChatRequestMessageUnitTests {
                     }
                 """;
 
-        ChatRequestToolMessage userMessage = BinaryData.fromString(userMessageJson).toObject(ChatRequestToolMessage.class);
+        ChatRequestToolMessage toolMessage = BinaryData.fromString(toolMessageJson).toObject(ChatRequestToolMessage.class);
 
         // Deserialization
-        assertEquals(TOOL, userMessage.getRole());
-        assertNull(userMessage.getStringContent());
-        List<ChatMessageContentItem> listContent = userMessage.getListContent();
+        assertEquals(TOOL, toolMessage.getRole());
+        assertNull(toolMessage.getStringContent());
+        List<ChatMessageContentItem> listContent = toolMessage.getListContent();
+        ChatMessageContentItem[] arrayContent = toolMessage.getArrayContent();
+
         assertEquals(2, listContent.size());
         assertInstanceOf(ChatMessageTextContentItem.class, listContent.get(0));
         assertEquals("this is a test message.", ((ChatMessageTextContentItem) listContent.get(0)).getText());
@@ -361,19 +376,26 @@ public class ChatRequestMessageUnitTests {
         assertEquals("https://example.com/image.png",
                 ((ChatMessageImageContentItem) listContent.get(1)).getImageUrl().getUrl());
 
-        // Serialization
-        String userMessageInString = BinaryData.fromObject(userMessage).toString();
-        assertTrue(userMessageInString.contains("role"));
-        assertTrue(userMessageInString.contains("tool"));
-        assertTrue(userMessageInString.contains("content"));
-        assertTrue(userMessageInString.contains("type"));
-        assertTrue(userMessageInString.contains("text"));
-        assertTrue(userMessageInString.contains("this is a test message."));
-        assertTrue(userMessageInString.contains("image_url"));
-        assertTrue(userMessageInString.contains("url"));
-        assertTrue(userMessageInString.contains("https://example.com/image.png"));
-    }
+        assertNotNull(arrayContent);
+        assertEquals(2, arrayContent.length);
+        assertInstanceOf(ChatMessageTextContentItem.class, arrayContent[0]);
+        assertEquals("this is a test message.", ((ChatMessageTextContentItem) arrayContent[0]).getText());
+        assertInstanceOf(ChatMessageImageContentItem.class, arrayContent[1]);
+        assertEquals("https://example.com/image.png",
+                ((ChatMessageImageContentItem) arrayContent[1]).getImageUrl().getUrl());
 
+        // Serialization
+        String toolMessageInString = BinaryData.fromObject(toolMessage).toString();
+        assertTrue(toolMessageInString.contains("role"));
+        assertTrue(toolMessageInString.contains("tool"));
+        assertTrue(toolMessageInString.contains("content"));
+        assertTrue(toolMessageInString.contains("type"));
+        assertTrue(toolMessageInString.contains("text"));
+        assertTrue(toolMessageInString.contains("this is a test message."));
+        assertTrue(toolMessageInString.contains("image_url"));
+        assertTrue(toolMessageInString.contains("url"));
+        assertTrue(toolMessageInString.contains("https://example.com/image.png"));
+    }
 
     private void assertChatRequestUserMessage(ChatRequestUserMessage userMessage) {
         String userMessageInString = BinaryData.fromObject(userMessage).toString();

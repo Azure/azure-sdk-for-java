@@ -27,7 +27,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
 
     private final String stringContent;
 
-    private final List<ChatMessageContentItem> chatMessageContentItem;
+    private final List<ChatMessageContentItem> chatMessageContentItems;
 
     /*
      * An optional name for the participant.
@@ -57,6 +57,36 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Generated
     public BinaryData getContent() {
         return this.content;
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as a list
+     */
+    public List<ChatMessageContentItem> getListContent() {
+        return this.chatMessageContentItems;
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as an array
+     */
+    public ChatMessageContentItem[] getArrayContent() {
+        return this.chatMessageContentItems == null ? null : this.chatMessageContentItems.toArray(ChatMessageContentItem[]::new);
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a list or null altogether.
+     *
+     * @return the content value if defined as a string
+     */
+    public String getStringContent() {
+        return this.stringContent;
     }
 
     /**
@@ -158,8 +188,8 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
         jsonWriter.writeStartObject();
         if (!CoreUtils.isNullOrEmpty(stringContent)) {
             jsonWriter.writeStringField("content", stringContent);
-        } else if (chatMessageContentItem != null) {
-            jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
+        } else if (chatMessageContentItems != null) {
+            jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
         } else {
             jsonWriter.writeNullField("content");
         }
@@ -236,7 +266,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     private ChatRequestAssistantMessage(BinaryData content) {
         this.content = content;
         this.stringContent = null;
-        this.chatMessageContentItem = null;
+        this.chatMessageContentItems = null;
     }
 
     /**
@@ -247,7 +277,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     public ChatRequestAssistantMessage(String content) {
         this.content = content == null ? null : BinaryData.fromString(content);
         this.stringContent = content;
-        this.chatMessageContentItem = null;
+        this.chatMessageContentItems = null;
     }
 
     /**
@@ -258,7 +288,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     public ChatRequestAssistantMessage(List<ChatMessageContentItem> content) {
         this.content = BinaryData.fromObject(content);
         this.stringContent = null;
-        this.chatMessageContentItem = content;
+        this.chatMessageContentItems = content;
     }
 
     /*

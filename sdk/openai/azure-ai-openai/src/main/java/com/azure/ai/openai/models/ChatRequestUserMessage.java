@@ -92,12 +92,22 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
 
     /**
      * Get the content property: The contents of the user message, with available input types varying by selected model.
-     * If the result of this method is `null`, it means that the content could be a list or null altogether.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
      *
      * @return the content value if defined as a list
      */
     public List<ChatMessageContentItem> getListContent() {
         return this.chatMessageContentItems;
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as an array
+     */
+    public ChatMessageContentItem[] getArrayContent() {
+        return this.chatMessageContentItems == null ? null : this.chatMessageContentItems.toArray(ChatMessageContentItem[]::new);
     }
 
     /**
@@ -156,7 +166,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
-        if (!CoreUtils.isNullOrEmpty(this.stringContent)) {
+        if (this.stringContent != null) {
             jsonWriter.writeStringField("content", this.stringContent);
         } else if (this.chatMessageContentItems != null) {
             jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
@@ -189,10 +199,8 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                 if ("content".equals(fieldName)) {
                     if (reader.currentToken() == JsonToken.STRING) {
                         stringContent = reader.getString();
-//                        content = BinaryData.fromString(stringContent);
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
                         chatMessageContentItems = reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
-//                        content = BinaryData.fromObject(chatMessageContentItems);
                     } else if (reader.currentToken() == JsonToken.NULL) {
                         content = null;
                     } else {
@@ -207,7 +215,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                     reader.skipChildren();
                 }
             }
-            ChatRequestUserMessage deserializedChatRequestUserMessage = null;
+            ChatRequestUserMessage deserializedChatRequestUserMessage;
             if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItems == null) {
                 deserializedChatRequestUserMessage = new ChatRequestUserMessage(content);
             } else {
