@@ -233,7 +233,7 @@ public class BootstrapperImplTests {
         LeaseStoreManager pkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
 
         ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions()
-            .enableLeaseVerificationOnRestart();
+            .setLeaseVerificationEnabledOnRestart(true);
 
         if (epkRangeBasedLease != null && expectIllegalStateException) {
             Mockito.when(epkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1)))

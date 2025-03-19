@@ -414,10 +414,11 @@ public final class ChangeFeedProcessorOptions {
      * Sets a flag to indicate whether on restart a check for missing leases should be executed. Usually this is not
      * required - but it can help to ensure all leases are processed continuously if any other application or
      * administrator etc. manually modifies lease documents. So, it is an additional safeguard to ensure correctness.
+     * @param enableLeaseVerificationOnRestart true to enable lease verification
      * @return the {@link ChangeFeedProcessorOptions}.
      */
-    public ChangeFeedProcessorOptions enableLeaseVerificationOnRestart() {
-        this.leaseVerificationOnRestartEnabled = true;
+    public ChangeFeedProcessorOptions setLeaseVerificationEnabledOnRestart(boolean enableLeaseVerificationOnRestart) {
+        this.leaseVerificationOnRestartEnabled = enableLeaseVerificationOnRestart;
         return this;
     }
 

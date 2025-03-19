@@ -157,7 +157,7 @@ public class BootstrapperImplTests {
         Mockito.when(partitionSynchronizerMock.createMissingLeases()).thenReturn(Mono.empty());
 
         ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions()
-            .enableLeaseVerificationOnRestart();
+            .setLeaseVerificationEnabledOnRestart(true);
 
         LeaseStore leaseStoreMock = Mockito.mock(LeaseStore.class);
         Mockito
