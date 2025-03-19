@@ -921,7 +921,7 @@ public class QueueApiTests extends QueueTestBase {
     }
 
     @Test
-    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-05-05")
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-07-05")
     public void getSetAccessPolicyOAuth() {
         // Arrange
         QueueServiceClient service = getOAuthQueueServiceClient();

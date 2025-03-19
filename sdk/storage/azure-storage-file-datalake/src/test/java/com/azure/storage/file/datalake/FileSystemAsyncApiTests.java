@@ -2553,7 +2553,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-05-05")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
     public void getSetAccessPolicyOAuth() {
         // Arrange
         DataLakeServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();

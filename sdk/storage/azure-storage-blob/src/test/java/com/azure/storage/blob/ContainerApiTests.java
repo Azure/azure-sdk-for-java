@@ -1978,7 +1978,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void getSetAccessPolicyOAuth() {
         // Arrange
         BlobServiceClient serviceClient = getOAuthServiceClient();
@@ -1990,10 +1990,10 @@ public class ContainerApiTests extends BlobTestBase {
 
         // Act
         BlobContainerAccessPolicies response = cc.getAccessPolicy();
-        cc.setAccessPolicy(null, response.getIdentifiers());
+        assertDoesNotThrow(() -> cc.setAccessPolicy(null, response.getIdentifiers()));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
     public void getAccountInfoOAuth() {
         // Arrange

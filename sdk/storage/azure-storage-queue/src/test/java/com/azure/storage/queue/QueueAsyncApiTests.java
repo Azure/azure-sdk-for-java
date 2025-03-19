@@ -3,7 +3,6 @@
 
 package com.azure.storage.queue;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -36,7 +35,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static com.azure.storage.queue.QueueApiTests.CREATE_METADATA;
@@ -888,7 +886,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
     }
 
     @Test
-    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-05-05")
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-07-05")
     public void getSetAccessPolicyOAuth() {
         // Arrange
         QueueServiceAsyncClient service = getOAuthQueueAsyncServiceClient();
