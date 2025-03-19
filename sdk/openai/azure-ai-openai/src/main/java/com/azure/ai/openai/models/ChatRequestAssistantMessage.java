@@ -186,7 +186,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        if (!CoreUtils.isNullOrEmpty(stringContent)) {
+        if (stringContent != null) {
             jsonWriter.writeStringField("content", stringContent);
         } else if (chatMessageContentItems != null) {
             jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
@@ -213,6 +213,8 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     public static ChatRequestAssistantMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BinaryData content = null;
+            String stringContent = null;
+            List<ChatMessageContentItem> chatMessageContentItems = null;
             ChatRole role = ChatRole.ASSISTANT;
             String refusal = null;
             String name = null;
@@ -223,10 +225,10 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
                     if (reader.currentToken() == JsonToken.STRING) {
-                        content = BinaryData.fromString(reader.getString());
+                        stringContent = reader.getString();
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
-                        content = BinaryData.fromObject(
-                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
+                        chatMessageContentItems =
+                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
                     } else if (reader.currentToken() == JsonToken.NULL) {
                         content = null;
                     } else {
@@ -247,8 +249,13 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
                     reader.skipChildren();
                 }
             }
-            ChatRequestAssistantMessage deserializedChatRequestAssistantMessage
-                = new ChatRequestAssistantMessage(content);
+            ChatRequestAssistantMessage deserializedChatRequestAssistantMessage;
+            if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItems == null) {
+                deserializedChatRequestAssistantMessage = new ChatRequestAssistantMessage(content);
+            } else {
+                deserializedChatRequestAssistantMessage = CoreUtils.isNullOrEmpty(stringContent) ?
+                    new ChatRequestAssistantMessage(chatMessageContentItems) : new ChatRequestAssistantMessage(stringContent);
+            }
             deserializedChatRequestAssistantMessage.role = role;
             deserializedChatRequestAssistantMessage.setRefusal(refusal)
                 .setName(name)
