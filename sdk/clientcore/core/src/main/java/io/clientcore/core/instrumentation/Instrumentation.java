@@ -3,6 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
@@ -116,7 +117,7 @@ public interface Instrumentation {
      * Instruments a client call which includes distributed tracing and duration metric.
      * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
      * <p>
-     * The method updates the {@link SdkRequestContext} object with the instrumentation context that should be used for the call.
+     * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
      * <!-- src_embed io.clientcore.core.instrumentation.instrumentwithresponse -->
      * <pre>
      * return instrumentation.instrumentWithResponse&#40;&quot;Sample.download&quot;,
@@ -127,20 +128,20 @@ public interface Instrumentation {
      *
      * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
      *                      or OpenAPI operationId.
-     * @param requestContext the request context.
+     * @param requestOptions the request context.
      * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request context passed to it.
      * @param <TResponse> the type of the response.
      * @return the response.
      * @throws RuntimeException if the call throws a runtime exception.
      */
-    <TResponse> TResponse instrumentWithResponse(String operationName, SdkRequestContext requestContext,
+    <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
         Function<SdkRequestContext, TResponse> operation);
 
     /**
      * Instruments a client call which includes distributed tracing and duration metric.
      * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
      * <p>
-     * The method updates the {@link RequestContext} object with the instrumentation context that should be used for the call.
+     * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
      * <!-- src_embed io.clientcore.core.instrumentation.instrument -->
      * <pre>
      * instrumentation.instrument&#40;&quot;Sample.create&quot;, SdkRequestContext.fromRequestOptions&#40;options&#41;, this::createImpl&#41;;
@@ -149,13 +150,13 @@ public interface Instrumentation {
      *
      * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
      *                      or OpenAPI operationId.
-     * @param requestContext the request context.
+     * @param requestOptions the request context.
      * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request context passed to it.
      * @throws RuntimeException if the call throws a runtime exception.
      */
-    default void instrument(String operationName, SdkRequestContext requestContext,
+    default void instrument(String operationName, RequestOptions requestOptions,
         Consumer<SdkRequestContext> operation) {
-        instrumentWithResponse(operationName, requestContext, context -> {
+        instrumentWithResponse(operationName, requestOptions, context -> {
             operation.accept(context);
             return null;
         });
@@ -198,7 +199,7 @@ public interface Instrumentation {
      *
      * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
      *
-     * RequestContext context = new RequestContext&#40;&#41;
+     * RequestOptions context = new RequestOptions&#40;&#41;
      *     .setInstrumentationContext&#40;new MyInstrumentationContext&#40;&quot;e4eaaaf2d48f4bf3b299a8a2a2a77ad7&quot;, &quot;5e0c63257de34c56&quot;&#41;&#41;;
      *
      * &#47;&#47; run on another thread
@@ -219,10 +220,10 @@ public interface Instrumentation {
      * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
      *
      * &#47;&#47; Propagating context implicitly is preferred way in synchronous code.
-     * &#47;&#47; However, in asynchronous code, context may need to be propagated explicitly using RequestContext
+     * &#47;&#47; However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
      * &#47;&#47; and explicit io.clientcore.core.util.Context.
      *
-     * RequestContext context = new RequestContext&#40;&#41;
+     * RequestOptions context = new RequestOptions&#40;&#41;
      *     .setInstrumentationContext&#40;Instrumentation.createInstrumentationContext&#40;span&#41;&#41;;
      *
      * &#47;&#47; run on another thread - all telemetry will be correlated with the span created above

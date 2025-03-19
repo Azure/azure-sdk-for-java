@@ -6,7 +6,7 @@ package io.clientcore.core.instrumentation;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -91,7 +91,7 @@ public class SuppressionTests {
             .build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
-        client.protocolMethod(RequestContext.none());
+        client.protocolMethod(RequestOptions.none());
 
         // test that one span is created for simple method
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -106,7 +106,7 @@ public class SuppressionTests {
             .build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
-        client.convenienceMethod(RequestContext.none());
+        client.convenienceMethod(RequestOptions.none());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData span = exporter.getFinishedSpanItems().get(0);
         assertEquals("convenienceMethod", span.getName());
@@ -124,7 +124,7 @@ public class SuppressionTests {
         SampleClientCallInstrumentation client
             = new SampleClientCallInstrumentation(pipeline, otelOptions, libraryInstrumentationOptions);
 
-        client.convenienceMethod(RequestContext.none());
+        client.convenienceMethod(RequestOptions.none());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData span = exporter.getFinishedSpanItems().get(0);
         assertEquals("convenience", span.getName());
@@ -145,7 +145,7 @@ public class SuppressionTests {
             = new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true);
         SampleClientCallInstrumentation client = new SampleClientCallInstrumentation(pipeline, otelOptions, libOptions);
 
-        client.convenienceMethod(RequestContext.none());
+        client.convenienceMethod(RequestOptions.none());
         assertEquals(2, exporter.getFinishedSpanItems().size());
         assertEquals("protocol", exporter.getFinishedSpanItems().get(0).getName());
         assertEquals("convenience", exporter.getFinishedSpanItems().get(1).getName());
@@ -366,12 +366,12 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void protocolMethod(RequestContext context) {
-            Span span = tracer.spanBuilder("protocolMethod", INTERNAL, context.getInstrumentationContext()).startSpan();
+        public void protocolMethod(RequestOptions options) {
+            Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options == null ? null : options.getInstrumentationContext()).startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response
-                    = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"));
+                    = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost").setRequestContext(SdkRequestContext.create(options, span.getInstrumentationContext())));
                 try {
                     response.close();
                 } catch (IOException e) {
@@ -383,14 +383,12 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void convenienceMethod(RequestContext options) {
-
-            SdkRequestContext sdkRequestContext = SdkRequestContext.fromRequestOptions(options);
+        public void convenienceMethod(RequestOptions options) {
             Span span
-                = tracer.spanBuilder("convenienceMethod", INTERNAL, sdkRequestContext.getInstrumentationContext()).startSpan();
+                = tracer.spanBuilder("convenienceMethod", INTERNAL, options == null ? null : options.getInstrumentationContext()).startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
-                protocolMethod(sdkRequestContext.setInstrumentationContext(span.getInstrumentationContext()));
+                protocolMethod(SdkRequestContext.create(options, span.getInstrumentationContext()));
             } finally {
                 span.end();
             }
@@ -408,16 +406,16 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public Response<?> protocolMethod(RequestContext options) {
-            return instrumentation.instrumentWithResponse("protocol", SdkRequestContext.fromRequestOptions(options),
+        public Response<?> protocolMethod(RequestOptions options) {
+            return instrumentation.instrumentWithResponse("protocol", SdkRequestContext.create(options),
                 updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
                     .setRequestContext(updatedOptions)));
         }
 
         @SuppressWarnings("try")
-        public Response<?> convenienceMethod(RequestContext options) throws IOException {
-            return instrumentation.instrumentWithResponse("convenience", SdkRequestContext.fromRequestOptions(options), this::protocolMethod);
+        public Response<?> convenienceMethod(RequestOptions options) throws IOException {
+            return instrumentation.instrumentWithResponse("convenience", SdkRequestContext.create(options), this::protocolMethod);
         }
     }
 }

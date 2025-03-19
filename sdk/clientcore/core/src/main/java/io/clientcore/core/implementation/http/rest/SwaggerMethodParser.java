@@ -277,7 +277,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         for (int i = 0; i < parameterTypes.length; i++) {
             Class<?> parameterType = parameterTypes[i];
 
-            // Check for the RequestContext position.
+            // Check for the RequestOptions position.
             // To retain previous behavior, only track the first instance found.
             if (parameterType == SdkRequestContext.class && requestContextPosition == -1) {
                 requestContextPosition = i;
