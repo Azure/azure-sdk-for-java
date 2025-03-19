@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 
 class SampleClient {
@@ -25,31 +26,33 @@ class SampleClient {
         return this.downloadContent(null);
     }
 
-    public Response<?> downloadContent(RequestContext context) {
+    public Response<?> downloadContent(RequestContext options) {
         // BEGIN: io.clientcore.core.instrumentation.instrumentwithresponse
-        return instrumentation.instrumentWithResponse("Sample.download", context, this::downloadImpl);
+        return instrumentation.instrumentWithResponse("Sample.download",
+            SdkRequestContext.fromRequestOptions(options),
+            this::downloadImpl);
         // END: io.clientcore.core.instrumentation.instrumentwithresponse
     }
 
-    public void create(RequestContext context) {
+    public void create(RequestContext options) {
         // BEGIN: io.clientcore.core.instrumentation.instrument
-        instrumentation.instrument("Sample.create", context, this::createImpl);
+        instrumentation.instrument("Sample.create", SdkRequestContext.fromRequestOptions(options), this::createImpl);
         // END: io.clientcore.core.instrumentation.instrument
     }
 
-    public Response<?> createWithResponse(RequestContext context) {
-        return instrumentation.instrumentWithResponse("create", context, this::createWithResponseImpl);
+    public Response<?> createWithResponse(RequestContext options) {
+        return instrumentation.instrumentWithResponse("create", SdkRequestContext.fromRequestOptions(options), this::createWithResponseImpl);
     }
 
-    private Response<?> downloadImpl(RequestContext context) {
+    private Response<?> downloadImpl(SdkRequestContext context) {
         return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestContext(context));
     }
 
-    private Response<?> createWithResponseImpl(RequestContext context) {
+    private Response<?> createWithResponseImpl(SdkRequestContext context) {
         return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(context));
     }
 
-    private void createImpl(RequestContext context) {
+    private void createImpl(SdkRequestContext context) {
         httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(context));
     }
 }

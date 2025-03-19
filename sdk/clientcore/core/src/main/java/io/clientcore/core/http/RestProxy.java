@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http;
 
-import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.rest.RestProxyImpl;
 import io.clientcore.core.implementation.http.rest.SwaggerInterfaceParser;
@@ -56,7 +56,7 @@ public final class RestProxy implements InvocationHandler {
         // Note: RequestContext need to be evaluated here, as it is a public class with package private methods.
         // Evaluating here allows the package private methods to be invoked here for downstream use.
         final SwaggerMethodParser methodParser = getMethodParser(method);
-        RequestContext context = methodParser.setRequestContext(args);
+        SdkRequestContext context = methodParser.setRequestContext(args);
 
         return restProxyImpl.invoke(proxy, context, methodParser, args);
     }

@@ -13,8 +13,8 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -52,10 +52,10 @@ public class RestProxyImplTests {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength,
-            RequestContext context);
+            SdkRequestContext context);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        void testVoidMethod(RequestContext context);
+        void testVoidMethod(SdkRequestContext context);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class RestProxyImplTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
-        testInterface.testVoidMethod(RequestContext.none());
+        testInterface.testVoidMethod(new SdkRequestContext());
 
         assertTrue(client.lastResponseClosed);
     }
@@ -77,7 +77,7 @@ public class RestProxyImplTests {
         byte[] bytes = "hello".getBytes();
         Response<Void> response
             = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
-                "application/json", (long) bytes.length, RequestContext.none());
+                "application/json", (long) bytes.length, new SdkRequestContext());
 
         assertEquals(200, response.getStatusCode());
     }

@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.instrumentation.InstrumentationContext;
@@ -72,7 +73,7 @@ public class HttpInstrumentationLoggingTests {
 
         HttpPipeline pipeline = createPipeline(new HttpInstrumentationOptions().setHttpLogLevel(detailLevel));
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI);
-        request.setRequestContext(new RequestContext().setLogger(logger));
+        request.setRequestContext(SdkRequestContext.fromRequestOptions(new RequestContext().setLogger(logger)));
 
         pipeline.send(request).close();
 
@@ -1006,7 +1007,7 @@ public class HttpInstrumentationLoggingTests {
         HttpRequest request = new HttpRequest().setMethod(method).setUri(url);
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer {token}");
-        request.setRequestContext(new RequestContext().setLogger(logger).setInstrumentationContext(context));
+        request.setRequestContext(SdkRequestContext.fromRequestOptions(new RequestContext().setLogger(logger).setInstrumentationContext(context)));
 
         return request;
     }

@@ -3,7 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation;
@@ -116,10 +116,12 @@ public interface Instrumentation {
      * Instruments a client call which includes distributed tracing and duration metric.
      * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
      * <p>
-     * The method updates the {@link RequestContext} object with the instrumentation context that should be used for the call.
+     * The method updates the {@link SdkRequestContext} object with the instrumentation context that should be used for the call.
      * <!-- src_embed io.clientcore.core.instrumentation.instrumentwithresponse -->
      * <pre>
-     * return instrumentation.instrumentWithResponse&#40;&quot;Sample.download&quot;, context, this::downloadImpl&#41;;
+     * return instrumentation.instrumentWithResponse&#40;&quot;Sample.download&quot;,
+     *     SdkRequestContext.fromRequestOptions&#40;options&#41;,
+     *     this::downloadImpl&#41;;
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.instrumentwithresponse -->
      *
@@ -131,8 +133,8 @@ public interface Instrumentation {
      * @return the response.
      * @throws RuntimeException if the call throws a runtime exception.
      */
-    <TResponse> TResponse instrumentWithResponse(String operationName, RequestContext requestContext,
-        Function<RequestContext, TResponse> operation);
+    <TResponse> TResponse instrumentWithResponse(String operationName, SdkRequestContext requestContext,
+        Function<SdkRequestContext, TResponse> operation);
 
     /**
      * Instruments a client call which includes distributed tracing and duration metric.
@@ -141,7 +143,7 @@ public interface Instrumentation {
      * The method updates the {@link RequestContext} object with the instrumentation context that should be used for the call.
      * <!-- src_embed io.clientcore.core.instrumentation.instrument -->
      * <pre>
-     * instrumentation.instrument&#40;&quot;Sample.create&quot;, context, this::createImpl&#41;;
+     * instrumentation.instrument&#40;&quot;Sample.create&quot;, SdkRequestContext.fromRequestOptions&#40;options&#41;, this::createImpl&#41;;
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.instrument -->
      *
@@ -151,7 +153,8 @@ public interface Instrumentation {
      * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request context passed to it.
      * @throws RuntimeException if the call throws a runtime exception.
      */
-    default void instrument(String operationName, RequestContext requestContext, Consumer<RequestContext> operation) {
+    default void instrument(String operationName, SdkRequestContext requestContext,
+        Consumer<SdkRequestContext> operation) {
         instrumentWithResponse(operationName, requestContext, context -> {
             operation.accept(context);
             return null;
