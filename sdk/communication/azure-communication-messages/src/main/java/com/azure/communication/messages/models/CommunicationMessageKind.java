@@ -85,22 +85,4 @@ public final class CommunicationMessageKind extends ExpandableStringEnum<Communi
     @Generated
     @Deprecated()
     public static final CommunicationMessageKind IMAGE_V0 = fromString("image_v0");
-
-    /**
-     * Sticker message type.
-     */
-    @Generated
-    public static final CommunicationMessageKind STICKER = fromString("sticker");
-
-    /**
-     * Reaction message type.
-     */
-    @Generated
-    public static final CommunicationMessageKind REACTION = fromString("reaction");
-
-    /**
-     * Interactive Actionable message type.
-     */
-    @Generated
-    public static final CommunicationMessageKind INTERACTIVE = fromString("interactive");
 }
