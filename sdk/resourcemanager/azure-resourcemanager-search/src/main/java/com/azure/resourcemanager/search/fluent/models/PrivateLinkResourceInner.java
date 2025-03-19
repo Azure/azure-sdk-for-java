@@ -13,19 +13,19 @@ import com.azure.resourcemanager.search.models.PrivateLinkResourceProperties;
 import java.io.IOException;
 
 /**
- * Describes a supported private link resource for the search service.
+ * Describes a supported private link resource for the Azure AI Search service.
  */
 @Immutable
 public final class PrivateLinkResourceInner extends ProxyResource {
     /*
-     * Describes the properties of a supported private link resource for the search service.
+     * Describes the properties of a supported private link resource for the Azure AI Search service.
      */
     private PrivateLinkResourceProperties properties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -33,9 +33,9 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of PrivateLinkResourceInner class.
@@ -44,8 +44,8 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Describes the properties of a supported private link resource for the search
-     * service.
+     * Get the properties property: Describes the properties of a supported private link resource for the Azure AI
+     * Search service.
      * 
      * @return the properties value.
      */
@@ -54,13 +54,13 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -74,13 +74,13 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**

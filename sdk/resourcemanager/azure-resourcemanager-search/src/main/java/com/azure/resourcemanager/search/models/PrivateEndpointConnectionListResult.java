@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Response containing a list of Private Endpoint connections.
+ * Response containing a list of private endpoint connections.
  */
 @Immutable
 public final class PrivateEndpointConnectionListResult
     implements JsonSerializable<PrivateEndpointConnectionListResult> {
     /*
-     * The list of Private Endpoint connections.
+     * The list of private endpoint connections.
      */
     private List<PrivateEndpointConnectionInner> value;
 
@@ -37,7 +37,7 @@ public final class PrivateEndpointConnectionListResult
     }
 
     /**
-     * Get the value property: The list of Private Endpoint connections.
+     * Get the value property: The list of private endpoint connections.
      * 
      * @return the value value.
      */

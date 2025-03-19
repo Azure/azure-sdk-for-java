@@ -4,69 +4,65 @@
 
 package com.azure.resourcemanager.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * The provisioning state of the shared private link resource. Valid values are Updating, Deleting, Failed, Succeeded or
  * Incomplete.
  */
-public enum SharedPrivateLinkResourceProvisioningState {
+public final class SharedPrivateLinkResourceProvisioningState
+    extends ExpandableStringEnum<SharedPrivateLinkResourceProvisioningState> {
     /**
-     * Enum value Updating.
+     * Static value Updating for SharedPrivateLinkResourceProvisioningState.
      */
-    UPDATING("Updating"),
+    public static final SharedPrivateLinkResourceProvisioningState UPDATING = fromString("Updating");
 
     /**
-     * Enum value Deleting.
+     * Static value Deleting for SharedPrivateLinkResourceProvisioningState.
      */
-    DELETING("Deleting"),
+    public static final SharedPrivateLinkResourceProvisioningState DELETING = fromString("Deleting");
 
     /**
-     * Enum value Failed.
+     * Static value Failed for SharedPrivateLinkResourceProvisioningState.
      */
-    FAILED("Failed"),
+    public static final SharedPrivateLinkResourceProvisioningState FAILED = fromString("Failed");
 
     /**
-     * Enum value Succeeded.
+     * Static value Succeeded for SharedPrivateLinkResourceProvisioningState.
      */
-    SUCCEEDED("Succeeded"),
+    public static final SharedPrivateLinkResourceProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Enum value Incomplete.
+     * Static value Incomplete for SharedPrivateLinkResourceProvisioningState.
      */
-    INCOMPLETE("Incomplete");
+    public static final SharedPrivateLinkResourceProvisioningState INCOMPLETE = fromString("Incomplete");
 
     /**
-     * The actual serialized value for a SharedPrivateLinkResourceProvisioningState instance.
-     */
-    private final String value;
-
-    SharedPrivateLinkResourceProvisioningState(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a SharedPrivateLinkResourceProvisioningState instance.
+     * Creates a new instance of SharedPrivateLinkResourceProvisioningState value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed SharedPrivateLinkResourceProvisioningState object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static SharedPrivateLinkResourceProvisioningState fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        SharedPrivateLinkResourceProvisioningState[] items = SharedPrivateLinkResourceProvisioningState.values();
-        for (SharedPrivateLinkResourceProvisioningState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public SharedPrivateLinkResourceProvisioningState() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a SharedPrivateLinkResourceProvisioningState from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding SharedPrivateLinkResourceProvisioningState.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static SharedPrivateLinkResourceProvisioningState fromString(String name) {
+        return fromString(name, SharedPrivateLinkResourceProvisioningState.class);
+    }
+
+    /**
+     * Gets known SharedPrivateLinkResourceProvisioningState values.
+     * 
+     * @return known SharedPrivateLinkResourceProvisioningState values.
+     */
+    public static Collection<SharedPrivateLinkResourceProvisioningState> values() {
+        return values(SharedPrivateLinkResourceProvisioningState.class);
     }
 }
