@@ -1,6 +1,29 @@
 # Release History
 
-## 1.0.0-beta.14 (Unreleased)
+## 1.0.0-beta.16 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.15 (2025-03-14)
+
+### Features Added
+
+- New subpackage `com.azure.ai.openai.responses` contains support for OpenAI's recently released Responses functionality.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` to version `1.15.11`.
+
+## 1.0.0-beta.14 (2025-02-21)
 
 ### Features Added
 
@@ -23,12 +46,12 @@
     - `PromptTokensDetails` gets `AudioTokens`
     - `CompletionTokensDetails` gets `AcceptedPredictionTokens`, `RejectedPredictionTokens`, and `AudioTokens`
 
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` to version `1.15.10`.
 
 ## 1.0.0-beta.13 (2024-12-04)
 

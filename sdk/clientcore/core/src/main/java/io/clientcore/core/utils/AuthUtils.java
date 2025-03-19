@@ -6,7 +6,6 @@ package io.clientcore.core.utils;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.implementation.utils.AuthenticateChallengeParser;
-import io.clientcore.core.implementation.utils.ImplUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -20,6 +19,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Utility class for handling various authentication-related operations.
@@ -351,17 +352,6 @@ public final class AuthUtils {
     }
 
     /**
-     * Checks if the character sequence is null or empty.
-     *
-     * @param charSequence Character sequence being checked for nullness or emptiness.
-     *
-     * @return True if the character sequence is null or empty, false otherwise.
-     */
-    public static boolean isNullOrEmpty(CharSequence charSequence) {
-        return charSequence == null || charSequence.length() == 0;
-    }
-
-    /**
      * Parses challenges from the provided {@link HttpHeaders}.
      *
      * @param headers The {@link HttpHeaders} that may contain challenge information.
@@ -524,19 +514,19 @@ public final class AuthUtils {
             .append(response)
             .append("\"");
 
-        if (!ImplUtils.isNullOrEmpty(algorithm)) {
+        if (!CoreUtils.isNullOrEmpty(algorithm)) {
             authorizationBuilder.append(", algorithm=").append(algorithm);
         }
 
-        if (!ImplUtils.isNullOrEmpty(cnonce)) {
+        if (!CoreUtils.isNullOrEmpty(cnonce)) {
             authorizationBuilder.append(", cnonce=\"").append(cnonce).append("\"");
         }
 
-        if (!ImplUtils.isNullOrEmpty(opaque)) {
+        if (!CoreUtils.isNullOrEmpty(opaque)) {
             authorizationBuilder.append(", opaque=\"").append(opaque).append("\"");
         }
 
-        if (!ImplUtils.isNullOrEmpty(qop)) {
+        if (!CoreUtils.isNullOrEmpty(qop)) {
             authorizationBuilder.append(", qop=").append(qop);
             authorizationBuilder.append(", nc=").append(java.lang.String.format("%08X", nc));
         }

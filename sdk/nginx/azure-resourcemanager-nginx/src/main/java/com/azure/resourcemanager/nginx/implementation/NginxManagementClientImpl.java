@@ -23,6 +23,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.nginx.fluent.ApiKeysClient;
 import com.azure.resourcemanager.nginx.fluent.CertificatesClient;
 import com.azure.resourcemanager.nginx.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.nginx.fluent.DeploymentsClient;
@@ -43,12 +44,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = NginxManagementClientBuilder.class)
 public final class NginxManagementClientImpl implements NginxManagementClient {
     /**
-     * The ID of the target subscription.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -127,6 +128,20 @@ public final class NginxManagementClientImpl implements NginxManagementClient {
     }
 
     /**
+     * The ApiKeysClient object to access its operations.
+     */
+    private final ApiKeysClient apiKeys;
+
+    /**
+     * Gets the ApiKeysClient object to access its operations.
+     * 
+     * @return the ApiKeysClient object.
+     */
+    public ApiKeysClient getApiKeys() {
+        return this.apiKeys;
+    }
+
+    /**
      * The CertificatesClient object to access its operations.
      */
     private final CertificatesClient certificates;
@@ -189,7 +204,7 @@ public final class NginxManagementClientImpl implements NginxManagementClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     NginxManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -199,7 +214,8 @@ public final class NginxManagementClientImpl implements NginxManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-01-01-preview";
+        this.apiVersion = "2024-11-01-preview";
+        this.apiKeys = new ApiKeysClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
         this.configurations = new ConfigurationsClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);

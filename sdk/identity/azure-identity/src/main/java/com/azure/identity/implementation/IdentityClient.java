@@ -286,6 +286,11 @@ public class IdentityClient extends IdentityClientBase {
             if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azCommand.append(" --tenant ").append(tenant);
             }
+
+            String subscription = options.getSubscription();
+            if (!CoreUtils.isNullOrEmpty(subscription)) {
+                azCommand.append(" --subscription \"").append(subscription).append("\"");
+            }
         } catch (ClientAuthenticationException | IllegalArgumentException e) {
             return Mono.error(e);
         }

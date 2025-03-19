@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Microsoft Fabric LakeHouse Files read settings.
+ * Microsoft Fabric Lakehouse Files read settings.
  */
 @Fluent
 public final class LakeHouseReadSettings extends StoreReadSettings {
@@ -29,12 +29,12 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     private Object recursive;
 
     /*
-     * Microsoft Fabric LakeHouse Files wildcardFolderPath. Type: string (or Expression with resultType string).
+     * Microsoft Fabric Lakehouse Files wildcardFolderPath. Type: string (or Expression with resultType string).
      */
     private Object wildcardFolderPath;
 
     /*
-     * Microsoft Fabric LakeHouse Files wildcardFileName. Type: string (or Expression with resultType string).
+     * Microsoft Fabric Lakehouse Files wildcardFileName. Type: string (or Expression with resultType string).
      */
     private Object wildcardFileName;
 
@@ -109,7 +109,7 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the wildcardFolderPath property: Microsoft Fabric LakeHouse Files wildcardFolderPath. Type: string (or
+     * Get the wildcardFolderPath property: Microsoft Fabric Lakehouse Files wildcardFolderPath. Type: string (or
      * Expression with resultType string).
      * 
      * @return the wildcardFolderPath value.
@@ -119,7 +119,7 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the wildcardFolderPath property: Microsoft Fabric LakeHouse Files wildcardFolderPath. Type: string (or
+     * Set the wildcardFolderPath property: Microsoft Fabric Lakehouse Files wildcardFolderPath. Type: string (or
      * Expression with resultType string).
      * 
      * @param wildcardFolderPath the wildcardFolderPath value to set.
@@ -131,7 +131,7 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the wildcardFileName property: Microsoft Fabric LakeHouse Files wildcardFileName. Type: string (or Expression
+     * Get the wildcardFileName property: Microsoft Fabric Lakehouse Files wildcardFileName. Type: string (or Expression
      * with resultType string).
      * 
      * @return the wildcardFileName value.
@@ -141,7 +141,7 @@ public final class LakeHouseReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the wildcardFileName property: Microsoft Fabric LakeHouse Files wildcardFileName. Type: string (or Expression
+     * Set the wildcardFileName property: Microsoft Fabric Lakehouse Files wildcardFileName. Type: string (or Expression
      * with resultType string).
      * 
      * @param wildcardFileName the wildcardFileName value to set.

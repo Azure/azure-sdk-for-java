@@ -3,10 +3,15 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryEventData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils;
 import io.opentelemetry.api.OpenTelemetry;
@@ -19,11 +24,13 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.util.annotation.Nullable;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
@@ -31,8 +38,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
-@Disabled
-public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTestBase {
+public class AzureMonitorExportersEndToEndTest {
 
     private static final String CONNECTION_STRING_ENV = "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;"
         + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
@@ -68,6 +74,21 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             .findFirst()
             .get();
         validateSpan(spanTelemetryItem);
+    }
+
+    HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy, HttpClient httpClient) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        if (policy != null) {
+            policies.add(policy);
+        }
+        return new HttpPipelineBuilder().httpClient(httpClient)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .tracer(new NoopTracer())
+            .build();
+    }
+
+    HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy) {
+        return getHttpPipeline(policy, HttpClient.createDefault());
     }
 
     @Test
@@ -117,6 +138,33 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             .get();
 
         validateLog(logTelemetryItem);
+    }
+
+    @Test
+    public void testBuildLogExporterWithCustomEvent() throws Exception {
+        // create the OpenTelemetry SDK
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
+        OpenTelemetry openTelemetry
+            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
+
+        // generate a log
+        generateEvent(openTelemetry);
+
+        // wait for export
+        countDownLatch.await(10, SECONDS);
+        assertThat(customValidationPolicy.getUrl())
+            .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
+
+        // validate log
+        TelemetryItem eventTelemetryItem = customValidationPolicy.getActualTelemetryItems()
+            .stream()
+            .filter(item -> item.getName().equals("Event"))
+            .findFirst()
+            .get();
+
+        validateEvent(eventTelemetryItem);
     }
 
     @Test
@@ -191,6 +239,15 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             .emit();
     }
 
+    private static void generateEvent(OpenTelemetry openTelemetry) {
+        Logger logger = openTelemetry.getLogsBridge().get("Sample");
+        logger.logRecordBuilder()
+            .setBody("TestEventBody")
+            .setAttribute(AttributeKey.stringKey("microsoft.custom_event.name"), "TestEvent")
+            .setAttribute(AttributeKey.stringKey("name"), "apple")
+            .emit();
+    }
+
     private static void validateSpan(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getName()).isEqualTo("RemoteDependency");
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
@@ -230,6 +287,21 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(messageData.getMessage()).isEqualTo("test body");
         assertThat(messageData.getProperties()).containsOnly(entry("LoggerName", "Sample"),
             entry("SourceType", "Logger"), entry("color", "red"), entry("name", "apple"));
+    }
+
+    private static void validateEvent(TelemetryItem telemetryItem) {
+        assertThat(telemetryItem.getName()).isEqualTo("Event");
+        assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
+        assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
+        assertThat(telemetryItem.getTags()).hasEntrySatisfying("ai.internal.sdkVersion",
+            v -> assertThat(v).contains("otel"));
+        assertThat(telemetryItem.getData().getBaseType()).isEqualTo("EventData");
+
+        TelemetryEventData eventData = TestUtils.toTelemetryEventData(telemetryItem.getData().getBaseData());
+        System.out.println("Actual Event Properties: " + eventData.getProperties());
+        assertThat(eventData.getName()).isEqualTo("TestEvent");
+        assertThat(eventData.getProperties()).containsOnly(entry("name", "apple"),
+            entry("microsoft.custom_event.name", "TestEvent"));
     }
 
     private static Map<String, String> getConfiguration() {

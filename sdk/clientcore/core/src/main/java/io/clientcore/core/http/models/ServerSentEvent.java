@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.utils.ServerSentEventHelper;
 
 import java.time.Duration;
@@ -12,6 +14,7 @@ import java.util.List;
  * Represents the SSE response from the server on event stream interpretation
  * <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream">here</a>.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class ServerSentEvent {
     private String id;
     private String event;

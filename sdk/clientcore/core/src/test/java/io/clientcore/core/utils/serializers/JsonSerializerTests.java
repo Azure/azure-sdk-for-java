@@ -6,11 +6,10 @@ package io.clientcore.core.utils.serializers;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.models.SimpleClass;
-import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
 import org.junit.jupiter.api.Test;
@@ -43,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JsonSerializerTests {
-    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
+    private static final JsonSerializer SERIALIZER = new JsonSerializer();
 
     @Test
     public void mapWithEmptyKeyAndNullValue() throws IOException {

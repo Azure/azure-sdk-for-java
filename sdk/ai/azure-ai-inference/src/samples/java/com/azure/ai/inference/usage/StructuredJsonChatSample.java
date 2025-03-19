@@ -6,6 +6,7 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
+import com.azure.ai.inference.ModelServiceVersion;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.models.ChatRequestMessage;
@@ -62,6 +63,7 @@ public final class StructuredJsonChatSample {
         ChatCompletionsClient client = new ChatCompletionsClientBuilder()
             .credential(new AzureKeyCredential(key))
             .endpoint(endpoint)
+            .serviceVersion(ModelServiceVersion.V2024_08_01_PREVIEW)
             .buildClient();
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
