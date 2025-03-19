@@ -29,6 +29,12 @@ This section includes changes in `spring-cloud-azure-starter-keyvault` module.
 #### Features Added
 - Support SSL Bundle with Azure Key Vault certificates [#44259](https://github.com/Azure/azure-sdk-for-java/pull/44259).
 
+### Spring Cloud Azure Starter Monitor
+This section includes changes in `spring-cloud-azure-starter-monitor` module.
+
+#### Dependency Updates
+- Upgrade `opentelemetry` to 1.48.0.
+
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
 Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5210-2025-03-20) for more details.
