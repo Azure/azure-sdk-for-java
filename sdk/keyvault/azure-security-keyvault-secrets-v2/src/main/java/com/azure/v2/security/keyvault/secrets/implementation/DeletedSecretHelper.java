@@ -35,6 +35,9 @@ public final class DeletedSecretHelper {
         void setDeletedOn(DeletedSecret deletedSecret, OffsetDateTime deletedOn);
     }
 
+    private DeletedSecretHelper() {
+    }
+
     public static void setId(DeletedSecret deletedSecret, String id) {
         if (accessor == null) {
             new DeletedSecret();
@@ -147,8 +150,5 @@ public final class DeletedSecretHelper {
 
     public static void setAccessor(DeletedSecretAccessor newAccessor) {
         accessor = newAccessor;
-    }
-
-    private DeletedSecretHelper() {
     }
 }
