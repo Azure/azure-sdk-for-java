@@ -11,17 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class JsonFieldWithDefaultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JsonFieldWithDefault model = BinaryData.fromString("{\"sourceField\":\"ibuyvpirf\",\"defaultValue\":\"pnqn\"}")
-            .toObject(JsonFieldWithDefault.class);
-        Assertions.assertEquals("ibuyvpirf", model.sourceField());
-        Assertions.assertEquals("pnqn", model.defaultValue());
+        JsonFieldWithDefault model
+            = BinaryData.fromString("{\"sourceField\":\"ewijymrhbguz\",\"defaultValue\":\"kyewnfnzhhhqo\"}")
+                .toObject(JsonFieldWithDefault.class);
+        Assertions.assertEquals("ewijymrhbguz", model.sourceField());
+        Assertions.assertEquals("kyewnfnzhhhqo", model.defaultValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonFieldWithDefault model = new JsonFieldWithDefault().withSourceField("ibuyvpirf").withDefaultValue("pnqn");
+        JsonFieldWithDefault model
+            = new JsonFieldWithDefault().withSourceField("ewijymrhbguz").withDefaultValue("kyewnfnzhhhqo");
         model = BinaryData.fromObject(model).toObject(JsonFieldWithDefault.class);
-        Assertions.assertEquals("ibuyvpirf", model.sourceField());
-        Assertions.assertEquals("pnqn", model.defaultValue());
+        Assertions.assertEquals("ewijymrhbguz", model.sourceField());
+        Assertions.assertEquals("kyewnfnzhhhqo", model.defaultValue());
     }
 }
