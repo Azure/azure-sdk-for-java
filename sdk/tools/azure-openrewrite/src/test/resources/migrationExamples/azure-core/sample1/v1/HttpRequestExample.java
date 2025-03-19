@@ -4,7 +4,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 
-
 public class HttpRequestExample {
     public static void main(String... args) {
         HttpClient client = HttpClient.createDefault();

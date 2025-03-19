@@ -71,6 +71,8 @@ recipeList:
   # HttpHeaderName
   # --------------------------------------------------------------------
 
+  - com.azure.openrewrite.core.http.HttpHeaderNameConstantsRecipe
+
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpHeaderName
       newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpHeaderName
@@ -159,7 +161,7 @@ recipeList:
   # HttpRequest
   # --------------------------------------------------------------------
 
-  - com.azure.openrewrite.core.HttpRequestFluentRecipe
+  - com.azure.openrewrite.core.http.HttpRequestFluentRecipe
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpRequest
