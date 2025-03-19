@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
- * The encryption algorithm to use to protected the exported key material.
+ * The encryption algorithm to use to protect the exported key material.
  */
 public final class KeyExportEncryptionAlgorithm implements ExpandableEnum<String> {
     private static final Map<String, KeyExportEncryptionAlgorithm> VALUES = new ConcurrentHashMap<>();
@@ -46,7 +46,7 @@ public final class KeyExportEncryptionAlgorithm implements ExpandableEnum<String
 
     /**
      * Creates or finds a KeyExportEncryptionAlgorithm.
-     * 
+     *
      * @param value a value to look for.
      * @return the corresponding KeyExportEncryptionAlgorithm.
      * @throws IllegalArgumentException if value is null.
@@ -61,7 +61,7 @@ public final class KeyExportEncryptionAlgorithm implements ExpandableEnum<String
 
     /**
      * Gets known KeyExportEncryptionAlgorithm values.
-     * 
+     *
      * @return Known KeyExportEncryptionAlgorithm values.
      */
     @Metadata(generated = true)
@@ -71,7 +71,7 @@ public final class KeyExportEncryptionAlgorithm implements ExpandableEnum<String
 
     /**
      * Gets the value of the KeyExportEncryptionAlgorithm instance.
-     * 
+     *
      * @return the value of the KeyExportEncryptionAlgorithm instance.
      */
     @Metadata(generated = true)

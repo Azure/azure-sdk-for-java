@@ -1144,7 +1144,7 @@ public final class KeyClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the key list result.
      */
-    private PagedResponse<KeyItem> getKeyVersionsSinglePage(String keyName, RequestOptions requestOptions) {
+    public PagedResponse<KeyItem> getKeyVersionsSinglePage(String keyName, RequestOptions requestOptions) {
         Response<KeyListResult> res
             = service.getKeyVersions(this.getServiceVersion().getVersion(), keyName, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
@@ -1257,7 +1257,7 @@ public final class KeyClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the key list result.
      */
-    private PagedResponse<KeyItem> getKeysSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<KeyItem> getKeysSinglePage(RequestOptions requestOptions) {
         Response<KeyListResult> res = service.getKeys(this.getServiceVersion().getVersion(), requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getValue(), null, res.getValue().getNextLink(), null, null, null);
@@ -1816,7 +1816,7 @@ public final class KeyClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return a list of keys that have been deleted in this vault.
      */
-    private PagedResponse<DeletedKeyItem> getDeletedKeysSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<DeletedKeyItem> getDeletedKeysSinglePage(RequestOptions requestOptions) {
         Response<DeletedKeyListResult> res
             = service.getDeletedKeys(this.getServiceVersion().getVersion(), requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
@@ -2219,7 +2219,7 @@ public final class KeyClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the key list result.
      */
-    private PagedResponse<KeyItem> getKeyVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<KeyItem> getKeyVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         Response<KeyListResult> res = service.getKeyVersionsNext(nextLink, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getValue(), null, res.getValue().getNextLink(), null, null, null);
@@ -2264,7 +2264,7 @@ public final class KeyClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the key list result.
      */
-    private PagedResponse<KeyItem> getKeysNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<KeyItem> getKeysNextSinglePage(String nextLink, RequestOptions requestOptions) {
         Response<KeyListResult> res = service.getKeysNext(nextLink, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getValue(), null, res.getValue().getNextLink(), null, null, null);
@@ -2312,7 +2312,7 @@ public final class KeyClientImpl {
      * @throws HttpResponseException thrown if the service returns an error.
      * @return a list of keys that have been deleted in this vault.
      */
-    private PagedResponse<DeletedKeyItem> getDeletedKeysNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<DeletedKeyItem> getDeletedKeysNextSinglePage(String nextLink, RequestOptions requestOptions) {
         Response<DeletedKeyListResult> res = service.getDeletedKeysNext(nextLink, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getValue(), null, res.getValue().getNextLink(), null, null, null);
