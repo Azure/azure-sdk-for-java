@@ -14,6 +14,7 @@ import java.util.List;
 import static com.azure.ai.openai.models.ChatRole.ASSISTANT;
 import static com.azure.ai.openai.models.ChatRole.DEVELOPER;
 import static com.azure.ai.openai.models.ChatRole.FUNCTION;
+import static com.azure.ai.openai.models.ChatRole.SYSTEM;
 import static com.azure.ai.openai.models.ChatRole.TOOL;
 import static com.azure.ai.openai.models.ChatRole.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -430,7 +431,7 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void chatRequestAssistantStringMessageJsonRoundTrip() {
-        String toolMessageJson = """
+        String assistantMessageJson = """
                     {
                         "role": "assistant",
                         "name": "Alice",
@@ -438,7 +439,7 @@ public class ChatRequestMessageUnitTests {
                     }
                 """;
 
-        ChatRequestAssistantMessage assistantMessage = BinaryData.fromString(toolMessageJson).toObject(ChatRequestAssistantMessage.class);
+        ChatRequestAssistantMessage assistantMessage = BinaryData.fromString(assistantMessageJson).toObject(ChatRequestAssistantMessage.class);
 
         // Deserialization
         assertEquals(ASSISTANT, assistantMessage.getRole());
@@ -508,7 +509,6 @@ public class ChatRequestMessageUnitTests {
         assertTrue(assistantMessageInString.contains("refusal message"));
     }
 
-
     @Test
     public void chatRequestDeveloperNullMessageJsonRoundTrip() {
         String developerMessageJson = """
@@ -567,6 +567,46 @@ public class ChatRequestMessageUnitTests {
         assertTrue(developerMessageInString.contains("Bob"));
     }
 
+    @Test
+    public void chatRequestDeveloperStructuredMessageJsonRoundTrip() {
+        String developerMessageJson = """
+                    {
+                        "role": "developer",
+                        "name": "Bob",
+                        "content": [{
+                            "type": "text",
+                            "text": "this is a test message."
+                        }]
+                    }
+                """;
+
+        ChatRequestAssistantMessage developerMessage = BinaryData.fromString(developerMessageJson).toObject(ChatRequestAssistantMessage.class);
+
+        // Deserialization
+        assertEquals(DEVELOPER, developerMessage.getRole());
+        assertEquals("Bob", developerMessage.getName());
+        assertNull(developerMessage.getStringContent());
+        List<ChatMessageContentItem> listContent = developerMessage.getListContent();
+        ChatMessageContentItem[] arrayContent = developerMessage.getArrayContent();
+
+        assertEquals(1, listContent.size());
+        assertInstanceOf(ChatMessageTextContentItem.class, listContent.get(0));
+        assertEquals("this is a test message.", ((ChatMessageTextContentItem) listContent.get(0)).getText());
+
+        assertNotNull(arrayContent);
+        assertEquals(1, arrayContent.length);
+        assertInstanceOf(ChatMessageTextContentItem.class, arrayContent[0]);
+        assertEquals("this is a test message.", ((ChatMessageTextContentItem) arrayContent[0]).getText());
+
+        // Serialization
+        String developerMessageInString = BinaryData.fromObject(developerMessage).toString();
+        assertTrue(developerMessageInString.contains("role"));
+        assertTrue(developerMessageInString.contains("developer"));
+        assertTrue(developerMessageInString.contains("content"));
+        assertTrue(developerMessageInString.contains("type"));
+        assertTrue(developerMessageInString.contains("text"));
+        assertTrue(developerMessageInString.contains("this is a test message."));
+    }
 
     @Test
     public void chatRequestFunctionNullMessageJsonRoundTrip() {
@@ -613,12 +653,71 @@ public class ChatRequestMessageUnitTests {
 
     }
 
+
     @Test
-    public void chatRequestDeveloperStructuredMessageJsonRoundTrip() {
-        String developerMessageJson = """
+    public void chatRequestSystemNullMessageJsonRoundTrip() {
+        String systemMessageJson = """
                     {
-                        "role": "developer",
-                        "name": "Bob",
+                        "role": "system",
+                        "name": "Carlos",
+                        "content": null
+                    }
+                """;
+
+        ChatRequestSystemMessage systemMessage = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
+
+        // Deserialization
+        assertEquals(SYSTEM, systemMessage.getRole());
+        assertEquals("Carlos", systemMessage.getName());
+        assertNull(systemMessage.getStringContent());
+        assertNull(systemMessage.getContent());
+        assertNull(systemMessage.getListContent());
+
+        // Serialization
+        String systemMessageInString = BinaryData.fromObject(systemMessage).toString();
+        assertTrue(systemMessageInString.contains("role"));
+        assertTrue(systemMessageInString.contains("system"));
+        assertTrue(systemMessageInString.contains("content"));
+        assertTrue(systemMessageInString.contains("null"));
+        assertTrue(systemMessageInString.contains("name"));
+        assertTrue(systemMessageInString.contains("Carlos"));
+    }
+
+    @Test
+    public void chatRequestSystemStringMessageJsonRoundTrip() {
+        String systemMessageJson = """
+                    {
+                        "role": "system",
+                        "name": "Carlos",
+                        "content": "this is a test message."
+                    }
+                """;
+
+        ChatRequestSystemMessage systemMessage = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
+
+        // Deserialization
+        assertEquals(SYSTEM, systemMessage.getRole());
+        assertEquals("this is a test message.", systemMessage.getStringContent());
+        assertEquals("this is a test message.", systemMessage.getContent().toString());
+        assertEquals("Carlos", systemMessage.getName());
+        assertNull(systemMessage.getListContent());
+
+        // Serialization
+        String systemMessageInString = BinaryData.fromObject(systemMessage).toString();
+        assertTrue(systemMessageInString.contains("role"));
+        assertTrue(systemMessageInString.contains("system"));
+        assertTrue(systemMessageInString.contains("content"));
+        assertTrue(systemMessageInString.contains("this is a test message."));
+        assertTrue(systemMessageInString.contains("name"));
+        assertTrue(systemMessageInString.contains("Carlos"));
+    }
+
+    @Test
+    public void chatRequestSystemStructuredMessageJsonRoundTrip() {
+        String systemMessageJson = """
+                    {
+                        "role": "system",
+                        "name": "Carlos",
                         "content": [{
                             "type": "text",
                             "text": "this is a test message."
@@ -626,14 +725,14 @@ public class ChatRequestMessageUnitTests {
                     }
                 """;
 
-        ChatRequestAssistantMessage developerMessage = BinaryData.fromString(developerMessageJson).toObject(ChatRequestAssistantMessage.class);
+        ChatRequestSystemMessage systemMessage = BinaryData.fromString(systemMessageJson).toObject(ChatRequestSystemMessage.class);
 
         // Deserialization
-        assertEquals(DEVELOPER, developerMessage.getRole());
-        assertEquals("Bob", developerMessage.getName());
-        assertNull(developerMessage.getStringContent());
-        List<ChatMessageContentItem> listContent = developerMessage.getListContent();
-        ChatMessageContentItem[] arrayContent = developerMessage.getArrayContent();
+        assertEquals(SYSTEM, systemMessage.getRole());
+        assertEquals("Carlos", systemMessage.getName());
+        assertNull(systemMessage.getStringContent());
+        List<ChatMessageContentItem> listContent = systemMessage.getListContent();
+        ChatMessageContentItem[] arrayContent = systemMessage.getArrayContent();
 
         assertEquals(1, listContent.size());
         assertInstanceOf(ChatMessageTextContentItem.class, listContent.get(0));
@@ -645,14 +744,17 @@ public class ChatRequestMessageUnitTests {
         assertEquals("this is a test message.", ((ChatMessageTextContentItem) arrayContent[0]).getText());
 
         // Serialization
-        String developerMessageInString = BinaryData.fromObject(developerMessage).toString();
-        assertTrue(developerMessageInString.contains("role"));
-        assertTrue(developerMessageInString.contains("developer"));
-        assertTrue(developerMessageInString.contains("content"));
-        assertTrue(developerMessageInString.contains("type"));
-        assertTrue(developerMessageInString.contains("text"));
-        assertTrue(developerMessageInString.contains("this is a test message."));
+        String systemMessageInString = BinaryData.fromObject(systemMessage).toString();
+        assertTrue(systemMessageInString.contains("role"));
+        assertTrue(systemMessageInString.contains("system"));
+        assertTrue(systemMessageInString.contains("content"));
+        assertTrue(systemMessageInString.contains("type"));
+        assertTrue(systemMessageInString.contains("text"));
+        assertTrue(systemMessageInString.contains("this is a test message."));
+        assertTrue(systemMessageInString.contains("name"));
+        assertTrue(systemMessageInString.contains("Carlos"));
     }
+
 
     private void assertChatRequestUserMessage(ChatRequestUserMessage userMessage) {
         String userMessageInString = BinaryData.fromObject(userMessage).toString();
