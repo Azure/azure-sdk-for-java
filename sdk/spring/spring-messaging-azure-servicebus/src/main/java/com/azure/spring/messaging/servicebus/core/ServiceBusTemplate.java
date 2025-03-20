@@ -58,6 +58,7 @@ public class ServiceBusTemplate implements SendOperation {
      * Sends a scheduled message to the specific Azure Service Bus entity. The scheduled message is
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
+     * @param <U> The type of the message payload.
      * @param destination topic or queue name.
      * @param entityType type of Service Bus entity.
      * @param message Message to be sent to the Service Bus entity.
@@ -87,6 +88,7 @@ public class ServiceBusTemplate implements SendOperation {
      * Sends a batch of scheduled messages to the specific Azure Service Bus entity. The scheduled
      * messages are enqueued and made available to receivers only at the scheduled enqueue time.
      *
+     * @param <U> The type of the message payload.
      * @param destination topic or queue name.
      * @param entityType entity type of Service Bus entity.
      * @param messages messages to be sent to the Service Bus entity.
@@ -127,7 +129,7 @@ public class ServiceBusTemplate implements SendOperation {
      * @throws ServiceBusException If the messages could not be cancelled.
      * @throws IllegalStateException if sender is already disposed.
      */
-    public <U> Mono<Void> cancelScheduledMessage(String destination,
+    public Mono<Void> cancelScheduledMessage(String destination,
                                                  ServiceBusEntityType entityType,
                                                  long sequenceNumber) {
         ServiceBusEntityType currentEntityType = entityType;
