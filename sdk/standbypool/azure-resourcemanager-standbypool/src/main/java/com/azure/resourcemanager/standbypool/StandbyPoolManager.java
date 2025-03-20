@@ -24,11 +24,11 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.standbypool.fluent.StandbyPoolClient;
+import com.azure.resourcemanager.standbypool.fluent.StandbyPoolManagementClient;
 import com.azure.resourcemanager.standbypool.implementation.OperationsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyContainerGroupPoolRuntimeViewsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyContainerGroupPoolsImpl;
-import com.azure.resourcemanager.standbypool.implementation.StandbyPoolClientBuilder;
+import com.azure.resourcemanager.standbypool.implementation.StandbyPoolManagementClientBuilder;
 import com.azure.resourcemanager.standbypool.implementation.StandbyVirtualMachinePoolRuntimeViewsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyVirtualMachinePoolsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyVirtualMachinesImpl;
@@ -62,12 +62,12 @@ public final class StandbyPoolManager {
 
     private StandbyContainerGroupPoolRuntimeViews standbyContainerGroupPoolRuntimeViews;
 
-    private final StandbyPoolClient clientObject;
+    private final StandbyPoolManagementClient clientObject;
 
     private StandbyPoolManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new StandbyPoolClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new StandbyPoolManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -355,12 +355,12 @@ public final class StandbyPoolManager {
     }
 
     /**
-     * Gets wrapped service client StandbyPoolClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets wrapped service client StandbyPoolManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client StandbyPoolClient.
+     * @return Wrapped service client StandbyPoolManagementClient.
      */
-    public StandbyPoolClient serviceClient() {
+    public StandbyPoolManagementClient serviceClient() {
         return this.clientObject;
     }
 }

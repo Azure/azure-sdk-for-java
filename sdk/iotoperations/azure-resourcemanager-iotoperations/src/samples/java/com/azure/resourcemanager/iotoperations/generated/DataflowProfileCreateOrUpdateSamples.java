@@ -16,7 +16,7 @@ import com.azure.resourcemanager.iotoperations.models.ProfileDiagnostics;
  */
 public final class DataflowProfileCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate.
@@ -38,7 +38,7 @@ public final class DataflowProfileCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowProfile_CreateOrUpdate_Minimal.json
+     * x-ms-original-file: 2025-04-01/DataflowProfile_CreateOrUpdate_Minimal.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate_Minimal.
@@ -57,7 +57,7 @@ public final class DataflowProfileCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowProfile_CreateOrUpdate_Multi.json
+     * x-ms-original-file: 2025-04-01/DataflowProfile_CreateOrUpdate_Multi.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate_Multi.
