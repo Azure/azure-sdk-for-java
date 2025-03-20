@@ -2058,10 +2058,11 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
         FilePurpose purpose = FilePurpose.ASSISTANTS;
 
-        StepVerifier.create(client.uploadFile(fileDetails, purpose)).assertNext(openAIFile -> {
-            assertNotNull(openAIFile);
-            assertEquals("test-file.txt", openAIFile.getFilename());
-        }).verifyComplete();
+        StepVerifier.create(client.uploadFile(fileDetails, purpose))
+                .assertNext(openAIFile -> {
+                    assertNotNull(openAIFile);
+                    assertEquals("test-file.txt", openAIFile.getFilename());
+                }).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2071,7 +2072,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
         FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
 
-        StepVerifier.create(client.uploadFile(fileDetails, null)).expectError(HttpResponseException.class).verify();
+        StepVerifier.create(client.uploadFile(fileDetails, null))
+                .expectError(HttpResponseException.class).verify();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2084,11 +2086,28 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
 
             StepVerifier.create(client.getAudioTranslationAsResponseObject(deploymentName, translationOptions))
-                .assertNext(translation -> {
-                    assertNotNull(translation);
-                    assertEquals("It's raining today.", translation.getText());
-                })
-                .verifyComplete();
+                    .assertNext(translation -> {
+                        assertNotNull(translation);
+                        assertEquals("It's raining today.", translation.getText());
+                    })
+                    .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranscriptionAsResponseObject(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+
+            StepVerifier.create(client.getAudioTranscriptionAsResponseObject(deploymentName, transcriptionOptions))
+                    .assertNext(translation -> {
+                        assertNotNull(translation);
+                        assertEquals(BATMAN_TRANSCRIPTION, translation.getText());
+                    }).verifyComplete();
         });
     }
 
