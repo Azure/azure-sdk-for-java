@@ -174,3 +174,8 @@ jobs:
           }
         displayName: Dump Test-Proxy Error Logs
         condition: succeededOrFailed()
+
+      - pwsh: |
+          Write-Host "Removing $($env:SYSTEM_DEFAULTWORKINGDIRECTORY)"
+          Remove-Item -Force -Recurse $env:SYSTEM_DEFAULTWORKINGDIRECTORY
+        displayName: bbp Remove source files for CG

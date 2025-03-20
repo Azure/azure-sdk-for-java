@@ -64,6 +64,7 @@ extends:
       # Ignore troubleshooting logs/state triggering CG, and don't run it for Analyze. The build job should trigger CG
       # when placing artifacts into an outside directory.
       componentgovernance:
+        useAgentBuildDirectory: true
         ignoreDirectories: $(System.DefaultWorkingDirectory)
       eslint:
         enabled: false

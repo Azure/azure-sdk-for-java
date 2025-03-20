@@ -439,6 +439,11 @@ jobs:
           SbomEnabled: false
           CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
 
+      - pwsh: |
+          Write-Host "Removing $($env:SYSTEM_DEFAULTWORKINGDIRECTORY)"
+          Remove-Item -Force -Recurse $env:SYSTEM_DEFAULTWORKINGDIRECTORY
+        displayName: bbp Remove source files for CG
+
   - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
     parameters:
       JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
