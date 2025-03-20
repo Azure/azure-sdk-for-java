@@ -14937,11 +14937,9 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getTaskFileProperties(String jobId, String taskId, String filePath,
+    public FileResponseHeaderProperties getTaskFileProperties(String jobId, String taskId, String filePath,
         GetBatchTaskFilePropertiesOptions options) {
-        // Generated convenience method for getTaskFilePropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
@@ -14957,7 +14955,10 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions).getValue();
+        // Retrieve response from getTaskFilePropertiesWithResponse and construct FileResponseHeaderProperties from its
+        // headers
+        Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions);
+        return new FileResponseHeaderProperties(response.getHeaders());
     }
 
     /**
@@ -14973,12 +14974,10 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getTaskFileProperties(String jobId, String taskId, String filePath) {
-        // Generated convenience method for getTaskFilePropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions).getValue();
+    public FileResponseHeaderProperties getTaskFileProperties(String jobId, String taskId, String filePath) {
+        Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, new RequestOptions());
+        return new FileResponseHeaderProperties(response.getHeaders());
     }
 
     /**

@@ -15326,11 +15326,9 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Task file on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getTaskFileProperties(String jobId, String taskId, String filePath,
+    public Mono<FileResponseHeaderProperties> getTaskFileProperties(String jobId, String taskId, String filePath,
         GetBatchTaskFilePropertiesOptions options) {
-        // Generated convenience method for getTaskFilePropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
@@ -15346,7 +15344,9 @@ public final class BatchAsyncClient {
             requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+        // Map the response headers of getTaskFilePropertiesWithResponse to FileResponseHeaderProperties
+        return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions)
+            .map(response -> new FileResponseHeaderProperties(response.getHeaders()));
     }
 
     /**
@@ -15363,12 +15363,10 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Task file on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getTaskFileProperties(String jobId, String taskId, String filePath) {
-        // Generated convenience method for getTaskFilePropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    public Mono<FileResponseHeaderProperties> getTaskFileProperties(String jobId, String taskId, String filePath) {
+        return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, new RequestOptions())
+            .map(response -> new FileResponseHeaderProperties(response.getHeaders()));
     }
 
     /**
