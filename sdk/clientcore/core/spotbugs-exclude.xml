@@ -246,6 +246,7 @@
       <Class name="io.clientcore.core.serialization.json.JsonWriterTests" />
       <Class name="io.clientcore.core.serialization.json.models.JsonPatchDocumentTests" />
       <Class name="io.clientcore.core.implementation.http.rest.RequestOptionsTests" />
+      <Class name="io.clientcore.core.implementation.http.rest.SdkRequestContextTests" />
     </Or>
   </Match>
   <Match>

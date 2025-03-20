@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.ProgressReporter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -107,6 +108,17 @@ public class RequestOptionsTests {
 
         assertEquals(value, options.getData(key));
         assertEquals(expectedOriginalValue, options.getData("key"));
+    }
+
+    @Test
+    public void noneIsLocked() {
+        assertThrows(IllegalStateException.class, () -> RequestOptions.none().putData("key", "value"));
+        assertThrows(IllegalStateException.class, () -> RequestOptions.none().addRequestCallback(request -> {
+        }));
+        assertThrows(IllegalStateException.class, () -> RequestOptions.none().addQueryParam("key", "value"));
+        assertThrows(IllegalStateException.class, () -> RequestOptions.none().addQueryParam("key", "value", true));
+        assertThrows(IllegalStateException.class, () -> RequestOptions.none().setLogger(new ClientLogger("test")));
+        assertThrows(IllegalStateException.class, () -> RequestOptions.none().setInstrumentationContext(null));
     }
 
     private static Stream<Arguments> addDataSupplier() {
