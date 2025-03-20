@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the StandbyPoolClientImpl type.
+ * A builder for creating a new instance of the StandbyPoolManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { StandbyPoolClientImpl.class })
-public final class StandbyPoolClientBuilder {
+@ServiceClientBuilder(serviceClients = { StandbyPoolManagementClientImpl.class })
+public final class StandbyPoolManagementClientBuilder {
     /*
      * Service host
      */
@@ -28,9 +28,9 @@ public final class StandbyPoolClientBuilder {
      * Sets Service host.
      * 
      * @param endpoint the endpoint value.
-     * @return the StandbyPoolClientBuilder.
+     * @return the StandbyPoolManagementClientBuilder.
      */
-    public StandbyPoolClientBuilder endpoint(String endpoint) {
+    public StandbyPoolManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -44,9 +44,9 @@ public final class StandbyPoolClientBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the StandbyPoolClientBuilder.
+     * @return the StandbyPoolManagementClientBuilder.
      */
-    public StandbyPoolClientBuilder subscriptionId(String subscriptionId) {
+    public StandbyPoolManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -60,9 +60,9 @@ public final class StandbyPoolClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the StandbyPoolClientBuilder.
+     * @return the StandbyPoolManagementClientBuilder.
      */
-    public StandbyPoolClientBuilder environment(AzureEnvironment environment) {
+    public StandbyPoolManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class StandbyPoolClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the StandbyPoolClientBuilder.
+     * @return the StandbyPoolManagementClientBuilder.
      */
-    public StandbyPoolClientBuilder pipeline(HttpPipeline pipeline) {
+    public StandbyPoolManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class StandbyPoolClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the StandbyPoolClientBuilder.
+     * @return the StandbyPoolManagementClientBuilder.
      */
-    public StandbyPoolClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public StandbyPoolManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class StandbyPoolClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the StandbyPoolClientBuilder.
+     * @return the StandbyPoolManagementClientBuilder.
      */
-    public StandbyPoolClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public StandbyPoolManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of StandbyPoolClientImpl with the provided parameters.
+     * Builds an instance of StandbyPoolManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of StandbyPoolClientImpl.
+     * @return an instance of StandbyPoolManagementClientImpl.
      */
-    public StandbyPoolClientImpl buildClient() {
+    public StandbyPoolManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,8 +131,8 @@ public final class StandbyPoolClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        StandbyPoolClientImpl client = new StandbyPoolClientImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
+        StandbyPoolManagementClientImpl client = new StandbyPoolManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }
 }

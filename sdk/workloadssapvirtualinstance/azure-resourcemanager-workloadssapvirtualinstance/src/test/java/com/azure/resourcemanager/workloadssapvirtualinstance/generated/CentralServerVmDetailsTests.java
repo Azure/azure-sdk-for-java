@@ -11,7 +11,7 @@ public final class CentralServerVmDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CentralServerVmDetails model = BinaryData.fromString(
-            "{\"type\":\"Standby\",\"virtualMachineId\":\"fjxwmsz\",\"storageDetails\":[{\"id\":\"qreyfkzi\"},{\"id\":\"jawneaiv\"},{\"id\":\"czelpcirel\"}]}")
+            "{\"type\":\"Primary\",\"virtualMachineId\":\"aknynfsynljphuop\",\"storageDetails\":[{\"id\":\"qiy\"},{\"id\":\"orzihle\"},{\"id\":\"jswsrmslyz\"}]}")
             .toObject(CentralServerVmDetails.class);
     }
 }
