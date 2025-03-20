@@ -2081,10 +2081,12 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
         FilePurpose purpose = FilePurpose.ASSISTANTS;
 
-        StepVerifier.create(client.uploadFileWrapper(fileDetails, purpose, fileDetails.getFilename())).assertNext(openAIFile -> {
-            assertNotNull(openAIFile);
-            assertEquals("test-file.txt", openAIFile.getFilename());
-        }).verifyComplete();
+        StepVerifier.create(client.uploadFileWrapper(fileDetails, purpose, fileDetails.getFilename()))
+            .assertNext(openAIFile -> {
+                assertNotNull(openAIFile);
+                assertEquals("test-file.txt", openAIFile.getFilename());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
