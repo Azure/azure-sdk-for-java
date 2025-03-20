@@ -58,7 +58,7 @@ public class PagingOperationTests {
         TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline);
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, SdkRequestContext.create(RequestOptions.none()));
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, (SdkRequestContext) RequestOptions.none());
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -70,7 +70,7 @@ public class PagingOperationTests {
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
             pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
-                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, SdkRequestContext.create(RequestOptions.none()));
+                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, (SdkRequestContext) RequestOptions.none());
                 return toPagedResponse(nextResponse, nextLink);
             }
         );
