@@ -931,7 +931,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -990,7 +989,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatCompletionsOptions.
      */
-    @Generated
     public static ChatCompletionsOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<ChatRequestMessage> messages = null;
@@ -1026,7 +1024,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             PredictionContent prediction = null;
             AudioOutputParameters audio = null;
             ServiceTierOptions serviceTierOptions = null;
-
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
