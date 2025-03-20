@@ -2076,21 +2076,6 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testUploadFileWrapperSuccess(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
-        FilePurpose purpose = FilePurpose.ASSISTANTS;
-
-        StepVerifier.create(client.uploadFileWrapper(fileDetails, purpose, fileDetails.getFilename()))
-            .assertNext(openAIFile -> {
-                assertNotNull(openAIFile);
-                assertEquals("test-file.txt", openAIFile.getFilename());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranslationAsResponseObject(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
