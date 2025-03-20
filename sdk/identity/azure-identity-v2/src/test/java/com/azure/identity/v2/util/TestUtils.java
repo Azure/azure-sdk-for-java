@@ -149,7 +149,7 @@ public final class TestUtils {
      * @return A configuration used for testing.
      */
     public static Configuration createTestConfiguration(ConfigurationSource configurationSource) {
-        return new Configuration(EMPTY_SOURCE, EMPTY_SOURCE, configurationSource);
+        return Configuration.from(EMPTY_SOURCE, EMPTY_SOURCE, configurationSource);
     }
 
     private TestUtils() {
