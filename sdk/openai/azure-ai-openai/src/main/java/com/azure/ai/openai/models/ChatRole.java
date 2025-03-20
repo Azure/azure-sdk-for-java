@@ -72,10 +72,4 @@ public final class ChatRole extends ExpandableStringEnum<ChatRole> {
      */
     @Generated
     public static final ChatRole TOOL = fromString("tool");
-
-    /**
-     * The role that provides instructions that the model should follow.
-     */
-    @Generated
-    public static final ChatRole DEVELOPER = fromString("developer");
 }

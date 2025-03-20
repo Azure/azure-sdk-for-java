@@ -88,7 +88,7 @@ public final class RntbdResponse implements ReferenceCounted {
         this.content = content.copy();
 
         final HttpResponseStatus status = HttpResponseStatus.valueOf(statusCode);
-        final int length = RntbdResponseStatus.LENGTH + this.headers.computeLength(false);
+        final int length = RntbdResponseStatus.LENGTH + this.headers.computeLength();
 
         this.frame = new RntbdResponseStatus(length, status, activityId);
         this.messageLength = length + this.content.writerIndex();
@@ -173,7 +173,7 @@ public final class RntbdResponse implements ReferenceCounted {
         final int start = out.writerIndex();
 
         this.frame.encode(out);
-        this.headers.encode(out, false);
+        this.headers.encode(out);
 
         final int length = out.writerIndex() - start;
         checkState(length == this.frame.getLength());
@@ -347,26 +347,27 @@ public final class RntbdResponse implements ReferenceCounted {
         return new RntbdResponse(in.readSlice(end - start), frame, headers, content);
     }
 
-    StoreResponse toStoreResponse(final String serverVersion) {
+    StoreResponse toStoreResponse(final RntbdContext context) {
 
-        checkNotNull(serverVersion, "Argument 'serverVersion' must not be null.");
+        checkNotNull(context, "expected non-null context");
 
         final int length = this.content.writerIndex();
 
         if (length == 0) {
             return new StoreResponse(
                 this.getStatus().code(),
-                this.headers.asMap(serverVersion, this.getActivityId()),
+                this.headers.asMap(context, this.getActivityId()),
                 null,
                 0);
         }
 
         return new StoreResponse(
             this.getStatus().code(),
-            this.headers.asMap(serverVersion, this.getActivityId()),
+            this.headers.asMap(context, this.getActivityId()),
             new ByteBufInputStream(this.content.retain(), true),
             length);
     }
+
     // endregion
 
     // region Types

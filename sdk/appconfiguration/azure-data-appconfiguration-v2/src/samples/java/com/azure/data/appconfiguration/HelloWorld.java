@@ -7,7 +7,6 @@ package com.azure.data.appconfiguration;
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClient;
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClientBuilder;
 import com.azure.v2.data.appconfiguration.models.KeyValue;
-import com.azure.v2.data.appconfiguration.models.KeyValueFields;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.util.Arrays;

@@ -13,7 +13,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 /**
  * Statistics related to resource consumption by Compute Nodes in a Pool.
@@ -288,8 +287,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
         jsonWriter.writeDoubleField("peakMemoryGiB", this.peakMemoryGiB);
         jsonWriter.writeDoubleField("avgDiskGiB", this.avgDiskGiB);
         jsonWriter.writeDoubleField("peakDiskGiB", this.peakDiskGiB);
-        jsonWriter.writeStringField("diskReadIOps", Objects.toString(this.diskReadIOps, null));
-        jsonWriter.writeStringField("diskWriteIOps", Objects.toString(this.diskWriteIOps, null));
+        jsonWriter.writeLongField("diskReadIOps", this.diskReadIOps);
+        jsonWriter.writeLongField("diskWriteIOps", this.diskWriteIOps);
         jsonWriter.writeDoubleField("diskReadGiB", this.diskReadGiB);
         jsonWriter.writeDoubleField("diskWriteGiB", this.diskWriteGiB);
         jsonWriter.writeDoubleField("networkReadGiB", this.networkReadGiB);
@@ -306,8 +305,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchPoolResourceStatistics.
      */
-    @Generated
     public static BatchPoolResourceStatistics fromJson(JsonReader jsonReader) throws IOException {
+        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
         return jsonReader.readObject(reader -> {
             OffsetDateTime startTime = null;
             OffsetDateTime lastUpdateTime = null;
@@ -316,8 +315,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
             double peakMemoryGiB = 0.0;
             double avgDiskGiB = 0.0;
             double peakDiskGiB = 0.0;
-            long diskReadIOps = Long.parseLong("0");
-            long diskWriteIOps = Long.parseLong("0");
+            long diskReadIOps = 0L;
+            long diskWriteIOps = 0L;
             double diskReadGiB = 0.0;
             double diskWriteGiB = 0.0;
             double networkReadGiB = 0.0;
@@ -342,9 +341,31 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
                 } else if ("peakDiskGiB".equals(fieldName)) {
                     peakDiskGiB = reader.getDouble();
                 } else if ("diskReadIOps".equals(fieldName)) {
-                    diskReadIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String diskReadIOpsStr = reader.getString();
+                        try {
+                            diskReadIOps = Long.parseLong(diskReadIOpsStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric diskReadIOps, but found: " + diskReadIOpsStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        diskReadIOps = reader.getLong();
+                    } else {
+                        throw new IOException("Expected diskReadIOps to be a number or string, but found other type");
+                    }
                 } else if ("diskWriteIOps".equals(fieldName)) {
-                    diskWriteIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String diskWriteIOpsStr = reader.getString();
+                        try {
+                            diskWriteIOps = Long.parseLong(diskWriteIOpsStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric diskWriteIOps, but found: " + diskWriteIOpsStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        diskWriteIOps = reader.getLong();
+                    } else {
+                        throw new IOException("Expected diskWriteIOps to be a number or string, but found other type");
+                    }
                 } else if ("diskReadGiB".equals(fieldName)) {
                     diskReadGiB = reader.getDouble();
                 } else if ("diskWriteGiB".equals(fieldName)) {

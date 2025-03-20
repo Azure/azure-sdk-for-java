@@ -52,6 +52,12 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
     private Float utilizedThroughputMibps;
 
     /*
+     * Maximum throughput in MiB/s that can be achieved by this pool and this will be accepted as input only for manual
+     * qosType pool with Flexible service level
+     */
+    private Float customThroughputMibps;
+
+    /*
      * The qos type of the pool
      */
     private QosType qosType;
@@ -152,6 +158,28 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
     }
 
     /**
+     * Get the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
+     * will be accepted as input only for manual qosType pool with Flexible service level.
+     * 
+     * @return the customThroughputMibps value.
+     */
+    public Float customThroughputMibps() {
+        return this.customThroughputMibps;
+    }
+
+    /**
+     * Set the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
+     * will be accepted as input only for manual qosType pool with Flexible service level.
+     * 
+     * @param customThroughputMibps the customThroughputMibps value to set.
+     * @return the PoolProperties object itself.
+     */
+    public PoolProperties withCustomThroughputMibps(Float customThroughputMibps) {
+        this.customThroughputMibps = customThroughputMibps;
+        return this;
+    }
+
+    /**
      * Get the qosType property: The qos type of the pool.
      * 
      * @return the qosType value.
@@ -235,6 +263,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("size", this.size);
         jsonWriter.writeStringField("serviceLevel", this.serviceLevel == null ? null : this.serviceLevel.toString());
+        jsonWriter.writeNumberField("customThroughputMibps", this.customThroughputMibps);
         jsonWriter.writeStringField("qosType", this.qosType == null ? null : this.qosType.toString());
         jsonWriter.writeBooleanField("coolAccess", this.coolAccess);
         jsonWriter.writeStringField("encryptionType",
@@ -270,6 +299,8 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
                     deserializedPoolProperties.totalThroughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else if ("utilizedThroughputMibps".equals(fieldName)) {
                     deserializedPoolProperties.utilizedThroughputMibps = reader.getNullable(JsonReader::getFloat);
+                } else if ("customThroughputMibps".equals(fieldName)) {
+                    deserializedPoolProperties.customThroughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else if ("qosType".equals(fieldName)) {
                     deserializedPoolProperties.qosType = QosType.fromString(reader.getString());
                 } else if ("coolAccess".equals(fieldName)) {

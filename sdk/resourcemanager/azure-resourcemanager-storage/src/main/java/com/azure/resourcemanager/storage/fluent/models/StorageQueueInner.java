@@ -23,9 +23,9 @@ public final class StorageQueueInner extends ProxyResource {
     private QueueProperties innerQueueProperties;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /*
      * The name of the resource.
@@ -33,9 +33,9 @@ public final class StorageQueueInner extends ProxyResource {
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /**
      * Creates an instance of StorageQueueInner class.
@@ -53,13 +53,13 @@ public final class StorageQueueInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -73,13 +73,13 @@ public final class StorageQueueInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**

@@ -159,7 +159,8 @@ public class TemplateInput {
         String shortName = null;
 
         if (type.getKind().isPrimitive()) {
-            return longName;
+            shortName = toShortName(longName);
+            imports.put(longName, shortName);
         } else if (imports.containsKey(type.toString())) {
             shortName = imports.get(longName);
         } else if (type.getKind() == TypeKind.DECLARED) {

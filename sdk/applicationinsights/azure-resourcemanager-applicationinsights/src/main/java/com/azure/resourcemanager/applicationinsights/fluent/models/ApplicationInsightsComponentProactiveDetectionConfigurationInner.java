@@ -200,12 +200,12 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeBooleanField("enabled", this.enabled);
-        jsonWriter.writeBooleanField("sendEmailsToSubscriptionOwners", this.sendEmailsToSubscriptionOwners);
-        jsonWriter.writeArrayField("customEmails", this.customEmails, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("lastUpdatedTime", this.lastUpdatedTime);
-        jsonWriter.writeJsonField("ruleDefinitions", this.ruleDefinitions);
+        jsonWriter.writeStringField("Name", this.name);
+        jsonWriter.writeBooleanField("Enabled", this.enabled);
+        jsonWriter.writeBooleanField("SendEmailsToSubscriptionOwners", this.sendEmailsToSubscriptionOwners);
+        jsonWriter.writeArrayField("CustomEmails", this.customEmails, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("LastUpdatedTime", this.lastUpdatedTime);
+        jsonWriter.writeJsonField("RuleDefinitions", this.ruleDefinitions);
         return jsonWriter.writeEndObject();
     }
 
@@ -227,23 +227,23 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("name".equals(fieldName)) {
+                if ("Name".equals(fieldName)) {
                     deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.name
                         = reader.getString();
-                } else if ("enabled".equals(fieldName)) {
+                } else if ("Enabled".equals(fieldName)) {
                     deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.enabled
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("sendEmailsToSubscriptionOwners".equals(fieldName)) {
+                } else if ("SendEmailsToSubscriptionOwners".equals(fieldName)) {
                     deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.sendEmailsToSubscriptionOwners
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("customEmails".equals(fieldName)) {
+                } else if ("CustomEmails".equals(fieldName)) {
                     List<String> customEmails = reader.readArray(reader1 -> reader1.getString());
                     deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.customEmails
                         = customEmails;
-                } else if ("lastUpdatedTime".equals(fieldName)) {
+                } else if ("LastUpdatedTime".equals(fieldName)) {
                     deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.lastUpdatedTime
                         = reader.getString();
-                } else if ("ruleDefinitions".equals(fieldName)) {
+                } else if ("RuleDefinitions".equals(fieldName)) {
                     deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.ruleDefinitions
                         = ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.fromJson(reader);
                 } else {

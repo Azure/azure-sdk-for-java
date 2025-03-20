@@ -9,7 +9,6 @@ import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyPropertiesMetrics;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -26,9 +25,9 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
     private ObjectReplicationPolicyProperties innerProperties;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /*
      * The name of the resource.
@@ -36,9 +35,9 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /**
      * Creates an instance of ObjectReplicationPolicyInner class.
@@ -56,13 +55,13 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -76,13 +75,13 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -173,29 +172,6 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
             this.innerProperties = new ObjectReplicationPolicyProperties();
         }
         this.innerProperties().withRules(rules);
-        return this;
-    }
-
-    /**
-     * Get the metrics property: Optional. The object replication policy metrics feature options.
-     * 
-     * @return the metrics value.
-     */
-    public ObjectReplicationPolicyPropertiesMetrics metrics() {
-        return this.innerProperties() == null ? null : this.innerProperties().metrics();
-    }
-
-    /**
-     * Set the metrics property: Optional. The object replication policy metrics feature options.
-     * 
-     * @param metrics the metrics value to set.
-     * @return the ObjectReplicationPolicyInner object itself.
-     */
-    public ObjectReplicationPolicyInner withMetrics(ObjectReplicationPolicyPropertiesMetrics metrics) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ObjectReplicationPolicyProperties();
-        }
-        this.innerProperties().withMetrics(metrics);
         return this;
     }
 

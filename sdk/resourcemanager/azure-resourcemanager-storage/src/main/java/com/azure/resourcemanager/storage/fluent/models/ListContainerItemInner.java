@@ -31,14 +31,9 @@ public final class ListContainerItemInner extends AzureEntityResource {
     private ContainerProperties innerProperties;
 
     /*
-     * Resource Etag.
+     * Fully qualified resource Id for the resource.
      */
-    private String etag;
-
-    /*
-     * The type of the resource.
-     */
-    private String type;
+    private String id;
 
     /*
      * The name of the resource.
@@ -46,9 +41,14 @@ public final class ListContainerItemInner extends AzureEntityResource {
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
+
+    /*
+     * Resource Etag.
+     */
+    private String etag;
 
     /**
      * Creates an instance of ListContainerItemInner class.
@@ -66,23 +66,13 @@ public final class ListContainerItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the etag property: Resource Etag.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the etag value.
+     * @return the id value.
      */
     @Override
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -96,13 +86,23 @@ public final class ListContainerItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -393,6 +393,7 @@ public final class ListContainerItemInner extends AzureEntityResource {
      */
     @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

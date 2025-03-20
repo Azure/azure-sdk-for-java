@@ -10,7 +10,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
 import com.azure.resourcemanager.storage.models.EnabledProtocols;
-import com.azure.resourcemanager.storage.models.FileSharePropertiesFileSharePaidBursting;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
 import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
@@ -33,14 +32,9 @@ public final class FileShareItemInner extends AzureEntityResource {
     private FileShareProperties innerProperties;
 
     /*
-     * Resource Etag.
+     * Fully qualified resource Id for the resource.
      */
-    private String etag;
-
-    /*
-     * The type of the resource.
-     */
-    private String type;
+    private String id;
 
     /*
      * The name of the resource.
@@ -48,9 +42,14 @@ public final class FileShareItemInner extends AzureEntityResource {
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
+
+    /*
+     * Resource Etag.
+     */
+    private String etag;
 
     /**
      * Creates an instance of FileShareItemInner class.
@@ -68,23 +67,13 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the etag property: Resource Etag.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the etag value.
+     * @return the id value.
      */
     @Override
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -98,13 +87,23 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -140,10 +139,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the shareQuota property: The provisioned size of the share, in gibibytes. Must be greater than 0, and less
-     * than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400. For file shares created under
-     * Files Provisioned v2 account type, please refer to the GetFileServiceUsage API response for the minimum and
-     * maximum allowed provisioned storage size.
+     * Get the shareQuota property: The maximum size of the share, in gigabytes. Must be greater than 0, and less than
+     * or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
      * 
      * @return the shareQuota value.
      */
@@ -152,10 +149,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Set the shareQuota property: The provisioned size of the share, in gibibytes. Must be greater than 0, and less
-     * than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400. For file shares created under
-     * Files Provisioned v2 account type, please refer to the GetFileServiceUsage API response for the minimum and
-     * maximum allowed provisioned storage size.
+     * Set the shareQuota property: The maximum size of the share, in gigabytes. Must be greater than 0, and less than
+     * or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
      * 
      * @param shareQuota the shareQuota value to set.
      * @return the FileShareItemInner object itself.
@@ -166,114 +161,6 @@ public final class FileShareItemInner extends AzureEntityResource {
         }
         this.innerProperties().withShareQuota(shareQuota);
         return this;
-    }
-
-    /**
-     * Get the provisionedIops property: The provisioned IOPS of the share. This property is only for file shares
-     * created under Files Provisioned v2 account type. Please refer to the GetFileServiceUsage API response for the
-     * minimum and maximum allowed value for provisioned IOPS.
-     * 
-     * @return the provisionedIops value.
-     */
-    public Integer provisionedIops() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisionedIops();
-    }
-
-    /**
-     * Set the provisionedIops property: The provisioned IOPS of the share. This property is only for file shares
-     * created under Files Provisioned v2 account type. Please refer to the GetFileServiceUsage API response for the
-     * minimum and maximum allowed value for provisioned IOPS.
-     * 
-     * @param provisionedIops the provisionedIops value to set.
-     * @return the FileShareItemInner object itself.
-     */
-    public FileShareItemInner withProvisionedIops(Integer provisionedIops) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FileShareProperties();
-        }
-        this.innerProperties().withProvisionedIops(provisionedIops);
-        return this;
-    }
-
-    /**
-     * Get the provisionedBandwidthMibps property: The provisioned bandwidth of the share, in mebibytes per second. This
-     * property is only for file shares created under Files Provisioned v2 account type. Please refer to the
-     * GetFileServiceUsage API response for the minimum and maximum allowed value for provisioned bandwidth.
-     * 
-     * @return the provisionedBandwidthMibps value.
-     */
-    public Integer provisionedBandwidthMibps() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisionedBandwidthMibps();
-    }
-
-    /**
-     * Set the provisionedBandwidthMibps property: The provisioned bandwidth of the share, in mebibytes per second. This
-     * property is only for file shares created under Files Provisioned v2 account type. Please refer to the
-     * GetFileServiceUsage API response for the minimum and maximum allowed value for provisioned bandwidth.
-     * 
-     * @param provisionedBandwidthMibps the provisionedBandwidthMibps value to set.
-     * @return the FileShareItemInner object itself.
-     */
-    public FileShareItemInner withProvisionedBandwidthMibps(Integer provisionedBandwidthMibps) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FileShareProperties();
-        }
-        this.innerProperties().withProvisionedBandwidthMibps(provisionedBandwidthMibps);
-        return this;
-    }
-
-    /**
-     * Get the includedBurstIops property: The calculated burst IOPS of the share. This property is only for file shares
-     * created under Files Provisioned v2 account type.
-     * 
-     * @return the includedBurstIops value.
-     */
-    public Integer includedBurstIops() {
-        return this.innerProperties() == null ? null : this.innerProperties().includedBurstIops();
-    }
-
-    /**
-     * Get the maxBurstCreditsForIops property: The calculated maximum burst credits for the share. This property is
-     * only for file shares created under Files Provisioned v2 account type.
-     * 
-     * @return the maxBurstCreditsForIops value.
-     */
-    public Long maxBurstCreditsForIops() {
-        return this.innerProperties() == null ? null : this.innerProperties().maxBurstCreditsForIops();
-    }
-
-    /**
-     * Get the nextAllowedQuotaDowngradeTime property: Returns the next allowed provisioned storage size downgrade time
-     * for the share. This property is only for file shares created under Files Provisioned v1 SSD and Files Provisioned
-     * v2 account type.
-     * 
-     * @return the nextAllowedQuotaDowngradeTime value.
-     */
-    public OffsetDateTime nextAllowedQuotaDowngradeTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().nextAllowedQuotaDowngradeTime();
-    }
-
-    /**
-     * Get the nextAllowedProvisionedIopsDowngradeTime property: Returns the next allowed provisioned IOPS downgrade
-     * time for the share. This property is only for file shares created under Files Provisioned v2 account type.
-     * 
-     * @return the nextAllowedProvisionedIopsDowngradeTime value.
-     */
-    public OffsetDateTime nextAllowedProvisionedIopsDowngradeTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().nextAllowedProvisionedIopsDowngradeTime();
-    }
-
-    /**
-     * Get the nextAllowedProvisionedBandwidthDowngradeTime property: Returns the next allowed provisioned bandwidth
-     * downgrade time for the share. This property is only for file shares created under Files Provisioned v2 account
-     * type.
-     * 
-     * @return the nextAllowedProvisionedBandwidthDowngradeTime value.
-     */
-    public OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime() {
-        return this.innerProperties() == null
-            ? null
-            : this.innerProperties().nextAllowedProvisionedBandwidthDowngradeTime();
     }
 
     /**
@@ -475,36 +362,13 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the fileSharePaidBursting property: File Share Paid Bursting properties.
-     * 
-     * @return the fileSharePaidBursting value.
-     */
-    public FileSharePropertiesFileSharePaidBursting fileSharePaidBursting() {
-        return this.innerProperties() == null ? null : this.innerProperties().fileSharePaidBursting();
-    }
-
-    /**
-     * Set the fileSharePaidBursting property: File Share Paid Bursting properties.
-     * 
-     * @param fileSharePaidBursting the fileSharePaidBursting value to set.
-     * @return the FileShareItemInner object itself.
-     */
-    public FileShareItemInner
-        withFileSharePaidBursting(FileSharePropertiesFileSharePaidBursting fileSharePaidBursting) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FileShareProperties();
-        }
-        this.innerProperties().withFileSharePaidBursting(fileSharePaidBursting);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

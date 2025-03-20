@@ -7,8 +7,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentWebTestLocation;
@@ -20,17 +20,17 @@ import reactor.core.publisher.Mono;
 public final class WebTestLocationsListMockTests {
     @Test
     public void testList() throws Exception {
-        String responseStr = "{\"value\":[{\"DisplayName\":\"oqltfae\",\"Tag\":\"inmfgvxirp\"}]}";
+        String responseStr = "{\"value\":[{\"DisplayName\":\"xieixynllxec\",\"Tag\":\"rojphslhcawjutif\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ApplicationInsightsComponentWebTestLocation> response
-            = manager.webTestLocations().list("qzbqqxlajrnwxa", "evehjkuyxoaf", com.azure.core.util.Context.NONE);
+            = manager.webTestLocations().list("ri", "kzobgopxlhsln", com.azure.core.util.Context.NONE);
 
     }
 }

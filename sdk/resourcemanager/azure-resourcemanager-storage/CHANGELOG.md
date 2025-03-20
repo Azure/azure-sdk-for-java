@@ -12,11 +12,13 @@
 
 ## 2.48.0 (2025-02-28)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
 ### Other Changes
-
-#### Dependency Updates
-
-- Updated `api-version` to `2024-01-01`.
 
 ## 2.47.0 (2025-01-24)
 

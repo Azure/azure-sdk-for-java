@@ -320,9 +320,9 @@ public class PoolTests extends BatchClientTestBase {
 
         if (!poolExists(batchClient, poolId)) {
             // Define the image reference
-            ImageReference imageReference = new ImageReference().setPublisher("microsoftwindowsserver")
-                .setOffer("windowsserver")
-                .setSku("2022-datacenter-smalldisk-g2");
+            ImageReference imageReference = new ImageReference().setPublisher("Canonical")
+                .setOffer("0001-com-ubuntu-server-jammy")
+                .setSku("22_04-lts");
 
             // Set the security profile for the Confidential VM
             SecurityProfile securityProfile = new SecurityProfile(true, SecurityTypes.CONFIDENTIAL_VM,
@@ -339,7 +339,7 @@ public class PoolTests extends BatchClientTestBase {
 
             // Define the virtual machine configuration
             VirtualMachineConfiguration vmConfiguration
-                = new VirtualMachineConfiguration(imageReference, "batch.node.windows amd64")
+                = new VirtualMachineConfiguration(imageReference, "batch.node.ubuntu 22.04")
                     .setSecurityProfile(securityProfile)
                     .setOsDisk(osDisk);
 

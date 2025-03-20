@@ -10,12 +10,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
-import com.azure.resourcemanager.netapp.fluent.models.GetKeyVaultStatusResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.Accounts;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
-import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
 
 public final class AccountsImpl implements Accounts {
@@ -97,25 +95,12 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().transitionToCmk(resourceGroupName, accountName, body, context);
     }
 
-    public GetKeyVaultStatusResponse getChangeKeyVaultInformation(String resourceGroupName, String accountName) {
-        GetKeyVaultStatusResponseInner inner
-            = this.serviceClient().getChangeKeyVaultInformation(resourceGroupName, accountName);
-        if (inner != null) {
-            return new GetKeyVaultStatusResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getChangeKeyVaultInformation(String resourceGroupName, String accountName) {
+        this.serviceClient().getChangeKeyVaultInformation(resourceGroupName, accountName);
     }
 
-    public GetKeyVaultStatusResponse getChangeKeyVaultInformation(String resourceGroupName, String accountName,
-        Context context) {
-        GetKeyVaultStatusResponseInner inner
-            = this.serviceClient().getChangeKeyVaultInformation(resourceGroupName, accountName, context);
-        if (inner != null) {
-            return new GetKeyVaultStatusResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context) {
+        this.serviceClient().getChangeKeyVaultInformation(resourceGroupName, accountName, context);
     }
 
     public void changeKeyVault(String resourceGroupName, String accountName) {

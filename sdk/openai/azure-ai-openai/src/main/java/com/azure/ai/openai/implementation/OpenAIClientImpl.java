@@ -1128,14 +1128,10 @@ public final class OpenAIClientImpl {
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *         prompt_tokens_details (Optional): {
-     *             audio_tokens: Integer (Optional)
      *             cached_tokens: Integer (Optional)
      *         }
      *         completion_tokens_details (Optional): {
-     *             accepted_prediction_tokens: Integer (Optional)
-     *             audio_tokens: Integer (Optional)
      *             reasoning_tokens: Integer (Optional)
-     *             rejected_prediction_tokens: Integer (Optional)
      *         }
      *     }
      *     system_fingerprint: String (Optional)
@@ -1308,14 +1304,10 @@ public final class OpenAIClientImpl {
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *         prompt_tokens_details (Optional): {
-     *             audio_tokens: Integer (Optional)
      *             cached_tokens: Integer (Optional)
      *         }
      *         completion_tokens_details (Optional): {
-     *             accepted_prediction_tokens: Integer (Optional)
-     *             audio_tokens: Integer (Optional)
      *             reasoning_tokens: Integer (Optional)
-     *             rejected_prediction_tokens: Integer (Optional)
      *         }
      *     }
      *     system_fingerprint: String (Optional)
@@ -1357,7 +1349,7 @@ public final class OpenAIClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user/function/tool/developer) (Required)
+     *             role: String(system/assistant/user/function/tool) (Required)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1413,28 +1405,6 @@ public final class OpenAIClientImpl {
      *     ]
      *     tool_choice: BinaryData (Optional)
      *     parallel_tool_calls: Boolean (Optional)
-     *     store: Boolean (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     reasoning_effort: String(low/medium/high) (Optional)
-     *     user_security_context (Optional): {
-     *         application_name: String (Optional)
-     *         end_user_id: String (Optional)
-     *         end_user_tenant_id: String (Optional)
-     *         source_ip: String (Optional)
-     *     }
-     *     modalities (Optional): [
-     *         String(text/audio) (Optional)
-     *     ]
-     *     prediction (Optional): {
-     *         type: String(content) (Required)
-     *         content: BinaryData (Required)
-     *     }
-     *     audio (Optional): {
-     *         voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
-     *         format: String(wav/mp3/flac/opus/pcm16) (Required)
-     *     }
      * }
      * }
      * </pre>
@@ -1449,7 +1419,7 @@ public final class OpenAIClientImpl {
      *     choices (Required): [
      *          (Required){
      *             message (Optional): {
-     *                 role: String(system/assistant/user/function/tool/developer) (Required)
+     *                 role: String(system/assistant/user/function/tool) (Required)
      *                 refusal: String (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
@@ -1461,12 +1431,6 @@ public final class OpenAIClientImpl {
      *                 function_call (Optional): {
      *                     name: String (Required)
      *                     arguments: String (Required)
-     *                 }
-     *                 audio (Optional): {
-     *                     id: String (Required)
-     *                     expires_at: long (Required)
-     *                     data: String (Required)
-     *                     transcript: String (Required)
      *                 }
      *                 context (Optional): {
      *                     citations (Optional): [
@@ -1622,14 +1586,10 @@ public final class OpenAIClientImpl {
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *         prompt_tokens_details (Optional): {
-     *             audio_tokens: Integer (Optional)
      *             cached_tokens: Integer (Optional)
      *         }
      *         completion_tokens_details (Optional): {
-     *             accepted_prediction_tokens: Integer (Optional)
-     *             audio_tokens: Integer (Optional)
      *             reasoning_tokens: Integer (Optional)
-     *             rejected_prediction_tokens: Integer (Optional)
      *         }
      *     }
      * }
@@ -1671,7 +1631,7 @@ public final class OpenAIClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user/function/tool/developer) (Required)
+     *             role: String(system/assistant/user/function/tool) (Required)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1727,28 +1687,6 @@ public final class OpenAIClientImpl {
      *     ]
      *     tool_choice: BinaryData (Optional)
      *     parallel_tool_calls: Boolean (Optional)
-     *     store: Boolean (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     reasoning_effort: String(low/medium/high) (Optional)
-     *     user_security_context (Optional): {
-     *         application_name: String (Optional)
-     *         end_user_id: String (Optional)
-     *         end_user_tenant_id: String (Optional)
-     *         source_ip: String (Optional)
-     *     }
-     *     modalities (Optional): [
-     *         String(text/audio) (Optional)
-     *     ]
-     *     prediction (Optional): {
-     *         type: String(content) (Required)
-     *         content: BinaryData (Required)
-     *     }
-     *     audio (Optional): {
-     *         voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
-     *         format: String(wav/mp3/flac/opus/pcm16) (Required)
-     *     }
      * }
      * }
      * </pre>
@@ -1763,7 +1701,7 @@ public final class OpenAIClientImpl {
      *     choices (Required): [
      *          (Required){
      *             message (Optional): {
-     *                 role: String(system/assistant/user/function/tool/developer) (Required)
+     *                 role: String(system/assistant/user/function/tool) (Required)
      *                 refusal: String (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
@@ -1775,12 +1713,6 @@ public final class OpenAIClientImpl {
      *                 function_call (Optional): {
      *                     name: String (Required)
      *                     arguments: String (Required)
-     *                 }
-     *                 audio (Optional): {
-     *                     id: String (Required)
-     *                     expires_at: long (Required)
-     *                     data: String (Required)
-     *                     transcript: String (Required)
      *                 }
      *                 context (Optional): {
      *                     citations (Optional): [
@@ -1936,14 +1868,10 @@ public final class OpenAIClientImpl {
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *         prompt_tokens_details (Optional): {
-     *             audio_tokens: Integer (Optional)
      *             cached_tokens: Integer (Optional)
      *         }
      *         completion_tokens_details (Optional): {
-     *             accepted_prediction_tokens: Integer (Optional)
-     *             audio_tokens: Integer (Optional)
      *             reasoning_tokens: Integer (Optional)
-     *             rejected_prediction_tokens: Integer (Optional)
      *         }
      *     }
      * }

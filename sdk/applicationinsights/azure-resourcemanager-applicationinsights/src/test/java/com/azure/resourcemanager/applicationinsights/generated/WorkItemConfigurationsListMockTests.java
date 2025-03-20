@@ -7,8 +7,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.WorkItemConfiguration;
@@ -22,22 +22,22 @@ public final class WorkItemConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"ConnectorId\":\"clrcivtsox\",\"ConfigDisplayName\":\"kenx\",\"IsDefault\":true,\"Id\":\"efrp\",\"ConfigProperties\":\"dnqqskawaoqvmmb\"}]}";
+            = "{\"value\":[{\"ConnectorId\":\"aumweoohguufu\",\"ConfigDisplayName\":\"oyjathwtzol\",\"IsDefault\":true,\"Id\":\"wm\",\"ConfigProperties\":\"mebwjscjpah\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkItemConfiguration> response
-            = manager.workItemConfigurations().list("un", "ixxrtikvcpw", com.azure.core.util.Context.NONE);
+            = manager.workItemConfigurations().list("sopteecj", "eislstvasylwx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("clrcivtsox", response.iterator().next().connectorId());
-        Assertions.assertEquals("kenx", response.iterator().next().configDisplayName());
+        Assertions.assertEquals("aumweoohguufu", response.iterator().next().connectorId());
+        Assertions.assertEquals("oyjathwtzol", response.iterator().next().configDisplayName());
         Assertions.assertEquals(true, response.iterator().next().isDefault());
-        Assertions.assertEquals("efrp", response.iterator().next().id());
-        Assertions.assertEquals("dnqqskawaoqvmmb", response.iterator().next().configProperties());
+        Assertions.assertEquals("wm", response.iterator().next().id());
+        Assertions.assertEquals("mebwjscjpah", response.iterator().next().configProperties());
     }
 }

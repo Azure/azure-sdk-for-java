@@ -101,6 +101,21 @@ public interface NetAppAccount {
     Boolean disableShowmount();
 
     /**
+     * Gets the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @return the nfsV4IdDomain value.
+     */
+    String nfsV4IdDomain();
+
+    /**
+     * Gets the isMultiAdEnabled property: This will have true value only if account is Multiple AD enabled.
+     * 
+     * @return the isMultiAdEnabled value.
+     */
+    Boolean isMultiAdEnabled();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -183,8 +198,9 @@ public interface NetAppAccount {
          * The stage of the NetAppAccount definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithActiveDirectories,
+            DefinitionStages.WithEncryption, DefinitionStages.WithNfsV4IdDomain {
             /**
              * Executes the create request.
              * 
@@ -252,6 +268,21 @@ public interface NetAppAccount {
              */
             WithCreate withEncryption(AccountEncryption encryption);
         }
+
+        /**
+         * The stage of the NetAppAccount definition allowing to specify nfsV4IdDomain.
+         */
+        interface WithNfsV4IdDomain {
+            /**
+             * Specifies the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all
+             * NetApp accounts in the subscription and region and only affect non ldap NFSv4 volumes..
+             * 
+             * @param nfsV4IdDomain Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts
+             * in the subscription and region and only affect non ldap NFSv4 volumes.
+             * @return the next definition stage.
+             */
+            WithCreate withNfsV4IdDomain(String nfsV4IdDomain);
+        }
     }
 
     /**
@@ -265,7 +296,7 @@ public interface NetAppAccount {
      * The template for NetAppAccount update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithActiveDirectories,
-        UpdateStages.WithEncryption {
+        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain {
         /**
          * Executes the update request.
          * 
@@ -336,6 +367,21 @@ public interface NetAppAccount {
              * @return the next definition stage.
              */
             Update withEncryption(AccountEncryption encryption);
+        }
+
+        /**
+         * The stage of the NetAppAccount update allowing to specify nfsV4IdDomain.
+         */
+        interface WithNfsV4IdDomain {
+            /**
+             * Specifies the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all
+             * NetApp accounts in the subscription and region and only affect non ldap NFSv4 volumes..
+             * 
+             * @param nfsV4IdDomain Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts
+             * in the subscription and region and only affect non ldap NFSv4 volumes.
+             * @return the next definition stage.
+             */
+            Update withNfsV4IdDomain(String nfsV4IdDomain);
         }
     }
 
@@ -412,9 +458,8 @@ public interface NetAppAccount {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
      */
-    GetKeyVaultStatusResponse getChangeKeyVaultInformation();
+    void getChangeKeyVaultInformation();
 
     /**
      * Get information about how volumes under NetApp account are encrypted.
@@ -427,9 +472,8 @@ public interface NetAppAccount {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
      */
-    GetKeyVaultStatusResponse getChangeKeyVaultInformation(Context context);
+    void getChangeKeyVaultInformation(Context context);
 
     /**
      * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.

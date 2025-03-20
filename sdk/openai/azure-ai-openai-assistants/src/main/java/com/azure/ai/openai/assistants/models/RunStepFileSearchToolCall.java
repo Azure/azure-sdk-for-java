@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 /**
  * A record of a call to a file search tool, issued by the model in evaluation of a defined tool, that represents
@@ -25,10 +25,22 @@ public final class RunStepFileSearchToolCall extends RunStepToolCall {
     private String type = "file_search";
 
     /*
-     * The results of the file search.
+     * Reserved for future use.
      */
     @Generated
-    private final List<FileSearchToolCallResult> fileSearch;
+    private final Map<String, String> fileSearch;
+
+    /**
+     * Creates an instance of RunStepFileSearchToolCall class.
+     *
+     * @param id the id value to set.
+     * @param fileSearch the fileSearch value to set.
+     */
+    @Generated
+    private RunStepFileSearchToolCall(String id, Map<String, String> fileSearch) {
+        super(id);
+        this.fileSearch = fileSearch;
+    }
 
     /**
      * Get the type property: The object type.
@@ -42,12 +54,12 @@ public final class RunStepFileSearchToolCall extends RunStepToolCall {
     }
 
     /**
-     * Get the fileSearch property: The results of the file search.
+     * Get the fileSearch property: Reserved for future use.
      *
      * @return the fileSearch value.
      */
     @Generated
-    public List<FileSearchToolCallResult> getFileSearch() {
+    public Map<String, String> getFileSearch() {
         return this.fileSearch;
     }
 
@@ -59,7 +71,7 @@ public final class RunStepFileSearchToolCall extends RunStepToolCall {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeArrayField("file_search", this.fileSearch, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("file_search", this.fileSearch, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
@@ -77,7 +89,7 @@ public final class RunStepFileSearchToolCall extends RunStepToolCall {
     public static RunStepFileSearchToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            List<FileSearchToolCallResult> fileSearch = null;
+            Map<String, String> fileSearch = null;
             String type = "file_search";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -85,7 +97,7 @@ public final class RunStepFileSearchToolCall extends RunStepToolCall {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("file_search".equals(fieldName)) {
-                    fileSearch = reader.readArray(reader1 -> FileSearchToolCallResult.fromJson(reader1));
+                    fileSearch = reader.readMap(reader1 -> reader1.getString());
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
                 } else {
@@ -97,17 +109,5 @@ public final class RunStepFileSearchToolCall extends RunStepToolCall {
             deserializedRunStepFileSearchToolCall.type = type;
             return deserializedRunStepFileSearchToolCall;
         });
-    }
-
-    /**
-     * Creates an instance of RunStepFileSearchToolCall class.
-     *
-     * @param id the id value to set.
-     * @param fileSearch the fileSearch value to set.
-     */
-    @Generated
-    private RunStepFileSearchToolCall(String id, List<FileSearchToolCallResult> fileSearch) {
-        super(id);
-        this.fileSearch = fileSearch;
     }
 }

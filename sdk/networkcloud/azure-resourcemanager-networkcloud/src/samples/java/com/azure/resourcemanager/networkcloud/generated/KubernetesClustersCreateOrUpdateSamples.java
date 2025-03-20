@@ -42,7 +42,7 @@ import java.util.Map;
 public final class KubernetesClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
      * KubernetesClusters_Create.json
      */
     /**
@@ -64,7 +64,7 @@ public final class KubernetesClustersCreateOrUpdateSamples {
                     .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
                 .withAvailabilityZones(Arrays.asList("1", "2", "3"))
                 .withCount(3L)
-                .withVmSkuName("NC_G6_28_v1"))
+                .withVmSkuName("NC_XXXX"))
             .withInitialAgentPoolConfigurations(Arrays.asList(new InitialAgentPoolConfiguration()
                 .withAdministratorConfiguration(new AdministratorConfiguration().withAdminUsername("azure")
                     .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
@@ -86,10 +86,9 @@ public final class KubernetesClustersCreateOrUpdateSamples {
                 .withLabels(Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true")))
                 .withMode(AgentPoolMode.SYSTEM)
                 .withName("SystemPool-1")
-                .withTaints(
-                    Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true:NoSchedule")))
+                .withTaints(Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true")))
                 .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("1"))
-                .withVmSkuName("NC_P46_224_v1")))
+                .withVmSkuName("NC_XXXX")))
             .withKubernetesVersion("1.XX.Y")
             .withNetworkConfiguration(new NetworkConfiguration()
                 .withAttachedNetworkConfiguration(new AttachedNetworkConfiguration()
@@ -144,7 +143,7 @@ public final class KubernetesClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
      * KubernetesClusters_L2LoadBalancer_Create.json
      */
     /**
@@ -166,7 +165,7 @@ public final class KubernetesClustersCreateOrUpdateSamples {
                     .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
                 .withAvailabilityZones(Arrays.asList("1", "2", "3"))
                 .withCount(3L)
-                .withVmSkuName("NC_G6_28_v1"))
+                .withVmSkuName("NC_XXXX"))
             .withInitialAgentPoolConfigurations(Arrays.asList(new InitialAgentPoolConfiguration()
                 .withAdministratorConfiguration(new AdministratorConfiguration().withAdminUsername("azure")
                     .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
@@ -188,10 +187,9 @@ public final class KubernetesClustersCreateOrUpdateSamples {
                 .withLabels(Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true")))
                 .withMode(AgentPoolMode.SYSTEM)
                 .withName("SystemPool-1")
-                .withTaints(
-                    Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true:NoSchedule")))
+                .withTaints(Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true")))
                 .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("1"))
-                .withVmSkuName("NC_P46_224_v1")))
+                .withVmSkuName("NC_XXXX")))
             .withKubernetesVersion("1.XX.Y")
             .withNetworkConfiguration(new NetworkConfiguration()
                 .withAttachedNetworkConfiguration(new AttachedNetworkConfiguration()

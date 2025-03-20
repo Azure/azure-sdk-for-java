@@ -76,9 +76,9 @@
               <goal>compile</goal>
             </goals>
             <configuration>
-              <source>1.8</source>
-              <target>1.8</target>
-              <release>8</release>
+              <source>1.11</source>
+              <target>1.11</target>
+              <release>11</release>
               <proc>only</proc>
               <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
               <annotationProcessorPaths>

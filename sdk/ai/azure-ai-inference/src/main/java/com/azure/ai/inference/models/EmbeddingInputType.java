@@ -13,19 +13,19 @@ import java.util.Collection;
 public final class EmbeddingInputType extends ExpandableStringEnum<EmbeddingInputType> {
 
     /**
-     * Indicates the input is a general text input.
+     * to do.
      */
     @Generated
     public static final EmbeddingInputType TEXT = fromString("text");
 
     /**
-     * Indicates the input represents a search query to find the most relevant documents in your vector database.
+     * to do.
      */
     @Generated
     public static final EmbeddingInputType QUERY = fromString("query");
 
     /**
-     * Indicates the input represents a document that is stored in a vector database.
+     * to do.
      */
     @Generated
     public static final EmbeddingInputType DOCUMENT = fromString("document");

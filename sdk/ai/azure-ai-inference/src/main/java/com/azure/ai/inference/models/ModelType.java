@@ -13,34 +13,40 @@ import java.util.Collection;
 public final class ModelType extends ExpandableStringEnum<ModelType> {
 
     /**
-     * A model capable of generating embeddings from a text.
+     * Embeddings.
      */
     @Generated
     public static final ModelType EMBEDDINGS = fromString("embeddings");
 
     /**
-     * A model capable of generating images from an image and text description.
+     * Image generation.
      */
     @Generated
     public static final ModelType IMAGE_GENERATION = fromString("image_generation");
 
     /**
-     * A text generation model.
+     * Text generation.
      */
     @Generated
     public static final ModelType TEXT_GENERATION = fromString("text_generation");
 
     /**
-     * A model capable of generating embeddings from an image.
+     * Image embeddings.
      */
     @Generated
     public static final ModelType IMAGE_EMBEDDINGS = fromString("image_embeddings");
 
     /**
-     * A text-to-audio generative model.
+     * Audio generation.
      */
     @Generated
     public static final ModelType AUDIO_GENERATION = fromString("audio_generation");
+
+    /**
+     * Chat completions.
+     */
+    @Generated
+    public static final ModelType CHAT = fromString("chat");
 
     /**
      * Creates a new instance of ModelType value.
@@ -72,10 +78,4 @@ public final class ModelType extends ExpandableStringEnum<ModelType> {
     public static Collection<ModelType> values() {
         return values(ModelType.class);
     }
-
-    /**
-     * A model capable of taking chat-formatted messages and generate responses.
-     */
-    @Generated
-    public static final ModelType CHAT_COMPLETION = fromString("chat_completion");
 }

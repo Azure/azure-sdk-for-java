@@ -33,7 +33,6 @@ final class RntbdToken {
     private final RntbdHeader header;
     private int length;
     private Object value;
-    private boolean hasConvertedValue;
 
     // endregion
 
@@ -74,22 +73,17 @@ final class RntbdToken {
             return codec.defaultValue();
         }
 
-        if (this.hasConvertedValue) {
-            return this.value;
-        }
-
         if (this.value instanceof ByteBuf) {
             final ByteBuf buffer = (ByteBuf) this.value;
             try {
+                this.value = codec.defaultValue();
                 this.value = codec.read(buffer);
-                this.hasConvertedValue = true;
             } catch (final CorruptedFrameException error) {
                 String message = lenientFormat("failed to read %s value: %s", this.getName(), error.getMessage());
                 throw new CorruptedFrameException(message);
             }
         } else {
             this.value = codec.convert(this.value);
-            this.hasConvertedValue = true;
         }
 
         return this.value;
@@ -107,7 +101,7 @@ final class RntbdToken {
     }
 
     @JsonIgnore
-    public Class<?> getValueType() {
+    public final Class<?> getValueType() {
         return this.header.type().codec().valueType();
     }
 

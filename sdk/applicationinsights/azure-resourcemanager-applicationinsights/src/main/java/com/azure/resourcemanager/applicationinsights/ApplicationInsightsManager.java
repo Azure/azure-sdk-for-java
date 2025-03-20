@@ -22,7 +22,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.ApplicationInsightsManagementClient;
 import com.azure.resourcemanager.applicationinsights.implementation.AnalyticsItemsImpl;
@@ -32,13 +31,12 @@ import com.azure.resourcemanager.applicationinsights.implementation.ApplicationI
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentAvailableFeaturesImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentCurrentBillingFeaturesImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentFeatureCapabilitiesImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.ComponentLinkedStorageAccountsOperationsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentQuotaStatusImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentsImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.DeletedWorkbooksImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ExportConfigurationsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.FavoritesImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.LiveTokensImpl;
+import com.azure.resourcemanager.applicationinsights.implementation.MyWorkbooksImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.OperationsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ProactiveDetectionConfigurationsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.WebTestLocationsImpl;
@@ -52,13 +50,12 @@ import com.azure.resourcemanager.applicationinsights.models.ApiKeys;
 import com.azure.resourcemanager.applicationinsights.models.ComponentAvailableFeatures;
 import com.azure.resourcemanager.applicationinsights.models.ComponentCurrentBillingFeatures;
 import com.azure.resourcemanager.applicationinsights.models.ComponentFeatureCapabilities;
-import com.azure.resourcemanager.applicationinsights.models.ComponentLinkedStorageAccountsOperations;
 import com.azure.resourcemanager.applicationinsights.models.ComponentQuotaStatus;
 import com.azure.resourcemanager.applicationinsights.models.Components;
-import com.azure.resourcemanager.applicationinsights.models.DeletedWorkbooks;
 import com.azure.resourcemanager.applicationinsights.models.ExportConfigurations;
 import com.azure.resourcemanager.applicationinsights.models.Favorites;
 import com.azure.resourcemanager.applicationinsights.models.LiveTokens;
+import com.azure.resourcemanager.applicationinsights.models.MyWorkbooks;
 import com.azure.resourcemanager.applicationinsights.models.Operations;
 import com.azure.resourcemanager.applicationinsights.models.ProactiveDetectionConfigurations;
 import com.azure.resourcemanager.applicationinsights.models.WebTestLocations;
@@ -70,7 +67,6 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -111,13 +107,11 @@ public final class ApplicationInsightsManager {
 
     private WorkbookTemplates workbookTemplates;
 
+    private MyWorkbooks myWorkbooks;
+
     private Workbooks workbooks;
 
     private LiveTokens liveTokens;
-
-    private ComponentLinkedStorageAccountsOperations componentLinkedStorageAccountsOperations;
-
-    private DeletedWorkbooks deletedWorkbooks;
 
     private final ApplicationInsightsManagementClient clientObject;
 
@@ -171,9 +165,6 @@ public final class ApplicationInsightsManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
-        private static final String SDK_VERSION = "version";
-        private static final Map<String, String> PROPERTIES
-            = CoreUtils.getProperties("azure-resourcemanager-applicationinsights.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -281,14 +272,12 @@ public final class ApplicationInsightsManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
-            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.applicationinsights")
                 .append("/")
-                .append(clientVersion);
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -532,6 +521,18 @@ public final class ApplicationInsightsManager {
     }
 
     /**
+     * Gets the resource collection API of MyWorkbooks. It manages MyWorkbook.
+     * 
+     * @return Resource collection API of MyWorkbooks.
+     */
+    public MyWorkbooks myWorkbooks() {
+        if (this.myWorkbooks == null) {
+            this.myWorkbooks = new MyWorkbooksImpl(clientObject.getMyWorkbooks(), this);
+        }
+        return myWorkbooks;
+    }
+
+    /**
      * Gets the resource collection API of Workbooks. It manages Workbook.
      * 
      * @return Resource collection API of Workbooks.
@@ -553,32 +554,6 @@ public final class ApplicationInsightsManager {
             this.liveTokens = new LiveTokensImpl(clientObject.getLiveTokens(), this);
         }
         return liveTokens;
-    }
-
-    /**
-     * Gets the resource collection API of ComponentLinkedStorageAccountsOperations. It manages
-     * ComponentLinkedStorageAccounts.
-     * 
-     * @return Resource collection API of ComponentLinkedStorageAccountsOperations.
-     */
-    public ComponentLinkedStorageAccountsOperations componentLinkedStorageAccountsOperations() {
-        if (this.componentLinkedStorageAccountsOperations == null) {
-            this.componentLinkedStorageAccountsOperations = new ComponentLinkedStorageAccountsOperationsImpl(
-                clientObject.getComponentLinkedStorageAccountsOperations(), this);
-        }
-        return componentLinkedStorageAccountsOperations;
-    }
-
-    /**
-     * Gets the resource collection API of DeletedWorkbooks.
-     * 
-     * @return Resource collection API of DeletedWorkbooks.
-     */
-    public DeletedWorkbooks deletedWorkbooks() {
-        if (this.deletedWorkbooks == null) {
-            this.deletedWorkbooks = new DeletedWorkbooksImpl(clientObject.getDeletedWorkbooks(), this);
-        }
-        return deletedWorkbooks;
     }
 
     /**

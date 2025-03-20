@@ -997,11 +997,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if ((HttpResponseStatus.OK.code() <= statusCode && statusCode < HttpResponseStatus.MULTIPLE_CHOICES.code()) ||
             statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
-            RntbdContext rntbdCtx = this.contextFuture.getNow(null);
-            if (rntbdCtx == null) {
-                throw new IllegalStateException("Expecting non-null rntbd context.");
-            }
-            final StoreResponse storeResponse = response.toStoreResponse(rntbdCtx.serverVersion());
+            final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
 
             if (this.serverErrorInjector != null) {
                 Consumer<Duration> completeWithInjectedDelayConsumer =
@@ -1035,7 +1031,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             // ..Map RNTBD response headers to HTTP response headers
 
             final Map<String, String> responseHeaders = response.getHeaders().asMap(
-                this.rntbdContext().orElseThrow(IllegalStateException::new).serverVersion(), activityId
+                this.rntbdContext().orElseThrow(IllegalStateException::new), activityId
             );
 
             // ..Create CosmosException based on status and sub-status codes

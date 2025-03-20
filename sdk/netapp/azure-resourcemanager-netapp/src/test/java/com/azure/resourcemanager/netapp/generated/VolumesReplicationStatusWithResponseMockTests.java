@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.MirrorState;
@@ -23,24 +23,24 @@ public final class VolumesReplicationStatusWithResponseMockTests {
     @Test
     public void testReplicationStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"healthy\":false,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Uninitialized\",\"totalProgress\":\"mq\",\"errorMessage\":\"qqxlajr\"}";
+            = "{\"healthy\":false,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Broken\",\"totalProgress\":\"mexiitdfuxt\",\"errorMessage\":\"siibmiybnnustgn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ReplicationStatus response = manager.volumes()
-            .replicationStatusWithResponse("sgzfczbg", "mfg", "eglqgleohibetn", "uankrrfxeeeb",
+            .replicationStatusWithResponse("qltfaey", "inmfgvxirp", "hriypoqeyhlqhy", "prlpy",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(false, response.healthy());
-        Assertions.assertEquals(RelationshipStatus.TRANSFERRING, response.relationshipStatus());
-        Assertions.assertEquals(MirrorState.UNINITIALIZED, response.mirrorState());
-        Assertions.assertEquals("mq", response.totalProgress());
-        Assertions.assertEquals("qqxlajr", response.errorMessage());
+        Assertions.assertEquals(RelationshipStatus.IDLE, response.relationshipStatus());
+        Assertions.assertEquals(MirrorState.BROKEN, response.mirrorState());
+        Assertions.assertEquals("mexiitdfuxt", response.totalProgress());
+        Assertions.assertEquals("siibmiybnnustgn", response.errorMessage());
     }
 }

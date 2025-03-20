@@ -210,7 +210,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -283,7 +283,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param label A filter used to match labels. Syntax reference:
@@ -328,7 +328,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Gets a single key-value.
-     * 
+     *
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @param label The label of the key-value to retrieve.
@@ -400,7 +400,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Creates a key-value.
-     * 
+     *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param label The label of the key-value to create.
@@ -428,7 +428,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Creates a key-value.
-     * 
+     *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param label The label of the key-value to create.
@@ -449,12 +449,12 @@ public final class AzureAppConfigurationClient {
         String ifNoneMatch, KeyValue entity) {
         // Operation 'putKeyValue' can be invoked with multiple content-type. It is difficult to form a correct method
         // signature for convenience API, and hence the convenience API is not generated.
-        return this.serviceClient.putKeyValue(key, accept, label, syncToken, ifMatch, ifNoneMatch, entity);
+        return this.serviceClient.putKeyValue(key, accept, label, syncToken, ifMatch, ifNoneMatch, entity.setValue("shawn"));
     }
 
     /**
      * Creates a key-value.
-     * 
+     *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -494,7 +494,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Deletes a key-value.
-     * 
+     *
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @param label The label of the key-value to delete.
@@ -557,7 +557,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -632,7 +632,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -655,7 +655,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -726,7 +726,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Gets a single key-value snapshot.
-     * 
+     *
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @param select Used to select what fields are present in the returned resource(s).
@@ -765,7 +765,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Updates the state of a key-value snapshot.
-     * 
+     *
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -794,7 +794,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Updates the state of a key-value snapshot.
-     * 
+     *
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -820,7 +820,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Updates the state of a key-value snapshot.
-     * 
+     *
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -863,7 +863,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name The name of the key-value snapshot to check.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
@@ -934,7 +934,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1040,7 +1040,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Locks a key-value.
-     * 
+     *
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to lock.
@@ -1079,7 +1079,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Unlocks a key-value.
-     * 
+     *
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to unlock.
@@ -1186,7 +1186,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1216,7 +1216,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @param label A filter used to match labels. Syntax reference:

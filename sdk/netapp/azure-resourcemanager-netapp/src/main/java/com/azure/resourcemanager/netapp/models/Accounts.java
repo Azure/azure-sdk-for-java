@@ -192,9 +192,8 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
      */
-    GetKeyVaultStatusResponse getChangeKeyVaultInformation(String resourceGroupName, String accountName);
+    void getChangeKeyVaultInformation(String resourceGroupName, String accountName);
 
     /**
      * Get information about how volumes under NetApp account are encrypted.
@@ -209,10 +208,8 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
      */
-    GetKeyVaultStatusResponse getChangeKeyVaultInformation(String resourceGroupName, String accountName,
-        Context context);
+    void getChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context);
 
     /**
      * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.

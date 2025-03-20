@@ -81,7 +81,6 @@ public final class EmbeddingsClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
      *     data (Required): [
      *          (Required){
      *             embedding: BinaryData (Required)
@@ -97,7 +96,7 @@ public final class EmbeddingsClient {
      * }
      * </pre>
      *
-     * @param body request options to pass to the endpoint using embeddings path.
+     * @param embedRequest The embedRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -109,8 +108,8 @@ public final class EmbeddingsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> embedWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.embedWithResponse(body, requestOptions);
+    Response<BinaryData> embedWithResponse(BinaryData embedRequest, RequestOptions requestOptions) {
+        return this.serviceClient.embedWithResponse(embedRequest, requestOptions);
     }
 
     /**
@@ -122,7 +121,7 @@ public final class EmbeddingsClient {
      * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
      *     model_provider_name: String (Required)
      * }
      * }

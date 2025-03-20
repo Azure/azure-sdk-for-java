@@ -1178,7 +1178,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -1259,7 +1259,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -2320,7 +2320,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -2402,7 +2402,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -2726,14 +2726,6 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new run for an assistant thread.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
-     * response. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2781,7 +2773,6 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     parallel_tool_calls: Boolean (Optional)
      *     stream: Boolean (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
@@ -2845,7 +2836,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -2875,14 +2865,6 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new run for an assistant thread.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
-     * response. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2930,7 +2912,6 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     parallel_tool_calls: Boolean (Optional)
      *     stream: Boolean (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
@@ -2994,7 +2975,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -3035,7 +3015,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -3088,7 +3068,6 @@ public final class AssistantsClientImpl {
      *                 last_messages: Integer (Optional)
      *             }
      *             tool_choice: BinaryData (Required)
-     *             parallel_tool_calls: boolean (Required)
      *             response_format: BinaryData (Required)
      *             metadata (Required): {
      *                 String: String (Required)
@@ -3132,7 +3111,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -3185,7 +3164,6 @@ public final class AssistantsClientImpl {
      *                 last_messages: Integer (Optional)
      *             }
      *             tool_choice: BinaryData (Required)
-     *             parallel_tool_calls: boolean (Required)
      *             response_format: BinaryData (Required)
      *             metadata (Required): {
      *                 String: String (Required)
@@ -3260,7 +3238,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -3334,7 +3311,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -3417,7 +3393,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -3505,7 +3480,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -3597,7 +3571,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -3690,7 +3663,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -3765,7 +3737,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -3839,7 +3810,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -3908,7 +3878,6 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     parallel_tool_calls: Boolean (Optional)
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
      *             file_ids (Optional): [
@@ -3984,7 +3953,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -4056,7 +4024,6 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     parallel_tool_calls: Boolean (Optional)
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
      *             file_ids (Optional): [
@@ -4132,7 +4099,6 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
-     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
@@ -4160,14 +4126,6 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a single run step from a thread run.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
-     * response. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4224,14 +4182,6 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a single run step from a thread run.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
-     * response. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4292,8 +4242,6 @@ public final class AssistantsClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
-     * response. In the form of "," separated string.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -4302,7 +4250,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -4375,8 +4323,6 @@ public final class AssistantsClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
-     * response. In the form of "," separated string.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -4385,7 +4331,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -4802,7 +4748,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -4875,7 +4821,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -5391,7 +5337,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -5411,7 +5357,7 @@ public final class AssistantsClientImpl {
      *             vector_store_id: String (Required)
      *             status: String(in_progress/completed/failed/cancelled) (Required)
      *             last_error (Required): {
-     *                 code: String(server_error/unsupported_file/invalid_file) (Required)
+     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
      *                 message: String (Required)
      *             }
      *             chunking_strategy (Required): {
@@ -5459,7 +5405,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -5479,7 +5425,7 @@ public final class AssistantsClientImpl {
      *             vector_store_id: String (Required)
      *             status: String(in_progress/completed/failed/cancelled) (Required)
      *             last_error (Required): {
-     *                 code: String(server_error/unsupported_file/invalid_file) (Required)
+     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
      *                 message: String (Required)
      *             }
      *             chunking_strategy (Required): {
@@ -5536,7 +5482,7 @@ public final class AssistantsClientImpl {
      *     vector_store_id: String (Required)
      *     status: String(in_progress/completed/failed/cancelled) (Required)
      *     last_error (Required): {
-     *         code: String(server_error/unsupported_file/invalid_file) (Required)
+     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
      *         message: String (Required)
      *     }
      *     chunking_strategy (Required): {
@@ -5592,7 +5538,7 @@ public final class AssistantsClientImpl {
      *     vector_store_id: String (Required)
      *     status: String(in_progress/completed/failed/cancelled) (Required)
      *     last_error (Required): {
-     *         code: String(server_error/unsupported_file/invalid_file) (Required)
+     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
      *         message: String (Required)
      *     }
      *     chunking_strategy (Required): {
@@ -5634,7 +5580,7 @@ public final class AssistantsClientImpl {
      *     vector_store_id: String (Required)
      *     status: String(in_progress/completed/failed/cancelled) (Required)
      *     last_error (Required): {
-     *         code: String(server_error/unsupported_file/invalid_file) (Required)
+     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
      *         message: String (Required)
      *     }
      *     chunking_strategy (Required): {
@@ -5676,7 +5622,7 @@ public final class AssistantsClientImpl {
      *     vector_store_id: String (Required)
      *     status: String(in_progress/completed/failed/cancelled) (Required)
      *     last_error (Required): {
-     *         code: String(server_error/unsupported_file/invalid_file) (Required)
+     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
      *         message: String (Required)
      *     }
      *     chunking_strategy (Required): {
@@ -6063,7 +6009,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -6083,7 +6029,7 @@ public final class AssistantsClientImpl {
      *             vector_store_id: String (Required)
      *             status: String(in_progress/completed/failed/cancelled) (Required)
      *             last_error (Required): {
-     *                 code: String(server_error/unsupported_file/invalid_file) (Required)
+     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
      *                 message: String (Required)
      *             }
      *             chunking_strategy (Required): {
@@ -6132,7 +6078,7 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
@@ -6152,7 +6098,7 @@ public final class AssistantsClientImpl {
      *             vector_store_id: String (Required)
      *             status: String(in_progress/completed/failed/cancelled) (Required)
      *             last_error (Required): {
-     *                 code: String(server_error/unsupported_file/invalid_file) (Required)
+     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
      *                 message: String (Required)
      *             }
      *             chunking_strategy (Required): {

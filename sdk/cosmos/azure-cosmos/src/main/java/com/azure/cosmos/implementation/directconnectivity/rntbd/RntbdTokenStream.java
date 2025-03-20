@@ -36,16 +36,12 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
 
     // region Methods
 
-    final int computeCount(boolean isThinClientRequest) {
+    final int computeCount() {
 
         int count = 0;
 
         for (final RntbdToken token : this.tokens.values()) {
             if (token.isPresent()) {
-                if (isThinClientRequest
-                    && RntbdConstants.RntbdRequestHeader.thinClientProxyExcludedSet.contains(token.getId())) {
-                    continue;
-                }
                 ++count;
             }
         }
@@ -53,15 +49,11 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         return count;
     }
 
-    final int computeLength(boolean isThinClientRequest) {
+    final int computeLength() {
 
         int total = 0;
 
         for (final RntbdToken token : this.tokens.values()) {
-            if (isThinClientRequest
-                && RntbdConstants.RntbdRequestHeader.thinClientProxyExcludedSet.contains(token.getId())) {
-                continue;
-            }
             total += token.computeLength();
         }
 
@@ -96,22 +88,8 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         return stream;
     }
 
-    final void encode(final ByteBuf out, boolean isThinClientRequest) {
-        if (isThinClientRequest) {
-            for (RntbdConstants.RntbdRequestHeader header : RntbdConstants.RntbdRequestHeader.thinClientHeadersInOrderList) {
-                RntbdToken token = this.tokens.get(header);
-                if (token != null && token.isPresent()) {
-                    token.encode(out);
-                }
-            }
-        }
-
+    final void encode(final ByteBuf out) {
         for (final RntbdToken token : this.tokens.values()) {
-            if (!token.isPresent()
-                || (isThinClientRequest && RntbdConstants.RntbdRequestHeader.thinClientProxyOrderedOrExcludedSet.contains(token.getId()))) {
-
-                continue;
-            }
             token.encode(out);
         }
     }

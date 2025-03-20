@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import java.nio.charset.StandardCharsets;
@@ -25,9 +25,10 @@ public final class SubvolumesDeleteMockTests {
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.subvolumes().delete("fg", "qbawpcbbnzqcykn", "p", "ofyuicd", "zb", com.azure.core.util.Context.NONE);
+        manager.subvolumes()
+            .delete("rkolawjm", "smwr", "kcdxfzzzw", "jafi", "lhguyn", com.azure.core.util.Context.NONE);
 
     }
 }

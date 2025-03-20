@@ -34,7 +34,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
-import com.azure.resourcemanager.netapp.fluent.models.GetKeyVaultStatusResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
@@ -152,7 +151,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/getKeyVaultStatus")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> getChangeKeyVaultInformation(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -1830,8 +1829,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted along
-     * with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getChangeKeyVaultInformationWithResponseAsync(String resourceGroupName,
@@ -1872,8 +1870,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted along
-     * with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getChangeKeyVaultInformationWithResponseAsync(String resourceGroupName,
@@ -1911,16 +1908,14 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of result of getKeyVaultStatus with information about how volumes
-     * under NetApp account are encrypted.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GetKeyVaultStatusResponseInner>, GetKeyVaultStatusResponseInner>
-        beginGetChangeKeyVaultInformationAsync(String resourceGroupName, String accountName) {
+    private PollerFlux<PollResult<Void>, Void> beginGetChangeKeyVaultInformationAsync(String resourceGroupName,
+        String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = getChangeKeyVaultInformationWithResponseAsync(resourceGroupName, accountName);
-        return this.client.<GetKeyVaultStatusResponseInner, GetKeyVaultStatusResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), GetKeyVaultStatusResponseInner.class, GetKeyVaultStatusResponseInner.class,
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
 
@@ -1937,17 +1932,15 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of result of getKeyVaultStatus with information about how volumes
-     * under NetApp account are encrypted.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GetKeyVaultStatusResponseInner>, GetKeyVaultStatusResponseInner>
-        beginGetChangeKeyVaultInformationAsync(String resourceGroupName, String accountName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginGetChangeKeyVaultInformationAsync(String resourceGroupName,
+        String accountName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = getChangeKeyVaultInformationWithResponseAsync(resourceGroupName, accountName, context);
-        return this.client.<GetKeyVaultStatusResponseInner, GetKeyVaultStatusResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), GetKeyVaultStatusResponseInner.class, GetKeyVaultStatusResponseInner.class,
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
 
@@ -1963,12 +1956,11 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result of getKeyVaultStatus with information about how volumes
-     * under NetApp account are encrypted.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GetKeyVaultStatusResponseInner>, GetKeyVaultStatusResponseInner>
-        beginGetChangeKeyVaultInformation(String resourceGroupName, String accountName) {
+    public SyncPoller<PollResult<Void>, Void> beginGetChangeKeyVaultInformation(String resourceGroupName,
+        String accountName) {
         return this.beginGetChangeKeyVaultInformationAsync(resourceGroupName, accountName).getSyncPoller();
     }
 
@@ -1985,12 +1977,11 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result of getKeyVaultStatus with information about how volumes
-     * under NetApp account are encrypted.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GetKeyVaultStatusResponseInner>, GetKeyVaultStatusResponseInner>
-        beginGetChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginGetChangeKeyVaultInformation(String resourceGroupName,
+        String accountName, Context context) {
         return this.beginGetChangeKeyVaultInformationAsync(resourceGroupName, accountName, context).getSyncPoller();
     }
 
@@ -2006,12 +1997,10 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted on
-     * successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GetKeyVaultStatusResponseInner> getChangeKeyVaultInformationAsync(String resourceGroupName,
-        String accountName) {
+    private Mono<Void> getChangeKeyVaultInformationAsync(String resourceGroupName, String accountName) {
         return beginGetChangeKeyVaultInformationAsync(resourceGroupName, accountName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2029,12 +2018,11 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted on
-     * successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GetKeyVaultStatusResponseInner> getChangeKeyVaultInformationAsync(String resourceGroupName,
-        String accountName, Context context) {
+    private Mono<Void> getChangeKeyVaultInformationAsync(String resourceGroupName, String accountName,
+        Context context) {
         return beginGetChangeKeyVaultInformationAsync(resourceGroupName, accountName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2051,11 +2039,10 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetKeyVaultStatusResponseInner getChangeKeyVaultInformation(String resourceGroupName, String accountName) {
-        return getChangeKeyVaultInformationAsync(resourceGroupName, accountName).block();
+    public void getChangeKeyVaultInformation(String resourceGroupName, String accountName) {
+        getChangeKeyVaultInformationAsync(resourceGroupName, accountName).block();
     }
 
     /**
@@ -2071,12 +2058,10 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetKeyVaultStatusResponseInner getChangeKeyVaultInformation(String resourceGroupName, String accountName,
-        Context context) {
-        return getChangeKeyVaultInformationAsync(resourceGroupName, accountName, context).block();
+    public void getChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context) {
+        getChangeKeyVaultInformationAsync(resourceGroupName, accountName, context).block();
     }
 
     /**

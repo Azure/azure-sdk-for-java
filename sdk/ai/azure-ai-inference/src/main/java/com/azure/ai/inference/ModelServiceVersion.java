@@ -13,12 +13,7 @@ public enum ModelServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-05-01-preview.
      */
-    V2024_05_01_PREVIEW("2024-05-01-preview"),
-
-    /**
-     * Enum value 2024-08-01-preview.
-     */
-    V2024_08_01_PREVIEW("2024-08-01-preview");
+    V2024_05_01_PREVIEW("2024-05-01-preview");
 
     private final String version;
 

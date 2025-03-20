@@ -14,27 +14,27 @@ public final class ReplicationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationStatusInner model = BinaryData.fromString(
-            "{\"healthy\":false,\"relationshipStatus\":\"Unknown\",\"mirrorState\":\"Broken\",\"totalProgress\":\"yhqmibzyhwi\",\"errorMessage\":\"mypyynpcdpu\"}")
+            "{\"healthy\":true,\"relationshipStatus\":\"Unknown\",\"mirrorState\":\"Broken\",\"totalProgress\":\"epxgyqagvr\",\"errorMessage\":\"npkukghimdblx\"}")
             .toObject(ReplicationStatusInner.class);
-        Assertions.assertEquals(false, model.healthy());
+        Assertions.assertEquals(true, model.healthy());
         Assertions.assertEquals(RelationshipStatus.UNKNOWN, model.relationshipStatus());
         Assertions.assertEquals(MirrorState.BROKEN, model.mirrorState());
-        Assertions.assertEquals("yhqmibzyhwi", model.totalProgress());
-        Assertions.assertEquals("mypyynpcdpu", model.errorMessage());
+        Assertions.assertEquals("epxgyqagvr", model.totalProgress());
+        Assertions.assertEquals("npkukghimdblx", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationStatusInner model = new ReplicationStatusInner().withHealthy(false)
+        ReplicationStatusInner model = new ReplicationStatusInner().withHealthy(true)
             .withRelationshipStatus(RelationshipStatus.UNKNOWN)
             .withMirrorState(MirrorState.BROKEN)
-            .withTotalProgress("yhqmibzyhwi")
-            .withErrorMessage("mypyynpcdpu");
+            .withTotalProgress("epxgyqagvr")
+            .withErrorMessage("npkukghimdblx");
         model = BinaryData.fromObject(model).toObject(ReplicationStatusInner.class);
-        Assertions.assertEquals(false, model.healthy());
+        Assertions.assertEquals(true, model.healthy());
         Assertions.assertEquals(RelationshipStatus.UNKNOWN, model.relationshipStatus());
         Assertions.assertEquals(MirrorState.BROKEN, model.mirrorState());
-        Assertions.assertEquals("yhqmibzyhwi", model.totalProgress());
-        Assertions.assertEquals("mypyynpcdpu", model.errorMessage());
+        Assertions.assertEquals("epxgyqagvr", model.totalProgress());
+        Assertions.assertEquals("npkukghimdblx", model.errorMessage());
     }
 }

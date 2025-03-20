@@ -6,7 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClient;
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClientBuilder;
 import com.azure.v2.data.appconfiguration.models.KeyValue;
-//import io.clientcore.core.http.models.PagedIterable;
+import io.clientcore.core.http.models.PagedIterable;
 import io.clientcore.core.utils.configuration.Configuration;
 
 /**
@@ -36,11 +36,11 @@ public class ReadRevisionHistory {
         KeyValue setting2 = client.putKeyValue(key, null, null, null, null, null, new KeyValue().setValue("newValue"));
         System.out.printf("[Override ConfigurationSetting] Key: %s, Value: %s", setting2.getKey(), setting2.getValue());
 
-//        PagedIterable<KeyValue> revisions = client.getRevisions(null, key, null, null, null, null, null, null);
-//        revisions.stream().forEach(
-//            revision -> {
-//                System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s%n", revision.getKey(), revision.getValue());
-//            }
-//        );
+        PagedIterable<KeyValue> revisions = client.getRevisions(null, key, null, null, null, null, null, null);
+        revisions.stream().forEach(
+            revision -> {
+                System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s%n", revision.getKey(), revision.getValue());
+            }
+        );
     }
 }
