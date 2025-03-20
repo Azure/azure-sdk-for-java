@@ -10,6 +10,8 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.utils.Base64Uri;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -22,7 +24,7 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
      * The backup blob associated with a secret bundle.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private final String secretBundleBackup;
+    private final Base64Uri secretBundleBackup;
 
     /**
      * Creates an instance of SecretRestoreParameters class.
@@ -34,7 +36,7 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
         if (secretBundleBackup == null) {
             this.secretBundleBackup = null;
         } else {
-            this.secretBundleBackup = String.encode(secretBundleBackup);
+            this.secretBundleBackup = Base64Uri.encode(secretBundleBackup);
         }
     }
 
@@ -80,7 +82,7 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    String secretBundleBackupHolder
+                    Base64Uri secretBundleBackupHolder
                         = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                     if (secretBundleBackupHolder != null) {
                         secretBundleBackup = secretBundleBackupHolder.decodedBytes();

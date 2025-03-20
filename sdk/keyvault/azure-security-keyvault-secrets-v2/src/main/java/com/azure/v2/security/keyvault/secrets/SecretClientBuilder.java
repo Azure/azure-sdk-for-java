@@ -12,6 +12,7 @@ import com.azure.v2.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.v2.security.keyvault.secrets.models.KeyVaultSecretIdentifier;
 import io.clientcore.core.annotations.ServiceClientBuilder;
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -21,18 +22,23 @@ import io.clientcore.core.http.pipeline.HttpRedirectOptions;
 import io.clientcore.core.http.pipeline.HttpRedirectPolicy;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.pipeline.UserAgentPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.traits.ConfigurationTrait;
 import io.clientcore.core.traits.EndpointTrait;
 import io.clientcore.core.traits.HttpTrait;
+import io.clientcore.core.traits.ProxyTrait;
+import io.clientcore.core.utils.ClientOptions;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
@@ -61,35 +67,36 @@ import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
 @ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder
     implements ConfigurationTrait<SecretClientBuilder>, EndpointTrait<SecretClientBuilder>,
-    HttpTrait<SecretClientBuilder>, TokenCredentialTrait<SecretClientBuilder> {
+    HttpTrait<SecretClientBuilder>, ProxyTrait<SecretClientBuilder>, TokenCredentialTrait<SecretClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(SecretClientBuilder.class);
-    private static final String SDK_NAME = "azure-security-keyvault-secrets-v2";
-    private static final String SDK_VERSION = "1.0.0-beta.1";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-    //private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
-    private final List<HttpPipelinePolicy> policies;
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-v2-security-keyvault-secrets.properties");
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+    private final List<HttpPipelinePolicy> pipelinePolicies;
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private String endpoint;
     private HttpClient httpClient;
     private HttpInstrumentationOptions instrumentationOptions;
     private HttpRedirectOptions redirectOptions;
-    private HttpRetryPolicy retryPolicy;
     private HttpRetryOptions retryOptions;
     private Configuration configuration;
     private SecretServiceVersion version;
-    //private ClientOptions clientOptions;
+    private ClientOptions clientOptions;
+    private ProxyOptions proxyOptions;
     private boolean disableChallengeResourceVerification = false;
 
     /**
      * Creates a {@link SecretClientBuilder} that is used to configure and create {@link SecretClient} instances.
      */
     public SecretClientBuilder() {
-        instrumentationOptions = new HttpInstrumentationOptions();
-        policies = new ArrayList<>();
+        pipelinePolicies = new ArrayList<>();
     }
 
     /**
@@ -107,8 +114,6 @@ public final class SecretClientBuilder
      * @throws IllegalStateException If an {@link SecretClientBuilder#endpoint(String) endpoint} has not been set or if
      * either of a {@link SecretClientBuilder#credential(TokenCredential) credential} or
      * {@link SecretClientBuilder#httpPipeline(HttpPipeline) pipeline} were not provided.
-     * @throws IllegalStateException If both {@link #httpRetryOptions(HttpRetryOptions)} and
-     * {@link #httpRetryPolicy(HttpRetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
         return new SecretClient(buildImplClient(), endpoint);
@@ -140,30 +145,14 @@ public final class SecretClientBuilder
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
+        ClientOptions clientOptions = this.clientOptions == null ? DEFAULT_CLIENT_OPTIONS : this.clientOptions;
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
+        policies.add(new UserAgentPolicy(clientOptions.getApplicationId(), clientName, clientVersion));
         policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
-
-        if (retryPolicy != null) {
-            policies.add(retryPolicy);
-        } else if (retryOptions != null) {
-            policies.add(new HttpRetryPolicy(retryOptions));
-        } else {
-            policies.add(new HttpRetryPolicy());
-        }
-
-        //ClientOptions clientOptions = this.clientOptions == null ? DEFAULT_CLIENT_OPTIONS : this.clientOptions;
-
-        /*policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, instrumentationOptions),
-            clientName, clientVersion, buildConfiguration));*/
-
-        //List<HttpHeader> httpHeaderList = new ArrayList<>();
-
-        /*clientOptions.getHeaders()
-            .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-
-        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));*/
-
-        policies.addAll(this.policies);
+        policies.add(retryOptions == null ? new HttpRetryPolicy() : new HttpRetryPolicy(retryOptions));
+        policies.addAll(pipelinePolicies);
         policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         HttpInstrumentationOptions instrumentationOptions = this.instrumentationOptions == null
@@ -177,11 +166,10 @@ public final class SecretClientBuilder
         // Add all policies to the pipeline.
         policies.forEach(httpPipelineBuilder::addPolicy);
 
-        HttpPipeline pipeline = httpPipelineBuilder.httpClient(httpClient)
-            //.clientOptions(clientOptions)
-            .build();
+        // TODO (vcolin7): Add ProxyOptions to the pipeline when the API is made available.
+        HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new SecretClientImpl(pipeline, endpoint, version);
+        return new SecretClientImpl(builtPipeline, endpoint, version);
     }
 
     /**
@@ -193,7 +181,7 @@ public final class SecretClientBuilder
      * other information via {@link KeyVaultSecretIdentifier#getEndpoint()}.
      * @return The updated {@link SecretClientBuilder} object.
      *
-     * @throws IllegalArgumentException If {@code endpoint} cannot be parsed into a valid URI.
+     * @throws IllegalArgumentException If {@code endpoint} isn't a valid URI.
      * @throws NullPointerException If {@code endpoint} is {@code null}.
      */
     @Override
@@ -282,7 +270,7 @@ public final class SecretClientBuilder
      * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @return The updated {@link SecretClientBuilder} object.
      *
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     @Override
     public SecretClientBuilder addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
@@ -290,7 +278,7 @@ public final class SecretClientBuilder
             throw LOGGER.logThrowableAsError(new NullPointerException("'pipelinePolicy' cannot be null."));
         }
 
-        policies.add(pipelinePolicy);
+        pipelinePolicies.add(pipelinePolicy);
 
         return this;
     }
@@ -366,21 +354,6 @@ public final class SecretClientBuilder
     }
 
     /**
-     * Sets the {@link HttpRetryPolicy} that is used when each request is sent. Setting this is mutually exclusive with
-     * using {@link #httpRetryOptions(HttpRetryOptions)}.
-     * <p>
-     * The default retry policy will be used in the pipeline, if not provided.
-     *
-     * @param retryPolicy user's retry policy applied to each request.
-     * @return The updated {@link SecretClientBuilder} object.
-     */
-    public SecretClientBuilder httpRetryPolicy(HttpRetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
-
-        return this;
-    }
-
-    /**
      * Sets the {@link HttpRetryOptions} for all the requests made through the client.
      *
      * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
@@ -421,11 +394,7 @@ public final class SecretClientBuilder
     }
 
     /**
-     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
-     * recommended that this method be called with an instance of the {@link HttpClientOptions}
-     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
-     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
-     * interface.
+     * Allows for setting common properties such as application ID, instrumentation options, etc.
      * <p>
      * <strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
      * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
@@ -434,15 +403,30 @@ public final class SecretClientBuilder
      * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
      * documentation of types that implement this trait to understand the full set of implications.
      *
-     * @param clientOptions A configured instance of {@link HttpClientOptions}.
+     * @param clientOptions A configured instance of {@link ClientOptions}.
      * @return The updated {@link SecretClientBuilder} object.
      */
-    /*@Override
-    public SecretClientBuilder clientOptions(ClientOptions clientOptions) {
+    /*public SecretClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 
         return this;
     }*/
+
+    /**
+     * Sets the {@link ProxyOptions} to use with an {@link HttpClient} when sending and receiving requests to and from
+     * the service.
+     *
+     * @param proxyOptions The {@link ProxyOptions} to use with an {@link HttpClient} when sending and receiving
+     * requests to and from the service.
+     *
+     * @return The updated {@link SecretClientBuilder} object.
+     */
+    @Override
+    public SecretClientBuilder proxyOptions(ProxyOptions proxyOptions) {
+        this.proxyOptions = proxyOptions;
+
+        return this;
+    }
 
     /**
      * Disables verifying if the authentication challenge resource matches the Key Vault domain. This verification is

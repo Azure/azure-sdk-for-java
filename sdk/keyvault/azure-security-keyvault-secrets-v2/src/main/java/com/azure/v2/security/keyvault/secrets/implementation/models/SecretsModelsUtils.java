@@ -19,7 +19,7 @@ import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Utility methods for KeyVault Secrets models.

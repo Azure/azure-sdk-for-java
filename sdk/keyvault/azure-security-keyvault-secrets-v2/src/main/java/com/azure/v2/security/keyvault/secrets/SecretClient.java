@@ -7,6 +7,7 @@ import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.v2.security.keyvault.secrets.implementation.models.BackupSecretResult;
 import com.azure.v2.security.keyvault.secrets.implementation.models.DeletedSecretBundle;
+import com.azure.v2.security.keyvault.secrets.implementation.models.KeyVaultErrorException;
 import com.azure.v2.security.keyvault.secrets.implementation.models.SecretBundle;
 import com.azure.v2.security.keyvault.secrets.implementation.models.SecretRestoreParameters;
 import com.azure.v2.security.keyvault.secrets.implementation.models.SecretSetParameters;
@@ -18,15 +19,12 @@ import com.azure.v2.security.keyvault.secrets.models.SecretProperties;
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceClient;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.exceptions.HttpResponseException;
-import io.clientcore.core.http.models.PagedIterable;
-import io.clientcore.core.http.models.PagedResponse;
-import io.clientcore.core.http.models.PagingOptions;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.http.HttpResponse;
+import io.clientcore.core.http.paging.PagedIterable;
+import io.clientcore.core.http.paging.PagedResponse;
+import io.clientcore.core.http.paging.PagingOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Context;
 
 import java.io.IOException;
@@ -41,7 +39,7 @@ import static com.azure.v2.security.keyvault.secrets.implementation.models.Secre
 import static com.azure.v2.security.keyvault.secrets.implementation.models.SecretsModelsUtils.createKeyVaultSecret;
 import static com.azure.v2.security.keyvault.secrets.implementation.models.SecretsModelsUtils.createSecretAttributes;
 import static com.azure.v2.security.keyvault.secrets.implementation.models.SecretsModelsUtils.createSecretProperties;
-import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * This class provides methods to manage secrets in Azure Key Vault. The client supports creating, retrieving, updating,
@@ -149,21 +147,23 @@ public final class SecretClient {
      * @param value The value of the secret. It is required and cannot be {@code null}.
      * @return The newly created secret.
      *
-     * @throws HttpResponseException If either of the provided {@code name} or {@code value} is invalid.
+     * @throws KeyVaultErrorException If either of the provided {@code name} or {@code value} is invalid.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret setSecret(String name, String value) {
-        try {
+        try (Response<SecretBundle> response = implClient.setSecretWithResponse(name, new SecretSetParameters(value),
+            RequestOptions.none())) {
+
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return createKeyVaultSecret(
-                implClient.setSecretWithResponse(name, BinaryData.fromObject(new SecretSetParameters(value)),
-                    RequestOptions.none()).getValue());
+            return createKeyVaultSecret(response.getValue());
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -186,24 +186,27 @@ public final class SecretClient {
      * cannot be {@code null}.
      * @return The newly created secret.
      *
-     * @throws HttpResponseException If the provided {@link KeyVaultSecret secret object} is malformed or if either of
+     * @throws KeyVaultErrorException If the provided {@link KeyVaultSecret secret object} is malformed or if either of
      * {@link KeyVaultSecret#getName()} or {@link KeyVaultSecret#getValue()} is invalid.
      * @throws IllegalArgumentException If {@link KeyVaultSecret#getName()} is {@code null} or an empty stirng.
      * @throws NullPointerException if the provided {@link KeyVaultSecret secret object} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret setSecret(KeyVaultSecret secret) {
-        try {
+        try (Response<SecretBundle> response = implClient.setSecretWithResponse(secret.getName(),
+            prepareSecretSetParameters(secret), RequestOptions.none())) {
+
             Objects.requireNonNull(secret, "'secret' cannot be null.");
 
             if (isNullOrEmpty(secret.getName())) {
                 throw new IllegalArgumentException("'secret.getName()' cannot be null or empty.");
             }
 
-            return createKeyVaultSecret(implClient.setSecretWithResponse(secret.getName(),
-                BinaryData.fromObject(prepareSecretSetParameters(secret)), RequestOptions.none()).getValue());
+            return createKeyVaultSecret(response.getValue());
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -227,27 +230,28 @@ public final class SecretClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the newly created secret.
      *
-     * @throws HttpResponseException If the provided {@link KeyVaultSecret secret object} is malformed or if either of
+     * @throws KeyVaultErrorException If the provided {@link KeyVaultSecret secret object} is malformed or if either of
      * {@link KeyVaultSecret#getName()} or {@link KeyVaultSecret#getValue()} is invalid.
      * @throws IllegalArgumentException If {@link KeyVaultSecret#getName()} is {@code null} or an empty stirng.
      * @throws NullPointerException if the provided {@link KeyVaultSecret secret object} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> setSecretWithResponse(KeyVaultSecret secret, RequestOptions requestOptions) {
-        try {
+        try (Response<SecretBundle> response = implClient.setSecretWithResponse(secret.getName(),
+            prepareSecretSetParameters(secret), requestOptions)) {
+
             Objects.requireNonNull(secret, "'secret' cannot be null.");
 
             if (isNullOrEmpty(secret.getName())) {
                 throw new IllegalArgumentException("'secret.getName()' cannot be null or empty.");
             }
 
-            Response<SecretBundle> response = implClient.setSecretWithResponse(secret.getName(),
-                BinaryData.fromObject(prepareSecretSetParameters(secret)), requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 createKeyVaultSecret(response.getValue()));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -277,7 +281,7 @@ public final class SecretClient {
      * @param name The name of the secret.
      * @return The requested secret.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -300,7 +304,7 @@ public final class SecretClient {
      * equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @return The requested secret.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} and {@code version} doesn't exist in the
+     * @throws KeyVaultErrorException If a secret with the given {@code name} and {@code version} doesn't exist in the
      * key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
@@ -334,7 +338,7 @@ public final class SecretClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the requested secret.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} and {@code version} doesn't exist in the
+     * @throws KeyVaultErrorException If a secret with the given {@code name} and {@code version} doesn't exist in the
      * vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
@@ -347,7 +351,7 @@ public final class SecretClient {
 
             Response<SecretBundle> response = implClient.getSecretWithResponse(name, version, requestOptions);
 
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 createKeyVaultSecret(response.getValue()));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -371,26 +375,27 @@ public final class SecretClient {
      * @param secretProperties An object containing the secret properties to update.
      * @return The updated secret properties.
      *
-     * @throws HttpResponseException If a secret with the given {@link SecretProperties#getName()} and
+     * @throws KeyVaultErrorException If a secret with the given {@link SecretProperties#getName()} and
      * {@link SecretProperties#getVersion()} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@link SecretProperties#getName()} is {@code null} or an empty string.
      * @throws NullPointerException If {@code secretProperties} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretProperties updateSecretProperties(SecretProperties secretProperties) {
-        try {
+        try (Response<SecretBundle> response = implClient.updateSecretWithResponse(secretProperties.getName(),
+            secretProperties.getVersion(), prepareUpdateSecretParameters(secretProperties), RequestOptions.none())) {
+
             Objects.requireNonNull(secretProperties, "'secretProperties' cannot be null.");
 
             if (isNullOrEmpty(secretProperties.getName())) {
                 throw new IllegalArgumentException("'secretProperties.getName()' cannot be null or empty.");
             }
 
-            return createSecretProperties(
-                implClient.updateSecretWithResponse(secretProperties.getName(), secretProperties.getVersion(),
-                        BinaryData.fromObject(prepareUpdateSecretParameters(secretProperties)), RequestOptions.none())
-                    .getValue());
+            return createSecretProperties(response.getValue());
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -413,7 +418,7 @@ public final class SecretClient {
      * the service call.
      * @return A response object whose {@link Response#getValue() value} contains the updated secret properties.
      *
-     * @throws HttpResponseException If a secret with the given {@link SecretProperties#getName()} and
+     * @throws KeyVaultErrorException If a secret with the given {@link SecretProperties#getName()} and
      * {@link SecretProperties#getVersion()} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@link SecretProperties#getName()} is {@code null} or an empty string.
      * @throws NullPointerException If {@code secretProperties} is {@code null}.
@@ -422,21 +427,21 @@ public final class SecretClient {
     public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties,
         RequestOptions requestOptions) {
 
-        try {
+        try (Response<SecretBundle> response = implClient.updateSecretWithResponse(secretProperties.getName(),
+            secretProperties.getVersion(), prepareUpdateSecretParameters(secretProperties), requestOptions)) {
+
             Objects.requireNonNull(secretProperties, "'secretProperties' cannot be null.");
 
             if (isNullOrEmpty(secretProperties.getName())) {
                 throw new IllegalArgumentException("'secretProperties.getName()' cannot be null or empty.");
             }
 
-            Response<SecretBundle> response = implClient.updateSecretWithResponse(secretProperties.getName(),
-                secretProperties.getVersion(), BinaryData.fromObject(prepareUpdateSecretParameters(secretProperties)),
-                requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 createSecretProperties(response.getValue()));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -467,7 +472,7 @@ public final class SecretClient {
      * @param name The name of the secret to delete.
      * @return A poller object to poll with and retrieve the deleted secret.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault or if the
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault or if the
      * provided {@code name} is an empty string.
      */
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -522,7 +527,7 @@ public final class SecretClient {
      * @param name The name of the deleted secret.
      * @return The deleted secret.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -552,7 +557,7 @@ public final class SecretClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the deleted secret.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -564,7 +569,7 @@ public final class SecretClient {
 
             Response<DeletedSecretBundle> response = implClient.getDeletedSecretWithResponse(name, requestOptions);
 
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 createDeletedSecret(response.getValue()));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -583,7 +588,7 @@ public final class SecretClient {
      *
      * @param name The name of the secret to purge.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -612,7 +617,7 @@ public final class SecretClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object containing the status code and headers related to the operation.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -641,7 +646,7 @@ public final class SecretClient {
      * @param name The name of the deleted secret to be recovered.
      * @return A poller object to poll with and retrieve the recovered secret.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault or if the
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault or if the
      * provided {@code name} is an empty string.
      */
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -694,7 +699,7 @@ public final class SecretClient {
      * @param name The name of the secret to back up.
      * @return A byte array containing the backed up secret blob.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -727,7 +732,7 @@ public final class SecretClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the backed up secret blob.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -738,7 +743,7 @@ public final class SecretClient {
 
         // Using try-with-resources to ensure the response is closed.
         try (Response<BackupSecretResult> response = implClient.backupSecretWithResponse(name, requestOptions)) {
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 response.getValue().getValue());
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -760,16 +765,18 @@ public final class SecretClient {
      * @param backup The backup blob associated with the secret.
      * @return The restored secret.
      *
-     * @throws HttpResponseException If the {@code backup} blob is malformed.
+     * @throws KeyVaultErrorException If the {@code backup} blob is malformed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret restoreSecretBackup(byte[] backup) {
-        try {
-            return createKeyVaultSecret(
-                implClient.restoreSecretWithResponse(BinaryData.fromObject(new SecretRestoreParameters(backup)),
-                    RequestOptions.none()).getValue());
+        try (Response<SecretBundle> response = implClient.restoreSecretWithResponse(new SecretRestoreParameters(backup),
+            RequestOptions.none())) {
+
+            return createKeyVaultSecret(response.getValue());
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -787,18 +794,19 @@ public final class SecretClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the restored secret.
      *
-     * @throws HttpResponseException If the {@code backup} blob is malformed.
+     * @throws KeyVaultErrorException If the {@code backup} blob is malformed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> restoreSecretBackupWithResponse(byte[] backup, RequestOptions requestOptions) {
-        try {
-            Response<SecretBundle> response = implClient.restoreSecretWithResponse(
-                BinaryData.fromObject(new SecretRestoreParameters(backup)), requestOptions);
+        try (Response<SecretBundle> response = implClient.restoreSecretWithResponse(new SecretRestoreParameters(backup),
+            requestOptions)) {
 
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 createKeyVaultSecret(response.getValue()));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -854,7 +862,7 @@ public final class SecretClient {
                 ? requestOptions.getContext()
                 : Context.none());
 
-            return mapPage((pagingOptions) -> implClient.getSecretsSinglePage(requestOptions),
+            return mapPage((pagingOptions) -> implClient.getSecretsSinglePage(null, requestOptions),
                 (pagingOptions, nextLink) -> implClient.getSecretsNextSinglePage(nextLink, requestOptionsForNextPage),
                 SecretsModelsUtils::createSecretProperties);
         } catch (RuntimeException e) {
@@ -904,7 +912,7 @@ public final class SecretClient {
                 ? requestOptions.getContext()
                 : Context.none());
 
-            return mapPage((pagingOptions) -> implClient.getDeletedSecretsSinglePage(requestOptions),
+            return mapPage((pagingOptions) -> implClient.getDeletedSecretsSinglePage(null, requestOptions),
                 (pagingOptions, nextLink) -> implClient.getDeletedSecretsNextSinglePage(nextLink,
                     requestOptionsForNextPage), SecretsModelsUtils::createDeletedSecret);
         } catch (RuntimeException e) {
@@ -928,7 +936,7 @@ public final class SecretClient {
      * specified secret in the vault. The list is empty if a secret with the given {@code name} does not exist in key
      * vault.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -959,7 +967,7 @@ public final class SecretClient {
      * specified secret in the vault. The list is empty if a secret with the given {@code name} does not exist in key
      * vault.
      *
-     * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
+     * @throws KeyVaultErrorException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -975,7 +983,7 @@ public final class SecretClient {
                 ? requestOptions.getContext()
                 : Context.none());
 
-            return mapPage((pagingOptions) -> implClient.getSecretVersionsSinglePage(name, requestOptions),
+            return mapPage((pagingOptions) -> implClient.getSecretVersionsSinglePage(name, null, requestOptions),
                 (pagingOptions, nextLink) -> implClient.getSecretVersionsNextSinglePage(nextLink,
                     requestOptionsForNextPage), SecretsModelsUtils::createSecretProperties);
         } catch (RuntimeException e) {
@@ -997,7 +1005,7 @@ public final class SecretClient {
         }
 
         return new PagedResponse<>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
-            pagedResponse.getHeaders(), pagedResponse.getBody(),
+            pagedResponse.getHeaders(),
             pagedResponse.getValue()
                 .stream()
                 .map(mapper)
