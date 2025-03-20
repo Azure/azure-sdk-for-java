@@ -11,7 +11,7 @@ import io.clientcore.core.utils.ProgressReporter;
 /**
  * JavaDoc code snippets for {@link RequestOptions}.
  */
-public class RequestContextJavaDocCodeSnippets {
+public class RequestOptionsJavaDocCodeSnippets {
 
     /**
      * Sample to demonstrate how to create an instance of {@link RequestOptions}.

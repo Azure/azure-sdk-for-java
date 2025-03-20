@@ -70,7 +70,7 @@ public class PagingOperationTests {
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
             pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
-                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, SdkRequestContext.create(RequestOptions.none()));
+                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, (SdkRequestContext) RequestOptions.none());
                 return toPagedResponse(nextResponse, nextLink);
             }
         );
