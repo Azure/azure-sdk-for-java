@@ -223,7 +223,8 @@ public class JdkHttpClientIT {
     public void testBufferedResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<BinaryData> response = getResponse(client, "/short", SdkRequestContext.create(RequestOptions.none()))) {
+        try (Response<BinaryData> response
+            = getResponse(client, "/short", SdkRequestContext.create(RequestOptions.none()))) {
             assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
@@ -232,7 +233,8 @@ public class JdkHttpClientIT {
     public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<BinaryData> response = getResponse(client, "/empty", SdkRequestContext.create(RequestOptions.none()))) {
+        try (Response<BinaryData> response
+            = getResponse(client, "/empty", SdkRequestContext.create(RequestOptions.none()))) {
             assertEquals(0L, response.getValue().toBytes().length);
         }
     }

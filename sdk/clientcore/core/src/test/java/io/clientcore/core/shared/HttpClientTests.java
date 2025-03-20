@@ -13,7 +13,6 @@ import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -312,20 +311,20 @@ public abstract class HttpClientTests {
             getProtocol(ECHO_RESPONSE),
             new Headers(),
             requestBody);
-
+    
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
             .setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
-
+    
         Response<?> response = createHttpClient()
             .send(request);
-
+    
         byte[] responseBytes = response
             .getBodyAsByteArray()
             .block();
-
+    
         assertArrayEquals(expectedResponseBody, responseBytes);
         assertEquals(expectedResponseBody.length, progress.intValue());
     }*/
@@ -1350,20 +1349,20 @@ public abstract class HttpClientTests {
             .putBodyAndHeaders(getRequestUri(), "body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-
+        
         assertEquals(Headers.class, response.getHeaders().getClass());
-
+        
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);
         assertMatchWithHttpOrHttps("localhost/put", body.uri());
         assertEquals("body string", body.data());
-
+        
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
         assertNotNull(headers.date());
         assertNotEquals(0, (Object) headers.xProcessedTime());
-
+        
          */
     }
 
@@ -1544,13 +1543,13 @@ public abstract class HttpClientTests {
         HttpBinFormDataJSON postForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam("custemail") String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
-
+    
         @Post("post")
         HttpBinFormDataJSON postEncodedForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam(value = "custemail", encoded = true) String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
     }
-
+    
     @Test
     public void postUriForm() {
         Service26 service = createService(Service26.class);
@@ -1562,12 +1561,12 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo%40bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-
+    
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
     }
-
+    
     @Test
     public void postUriFormEncoded() {
         Service26 service = createService(Service26.class);
@@ -1579,7 +1578,7 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo@bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-
+    
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
@@ -1617,8 +1616,8 @@ public abstract class HttpClientTests {
     public void requestContextChangesBodyAndContentLength() {
         Service27 service = createService(Service27.class);
 
-        RequestOptions options = new RequestOptions().addRequestCallback(r -> r.setBody(BinaryData.fromString("4242")))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, "4");
+        RequestOptions options = new RequestOptions().addRequestCallback(
+            r -> r.setBody(BinaryData.fromString("4242")).getHeaders().set(HttpHeaderName.CONTENT_LENGTH, "4"));
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.create(options));
 
         assertNotNull(response);
@@ -1632,7 +1631,8 @@ public abstract class HttpClientTests {
 
     @Test
     public void requestContextAddAHeader() {
-        RequestOptions options = new RequestOptions().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"));
+        RequestOptions options
+            = new RequestOptions().addRequestCallback(r -> r.getHeaders().set(RANDOM_HEADER, "randomValue"));
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.create(options));
 
@@ -1645,8 +1645,8 @@ public abstract class HttpClientTests {
 
     @Test
     public void requestContextSetsAHeader() {
-        RequestOptions options = new RequestOptions().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue"))
-            .setHeader(RANDOM_HEADER, "randomValue2");
+        RequestOptions options = new RequestOptions().addRequestCallback(
+            r -> r.getHeaders().add(RANDOM_HEADER, "randomValue").set(RANDOM_HEADER, "randomValue2"));
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42, SdkRequestContext.create(options));
 

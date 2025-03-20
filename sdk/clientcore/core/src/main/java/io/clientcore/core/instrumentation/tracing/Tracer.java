@@ -20,19 +20,24 @@ public interface Tracer {
      * <!-- src_embed io.clientcore.core.instrumentation.tracecall -->
      * <pre>
      *
-     * InstrumentationContext instrumentationContext = requestContext.getInstrumentationContext&#40;&#41;;
+     * if &#40;!tracer.isEnabled&#40;&#41;&#41; &#123;
+     *     &#47;&#47; tracing is disabled, so we don't need to create a span
+     *     clientCall&#40;SdkRequestContext.create&#40;options&#41;&#41;.close&#40;&#41;;
+     *     return;
+     * &#125;
+     *
+     * InstrumentationContext instrumentationContext = options == null
+     *     ? null
+     *     : options.getInstrumentationContext&#40;&#41;;
      * Span span = tracer.spanBuilder&#40;&quot;&#123;operationName&#125;&quot;, SpanKind.CLIENT, instrumentationContext&#41;
      *     .startSpan&#40;&#41;;
      *
+     * SdkRequestContext requestContext = SdkRequestContext.create&#40;options, span.getInstrumentationContext&#40;&#41;&#41;;
+     *
      * &#47;&#47; we'll propagate context implicitly using span.makeCurrent&#40;&#41; as shown later.
      * &#47;&#47; Libraries that write async code should propagate context explicitly in addition to implicit propagation.
-     * if &#40;tracer.isEnabled&#40;&#41;&#41; &#123;
-     *     requestContext = new SdkRequestContext&#40;requestContext, span.getInstrumentationContext&#40;&#41;&#41;;
-     * &#125;
-     *
      * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
-     *     Response&lt;?&gt; response = clientCall&#40;requestContext&#41;;
-     *     response.close&#40;&#41;;
+     *     clientCall&#40;requestContext&#41;.close&#40;&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     &#47;&#47; make sure to report any exceptions including unchecked ones.
      *     span.end&#40;getCause&#40;t&#41;&#41;;

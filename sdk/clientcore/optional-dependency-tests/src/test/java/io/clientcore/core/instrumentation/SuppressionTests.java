@@ -367,11 +367,14 @@ public class SuppressionTests {
 
         @SuppressWarnings("try")
         public void protocolMethod(RequestOptions options) {
-            Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options == null ? null : options.getInstrumentationContext()).startSpan();
+            Span span = tracer
+                .spanBuilder("protocolMethod", INTERNAL, options == null ? null : options.getInstrumentationContext())
+                .startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
-                Response<?> response
-                    = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost").setRequestContext(SdkRequestContext.create(options, span.getInstrumentationContext())));
+                Response<?> response = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+                    .setUri("https://localhost")
+                    .setRequestContext(SdkRequestContext.create(options, span.getInstrumentationContext())));
                 try {
                     response.close();
                 } catch (IOException e) {
@@ -385,7 +388,10 @@ public class SuppressionTests {
         @SuppressWarnings("try")
         public void convenienceMethod(RequestOptions options) {
             Span span
-                = tracer.spanBuilder("convenienceMethod", INTERNAL, options == null ? null : options.getInstrumentationContext()).startSpan();
+                = tracer
+                    .spanBuilder("convenienceMethod", INTERNAL,
+                        options == null ? null : options.getInstrumentationContext())
+                    .startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
                 protocolMethod(SdkRequestContext.create(options, span.getInstrumentationContext()));
@@ -415,7 +421,8 @@ public class SuppressionTests {
 
         @SuppressWarnings("try")
         public Response<?> convenienceMethod(RequestOptions options) throws IOException {
-            return instrumentation.instrumentWithResponse("convenience", SdkRequestContext.create(options), this::protocolMethod);
+            return instrumentation.instrumentWithResponse("convenience", SdkRequestContext.create(options),
+                this::protocolMethod);
         }
     }
 }
