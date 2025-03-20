@@ -176,7 +176,7 @@ public class LocationCache {
 
     void onLocationPreferenceChanged(UnmodifiableList<String> preferredLocations) {
         this.updateLocationCache(
-                null, null, preferredLocations, null);
+                null, null, null, null, preferredLocations, null);
     }
 
     /**
@@ -722,25 +722,15 @@ public class LocationCache {
             for (DatabaseAccountLocation thinclientDbAccountLocation : thinclientDbAccountLocations) {
                 if (!Strings.isNullOrEmpty(thinclientDbAccountLocation.getName())) {
                     try {
-
                         String location = thinclientDbAccountLocation.getName().toLowerCase(Locale.ROOT);
                         URI endpoint = new URI(thinclientDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
 
-                        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(endpoint);
-
-                        if (!endpointsByLocation.containsKey(location)) {
-                            endpointsByLocation.put(location, regionalRoutingContext);
-                        }
-
-                        if (!regionByEndpoint.containsKey(regionalRoutingContext)) {
-                            regionByEndpoint.put(regionalRoutingContext, location);
-                        }
-
-                        parsedLocations.add(gatewayDbAccountLocation.getName());
+                        RegionalRoutingContext regionalRoutingContext = endpointsByLocation.get(location);
+                        regionalRoutingContext.setThinclientRegionalEndpoint(endpoint);
                     } catch (Exception e) {
                         logger.warn("Skipping add for location = [{}] and endpoint = [{}] due to exception [{}]",
-                            gatewayDbAccountLocation.getName(),
-                            gatewayDbAccountLocation.getEndpoint(),
+                            thinclientDbAccountLocation.getName(),
+                            thinclientDbAccountLocation.getEndpoint(),
                             e.getMessage());
                     }
                 }

@@ -1904,8 +1904,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
         // TODO: Configs.isThinClientEnabled() && request.useGatewayMode -> false for some reason, fix it
-        request.useThinProxy = Configs.isThinClientEnabled() && request.useGatewayMode ? true : false;
-        request.useThinProxy = true;
+        request.useThinProxy = Configs.isThinClientEnabled() &&  this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY ? true : false;
 
         if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
@@ -2071,7 +2070,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      */
     public Mono<RxDocumentServiceRequest> populateHeadersAsync(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         // if thin client enabled, populate thin client header so we can get thin client read and writeable locations
-        if (this.isThinClientEnabled) {
+        if (request.useThinProxy) {
             request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_OPT_IN, "true");
         }
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
@@ -3446,8 +3445,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
 
-            request.useThinProxy = Configs.isThinClientEnabled() && request.useGatewayMode ? true : false;
-            request.useThinProxy = true;
+            request.useThinProxy = Configs.isThinClientEnabled() && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY ? true : false;
             DocumentServiceRequestContext requestContext = request.requestContext;
 
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
@@ -5764,8 +5762,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return RxStoreModel
      */
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
-        // TODO: request.useThinProxy is false here, fix it
-
         // TODO: remove, for testing
         if (request.isMetadataRequest()) {
             return this.gatewayProxy;
