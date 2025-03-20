@@ -19,10 +19,10 @@ public class RequestContextJavaDocCodeSnippets {
      */
     public RequestOptions createInstance() {
         // BEGIN: io.clientcore.core.http.rest.requestcontext.instantiation
-        RequestOptions context = new RequestOptions()
-            .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"));
+        RequestOptions options = new RequestOptions()
+            .addRequestCallback(r -> r.getHeaders().add(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"));
         // END: io.clientcore.core.http.rest.requestcontext.instantiation
-        return context;
+        return options;
     }
 
     /**
@@ -55,7 +55,7 @@ public class RequestContextJavaDocCodeSnippets {
         // END: io.clientcore.core.http.rest.requestcontext.createjsonrequest
 
         // BEGIN: io.clientcore.core.http.rest.requestcontext.postrequest
-        RequestOptions context = new RequestOptions()
+        RequestOptions options = new RequestOptions()
             .addRequestCallback(request -> request
                 // may already be set if request is created from a client
                 .setUri("https://petstore.example.com/pet")
@@ -63,7 +63,7 @@ public class RequestContextJavaDocCodeSnippets {
                 .setBody(requestBodyData)
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
         // END: io.clientcore.core.http.rest.requestcontext.postrequest
-        return context;
+        return options;
     }
 
 
@@ -73,7 +73,7 @@ public class RequestContextJavaDocCodeSnippets {
     public void putDataContext() {
         // BEGIN: io.clientcore.core.http.rest.requestcontext.putData
 
-        RequestOptions context = new RequestOptions()
+        RequestOptions options = new RequestOptions()
             .putData("stringKey", "value")
             .putData("complexObject", ProgressReporter.withProgressListener(value -> System.out.printf("Got %s bytes", value)));
 
@@ -82,12 +82,12 @@ public class RequestContextJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.http.rest.requestcontext.getData
 
         // Get the string value
-        Object stringKeyValue = context.getData("stringKey");
+        Object stringKeyValue = options.getData("stringKey");
         String stringValue = stringKeyValue instanceof String ? (String) stringKeyValue : null;
         System.out.printf("Key1 value: %s%n", stringValue);
 
         // Get the complex object
-        Object complexObjectValue = context.getData("complexObject");
+        Object complexObjectValue = options.getData("complexObject");
         ProgressReporter progressReporter = complexObjectValue instanceof ProgressReporter
             ? (ProgressReporter) complexObjectValue
             : null;

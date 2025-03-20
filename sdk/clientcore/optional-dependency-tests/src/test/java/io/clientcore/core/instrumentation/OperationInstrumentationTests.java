@@ -81,8 +81,8 @@ public class OperationInstrumentationTests {
     @Test
     public void invalidArguments() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, libraryInstrumentationOptions);
-        assertThrows(NullPointerException.class,
-            () -> instrumentation.instrumentWithResponse(null, SdkRequestContext.create(RequestOptions.none()), o -> "done"));
+        assertThrows(NullPointerException.class, () -> instrumentation.instrumentWithResponse(null,
+            SdkRequestContext.create(RequestOptions.none()), o -> "done"));
         assertThrows(NullPointerException.class,
             () -> instrumentation.instrument("call", SdkRequestContext.create(RequestOptions.none()), null));
     }
@@ -114,9 +114,10 @@ public class OperationInstrumentationTests {
         Instrumentation instrumentation
             = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
         RuntimeException error = new RuntimeException("Test error");
-        assertThrows(RuntimeException.class, () -> instrumentation.instrument("call", SdkRequestContext.create(RequestOptions.none()), o -> {
-            throw error;
-        }));
+        assertThrows(RuntimeException.class,
+            () -> instrumentation.instrument("call", SdkRequestContext.create(RequestOptions.none()), o -> {
+                throw error;
+            }));
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);

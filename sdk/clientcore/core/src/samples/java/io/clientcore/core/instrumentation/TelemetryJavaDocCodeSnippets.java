@@ -98,11 +98,11 @@ public class TelemetryJavaDocCodeSnippets {
 
         SampleClient client = new SampleClientBuilder().build();
 
-        RequestOptions context = new RequestOptions()
+        RequestOptions options = new RequestOptions()
             .setInstrumentationContext(new MyInstrumentationContext("e4eaaaf2d48f4bf3b299a8a2a2a77ad7", "5e0c63257de34c56"));
 
         // run on another thread
-        client.downloadContent(context);
+        client.downloadContent(options);
 
         // END: io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext
     }

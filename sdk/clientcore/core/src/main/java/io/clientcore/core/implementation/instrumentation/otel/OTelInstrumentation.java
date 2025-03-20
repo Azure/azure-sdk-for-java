@@ -225,8 +225,7 @@ public class OTelInstrumentation implements Instrumentation {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
-        InstrumentationContext context
-            = requestOptions == null ? null : requestOptions.getInstrumentationContext();
+        InstrumentationContext context = requestOptions == null ? null : requestOptions.getInstrumentationContext();
         if (!shouldInstrument(SpanKind.CLIENT, context)) {
             return operation.apply(SdkRequestContext.create(requestOptions));
         }

@@ -1007,7 +1007,8 @@ public class HttpInstrumentationLoggingTests {
         HttpRequest request = new HttpRequest().setMethod(method).setUri(url);
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer {token}");
-        request.setRequestContext(SdkRequestContext.create(new RequestOptions().setLogger(logger).setInstrumentationContext(context)));
+        request.setRequestContext(
+            SdkRequestContext.create(new RequestOptions().setLogger(logger).setInstrumentationContext(context)));
 
         return request;
     }

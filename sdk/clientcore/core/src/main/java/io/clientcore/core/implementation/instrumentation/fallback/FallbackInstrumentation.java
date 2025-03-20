@@ -107,8 +107,8 @@ public class FallbackInstrumentation implements Instrumentation {
             return operation.apply(SdkRequestContext.create(requestOptions));
         }
 
-        SpanBuilder builder = tracer.spanBuilder(operationName, SpanKind.CLIENT, context)
-            .setAttribute(SERVER_ADDRESS_KEY, serviceHost);
+        SpanBuilder builder
+            = tracer.spanBuilder(operationName, SpanKind.CLIENT, context).setAttribute(SERVER_ADDRESS_KEY, serviceHost);
 
         if (servicePort > 0) {
             builder.setAttribute(SERVER_PORT_KEY, servicePort);

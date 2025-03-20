@@ -28,9 +28,7 @@ class SampleClient {
 
     public Response<?> downloadContent(RequestOptions options) {
         // BEGIN: io.clientcore.core.instrumentation.instrumentwithresponse
-        return instrumentation.instrumentWithResponse("Sample.download",
-            options,
-            this::downloadImpl);
+        return instrumentation.instrumentWithResponse("Sample.download", options, this::downloadImpl);
         // END: io.clientcore.core.instrumentation.instrumentwithresponse
     }
 

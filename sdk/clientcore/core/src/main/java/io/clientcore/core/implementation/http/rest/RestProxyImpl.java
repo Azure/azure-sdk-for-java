@@ -75,7 +75,7 @@ public class RestProxyImpl {
      */
     @SuppressWarnings({ "try", "unused" })
     public final Object invoke(Object proxy, SdkRequestContext context, SwaggerMethodParser methodParser,
-                               Object[] args) {
+        Object[] args) {
         try {
             HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestContext(context)
                 .setServerSentEventListener(methodParser.setServerSentEventListener(args));

@@ -32,9 +32,9 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions context = new RequestOptions().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
+        RequestOptions options = new RequestOptions().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
 
-        context.getRequestCallback().accept(request);
+        options.getRequestCallback().accept(request);
 
         assertTrue(request.getUri().toString().contains("?foo=bar&%24skipToken=1"));
     }
@@ -44,10 +44,10 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions context = new RequestOptions().addRequestCallback(r -> r.getHeaders()
+        RequestOptions options = new RequestOptions().addRequestCallback(r -> r.getHeaders()
             .add(new HttpHeader(X_MS_FOO, "bar"))
             .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")));
-        context.getRequestCallback().accept(request);
+        options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
         assertEquals("bar", headers.getValue(X_MS_FOO));
@@ -59,14 +59,14 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions context
+        RequestOptions options
             = new RequestOptions().addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
                 .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
                 .addRequestCallback(r -> r.setUri("https://request.uri"))
                 .addQueryParam("$skipToken", "1")
                 .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"));
 
-        context.getRequestCallback().accept(request);
+        options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
         assertEquals("baz", headers.getValue(X_MS_FOO));
@@ -78,35 +78,35 @@ public class RequestOptionsTests {
     public void simpleContext() {
         Object complexObject = ProgressReporter.withProgressListener(value -> {
         });
-        RequestOptions context = new RequestOptions().putData("stringKey", "value")
+        RequestOptions options = new RequestOptions().putData("stringKey", "value")
             .putData("longKey", 10L)
             .putData("booleanKey", true)
             .putData("doubleKey", 42.0)
             .putData("complexObject", complexObject);
 
-        assertEquals("value", context.getData("stringKey"));
-        assertEquals("value", context.getData("stringKey"));
-        assertEquals(10L, context.getData("longKey"));
-        assertEquals(true, context.getData("booleanKey"));
-        assertEquals(42.0, context.getData("doubleKey"));
-        assertSame(complexObject, context.getData("complexObject"));
-        assertNull(context.getData("fakeKey"));
+        assertEquals("value", options.getData("stringKey"));
+        assertEquals("value", options.getData("stringKey"));
+        assertEquals(10L, options.getData("longKey"));
+        assertEquals(true, options.getData("booleanKey"));
+        assertEquals(42.0, options.getData("doubleKey"));
+        assertSame(complexObject, options.getData("complexObject"));
+        assertNull(options.getData("fakeKey"));
     }
 
     @Test
     public void keysCannotBeNull() {
-        RequestOptions context = new RequestOptions();
-        assertThrows(NullPointerException.class, () -> context.putData(null, null));
-        assertThrows(NullPointerException.class, () -> context.putData(null, "value"));
+        RequestOptions options = new RequestOptions();
+        assertThrows(NullPointerException.class, () -> options.putData(null, null));
+        assertThrows(NullPointerException.class, () -> options.putData(null, "value"));
     }
 
     @ParameterizedTest
     @MethodSource("addDataSupplier")
     public void addContext(String key, String value, String expectedOriginalValue) {
-        RequestOptions context = new RequestOptions().putData("key", "value").putData(key, value);
+        RequestOptions options = new RequestOptions().putData("key", "value").putData(key, value);
 
-        assertEquals(value, context.getData(key));
-        assertEquals(expectedOriginalValue, context.getData("key"));
+        assertEquals(value, options.getData(key));
+        assertEquals(expectedOriginalValue, options.getData("key"));
     }
 
     private static Stream<Arguments> addDataSupplier() {
@@ -120,9 +120,9 @@ public class RequestOptionsTests {
 
     @Test
     public void putValueCanBeNull() {
-        RequestOptions context = new RequestOptions().putData("key", null);
+        RequestOptions options = new RequestOptions().putData("key", null);
 
-        assertNull(context.getData("key"));
+        assertNull(options.getData("key"));
     }
 
     @Test

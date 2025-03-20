@@ -244,7 +244,8 @@ public class TestInterfaceGenerationTests {
             pagingOptions -> toPagedResponse(
                 testInterface.listFooListResult(uri, RequestContext.none()), null),
             (pagingOptions, nextLink) -> toPagedResponse(
-                testInterface.listNextFooListResult(nextLink, SdkRequestContext.create(RequestOptions.none())), nextLink));
+                testInterface.listNextFooListResult(nextLink, SdkRequestContext.create(RequestOptions.none())),
+                nextLink));
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());

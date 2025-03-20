@@ -165,18 +165,18 @@ public class HttpRequest {
     }
 
     /**
-     * Get the request {@link RequestOptions context}.
+     * Get the request {@link SdkRequestContext context}.
      *
-     * @return The request {@link RequestOptions context}.
+     * @return The request {@link SdkRequestContext context}.
      */
     public SdkRequestContext getRequestContext() {
         return requestContext;
     }
 
     /**
-     * Set the request {@link RequestOptions context}.
+     * Set the request {@link SdkRequestContext context}.
      *
-     * @param requestContext The request {@link RequestOptions context}.
+     * @param requestContext The request {@link SdkRequestContext context}.
      * @return The updated {@link HttpRequest}.
      */
     public HttpRequest setRequestContext(SdkRequestContext requestContext) {
