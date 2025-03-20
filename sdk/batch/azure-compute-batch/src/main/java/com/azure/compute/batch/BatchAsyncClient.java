@@ -4,9 +4,13 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
+import com.azure.compute.batch.implementation.task.TaskManager;
+import com.azure.compute.batch.implementation.task.TaskSubmitter;
 import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchApplication;
 import com.azure.compute.batch.models.BatchCertificate;
+import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateContent;
 import com.azure.compute.batch.models.BatchJobDisableContent;
@@ -165,6 +169,45 @@ public final class BatchAsyncClient {
     @Generated
     BatchAsyncClient(BatchClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Adds multiple tasks to a job.
+     *
+     * @param jobId The ID of the job to which to add the task.
+     * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateContent> taskList) {
+        return createTasks(jobId, taskList, null);
+    }
+
+    /**
+     * Creates a collection of Tasks to the specified Job.
+     *
+     * <p>
+     * Note that each Task must have a unique ID.This method can work with multiple threads. The parallel degree can
+     * be specified by the user. If the server times out or the connection is closed during the request, the request may
+     * have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note
+     * that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the
+     * same Task IDs during a retry so that if the prior operation succeeded, the retry will not create extra Tasks
+     * unexpectedly. If the response contains any Tasks which failed to add, a client can retry the request. In a retry,
+     * it is most efficient to resubmit only Tasks that failed to add, and to omit Tasks that were successfully added on
+     * the first attempt. The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not
+     * completed within 180 days of being added it will be terminated by the Batch service and left in whatever state it
+     * was in at that time.
+     *
+     * @param jobId The ID of the job to which to add the task.
+     * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
+     * @param batchClientParallelOptions Option that configure the parallelization of the method.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateContent> taskList,
+        BatchClientParallelOptions batchClientParallelOptions) {
+        TaskSubmitter taskSubmitter = new AsyncTaskSubmitter(this);
+        return TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions);
     }
 
     /**
