@@ -18,7 +18,22 @@ import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.http.client.JdkHttpClient;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Context;
-import io.clientcore.core.utils.TestUtils;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.servlet.ServletException;
 import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,22 +43,7 @@ import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.TimeUnit;
-
-import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -264,7 +264,7 @@ public class JdkHttpClientIT {
 
         try (Response<BinaryData> response
             = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(httpsUri(server, "/short")))) {
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
+            assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
 
@@ -300,5 +300,47 @@ public class JdkHttpClientIT {
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path));
 
         return client.send(request);
+    }
+
+    /**
+     * Asserts that two arrays are equal in an optimized way when they are equal (common case).
+     *
+     * @param expected Expected array.
+     * @param actual Actual array.
+     */
+    public static void assertArraysEqual(byte[] expected, byte[] actual) {
+        assertArraysEqual(expected, 0, expected.length, actual, actual.length);
+    }
+
+    /**
+     * Asserts that two arrays are equal in an optimized way when they are equal (common case).
+     *
+     * @param expected Expected array.
+     * @param expectedOffset Offset to begin comparing in the expected array.
+     * @param expectedLength Amount of bytes to compare in the expected array.
+     * @param actual Actual array.
+     */
+    public static void assertArraysEqual(byte[] expected, int expectedOffset, int expectedLength, byte[] actual) {
+        assertArraysEqual(expected, expectedOffset, expectedLength, actual, actual.length);
+    }
+
+    /**
+     * Asserts that two arrays are equal in an optimized way when they are equal (common case).
+     *
+     * @param expected Expected array.
+     * @param expectedOffset Offset to begin comparing in the expected array.
+     * @param expectedLength Amount of bytes to compare in the expected array.
+     * @param actual Actual array.
+     * @param actualLength Amount of bytes to compare in the actual array.
+     */
+    private static void assertArraysEqual(byte[] expected, int expectedOffset, int expectedLength, byte[] actual,
+        int actualLength) {
+
+        if (!Objects.equals(ByteBuffer.wrap(expected, expectedOffset, expectedLength),
+            ByteBuffer.wrap(actual, 0, actualLength))) {
+
+            assertArrayEquals(Arrays.copyOfRange(expected, expectedOffset, expectedOffset + expectedLength),
+                Arrays.copyOfRange(actual, 0, actualLength));
+        }
     }
 }
