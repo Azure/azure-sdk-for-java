@@ -19,7 +19,6 @@ import com.azure.v2.storage.blob.models.UserDelegationKey;
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -174,7 +173,7 @@ public final class BlobClientImpl {
         this.containerPageBlobs = new ContainerPageBlobsImpl(this);
         this.containerAppendBlobs = new ContainerAppendBlobsImpl(this);
         this.containerBlockBlobs = new ContainerBlockBlobsImpl(this);
-        this.service = RestProxy.create(BlobClientService.class, this.httpPipeline);
+        this.service = BlobClientService.getNewInstance(this.httpPipeline);
     }
 
     /**

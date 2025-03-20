@@ -12,7 +12,6 @@ import com.azure.v2.storage.blob.models.StorageError;
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -52,7 +51,7 @@ public final class ContainerAppendBlobsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     ContainerAppendBlobsImpl(BlobClientImpl client) {
-        this.service = RestProxy.create(ContainerAppendBlobsService.class, client.getHttpPipeline());
+        this.service = ContainerAppendBlobsService.getNewInstance(client.getHttpPipeline());
         this.client = client;
     }
 
