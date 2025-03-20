@@ -2335,33 +2335,6 @@ public final class OpenAIAsyncClient {
      *
      * @param file The file data (not filename) to upload.
      * @param purpose The intended purpose of the file.
-     * @param filename A filename to associate with the uploaded data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
-        RequestOptions requestOptions = new RequestOptions();
-        UploadFileRequest uploadFileRequestObj = new UploadFileRequest(file, purpose).setFilename(filename);
-        BinaryData uploadFileRequest = new MultipartFormDataHelper(requestOptions)
-            .serializeFileField("file", uploadFileRequestObj.getFile().getContent(),
-                uploadFileRequestObj.getFile().getContentType(), uploadFileRequestObj.getFile().getFilename())
-            .serializeTextField("purpose", Objects.toString(uploadFileRequestObj.getPurpose()))
-            .end()
-            .getRequestBody();
-        return uploadFileWithResponse(uploadFileRequest, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Uploads a file for use by other operations.
-     *
-     * @param file The file data (not filename) to upload.
-     * @param purpose The intended purpose of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2889,25 +2862,5 @@ public final class OpenAIAsyncClient {
     public Mono<Upload> cancelUpload(String uploadId) {
         RequestOptions requestOptions = new RequestOptions();
         return cancelUploadWithResponse(uploadId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Wrapper method to upload a file for use by other operations, primarily for testing purposes.
-     * This method allows access to the private method, 
-     * which uploads a file and handles the request body for a file upload operation.
-     *
-     * @param file The file data (not filename) to upload.
-     * @param purpose The intended purpose of the file.
-     * @param filename A filename to associate with the uploaded data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
-     */
-    public Mono<OpenAIFile> uploadFileWrapper(FileDetails file, FilePurpose purpose, String filename) {
-        return uploadFile(file, purpose, filename);
     }
 }
