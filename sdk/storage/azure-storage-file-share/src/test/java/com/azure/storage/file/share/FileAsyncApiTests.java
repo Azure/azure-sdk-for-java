@@ -14,6 +14,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
@@ -37,11 +38,12 @@ import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
-import com.azure.storage.file.share.models.ShareInfo;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
@@ -2122,28 +2124,24 @@ public class FileAsyncApiTests extends FileShareTestBase {
         // Arrange
         ShareServiceAsyncClient oauthServiceClient = getOAuthPremiumServiceAsyncClient(
             new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryAsyncClient directory
-            = oauthServiceClient.getShareAsyncClient(shareName).getRootDirectoryClient();
 
-        ShareFileAsyncClient source = directory.getFileClient(generatePathName());
-        ShareFileAsyncClient symlink = directory.getFileClient(generatePathName());
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        Mono<Response<ShareFileSymbolicLinkInfo>> response = oauthServiceClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol))
+            .flatMap(shareClient -> {
+                ShareDirectoryAsyncClient directory = shareClient.getValue().getDirectoryClient(generatePathName());
+                ShareFileAsyncClient source = directory.getFileClient(generatePathName());
+                ShareFileAsyncClient symlink = directory.getFileClient(generatePathName());
+                return directory.create()
+                    .then(source.create(1024))
+                    .then(symlink.createSymbolicLink(source.getFileUrl()))
+                    .then(symlink.getSymbolicLinkWithResponse());
+            });
 
-        // Ensure the share exists
-        StepVerifier.create(oauthServiceClient.getShareAsyncClient(shareName).createWithResponse(null))
-            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
-            .verifyComplete();
-
-        // Act & Assert
-        StepVerifier
-            .create(source.create(1024)
-                .then(
-                    symlink.createSymbolicLinkWithResponse(new ShareFileCreateSymbolicLinkOptions(source.getFileUrl())))
-                .then(symlink.getSymbolicLinkWithResponse()))
+        StepVerifier.create(response)
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200))
             .verifyComplete();
 
-        // Cleanup
-        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
         oauthServiceClient.deleteShare(shareName).block();
     }
 

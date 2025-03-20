@@ -22,6 +22,7 @@ import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.ClearRange;
@@ -55,10 +56,12 @@ import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
@@ -3316,14 +3319,13 @@ class FileApiTests extends FileShareTestBase {
         ShareServiceClient oauthServiceClient
             = getOAuthPremiumServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
 
-        ShareClient shareClient = oauthServiceClient.getShareClient(shareName);
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        ShareClient shareClient = oauthServiceClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol), null, null)
+            .getValue();
 
-        // Ensure the share exists before proceeding
-        if (!shareClient.exists()) {
-            shareClient.create();
-        }
-
-        ShareDirectoryClient directory = shareClient.getRootDirectoryClient();
+        ShareDirectoryClient directory = shareClient.getDirectoryClient(generatePathName());
+        directory.create();
 
         ShareFileClient source = directory.getFileClient(generatePathName());
         source.create(1024);
@@ -3335,6 +3337,6 @@ class FileApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(symlink.getSymbolicLinkWithResponse(null, null), 200);
 
         // Cleanup
-        oauthServiceClient.deleteShare(shareName);
+        shareClient.delete();
     }
 }
