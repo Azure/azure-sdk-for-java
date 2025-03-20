@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
-import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -50,7 +49,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
     private final LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
     private final ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker;
     private final AtomicReference<GlobalAddressResolver> globalAddressResolverSnapshot;
-    private final ConcurrentHashMap<RegionalRoutingContext, String> locationToRegion;
+    private final ConcurrentHashMap<URI, String> locationToRegion;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
     private final Scheduler partitionRecoveryScheduler = Schedulers.newSingle(
         "partition-availability-staleness-check",
@@ -75,7 +74,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
         }
     }
 
-    public void handleLocationExceptionForPartitionKeyRange(RxDocumentServiceRequest request, RegionalRoutingContext failedLocation) {
+    public void handleLocationExceptionForPartitionKeyRange(RxDocumentServiceRequest request, URI failedLocation) {
 
         checkNotNull(request, "Argument 'request' cannot be null!");
         checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
@@ -112,7 +111,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
 
             if (isFailureThresholdBreached.get()) {
 
-                UnmodifiableList<RegionalRoutingContext> applicableEndpoints = request.isReadOnlyRequest() ?
+                UnmodifiableList<URI> applicableEndpoints = request.isReadOnlyRequest() ?
                     this.globalEndpointManager.getApplicableReadEndpoints(request.requestContext.getExcludeRegions()) :
                     this.globalEndpointManager.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
 
@@ -135,7 +134,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
             logger.warn("It is not possible to mark region {} as Unavailable for partition key range {}-{} and collection rid {} " +
                     "as all regions will be Unavailable in that case, will remove health status tracking for this partition!",
                 this.globalEndpointManager.getRegionName(
-                    failedLocation.getGatewayRegionalEndpoint(), request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create),
+                    failedLocation, request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create),
                 resolvedPartitionKeyRangeForCircuitBreaker.getMinInclusive(),
                 resolvedPartitionKeyRangeForCircuitBreaker.getMaxExclusive(),
                 collectionResourceId);
@@ -164,7 +163,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
         String resourceId = request.getResourceId();
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(resolvedPartitionKeyRangeForCircuitBreaker, resourceId);
-        RegionalRoutingContext succeededLocation = request.requestContext.regionalRoutingContextToRoute;
+        URI succeededLocation = request.requestContext.locationEndpointToRoute;
 
         String collectionLink = getCollectionLink(request);
 
@@ -176,6 +175,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
 
             partitionKeyRangeToFailoverInfoAsVal.handleSuccess(
                 partitionKeyRangeWrapper,
+                collectionLink,
                 succeededLocation,
                 request.isReadOnlyRequest());
 
@@ -197,18 +197,15 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
         List<String> unavailableRegions = new ArrayList<>();
 
         if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
-            Map<RegionalRoutingContext, LocationSpecificHealthContext> locationEndpointToFailureMetricsForPartition =
+            Map<URI, LocationSpecificHealthContext> locationEndpointToFailureMetricsForPartition =
                 partitionLevelLocationUnavailabilityInfoSnapshot.locationEndpointToLocationSpecificContextForPartition;
 
-            for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> pair : locationEndpointToFailureMetricsForPartition.entrySet()) {
-                RegionalRoutingContext regionalRoutingContext = pair.getKey();
-
-                URI gatewayLocationEndpoint = regionalRoutingContext.getGatewayRegionalEndpoint();
-
+            for (Map.Entry<URI, LocationSpecificHealthContext> pair : locationEndpointToFailureMetricsForPartition.entrySet()) {
+                URI location = pair.getKey();
                 LocationSpecificHealthContext locationSpecificHealthContext = pair.getValue();
 
                 if (locationSpecificHealthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
-                    unavailableRegions.add(this.globalEndpointManager.getRegionName(gatewayLocationEndpoint, operationType));
+                    unavailableRegions.add(this.globalEndpointManager.getRegionName(location, operationType));
                 }
             }
         }
@@ -231,11 +228,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
 
                 if (partitionLevelLocationUnavailabilityInfo != null) {
 
-                    List<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> locationToLocationSpecificHealthContextList = new ArrayList<>();
+                    List<Pair<PartitionKeyRangeWrapper, Pair<URI, LocationSpecificHealthContext>>> locationToLocationSpecificHealthContextList = new ArrayList<>();
 
-                    for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
+                    for (Map.Entry<URI, LocationSpecificHealthContext> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
 
-                        RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
+                        URI locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
                         LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
 
                         if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
@@ -262,7 +259,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
             .flatMap(locationToLocationSpecificHealthContextPair -> {
 
                 PartitionKeyRangeWrapper partitionKeyRangeWrapper = locationToLocationSpecificHealthContextPair.getLeft();
-                RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationSpecificHealthContextPair.getRight().getLeft();
+                URI locationWithStaleUnavailabilityInfo = locationToLocationSpecificHealthContextPair.getRight().getLeft();
 
                 PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
 
@@ -272,7 +269,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
 
                     if (globalAddressResolver != null) {
 
-                        GatewayAddressCache gatewayAddressCache = globalAddressResolver.getGatewayAddressCache(locationWithStaleUnavailabilityInfo.getGatewayRegionalEndpoint());
+                        GatewayAddressCache gatewayAddressCache = globalAddressResolver.getGatewayAddressCache(locationWithStaleUnavailabilityInfo);
 
                         if (gatewayAddressCache != null) {
 
@@ -359,7 +356,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
             return false;
         }
 
-        UnmodifiableList<RegionalRoutingContext> applicableWriteEndpoints = globalEndpointManager.getApplicableWriteEndpoints(Collections.emptyList());
+        UnmodifiableList<URI> applicableWriteEndpoints = globalEndpointManager.getApplicableWriteEndpoints(Collections.emptyList());
 
         return applicableWriteEndpoints != null && applicableWriteEndpoints.size() > 1;
     }
@@ -376,7 +373,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
 
     private class PartitionLevelLocationUnavailabilityInfo {
 
-        private final ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition;
+        private final ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition;
         private final ConcurrentHashMap<String, LocationSpecificHealthContext> regionToLocationSpecificHealthContext;
         private final LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
 
@@ -388,7 +385,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
 
         private boolean handleException(
             PartitionKeyRangeWrapper partitionKeyRangeWrapper,
-            RegionalRoutingContext locationWithException,
+            URI locationWithException,
             boolean isReadOnlyRequest) {
 
             AtomicBoolean isExceptionThresholdBreached = new AtomicBoolean(false);
@@ -422,7 +419,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
                         locationAsKey,
                         GlobalPartitionEndpointManagerForCircuitBreaker
                             .this.globalEndpointManager
-                            .getRegionName(locationAsKey.getGatewayRegionalEndpoint(), isReadOnlyRequest ? OperationType.Read : OperationType.Create));
+                            .getRegionName(locationAsKey, isReadOnlyRequest ? OperationType.Read : OperationType.Create));
                 }
 
                 String region = GlobalPartitionEndpointManagerForCircuitBreaker.this.locationToRegion.get(locationAsKey);
@@ -437,7 +434,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
 
         private void handleSuccess(
             PartitionKeyRangeWrapper partitionKeyRangeWrapper,
-            RegionalRoutingContext succeededLocation,
+            String collectionLink,
+            URI succeededLocation,
             boolean isReadOnlyRequest) {
 
             this.locationEndpointToLocationSpecificContextForPartition.compute(succeededLocation, (locationAsKey, locationSpecificContextAsVal) -> {
@@ -471,7 +469,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
                         locationAsKey,
                         GlobalPartitionEndpointManagerForCircuitBreaker
                             .this.globalEndpointManager
-                            .getRegionName(locationAsKey.getGatewayRegionalEndpoint(), isReadOnlyRequest ? OperationType.Read : OperationType.Create));
+                            .getRegionName(locationAsKey, isReadOnlyRequest ? OperationType.Read : OperationType.Create));
                 }
 
                 String region = GlobalPartitionEndpointManagerForCircuitBreaker.this.locationToRegion.get(locationAsKey);
@@ -481,9 +479,9 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
             });
         }
 
-        public boolean areLocationsAvailableForPartitionKeyRange(List<RegionalRoutingContext> availableLocationsAtAccountLevel) {
+        public boolean areLocationsAvailableForPartitionKeyRange(List<URI> availableLocationsAtAccountLevel) {
 
-            for (RegionalRoutingContext availableLocation : availableLocationsAtAccountLevel) {
+            for (URI availableLocation : availableLocationsAtAccountLevel) {
                 if (!this.locationEndpointToLocationSpecificContextForPartition.containsKey(availableLocation)) {
                     return true;
                 } else {

@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.routing.LocationCache;
-import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.Assert;
@@ -100,7 +99,7 @@ public class GlobalEndPointManagerTest {
         LocationCache locationCache = this.getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 2, "Read endpoints should have 2 values");
 
-        Map<String, RegionalRoutingContext> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
+        Map<String, URI> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
         Assert.assertEquals(availableReadEndpointByLocation.size(), 2);
 
         Assert.assertTrue(availableReadEndpointByLocation.keySet().contains("East Asia"));
@@ -156,7 +155,7 @@ public class GlobalEndPointManagerTest {
         locationCache = this.getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 2); //Cache will not refresh immediately, other preferred region East Asia is still active
 
-        Map<String, RegionalRoutingContext> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
+        Map<String, URI> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
         Assert.assertEquals(availableReadEndpointByLocation.size(), 2);
         Assert.assertTrue(availableReadEndpointByLocation.keySet().iterator().next().equalsIgnoreCase("East Asia"));
 
@@ -196,7 +195,7 @@ public class GlobalEndPointManagerTest {
         LocationCache locationCache = this.getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 1);
 
-        Map<String, RegionalRoutingContext> availableWriteEndpointByLocation = this.getAvailableWriteEndpointByLocation(locationCache);
+        Map<String, URI> availableWriteEndpointByLocation = this.getAvailableWriteEndpointByLocation(locationCache);
         Assert.assertTrue(availableWriteEndpointByLocation.keySet().contains("East Asia"));
 
         AtomicBoolean isRefreshing = getIsRefreshing(globalEndPointManager);
@@ -262,7 +261,7 @@ public class GlobalEndPointManagerTest {
 
         LocationCache locationCache = this.getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 1);
-        Map<String, RegionalRoutingContext> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
+        Map<String, URI> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
         Assert.assertEquals(availableReadEndpointByLocation.size(), 1);
         Assert.assertTrue(availableReadEndpointByLocation.keySet().iterator().next().equalsIgnoreCase("East Asia"));
 
@@ -291,33 +290,33 @@ public class GlobalEndPointManagerTest {
         return locationCache;
     }
 
-    private Map<String, RegionalRoutingContext> getAvailableWriteEndpointByLocation(LocationCache locationCache) throws Exception {
+    private Map<String, URI> getAvailableWriteEndpointByLocation(LocationCache locationCache) throws Exception {
         Field locationInfoField = LocationCache.class.getDeclaredField("locationInfo");
         locationInfoField.setAccessible(true);
         Object locationInfo = locationInfoField.get(locationCache);
 
         Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing.LocationCache$DatabaseAccountLocationsInfo");
-        Field availableWriteEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableWriteEndpointsByLocation");
+        Field availableWriteEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableWriteEndpointByLocation");
         availableWriteEndpointByLocationField.setAccessible(true);
-        Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointsByLocation");
+        Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointByLocation");
         availableReadEndpointByLocationField.setAccessible(true);
 
         @SuppressWarnings("unchecked")
-        Map<String, RegionalRoutingContext> map = (Map<String, RegionalRoutingContext>) availableWriteEndpointByLocationField.get(locationInfo);
+        Map<String, URI> map = (Map<String, URI>) availableWriteEndpointByLocationField.get(locationInfo);
         return map;
     }
 
-    private Map<String, RegionalRoutingContext> getAvailableReadEndpointByLocation(LocationCache locationCache) throws Exception {
+    private Map<String, URI> getAvailableReadEndpointByLocation(LocationCache locationCache) throws Exception {
         Field locationInfoField = LocationCache.class.getDeclaredField("locationInfo");
         locationInfoField.setAccessible(true);
         Object locationInfo = locationInfoField.get(locationCache);
 
         Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing.LocationCache$DatabaseAccountLocationsInfo");
-        Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointsByLocation");
+        Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointByLocation");
         availableReadEndpointByLocationField.setAccessible(true);
 
         @SuppressWarnings("unchecked")
-        Map<String, RegionalRoutingContext> map = (Map<String, RegionalRoutingContext>) availableReadEndpointByLocationField.get(locationInfo);
+        Map<String, URI> map = (Map<String, URI>) availableReadEndpointByLocationField.get(locationInfo);
         return map;
     }
 
@@ -354,8 +353,8 @@ public class GlobalEndPointManagerTest {
         LocationCache locationCache = getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 2, "Read endpoints should have 2 values");
 
-        Map<String, RegionalRoutingContext> availableWriteEndpointByLocation = this.getAvailableWriteEndpointByLocation(locationCache);
-        Map<String, RegionalRoutingContext> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
+        Map<String, URI> availableWriteEndpointByLocation = this.getAvailableWriteEndpointByLocation(locationCache);
+        Map<String, URI> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
         Assert.assertEquals(availableWriteEndpointByLocation.size(), 1);
         Assert.assertEquals(availableReadEndpointByLocation.size(), 2);
         Assert.assertTrue(availableWriteEndpointByLocation.keySet().contains("East US"));

@@ -13,7 +13,7 @@
 
 ### 4.67.0 (2025-02-20)
 
-#### Other Changes
+#### Bugs Fixed
 * Block `ChangeFeedProcessor` from starting by throwing an `IllegalStateException` when the lease container contains leases with the same lease prefix but different `ChangeFeedMode` - [PR 43798](https://github.com/Azure/azure-sdk-for-java/pull/43798).
 
 ### 4.66.1 (2025-02-08)

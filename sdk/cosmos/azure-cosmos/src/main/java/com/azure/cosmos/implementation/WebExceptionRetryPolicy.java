@@ -7,15 +7,12 @@ import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
-import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 public class WebExceptionRetryPolicy implements IRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicy.class);
@@ -26,8 +23,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     private HttpTimeoutPolicy timeoutPolicy;
     private boolean isReadRequest;
     private int retryCount = 0;
-    private RegionalRoutingContext regionalRoutingContext;
-    private URI overriddenEndpoint;
+    private URI locationEndpoint;
 
     public WebExceptionRetryPolicy() {
         durationTimer.start();
@@ -41,17 +37,12 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-
-        checkArgument(this.overriddenEndpoint != null ||
-            this.regionalRoutingContext != null,
-            "Both overriddenEndpoint and regionalRoutingContext cannot null!");
-
         if (this.isOutOfRetries()) {
             logger
                 .warn(
                     "WebExceptionRetryPolicy() No more retrying on endpoint {}, operationType = {}, count = {}, " +
                         "isAddressRefresh = {}",
-                    this.regionalRoutingContext != null ? this.regionalRoutingContext.getGatewayRegionalEndpoint() : this.overriddenEndpoint,
+                    this.locationEndpoint,
                     this.request.getOperationType(),
                     this.retryCount,
                     this.request.isAddressRefresh());
@@ -72,8 +63,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
                     .debug("WebExceptionRetryPolicy() Retrying on endpoint {}, operationType = {}, resourceType = {}, count = {}, " +
                             "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
                             "shouldForceCollectionRoutingMapRefresh = {}",
-                        this.regionalRoutingContext != null ? this.regionalRoutingContext.getGatewayRegionalEndpoint() : this.overriddenEndpoint,
-                        this.request.getOperationType(), this.request.getResourceType(), this.retryCount,
+                        this.locationEndpoint, this.request.getOperationType(), this.request.getResourceType(), this.retryCount,
                         this.request.isAddressRefresh(),
                         this.request.shouldForceAddressRefresh(),
                         this.request.forceCollectionRoutingMapRefresh);
@@ -87,7 +77,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             .debug(
                 "WebExceptionRetryPolicy() No retrying on un-retryable exceptions on endpoint {}, operationType = {}, resourceType = {}, count = {}, " +
                     "isAddressRefresh = {}",
-                this.regionalRoutingContext != null ? this.regionalRoutingContext.getGatewayRegionalEndpoint() : this.overriddenEndpoint,
+                this.locationEndpoint,
                 this.request.getOperationType(),
                 this.request.getResourceType(),
                 this.retryCount,
@@ -111,8 +101,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
         // set the initial response timeout
         this.request.setResponseTimeout(timeoutPolicy.getTimeoutAndDelaysList().get(0).getResponseTimeout());
-        this.regionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
-        this.overriddenEndpoint = request.getEndpointOverride();
+        this.locationEndpoint = request.requestContext.locationEndpointToRoute;
     }
 
     private boolean isOutOfRetries() {

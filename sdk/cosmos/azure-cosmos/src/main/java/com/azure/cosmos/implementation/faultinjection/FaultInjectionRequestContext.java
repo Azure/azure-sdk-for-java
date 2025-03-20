@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
-import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,6 @@ public class FaultInjectionRequestContext {
     private final AtomicBoolean addressForceRefreshed;
 
     private volatile URI locationEndpointToRoute;
-    private volatile RegionalRoutingContext regionalRoutingContextToRoute;
 
     /***
      * This usually is called during retries.
@@ -99,7 +96,6 @@ public class FaultInjectionRequestContext {
 
     public void setLocationEndpointToRoute(URI locationEndpointToRoute) {
         this.locationEndpointToRoute = locationEndpointToRoute;
-        this.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointToRoute);
     }
 
     public URI getLocationEndpointToRoute() {
