@@ -17,7 +17,7 @@ import java.util.Objects;
  */
 public final class NoopMeter implements Meter {
     public static final Meter INSTANCE = new NoopMeter();
-    private static final DoubleHistogram NOOP_LONG_HISTOGRAM = new DoubleHistogram() {
+    public static final DoubleHistogram NOOP_LONG_HISTOGRAM = new DoubleHistogram() {
         @Override
         public void record(double value, InstrumentationAttributes attributes, InstrumentationContext context) {
             Objects.requireNonNull(attributes, "'attributes' cannot be null.");

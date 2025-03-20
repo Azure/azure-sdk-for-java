@@ -3,37 +3,25 @@
 
 package io.clientcore.core.implementation.utils;
 
-import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.DateTimeRfc1123;
-import io.clientcore.core.utils.UriBuilder;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
-import java.time.DateTimeException;
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,8 +29,8 @@ import java.util.regex.Pattern;
  * Utility class containing implementation specific methods.
  */
 public final class ImplUtils {
-    private static final HttpHeaderName RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("retry-after-ms");
-    private static final HttpHeaderName X_MS_RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("x-ms-retry-after-ms");
+    private static final ClientLogger LOGGER = new ClientLogger(ImplUtils.class);
+
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
     private static final byte ZERO = (byte) 0x00;
@@ -53,190 +41,67 @@ public final class ImplUtils {
     private static final byte FF = (byte) 0xFF;
     private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
 
-    /**
-     * Default sanitizer for a value, where it is simply replaced with "REDACTED".
-     */
-    public static final Function<String, String> DEFAULT_SANITIZER = value -> "REDACTED";
+    private static final Duration DEFAULT_HTTP_CONNECT_TIMEOUT;
+    private static final Duration DEFAULT_HTTP_WRITE_TIMEOUT;
+    private static final Duration DEFAULT_HTTP_RESPONSE_TIMEOUT;
+    private static final Duration DEFAULT_HTTP_READ_TIMEOUT;
+
+    static {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        DEFAULT_HTTP_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, Duration.ofSeconds(10), LOGGER);
+        DEFAULT_HTTP_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
+        DEFAULT_HTTP_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            Configuration.REQUEST_RESPONSE_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
+        DEFAULT_HTTP_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            Configuration.REQUEST_READ_TIMEOUT_IN_MS, Duration.ofSeconds(60), LOGGER);
+    }
 
     private ImplUtils() {
         // Exists only to defeat instantiation.
     }
 
     /**
-     * Checks if the array is null or empty.
-     *
-     * @param array Array being checked for nullness or emptiness.
-     *
-     * @return True if the array is null or empty, false otherwise.
-     */
-    public static boolean isNullOrEmpty(Object[] array) {
-        return array == null || array.length == 0;
-    }
-
-    /**
-     * Checks if the collection is null or empty.
-     *
-     * @param collection Collection being checked for nullness or emptiness.
-     *
-     * @return True if the collection is null or empty, false otherwise.
-     */
-    public static boolean isNullOrEmpty(Collection<?> collection) {
-        return collection == null || collection.isEmpty();
-    }
-
-    /**
-     * Checks if the map is null or empty.
-     *
-     * @param map Map being checked for nullness or emptiness.
-     *
-     * @return True if the map is null or empty, false otherwise.
-     */
-    public static boolean isNullOrEmpty(Map<?, ?> map) {
-        return map == null || map.isEmpty();
-    }
-
-    /**
-     * Checks if the character sequence is null or empty.
-     *
-     * @param charSequence Character sequence being checked for nullness or emptiness.
-     *
-     * @return True if the character sequence is null or empty, false otherwise.
-     */
-    public static boolean isNullOrEmpty(CharSequence charSequence) {
-        return charSequence == null || charSequence.length() == 0;
-    }
-
-    /**
-     * Optimized version of {@link String#join(CharSequence, Iterable)} when the {@code values} has a small set of
-     * object.
-     *
-     * @param delimiter Delimiter between the values.
-     * @param values The values to join.
-     *
-     * @return The {@code values} joined delimited by the {@code delimiter}.
-     *
-     * @throws NullPointerException If {@code delimiter} or {@code values} is null.
-     */
-    public static String stringJoin(String delimiter, List<String> values) {
-        Objects.requireNonNull(delimiter, "'delimiter' cannot be null.");
-        Objects.requireNonNull(values, "'values' cannot be null.");
-
-        int count = values.size();
-
-        switch (count) {
-            case 0:
-                return "";
-
-            case 1:
-                return values.get(0);
-
-            case 2:
-                return values.get(0) + delimiter + values.get(1);
-
-            case 3:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
-
-            case 4:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3);
-
-            case 5:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
-                    + delimiter + values.get(4);
-
-            case 6:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
-                    + delimiter + values.get(4) + delimiter + values.get(5);
-
-            case 7:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
-                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
-
-            case 8:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
-                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
-                    + values.get(7);
-
-            case 9:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
-                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
-                    + values.get(7) + delimiter + values.get(8);
-
-            case 10:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
-                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
-                    + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
-
-            default:
-                return String.join(delimiter, values);
-        }
-    }
-
-    /**
-     * Attempts to extract a retry after duration from a given set of {@link HttpHeaders}.
+     * Attempts to load an environment configured default timeout.
      * <p>
-     * This searches for the well-known retry after headers {@code Retry-After}, {@code retry-after-ms}, and
-     * {@code x-ms-retry-after-ms}.
-     * <p>
-     * If no well-known headers are found null will be returned.
+     * If the environment default timeout isn't configured, {@code defaultTimeout} will be returned. If the environment
+     * default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code defaultTimeout} will
+     * be returned. If the environment default timeout is less than 0, {@link Duration#ZERO} will be returned indicated
+     * that there is no timeout period.
      *
-     * @param headers The set of headers to search for a well-known retry after header.
-     * @param nowSupplier A supplier for the current time used when {@code Retry-After} is using relative retry after
-     * time.
-     * @return The retry after duration if a well-known retry after header was found, otherwise null.
+     * @param configuration The environment configurations.
+     * @param timeoutPropertyName The default timeout property name.
+     * @param defaultTimeout The fallback timeout to be used.
+     * @param logger A {@link ClientLogger} to log exceptions.
+     * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
      */
-    public static Duration getRetryAfterFromHeaders(HttpHeaders headers, Supplier<OffsetDateTime> nowSupplier) {
-        // Found 'x-ms-retry-after-ms' header, use a Duration of milliseconds based on the value.
-        Duration retryDelay = tryGetRetryDelay(headers, X_MS_RETRY_AFTER_MS_HEADER, ImplUtils::tryGetDelayMillis);
-        if (retryDelay != null) {
-            return retryDelay;
+    public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
+        Duration defaultTimeout, ClientLogger logger) {
+        String environmentTimeout = configuration.get(timeoutPropertyName);
+
+        // Environment wasn't configured with the timeout property.
+        if (environmentTimeout == null || environmentTimeout.isEmpty()) {
+            return defaultTimeout;
         }
 
-        // Found 'retry-after-ms' header, use a Duration of milliseconds based on the value.
-        retryDelay = tryGetRetryDelay(headers, RETRY_AFTER_MS_HEADER, ImplUtils::tryGetDelayMillis);
-        if (retryDelay != null) {
-            return retryDelay;
-        }
-
-        // Found 'Retry-After' header. First, attempt to resolve it as a Duration of seconds. If that fails, then
-        // attempt to resolve it as an HTTP date (RFC1123).
-        retryDelay = tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER,
-            headerValue -> tryParseLongOrDateTime(headerValue, nowSupplier));
-
-        // Either the retry delay will have been found or it'll be null, null indicates no retry after.
-        return retryDelay;
-    }
-
-    private static Duration tryGetRetryDelay(HttpHeaders headers, HttpHeaderName headerName,
-        Function<String, Duration> delayParser) {
-        String headerValue = headers.getValue(headerName);
-
-        return isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
-    }
-
-    private static Duration tryGetDelayMillis(String value) {
-        long delayMillis = tryParseLong(value);
-        return (delayMillis >= 0) ? Duration.ofMillis(delayMillis) : null;
-    }
-
-    private static Duration tryParseLongOrDateTime(String value, Supplier<OffsetDateTime> nowSupplier) {
-        long delaySeconds;
         try {
-            OffsetDateTime retryAfter = new DateTimeRfc1123(value).getDateTime();
+            long timeoutMillis = Long.parseLong(environmentTimeout);
+            if (timeoutMillis < 0) {
+                logger.atVerbose()
+                    .addKeyValue(timeoutPropertyName, timeoutMillis)
+                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout.");
+                return Duration.ZERO;
+            }
 
-            delaySeconds = nowSupplier.get().until(retryAfter, ChronoUnit.SECONDS);
-        } catch (DateTimeException ex) {
-            delaySeconds = tryParseLong(value);
-        }
-
-        return (delaySeconds >= 0) ? Duration.ofSeconds(delaySeconds) : null;
-    }
-
-    private static long tryParseLong(String value) {
-        try {
-            return Long.parseLong(value);
+            return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            return -1;
+            logger.atInfo()
+                .addKeyValue(timeoutPropertyName, environmentTimeout)
+                .addKeyValue("defaultTimeout", defaultTimeout)
+                .log("Timeout is not valid number. Using default value.", ex);
+
+            return defaultTimeout;
         }
     }
 
@@ -295,46 +160,6 @@ public final class ImplUtils {
         return byteArray;
     }
 
-    /**
-     * Utility method for parsing a {@link URI} into a {@link UriBuilder}.
-     *
-     * @param uri The URI being parsed.
-     * @param includeQuery Whether the query string should be excluded.
-     * @return The UriBuilder that represents the parsed URI.
-     */
-    public static UriBuilder parseUri(URI uri, boolean includeQuery) {
-        final UriBuilder result = new UriBuilder();
-
-        if (uri != null) {
-            final String scheme = uri.getScheme();
-            if (scheme != null && !scheme.isEmpty()) {
-                result.setScheme(scheme);
-            }
-
-            final String host = uri.getHost();
-            if (host != null && !host.isEmpty()) {
-                result.setHost(host);
-            }
-
-            final int port = uri.getPort();
-            if (port != -1) {
-                result.setPort(port);
-            }
-
-            final String path = uri.getPath();
-            if (path != null && !path.isEmpty()) {
-                result.setPath(path);
-            }
-
-            final String query = uri.getQuery();
-            if (query != null && !query.isEmpty() && includeQuery) {
-                result.setQuery(query);
-            }
-        }
-
-        return result;
-    }
-
     public static final class QueryParameterIterable implements Iterable<Map.Entry<String, String>> {
         private final String queryParameters;
 
@@ -352,16 +177,23 @@ public final class ImplUtils {
         private final String queryParameters;
         private final int queryParametersLength;
 
-        private boolean done = false;
+        private boolean done;
         private int position;
 
         public QueryParameterIterator(String queryParameters) {
             this.queryParameters = queryParameters;
-            this.queryParametersLength = queryParameters.length();
+            this.done = CoreUtils.isNullOrEmpty(queryParameters);
 
-            // If the URI query begins with '?' the first possible start of a query parameter key is the
-            // second character in the query.
-            position = (queryParameters.startsWith("?")) ? 1 : 0;
+            if (done) {
+                this.position = 0;
+                this.queryParametersLength = 0;
+            } else {
+                this.queryParametersLength = queryParameters.length();
+
+                // If the URI query begins with '?' the first possible start of a query parameter key is the
+                // second character in the query.
+                position = (queryParameters.startsWith("?")) ? 1 : 0;
+            }
         }
 
         @Override
@@ -466,7 +298,7 @@ public final class ImplUtils {
              * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
              * present or invalid fallback to 'UTF-8' for the default charset.
              */
-            if (!isNullOrEmpty(contentType)) {
+            if (!CoreUtils.isNullOrEmpty(contentType)) {
                 try {
                     Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
                     if (charsetMatcher.find()) {
@@ -481,45 +313,6 @@ public final class ImplUtils {
                 return new String(bytes, offset, count, StandardCharsets.UTF_8);
             }
         }
-    }
-
-    /**
-     * Gets either the system property or environment variable configuration for the passed environment.
-     * <p>
-     * The system property is checked first, then the environment variable. If neither are found, null is returned.
-     *
-     * @param environmentConfiguration The environment to search.
-     * @param systemProperty The system property name.
-     * @param envVar The environment variable name.
-     * @param valueSanitizer The function to sanitize the value.
-     * @param logger The logger to log the property retrieval.
-     * @return The value of the property if found, otherwise null.
-     */
-    public static String getFromEnvironment(EnvironmentConfiguration environmentConfiguration, String systemProperty,
-        String envVar, Function<String, String> valueSanitizer, ClientLogger logger) {
-        if (systemProperty != null) {
-            final String value = environmentConfiguration.getSystemProperty(systemProperty);
-            if (value != null) {
-                logger.atVerbose()
-                    .addKeyValue("systemProperty", systemProperty)
-                    .addKeyValue("value", () -> valueSanitizer.apply(value))
-                    .log("Got property from system property.");
-                return value;
-            }
-        }
-
-        if (envVar != null) {
-            final String value = environmentConfiguration.getEnvironmentVariable(envVar);
-            if (value != null) {
-                logger.atVerbose()
-                    .addKeyValue("envVar", envVar)
-                    .addKeyValue("value", () -> valueSanitizer.apply(value))
-                    .log("Got property from environment variable.");
-                return value;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -634,4 +427,41 @@ public final class ImplUtils {
     static void setShutdownHookAccessHelper(boolean shutdownHookAccessHelper) {
         ShutdownHookAccessHelperHolder.shutdownHookAccessHelper = shutdownHookAccessHelper;
     }
+
+    /**
+     * Gets the default connect timeout.
+     *
+     * @return The default connect timeout.
+     */
+    public static Duration getDefaultHttpConnectTimeout() {
+        return DEFAULT_HTTP_CONNECT_TIMEOUT;
+    }
+
+    /**
+     * Gets the default write timeout.
+     *
+     * @return The default write timeout.
+     */
+    public static Duration getDefaultHttpWriteTimeout() {
+        return DEFAULT_HTTP_WRITE_TIMEOUT;
+    }
+
+    /**
+     * Gets the default response timeout.
+     *
+     * @return The default response timeout.
+     */
+    public static Duration getDefaultHttpResponseTimeout() {
+        return DEFAULT_HTTP_RESPONSE_TIMEOUT;
+    }
+
+    /**
+     * Gets the default read timeout.
+     *
+     * @return The default read timeout.
+     */
+    public static Duration getDefaultHttpReadTimeout() {
+        return DEFAULT_HTTP_READ_TIMEOUT;
+    }
+
 }

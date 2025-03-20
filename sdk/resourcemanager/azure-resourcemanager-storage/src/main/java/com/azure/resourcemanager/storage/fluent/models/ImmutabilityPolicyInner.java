@@ -24,14 +24,9 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     private ImmutabilityPolicyProperty innerProperties = new ImmutabilityPolicyProperty();
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Resource Etag.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private String etag;
 
     /*
      * The type of the resource.
@@ -39,9 +34,14 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     private String type;
 
     /*
-     * Resource Etag.
+     * The name of the resource.
      */
-    private String etag;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ImmutabilityPolicyInner class.
@@ -59,23 +59,13 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the etag property: Resource Etag.
      * 
-     * @return the id value.
+     * @return the etag value.
      */
     @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -89,13 +79,23 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     }
 
     /**
-     * Get the etag property: Resource Etag.
+     * Get the name property: The name of the resource.
      * 
-     * @return the etag value.
+     * @return the name value.
      */
     @Override
-    public String etag() {
-        return this.etag;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -201,7 +201,6 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

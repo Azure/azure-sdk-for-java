@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyDefinitionsGetAtManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * getPolicyDefinitionAtManagementGroup.json
      */
     /**
@@ -23,6 +23,6 @@ public final class PolicyDefinitionsGetAtManagementGroupSamples {
             .manager()
             .policyClient()
             .getPolicyDefinitions()
-            .getAtManagementGroupWithResponse("ResourceNaming", "MyManagementGroup", com.azure.core.util.Context.NONE);
+            .getAtManagementGroupWithResponse("MyManagementGroup", "ResourceNaming", com.azure.core.util.Context.NONE);
     }
 }
