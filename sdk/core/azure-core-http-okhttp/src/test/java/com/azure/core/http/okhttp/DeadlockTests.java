@@ -29,7 +29,7 @@ public class DeadlockTests {
     public void attemptToDeadlock() {
         HttpClient httpClient = new OkHttpAsyncClientProvider().createInstance();
 
-        String endpoint = OkHttpClientLocalTestServer.getServer().getHttpUri() + GET_ENDPOINT;
+        String endpoint = OkHttpClientLocalTestServer.getServer().getUri() + GET_ENDPOINT;
 
         Mono<Tuple2<byte[], Integer>> request = httpClient.send(new HttpRequest(HttpMethod.GET, endpoint))
             .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody(), 32768)

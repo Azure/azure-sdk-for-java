@@ -129,6 +129,18 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-alpn-server</artifactId>
+      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-alpn-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-alpn-java-server</artifactId>
+      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-alpn-java-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
       <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
       <scope>test</scope>

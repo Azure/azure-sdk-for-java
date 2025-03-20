@@ -3,10 +3,11 @@
 package com.azure.core.validation.http;
 
 import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpProtocolVersion;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.validation.http.models.HttpBinFormDataJson;
 import com.azure.core.validation.http.models.HttpBinJson;
 import com.azure.core.validation.http.models.PizzaSize;
-import com.azure.core.util.DateTimeRfc1123;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.util.Callback;
@@ -57,10 +58,13 @@ public final class HttpClientTestsServer {
     /**
      * Gets the {@link LocalTestServer}.
      *
+     * @param supportedProtocol The protocol supported by this server. If null, {@link HttpProtocolVersion#HTTP_1_1}
+     * will be the supported protocol.
+     * @param includeTls Flag indicating if TLS will be included.
      * @return The {@link LocalTestServer}.
      */
-    public static LocalTestServer getHttpClientTestsServer() {
-        return new LocalTestServer((req, resp, requestBody) -> {
+    public static LocalTestServer getHttpClientTestsServer(HttpProtocolVersion supportedProtocol, boolean includeTls) {
+        return new LocalTestServer(supportedProtocol, includeTls, (req, resp, requestBody) -> {
             String path = req.getServletPath();
             boolean get = "GET".equalsIgnoreCase(req.getMethod());
             boolean post = "POST".equalsIgnoreCase(req.getMethod());

@@ -54,8 +54,8 @@ public class JdkHttpClientBuilderTests {
     static final String SERVICE_ENDPOINT = "/default";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
-    private static final String SERVER_HTTP_URI = JdkHttpClientLocalTestServer.getServer().getHttpUri();
-    private static final int PROXY_SERVER_HTTP_PORT = JdkHttpClientLocalTestServer.getProxyServer().getHttpPort();
+    private static final String SERVER_HTTP_URI = JdkHttpClientLocalTestServer.getServer().getUri();
+    private static final int PROXY_SERVER_HTTP_PORT = JdkHttpClientLocalTestServer.getProxyServer().getPort();
 
     /**
      * Tests that an {@link JdkHttpClient} is able to be built from an existing

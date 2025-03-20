@@ -26,6 +26,7 @@ import io.netty.handler.proxy.Socks5ProxyHandler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -62,6 +63,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Tests {@link NettyAsyncHttpClientBuilder}.
  */
+@Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class NettyAsyncHttpClientBuilderTests {
     private static final String COOKIE_NAME = "test";
@@ -76,7 +78,7 @@ public class NettyAsyncHttpClientBuilderTests {
     private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
-    private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
+    private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getUri();
     private static final String DEFAULT_URL = SERVER_HTTP_URI + DEFAULT_PATH;
     private static final String PREBUILT_CLIENT_URL = SERVER_HTTP_URI + PREBUILT_CLIENT_PATH;
 

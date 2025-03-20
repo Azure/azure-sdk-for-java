@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.http.vertx;
 
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.validation.http.LocalTestServer;
 import org.eclipse.jetty.util.Callback;
 
@@ -62,7 +63,7 @@ public final class VertxHttpClientLocalTestServer {
     }
 
     private static LocalTestServer initializeServer() {
-        LocalTestServer server = new LocalTestServer((req, resp, requestBody) -> {
+        LocalTestServer server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
             String path = req.getServletPath();
             boolean get = "GET".equalsIgnoreCase(req.getMethod());
             boolean post = "POST".equalsIgnoreCase(req.getMethod());
@@ -164,32 +165,33 @@ public final class VertxHttpClientLocalTestServer {
     }
 
     private static LocalTestServer initializeProxyServer() {
-        LocalTestServer proxyServer = new LocalTestServer((req, resp, requestBody) -> {
-            String requestUrl = req.getRequestURL().toString();
-            if (!Objects.equals(requestUrl, "/default")) {
-                throw new ServletException("Unexpected request to proxy server");
-            }
+        LocalTestServer proxyServer
+            = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
+                String requestUrl = req.getRequestURL().toString();
+                if (!Objects.equals(requestUrl, "/default")) {
+                    throw new ServletException("Unexpected request to proxy server");
+                }
 
-            String proxyAuthorization = req.getHeader("Proxy-Authorization");
-            if (proxyAuthorization == null) {
-                resp.setStatus(407);
-                resp.setHeader("Proxy-Authenticate", "Basic");
-                return;
-            }
+                String proxyAuthorization = req.getHeader("Proxy-Authorization");
+                if (proxyAuthorization == null) {
+                    resp.setStatus(407);
+                    resp.setHeader("Proxy-Authenticate", "Basic");
+                    return;
+                }
 
-            if (!proxyAuthorization.startsWith("Basic")) {
-                resp.setStatus(401);
-                return;
-            }
+                if (!proxyAuthorization.startsWith("Basic")) {
+                    resp.setStatus(401);
+                    return;
+                }
 
-            String encodedCred = proxyAuthorization.substring("Basic".length());
-            encodedCred = encodedCred.trim();
-            final Base64.Decoder decoder = Base64.getDecoder();
-            final byte[] decodedCred = decoder.decode(encodedCred);
-            if (!new String(decodedCred).equals(PROXY_USERNAME + ":" + PROXY_PASSWORD)) {
-                resp.setStatus(401);
-            }
-        });
+                String encodedCred = proxyAuthorization.substring("Basic".length());
+                encodedCred = encodedCred.trim();
+                final Base64.Decoder decoder = Base64.getDecoder();
+                final byte[] decodedCred = decoder.decode(encodedCred);
+                if (!new String(decodedCred).equals(PROXY_USERNAME + ":" + PROXY_PASSWORD)) {
+                    resp.setStatus(401);
+                }
+            });
 
         proxyServer.start();
 

@@ -279,7 +279,7 @@ public class VertxHttpClientBuilder {
         // If HTTP/1.1 is chosen it will not attempt to use HTTP/2.
         // The default if version is not set is HTTP/1.1.
         if (protocolVersions != null && protocolVersions.contains(HttpProtocolVersion.HTTP_2)) {
-            buildOptions.setProtocolVersion(HttpVersion.HTTP_2);
+            buildOptions.setProtocolVersion(HttpVersion.HTTP_2).setUseAlpn(true);
         } else {
             buildOptions.setProtocolVersion(HttpVersion.HTTP_1_1);
         }

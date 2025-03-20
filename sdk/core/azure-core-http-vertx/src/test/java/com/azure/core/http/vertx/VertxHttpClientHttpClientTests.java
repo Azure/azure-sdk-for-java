@@ -4,6 +4,7 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.validation.http.HttpClientTests;
 import com.azure.core.validation.http.HttpClientTestsServer;
 import com.azure.core.validation.http.LocalTestServer;
@@ -18,7 +19,7 @@ public class VertxHttpClientHttpClientTests extends HttpClientTests {
 
     @BeforeAll
     public static void beforeAll() {
-        server = HttpClientTestsServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, false);
         server.start();
     }
 
@@ -32,12 +33,12 @@ public class VertxHttpClientHttpClientTests extends HttpClientTests {
     @Override
     @Deprecated
     protected int getPort() {
-        return server.getHttpPort();
+        return server.getPort();
     }
 
     @Override
     protected String getServerUri(boolean secure) {
-        return secure ? server.getHttpsUri() : server.getHttpUri();
+        return secure ? server.getHttpsUri() : server.getUri();
     }
 
     @Override

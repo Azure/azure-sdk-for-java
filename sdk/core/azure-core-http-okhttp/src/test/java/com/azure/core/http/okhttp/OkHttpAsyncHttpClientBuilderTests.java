@@ -66,7 +66,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
-    private static final String SERVER_HTTP_URI = OkHttpClientLocalTestServer.getServer().getHttpUri();
+    private static final String SERVER_HTTP_URI = OkHttpClientLocalTestServer.getServer().getUri();
 
     /**
      * Tests that an {@link OkHttpAsyncHttpClient} is able to be built from an existing {@link OkHttpClient}.

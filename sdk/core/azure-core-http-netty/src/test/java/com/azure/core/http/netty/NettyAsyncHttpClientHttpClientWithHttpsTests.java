@@ -4,6 +4,7 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.validation.http.HttpClientTests;
 import com.azure.core.validation.http.HttpClientTestsServer;
 import com.azure.core.validation.http.LocalTestServer;
@@ -43,7 +44,7 @@ public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTest
 
     @BeforeAll
     public static void startTestServer() {
-        server = HttpClientTestsServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, true);
         server.start();
     }
 
@@ -57,12 +58,12 @@ public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTest
     @Override
     @Deprecated
     protected int getPort() {
-        return server.getHttpsPort();
+        return server.getPort();
     }
 
     @Override
     protected String getServerUri(boolean secure) {
-        return secure ? server.getHttpsUri() : server.getHttpUri();
+        return server.getHttpsUri();
     }
 
     @Override

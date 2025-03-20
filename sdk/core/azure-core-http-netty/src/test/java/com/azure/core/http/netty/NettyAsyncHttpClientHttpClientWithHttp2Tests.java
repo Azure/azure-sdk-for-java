@@ -8,8 +8,12 @@ import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.validation.http.HttpClientTests;
 import com.azure.core.validation.http.HttpClientTestsServer;
 import com.azure.core.validation.http.LocalTestServer;
+import io.netty.handler.codec.http2.Http2SecurityUtil;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SupportedCipherSuiteFilter;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,8 +34,13 @@ public class NettyAsyncHttpClientHttpClientWithHttp2Tests extends HttpClientTest
 
     static {
         try {
-            SslContext sslContext
-                = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+            SslContext sslContext = SslContextBuilder.forClient()
+                .ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
+                .applicationProtocolConfig(new ApplicationProtocolConfig(ApplicationProtocolConfig.Protocol.ALPN,
+                    ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE,
+                    ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT, ApplicationProtocolNames.HTTP_2))
+                .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                .build();
 
             reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
                 .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
@@ -46,7 +55,7 @@ public class NettyAsyncHttpClientHttpClientWithHttp2Tests extends HttpClientTest
 
     @BeforeAll
     public static void startTestServer() {
-        server = HttpClientTestsServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_2, true);
         server.start();
     }
 
@@ -58,14 +67,24 @@ public class NettyAsyncHttpClientHttpClientWithHttp2Tests extends HttpClientTest
     }
 
     @Override
+    protected boolean isSecure() {
+        return true;
+    }
+
+    @Override
+    protected boolean isHttp2() {
+        return true;
+    }
+
+    @Override
     @Deprecated
     protected int getPort() {
-        return server.getHttp2Port();
+        return server.getPort();
     }
 
     @Override
     protected String getServerUri(boolean secure) {
-        return server.getHttp2Uri();
+        return server.getHttpsUri();
     }
 
     @Override

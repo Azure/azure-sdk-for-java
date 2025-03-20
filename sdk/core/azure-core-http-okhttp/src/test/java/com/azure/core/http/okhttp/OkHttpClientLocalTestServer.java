@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.http.okhttp;
 
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.validation.http.LocalTestServer;
 import org.eclipse.jetty.util.Callback;
 
@@ -59,7 +60,7 @@ public final class OkHttpClientLocalTestServer {
     }
 
     private static LocalTestServer initializeServer() {
-        LocalTestServer server = new LocalTestServer((req, resp, requestBody) -> {
+        LocalTestServer server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
             String path = req.getServletPath();
             boolean get = "GET".equalsIgnoreCase(req.getMethod());
             boolean post = "POST".equalsIgnoreCase(req.getMethod());

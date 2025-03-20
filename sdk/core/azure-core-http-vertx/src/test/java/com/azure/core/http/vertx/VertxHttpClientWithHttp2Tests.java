@@ -1,28 +1,33 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
-package com.azure.core.http.jdk.httpclient;
+package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.validation.http.HttpClientTests;
 import com.azure.core.validation.http.HttpClientTestsServer;
 import com.azure.core.validation.http.LocalTestServer;
+import io.vertx.core.http.HttpClientOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.condition.DisabledForJreRange;
-import org.junit.jupiter.api.condition.JRE;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
-@DisabledForJreRange(max = JRE.JAVA_11)
-@Execution(ExecutionMode.SAME_THREAD)
-public class JdkHttpClientTestsTests extends HttpClientTests {
+import java.util.EnumSet;
+
+public class VertxHttpClientWithHttp2Tests extends HttpClientTests {
     private static LocalTestServer server;
+
+    private static final HttpClient HTTP_CLIENT_INSTANCE;
+
+    static {
+        HTTP_CLIENT_INSTANCE = new VertxHttpClientBuilder()
+            .httpClientOptions(new HttpClientOptions().setTrustAll(true).setVerifyHost(false))
+            .setProtocolVersions(EnumSet.of(HttpProtocolVersion.HTTP_2, HttpProtocolVersion.HTTP_1_1))
+            .build();
+    }
 
     @BeforeAll
     public static void startTestServer() {
-        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, false);
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_2, true);
         server.start();
     }
 
@@ -34,6 +39,16 @@ public class JdkHttpClientTestsTests extends HttpClientTests {
     }
 
     @Override
+    protected boolean isSecure() {
+        return true;
+    }
+
+    @Override
+    protected boolean isHttp2() {
+        return true;
+    }
+
+    @Override
     @Deprecated
     protected int getPort() {
         return server.getPort();
@@ -41,16 +56,11 @@ public class JdkHttpClientTestsTests extends HttpClientTests {
 
     @Override
     protected String getServerUri(boolean secure) {
-        return secure ? server.getHttpsUri() : server.getUri();
-    }
-
-    @Override
-    protected boolean isSecure() {
-        return false;
+        return server.getHttpsUri();
     }
 
     @Override
     protected HttpClient createHttpClient() {
-        return new JdkHttpClientProvider().createInstance();
+        return HTTP_CLIENT_INSTANCE;
     }
 }

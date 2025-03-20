@@ -51,8 +51,8 @@ public class VertxHttpClientBuilderTests {
     private static final String PROXY_USER_INFO = PROXY_USERNAME + ":" + PROXY_PASSWORD + "@";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
-    private static final String SERVER_HTTP_URI = VertxHttpClientLocalTestServer.getServer().getHttpUri();
-    private static final int PROXY_SERVER_HTTP_PORT = VertxHttpClientLocalTestServer.getProxyServer().getHttpPort();
+    private static final String SERVER_HTTP_URI = VertxHttpClientLocalTestServer.getServer().getUri();
+    private static final int PROXY_SERVER_HTTP_PORT = VertxHttpClientLocalTestServer.getProxyServer().getPort();
 
     @Test
     public void buildWithConfigurationNone() {

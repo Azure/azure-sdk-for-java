@@ -184,6 +184,15 @@ public abstract class HttpClientTests {
         return false;
     }
 
+    /**
+     * Flag indicating if testing is using HTTP/2, rather than HTTP/1.1.
+     *
+     * @return A flag indicating if testing is using HTTP/2, rather than HTTP/1.1.
+     */
+    protected boolean isHttp2() {
+        return false;
+    }
+
     private String getRequestUri() {
         return getServerUri(isSecure());
     }
@@ -1415,8 +1424,9 @@ public abstract class HttpClientTests {
         final HttpBinJson json = createService(Service9.class).putBodyAndContentLength(getRequestUri(), body, 4L);
 
         assertEquals("test", json.data());
-        assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
-        assertEquals("4", json.getHeaderValue("Content-Length"));
+        assertEquals(ContentType.APPLICATION_OCTET_STREAM,
+            json.getHeaderValue(isHttp2() ? "content-type" : "Content-Type"));
+        assertEquals("4", json.getHeaderValue(isHttp2() ? "content-length" : "Content-Length"));
     }
 
     /**
@@ -1459,8 +1469,9 @@ public abstract class HttpClientTests {
         StepVerifier.create(createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 4L))
             .assertNext(json -> {
                 assertEquals("test", json.data());
-                assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
-                assertEquals("4", json.getHeaderValue("Content-Length"));
+                assertEquals(ContentType.APPLICATION_OCTET_STREAM,
+                    json.getHeaderValue(isHttp2() ? "content-type" : "Content-Type"));
+                assertEquals("4", json.getHeaderValue(isHttp2() ? "content-length" : "Content-Length"));
             })
             .verifyComplete();
     }
@@ -1510,8 +1521,9 @@ public abstract class HttpClientTests {
                 .flatMap(body -> createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 4L)))
             .assertNext(json -> {
                 assertEquals("test", json.data());
-                assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
-                assertEquals("4", json.getHeaderValue("Content-Length"));
+                assertEquals(ContentType.APPLICATION_OCTET_STREAM,
+                    json.getHeaderValue(isHttp2() ? "content-type" : "Content-Type"));
+                assertEquals("4", json.getHeaderValue(isHttp2() ? "content-length" : "Content-Length"));
             })
             .verifyComplete();
     }
@@ -3196,7 +3208,7 @@ public abstract class HttpClientTests {
         assertNotNull(response.data());
         assertInstanceOf(String.class, response.data());
         assertEquals("4242", response.data());
-        assertEquals("4", response.getHeaderValue("Content-Length"));
+        assertEquals("4", response.getHeaderValue(isHttp2() ? "content-length" : "Content-Length"));
     }
 
     private static final HttpHeaderName RANDOM_HEADER = HttpHeaderName.fromString("randomHeader");
@@ -3214,7 +3226,7 @@ public abstract class HttpClientTests {
         assertNotNull(response.data());
         assertInstanceOf(String.class, response.data());
         assertEquals("42", response.data());
-        assertEquals("randomValue", response.getHeaderValue("randomHeader"));
+        assertEquals("randomValue", response.getHeaderValue(isHttp2() ? "randomheader" : "randomHeader"));
     }
 
     /**
@@ -3230,7 +3242,7 @@ public abstract class HttpClientTests {
         assertNotNull(response.data());
         assertInstanceOf(String.class, response.data());
         assertEquals("42", response.data());
-        assertEquals("randomValue2", response.getHeaderValue("randomHeader"));
+        assertEquals("randomValue2", response.getHeaderValue(isHttp2() ? "randomheader" : "randomHeader"));
     }
 
     /**

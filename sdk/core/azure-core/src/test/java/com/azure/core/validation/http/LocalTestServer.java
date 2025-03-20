@@ -2,7 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.core.validation.http;
 
+import com.azure.core.http.HttpProtocolVersion;
+import org.eclipse.jetty.alpn.server.ALPNServerConnectionFactory;
+import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
+import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Request;
@@ -24,6 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -31,25 +37,25 @@ import java.util.Objects;
  */
 public class LocalTestServer {
     private final Server server;
-    private final ServerConnector httpConnector;
-    private final ServerConnector httpsConnector;
-    private final ServerConnector http2Connector;
+    private final ServerConnector connector;
 
     /**
      * Creates a new instance of {@link LocalTestServer} that will reply to requests based on the passed
      * RequestHandler.
      *
+     * @param supportedProtocol The protocol supported by this server. If null, {@link HttpProtocolVersion#HTTP_1_1}
+     * will be the supported protocol.
+     * @param includeTls Flag indicating if TLS will be included.
      * @param requestHandler The request handler that will be used to process requests.
      * @throws RuntimeException If the server cannot configure SSL.
      */
-    public LocalTestServer(RequestHandler requestHandler) {
+    public LocalTestServer(HttpProtocolVersion supportedProtocol, boolean includeTls, RequestHandler requestHandler) {
         this.server = new Server(new ExecutorThreadPool());
 
-        HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory();
-        this.httpConnector = new ServerConnector(server, httpConnectionFactory);
-        this.httpConnector.setHost("localhost");
-
-        server.addConnector(this.httpConnector);
+        HttpConfiguration httpConfig = new HttpConfiguration();
+        if (includeTls) {
+            httpConfig.addCustomizer(new SecureRequestCustomizer());
+        }
 
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
         String mockKeyStore = Objects.toString(LocalTestServer.class.getResource("/keystore.jks"), null);
@@ -59,22 +65,37 @@ public class LocalTestServer {
         sslContextFactory.setKeyStorePath(mockKeyStore);
         sslContextFactory.setTrustStorePassword("password");
         sslContextFactory.setTrustAll(true);
-        SslConnectionFactory sslConnectionFactory
-            = new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
 
-        HttpConfiguration secureConfig = new HttpConfiguration();
-        secureConfig.addCustomizer(new SecureRequestCustomizer());
+        List<ConnectionFactory> connectionFactories = new ArrayList<>();
 
-        this.httpsConnector
-            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(secureConfig));
-        this.httpsConnector.setHost("localhost");
+        // SSL/TLS connection factory
+        if (includeTls) {
+            String nextProtocol = supportedProtocol == null
+                ? HttpVersion.HTTP_1_1.asString()
+                : (supportedProtocol == HttpProtocolVersion.HTTP_1_1) ? HttpVersion.HTTP_1_1.asString() : "alpn";
+            connectionFactories.add(new SslConnectionFactory(sslContextFactory, nextProtocol));
+        }
 
-        server.addConnector(this.httpsConnector);
+        // ALPN connection factory
+        if (supportedProtocol == HttpProtocolVersion.HTTP_2) {
+            ALPNServerConnectionFactory alpn = new ALPNServerConnectionFactory();
+            alpn.setDefaultProtocol("h2");
+            connectionFactories.add(alpn);
+        }
 
-        this.http2Connector = new ServerConnector(server, new HTTP2ServerConnectionFactory(secureConfig));
-        this.http2Connector.setHost("localhost");
+        // HTTP/1.1 connection factory
+        if (supportedProtocol == null || supportedProtocol == HttpProtocolVersion.HTTP_1_1) {
+            connectionFactories.add(new HttpConnectionFactory(httpConfig));
+        }
 
-        server.addConnector(this.http2Connector);
+        // HTTP/2 connection factory
+        if (supportedProtocol == HttpProtocolVersion.HTTP_2) {
+            connectionFactories.add(new HTTP2ServerConnectionFactory(httpConfig));
+        }
+
+        connector = new ServerConnector(server, connectionFactories.toArray(new ConnectionFactory[0]));
+        connector.setHost("localhost");
+        server.addConnector(connector);
 
         ServletContextHandler servletContextHandler = new ServletContextHandler();
         servletContextHandler.setContextPath("/");
@@ -149,30 +170,12 @@ public class LocalTestServer {
     }
 
     /**
-     * Gets the HTTP port that the local server is listening on.
+     * Gets the port that the local server is listening on.
      *
-     * @return The HTTP port that the local server is listening on.
+     * @return The port that the local server is listening on.
      */
-    public int getHttpPort() {
-        return httpConnector.getLocalPort();
-    }
-
-    /**
-     * Gets the HTTPS port that the local server is listening on.
-     *
-     * @return The HTTPS port that the local server is listening on.
-     */
-    public int getHttpsPort() {
-        return httpsConnector.getLocalPort();
-    }
-
-    /**
-     * Gets the HTTP/2 port that the local server is listening on.
-     *
-     * @return The HTTP/2 port that the local server is listening on.
-     */
-    public int getHttp2Port() {
-        return http2Connector.getLocalPort();
+    public int getPort() {
+        return connector.getLocalPort();
     }
 
     /**
@@ -180,8 +183,8 @@ public class LocalTestServer {
      *
      * @return The HTTP URI that the local server is listening on.
      */
-    public String getHttpUri() {
-        return "http://localhost:" + getHttpPort();
+    public String getUri() {
+        return "http://localhost:" + getPort();
     }
 
     /**
@@ -190,16 +193,7 @@ public class LocalTestServer {
      * @return The HTTPS URI that the local server is listening on.
      */
     public String getHttpsUri() {
-        return "https://localhost:" + getHttpsPort();
-    }
-
-    /**
-     * Gets the HTTP/2 URI that the local server is listening on.
-     *
-     * @return The HTTP/2 URI that the local server is listening on.
-     */
-    public String getHttp2Uri() {
-        return "http://localhost:" + getHttp2Port();
+        return "https://localhost:" + getPort();
     }
 
     /**

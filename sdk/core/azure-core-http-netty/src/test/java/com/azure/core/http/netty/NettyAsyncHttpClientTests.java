@@ -24,7 +24,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.SharedExecutorService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
@@ -37,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -69,6 +69,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -104,12 +105,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class NettyAsyncHttpClientTests {
     private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS
         = StepVerifierOptions.create().initialRequest(0);
 
-    private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
+    private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getUri();
 
     @Test
     public void testFlowableResponseShortBodyAsByteArrayAsync() {
@@ -264,10 +266,15 @@ public class NettyAsyncHttpClientTests {
             });
         }
 
-        List<Future<Void>> futures = SharedExecutorService.getInstance().invokeAll(requests, 60, TimeUnit.SECONDS);
-        for (Future<Void> future : futures) {
-            assertTrue(future.isDone());
-            assertDoesNotThrow(() -> future.get());
+        ForkJoinPool pool = new ForkJoinPool();
+        try {
+            List<Future<Void>> futures = pool.invokeAll(requests, 60, TimeUnit.SECONDS);
+            for (Future<Void> future : futures) {
+                assertTrue(future.isDone());
+                assertDoesNotThrow(() -> future.get());
+            }
+        } finally {
+            pool.shutdown();
         }
     }
 
