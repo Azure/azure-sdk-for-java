@@ -59,7 +59,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -73,7 +73,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AzureAppConfigurationServiceVersion getServiceVersion() {
@@ -87,7 +87,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -96,7 +96,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Initializes an instance of AzureAppConfigurationClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint
      * @param serviceVersion Service version.
@@ -106,8 +106,7 @@ public final class AzureAppConfigurationClientImpl {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service = com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientServiceImpl
-            .getNewInstance(this.httpPipeline, null);
+        this.service = AzureAppConfigurationClientService.getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -329,7 +328,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -353,7 +352,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -378,7 +377,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -400,7 +399,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -419,7 +418,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -448,7 +447,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -471,7 +470,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -489,7 +488,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -504,7 +503,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     *
+     * 
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -550,7 +549,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     *
+     * 
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -597,7 +596,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     *
+     * 
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -635,7 +634,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     *
+     * 
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -663,7 +662,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     *
+     * 
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -706,7 +705,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param label A filter used to match labels. Syntax reference:
@@ -751,7 +750,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param label A filter used to match labels. Syntax reference:
@@ -783,7 +782,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -805,7 +804,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value.
-     *
+     * 
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @param label The label of the key-value to retrieve.
@@ -838,7 +837,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value.
-     *
+     * 
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @param label The label of the key-value to retrieve.
@@ -864,7 +863,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value.
-     *
+     * 
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -886,7 +885,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param label The label of the key-value to create.
@@ -911,7 +910,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param label The label of the key-value to create.
@@ -935,7 +934,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -956,7 +955,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Deletes a key-value.
-     *
+     * 
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @param label The label of the key-value to delete.
@@ -978,7 +977,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Deletes a key-value.
-     *
+     * 
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @param label The label of the key-value to delete.
@@ -997,7 +996,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Deletes a key-value.
-     *
+     * 
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1015,7 +1014,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1047,7 +1046,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1071,7 +1070,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1091,7 +1090,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1126,7 +1125,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1162,7 +1161,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1185,7 +1184,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1206,7 +1205,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1235,7 +1234,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -1254,7 +1253,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -1269,7 +1268,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -1282,7 +1281,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value snapshot.
-     *
+     * 
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @param select Used to select what fields are present in the returned resource(s).
@@ -1311,7 +1310,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value snapshot.
-     *
+     * 
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @param select Used to select what fields are present in the returned resource(s).
@@ -1334,7 +1333,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value snapshot.
-     *
+     * 
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1354,7 +1353,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -1380,7 +1379,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -1404,7 +1403,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -1426,7 +1425,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name The name of the key-value snapshot to check.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
@@ -1449,7 +1448,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name The name of the key-value snapshot to check.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
@@ -1467,7 +1466,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name The name of the key-value snapshot to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1483,7 +1482,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1513,7 +1512,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1544,7 +1543,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1568,7 +1567,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1589,7 +1588,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1620,7 +1619,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1649,7 +1648,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1669,7 +1668,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -1685,7 +1684,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Locks a key-value.
-     *
+     * 
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to lock.
@@ -1709,7 +1708,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Locks a key-value.
-     *
+     * 
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to lock.
@@ -1732,7 +1731,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Locks a key-value.
-     *
+     * 
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1752,7 +1751,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Unlocks a key-value.
-     *
+     * 
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to unlock.
@@ -1776,7 +1775,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Unlocks a key-value.
-     *
+     * 
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to unlock.
@@ -1799,7 +1798,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Unlocks a key-value.
-     *
+     * 
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1819,7 +1818,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     *
+     * 
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1858,7 +1857,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     *
+     * 
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1899,7 +1898,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     *
+     * 
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1929,7 +1928,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     *
+     * 
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1953,7 +1952,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     *
+     * 
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1989,7 +1988,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @param label A filter used to match labels. Syntax reference:
@@ -2026,7 +2025,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @param label A filter used to match labels. Syntax reference:
@@ -2051,7 +2050,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -2069,9 +2068,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2093,9 +2092,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2118,9 +2117,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     *
+     * 
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2146,9 +2145,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     *
+     * 
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2175,9 +2174,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2196,9 +2195,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2219,9 +2218,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2243,9 +2242,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2268,9 +2267,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     *
+     * 
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2292,9 +2291,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     *
+     * 
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
