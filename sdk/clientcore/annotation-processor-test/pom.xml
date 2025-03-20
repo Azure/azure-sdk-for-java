@@ -46,9 +46,8 @@
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
-
       --add-exports io.clientcore.annotation.processor.test/io.clientcore.annotation.processor.test.shared=ALL-UNNAMED
-      --add-opens io.clientcore.annotation.processor.test/io.clientcore.annotation.processor.test.shared.=ALL-UNNAMED
+      --add-opens io.clientcore.annotation.processor.test/io.clientcore.annotation.processor.test.shared=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -60,13 +59,6 @@
     </dependency>
 
     <!-- Test dependencies -->
-    <dependency>
-      <groupId>io.clientcore</groupId>
-      <artifactId>core</artifactId>
-      <version>1.0.0-beta.8</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
@@ -148,6 +140,34 @@
               </excludes>
             </configuration>
           </execution>
+
+          <execution>
+            <id>run-annotation-processing-test</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+              <release>8</release>
+              <proc>only</proc>
+              <generatedTestSourcesDirectory>${project.build.directory}/generated-test-sources/</generatedTestSourcesDirectory>
+              <annotationProcessorPaths>
+                <annotationProcessorPath>
+                  <groupId>io.clientcore</groupId>
+                  <artifactId>annotation-processor</artifactId>
+                  <version>1.0.0-beta.2</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
+                </annotationProcessorPath>
+              </annotationProcessorPaths>
+              <annotationProcessors>
+                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
+              </annotationProcessors>
+              <compilerArgs>
+                <arg>-Xlint:-options</arg>
+              </compilerArgs>
+            </configuration>
+          </execution>
         </executions>
 
         <dependencies>
@@ -176,8 +196,56 @@
               </sources>
             </configuration>
           </execution>
+
+          <execution>
+            <id>add-generated-test-sources</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${basedir}/target/generated-test-sources</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+      </plugin>
+
+      <!-- HttpClientTests is inherited by tests in http-okhttp3 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>test-jar</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+
+          <execution>
+            <id>default-jar</id>
+            <phase>package</phase>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <Multi-Release>true</Multi-Release>
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
+
 </project>

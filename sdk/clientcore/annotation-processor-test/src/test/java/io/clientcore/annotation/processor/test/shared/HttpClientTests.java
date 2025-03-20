@@ -4,7 +4,6 @@
 package io.clientcore.annotation.processor.test.shared;
 
 import io.clientcore.core.annotations.ServiceInterface;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -32,29 +31,23 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
-import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.utils.Context;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.UriBuilder;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Named;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -68,9 +61,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Named;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static io.clientcore.core.implementation.utils.ImplUtils.bomAwareToString;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -99,9 +101,17 @@ public abstract class HttpClientTests {
     private static final String UTF_32BE_BOM_RESPONSE = "utf32BeBomBytes";
     private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
-    private static final String SSE_RESPONSE = "serversentevent";
 
     protected static final String ECHO_RESPONSE = "echo";
+    private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
+    private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
+    private static final byte ZERO = (byte) 0x00;
+    private static final byte BB = (byte) 0xBB;
+    private static final byte BF = (byte) 0xBF;
+    private static final byte EF = (byte) 0xEF;
+    private static final byte FE = (byte) 0xFE;
+    private static final byte FF = (byte) 0xFF;
+    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
 
     /**
      * Get the HTTP client that will be used for each test. This will be called once per test.
@@ -427,7 +437,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service1", host = "{uri}")
-    private interface Service1 {
+    interface Service1 {
+        static Service1 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service1Impl");
+                return (Service1) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = { 200 })
         byte[] getByteArray(@HostParam("uri") String uri);
     }
@@ -444,7 +470,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service2", host = "{scheme}://{hostName}")
-    private interface Service2 {
+    interface Service2 {
+        static Service2 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service2Impl");
+                return (Service2) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/{numberOfBytes}", expectedStatusCodes = { 200 })
         byte[] getByteArray(@HostParam("scheme") String scheme, @HostParam("hostName") String host,
             @PathParam("numberOfBytes") int numberOfBytes);
@@ -474,7 +516,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service3", host = "{uri}")
-    private interface Service3 {
+    interface Service3 {
+        static Service3 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service3Impl");
+                return (Service3) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = { 200 })
         void getNothing(@HostParam("uri") String uri);
     }
@@ -488,7 +546,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service5", host = "{uri}")
-    private interface Service5 {
+    interface Service5 {
+        static Service5 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service5Impl");
+                return (Service5) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
         HttpBinJSON getAnything(@HostParam("uri") String uri);
 
@@ -574,7 +648,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service6", host = "{uri}")
-    private interface Service6 {
+    interface Service6 {
+        static Service6 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service6Impl");
+                return (Service6) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
         HttpBinJSON getAnything(@HostParam("uri") String uri, @QueryParam("a") String a, @QueryParam("b") int b);
 
@@ -616,7 +706,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service7", host = "{uri}")
-    private interface Service7 {
+    interface Service7 {
+        static Service7 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service7Impl");
+                return (Service7) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
         HttpBinJSON getAnything(@HostParam("uri") String uri, @HeaderParam("a") String a, @HeaderParam("b") int b);
 
@@ -654,7 +760,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service8", host = "{uri}")
-    private interface Service8 {
+    interface Service8 {
+        static Service8 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service8Impl");
+                return (Service8) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.POST, path = "post", expectedStatusCodes = { 200 })
         HttpBinJSON post(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
@@ -678,7 +800,23 @@ public abstract class HttpClientTests {
 
     @SuppressWarnings("UnusedReturnValue")
     @ServiceInterface(name = "Service9", host = "{uri}")
-    private interface Service9 {
+    interface Service9 {
+        static Service9 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service9Impl");
+                return (Service9) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         HttpBinJSON put(@HostParam("uri") String uri, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
@@ -771,7 +909,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service10", host = "{uri}")
-    private interface Service10 {
+    interface Service10 {
+        static Service10 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service10Impl");
+                return (Service10) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "anything", expectedStatusCodes = { 200 })
         Response<Void> head(@HostParam("uri") String uri);
 
@@ -802,7 +956,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service11", host = "{uri}")
-    private interface Service11 {
+    interface Service11 {
+        static Service11 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service11Impl");
+                return (Service11) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.DELETE, path = "delete", expectedStatusCodes = { 200 })
         HttpBinJSON delete(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
@@ -817,7 +987,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service12", host = "{uri}")
-    private interface Service12 {
+    interface Service12 {
+        static Service12 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service12Impl");
+                return (Service12) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.PATCH, path = "patch", expectedStatusCodes = { 200 })
         HttpBinJSON patch(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
@@ -832,7 +1018,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service13", host = "{uri}")
-    private interface Service13 {
+    interface Service13 {
+        static Service13 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service13Impl");
+                return (Service13) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(
             method = HttpMethod.GET,
             path = "anything",
@@ -871,7 +1073,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service14", host = "{uri}")
-    private interface Service14 {
+    interface Service14 {
+        static Service14 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service14Impl");
+                return (Service14) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(
             method = HttpMethod.GET,
             path = "anything",
@@ -881,7 +1099,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service16", host = "{uri}")
-    private interface Service16 {
+    interface Service16 {
+        static Service16 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service16Impl");
+                return (Service16) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         HttpBinJSON putByteArray(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
@@ -903,7 +1137,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service17", host = "{scheme}://{hostPart1}{hostPart2}")
-    private interface Service17 {
+    interface Service17 {
+        static Service17 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service17Impl");
+                return (Service17) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.GET, path = "get", expectedStatusCodes = { 200 })
         HttpBinJSON get(@HostParam("scheme") String scheme, @HostParam("hostPart1") String hostPart1,
             @HostParam("hostPart2") String hostPart2);
@@ -918,7 +1168,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service18", host = "{uri}")
-    private interface Service18 {
+    interface Service18 {
+        static Service18 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service18Impl");
+                return (Service18) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.GET, path = "status/200")
         void getStatus200(@HostParam("uri") String uri);
 
@@ -985,7 +1251,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service19", host = "{uri}")
-    private interface Service19 {
+    interface Service19 {
+        static Service19 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service19Impl");
+                return (Service19) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithNoContentTypeAndStringBody(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
@@ -1335,11 +1617,27 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service20", host = "{uri}")
-    private interface Service20 {
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/100")
+    interface Service20 {
+        static Service20 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service20Impl");
+                return (Service20) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = { 200 })
         Response<Void> getVoidResponse(@HostParam("uri") String uri);
 
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         Response<HttpBinJSON> putBody(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
     }
@@ -1396,7 +1694,23 @@ public abstract class HttpClientTests {
 
     @ServiceInterface(name = "UnexpectedOKService", host = "{uri}")
     interface UnexpectedOKService {
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/1024", expectedStatusCodes = { 400 })
+        static UnexpectedOKService getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".UnexpectedOKServiceImpl");
+                return (UnexpectedOKService) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/1024", expectedStatusCodes = { 400 })
         Response<InputStream> getBytes(@HostParam("uri") String uri);
     }
 
@@ -1409,8 +1723,24 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service21", host = "{uri}")
-    private interface Service21 {
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/100", expectedStatusCodes = { 200 })
+    interface Service21 {
+        static Service21 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service21Impl");
+                return (Service21) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = { 200 })
         byte[] getBytes100(@HostParam("uri") String uri);
     }
 
@@ -1424,7 +1754,23 @@ public abstract class HttpClientTests {
 
     @ServiceInterface(name = "DownloadService", host = "{uri}")
     interface DownloadService {
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/30720")
+        static DownloadService getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".DownloadServiceImpl");
+                return (DownloadService) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/30720", expectedStatusCodes = { 200 })
         Response<InputStream> getBytes(@HostParam("uri") String uri, Context context);
     }
 
@@ -1461,7 +1807,23 @@ public abstract class HttpClientTests {
 
     @ServiceInterface(name = "BinaryDataUploadServ", host = "{uri}")
     interface BinaryDataUploadService {
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "/put")
+        static BinaryDataUploadService getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".BinaryDataUploadServiceImpl");
+                return (BinaryDataUploadService) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         Response<HttpBinJSON> put(@HostParam("uri") String host, @BodyParam("text/plain") BinaryData content,
             @HeaderParam("Content-Length") long contentLength);
     }
@@ -1479,17 +1841,39 @@ public abstract class HttpClientTests {
             .addPolicy(new HttpInstrumentationPolicy(new HttpInstrumentationOptions()
                 .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS)))
             .build();
-
-        Response<HttpBinJSON> response
-            = RestProxy.create(BinaryDataUploadService.class, httpPipeline, new JsonSerializer())
-                .put(getServerUri(isSecure()), data, Files.size(filePath));
+        Response<HttpBinJSON> response;
+            try {
+                // Invoke getNewInstance(HttpPipeline) using reflection
+                response
+                    =  ((BinaryDataUploadService) BinaryDataUploadService.class.getMethod("getNewInstance",
+                        HttpPipeline.class)
+                    .invoke(null, httpPipeline)).put(getServerUri(isSecure()), data, Files.size(filePath));
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException("Failed to create service instance for " + BinaryDataUploadService.class.getName(), e);
+            }
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
     }
 
     @ServiceInterface(name = "Service22", host = "{uri}")
     interface Service22 {
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/")
+        static Service22 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service22Impl");
+                return (Service22) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "")
         byte[] getBytes(@HostParam("uri") String uri);
     }
 
@@ -1503,6 +1887,22 @@ public abstract class HttpClientTests {
 
     @ServiceInterface(name = "Service23", host = "{uri}")
     interface Service23 {
+        static Service23 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service23Impl");
+                return (Service23) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/28")
         byte[] getBytes(@HostParam("uri") String uri);
     }
@@ -1517,6 +1917,22 @@ public abstract class HttpClientTests {
 
     @ServiceInterface(name = "Service24", host = "{uri}")
     interface Service24 {
+        static Service24 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service24Impl");
+                return (Service24) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON put(@HostParam("uri") String uri, @HeaderParam("ABC") Map<String, String> headerCollection);
     }
@@ -1588,6 +2004,22 @@ public abstract class HttpClientTests {
 
     @ServiceInterface(name = "Service27", host = "{uri}")
     interface Service27 {
+        static Service27 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service27Impl");
+                return (Service27) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         HttpBinJSON put(@HostParam("uri") String uri, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
             RequestOptions requestOptions);
@@ -1655,6 +2087,22 @@ public abstract class HttpClientTests {
 
     @ServiceInterface(name = "Service28", host = "{uri}")
     public interface Service28 {
+        static Service28 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service28Impl");
+                return (Service28) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "voideagerreadoom", expectedStatusCodes = { 200 })
         void headvoid(@HostParam("uri") String uri);
 
@@ -1678,6 +2126,22 @@ public abstract class HttpClientTests {
 
     @ServiceInterface(name = "Service29", host = "{uri}")
     public interface Service29 {
+        static Service29 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service29Impl");
+                return (Service29) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = { 200 })
         void headvoid(@HostParam("uri") String uri);
 
@@ -1810,6 +2274,22 @@ public abstract class HttpClientTests {
 
     @ServiceInterface(name = "Service30", host = "{uri}")
     interface Service30 {
+        static Service30 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    "Service30Impl");
+                return (Service30) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         HttpBinJSON put(@HostParam("uri") String uri, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
             RequestOptions requestOptions);
@@ -1827,8 +2307,24 @@ public abstract class HttpClientTests {
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions requestOptions);
     }
 
-    @ServiceInterface(name = "Service30", host = "{uri}")
+    @ServiceInterface(name = "ServerSentEventService", host = "{uri}")
     interface ServerSentEventService {
+        static ServerSentEventService getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    "ServerSentEventServiceImpl");
+                return (ServerSentEventService) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.PUT, path = "serversentevent", expectedStatusCodes = { 200 })
         Response<BinaryData> put(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData putBody,
@@ -1856,7 +2352,23 @@ public abstract class HttpClientTests {
     }
 
     @ServiceInterface(name = "Service31", host = "{uri}")
-    private interface Service31 {
+    interface Service31 {
+        static Service31 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" +
+                    ".Service31Impl");
+                return (Service31) clazz
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                     | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(
             method = HttpMethod.GET,
             path = "anything",
@@ -2000,14 +2512,20 @@ public abstract class HttpClientTests {
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = getHttpClient();
-
         return createService(serviceClass, httpClient);
     }
 
+    @SuppressWarnings("unchecked")
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
 
-        return RestProxy.create(serviceClass, httpPipeline, new JsonSerializer());
+        try {
+            // Invoke getNewInstance(HttpPipeline) using reflection
+            return (T) serviceClass.getMethod("getNewInstance", HttpPipeline.class)
+                .invoke(null, httpPipeline);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Failed to create service instance for " + serviceClass.getName(), e);
+        }
     }
 
     private static void assertMatchWithHttpOrHttps(String uri1, String uri2) {
@@ -2046,4 +2564,67 @@ public abstract class HttpClientTests {
             fail("One list is null but the other is not.");
         }
     }
+
+
+    /**
+     * Attempts to convert a byte stream into the properly encoded String.
+     * <p>
+     * This utility method will attempt to find the encoding for the String in this order.
+     * <ol>
+     *     <li>Find the byte order mark in the byte array.</li>
+     *     <li>Find the charset in the {@code contentType} header.</li>
+     *     <li>Default to {@code UTF-8}.</li>
+     * </ol>
+     *
+     * @param bytes The byte array.
+     * @param offset The starting offset in the byte array.
+     * @param count The number of bytes to process in the byte array.
+     * @param contentType The {@code Content-Type} header value.
+     * @return A string representation of the byte encoded to the found encoding, or null if {@code bytes} is null.
+     */
+    private static String bomAwareToString(byte[] bytes, int offset, int count, String contentType) {
+        if (bytes == null) {
+            return null;
+        }
+
+        if (count >= 3 && bytes[offset] == EF && bytes[offset + 1] == BB && bytes[offset + 2] == BF) {
+            return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
+        } else if (count >= 4
+            && bytes[offset] == ZERO
+            && bytes[offset + 1] == ZERO
+            && bytes[offset + 2] == FE
+            && bytes[offset + 3] == FF) {
+            return new String(bytes, 4, bytes.length - 4, UTF_32BE);
+        } else if (count >= 4
+            && bytes[offset] == FF
+            && bytes[offset + 1] == FE
+            && bytes[offset + 2] == ZERO
+            && bytes[offset + 3] == ZERO) {
+            return new String(bytes, 4, bytes.length - 4, UTF_32LE);
+        } else if (count >= 2 && bytes[offset] == FE && bytes[offset + 1] == FF) {
+            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
+        } else if (count >= 2 && bytes[offset] == FF && bytes[offset + 1] == FE) {
+            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16LE);
+        } else {
+            /*
+             * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
+             * present or invalid fallback to 'UTF-8' for the default charset.
+             */
+            if (!CoreUtils.isNullOrEmpty(contentType)) {
+                try {
+                    Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
+                    if (charsetMatcher.find()) {
+                        return new String(bytes, offset, count, Charset.forName(charsetMatcher.group(1)));
+                    } else {
+                        return new String(bytes, offset, count, StandardCharsets.UTF_8);
+                    }
+                } catch (IllegalCharsetNameException | UnsupportedCharsetException ex) {
+                    return new String(bytes, offset, count, StandardCharsets.UTF_8);
+                }
+            } else {
+                return new String(bytes, offset, count, StandardCharsets.UTF_8);
+            }
+        }
+    }
+
 }
