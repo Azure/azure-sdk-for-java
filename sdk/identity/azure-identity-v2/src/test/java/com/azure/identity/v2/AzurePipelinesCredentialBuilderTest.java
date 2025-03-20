@@ -18,7 +18,7 @@ public class AzurePipelinesCredentialBuilderTest {
         String tenantId = "tenantId";
         String serviceConnectionId = "serviceConnectionId";
         String systemAccessToken = "FakeToken";
-        Configuration configuration = new Configuration(new ConfigurationSource() {
+        Configuration configuration = Configuration.from(new ConfigurationSource() {
             @Override
             public String getProperty(String name) {
                 return null;
