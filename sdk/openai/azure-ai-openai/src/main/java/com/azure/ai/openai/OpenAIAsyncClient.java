@@ -1633,7 +1633,7 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AudioTranscription> getAudioTranscriptionAsResponseObject(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
-        return getAudioTranscription(deploymentOrModelName, audioTranscriptionOptions.getFilename(), 
+        return getAudioTranscription(deploymentOrModelName, audioTranscriptionOptions.getFilename(),
             audioTranscriptionOptions);
     }
 
