@@ -50,7 +50,6 @@
       --add-opens io.clientcore.core/io.clientcore.core.http.pipeline=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.implementation.http.rest=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.models=ALL-UNNAMED
@@ -61,6 +60,7 @@
 
       --add-exports io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.instrumentation.fallback=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.http.client=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
@@ -83,18 +83,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
-      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
@@ -112,11 +100,17 @@
       <version>1.37</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.conscrypt</groupId>
+      <artifactId>conscrypt-openjdk-uber</artifactId>
+      <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <!-- RestProxyTests is inherited by tests in http-okhttp3 -->
+      <!-- InstrumentationTests is inherited by tests in optional-dependency-tests -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

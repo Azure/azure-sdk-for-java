@@ -8,7 +8,6 @@ module io.clientcore.core {
     requires transitive java.xml;
 
     requires java.net.http;
-    requires jdk.httpserver;
 
     // public API surface area
     exports io.clientcore.core.annotations;
@@ -34,6 +33,7 @@ module io.clientcore.core {
     exports io.clientcore.core.utils;
     exports io.clientcore.core.utils.configuration;
     exports io.clientcore.core.implementation.http;
+    exports io.clientcore.core.implementation.http.client;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
 }
