@@ -4,12 +4,14 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.BatchSharedKeyCredentialsPolicy;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -195,6 +197,21 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
         return this;
     }
 
+    private AzureNamedKeyCredential azureNamedKeyCredential;
+
+    /**
+     * The AzureNamedKeyCredential used for authentication.
+     *
+     * @param azureNamedKeyCredential the AzureNamedKeyCredential.
+     * @return the credential.
+     */
+    public BatchClientBuilder credential(AzureNamedKeyCredential azureNamedKeyCredential) {
+        this.azureNamedKeyCredential
+            = Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
+        this.tokenCredential = null;
+        return this;
+    }
+
     /*
      * The service endpoint
      */
@@ -270,7 +287,6 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -295,6 +311,8 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        } else if (azureNamedKeyCredential != null) {
+            policies.add(new BatchSharedKeyCredentialsPolicy(azureNamedKeyCredential));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
