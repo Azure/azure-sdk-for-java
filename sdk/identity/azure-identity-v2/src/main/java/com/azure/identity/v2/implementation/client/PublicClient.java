@@ -172,28 +172,19 @@ public class PublicClient extends ClientBase {
      * listed as a valid reply URL for the application.
      *
      * @param request     the details of the token request
-     * @param port        the port on which the HTTP server is listening
-     * @param redirectUrl the redirect URL to listen on and receive security code
-     * @param loginHint   the username suggestion to pre-fill the login page's username/email address field
      * @return a Publisher that emits an AccessToken
      */
-    public MsalToken authenticateWithBrowserInteraction(TokenRequestContext request, Integer port, String redirectUrl,
-        String loginHint) {
+    public MsalToken authenticateWithBrowserInteraction(TokenRequestContext request) {
         URI redirectUri;
-        String redirect;
 
-        if (port != null) {
-            redirect = HTTP_LOCALHOST + ":" + port;
-        } else if (redirectUrl != null) {
-            redirect = redirectUrl;
+        if (options.getRedirectUri() != null) {
+            redirectUri = options.getRedirectUri();
         } else {
-            redirect = HTTP_LOCALHOST;
-        }
-
-        try {
-            redirectUri = new URI(redirect);
-        } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            try {
+                redirectUri = new URI(HTTP_LOCALHOST);
+            } catch (URISyntaxException ex) {
+                throw LOGGER.logThrowableAsError(new IllegalStateException(ex));
+            }
         }
         PublicClientApplication pc = getClientInstance(request).getValue();
 
@@ -202,7 +193,7 @@ public class PublicClient extends ClientBase {
         MsalToken token = null;
         if (token == null) {
             InteractiveRequestParameters.InteractiveRequestParametersBuilder builder
-                = buildInteractiveRequestParameters(request, loginHint, redirectUri);
+                = buildInteractiveRequestParameters(request, options.getLoginHint(), redirectUri);
 
             try {
                 return new MsalToken(pc.acquireToken(builder.build()).get());

@@ -94,16 +94,6 @@ public final class ValidationUtil {
         }
     }
 
-    public static void validateInteractiveBrowserRedirectUrlSetup(Integer port, String redirectUrl,
-        ClientLogger logger) {
-        if (port != null && redirectUrl != null) {
-            throw logger.logThrowableAsError(
-                new IllegalArgumentException("Port and Redirect URL cannot be configured at the same time. "
-                    + "Port is deprecated now. Use the redirectUrl setter to specify"
-                    + " the redirect URL on the builder."));
-        }
-    }
-
     private static boolean isValidTenantCharacter(char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '.') || (c == '-');
     }

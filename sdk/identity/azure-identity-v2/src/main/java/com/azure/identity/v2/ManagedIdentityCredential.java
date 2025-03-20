@@ -73,7 +73,6 @@ import io.clientcore.core.utils.CoreUtils;
 public final class ManagedIdentityCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ManagedIdentityCredential.class);
 
-    private final ManagedIdentityClientOptions miClientOptions;
     private final ManagedIdentityClient managedIdentityClient;
     private final String managedIdentityId;
 
@@ -84,8 +83,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @param miClientOptions the options for configuring the identity client.
      */
     ManagedIdentityCredential(ManagedIdentityClientOptions miClientOptions) {
-        this.miClientOptions = miClientOptions;
-
         this.managedIdentityId = fetchManagedIdentityId(miClientOptions);
 
         this.managedIdentityClient = new ManagedIdentityClient(miClientOptions);

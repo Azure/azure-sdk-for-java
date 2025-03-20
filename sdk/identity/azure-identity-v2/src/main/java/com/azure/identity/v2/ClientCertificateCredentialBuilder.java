@@ -11,6 +11,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 
 /**
  * Fluent credential builder for instantiating a {@link ClientCertificateCredential}.
@@ -77,46 +78,7 @@ public class ClientCertificateCredentialBuilder
      */
     public ClientCertificateCredentialBuilder() {
         super();
-    }
-
-    /**
-     * Sets the path of the PEM certificate for authenticating to Microsoft Entra ID.
-     *
-     * @param certificatePath the PEM file containing the certificate
-     * @return An updated instance of this builder.
-     */
-    public ClientCertificateCredentialBuilder pemCertificate(String certificatePath) {
-        this.confidentialClientOptions.setCertificatePath(certificatePath);
-        return this;
-    }
-
-    /**
-     * Sets the input stream holding the PEM certificate for authenticating to Microsoft Entra ID.
-     *
-     * @param certificate the input stream containing the PEM certificate
-     * @return An updated instance of this builder.
-     */
-    public ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
-        this.confidentialClientOptions.setCertificateBytes(IdentityUtil.convertInputStreamToByteArray(certificate));
-        return this;
-    }
-
-    /**
-     * Sets the path and password of the PFX certificate for authenticating to Microsoft Entra ID.
-     *
-     * @deprecated This API is deprecated and will be removed. Specify the PFX certificate via
-     * {@link ClientCertificateCredentialBuilder#pfxCertificate(String)} API and client certificate password via
-     * the {@link ClientCertificateCredentialBuilder#clientCertificatePassword(String)} API as applicable.
-     *
-     * @param certificatePath the password protected PFX file containing the certificate
-     * @param clientCertificatePassword the password protecting the PFX file
-     * @return An updated instance of this builder.
-     */
-    @Deprecated
-    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath, String clientCertificatePassword) {
-        this.confidentialClientOptions.setCertificatePath(certificatePath);
-        this.confidentialClientOptions.setCertificatePassword(clientCertificatePassword);
-        return this;
+        confidentialClientOptions = new ConfidentialClientOptions();
     }
 
     /**
@@ -125,19 +87,30 @@ public class ClientCertificateCredentialBuilder
      * @param certificatePath the password protected PFX file containing the certificate
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath) {
+    public ClientCertificateCredentialBuilder clientCertificatePath(String certificatePath) {
         this.confidentialClientOptions.setCertificatePath(certificatePath);
+        return this;
+    }
+
+    /**
+     * Sets the input stream holding the PFX/PEM certificate for authenticating to Microsoft Entra ID.
+     *
+     * @param certificate the input stream containing the PFX/PEM certificate
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder clientCertificate(InputStream certificate) {
+        this.confidentialClientOptions.setCertificateBytes(IdentityUtil.convertInputStreamToByteArray(certificate));
         return this;
     }
 
     /**
      * Sets the input stream holding the PFX certificate for authenticating to Microsoft Entra ID.
      *
-     * @param certificate the input stream containing the password protected PFX certificate
+     * @param certificate the input stream containing the PFX/PEM certificate
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate) {
-        this.confidentialClientOptions.setCertificateBytes(IdentityUtil.convertInputStreamToByteArray(certificate));
+    public ClientCertificateCredentialBuilder clientCertificate(byte[] certificate) {
+        this.confidentialClientOptions.setCertificateBytes(Arrays.copyOf(certificate, certificate.length));
         return this;
     }
 
@@ -195,7 +168,7 @@ public class ClientCertificateCredentialBuilder
         if (confidentialClientOptions.getCertificateBytes() != null
             && confidentialClientOptions.getCertificatePath() != null) {
             throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("Both certificate input stream and "
-                + "certificate path are provided in ClientCertificateCredentialBuilder. Only one of them should "
+                + "certificate path/bytes are provided in ClientCertificateCredentialBuilder. Only one of them should "
                 + "be provided."));
         }
         return new ClientCertificateCredential(confidentialClientOptions);

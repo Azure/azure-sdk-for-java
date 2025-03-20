@@ -20,6 +20,7 @@ public class PublicClientOptions extends ClientOptions {
     private boolean automaticAuthentication;
     private String authCode;
     private URI redirectUri;
+    private String loginHint;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -118,5 +119,14 @@ public class PublicClientOptions extends ClientOptions {
             .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())
             .setTokenCacheOptions(this.getTokenCacheOptions());
         return clone;
+    }
+
+    public PublicClientOptions setLoginHint(String loginHint) {
+        this.loginHint = loginHint;
+        return this;
+    }
+
+    public String getLoginHint() {
+        return this.loginHint;
     }
 }

@@ -147,46 +147,14 @@ public class DeviceCodeCredentialBuilder extends EntraIdCredentialBuilderBase<De
     }
 
     /**
-     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
-     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
-     * If no value is specified for TenantId this option will have no effect, and the credential will
-     * acquire tokens for any requested tenant.
-     *
-     * @param additionallyAllowedTenants the additionally allowed tenants.
-     * @return An updated instance of this builder with the additional tenants configured.
-     */
-    @Override
-    public DeviceCodeCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        publicClientOptions.setAdditionallyAllowedTenants(
-            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
-        return this;
-    }
-
-    /**
-     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
-     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
-     * If no value is specified for TenantId this option will have no effect, and the credential will
-     * acquire tokens for any requested tenant.
-     *
-     * @param additionallyAllowedTenants the additionally allowed tenants.
-     * @return An updated instance of this builder with the additional tenants configured.
-     */
-    @Override
-    public DeviceCodeCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        publicClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
-        return this;
-    }
-
-    /**
      * Creates a new {@link DeviceCodeCredential} with the current configurations.
      *
      * @return a {@link DeviceCodeCredential} with the current configurations.
      */
     public DeviceCodeCredential build() {
-        String clientId = this.publicClientOptions.getClientId() != null
-            ? this.publicClientOptions.getClientId()
-            : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
+        if (publicClientOptions.getClientId() == null) {
+            publicClientOptions.setClientId(IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID);
+        }
         return new DeviceCodeCredential(publicClientOptions);
     }
 }

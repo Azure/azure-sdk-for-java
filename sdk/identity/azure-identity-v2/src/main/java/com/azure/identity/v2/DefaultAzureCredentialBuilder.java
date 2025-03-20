@@ -229,17 +229,15 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         Configuration configuration = clientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration()
             : clientOptions.getConfiguration();
-        String tenantId = clientOptions.getTenantId();
-        tenantId
-            = CoreUtils.isNullOrEmpty(tenantId) ? configuration.get(IdentityUtil.PROPERTY_AZURE_TENANT_ID) : tenantId;
+        if (CoreUtils.isNullOrEmpty(clientOptions.getTenantId())) {
+            clientOptions.setTenantId(configuration.get(IdentityUtil.PROPERTY_AZURE_TENANT_ID));
+        }
         managedIdentityClientId = CoreUtils.isNullOrEmpty(managedIdentityClientId)
             ? configuration.get(IdentityUtil.PROPERTY_AZURE_CLIENT_ID)
             : managedIdentityClientId;
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
-        ConfidentialClientOptions confidentialClientOptions = new ConfidentialClientOptions();
-
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
         output.add(new EnvironmentCredential(((ConfidentialClientOptions) clientOptions.clone())));
         output.add(getWorkloadIdentityCredential());
@@ -262,8 +260,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             : clientOptions.getConfiguration();
 
         String azureAuthorityHost = configuration.get(IdentityUtil.PROPERTY_AZURE_AUTHORITY_HOST);
-        String clientId
-            = CoreUtils.isNullOrEmpty(workloadIdentityClientId) ? managedIdentityClientId : workloadIdentityClientId;
+        clientOptions.setClientId(
+            CoreUtils.isNullOrEmpty(workloadIdentityClientId) ? managedIdentityClientId : workloadIdentityClientId);
 
         if (!CoreUtils.isNullOrEmpty(azureAuthorityHost)) {
             clientOptions.setAuthorityHost(azureAuthorityHost);

@@ -55,6 +55,7 @@ public class AuthorizationCodeCredentialBuilder
      */
     public AuthorizationCodeCredentialBuilder() {
         super();
+        publicClientOptions = new PublicClientOptions();
     }
 
     /**

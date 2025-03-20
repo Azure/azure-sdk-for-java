@@ -50,6 +50,7 @@ public class AzureToolkitCredentialBuilder extends CredentialBuilderBase<AzureTo
      */
     public AzureToolkitCredentialBuilder() {
         super();
+        publicClientOptions = new PublicClientOptions();
     }
 
     /**
@@ -106,6 +107,6 @@ public class AzureToolkitCredentialBuilder extends CredentialBuilderBase<AzureTo
 
     @Override
     ClientOptions getClientOptions() {
-        return null;
+        return publicClientOptions;
     }
 }

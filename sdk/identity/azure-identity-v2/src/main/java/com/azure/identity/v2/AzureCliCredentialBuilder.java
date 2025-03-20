@@ -44,9 +44,7 @@ import java.util.Objects;
 public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(AzureCliCredentialBuilder.class);
 
-    private String tenantId;
     private DevToolsClientOptions clientOptions;
-    private String subscription;
 
     /**
      * Constructs an instance of AzureCliCredentialBuilder.
@@ -64,13 +62,13 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
      */
     public AzureCliCredentialBuilder tenantId(String tenantId) {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
-        this.tenantId = tenantId;
+        this.clientOptions.setTenantId(tenantId);
         return this;
     }
 
     @Override
     ClientOptions getClientOptions() {
-        return null;
+        return clientOptions;
     }
 
     /**

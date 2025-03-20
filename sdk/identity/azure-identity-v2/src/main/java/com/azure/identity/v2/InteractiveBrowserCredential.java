@@ -61,14 +61,9 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class InteractiveBrowserCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(InteractiveBrowserCredential.class);
-
-    private final Integer port;
     private final PublicClient publicClient;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
-    private final boolean automaticAuthentication;
     private final String authorityHost;
-    private final String redirectUrl;
-    private final String loginHint;
     private boolean isCaeEnabledRequestCached;
     private boolean isCaeDisabledRequestCached;
     private boolean isCachePopulated;
@@ -78,22 +73,14 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * Creates a InteractiveBrowserCredential with the given identity client options and a listening port, for which
      * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
      *
-     * @param port the port on which the credential will listen for the browser authentication result
-     * @param redirectUrl the redirect URL to listen on and receive security code.
-     * @param automaticAuthentication indicates whether automatic authentication should be attempted or not.
      * @param publicClientOptions the options for configuring the public client
      */
-    InteractiveBrowserCredential(Integer port, String redirectUrl, boolean automaticAuthentication, String loginHint,
-        PublicClientOptions publicClientOptions) {
-        this.port = port;
-        this.redirectUrl = redirectUrl;
+    InteractiveBrowserCredential(PublicClientOptions publicClientOptions) {
         this.publicClient = new PublicClient(publicClientOptions);
         this.publicClientOptions = publicClientOptions;
 
         cachedToken = new AtomicReference<>();
         this.authorityHost = publicClientOptions.getAuthorityHost();
-        this.automaticAuthentication = automaticAuthentication;
-        this.loginHint = loginHint;
         if (publicClientOptions.getAuthenticationRecord() != null) {
             cachedToken.set(new MsalAuthenticationAccount(publicClientOptions.getAuthenticationRecord()));
         }
@@ -113,13 +100,12 @@ public class InteractiveBrowserCredential implements TokenCredential {
             }
         }
         try {
-            if (!automaticAuthentication) {
+            if (!publicClientOptions.isAutomaticAuthentication()) {
                 throw LOGGER.logThrowableAsError(new AuthenticationRequiredException("Interactive "
                     + "authentication is needed to acquire token. Call Authenticate to initiate the device "
                     + "code authentication.", request));
             }
-            MsalToken accessToken
-                = publicClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint);
+            MsalToken accessToken = publicClient.authenticateWithBrowserInteraction(request);
             updateCache(accessToken);
             if (request.isCaeEnabled()) {
                 isCaeEnabledRequestCached = true;
@@ -146,7 +132,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * when credential was instantiated.
      */
     public AuthenticationRecord authenticate(TokenRequestContext request) {
-        MsalToken msalToken = publicClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint);
+        MsalToken msalToken = publicClient.authenticateWithBrowserInteraction(request);
         this.updateCache(msalToken);
         return cachedToken.get().getAuthenticationRecord();
     }

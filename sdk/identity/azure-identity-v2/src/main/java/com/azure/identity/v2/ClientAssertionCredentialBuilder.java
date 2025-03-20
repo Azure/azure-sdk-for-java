@@ -73,13 +73,12 @@ public class ClientAssertionCredentialBuilder extends EntraIdCredentialBuilderBa
 
     private ConfidentialClientOptions confidentialClientOptions;
 
-    private Supplier<String> clientAssertionSupplier;
-
     /**
      * Constructs an instance of ClientAssertionCredentialBuilder.
      */
     public ClientAssertionCredentialBuilder() {
         super();
+        confidentialClientOptions = new ConfidentialClientOptions();
     }
 
     /**

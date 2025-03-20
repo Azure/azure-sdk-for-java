@@ -5,9 +5,12 @@ package com.azure.identity.v2;
 
 import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
+import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 /**
@@ -81,24 +84,35 @@ public class OnBehalfOfCredentialBuilder extends EntraIdCredentialBuilderBase<On
     }
 
     /**
-     * Sets the path of the PEM certificate for authenticating to Microsoft Entra ID.
+     * Sets the path and password of the PFX certificate for authenticating to Microsoft Entra ID.
      *
-     * @param pemCertificatePath the PEM file containing the certificate
+     * @param certificatePath the PFX/PEM file containing the certificate
      * @return An updated instance of this builder.
      */
-    public OnBehalfOfCredentialBuilder pemCertificate(String pemCertificatePath) {
-        this.confidentialClientOptions.setCertificatePath(pemCertificatePath);
+    public OnBehalfOfCredentialBuilder clientCertificatePath(String certificatePath) {
+        this.confidentialClientOptions.setCertificatePath(certificatePath);
         return this;
     }
 
     /**
-     * Sets the path and password of the PFX certificate for authenticating to Microsoft Entra ID.
+     * Sets the input stream holding the PFX certificate for authenticating to Microsoft Entra ID.
      *
-     * @param pfxCertificatePath the password protected PFX file containing the certificate
+     * @param certificate the input stream containing the PFX/PEM certificate
      * @return An updated instance of this builder.
      */
-    public OnBehalfOfCredentialBuilder pfxCertificate(String pfxCertificatePath) {
-        this.confidentialClientOptions.setCertificatePath(pfxCertificatePath);
+    public OnBehalfOfCredentialBuilder clientCertificate(InputStream certificate) {
+        this.confidentialClientOptions.setCertificateBytes(IdentityUtil.convertInputStreamToByteArray(certificate));
+        return this;
+    }
+
+    /**
+     * Sets the input stream holding the PFX certificate for authenticating to Microsoft Entra ID.
+     *
+     * @param certificate the byte array containing the PFX/PEM certificate
+     * @return An updated instance of this builder.
+     */
+    public OnBehalfOfCredentialBuilder clientCertificate(byte[] certificate) {
+        this.confidentialClientOptions.setCertificateBytes(Arrays.copyOf(certificate, certificate.length));
         return this;
     }
 
@@ -170,6 +184,13 @@ public class OnBehalfOfCredentialBuilder extends EntraIdCredentialBuilderBase<On
             throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("Exactly one of client secret, "
                 + "client certificate path, or client assertion supplier must be provided "
                 + "in OnBehalfOfCredentialBuilder."));
+        }
+
+        if (confidentialClientOptions.getCertificateBytes() != null
+            && confidentialClientOptions.getCertificatePath() != null) {
+            throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("Both certificate input stream and "
+                + "certificate path/bytes are provided in ClientCertificateCredentialBuilder. Only one of them should "
+                + "be provided."));
         }
 
         return new OnBehalfOfCredential(confidentialClientOptions);

@@ -33,11 +33,8 @@ import java.util.concurrent.ExecutorService;
  *
  * @see EnvironmentCredential
  */
-public class EnvironmentCredentialBuilder extends CredentialBuilderBase<EnvironmentCredentialBuilder> {
+public class EnvironmentCredentialBuilder extends EntraIdCredentialBuilderBase<EnvironmentCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentCredentialBuilder.class);
-
-    private String authorityHost;
-
     private ConfidentialClientOptions confidentialClientOptions;
 
     /**
@@ -55,7 +52,7 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
      */
     public EnvironmentCredentialBuilder authorityHost(String authorityHost) {
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
-        this.authorityHost = authorityHost;
+        this.confidentialClientOptions.setAuthorityHost(authorityHost);
         return this;
     }
 
@@ -86,9 +83,6 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
      * @return a {@link EnvironmentCredential} with the current configurations.
      */
     public EnvironmentCredential build() {
-        if (!CoreUtils.isNullOrEmpty(authorityHost)) {
-            confidentialClientOptions.setAuthorityHost(authorityHost);
-        }
         return new EnvironmentCredential(confidentialClientOptions);
     }
 

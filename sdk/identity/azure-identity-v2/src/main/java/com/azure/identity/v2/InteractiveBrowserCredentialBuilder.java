@@ -7,10 +7,11 @@ import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.PublicClientOptions;
 import com.azure.identity.v2.implementation.util.IdentityConstants;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
-import com.azure.identity.v2.implementation.util.ValidationUtil;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,11 +47,6 @@ import java.util.List;
 public class InteractiveBrowserCredentialBuilder
     extends EntraIdCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(InteractiveBrowserCredentialBuilder.class);
-    private Integer port;
-    private boolean automaticAuthentication = true;
-    private String redirectUrl;
-    private String loginHint;
-
     private PublicClientOptions publicClientOptions;
 
     /**
@@ -73,22 +69,6 @@ public class InteractiveBrowserCredentialBuilder
     @Override
     public InteractiveBrowserCredentialBuilder clientId(String clientId) {
         return super.clientId(clientId);
-    }
-
-    /**
-     * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
-     * registered as a valid reply URL on the application.
-     *
-     * @deprecated Configure the redirect URL as {@code http://localhost:{port}} via
-     * {@link InteractiveBrowserCredentialBuilder#redirectUrl(String)} instead.
-     *
-     * @param port the port on which the credential will listen for the browser authentication result
-     * @return An updated instance of this builder with the port configured.
-     */
-    @Deprecated
-    public InteractiveBrowserCredentialBuilder port(int port) {
-        this.port = port;
-        return this;
     }
 
     /**
@@ -127,7 +107,11 @@ public class InteractiveBrowserCredentialBuilder
      * @return An updated instance of this builder with the configured redirect URL.
      */
     public InteractiveBrowserCredentialBuilder redirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
+        try {
+            this.publicClientOptions.setRedirectUri(new URI(redirectUrl));
+        } catch (URISyntaxException e) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(e));
+        }
         return this;
     }
 
@@ -142,7 +126,7 @@ public class InteractiveBrowserCredentialBuilder
      * @return An updated instance of this builder with automatic authentication disabled.
      */
     public InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
-        this.automaticAuthentication = false;
+        this.publicClientOptions.setAutomaticAuthentication(false);
         return this;
     }
 
@@ -155,7 +139,7 @@ public class InteractiveBrowserCredentialBuilder
      * @return An updated instance of this builder with login hint configured.
      */
     public InteractiveBrowserCredentialBuilder loginHint(String loginHint) {
-        this.loginHint = loginHint;
+        this.publicClientOptions.setLoginHint(loginHint);
         return this;
     }
 
@@ -208,13 +192,10 @@ public class InteractiveBrowserCredentialBuilder
      * @return a {@link InteractiveBrowserCredential} with the current configurations.
      */
     public InteractiveBrowserCredential build() {
-        ValidationUtil.validateInteractiveBrowserRedirectUrlSetup(port, redirectUrl, LOGGER);
-
         String clientId = this.publicClientOptions.getClientId();
 
         publicClientOptions.setClientId(clientId != null ? clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID);
-        return new InteractiveBrowserCredential(port, redirectUrl, automaticAuthentication, loginHint,
-            publicClientOptions);
+        return new InteractiveBrowserCredential(publicClientOptions);
     }
 
     @Override
