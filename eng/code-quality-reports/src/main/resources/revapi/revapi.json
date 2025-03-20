@@ -737,6 +737,25 @@
           "code" : "java.method.removed",
           "old" : "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
           "justification": "The property is a constant, which should not be changed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.nowFinal",
+          "old": "class com.azure.resourcemanager.eventgrid.models.(DeadLetterWithResourceIdentity|DeliveryWithResourceIdentity|EventSubscriptionIdentity)",
+          "justification": "Class is now final."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeTypeParametersChanged",
+          "old" : "method java.util.List<com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem> com.azure.resourcemanager.eventgrid.models.TopicTypeInfo::supportedScopesForSource()",
+          "new" : "method java.util.List<com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope> com.azure.resourcemanager.eventgrid.models.TopicTypeInfo::supportedScopesForSource()",
+          "justification": "Return type changed type parameter."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old" : "class com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem",
+          "justification": "Class was removed."
         }
       ]
     }
