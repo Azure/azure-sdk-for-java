@@ -2227,4 +2227,64 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .verify();
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranscriptionWithResponseSuccess(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+            transcriptionOptions.setTemperature(0.0);
+
+            StepVerifier
+                .create(client.getAudioTranscriptionWithResponse(deploymentName, transcriptionOptions.getFilename(),
+                    transcriptionOptions, new RequestOptions()))
+                .assertNext(
+                    transcription -> assertAudioTranscriptionSimpleJson(transcription.getValue(), BATMAN_TRANSCRIPTION))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationWithResponseSuccess(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
+            translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
+            translationOptions.setTemperature(0.0);
+
+            StepVerifier
+                .create(client.getAudioTranslationWithResponse(deploymentName, translationOptions.getFilename(),
+                    translationOptions, new RequestOptions()))
+                .assertNext(
+                    translation -> assertAudioTranslationSimpleJson(translation.getValue(), "It's raining today."))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationWithResponseWithTemperature(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, audioTranslationOptions) -> {
+            audioTranslationOptions.setResponseFormat(AudioTranslationFormat.JSON);
+            audioTranslationOptions.setTemperature(1.0);
+
+            StepVerifier.create(client.getAudioTranslationWithResponse(deploymentName,
+                audioTranslationOptions.getFilename(), audioTranslationOptions, new RequestOptions()))
+                .assertNext(translation -> {
+                    assertNotNull(translation);
+                    assertEquals("It's raining today.", translation.getValue().getText());
+                })
+                .verifyComplete();
+        });
+    }
 }
