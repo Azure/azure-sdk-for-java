@@ -6,6 +6,8 @@ package com.azure.v2.security.keyvault.secrets.models;
 import com.azure.v2.security.keyvault.secrets.SecretClient;
 import com.azure.v2.security.keyvault.secrets.implementation.DeletedSecretHelper;
 import com.azure.v2.security.keyvault.secrets.implementation.models.SecretsModelsUtils;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -20,7 +22,7 @@ import java.time.OffsetDateTime;
  *
  * @see SecretClient
  */
-//@Immutable
+@Metadata(properties = { MetadataProperties.FLUENT })
 public final class DeletedSecret extends KeyVaultSecret {
     static {
         DeletedSecretHelper.setAccessor(new DeletedSecretHelper.DeletedSecretAccessor() {
