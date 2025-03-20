@@ -1633,8 +1633,10 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AudioTranscription> getAudioTranscriptionAsResponseObject(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
-        return getAudioTranscription(deploymentOrModelName, audioTranscriptionOptions.getFilename(),
-            audioTranscriptionOptions);
+        String filename = CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())
+            ? "filename"
+            : audioTranscriptionOptions.getFilename();
+        return getAudioTranscription(deploymentOrModelName, filename, audioTranscriptionOptions);
     }
 
     /**
@@ -1655,8 +1657,10 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AudioTranslation> getAudioTranslationAsResponseObject(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
-        return getAudioTranslation(deploymentOrModelName, audioTranslationOptions.getFilename(),
-            audioTranslationOptions);
+        String filename = CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())
+            ? "filename"
+            : audioTranslationOptions.getFilename();
+        return getAudioTranslation(deploymentOrModelName, filename, audioTranslationOptions);
     }
 
     /**
