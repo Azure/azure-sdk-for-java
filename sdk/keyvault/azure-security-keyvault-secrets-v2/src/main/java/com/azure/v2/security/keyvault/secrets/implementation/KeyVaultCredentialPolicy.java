@@ -4,13 +4,13 @@ package com.azure.v2.security.keyvault.secrets.implementation;
 
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.azure.v2.core.http.pipeline.AzureBearerTokenAuthenticationPolicy;
+import com.azure.v2.core.http.pipeline.BearerTokenAuthenticationPolicy;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.utils.Base64Util;
+import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.Context;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_LENGTH;
 import static io.clientcore.core.http.models.HttpHeaderName.WWW_AUTHENTICATE;
-import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * A policy that authenticates requests with the Azure Key Vault service. The content added by this policy is
@@ -34,7 +34,7 @@ import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
  *
  * @see TokenCredential
  */
-public class KeyVaultCredentialPolicy extends AzureBearerTokenAuthenticationPolicy {
+public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultCredentialPolicy.class);
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
     private static final String KEY_VAULT_STASHED_CONTENT_KEY = "KeyVaultCredentialPolicyStashedBody";
@@ -204,7 +204,7 @@ public class KeyVaultCredentialPolicy extends AzureBearerTokenAuthenticationPoli
                 String claims = challengeAttributes.get("claims");
 
                 if (claims != null) {
-                    tokenRequestContext.setClaims(new String(Base64Util.decodeString(claims)));
+                    tokenRequestContext.setClaims(new String(new Base64Uri(claims).decodedBytes()));
                 }
             }
         }
@@ -215,7 +215,7 @@ public class KeyVaultCredentialPolicy extends AzureBearerTokenAuthenticationPoli
     }
 
     @Override
-    public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
         if (!"https".equals(request.getUri().getScheme())) {
             throw LOGGER.logThrowableAsError(
                 new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme."));
@@ -225,17 +225,18 @@ public class KeyVaultCredentialPolicy extends AzureBearerTokenAuthenticationPoli
 
         authorizeRequest(request);
 
-        Response<?> httpResponse = next.process();
-        String authHeader = httpResponse.getHeaders().getValue(WWW_AUTHENTICATE);
+        Response<BinaryData> response = next.process();
+        String authHeader = response.getHeaders().getValue(WWW_AUTHENTICATE);
 
-        if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-            return handleChallenge(request, httpResponse, nextPolicy);
+        if (response.getStatusCode() == 401 && authHeader != null) {
+            return handleChallenge(request, response, nextPolicy);
         }
 
-        return httpResponse;
+        return response;
     }
 
-    private Response<?> handleChallenge(HttpRequest request, Response<?> response, HttpPipelineNextPolicy next) {
+    private Response<BinaryData> handleChallenge(HttpRequest request, Response<BinaryData> response,
+        HttpPipelineNextPolicy next) {
 
         if (authorizeRequestOnChallenge(request, response)) {
             // The body needs to be closed or read to the end to release the connection.
@@ -248,7 +249,7 @@ public class KeyVaultCredentialPolicy extends AzureBearerTokenAuthenticationPoli
             }
 
             HttpPipelineNextPolicy nextPolicy = next.copy();
-            Response<?> newResponse = next.process();
+            Response<BinaryData> newResponse = next.process();
             String authHeader = newResponse.getHeaders().getValue(WWW_AUTHENTICATE);
 
             if (newResponse.getStatusCode() == 401 && authHeader != null && isClaimsPresent(newResponse)

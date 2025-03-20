@@ -4,6 +4,8 @@
 package com.azure.v2.security.keyvault.secrets.models;
 
 import com.azure.v2.security.keyvault.secrets.SecretClient;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.net.URI;
@@ -13,7 +15,7 @@ import java.net.URISyntaxException;
  * Information about a {@link KeyVaultSecret} parsed from the secret URL. You can use this information when calling
  * methods of {@link SecretClient}.
  */
-//@Immutable
+@Metadata(properties = { MetadataProperties.IMMUTABLE })
 public final class KeyVaultSecretIdentifier {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSecretIdentifier.class);
 
