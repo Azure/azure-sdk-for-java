@@ -3,6 +3,7 @@
 package com.azure.core.validation.http;
 
 import com.azure.core.http.HttpProtocolVersion;
+import org.conscrypt.OpenSSLProvider;
 import org.eclipse.jetty.alpn.server.ALPNServerConnectionFactory;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,7 +59,9 @@ public class LocalTestServer {
             httpConfig.addCustomizer(new SecureRequestCustomizer());
         }
 
+        Security.addProvider(new OpenSSLProvider());
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+        sslContextFactory.setProvider("Conscrypt");
         String mockKeyStore = Objects.toString(LocalTestServer.class.getResource("/keystore.jks"), null);
         sslContextFactory.setKeyStorePath(mockKeyStore);
         sslContextFactory.setKeyStorePassword("password");
