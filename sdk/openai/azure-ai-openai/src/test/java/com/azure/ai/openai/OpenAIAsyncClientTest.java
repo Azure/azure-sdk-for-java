@@ -2077,7 +2077,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
-    public void testGetAudioTranslationAsResponseObject(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetAudioTranslationAsResponseObjectSuccess(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getAudioTranslationRunner((deploymentName, translationOptions) -> {
@@ -2095,7 +2096,25 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
-    public void testGetAudioTranscriptionAsResponseObject(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetAudioTranslationAsResponseObjectFailure(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
+            translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
+            translationOptions.setFilename(null);
+
+            StepVerifier.create(client.getAudioTranslationAsResponseObject(deploymentName, translationOptions))
+                .expectError(HttpResponseException.class)
+                .verify();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranscriptionAsResponseObjectSuccess(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
@@ -2107,6 +2126,23 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertEquals(BATMAN_TRANSCRIPTION, translation.getText());
                 })
                 .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranscriptionAsResponseObjectFailure(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+            transcriptionOptions.setFilename(null);
+
+            StepVerifier.create(client.getAudioTranscriptionAsResponseObject(deploymentName, transcriptionOptions))
+                .expectError(HttpResponseException.class)
+                .verify();
         });
     }
 
