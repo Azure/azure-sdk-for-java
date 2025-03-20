@@ -42,12 +42,12 @@ public class ListLabels {
         client.getLabels(null)
                 .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
 
-//        System.out.println("List label by exact match:");
-//        client.getLabels(null, "prod2", null, null, null, null)
-//                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
-//
-//        System.out.println("List labels by wildcard:");
-//        client.getLabels(null, "prod*", null, null, null, null)
-//                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+        System.out.println("List label by exact match:");
+        client.getLabels(null, "prod2", null, null, null, null)
+                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+
+        System.out.println("List labels by wildcard:");
+        client.getLabels(null, "prod*", null, null, null, null)
+                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
     }
 }
