@@ -9,6 +9,8 @@ import com.azure.core.validation.http.HttpClientTestsServer;
 import com.azure.core.validation.http.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
@@ -25,6 +27,7 @@ import java.util.EnumSet;
 /**
  * Reactor Netty {@link HttpClientTests}.
  */
+@DisabledForJreRange(max = JRE.JAVA_11)
 @Execution(ExecutionMode.SAME_THREAD)
 public class JdkHttpClientWithHttp2Tests extends HttpClientTests {
     private static LocalTestServer server;
