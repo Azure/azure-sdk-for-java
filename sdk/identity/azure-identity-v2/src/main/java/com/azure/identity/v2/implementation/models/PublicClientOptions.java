@@ -5,6 +5,10 @@ package com.azure.identity.v2.implementation.models;
 
 import com.azure.identity.v2.AuthenticationRecord;
 import com.azure.identity.v2.BrowserCustomizationOptions;
+import com.azure.identity.v2.DeviceCodeInfo;
+
+import java.net.URI;
+import java.util.function.Consumer;
 
 /**
  * Options to configure the IdentityClient.
@@ -12,6 +16,10 @@ import com.azure.identity.v2.BrowserCustomizationOptions;
 public class PublicClientOptions extends ClientOptions {
     private BrowserCustomizationOptions browserCustomizationOptions;
     private AuthenticationRecord authenticationRecord;
+    private Consumer<DeviceCodeInfo> challengeConsumer;
+    private boolean automaticAuthentication;
+    private String authCode;
+    private URI redirectUri;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -62,6 +70,43 @@ public class PublicClientOptions extends ClientOptions {
         return authenticationRecord;
     }
 
+    public Consumer<DeviceCodeInfo> getChallengeConsumer() {
+        return challengeConsumer;
+    }
+
+    public PublicClientOptions setChallengeConsumer(Consumer<DeviceCodeInfo> challengeConsumer) {
+        this.challengeConsumer = challengeConsumer;
+        return this;
+    }
+
+    public boolean isAutomaticAuthentication() {
+        return automaticAuthentication;
+    }
+
+    public PublicClientOptions setAutomaticAuthentication(boolean automaticAuthentication) {
+        this.automaticAuthentication = automaticAuthentication;
+        return this;
+    }
+
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public PublicClientOptions setAuthCode(String authCode) {
+        this.authCode = authCode;
+        return this;
+    }
+
+    public URI getRedirectUri() {
+        return redirectUri;
+    }
+
+    public PublicClientOptions setRedirectUri(URI redirectUri) {
+        this.redirectUri = redirectUri;
+        return this;
+    }
+
+    @Override
     public PublicClientOptions clone() {
         PublicClientOptions clone = (PublicClientOptions) new PublicClientOptions()
             .setBrowserCustomizationOptions(browserCustomizationOptions)

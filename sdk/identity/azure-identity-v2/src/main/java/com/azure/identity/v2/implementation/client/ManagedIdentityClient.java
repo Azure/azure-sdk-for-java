@@ -10,6 +10,7 @@ import com.azure.identity.v2.implementation.util.ScopeUtil;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentityId;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.SharedExecutorService;
@@ -63,8 +64,14 @@ public class ManagedIdentityClient extends ClientBase {
             managedIdentityId = ManagedIdentityId.systemAssigned();
         }
 
-        ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication.builder(managedIdentityId);
+        ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication.builder(managedIdentityId)
+            .logPii(managedIdentityClientOptions.isUnsafeSupportLoggingEnabled());
 
+        ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
+
+        if (ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(managedIdentitySourceType)) {
+            managedIdentityClientOptions.setUseImdsRetryStrategy(true);
+        }
         initializeHttpPipelineAdapter();
         miBuilder.httpClient(httpPipelineAdapter);
 

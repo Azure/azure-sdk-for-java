@@ -161,4 +161,18 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
             .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return (T) this;
     }
+
+    /**
+     * Enables additional support logging for public and confidential client applications. This enables
+     * PII logging in MSAL4J as described <a href="https://learn.microsoft.com/entra/msal/java/advanced/msal-logging-java#personal-and-organization-information">here.</a>
+     *
+     * <p><b>This operation will log PII including tokens. It should only be used when directed by support.</b>
+     *
+     * @return An updated instance of this builder with additional support logging enabled.
+     */
+    @SuppressWarnings("unchecked")
+    public T enableUnsafeSupportLogging() {
+        getClientOptions().setUnsafeSupportLoggingEnabled(true);
+        return (T) this;
+    }
 }

@@ -8,8 +8,12 @@ import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.configuration.Configuration;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Utilities to handle logging for credentials.
@@ -53,4 +57,33 @@ public final class LoggingUtil {
     public static void logError(ClientLogger logger, Supplier<String> messageSupplier) {
         logger.atLevel(LogLevel.ERROR).log(messageSupplier.get());
     }
+
+    /**
+     * Log the names of the currently available environment variables among a list of useful environment variables for
+     * Azure Identity authentications.
+     * @param logger the logger to output the log message
+     */
+    public static void logAvailableEnvironmentVariables(ClientLogger logger, Configuration configuration) {
+        String clientId = configuration.get(IdentityUtil.PROPERTY_AZURE_CLIENT_ID);
+        String tenantId = configuration.get(IdentityUtil.PROPERTY_AZURE_TENANT_ID);
+        String clientSecret = configuration.get(IdentityUtil.PROPERTY_AZURE_CLIENT_SECRET);
+        String certPath = configuration.get(IdentityUtil.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
+        List<String> envVars = new ArrayList<>();
+        if (clientId != null) {
+            envVars.add(IdentityUtil.PROPERTY_AZURE_CLIENT_ID);
+        }
+        if (tenantId != null) {
+            envVars.add(IdentityUtil.PROPERTY_AZURE_TENANT_ID);
+        }
+        if (clientSecret != null) {
+            envVars.add(IdentityUtil.PROPERTY_AZURE_CLIENT_SECRET);
+        }
+        if (certPath != null) {
+            envVars.add(IdentityUtil.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
+        }
+        logger.atLevel(LogLevel.VERBOSE)
+            .log(String.format("Azure Identity => Found the following environment variables: {}",
+                String.join(", ", envVars)));
+    }
+
 }

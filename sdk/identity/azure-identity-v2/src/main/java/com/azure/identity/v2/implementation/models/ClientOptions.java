@@ -5,6 +5,7 @@ package com.azure.identity.v2.implementation.models;
 
 import com.azure.identity.v2.AzureAuthorityHosts;
 import com.azure.identity.v2.TokenCachePersistenceOptions;
+import com.azure.identity.v2.implementation.client.IdentityLogOptionsImpl;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -18,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Represents abstract base for Client Options used in Managed Identity OAuth Flow .
  */
-public abstract class ClientOptions implements Cloneable {
+public class ClientOptions implements Cloneable {
     private static final ClientLogger LOGGER = new ClientLogger(ClientOptions.class);
     private HttpPipelineOptions httpPipelineOptions;
     private String authorityHost;
@@ -29,6 +30,9 @@ public abstract class ClientOptions implements Cloneable {
     private Configuration configuration;
     private String tenantId;
     private String clientId;
+    private boolean isChained;
+    private boolean unsafeSupportLoggingEnabled;
+    private IdentityLogOptionsImpl identityLogOptions;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -37,7 +41,7 @@ public abstract class ClientOptions implements Cloneable {
         configuration = Configuration.getGlobalConfiguration();
         loadFromConfiguration(configuration);
         instanceDiscovery = true;
-        additionallyAllowedTenants = new HashSet<>();
+        additionallyAllowedTenants = new HashSet<>(2);
     }
 
     /**
@@ -239,5 +243,31 @@ public abstract class ClientOptions implements Cloneable {
         return this;
     }
 
-    public abstract ClientOptions clone();
+    public boolean isChained() {
+        return isChained;
+    }
+
+    public void setChained(boolean chained) {
+        isChained = chained;
+    }
+
+    public IdentityLogOptionsImpl getIdentityLogOptions() {
+        return identityLogOptions;
+    }
+
+    public void setIdentityLogOptions(IdentityLogOptionsImpl identityLogOptions) {
+        this.identityLogOptions = identityLogOptions;
+    }
+
+    public ClientOptions clone() {
+        return new ClientOptions();
+    };
+
+    public boolean isUnsafeSupportLoggingEnabled() {
+        return unsafeSupportLoggingEnabled;
+    }
+
+    public void setUnsafeSupportLoggingEnabled(boolean unsafeSupportLoggingEnabled) {
+        this.unsafeSupportLoggingEnabled = unsafeSupportLoggingEnabled;
+    }
 }

@@ -132,4 +132,67 @@ public final class ValidationUtil {
                 new IllegalStateException("Only one of clientId, resourceId, or objectId can be specified."));
         }
     }
+
+    public static void validate(String className, ClientLogger logger, String param1Name, Object param1,
+        String param2Name, Object param2, String param3Name, Object param3) {
+        String missing = "";
+
+        if (param1 == null) {
+            missing += param1Name;
+        }
+
+        if (param2 == null) {
+            missing += missing.isEmpty() ? param2Name : ", " + param2Name;
+        }
+
+        if (param3 == null) {
+            missing += missing.isEmpty() ? param3Name : ", " + param3Name;
+        }
+
+        if (!missing.isEmpty()) {
+            throw logger.logThrowableAsWarning(new IllegalArgumentException(
+                "Must provide non-null values for " + missing + " properties in " + className));
+        }
+    }
+
+    public static void validate(String className, ClientLogger logger, String param1Name, Object param1,
+        String param2Name, Object param2) {
+        String missing = "";
+
+        if (param1 == null) {
+            missing += param1Name;
+        }
+
+        if (param2 == null) {
+            missing += missing.isEmpty() ? param2Name : ", " + param2Name;
+        }
+
+        if (!missing.isEmpty()) {
+            throw logger.logThrowableAsWarning(new IllegalArgumentException(
+                "Must provide non-null values for " + missing + " properties in " + className));
+        }
+    }
+
+    private static boolean isValidSubscriptionCharacter(char c) {
+        return (c >= 'a' && c <= 'z')
+            || (c >= 'A' && c <= 'Z')
+            || (c >= '0' && c <= '9')
+            || (c == '.')
+            || (c == '-')
+            || (c == '_')
+            || (c == ' ');
+    }
+
+    public static void validateSubscriptionCharacterRange(String subscription, ClientLogger logger) {
+        if (subscription != null) {
+            for (int i = 0; i < subscription.length(); i++) {
+                if (!isValidSubscriptionCharacter(subscription.charAt(i))) {
+                    throw logger.logThrowableAsError(new IllegalArgumentException("Invalid subscription: "
+                        + subscription + " provided. If this is the name of a subscription, use its ID instead."
+                        + " You can locate your subscription ID by following the instructions"
+                        + " listed here: https://learn.microsoft.com/azure/azure-portal/get-subscription-tenant-id"));
+                }
+            }
+        }
+    }
 }

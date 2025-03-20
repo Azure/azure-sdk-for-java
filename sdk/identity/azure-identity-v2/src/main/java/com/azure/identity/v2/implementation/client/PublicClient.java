@@ -3,20 +3,13 @@
 
 package com.azure.identity.v2.implementation.client;
 
-import com.azure.identity.v2.BrowserCustomizationOptions;
-import com.azure.identity.v2.CredentialAuthenticationException;
-import com.azure.identity.v2.TokenCachePersistenceOptions;
+import com.azure.identity.v2.*;
 import com.azure.identity.v2.implementation.models.MsalToken;
 import com.azure.identity.v2.implementation.models.PublicClientOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
+import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.microsoft.aad.msal4j.ClaimsRequest;
-import com.microsoft.aad.msal4j.IAccount;
-import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.aad.msal4j.SilentParameters;
-import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.SystemBrowserOptions;
-import com.microsoft.aad.msal4j.Prompt;
+import com.microsoft.aad.msal4j.*;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.utils.CoreUtils;
@@ -30,6 +23,7 @@ import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 public class PublicClient extends ClientBase {
@@ -122,7 +116,9 @@ public class PublicClient extends ClientBase {
             = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/" + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
+            builder = builder.authority(authorityUrl)
+                .instanceDiscovery(options.isInstanceDiscoveryEnabled())
+                .logPii(options.isUnsafeSupportLoggingEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
                 LOGGER.atLevel(LogLevel.VERBOSE)
@@ -175,10 +171,10 @@ public class PublicClient extends ClientBase {
      * credential will run a minimal local HttpServer at the given port, so {@code http://localhost:{port}} must be
      * listed as a valid reply URL for the application.
      *
-     * @param request the details of the token request
-     * @param port the port on which the HTTP server is listening
+     * @param request     the details of the token request
+     * @param port        the port on which the HTTP server is listening
      * @param redirectUrl the redirect URL to listen on and receive security code
-     * @param loginHint the username suggestion to pre-fill the login page's username/email address field
+     * @param loginHint   the username suggestion to pre-fill the login page's username/email address field
      * @return a Publisher that emits an AccessToken
      */
     public MsalToken authenticateWithBrowserInteraction(TokenRequestContext request, Integer port, String redirectUrl,
@@ -249,5 +245,100 @@ public class PublicClient extends ClientBase {
             builder.loginHint(loginHint);
         }
         return builder;
+    }
+
+    /**
+     * Asynchronously acquire a token from Active Directory with a device code challenge. Active Directory will provide
+     * a device code for login and the user must meet the challenge by authenticating in a browser on the current or a
+     * different device.
+     *
+     * @param request            the details of the token request
+     * @param deviceCodeConsumer the user provided closure that will consume the device code challenge
+     * @return a Publisher that emits an AccessToken when the device challenge is met, or an exception if the device
+     * code expires
+     */
+    public MsalToken authenticateWithDeviceCode(TokenRequestContext request,
+        Consumer<DeviceCodeInfo> deviceCodeConsumer) {
+        PublicClientApplication pc = getClientInstance(request).getValue();
+        DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder
+            = buildDeviceCodeFlowParameters(request, deviceCodeConsumer);
+
+        try {
+            return new MsalToken(pc.acquireToken(parametersBuilder.build()).get());
+        } catch (Exception e) {
+            throw LOGGER.logThrowableAsError(
+                new CredentialUnavailableException("Failed to acquire token with device code.", e));
+        }
+    }
+
+    DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder buildDeviceCodeFlowParameters(TokenRequestContext request,
+        Consumer<DeviceCodeInfo> deviceCodeConsumer) {
+        DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder = DeviceCodeFlowParameters
+            .builder(new HashSet<>(request.getScopes()),
+                dc -> deviceCodeConsumer.accept(new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
+                    OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())))
+            .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+
+        if (request.getClaims() != null) {
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(claimsRequest);
+        }
+        return parametersBuilder;
+    }
+
+    /**
+     * Acquire a token from Active Directory with an authorization code from an oauth flow.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public MsalToken authenticateWithAuthorizationCode(TokenRequestContext request) {
+        AuthorizationCodeParameters.AuthorizationCodeParametersBuilder parametersBuilder
+            = AuthorizationCodeParameters.builder(options.getAuthCode(), options.getRedirectUri())
+                .scopes(new HashSet<>(request.getScopes()))
+                .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+
+        if (request.getClaims() != null) {
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(claimsRequest);
+        }
+
+        SynchronousAccessor<PublicClientApplication> publicClient = getClientInstance(request);
+        try {
+            return new MsalToken(publicClient.getValue().acquireToken(parametersBuilder.build()).get());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new CredentialAuthenticationException("Failed to acquire token with authorization code", e);
+        }
+    }
+
+    public MsalToken authenticateWithAzureToolkit(TokenRequestContext request) {
+        AzureToolkitCacheAccessor cacheAccessor = new AzureToolkitCacheAccessor();
+        // Look for cached credential in msal cache first.
+        String cachedRefreshToken = cacheAccessor.getIntelliJCredentialsFromIdentityMsalCache();
+        if (!CoreUtils.isNullOrEmpty(cachedRefreshToken)) {
+            RefreshTokenParameters.RefreshTokenParametersBuilder refreshTokenParametersBuilder
+                = RefreshTokenParameters.builder(new HashSet<>(request.getScopes()), cachedRefreshToken);
+
+            if (request.getClaims() != null) {
+                ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+                refreshTokenParametersBuilder.claims(claimsRequest);
+            }
+
+            try {
+                return new MsalToken(
+                    getClientInstance(request).getValue().acquireToken(refreshTokenParametersBuilder.build()).get());
+            } catch (InterruptedException | ExecutionException e) {
+                throw LOGGER.logThrowableAsError(
+                    new CredentialAuthenticationException("Failed to get token using IntelliJ auth", e));
+            }
+        }
+        String exception
+            = "Azure Toolkit authentication not available. Please login with the Azure Toolkit for IntelliJ/Eclipse.";
+        LoggingUtil.logCredentialUnavailableException(LOGGER, new CredentialUnavailableException(exception));
+        return null;
+    }
+
+    public PublicClientOptions getClientOptions() {
+        return this.options;
     }
 }
