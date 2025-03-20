@@ -2287,4 +2287,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .verifyComplete();
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testListBatchesFailure(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        StepVerifier.create(client.listBatches("40", 20)).expectError(HttpResponseException.class).verify();
+    }
 }
