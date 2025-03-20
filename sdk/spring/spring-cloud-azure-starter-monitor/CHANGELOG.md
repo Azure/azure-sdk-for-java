@@ -6,7 +6,7 @@
 * `spring-cloud-azure-starter-monitor` is GA and part of Spring Cloud Azure
 * Update OpenTelemetry SDK to 1.48.0 and OpenTelemetry Java instrumentation to 2.14.0 ([#44675](https://github.com/Azure/azure-sdk-for-java/pull/44675))
 * Stater based on Spring Boot 3 ([#43722](https://github.com/Azure/azure-sdk-for-java/pull/43722))
-* Improve self-diagnostics ([#43151)](https://github.com/Azure/azure-sdk-for-java/pull/43151)) ([#43219))](https://github.com/Azure/azure-sdk-for-java/pull/43219)))
+* Improve self-diagnostics ([#43151](https://github.com/Azure/azure-sdk-for-java/pull/43151)) ([#43219](https://github.com/Azure/azure-sdk-for-java/pull/43219))
 
 ## 1.0.0-beta.6
 
