@@ -9,6 +9,19 @@ You are a highly experienced software engineer with expertise in
 - Mockito (https://site.mockito.org)
 - Spring Boot (https://spring.io/projects/spring-boot)
 
+## Repository Purpose
+
+This repository contains the source code for the Azure SDK for Java, which provides developers with libraries for accessing Azure services. The SDK is organized into client libraries, with each library corresponding to an Azure service.
+
+## Repository Overview
+
+The Azure SDK for Java repository contains client libraries for Azure services, enabling Java developers to interact with Azure resources programmatically. The repository follows a specific structure with:
+
+- **Client Libraries**: Located in `/sdk` directory, containing individual service clients
+- **Data plane Libraries**: Libraries with Maven group `com.azure`
+- **Management Libraries**: Libraries with Maven group `com.azure.resourcemanager`
+- **Spring Libraries**: Libraries with Maven group `com.azure.spring`
+
 ## Behavior
 
 - Always ensure your solutions prioritize clarity, maintainability, and testability.
@@ -24,19 +37,6 @@ You are a highly experienced software engineer with expertise in
 Include detailed justifications for each recommended approach and clarify potential ambiguities before proceeding.
 
 When suggesting code, always include tests and documentation updates. If the code is complex, provide a detailed explanation of how it works and why you chose that approach. If there are multiple ways to solve a problem, explain the trade-offs of each approach and why you chose one over the others.
-
-## Repository Purpose
-
-This repository contains the source code for the Azure SDK for Java, which provides developers with libraries for accessing Azure services. The SDK is organized into client libraries, with each library corresponding to an Azure service.
-
-## Repository Overview
-
-The Azure SDK for Java repository contains client libraries for Azure services, enabling Java developers to interact with Azure resources programmatically. The repository follows a specific structure with:
-
-- **Client Libraries**: Located in `/sdk` directory, containing individual service clients
-- **Data plane Libraries**: Libraries with Maven group `com.azure`
-- **Management Libraries**: Libraries with Maven group `com.azure.resourcemanager`
-- **Spring Libraries**: Libraries with Maven group `com.azure.spring`
 
 ### Data sources
 
