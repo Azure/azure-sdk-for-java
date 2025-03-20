@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
  */
 public final class MongoClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-07-01/MongoClusters_CreateGeoReplica.json
+     * x-ms-original-file: 2024-10-01-preview/MongoClusters_CreateGeoReplica.json
      */
     /**
      * Sample code: Creates a replica Mongo Cluster resource from a source resource.
@@ -42,7 +42,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-07-01/MongoClusters_CreatePITR.json
+     * x-ms-original-file: 2024-10-01-preview/MongoClusters_CreatePITR.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource from a point in time restore.
@@ -64,7 +64,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-07-01/MongoClusters_Create.json
+     * x-ms-original-file: 2024-10-01-preview/MongoClusters_Create.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource.

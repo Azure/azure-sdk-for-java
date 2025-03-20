@@ -21,25 +21,32 @@ public class AppConfigurationSnapshotEventData implements JsonSerializable<AppCo
      * The name of the snapshot.
      */
     @Generated
-    private String name;
+    private final String name;
 
     /*
      * The etag representing the new state of the snapshot.
      */
     @Generated
-    private String etag;
+    private final String etag;
 
     /*
      * The sync token representing the server state after the event.
      */
     @Generated
-    private String syncToken;
+    private final String syncToken;
 
     /**
      * Creates an instance of AppConfigurationSnapshotEventData class.
+     * 
+     * @param name the name value to set.
+     * @param etag the etag value to set.
+     * @param syncToken the syncToken value to set.
      */
     @Generated
-    protected AppConfigurationSnapshotEventData() {
+    protected AppConfigurationSnapshotEventData(String name, String etag, String syncToken) {
+        this.name = name;
+        this.etag = etag;
+        this.syncToken = syncToken;
     }
 
     /**
@@ -53,18 +60,6 @@ public class AppConfigurationSnapshotEventData implements JsonSerializable<AppCo
     }
 
     /**
-     * Set the name property: The name of the snapshot.
-     * 
-     * @param name the name value to set.
-     * @return the AppConfigurationSnapshotEventData object itself.
-     */
-    @Generated
-    AppConfigurationSnapshotEventData setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the etag property: The etag representing the new state of the snapshot.
      * 
      * @return the etag value.
@@ -75,18 +70,6 @@ public class AppConfigurationSnapshotEventData implements JsonSerializable<AppCo
     }
 
     /**
-     * Set the etag property: The etag representing the new state of the snapshot.
-     * 
-     * @param etag the etag value to set.
-     * @return the AppConfigurationSnapshotEventData object itself.
-     */
-    @Generated
-    AppConfigurationSnapshotEventData setEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the syncToken property: The sync token representing the server state after the event.
      * 
      * @return the syncToken value.
@@ -94,18 +77,6 @@ public class AppConfigurationSnapshotEventData implements JsonSerializable<AppCo
     @Generated
     public String getSyncToken() {
         return this.syncToken;
-    }
-
-    /**
-     * Set the syncToken property: The sync token representing the server state after the event.
-     * 
-     * @param syncToken the syncToken value to set.
-     * @return the AppConfigurationSnapshotEventData object itself.
-     */
-    @Generated
-    AppConfigurationSnapshotEventData setSyncToken(String syncToken) {
-        this.syncToken = syncToken;
-        return this;
     }
 
     /**
@@ -127,29 +98,30 @@ public class AppConfigurationSnapshotEventData implements JsonSerializable<AppCo
      * @param jsonReader The JsonReader being read.
      * @return An instance of AppConfigurationSnapshotEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AppConfigurationSnapshotEventData.
      */
     @Generated
     public static AppConfigurationSnapshotEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppConfigurationSnapshotEventData deserializedAppConfigurationSnapshotEventData
-                = new AppConfigurationSnapshotEventData();
+            String name = null;
+            String etag = null;
+            String syncToken = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedAppConfigurationSnapshotEventData.name = reader.getString();
+                    name = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedAppConfigurationSnapshotEventData.etag = reader.getString();
+                    etag = reader.getString();
                 } else if ("syncToken".equals(fieldName)) {
-                    deserializedAppConfigurationSnapshotEventData.syncToken = reader.getString();
+                    syncToken = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedAppConfigurationSnapshotEventData;
+            return new AppConfigurationSnapshotEventData(name, etag, syncToken);
         });
     }
 }
