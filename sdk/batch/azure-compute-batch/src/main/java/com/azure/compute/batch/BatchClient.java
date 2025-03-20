@@ -75,6 +75,7 @@ import com.azure.compute.batch.models.EnableBatchJobScheduleOptions;
 import com.azure.compute.batch.models.EnableBatchNodeSchedulingOptions;
 import com.azure.compute.batch.models.EnableBatchPoolAutoScaleOptions;
 import com.azure.compute.batch.models.EvaluateBatchPoolAutoScaleOptions;
+import com.azure.compute.batch.models.FileResponseHeaderProperties;
 import com.azure.compute.batch.models.GetBatchApplicationOptions;
 import com.azure.compute.batch.models.GetBatchCertificateOptions;
 import com.azure.compute.batch.models.GetBatchJobOptions;
@@ -16017,11 +16018,9 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getNodeFileProperties(String poolId, String nodeId, String filePath,
+    public FileResponseHeaderProperties getNodeFileProperties(String poolId, String nodeId, String filePath,
         GetBatchNodeFilePropertiesOptions options) {
-        // Generated convenience method for getNodeFilePropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
@@ -16037,7 +16036,9 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+        // Retrieve response from getNodeFilePropertiesWithResponse and construct NodeFileProperties from its headers
+        Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions);
+        return new FileResponseHeaderProperties(response.getHeaders());
     }
 
     /**
@@ -16053,12 +16054,10 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getNodeFileProperties(String poolId, String nodeId, String filePath) {
-        // Generated convenience method for getNodeFilePropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    public FileResponseHeaderProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
+        Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions());
+        return new FileResponseHeaderProperties(response.getHeaders());
     }
 
     /**

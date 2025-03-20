@@ -75,6 +75,7 @@ import com.azure.compute.batch.models.EnableBatchJobScheduleOptions;
 import com.azure.compute.batch.models.EnableBatchNodeSchedulingOptions;
 import com.azure.compute.batch.models.EnableBatchPoolAutoScaleOptions;
 import com.azure.compute.batch.models.EvaluateBatchPoolAutoScaleOptions;
+import com.azure.compute.batch.models.FileResponseHeaderProperties;
 import com.azure.compute.batch.models.GetBatchApplicationOptions;
 import com.azure.compute.batch.models.GetBatchCertificateOptions;
 import com.azure.compute.batch.models.GetBatchJobOptions;
@@ -16506,11 +16507,9 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getNodeFileProperties(String poolId, String nodeId, String filePath,
+    public Mono<FileResponseHeaderProperties> getNodeFileProperties(String poolId, String nodeId, String filePath,
         GetBatchNodeFilePropertiesOptions options) {
-        // Generated convenience method for getNodeFilePropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
@@ -16526,7 +16525,9 @@ public final class BatchAsyncClient {
             requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+        // Map the response headers of getNodeFilePropertiesWithResponse to NodeFileProperties
+        return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions)
+            .map(response -> new FileResponseHeaderProperties(response.getHeaders()));
     }
 
     /**
@@ -16543,12 +16544,10 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getNodeFileProperties(String poolId, String nodeId, String filePath) {
-        // Generated convenience method for getNodeFilePropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    public Mono<FileResponseHeaderProperties> getNodeFileProperties(String poolId, String nodeId, String filePath) {
+        return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions())
+            .map(response -> new FileResponseHeaderProperties(response.getHeaders()));
     }
 
     /**
