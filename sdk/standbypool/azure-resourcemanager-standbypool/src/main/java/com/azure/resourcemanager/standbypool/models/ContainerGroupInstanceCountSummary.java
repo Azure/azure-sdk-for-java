@@ -19,9 +19,14 @@ import java.util.List;
 @Immutable
 public final class ContainerGroupInstanceCountSummary implements JsonSerializable<ContainerGroupInstanceCountSummary> {
     /*
-     * The count of pooled resources in each state.
+     * The zone that the provided counts are in. It will not have a value if zones are not enabled.
      */
-    private List<PoolResourceStateCount> instanceCountsByState;
+    private Long zone;
+
+    /*
+     * The count of pooled container groups in each state for the given zone.
+     */
+    private List<PoolContainerGroupStateCount> instanceCountsByState;
 
     /**
      * Creates an instance of ContainerGroupInstanceCountSummary class.
@@ -30,11 +35,21 @@ public final class ContainerGroupInstanceCountSummary implements JsonSerializabl
     }
 
     /**
-     * Get the instanceCountsByState property: The count of pooled resources in each state.
+     * Get the zone property: The zone that the provided counts are in. It will not have a value if zones are not
+     * enabled.
+     * 
+     * @return the zone value.
+     */
+    public Long zone() {
+        return this.zone;
+    }
+
+    /**
+     * Get the instanceCountsByState property: The count of pooled container groups in each state for the given zone.
      * 
      * @return the instanceCountsByState value.
      */
-    public List<PoolResourceStateCount> instanceCountsByState() {
+    public List<PoolContainerGroupStateCount> instanceCountsByState() {
         return this.instanceCountsByState;
     }
 
@@ -63,6 +78,7 @@ public final class ContainerGroupInstanceCountSummary implements JsonSerializabl
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("instanceCountsByState", this.instanceCountsByState,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("zone", this.zone);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,9 +100,11 @@ public final class ContainerGroupInstanceCountSummary implements JsonSerializabl
                 reader.nextToken();
 
                 if ("instanceCountsByState".equals(fieldName)) {
-                    List<PoolResourceStateCount> instanceCountsByState
-                        = reader.readArray(reader1 -> PoolResourceStateCount.fromJson(reader1));
+                    List<PoolContainerGroupStateCount> instanceCountsByState
+                        = reader.readArray(reader1 -> PoolContainerGroupStateCount.fromJson(reader1));
                     deserializedContainerGroupInstanceCountSummary.instanceCountsByState = instanceCountsByState;
+                } else if ("zone".equals(fieldName)) {
+                    deserializedContainerGroupInstanceCountSummary.zone = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

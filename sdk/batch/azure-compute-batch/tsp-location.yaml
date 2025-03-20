@@ -1,4 +1,4 @@
 directory: specification/batch/Azure.Batch
-commit: a0dc6346cd1f771c60765ade7ee86e476f24aa18
+commit: 6f175c9c006269a1d0f1928fbc768cacc6ac379a
 repo: Azure/azure-rest-api-specs
 cleanup: false
