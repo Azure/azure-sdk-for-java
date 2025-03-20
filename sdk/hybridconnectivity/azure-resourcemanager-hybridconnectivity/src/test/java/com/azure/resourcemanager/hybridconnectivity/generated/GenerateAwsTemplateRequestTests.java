@@ -17,7 +17,7 @@ public final class GenerateAwsTemplateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenerateAwsTemplateRequest model = BinaryData.fromString(
-            "{\"connectorId\":\"dhkrwpdappdsbdk\",\"solutionTypes\":[{\"solutionType\":\"wjfeusnhutjel\",\"solutionSettings\":{\"\":{\"eablg\":\"dhugjzzdatqxhocd\",\"wyiftyhxhur\":\"huticndvkao\",\"tyxolniwpwc\":\"k\",\"awxklr\":\"kjfkg\"}}},{\"solutionType\":\"plwckbas\",\"solutionSettings\":{\"\":{\"koty\":\"ddhsgcbacphe\",\"i\":\"qgoulznd\",\"dgak\":\"wyqkgfgibm\"}}}]}")
+            "{\"connectorId\":\"dhkrwpdappdsbdk\",\"solutionTypes\":[{\"solutionType\":\"wjfeusnhutjel\",\"solutionSettings\":{\"tyxolniwpwc\":\"k\",\"eablg\":\"dhugjzzdatqxhocd\",\"wyiftyhxhur\":\"huticndvkao\",\"awxklr\":\"kjfkg\"}},{\"solutionType\":\"plwckbas\",\"solutionSettings\":{\"dgak\":\"wyqkgfgibm\",\"i\":\"qgoulznd\",\"koty\":\"ddhsgcbacphe\"}}]}")
             .toObject(GenerateAwsTemplateRequest.class);
         Assertions.assertEquals("dhkrwpdappdsbdk", model.connectorId());
         Assertions.assertEquals("wjfeusnhutjel", model.solutionTypes().get(0).solutionType());
