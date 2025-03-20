@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsGetByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * getPolicyAssignmentById.json
      */
     /**
@@ -24,11 +24,11 @@ public final class PolicyAssignmentsGetByIdSamples {
             .getPolicyAssignments()
             .getByIdWithResponse(
                 "providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage",
-                com.azure.core.util.Context.NONE);
+                null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * getPolicyAssignmentWithIdentityById.json
      */
     /**
@@ -44,6 +44,6 @@ public final class PolicyAssignmentsGetByIdSamples {
             .getPolicyAssignments()
             .getByIdWithResponse(
                 "providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage",
-                com.azure.core.util.Context.NONE);
+                null, com.azure.core.util.Context.NONE);
     }
 }

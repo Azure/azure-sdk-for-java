@@ -16,6 +16,10 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 - Custom `ObjectMapper` bean does not work for received messages. [#37796](https://github.com/Azure/azure-sdk-for-java/issues/37796).
 
+#### Features Added
+- Support new property `sessionIdleTimeout` for `ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder` [#44414](https://github.com/Azure/azure-sdk-for-java/issues/44414).
+- Enable annotation `@EnableAzureMessaging` automatically.
+
 ### Spring Cloud Azure Starter Key Vault
 This section includes changes in `spring-cloud-azure-starter-keyvault` module.
 

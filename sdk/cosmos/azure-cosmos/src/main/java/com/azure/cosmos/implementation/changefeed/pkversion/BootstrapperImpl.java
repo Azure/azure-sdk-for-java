@@ -82,10 +82,9 @@ class BootstrapperImpl implements Bootstrapper {
             .flatMap(value -> this.leaseStore.isInitialized())
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
-
+                Mono<Void> previousOperation = Mono.empty();
                 if (initialized) {
-
-                    return this.epkRangeVersionLeaseStoreManager
+                    Mono<Void> validateExistingLeasesMono = this.epkRangeVersionLeaseStoreManager
                         .getTopLeases(1)
                         .next()
                         .flatMap(lease -> {
@@ -102,31 +101,40 @@ class BootstrapperImpl implements Bootstrapper {
 
                             return Mono.empty();
                         });
-                } else {
-                    logger.info("Acquire initialization lock");
-                    return this.leaseStore.acquireInitializationLock(this.lockTime)
-                        .flatMap(lockAcquired -> {
-                            this.isLockAcquired = lockAcquired;
 
-                            if (!this.isLockAcquired) {
-                                logger.info("Another instance is initializing the store");
-                                return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
-                            } else {
-                                return this.synchronizer.createMissingLeases()
-                                    .then(this.leaseStore.markInitialized());
-                            }
-                        })
-                        .onErrorResume(throwable -> {
-                            logger.warn("Unexpected exception caught while initializing the lock", throwable);
-                            return Mono.just(this.isLockAcquired);
-                        })
-                        .flatMap(lockAcquired -> {
-                            if (this.isLockAcquired) {
-                                return this.leaseStore.releaseInitializationLock();
-                            }
-                            return Mono.just(lockAcquired);
-                        });
+                    if (!this.changeFeedProcessorOptions.isLeaseVerificationEnabledOnRestart()) {
+                        return validateExistingLeasesMono;
+                    } else {
+                        previousOperation = validateExistingLeasesMono;
+                    }
                 }
+
+                logger.info("Acquire initialization lock");
+                return previousOperation.then(
+                    this.leaseStore.acquireInitializationLock(this.lockTime)
+                    .flatMap(lockAcquired -> {
+                        this.isLockAcquired = lockAcquired;
+
+                        if (!this.isLockAcquired) {
+                            logger.info("Another instance is initializing the store");
+                            return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
+                        } else {
+                            return this.synchronizer.createMissingLeases()
+                                .then(!isInitialized
+                                    ? this.leaseStore.markInitialized().flatMap((initSucceeded) -> Mono.just(lockAcquired))
+                                    : Mono.just(lockAcquired));
+                        }
+                    })
+                    .onErrorResume(throwable -> {
+                        logger.warn("Unexpected exception caught while initializing the lock", throwable);
+                        return Mono.just(this.isLockAcquired);
+                    })
+                    .flatMap(lockAcquired -> {
+                        if (this.isLockAcquired) {
+                            return this.leaseStore.releaseInitializationLock();
+                        }
+                        return Mono.just(lockAcquired);
+                    }));
             })
             .repeat( () -> !this.isInitialized)
             .then();

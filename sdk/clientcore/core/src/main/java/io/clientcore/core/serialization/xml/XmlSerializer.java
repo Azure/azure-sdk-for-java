@@ -29,6 +29,16 @@ import java.lang.reflect.Type;
 public class XmlSerializer implements ObjectSerializer {
     private static final ClientLogger LOGGER = new ClientLogger(XmlSerializer.class);
 
+    private static final XmlSerializer INSTANCE = new XmlSerializer();
+
+    /**
+     * Get an instance of the {@link XmlSerializer}
+     * @return An instance of {@link XmlSerializer}
+     */
+    public static XmlSerializer getInstance() {
+        return INSTANCE;
+    }
+
     /**
      * Creates an instance of the {@link XmlSerializer}.
      */
