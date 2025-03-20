@@ -2207,4 +2207,24 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .verifyComplete();
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranscriptionTextWithResponseFailure(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
+            transcriptionOptions.setFilename(null);
+            transcriptionOptions.setTemperature(0.0);
+
+            StepVerifier
+                .create(client.getAudioTranscriptionTextWithResponse(deploymentName, "test-file.txt",
+                    transcriptionOptions, new RequestOptions()))
+                .expectError(HttpResponseException.class)
+                .verify();
+        });
+    }
 }
