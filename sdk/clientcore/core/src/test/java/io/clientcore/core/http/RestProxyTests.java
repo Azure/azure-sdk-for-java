@@ -119,9 +119,9 @@ public class RestProxyTests {
             .build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
-
+    
         streamResponse.close();
-
+    
         // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/
@@ -276,9 +276,11 @@ public class RestProxyTests {
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
-            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, SdkRequestContext.create(RequestOptions.none())), null),
+            pagingOptions -> toPagedResponse(
+                testInterface.listFooListResult(uri, SdkRequestContext.create(RequestOptions.none())), null),
             (pagingOptions, nextLink) -> toPagedResponse(
-                testInterface.listNextFooListResult(nextLink, SdkRequestContext.create(RequestOptions.none())), nextLink));
+                testInterface.listNextFooListResult(nextLink, SdkRequestContext.create(RequestOptions.none())),
+                nextLink));
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());
@@ -318,7 +320,8 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, SdkRequestContext.create(RequestOptions.none()));
+        Response<List<Foo>> initialResponse
+            = testInterface.listFoo(uri, SdkRequestContext.create(RequestOptions.none()));
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -329,7 +332,8 @@ public class RestProxyTests {
 
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
-                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, SdkRequestContext.create(RequestOptions.none()));
+                Response<List<Foo>> nextResponse
+                    = testInterface.listNextFoo(nextLink, SdkRequestContext.create(RequestOptions.none()));
                 return toPagedResponse(nextResponse, nextLink);
             });
 

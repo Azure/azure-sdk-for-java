@@ -12,7 +12,6 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -518,17 +517,18 @@ public class SwaggerMethodParserTests {
     }
 
     private static Stream<Arguments> setRequestContextSupplier() throws NoSuchMethodException {
-        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestContext", SdkRequestContext.class);
+        Method method
+            = OperationMethods.class.getDeclaredMethod("getMethodWithRequestContext", SdkRequestContext.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         SdkRequestContext emptyOptions = SdkRequestContext.create(RequestOptions.none());
 
-        SdkRequestContext headerQueryOptions
-            = SdkRequestContext.create(new RequestOptions().addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
-                .addQueryParam("foo", "bar"));
+        SdkRequestContext headerQueryOptions = SdkRequestContext.create(new RequestOptions()
+            .addRequestCallback(r -> r.getHeaders().add(HttpHeaderName.fromString("x-ms-foo"), "bar"))
+            .addQueryParam("foo", "bar"));
 
-        SdkRequestContext uriOptions
-            = SdkRequestContext.create(new RequestOptions().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com")));
+        SdkRequestContext uriOptions = SdkRequestContext
+            .create(new RequestOptions().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com")));
 
         // Add this test back if error options is ever made public.
         // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));

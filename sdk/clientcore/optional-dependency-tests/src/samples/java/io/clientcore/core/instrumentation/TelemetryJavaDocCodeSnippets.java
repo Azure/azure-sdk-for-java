@@ -156,11 +156,11 @@ public class TelemetryJavaDocCodeSnippets {
         // However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
         // and explicit io.clientcore.core.util.Context.
 
-        RequestOptions context = new RequestOptions()
+        RequestOptions options = new RequestOptions()
             .setInstrumentationContext(Instrumentation.createInstrumentationContext(span));
 
         // run on another thread - all telemetry will be correlated with the span created above
-        client.clientCall(context);
+        client.clientCall(options);
 
         // END: io.clientcore.core.telemetry.correlationwithexplicitcontext
     }
