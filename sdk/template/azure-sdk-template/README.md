@@ -1,4 +1,4 @@
-TEST1
+TEST2
 # Azure Template client library for Java
 
 Use the guidelines in each section of this template to ensure consistency and readability of your README. 
