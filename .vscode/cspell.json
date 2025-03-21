@@ -478,7 +478,9 @@
         "getavirtualmachineconfigurationpoolwithextensions",
         "getavirtualmachineconfigurationpoolwithsecurityprofile",
         "getavirtualmachineconfigurationpoolwithserviceartifactreference",
-        "reimagenode"
+        "reimagenode",
+        "mytask",
+        "myaccount"
       ]
     },
     {
