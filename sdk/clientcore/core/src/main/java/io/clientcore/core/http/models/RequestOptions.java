@@ -45,7 +45,7 @@ import java.util.function.Consumer;
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, an HTTP POST call should be
  * made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
- *
+ * <p>
  * The JSON structure for the request is defined as follows:
  *
  * <pre>{@code
@@ -175,7 +175,6 @@ public final class RequestOptions {
         checkLocked("Cannot add header.");
         Objects.requireNonNull(header, "'header' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
-
         return this;
     }
 
@@ -192,7 +191,6 @@ public final class RequestOptions {
     public RequestOptions setHeader(HttpHeaderName header, String value) {
         checkLocked("Cannot set header.");
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
-
         return this;
     }
 
@@ -246,7 +244,6 @@ public final class RequestOptions {
         checkLocked("Cannot add request callback.");
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(requestCallback);
-
         return this;
     }
 
@@ -262,7 +259,6 @@ public final class RequestOptions {
         checkLocked("Cannot set body.");
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
-
         return this;
     }
 
@@ -276,7 +272,6 @@ public final class RequestOptions {
     public RequestOptions setContext(Context context) {
         checkLocked("Cannot set context.");
         this.context = context;
-
         return this;
     }
 
@@ -290,7 +285,6 @@ public final class RequestOptions {
     public RequestOptions setLogger(ClientLogger logger) {
         checkLocked("Cannot set logger.");
         this.logger = logger;
-
         return this;
     }
 
@@ -301,7 +295,6 @@ public final class RequestOptions {
      */
     private RequestOptions lock() {
         locked = true;
-
         return this;
     }
 
@@ -335,7 +328,6 @@ public final class RequestOptions {
     public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
         checkLocked("Cannot set instrumentation context.");
         this.instrumentationContext = instrumentationContext;
-
         return this;
     }
 
