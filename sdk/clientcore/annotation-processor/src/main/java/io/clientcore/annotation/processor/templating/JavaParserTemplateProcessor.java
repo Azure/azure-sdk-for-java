@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
@@ -384,6 +385,13 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             body.addStatement(newUrlDeclaration);
 
             method.getQueryParams().forEach((key, value) -> {
+                Optional<HttpRequestContext.MethodParameter> valueTypeOpt
+                    = method.getParameters().stream().filter(parameter -> key.equals(parameter.getName())).findFirst();
+
+                boolean isStringType
+                    = valueTypeOpt.map(param -> "String".equals(param.getShortTypeName())).orElse(false);
+                value = isStringType ? value : "String.valueOf(" + value + ")";
+
                 body.addStatement(String.format("newUrl = CoreUtils.appendQueryParam(url, \"%s\", %s);", key, value));
                 body.addStatement("if (newUrl != null) { url = newUrl; }");
             });

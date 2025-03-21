@@ -4,8 +4,11 @@
 package io.clientcore.annotation.processor.templating;
 
 import com.github.javaparser.ast.stmt.BlockStmt;
+import io.clientcore.annotation.processor.mocks.MockTypeMirror;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -33,6 +36,9 @@ public class HttpRequestInitializerTest {
         method.setHttpMethod(HttpMethod.valueOf(httpMethod));
         method.addQueryParam(queryKey1, queryValue1);
         method.addQueryParam(queryKey2, queryValue2);
+        TypeMirror typeMirror = new MockTypeMirror(TypeKind.DECLARED, "int");
+        method.addParameter(new HttpRequestContext.MethodParameter(typeMirror, "String", queryKey1));
+        method.addParameter(new HttpRequestContext.MethodParameter(typeMirror, "String", queryKey2));
         method.addHeaderParam("Content-Type", "application/json");
         method.addHeaderParam("Content-Length", String.valueOf(0));
 
