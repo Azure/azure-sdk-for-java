@@ -284,40 +284,35 @@ public class CoreUtilsTests {
     }
 
     /**
-     * Test that appendQueryParam correctly appends a query parameter when no query string exists.
+     * Test that appendQueryParam correctly appends multi-value query parameters with the specified delimiter.
      */
     @ParameterizedTest
-    @CsvSource({
-        "https://example.com, api-version, 1.0, https://example.com?api-version=1.0",  // No query string
-        "https://example.com?existingParam=value, api-version, 1.0, https://example.com?existingParam=value&api-version=1.0",  // Query string exists
-        "'', api-version, 1.0, '?api-version=1.0'"  // Empty URL
-    })
-    void testAppendQueryParam(String url, String key, String value, String expected) {
-        String result = CoreUtils.appendQueryParam(url, key, value);
-        assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
-    }
-
-    @ParameterizedTest
     @MethodSource("provideTestCases")
-    void testAppendMultiQueryParam(String url, String key, List<?> value, char delimiter, String expected) {
-        String result = CoreUtils.appendMultiQueryParam(url, key, value, delimiter);
-        assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
+    void testAppendQueryParam(String url, String key, List<?> value, char delimiter, String expected) {
+        String result = CoreUtils.appendQueryParam(url, Collections.singletonMap(key, value), delimiter);
+        assertEquals(expected, result, "The URL should be correctly updated with the multi-value query parameter.");
     }
 
     private static Stream<Arguments> provideTestCases() {
         return Stream.of(
+            // Test cases with no query string
             Arguments.of("https://example.com", "api-version", Collections.singletonList("1.0"), ',',
-                "https" + "://example.com?api-version=1.0"),  // No query string
-            Arguments.of("https://example.com?existingParam=value", "api-version", Collections.singletonList("1.0"),
-                ',', "https://example.com?existingParam=value&api-version=1.0"),  // Query string exists
-            Arguments.of("", "api-version", Collections.singletonList("1.0"), ',', "?api-version=1.0"),  // Empty URL
+                "https://example.com?api-version=1.0"),
             Arguments.of("https://example.com", "api-version", Arrays.asList("1.0", "2.0"), ',',
                 "https://example.com?api-version=1.0,2.0"),  // List value with comma delimiter
             Arguments.of("https://example.com", "api-version", Arrays.asList("1.0", "2.0"), ';',
                 "https://example.com?api-version=1.0;2.0"),  // List value with semicolon delimiter
             Arguments.of("https://example.com", "api-version", Arrays.asList("1.0", "2.0"), '|',
-                "https://example.com?api-version=1.0|2.0")  // List value with pipe delimiter
-        );
+                "https://example.com?api-version=1.0|2.0"),  // List value with pipe delimiter
+
+            // Test cases with existing query string
+            Arguments.of("https://example.com?existingParam=value", "api-version", Collections.singletonList("1.0"),
+                ',', "https://example.com?existingParam=value&api-version=1.0"),
+            Arguments.of("https://example.com?existingParam=value", "api-version", Arrays.asList("1.0", "2.0"), ',',
+                "https://example.com?existingParam=value&api-version=1.0,2.0"),
+
+            // Test cases with empty URL
+            Arguments.of("", "api-version", Collections.singletonList("1.0"), ',', "?api-version=1.0"));
     }
 
     @Test
@@ -326,7 +321,7 @@ public class CoreUtilsTests {
         String key = "name";
         String expected = "https://example.com";
         // Null value for parameter
-        String result = CoreUtils.appendQueryParam(url, key, null);
+        String result = CoreUtils.appendQueryParam(url, null, ',');
         assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
     }
 

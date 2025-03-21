@@ -48,12 +48,11 @@ public class HttpRequestInitializerTest {
         assertTrue(normalizedBody.contains("String newUrl;"));
 
         // Ensure each query parameter is appended correctly
-        String expectedQueryStatement1 = "newUrl = CoreUtils.appendQueryParam(url, \"" + queryKey1 + "\", "
-            + queryValue1 + "); if (newUrl != null) { url = newUrl; }";
-        String expectedQueryStatement2 = "newUrl = CoreUtils.appendMultiQueryParam(url, \"" + queryKey2 + "\", "
-            + queryValue2 + ", ','); if (newUrl != null) { url = newUrl; }";
-        assertTrue(normalizedBody.contains(expectedQueryStatement1));
-        assertTrue(normalizedBody.contains(expectedQueryStatement2));
+        String expectedQueryStatement = "HashMap<String, Object> queryParamMap = new HashMap<>(); "
+            + "queryParamMap.put(\"" + queryKey1 + "\", " + queryValue1 + "); "
+            + "queryParamMap.put(\"" + queryKey2 + "\", " + queryValue2 + "); "
+            + "newUrl = CoreUtils.appendQueryParam(url, queryParamMap, ',');";
+        assertTrue(normalizedBody.contains(expectedQueryStatement));
 
         // Ensure the final HttpRequest construction is correct
         String expectedHttpRequestStatement

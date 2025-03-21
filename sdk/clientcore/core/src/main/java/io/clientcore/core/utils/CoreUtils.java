@@ -8,8 +8,11 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.SerializationFormat;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -21,7 +24,6 @@ import java.time.temporal.TemporalQuery;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -427,61 +429,52 @@ public final class CoreUtils {
     }
 
     /**
-     * Appends a query parameter to the given host URL.
+     * Appends a query parameter to the given URL.
      *
-     * @param url the base URL to which the query parameter will be appended.
-     * @param key the name of the query parameter (e.g., "api-version", "name", "After").
-     * @param value the value of the query parameter
-     * @return the updated URL with the appended query parameter.
+     * @param host The base URL to which the query parameter will be appended.
+     * @param queryParams A map containing the query parameters and their values.
+     * @param delimiter The delimiter to use if the value is a list.
+     * @return The URL with the appended query parameter.
      */
-    public static String appendQueryParam(String url, String key, String value) {
-        if (value == null) {
-            return url;
+    public static String appendQueryParam(String host, Map<String, Object> queryParams, char delimiter) {
+        if (queryParams == null || queryParams.isEmpty()) {
+            return host;  // No parameters to append
         }
 
-        // Append query parameter to URL
-        if (url.contains("?")) {
-            return url + "&" + key + "=" + value;
-        } else {
-            return url + "?" + key + "=" + value;
+        StringBuilder urlBuilder = new StringBuilder(host);
+        boolean hasExistingQuery = host.contains("?");
+
+        // Process each key-value pair in the queryParams map
+        for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
+            String key = encodeValue(entry.getKey());
+            Object value = entry.getValue();
+            String valueString;
+
+            if (value instanceof List<?>) {
+                List<?> valueList = (List<?>) value;
+                valueString = valueList.stream()
+                    .map(Object::toString)
+                    .map(CoreUtils::encodeValue)  // Encoding each value
+                    .collect(Collectors.joining(String.valueOf(delimiter)));  // Join with delimiter
+            } else {
+                valueString = encodeValue(value.toString());
+            }
+
+            // Append '&' or '?' depending on whether a query string already exists
+            urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(valueString);
+
+            hasExistingQuery = true; // Ensure subsequent parameters use '&'
         }
+
+        return urlBuilder.toString();
     }
 
-    /**
-     * Appends the query parameter list values to the given host URL.
-     *
-     * @param url the base URL to which the query parameter will be appended.
-     * @param key the name of the query parameter (e.g., "api-version", "name", "After").
-     * @param value the value of the query parameter.
-     * @param delimiter The delimiter to use if the value is a list.
-     * @return the updated URL with the appended query parameter.
-     */
-    public static String appendMultiQueryParam(String url, String key, List<?> value, char delimiter) {
-        if (url == null || key == null || value == null) {
-            return url;
+    private static String encodeValue(String value) {
+        try {
+            return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            throw LOGGER.logThrowableAsError(new RuntimeException("UTF-8 encoding is not supported", e));
         }
-
-        StringBuilder newUrl = new StringBuilder(url);
-
-        // Determine if we need to append '?' or '&' at the beginning of the query part
-        boolean hasQuery = url.indexOf('?') != -1;
-        if (!hasQuery) {
-            newUrl.append("?");
-        } else if (!url.endsWith("?") && !url.endsWith("&")) {
-            newUrl.append("&");
-        }
-
-        newUrl.append(key).append("=");
-
-        String delimiterStr = String.valueOf(delimiter);
-        for (Iterator<?> iterator = value.iterator(); iterator.hasNext();) {
-            newUrl.append(iterator.next());
-            if (iterator.hasNext()) {
-                newUrl.append(delimiterStr);
-            }
-        }
-
-        return newUrl.toString();
     }
 
     /*

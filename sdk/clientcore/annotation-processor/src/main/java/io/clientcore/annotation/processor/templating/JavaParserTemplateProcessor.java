@@ -356,18 +356,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             Statement newUrlDeclaration = StaticJavaParser.parseStatement("String newUrl;");
             newUrlDeclaration.setComment(new LineComment("\n Append non-null query parameters"));
             body.addStatement(newUrlDeclaration);
+            body.tryAddImportToParentCompilationUnit(HashMap.class);
+            body.addStatement("HashMap<String, Object> queryParamMap = new HashMap<>();");
 
             method.getQueryParams().forEach((key, value) -> {
-                if (value.isMultiple()) {
-                    // If multiple values exist for the key, append each one separately
-                    body.addStatement(String.format("newUrl = CoreUtils.appendMultiQueryParam(url, \"%s\", %s, ',');",
-                        key, value.getValue()));
-                } else {
-                    body.addStatement(
-                        String.format("newUrl = CoreUtils.appendQueryParam(url, \"%s\", %s);", key, value.getValue()));
-                }
-                body.addStatement("if (newUrl != null) { url = newUrl; }");
+                body.addStatement("queryParamMap.put(\"" + key + "\", " + value.getValue() + ");");
             });
+            body.addStatement("newUrl = CoreUtils.appendQueryParam(url, queryParamMap, ',');");
+            body.addStatement("if (newUrl != null) { url = newUrl; }");
         }
 
         Statement statement
