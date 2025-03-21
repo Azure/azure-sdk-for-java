@@ -14,7 +14,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.paging.PagedIterable;
@@ -276,11 +275,9 @@ public class RestProxyTests {
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
-            pagingOptions -> toPagedResponse(
-                testInterface.listFooListResult(uri, SdkRequestContext.create(RequestOptions.none())), null),
+            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, SdkRequestContext.none()), null),
             (pagingOptions, nextLink) -> toPagedResponse(
-                testInterface.listNextFooListResult(nextLink, SdkRequestContext.create(RequestOptions.none())),
-                nextLink));
+                testInterface.listNextFooListResult(nextLink, SdkRequestContext.none()), nextLink));
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());
@@ -320,8 +317,7 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse
-            = testInterface.listFoo(uri, SdkRequestContext.create(RequestOptions.none()));
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, SdkRequestContext.none());
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -332,8 +328,7 @@ public class RestProxyTests {
 
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
-                Response<List<Foo>> nextResponse
-                    = testInterface.listNextFoo(nextLink, SdkRequestContext.create(RequestOptions.none()));
+                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, SdkRequestContext.none());
                 return toPagedResponse(nextResponse, nextLink);
             });
 

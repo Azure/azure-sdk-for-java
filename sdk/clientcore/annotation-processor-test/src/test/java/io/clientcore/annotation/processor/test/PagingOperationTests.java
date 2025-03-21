@@ -108,8 +108,8 @@ public class PagingOperationTests {
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
-            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, SdkRequestContext.create(RequestOptions.none())), nextLinkUri),
-            (pagingOptions, nextLink) -> toPagedResponse(testInterface.listNextFooListResult(nextLink, SdkRequestContext.create(RequestOptions.none())), null)
+            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, SdkRequestContext.none()), nextLinkUri),
+            (pagingOptions, nextLink) -> toPagedResponse(testInterface.listNextFooListResult(nextLink, SdkRequestContext.none()), null)
         );
 
         assertNotNull(pagedIterable);

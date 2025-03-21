@@ -521,7 +521,7 @@ public class SwaggerMethodParserTests {
             = OperationMethods.class.getDeclaredMethod("getMethodWithRequestContext", SdkRequestContext.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        SdkRequestContext emptyOptions = SdkRequestContext.create(RequestOptions.none());
+        SdkRequestContext emptyOptions = SdkRequestContext.none();
 
         SdkRequestContext headerQueryOptions = SdkRequestContext.create(new RequestOptions()
             .addRequestCallback(r -> r.getHeaders().add(HttpHeaderName.fromString("x-ms-foo"), "bar"))

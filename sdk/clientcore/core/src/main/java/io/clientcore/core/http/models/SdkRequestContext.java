@@ -21,14 +21,17 @@ import java.util.function.Consumer;
 public final class SdkRequestContext extends RequestOptions {
     // TODO (limolkova) do we need to make it public and probably move to another class?
     private static final String PROGRESS_REPORTER_KEY = "progressReporter";
-    static final SdkRequestContext NONE = new SdkRequestContext(null, null);
+    static final SdkRequestContext NONE = new SdkRequestContext(null, null, null);
     private static final ClientLogger LOGGER = new ClientLogger(SdkRequestContext.class);
     private final InstrumentationContext childInstrumentationContext;
+    private final ProgressReporter childProgressReporter;
 
-    private SdkRequestContext(RequestOptions options, InstrumentationContext instrumentationContext) {
+    private SdkRequestContext(RequestOptions options, InstrumentationContext instrumentationContext,
+        ProgressReporter progressReporter) {
         super(options);
 
         this.childInstrumentationContext = instrumentationContext;
+        this.childProgressReporter = progressReporter;
     }
 
     /**
@@ -45,7 +48,19 @@ public final class SdkRequestContext extends RequestOptions {
             return (SdkRequestContext) options;
         }
 
-        return new SdkRequestContext(options, instrumentationContext);
+        return new SdkRequestContext(options, instrumentationContext, null);
+    }
+
+    /**
+     * Creates a new instance of {@link SdkRequestContext} with the given options and progress reporter.
+     *
+     * @param options The {@link RequestOptions} to be used.
+     * @param progressReporter The {@link ProgressReporter} to be used.
+     * @return A new instance of {@link SdkRequestContext} or, when optimization is possible, the existing instance of {@link SdkRequestContext}
+     * provided in the {@code options} parameter.
+     */
+    public static SdkRequestContext create(RequestOptions options, ProgressReporter progressReporter) {
+        return new SdkRequestContext(options, null, progressReporter);
     }
 
     /**
@@ -59,7 +74,17 @@ public final class SdkRequestContext extends RequestOptions {
             return (SdkRequestContext) options;
         }
 
-        return new SdkRequestContext(options, null);
+        return new SdkRequestContext(options, null, null);
+    }
+
+    /**
+     * An empty {@link SdkRequestContext} used in situations where there is no request-specific
+     * configuration to pass into the request.
+     *
+     * @return The singleton instance of an empty {@link RequestOptions}.
+     */
+    public static SdkRequestContext none() {
+        return NONE;
     }
 
     @Override
@@ -77,6 +102,10 @@ public final class SdkRequestContext extends RequestOptions {
      * @return The {@link ProgressReporter} if present, otherwise null.
      */
     public ProgressReporter getProgressReporter() {
+        if (childProgressReporter != null) {
+            return childProgressReporter;
+        }
+
         Object progressReporter = super.getData(PROGRESS_REPORTER_KEY);
         if (progressReporter instanceof ProgressReporter) {
             return (ProgressReporter) progressReporter;
@@ -94,42 +123,35 @@ public final class SdkRequestContext extends RequestOptions {
 
     @Override
     public RequestOptions putData(String key, Object value) {
-        throwOnImmutable("Cannot put data");
-        return this;
+        throw throwOnImmutable("Cannot put data");
     }
 
     @Override
     public RequestOptions setLogger(ClientLogger logger) {
-        throwOnImmutable("Cannot set logger");
-        return this;
+        throw throwOnImmutable("Cannot set logger");
     }
 
     @Override
     public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
-        throwOnImmutable("Cannot set instrumentation context");
-        return this;
+        throw throwOnImmutable("Cannot set instrumentation context");
     }
 
     @Override
     public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
-        throwOnImmutable("Cannot add request callback");
-        return this;
+        throw throwOnImmutable("Cannot add request callback");
     }
 
     @Override
     public RequestOptions addQueryParam(String name, String value) {
-        throwOnImmutable("Cannot add query param");
-        return this;
+        throw throwOnImmutable("Cannot add query param");
     }
 
     @Override
     public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
-        throwOnImmutable("Cannot add query param");
-        return this;
+        throw throwOnImmutable("Cannot add query param");
     }
 
-    private void throwOnImmutable(String message) {
-        throw LOGGER.logThrowableAsError(
-            new IllegalStateException(message + ". This instance of RequestOptions is immutable."));
+    private IllegalStateException throwOnImmutable(String message) {
+        return LOGGER.logThrowableAsError(new IllegalStateException(message + ". This instance is immutable."));
     }
 }
