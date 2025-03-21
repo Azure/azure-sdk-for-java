@@ -149,6 +149,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setPath(httpRequestInfo.path());
         method.setHttpMethod(httpRequestInfo.method());
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
+        method.setHeaders(httpRequestInfo.headers());
 
         method.setMethodReturnType(requestMethod.getReturnType());
         boolean isEncoded = false;
@@ -176,7 +177,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                 method.addSubstitution(
                     new Substitution(pathParam.value(), param.getSimpleName().toString(), pathParam.encoded()));
             } else if (headerParam != null) {
-                method.addHeader(headerParam.value(), param.getSimpleName().toString());
+                method.addHeaderParam(headerParam.value(), param.getSimpleName().toString());
             } else if (queryParam != null) {
                 method.addQueryParam(queryParam.value(), param.getSimpleName().toString());
                 // TODO: Add support for multipleQueryParams and encoded handling

@@ -3,8 +3,10 @@
 
 package io.clientcore.annotation.processor.templating;
 
+import com.github.javaparser.ast.stmt.BlockStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -31,8 +33,8 @@ public class HttpRequestInitializerTest {
         method.setHttpMethod(HttpMethod.valueOf(httpMethod));
         method.addQueryParam(queryKey1, queryValue1);
         method.addQueryParam(queryKey2, queryValue2);
-        method.addHeader("Content-Type", "application/json");
-        method.addHeader("Content-Length", String.valueOf(0));
+        method.addHeaderParam("Content-Type", "application/json");
+        method.addHeaderParam("Content-Length", String.valueOf(0));
 
         // Act: Call the method
         processor.initializeHttpRequest(body, method);
@@ -62,8 +64,27 @@ public class HttpRequestInitializerTest {
         assertTrue(normalizedBody.contains(expectedHttpRequestStatement));
 
         String expectedHttpRequestHeaderStatement
-            = "httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(0)).add(HttpHeaderName.CONTENT_TYPE, String.valueOf(application / json));";
+            = "httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(0)).add(HttpHeaderName"
+                + ".CONTENT_TYPE, String.valueOf(application / json));";
         assertTrue(normalizedBody.contains(expectedHttpRequestHeaderStatement));
+    }
+
+    @Test
+    public void testAddStaticHeaders() {
+        BlockStmt body = new BlockStmt();
+        HttpRequestContext method = new HttpRequestContext();
+        method.setHeaders(new String[] { "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" });
+
+        JavaParserTemplateProcessor processor = new JavaParserTemplateProcessor();
+        processor.addStaticHeaders(body, method);
+
+        String normalizedBody = body.toString().replaceAll("\\s+", " ").trim();
+
+        // Ensure headers are set correctly
+        String expectedHeaderStatement = "httpRequest.getHeaders().set(HttpHeaderName.fromString(\"MyHeader\"), "
+            + "\"MyHeaderValue\").set(HttpHeaderName.fromString(\"MyOtherHeader\"), \"My,Header,Value\");";
+
+        assertTrue(normalizedBody.contains(expectedHeaderStatement));
     }
 
 }

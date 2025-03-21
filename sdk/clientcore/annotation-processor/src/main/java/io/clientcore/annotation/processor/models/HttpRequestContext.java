@@ -32,8 +32,9 @@ public final class HttpRequestContext {
     // It will likely have one or more substitutions in it, which will be replaced with the appropriate parameter values
     // annotated with @PathParam.
     private String path;
+    private String[] headers;
 
-    private final Map<String, String> headers;
+    private final Map<String, String> headerParams;
     private final Map<String, String> queryParams;
 
     private final Map<String, Substitution> substitutions;
@@ -45,9 +46,10 @@ public final class HttpRequestContext {
      */
     public HttpRequestContext() {
         this.parameters = new ArrayList<>();
-        this.headers = new HashMap<>();
+        this.headerParams = new HashMap<>();
         this.queryParams = new HashMap<>();
         this.substitutions = new HashMap<>();
+        headers = new String[0];
     }
 
     private Body body;
@@ -161,12 +163,12 @@ public final class HttpRequestContext {
     }
 
     /**
-     * Gets the headers.
+     * Gets the headerParams.
      *
-     * @return the headers.
+     * @return the headerParams.
      */
-    public Map<String, String> getHeaders() {
-        return headers;
+    public Map<String, String> getHeaderParams() {
+        return headerParams;
     }
 
     /**
@@ -175,8 +177,17 @@ public final class HttpRequestContext {
      * @param key the header key.
      * @param value the header value.
      */
-    public void addHeader(String key, String value) {
-        headers.put(key, value);
+    public void addHeaderParam(String key, String value) {
+        headerParams.put(key, value);
+    }
+
+    /**
+     * Sets the static headers.
+     *
+     * @param headers the static headers
+     */
+    public void setHeaders(String[] headers) {
+        this.headers = headers;
     }
 
     /**
@@ -279,6 +290,14 @@ public final class HttpRequestContext {
      */
     public void setIsConvenience(boolean isConvenience) {
         this.isConvenience = isConvenience;
+    }
+
+    /**
+     * Gets the static headers.
+     * @return the static headers.
+     */
+    public String[] getHeaders() {
+        return headers;
     }
 
     /**

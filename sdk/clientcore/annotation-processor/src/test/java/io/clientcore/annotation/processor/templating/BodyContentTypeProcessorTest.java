@@ -39,8 +39,8 @@ public class BodyContentTypeProcessorTest {
 
         // Add headers
         // Content-Type header is set to "application/json"
-        context.addHeader("Content-Type", "application/json");
-        context.addHeader("Content-Length", String.valueOf((long) bytes.length));
+        context.addHeaderParam("Content-Type", "application/json");
+        context.addHeaderParam("Content-Length", String.valueOf((long) bytes.length));
         HttpRequestContext.Body requestBody = context.getBody();
 
         BlockStmt body = new BlockStmt();
@@ -107,8 +107,8 @@ public class BodyContentTypeProcessorTest {
 
         // Add headers
         // Content-Type header is set to "application/json"
-        context.addHeader("Content-Type", "application/json");
-        context.addHeader("Content-Length", String.valueOf((long) bytes.length));
+        context.addHeaderParam("Content-Type", "application/json");
+        context.addHeaderParam("Content-Length", String.valueOf((long) bytes.length));
         HttpRequestContext.Body requestBody = context.getBody();
 
         BlockStmt body = new BlockStmt();
