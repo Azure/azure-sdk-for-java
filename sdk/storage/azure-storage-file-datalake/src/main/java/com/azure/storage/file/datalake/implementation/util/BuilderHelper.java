@@ -253,4 +253,13 @@ public final class BuilderHelper {
         }
 
     }
+
+    public static Context skipResponseValidationForEncryptionKey(Context context) {
+        if (context == null) {
+            return new Context(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME, null);
+        } else {
+            return context.addData(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME, null);
+        }
+
+    }
 }
