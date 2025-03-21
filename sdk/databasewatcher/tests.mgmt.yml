@@ -1,0 +1,15 @@
+trigger: none
+
+pr: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: databasewatcher
+    Artifacts:
+      - name: azure-resourcemanager-databasewatcher
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdatabasewatcher
+    # Only run tests on Windows to save cost.
+    MatrixFilters:
+      - pool=.*(win).*
