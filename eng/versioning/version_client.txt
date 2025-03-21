@@ -497,11 +497,6 @@ io.clientcore:annotation-processor-test;1.0.0-beta.1;1.0.0-beta.1
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
 unreleased_io.clientcore:core;1.0.0-beta.8
-<<<<<<< HEAD
-unreleased_io.clientcore:annotation-processor;1.0.0-beta.2
-=======
->>>>>>> a84c1f5b37a (update annotation processor)
-unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_io.clientcore:annotation-processor;1.0.0-beta.2
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
