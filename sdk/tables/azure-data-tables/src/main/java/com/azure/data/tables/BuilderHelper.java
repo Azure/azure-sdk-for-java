@@ -51,7 +51,7 @@ final class BuilderHelper {
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-data-tables.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
-    private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.com";
+    private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.";
     private static final String TABLES_TRACING_NAMESPACE_VALUE = "Microsoft.Tables";
 
     public static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();

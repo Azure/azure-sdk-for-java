@@ -32,6 +32,16 @@ import java.util.List;
 public class JsonSerializer implements ObjectSerializer {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializer.class);
 
+    private static final JsonSerializer INSTANCE = new JsonSerializer();
+
+    /**
+     * Get an instance of the {@link JsonSerializer}
+     * @return An instance of {@link JsonSerializer}
+     */
+    public static JsonSerializer getInstance() {
+        return INSTANCE;
+    }
+
     /**
      * Creates an instance of the {@link JsonSerializer}.
      */

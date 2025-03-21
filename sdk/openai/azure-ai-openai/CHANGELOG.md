@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `ServiceTier` and `ServiceTierOptions` for `ChatCompletions` and `ChatCompletionsOptions` respectively. This is exclusively a non-Azure OpenAI issue and was requested in [this issue](https://github.com/Azure/azure-sdk-for-java/issues/41695#issuecomment-2736037879).
+
 ### Breaking Changes
 
 ### Bugs Fixed
