@@ -29,7 +29,7 @@ public class DeadlockTests {
     public void attemptToDeadlock() {
         HttpClient httpClient = new VertxHttpClientProvider().createInstance();
 
-        String endpoint = VertxHttpClientLocalTestServer.getServer().getHttpUri() + GET_ENDPOINT;
+        String endpoint = VertxHttpClientLocalTestServer.getServer().getUri() + GET_ENDPOINT;
 
         Mono<Tuple2<byte[], Integer>> request = httpClient.send(new HttpRequest(HttpMethod.GET, endpoint))
             .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody(), 32768)

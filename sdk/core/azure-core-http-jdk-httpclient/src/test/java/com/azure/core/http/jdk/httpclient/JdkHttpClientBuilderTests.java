@@ -5,6 +5,7 @@ package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
@@ -24,6 +25,7 @@ import reactor.test.StepVerifier;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -39,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -51,8 +54,8 @@ public class JdkHttpClientBuilderTests {
     static final String SERVICE_ENDPOINT = "/default";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
-    private static final String SERVER_HTTP_URI = JdkHttpClientLocalTestServer.getServer().getHttpUri();
-    private static final int PROXY_SERVER_HTTP_PORT = JdkHttpClientLocalTestServer.getProxyServer().getHttpPort();
+    private static final String SERVER_HTTP_URI = JdkHttpClientLocalTestServer.getServer().getUri();
+    private static final int PROXY_SERVER_HTTP_PORT = JdkHttpClientLocalTestServer.getProxyServer().getPort();
 
     /**
      * Tests that an {@link JdkHttpClient} is able to be built from an existing
@@ -287,6 +290,32 @@ public class JdkHttpClientBuilderTests {
         assertTrue(restrictedHeaders.contains("connection"), "connection header is missing");
 
         assertFalse(restrictedHeaders.contains("content-length"), "content-length not removed");
+    }
+
+    @Test
+    public void noHttpProtocolResultsInJustHttp11() {
+        JdkHttpClient client = (JdkHttpClient) new JdkHttpClientBuilder().build();
+
+        java.net.http.HttpClient.Version version = client.jdkHttpClient.version();
+        assertEquals(java.net.http.HttpClient.Version.HTTP_1_1, version);
+    }
+
+    @Test
+    public void missingHttp11InHttpProtocolsThrows() {
+        assertThrows(IllegalArgumentException.class,
+            () -> new JdkHttpClientBuilder().setProtocolVersions(EnumSet.noneOf(HttpProtocolVersion.class)));
+        assertThrows(IllegalArgumentException.class,
+            () -> new JdkHttpClientBuilder().setProtocolVersions(EnumSet.of(HttpProtocolVersion.HTTP_2)));
+    }
+
+    @Test
+    public void settingHttp2InHttpProtocolsAllowsHttp2() {
+        JdkHttpClient client = (JdkHttpClient) new JdkHttpClientBuilder()
+            .setProtocolVersions(EnumSet.of(HttpProtocolVersion.HTTP_2, HttpProtocolVersion.HTTP_1_1))
+            .build();
+
+        java.net.http.HttpClient.Version version = client.jdkHttpClient.version();
+        assertEquals(java.net.http.HttpClient.Version.HTTP_2, version);
     }
 
     private static void configurationProxyTest(Configuration configuration) {
