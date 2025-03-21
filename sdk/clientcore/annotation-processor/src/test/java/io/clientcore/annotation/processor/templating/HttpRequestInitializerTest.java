@@ -3,11 +3,18 @@
 
 package io.clientcore.annotation.processor.templating;
 
+import com.github.javaparser.ast.stmt.BlockStmt;
+import io.clientcore.annotation.processor.mocks.MockTypeMirror;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -31,8 +38,11 @@ public class HttpRequestInitializerTest {
         method.setHttpMethod(HttpMethod.valueOf(httpMethod));
         method.addQueryParam(queryKey1, queryValue1);
         method.addQueryParam(queryKey2, queryValue2);
-        method.addHeader("Content-Type", "application/json");
-        method.addHeader("Content-Length", String.valueOf(0));
+        TypeMirror typeMirror = new MockTypeMirror(TypeKind.DECLARED, "int");
+        method.addParameter(new HttpRequestContext.MethodParameter(typeMirror, "String", queryKey1));
+        method.addParameter(new HttpRequestContext.MethodParameter(typeMirror, "String", queryKey2));
+        method.addHeaderParam("Content-Type", "application/json");
+        method.addHeaderParam("Content-Length", String.valueOf(0));
 
         // Act: Call the method
         processor.initializeHttpRequest(body, method);
@@ -62,8 +72,42 @@ public class HttpRequestInitializerTest {
         assertTrue(normalizedBody.contains(expectedHttpRequestStatement));
 
         String expectedHttpRequestHeaderStatement
-            = "httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(0)).add(HttpHeaderName.CONTENT_TYPE, String.valueOf(application / json));";
+            = "httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(0)).add(HttpHeaderName"
+                + ".CONTENT_TYPE, String.valueOf(application / json));";
         assertTrue(normalizedBody.contains(expectedHttpRequestHeaderStatement));
+    }
+
+    @Test
+    public void testAddStaticHeaders() {
+        BlockStmt body = new BlockStmt();
+        HttpRequestContext method = new HttpRequestContext();
+        method.setHeaders(
+            new String[] { "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value", "Accept:AcceptValue" });
+
+        JavaParserTemplateProcessor processor = new JavaParserTemplateProcessor();
+        processor.addStaticHeaders(body, method);
+
+        String normalizedBody = body.toString().replaceAll("\\s+", " ").trim();
+
+        // Ensure headers are set correctly
+        String expectedHeaderStatement
+            = "httpRequest.getHeaders().set(HttpHeaderName.fromString(\"MyHeader\"), \"MyHeaderValue\").set(HttpHeaderName.fromString(\"MyOtherHeader\"), Arrays.asList(\"My\", \"Header\", \"Value\")).set(HttpHeaderName.ACCEPT, \"AcceptValue\");";
+        assertTrue(normalizedBody.contains(expectedHeaderStatement));
+    }
+
+    @Test
+    public void addStaticHeadersThrowsOnMissingColon() {
+        BlockStmt body = new BlockStmt();
+        HttpRequestContext method = new HttpRequestContext();
+        method.setHeaders(new String[] { "InvalidHeaderWithoutColon" });
+        JavaParserTemplateProcessor processor = new JavaParserTemplateProcessor();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            processor.addStaticHeaders(body, method);
+        });
+
+        assertEquals("Invalid HTTP header: missing ':' separator for InvalidHeaderWithoutColon",
+            exception.getMessage());
     }
 
 }

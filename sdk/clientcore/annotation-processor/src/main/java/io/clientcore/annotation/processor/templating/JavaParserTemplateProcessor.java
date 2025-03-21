@@ -36,9 +36,7 @@ import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.type.TypeMirror;
+import io.clientcore.core.utils.CoreUtils;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.Writer;
@@ -46,11 +44,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.type.TypeMirror;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
 
@@ -237,6 +239,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
      * @param contentType The content type of the request
      * @param parameterName The name of the parameter
      * @param isContentTypeSetInHeaders Whether the content type is set in the headers
+     *
      * @return boolean indicating if serializationFormat set and used in request body
      */
     boolean configureBodyWithContentType(BlockStmt body, String parameterType, String contentType, String parameterName,
@@ -310,11 +313,62 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         BlockStmt body = internalMethod.getBody().get();
 
         initializeHttpRequest(body, method);
-        boolean serializationFormatSet = addRequestBody(body, method);
         addRequestOptionsToRequestIfPresent(body, method);
+        boolean serializationFormatSet = addRequestBody(body, method);
+        addStaticHeaders(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
-
         internalMethod.setBody(body);
+    }
+
+    void addStaticHeaders(BlockStmt body, HttpRequestContext method) {
+        // Headers from HttpRequestInformation always take precedence over inferred headers from body types
+        if (!CoreUtils.isNullOrEmpty(method.getHeaders())) {
+            String[] requestHeaders = method.getHeaders();
+            StringBuilder statementBuilder = new StringBuilder("httpRequest.getHeaders()");
+            for (String requestHeader : requestHeaders) {
+                int colonIndex = requestHeader.indexOf(":");
+
+                if (colonIndex < 0) {
+                    throw new IllegalArgumentException(
+                        "Invalid HTTP header: missing ':' separator for " + requestHeader);
+                }
+
+                String headerName = requestHeader.substring(0, colonIndex).trim();
+                String headerValue = requestHeader.substring(colonIndex + 1).trim();
+
+                if (headerName.isEmpty()) {
+                    throw new IllegalArgumentException(
+                        "Invalid HTTP header: header name cannot be empty for " + requestHeader);
+                }
+
+                String constantName
+                    = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerName.toLowerCase(Locale.ROOT));
+                String headerReference = (constantName != null)
+                    ? "HttpHeaderName." + constantName
+                    : "HttpHeaderName.fromString(\"" + headerName + "\")";
+
+                if (!headerValue.isEmpty()) {
+                    if (headerValue.contains(",")) {
+                        compilationUnit.tryAddImportToParentCompilationUnit(Arrays.class);
+                        statementBuilder.append(".set(")
+                            .append(headerReference)
+                            .append(", Arrays.asList(\"")
+                            .append(headerValue.replace(",", "\", \""))
+                            .append("\"))");
+                    } else {
+                        statementBuilder.append(".set(")
+                            .append(headerReference)
+                            .append(", \"")
+                            .append(headerValue)
+                            .append("\")");
+                    }
+                } else {
+                    statementBuilder.append(".set(").append(headerReference).append(", \"\")"); // Explicitly set empty value for headers like "Header-Name:"
+                }
+            }
+            statementBuilder.append(";");
+            body.addStatement(statementBuilder.toString());
+        }
     }
 
     // Helper methods
@@ -359,6 +413,13 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             body.addStatement(newUrlDeclaration);
 
             method.getQueryParams().forEach((key, value) -> {
+                Optional<HttpRequestContext.MethodParameter> valueTypeOpt
+                    = method.getParameters().stream().filter(parameter -> key.equals(parameter.getName())).findFirst();
+
+                boolean isStringType
+                    = valueTypeOpt.map(param -> "String".equals(param.getShortTypeName())).orElse(false);
+                value = isStringType ? value : "String.valueOf(" + value + ")";
+
                 body.addStatement(String.format("newUrl = CoreUtils.appendQueryParam(url, \"%s\", %s);", key, value));
                 body.addStatement("if (newUrl != null) { url = newUrl; }");
             });
@@ -374,13 +435,13 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     private void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
-        if (method.getHeaders().isEmpty()) {
+        if (method.getHeaderParams().isEmpty()) {
             return;
         }
 
         body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
         StringBuilder httpRequestBuilder = new StringBuilder("httpRequest.getHeaders()"); // Start the header chaining
-        for (Map.Entry<String, String> header : method.getHeaders().entrySet()) {
+        for (Map.Entry<String, String> header : method.getHeaderParams().entrySet()) {
             boolean isStringType = method.getParameters()
                 .stream()
                 .anyMatch(parameter -> parameter.getName().equals(header.getValue())
