@@ -152,19 +152,11 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret setSecret(String name, String value) {
-        try (Response<SecretBundle> response = implClient.setSecretWithResponse(name, new SecretSetParameters(value),
-            RequestOptions.none())) {
-
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
-
-            return createKeyVaultSecret(response.getValue());
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
+
+        return setSecret(new KeyVaultSecret(name, value));
     }
 
     /**
@@ -193,20 +185,16 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret setSecret(KeyVaultSecret secret) {
-        try (Response<SecretBundle> response = implClient.setSecretWithResponse(secret.getName(),
-            prepareSecretSetParameters(secret), RequestOptions.none())) {
-
+        try {
             Objects.requireNonNull(secret, "'secret' cannot be null.");
 
             if (isNullOrEmpty(secret.getName())) {
                 throw new IllegalArgumentException("'secret.getName()' cannot be null or empty.");
             }
 
-            return createKeyVaultSecret(response.getValue());
+            return createKeyVaultSecret(implClient.setSecret(secret.getName(), prepareSecretSetParameters(secret)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -237,6 +225,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> setSecretWithResponse(KeyVaultSecret secret, RequestOptions requestOptions) {
+        // Using try-with-resources to ensure the response is closed.
         try (Response<SecretBundle> response = implClient.setSecretWithResponse(secret.getName(),
             prepareSecretSetParameters(secret), requestOptions)) {
 
@@ -315,8 +304,7 @@ public final class SecretClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return createKeyVaultSecret(
-                implClient.getSecretWithResponse(name, version, RequestOptions.none()).getValue());
+            return createKeyVaultSecret(implClient.getSecret(name, version));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -344,17 +332,18 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, RequestOptions requestOptions) {
-        try {
+        // Using try-with-resources to ensure the response is closed.
+        try (Response<SecretBundle> response = implClient.getSecretWithResponse(name, version, requestOptions)) {
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
-
-            Response<SecretBundle> response = implClient.getSecretWithResponse(name, version, requestOptions);
 
             return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 createKeyVaultSecret(response.getValue()));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -382,20 +371,18 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretProperties updateSecretProperties(SecretProperties secretProperties) {
-        try (Response<SecretBundle> response = implClient.updateSecretWithResponse(secretProperties.getName(),
-            secretProperties.getVersion(), prepareUpdateSecretParameters(secretProperties), RequestOptions.none())) {
-
+        try {
             Objects.requireNonNull(secretProperties, "'secretProperties' cannot be null.");
 
             if (isNullOrEmpty(secretProperties.getName())) {
                 throw new IllegalArgumentException("'secretProperties.getName()' cannot be null or empty.");
             }
 
-            return createSecretProperties(response.getValue());
+            return createSecretProperties(
+                implClient.updateSecret(secretProperties.getName(), secretProperties.getVersion(),
+                    prepareUpdateSecretParameters(secretProperties)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -427,6 +414,7 @@ public final class SecretClient {
     public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties,
         RequestOptions requestOptions) {
 
+        // Using try-with-resources to ensure the response is closed.
         try (Response<SecretBundle> response = implClient.updateSecretWithResponse(secretProperties.getName(),
             secretProperties.getVersion(), prepareUpdateSecretParameters(secretProperties), requestOptions)) {
 
@@ -537,7 +525,7 @@ public final class SecretClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return createDeletedSecret(implClient.getDeletedSecretWithResponse(name, RequestOptions.none()).getValue());
+            return createDeletedSecret(implClient.getDeletedSecret(name));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -562,17 +550,18 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSecret> getDeletedSecretWithResponse(String name, RequestOptions requestOptions) {
-        try {
+        // Using try-with-resources to ensure the response is closed.
+        try (Response<DeletedSecretBundle> response = implClient.getDeletedSecretWithResponse(name, requestOptions)) {
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
-
-            Response<DeletedSecretBundle> response = implClient.getDeletedSecretWithResponse(name, requestOptions);
 
             return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 createDeletedSecret(response.getValue()));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -593,13 +582,14 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedSecret(String name) {
-        // Using try-with-resources to ensure the response is closed.
-        try (Response<Void> response = purgeDeletedSecretWithResponse(name, RequestOptions.none())) {
-            // Ignored
+        try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
+
+            implClient.purgeDeletedSecret(name);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -704,17 +694,14 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] backupSecret(String name) {
-        if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
-        }
+        try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
 
-        // Using try-with-resources to ensure the response is closed.
-        try (Response<byte[]> response = backupSecretWithResponse(name, RequestOptions.none())) {
-            return response.getValue();
+            return implClient.backupSecret(name).getValue();
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -769,14 +756,10 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret restoreSecretBackup(byte[] backup) {
-        try (Response<SecretBundle> response = implClient.restoreSecretWithResponse(new SecretRestoreParameters(backup),
-            RequestOptions.none())) {
-
-            return createKeyVaultSecret(response.getValue());
+        try {
+            return createKeyVaultSecret(implClient.restoreSecret(new SecretRestoreParameters(backup)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -798,6 +781,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> restoreSecretBackupWithResponse(byte[] backup, RequestOptions requestOptions) {
+        // Using try-with-resources to ensure the response is closed.
         try (Response<SecretBundle> response = implClient.restoreSecretWithResponse(new SecretRestoreParameters(backup),
             requestOptions)) {
 
