@@ -61,7 +61,8 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @param requestContext an instance of {@link SdkRequestContext}
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public DefaultPollingStrategy(HttpPipeline httpPipeline, JsonSerializer serializer, SdkRequestContext requestContext) {
+    public DefaultPollingStrategy(HttpPipeline httpPipeline, JsonSerializer serializer,
+        SdkRequestContext requestContext) {
         this(httpPipeline, null, serializer, requestContext);
     }
 
@@ -77,11 +78,11 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer,
-                                  SdkRequestContext requestContext) {
-        this.chainedPollingStrategy = new ChainedPollingStrategy<>(
-            Arrays.asList(new OperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, requestContext),
-                new LocationPollingStrategy<>(httpPipeline, endpoint, serializer, requestContext),
-                new StatusCheckPollingStrategy<>(serializer)));
+        SdkRequestContext requestContext) {
+        this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
+            new OperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, requestContext),
+            new LocationPollingStrategy<>(httpPipeline, endpoint, serializer, requestContext),
+            new StatusCheckPollingStrategy<>(serializer)));
     }
 
     /**
