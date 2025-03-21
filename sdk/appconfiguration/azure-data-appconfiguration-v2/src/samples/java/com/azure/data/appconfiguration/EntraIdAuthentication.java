@@ -4,8 +4,8 @@
 package com.azure.data.appconfiguration;
 
 
-import com.azure.identity.v2.ManagedIdentityCredential;
-import com.azure.identity.v2.ManagedIdentityCredentialBuilder;
+//import com.azure.identity.v2.ManagedIdentityCredential;
+//import com.azure.identity.v2.ManagedIdentityCredentialBuilder;
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClient;
 import com.azure.v2.data.appconfiguration.AzureAppConfigurationClientBuilder;
 import com.azure.v2.data.appconfiguration.models.KeyValue;
@@ -37,10 +37,10 @@ public class EntraIdAuthentication {
         //      ManagedIdentityCredential
         //      SharedTokenCacheCredential
         //      Fails if none of the credentials above could be created.
-        ManagedIdentityCredential tokenCredential = new ManagedIdentityCredentialBuilder().build();
+//        ManagedIdentityCredential tokenCredential = new ManagedIdentityCredentialBuilder().build();
 
         final AzureAppConfigurationClient client = new AzureAppConfigurationClientBuilder()
-            .credential(tokenCredential) // Entra authentication
+//            .credential(tokenCredential) // Entra authentication
             .endpoint(endpoint)
             .buildClient();
 

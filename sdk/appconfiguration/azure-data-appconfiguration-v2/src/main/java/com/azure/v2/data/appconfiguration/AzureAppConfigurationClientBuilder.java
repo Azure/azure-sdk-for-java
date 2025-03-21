@@ -75,25 +75,6 @@ public final class AzureAppConfigurationClientBuilder
     }
 
     /*
-     * The HTTP pipeline to send requests through.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    private HttpPipeline pipeline;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    @Override
-    public AzureAppConfigurationClientBuilder httpPipeline(HttpPipeline pipeline) {
-        if (this.pipeline != null && pipeline == null) {
-            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
-        }
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
      * The HTTP client used to send the request.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -296,7 +277,7 @@ public final class AzureAppConfigurationClientBuilder
         this.endpoint = credentialsLocal.getBaseUri();
         // Manual changes end
         this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline(credentialsLocal);
+        HttpPipeline localPipeline = createHttpPipeline(credentialsLocal);
         AzureAppConfigurationServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AzureAppConfigurationServiceVersion.getLatest();
         AzureAppConfigurationClientImpl client
