@@ -112,7 +112,6 @@
       <version>1.14.10</version><!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>

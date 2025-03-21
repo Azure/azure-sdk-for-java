@@ -11,8 +11,10 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.configuration.Configuration;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,17 @@ public final class IdentityUtil {
     public static final HttpHeaderName X_TFS_FED_AUTH_REDIRECT = HttpHeaderName.fromString("X-TFS-FedAuthRedirect");
     public static final HttpHeaderName X_VSS_E2EID = HttpHeaderName.fromString("x-vss-e2eid");
     public static final HttpHeaderName X_MSEDGE_REF = HttpHeaderName.fromString("x-msedge-ref");
+    public static final String PROPERTY_AZURE_TENANT_ID = "AZURE_TENANT_ID";
+    public static final String PROPERTY_AZURE_CLIENT_ID = "AZURE_CLIENT_ID";
+    public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH = "AZURE_CLIENT_CERTIFICATE_PATH";
+    public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD = "AZURE_CLIENT_CERTIFICATE_PATH";
+    public static final String PROPERTY_AZURE_CLIENT_SECRET = "AZURE_CLIENT_SECRET";
+    public static final String AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
+    public static final String PROPERTY_AZURE_CLIENT_SEND_CERTIFICATE_CHAIN = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN";
+    public static final String AZURE_ADDITIONALLY_ALLOWED_TENANTS = "AZURE_ADDITIONALLY_ALLOWED_TENANTS";
+    public static final String PROPERTY_AZURE_AUTHORITY_HOST = "AZURE_AUTHORITY_HOST";
+    public static final File NULL_FILE
+        = new File((System.getProperty("os.name").startsWith("Windows") ? "NUL" : "/dev/null"));
 
     private IdentityUtil() {
     }
@@ -119,5 +132,30 @@ public final class IdentityUtil {
     public static boolean browserCustomizationOptionsPresent(BrowserCustomizationOptions browserCustomizationOptions) {
         return !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getErrorMessage())
             || !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getSuccessMessage());
+    }
+
+    public static byte[] convertInputStreamToByteArray(InputStream inputStream) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        try {
+            int read = inputStream.read(buffer, 0, buffer.length);
+            while (read != -1) {
+                outputStream.write(buffer, 0, read);
+                read = inputStream.read(buffer, 0, buffer.length);
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+        return outputStream.toByteArray();
+    }
+
+    public static List<String> getAdditionalTenantsFromEnvironment(Configuration configuration) {
+        String additionalTenantsFromEnv = configuration.get(AZURE_ADDITIONALLY_ALLOWED_TENANTS);
+        if (!CoreUtils.isNullOrEmpty(additionalTenantsFromEnv)) {
+            return resolveAdditionalTenants(
+                Arrays.asList(configuration.get(AZURE_ADDITIONALLY_ALLOWED_TENANTS).split(";")));
+        } else {
+            return Collections.emptyList();
+        }
     }
 }

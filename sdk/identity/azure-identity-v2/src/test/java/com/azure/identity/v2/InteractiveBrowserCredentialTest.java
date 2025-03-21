@@ -42,7 +42,7 @@ public class InteractiveBrowserCredentialTest {
 
         try (MockedConstruction<PublicClient> identityClientMock
             = mockConstruction(PublicClient.class, (identitySyncClient, context) -> {
-                when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null)))
+                when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1)))
                     .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
                 when(identitySyncClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
@@ -60,7 +60,7 @@ public class InteractiveBrowserCredentialTest {
             })) {
             // test
             InteractiveBrowserCredential credential
-                = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
+                = new InteractiveBrowserCredentialBuilder().clientId(CLIENT_ID).build();
             AccessToken accessToken = credential.getToken(request1);
             Assertions.assertEquals(token1, accessToken.getToken());
             Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
@@ -87,7 +87,7 @@ public class InteractiveBrowserCredentialTest {
 
         try (MockedConstruction<PublicClient> identityClientMock
             = mockConstruction(PublicClient.class, (publicClient, context) -> {
-                when(publicClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null)))
+                when(publicClient.authenticateWithBrowserInteraction(eq(request1)))
                     .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
                 when(publicClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
@@ -106,7 +106,7 @@ public class InteractiveBrowserCredentialTest {
             })) {
             // test
             InteractiveBrowserCredential credential
-                = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
+                = new InteractiveBrowserCredentialBuilder().clientId(CLIENT_ID).build();
             AccessToken accessToken = credential.getToken(request1);
             Assertions.assertEquals(token1, accessToken.getToken());
             Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
@@ -129,8 +129,8 @@ public class InteractiveBrowserCredentialTest {
 
         try (MockedConstruction<PublicClient> identityClientMock
             = mockConstruction(PublicClient.class, (identitySyncClient, context) -> {
-                when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(redirectUrl),
-                    eq(null))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+                when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1)))
+                    .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
                 when(identitySyncClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                     if (argument.getScopes().size() == 1
@@ -171,8 +171,8 @@ public class InteractiveBrowserCredentialTest {
         // mock
         try (MockedConstruction<PublicClient> identityClientMock
             = mockConstruction(PublicClient.class, (identitySyncClient, context) -> {
-                when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(null),
-                    eq(username))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+                when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1)))
+                    .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
                 when(identitySyncClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                     if (argument.getScopes().size() == 1
@@ -205,7 +205,6 @@ public class InteractiveBrowserCredentialTest {
         // setup
         Assertions.assertThrows(IllegalArgumentException.class,
             () -> new InteractiveBrowserCredentialBuilder().clientId(CLIENT_ID)
-                .port(8080)
                 .redirectUrl("http://localhost:8080")
                 .build());
     }
@@ -223,12 +222,12 @@ public class InteractiveBrowserCredentialTest {
         // mock
         try (MockedConstruction<PublicClient> identityClientMock
             = mockConstruction(PublicClient.class, (identityClient, context) -> {
-                when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null)))
+                when(identityClient.authenticateWithBrowserInteraction(eq(request1)))
                     .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
             })) {
             // test
             InteractiveBrowserCredential credential
-                = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
+                = new InteractiveBrowserCredentialBuilder().clientId(CLIENT_ID).build();
             AuthenticationRecord authenticationRecord = credential.authenticate(request1);
 
             Assertions.assertTrue(authenticationRecord.getAuthority().equals("http://login.microsoftonline.com")

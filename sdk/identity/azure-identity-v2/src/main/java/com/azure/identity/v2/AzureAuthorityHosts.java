@@ -29,14 +29,6 @@ public final class AzureAuthorityHosts {
     public static final String AZURE_CHINA = "https://login.chinacloudapi.cn/";
 
     /**
-     * The host of the Microsoft Entra authority for tenants in the Azure German Cloud.
-     *
-     * @deprecated Microsoft Cloud Germany was closed on October 29th, 2021.
-     */
-    @Deprecated
-    public static final String AZURE_GERMANY = "https://login.microsoftonline.de/";
-
-    /**
      * The host of the Microsoft Entra authority for tenants in the Azure US Government Cloud.
      */
     public static final String AZURE_GOVERNMENT = "https://login.microsoftonline.us/";
@@ -48,9 +40,6 @@ public final class AzureAuthorityHosts {
 
             case AZURE_CHINA:
                 return "https://management.core.chinacloudapi.cn//.default";
-
-            case AZURE_GERMANY:
-                return "https://management.core.cloudapi.de//.default";
 
             case AZURE_GOVERNMENT:
                 return "https://management.core.usgovcloudapi.net//.default";

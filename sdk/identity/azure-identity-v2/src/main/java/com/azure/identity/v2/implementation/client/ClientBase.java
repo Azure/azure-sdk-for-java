@@ -6,10 +6,7 @@ package com.azure.identity.v2.implementation.client;
 import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.HttpPipelineOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.pipeline.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,13 +52,36 @@ public abstract class ClientBase {
     }
 
     HttpPipeline setupPipeline() {
-        //TODO (g2vinay): Wire the HttpPipelineOptions in Pipeline construction.
+        // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new HttpRetryPolicy());
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().addPolicy(policies.get(0))
-            .httpClient(getHttpPipelineOptions().getHttpClient())
-            .build();
-        return httpPipeline;
+
+        policies.add(clientOptions.getHttpPipelineOptions().getHttpRedirectOptions() == null
+            ? new HttpRedirectPolicy()
+            : new HttpRedirectPolicy(clientOptions.getHttpPipelineOptions().getHttpRedirectOptions()));
+
+        if (clientOptions.getHttpPipelineOptions().getHttpRetryOptions() != null) {
+            policies.add(new HttpRetryPolicy(clientOptions.getHttpPipelineOptions().getHttpRetryOptions()));
+        } else {
+            policies.add(new HttpRetryPolicy());
+        }
+
+        //TODO (g2vinay): Wire the ClientOptions and HeaderPolicy when available in Pipeline construction.
+
+        policies.addAll(this.clientOptions.getHttpPipelineOptions().getHttpPipelinePolicy());
+
+        HttpInstrumentationOptions instrumentationOptions
+            = this.clientOptions.getHttpPipelineOptions().getHttpInstrumentationOptions() == null
+                ? new HttpInstrumentationOptions()
+                : this.clientOptions.getHttpPipelineOptions().getHttpInstrumentationOptions();
+
+        policies.add(new HttpInstrumentationPolicy(instrumentationOptions));
+
+        HttpPipelineBuilder httpPipelineBuilder = new HttpPipelineBuilder();
+
+        // Add all policies to the pipeline.
+        policies.forEach(httpPipelineBuilder::addPolicy);
+
+        return httpPipelineBuilder.httpClient(getHttpPipelineOptions().getHttpClient()).build();
     }
 
     void initializeHttpPipelineAdapter() {

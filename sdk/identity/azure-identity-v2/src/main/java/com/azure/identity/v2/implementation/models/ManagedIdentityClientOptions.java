@@ -9,6 +9,7 @@ package com.azure.identity.v2.implementation.models;
 public class ManagedIdentityClientOptions extends ClientOptions {
     private String resourceId;
     private String objectId;
+    private boolean useImdsRetryStrategy;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -66,5 +67,14 @@ public class ManagedIdentityClientOptions extends ClientOptions {
                 .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())
                 .setTokenCacheOptions(this.getTokenCacheOptions());
         return clone;
+    }
+
+    public ManagedIdentityClientOptions setUseImdsRetryStrategy(boolean useImdsRetryStrategy) {
+        this.useImdsRetryStrategy = useImdsRetryStrategy;
+        return this;
+    }
+
+    public boolean getUseImdsRetryStrategy() {
+        return this.useImdsRetryStrategy;
     }
 }
