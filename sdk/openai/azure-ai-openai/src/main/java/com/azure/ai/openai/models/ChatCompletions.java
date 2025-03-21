@@ -43,6 +43,8 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
     @Generated
     private final CompletionsUsage usage;
 
+    private ServiceTier serviceTier;
+
     /**
      * Get the id property: A unique identifier associated with this chat completions response.
      *
@@ -93,6 +95,15 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
     @Generated
     public OffsetDateTime getCreatedAt() {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
+    }
+
+    /**
+     * This field is not available in Azure OpenAI. The service tier used for processing the request.
+     *
+     * @return the serviceTier value.
+     */
+    public ServiceTier getServiceTier() {
+        return serviceTier;
     }
 
     /*
@@ -173,7 +184,6 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -185,6 +195,9 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
         jsonWriter.writeArrayField("prompt_filter_results", this.promptFilterResults,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("system_fingerprint", this.systemFingerprint);
+        if (this.serviceTier != null) {
+            jsonWriter.writeStringField("service_tier", this.serviceTier.toString());
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -197,7 +210,6 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatCompletions.
      */
-    @Generated
     public static ChatCompletions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
@@ -206,6 +218,7 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
             CompletionsUsage usage = null;
             String model = null;
             List<ContentFilterResultsForPrompt> promptFilterResults = null;
+            ServiceTier serviceTier = null;
             String systemFingerprint = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -224,6 +237,8 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
                     promptFilterResults = reader.readArray(reader1 -> ContentFilterResultsForPrompt.fromJson(reader1));
                 } else if ("system_fingerprint".equals(fieldName)) {
                     systemFingerprint = reader.getString();
+                } else if ("service_tier".equals(fieldName)) {
+                    serviceTier = ServiceTier.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -232,6 +247,7 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
             deserializedChatCompletions.model = model;
             deserializedChatCompletions.promptFilterResults = promptFilterResults;
             deserializedChatCompletions.systemFingerprint = systemFingerprint;
+            deserializedChatCompletions.serviceTier = serviceTier;
             return deserializedChatCompletions;
         });
     }
