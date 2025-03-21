@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Marked `VisualStudioCodeCredential` and `VisualStudioCodeCredentialBuilder` as deprecated.
+
 ## 1.16.0-beta.1 (2025-03-13)
 
 ### Features Added
