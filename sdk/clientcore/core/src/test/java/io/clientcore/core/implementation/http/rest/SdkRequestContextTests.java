@@ -133,7 +133,7 @@ public class SdkRequestContextTests {
 
         assertSame(childReporter, innerRequestContext.getProgressReporter());
 
-        SdkRequestContext noExplicitProgressReporter  = SdkRequestContext.create(innerRequestContext);
+        SdkRequestContext noExplicitProgressReporter = SdkRequestContext.create(innerRequestContext);
         assertSame(childReporter, noExplicitProgressReporter.getProgressReporter());
     }
 
