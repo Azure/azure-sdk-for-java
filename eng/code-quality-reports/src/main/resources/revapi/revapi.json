@@ -755,7 +755,7 @@
           "ignore": true,
           "code": "java.class.nowFinal",
           "new": "class com\\.azure\\.resourcemanager\\.eventgrid\\.models\\.(DeadLetterWithResourceIdentity|DeliveryWithResourceIdentity|EventSubscriptionIdentity)",
-          "justification": "Class is now final."
+          "justification": "User should not be able to extend these classes."
         },
         {
           "ignore": true,
