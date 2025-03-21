@@ -50,9 +50,9 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
     private String region;
 
     /*
-     * The name of the embedding model from the Azure AI Studio Catalog that is deployed at the provided endpoint.
+     * The name of the embedding model from the Azure AI Foundry Catalog that is deployed at the provided endpoint.
      */
-    private AIStudioModelCatalogName modelName;
+    private AIFoundryModelCatalogName modelName;
 
     /**
      * Creates an instance of AzureMachineLearningParameters class.
@@ -160,23 +160,23 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
     }
 
     /**
-     * Get the modelName property: The name of the embedding model from the Azure AI Studio Catalog that is deployed at
+     * Get the modelName property: The name of the embedding model from the Azure AI Foundry Catalog that is deployed at
      * the provided endpoint.
      * 
      * @return the modelName value.
      */
-    public AIStudioModelCatalogName getModelName() {
+    public AIFoundryModelCatalogName getModelName() {
         return this.modelName;
     }
 
     /**
-     * Set the modelName property: The name of the embedding model from the Azure AI Studio Catalog that is deployed at
+     * Set the modelName property: The name of the embedding model from the Azure AI Foundry Catalog that is deployed at
      * the provided endpoint.
      * 
      * @param modelName the modelName value to set.
      * @return the AzureMachineLearningParameters object itself.
      */
-    public AzureMachineLearningParameters setModelName(AIStudioModelCatalogName modelName) {
+    public AzureMachineLearningParameters setModelName(AIFoundryModelCatalogName modelName) {
         this.modelName = modelName;
         return this;
     }
@@ -213,7 +213,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
             String resourceId = null;
             Duration timeout = null;
             String region = null;
-            AIStudioModelCatalogName modelName = null;
+            AIFoundryModelCatalogName modelName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -230,7 +230,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
                 } else if ("region".equals(fieldName)) {
                     region = reader.getString();
                 } else if ("modelName".equals(fieldName)) {
-                    modelName = AIStudioModelCatalogName.fromString(reader.getString());
+                    modelName = AIFoundryModelCatalogName.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

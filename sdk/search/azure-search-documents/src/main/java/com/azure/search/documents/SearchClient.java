@@ -1178,4 +1178,5 @@ public final class SearchClient {
             return new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue()));
         }, LOGGER);
     }
+
 }
