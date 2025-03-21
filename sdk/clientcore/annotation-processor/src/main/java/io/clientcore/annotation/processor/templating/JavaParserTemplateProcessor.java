@@ -44,6 +44,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -328,13 +329,25 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 int colonIndex = requestHeader.indexOf(":");
                 if (colonIndex >= 0) {
                     String headerName = requestHeader.substring(0, colonIndex).trim();
-                    String headerValue = requestHeader.substring(colonIndex + 1).trim();
-                    if (!headerName.isEmpty() && !headerValue.isEmpty()) {
-                        statementBuilder.append(".set(HttpHeaderName.fromString(\"")
-                            .append(headerName)
-                            .append("\"), \"")
-                            .append(headerValue)
-                            .append("\")");
+                    if (!headerName.isEmpty()) {
+                        String headerValue = requestHeader.substring(colonIndex + 1).trim();
+                        if (!headerValue.isEmpty()) {
+                            if (headerValue.contains(",")) {
+                                compilationUnit.tryAddImportToParentCompilationUnit(Arrays.class);
+                                // There are multiple values for this header, so we split them out.
+                                statementBuilder.append(".set(HttpHeaderName.fromString(\"")
+                                    .append(headerName)
+                                    .append("\"), Arrays.asList(\"")
+                                    .append(headerValue.replace(",", "\", \""))
+                                    .append("\"))");
+                            } else {
+                                statementBuilder.append(".set(HttpHeaderName.fromString(\"")
+                                    .append(headerName)
+                                    .append("\"), \"")
+                                    .append(headerValue)
+                                    .append("\")");
+                            }
+                        }
                     }
                 }
             }

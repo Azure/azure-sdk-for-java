@@ -87,9 +87,9 @@ public class HttpRequestInitializerTest {
         String normalizedBody = body.toString().replaceAll("\\s+", " ").trim();
 
         // Ensure headers are set correctly
-        String expectedHeaderStatement = "httpRequest.getHeaders().set(HttpHeaderName.fromString(\"MyHeader\"), "
-            + "\"MyHeaderValue\").set(HttpHeaderName.fromString(\"MyOtherHeader\"), \"My,Header,Value\");";
-
+        String expectedHeaderStatement
+            = "httpRequest.getHeaders().set(HttpHeaderName.fromString(\"MyHeader\"), \"MyHeaderValue\").set(HttpHeaderName.fromString(\"MyOtherHeader\"), Arrays.asList(\"My\", \"Header\", \"Value\"));";
+        System.out.println(normalizedBody);
         assertTrue(normalizedBody.contains(expectedHeaderStatement));
     }
 
