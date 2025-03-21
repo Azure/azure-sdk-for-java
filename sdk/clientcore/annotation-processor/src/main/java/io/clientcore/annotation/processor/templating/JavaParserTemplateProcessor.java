@@ -327,28 +327,43 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             StringBuilder statementBuilder = new StringBuilder("httpRequest.getHeaders()");
             for (String requestHeader : requestHeaders) {
                 int colonIndex = requestHeader.indexOf(":");
-                if (colonIndex >= 0) {
-                    String headerName = requestHeader.substring(0, colonIndex).trim();
-                    if (!headerName.isEmpty()) {
-                        String headerValue = requestHeader.substring(colonIndex + 1).trim();
-                        if (!headerValue.isEmpty()) {
-                            if (headerValue.contains(",")) {
-                                compilationUnit.tryAddImportToParentCompilationUnit(Arrays.class);
-                                // There are multiple values for this header, so we split them out.
-                                statementBuilder.append(".set(HttpHeaderName.fromString(\"")
-                                    .append(headerName)
-                                    .append("\"), Arrays.asList(\"")
-                                    .append(headerValue.replace(",", "\", \""))
-                                    .append("\"))");
-                            } else {
-                                statementBuilder.append(".set(HttpHeaderName.fromString(\"")
-                                    .append(headerName)
-                                    .append("\"), \"")
-                                    .append(headerValue)
-                                    .append("\")");
-                            }
-                        }
+
+                if (colonIndex < 0) {
+                    throw new IllegalArgumentException(
+                        "Invalid HTTP header: missing ':' separator for " + requestHeader);
+                }
+
+                String headerName = requestHeader.substring(0, colonIndex).trim();
+                String headerValue = requestHeader.substring(colonIndex + 1).trim();
+
+                if (headerName.isEmpty()) {
+                    throw new IllegalArgumentException(
+                        "Invalid HTTP header: header name cannot be empty for " + requestHeader);
+                }
+
+                String constantName
+                    = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerName.toLowerCase(Locale.ROOT));
+                String headerReference = (constantName != null)
+                    ? "HttpHeaderName." + constantName
+                    : "HttpHeaderName.fromString(\"" + headerName + "\")";
+
+                if (!headerValue.isEmpty()) {
+                    if (headerValue.contains(",")) {
+                        compilationUnit.tryAddImportToParentCompilationUnit(Arrays.class);
+                        statementBuilder.append(".set(")
+                            .append(headerReference)
+                            .append(", Arrays.asList(\"")
+                            .append(headerValue.replace(",", "\", \""))
+                            .append("\"))");
+                    } else {
+                        statementBuilder.append(".set(")
+                            .append(headerReference)
+                            .append(", \"")
+                            .append(headerValue)
+                            .append("\")");
                     }
+                } else {
+                    statementBuilder.append(".set(").append(headerReference).append(", \"\")"); // Explicitly set empty value for headers like "Header-Name:"
                 }
             }
             statementBuilder.append(";");

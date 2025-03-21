@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -79,7 +81,8 @@ public class HttpRequestInitializerTest {
     public void testAddStaticHeaders() {
         BlockStmt body = new BlockStmt();
         HttpRequestContext method = new HttpRequestContext();
-        method.setHeaders(new String[] { "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" });
+        method.setHeaders(
+            new String[] { "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value", "Accept:AcceptValue" });
 
         JavaParserTemplateProcessor processor = new JavaParserTemplateProcessor();
         processor.addStaticHeaders(body, method);
@@ -88,9 +91,23 @@ public class HttpRequestInitializerTest {
 
         // Ensure headers are set correctly
         String expectedHeaderStatement
-            = "httpRequest.getHeaders().set(HttpHeaderName.fromString(\"MyHeader\"), \"MyHeaderValue\").set(HttpHeaderName.fromString(\"MyOtherHeader\"), Arrays.asList(\"My\", \"Header\", \"Value\"));";
-        System.out.println(normalizedBody);
+            = "httpRequest.getHeaders().set(HttpHeaderName.fromString(\"MyHeader\"), \"MyHeaderValue\").set(HttpHeaderName.fromString(\"MyOtherHeader\"), Arrays.asList(\"My\", \"Header\", \"Value\")).set(HttpHeaderName.ACCEPT, \"AcceptValue\");";
         assertTrue(normalizedBody.contains(expectedHeaderStatement));
+    }
+
+    @Test
+    public void addStaticHeadersThrowsOnMissingColon() {
+        BlockStmt body = new BlockStmt();
+        HttpRequestContext method = new HttpRequestContext();
+        method.setHeaders(new String[] { "InvalidHeaderWithoutColon" });
+        JavaParserTemplateProcessor processor = new JavaParserTemplateProcessor();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            processor.addStaticHeaders(body, method);
+        });
+
+        assertEquals("Invalid HTTP header: missing ':' separator for InvalidHeaderWithoutColon",
+            exception.getMessage());
     }
 
 }
