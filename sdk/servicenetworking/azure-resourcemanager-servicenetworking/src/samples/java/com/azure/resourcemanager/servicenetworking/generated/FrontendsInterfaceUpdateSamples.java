@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicenetworking.models.Frontend;
  */
 public final class FrontendsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/FrontendPatch.json
+     * x-ms-original-file: 2025-03-01-preview/FrontendPatch.json
      */
     /**
      * Sample code: Update Frontend.

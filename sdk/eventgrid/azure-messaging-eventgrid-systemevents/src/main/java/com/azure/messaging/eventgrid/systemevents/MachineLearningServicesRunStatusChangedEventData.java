@@ -24,55 +24,61 @@ public final class MachineLearningServicesRunStatusChangedEventData
      * The ID of the experiment that the Machine Learning Run belongs to.
      */
     @Generated
-    private String experimentId;
+    private final String experimentId;
 
     /*
      * The name of the experiment that the Machine Learning Run belongs to.
      */
     @Generated
-    private String experimentName;
+    private final String experimentName;
 
     /*
      * The ID of the Machine Learning Run.
      */
     @Generated
-    private String runId;
+    private final String runId;
 
     /*
      * The Run Type of the Machine Learning Run.
      */
     @Generated
-    private String runType;
+    private final String runType;
 
     /*
      * The tags of the Machine Learning Run.
      */
     @Generated
-    private final Map<String, BinaryData> runTags;
+    private Map<String, BinaryData> runTags;
 
     /*
      * The properties of the Machine Learning Run.
      */
     @Generated
-    private final Map<String, BinaryData> runProperties;
+    private Map<String, BinaryData> runProperties;
 
     /*
      * The status of the Machine Learning Run.
      */
     @Generated
-    private String runStatus;
+    private final String runStatus;
 
     /**
      * Creates an instance of MachineLearningServicesRunStatusChangedEventData class.
      * 
-     * @param runTags the runTags value to set.
-     * @param runProperties the runProperties value to set.
+     * @param experimentId the experimentId value to set.
+     * @param experimentName the experimentName value to set.
+     * @param runId the runId value to set.
+     * @param runType the runType value to set.
+     * @param runStatus the runStatus value to set.
      */
     @Generated
-    private MachineLearningServicesRunStatusChangedEventData(Map<String, BinaryData> runTags,
-        Map<String, BinaryData> runProperties) {
-        this.runTags = runTags;
-        this.runProperties = runProperties;
+    private MachineLearningServicesRunStatusChangedEventData(String experimentId, String experimentName, String runId,
+        String runType, String runStatus) {
+        this.experimentId = experimentId;
+        this.experimentName = experimentName;
+        this.runId = runId;
+        this.runType = runType;
+        this.runStatus = runStatus;
     }
 
     /**
@@ -152,15 +158,15 @@ public final class MachineLearningServicesRunStatusChangedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("runTags", this.runTags,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("runProperties", this.runProperties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("experimentId", this.experimentId);
         jsonWriter.writeStringField("experimentName", this.experimentName);
         jsonWriter.writeStringField("runId", this.runId);
         jsonWriter.writeStringField("runType", this.runType);
         jsonWriter.writeStringField("runStatus", this.runStatus);
+        jsonWriter.writeMapField("runTags", this.runTags,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("runProperties", this.runProperties,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         return jsonWriter.writeEndObject();
     }
 
@@ -176,24 +182,18 @@ public final class MachineLearningServicesRunStatusChangedEventData
     @Generated
     public static MachineLearningServicesRunStatusChangedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, BinaryData> runTags = null;
-            Map<String, BinaryData> runProperties = null;
             String experimentId = null;
             String experimentName = null;
             String runId = null;
             String runType = null;
             String runStatus = null;
+            Map<String, BinaryData> runTags = null;
+            Map<String, BinaryData> runProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("runTags".equals(fieldName)) {
-                    runTags = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                } else if ("runProperties".equals(fieldName)) {
-                    runProperties = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                } else if ("experimentId".equals(fieldName)) {
+                if ("experimentId".equals(fieldName)) {
                     experimentId = reader.getString();
                 } else if ("experimentName".equals(fieldName)) {
                     experimentName = reader.getString();
@@ -203,17 +203,21 @@ public final class MachineLearningServicesRunStatusChangedEventData
                     runType = reader.getString();
                 } else if ("runStatus".equals(fieldName)) {
                     runStatus = reader.getString();
+                } else if ("runTags".equals(fieldName)) {
+                    runTags = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                } else if ("runProperties".equals(fieldName)) {
+                    runProperties = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else {
                     reader.skipChildren();
                 }
             }
             MachineLearningServicesRunStatusChangedEventData deserializedMachineLearningServicesRunStatusChangedEventData
-                = new MachineLearningServicesRunStatusChangedEventData(runTags, runProperties);
-            deserializedMachineLearningServicesRunStatusChangedEventData.experimentId = experimentId;
-            deserializedMachineLearningServicesRunStatusChangedEventData.experimentName = experimentName;
-            deserializedMachineLearningServicesRunStatusChangedEventData.runId = runId;
-            deserializedMachineLearningServicesRunStatusChangedEventData.runType = runType;
-            deserializedMachineLearningServicesRunStatusChangedEventData.runStatus = runStatus;
+                = new MachineLearningServicesRunStatusChangedEventData(experimentId, experimentName, runId, runType,
+                    runStatus);
+            deserializedMachineLearningServicesRunStatusChangedEventData.runTags = runTags;
+            deserializedMachineLearningServicesRunStatusChangedEventData.runProperties = runProperties;
 
             return deserializedMachineLearningServicesRunStatusChangedEventData;
         });

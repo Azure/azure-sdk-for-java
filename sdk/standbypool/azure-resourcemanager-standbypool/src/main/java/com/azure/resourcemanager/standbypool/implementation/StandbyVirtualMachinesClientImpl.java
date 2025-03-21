@@ -42,25 +42,25 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
     /**
      * The service client containing this operation class.
      */
-    private final StandbyPoolClientImpl client;
+    private final StandbyPoolManagementClientImpl client;
 
     /**
      * Initializes an instance of StandbyVirtualMachinesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    StandbyVirtualMachinesClientImpl(StandbyPoolClientImpl client) {
+    StandbyVirtualMachinesClientImpl(StandbyPoolManagementClientImpl client) {
         this.service = RestProxy.create(StandbyVirtualMachinesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StandbyPoolClientStandbyVirtualMachines to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for StandbyPoolManagementClientStandbyVirtualMachines to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "StandbyPoolClientSta")
+    @ServiceInterface(name = "StandbyPoolManagemen")
     public interface StandbyVirtualMachinesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}/standbyVirtualMachines/{standbyVirtualMachineName}")

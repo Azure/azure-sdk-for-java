@@ -10,7 +10,7 @@ import com.azure.resourcemanager.healthdataaiservices.models.UserAssignedIdentit
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model = BinaryData.fromString("{\"principalId\":\"tymw\",\"clientId\":\"dkfthwxmnt\"}")
+        UserAssignedIdentity model = BinaryData.fromString("{\"clientId\":\"tymw\",\"principalId\":\"dkfthwxmnt\"}")
             .toObject(UserAssignedIdentity.class);
     }
 

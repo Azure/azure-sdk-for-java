@@ -2700,7 +2700,7 @@ public final class AssistantsAsyncClient {
      * 
      * <pre>
      * {@code
-     * byte[]
+     * BinaryData
      * }
      * </pre>
      *
@@ -2710,7 +2710,7 @@ public final class AssistantsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2728,15 +2728,14 @@ public final class AssistantsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getFileContent(String fileId) {
+    public Mono<BinaryData> getFileContent(String fileId) {
         // Generated convenience method for getFileContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
+        return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**

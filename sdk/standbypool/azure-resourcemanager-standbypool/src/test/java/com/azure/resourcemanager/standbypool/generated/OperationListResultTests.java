@@ -6,7 +6,6 @@ package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.standbypool.implementation.models.OperationListResult;
-import com.azure.resourcemanager.standbypool.models.ActionType;
 import org.junit.jupiter.api.Assertions;
 
 public final class OperationListResultTests {
@@ -15,7 +14,6 @@ public final class OperationListResultTests {
         OperationListResult model = BinaryData.fromString(
             "{\"value\":[{\"name\":\"hq\",\"isDataAction\":true,\"display\":{\"provider\":\"pybczmehmtzopb\",\"resource\":\"h\",\"operation\":\"pidgsybbejhphoyc\",\"description\":\"xaobhdxbmtqioqjz\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"fpownoizhwlr\",\"isDataAction\":false,\"display\":{\"provider\":\"oqijgkdmbpaz\",\"resource\":\"bc\",\"operation\":\"pdznrbtcqqjnqgl\",\"description\":\"gnufoooj\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"esaagdfm\",\"isDataAction\":true,\"display\":{\"provider\":\"j\",\"resource\":\"ifkwmrvktsizntoc\",\"operation\":\"a\",\"description\":\"ajpsquc\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"kfo\"}")
             .toObject(OperationListResult.class);
-        Assertions.assertEquals(ActionType.INTERNAL, model.value().get(0).actionType());
         Assertions.assertEquals("kfo", model.nextLink());
     }
 }

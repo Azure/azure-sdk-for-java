@@ -25,43 +25,43 @@ public final class EventHubCaptureFileCreatedEventData
      * The path to the capture file.
      */
     @Generated
-    private String fileUrl;
+    private final String fileUrl;
 
     /*
      * The file type of the capture file.
      */
     @Generated
-    private String fileType;
+    private final String fileType;
 
     /*
      * The shard ID.
      */
     @Generated
-    private String partitionId;
+    private final String partitionId;
 
     /*
      * The file size.
      */
     @Generated
-    private Integer sizeInBytes;
+    private final int sizeInBytes;
 
     /*
      * The number of events in the file.
      */
     @Generated
-    private Integer eventCount;
+    private final int eventCount;
 
     /*
      * The smallest sequence number from the queue.
      */
     @Generated
-    private Integer firstSequenceNumber;
+    private final int firstSequenceNumber;
 
     /*
      * The last sequence number from the queue.
      */
     @Generated
-    private Integer lastSequenceNumber;
+    private final int lastSequenceNumber;
 
     /*
      * The first time from the queue.
@@ -78,11 +78,27 @@ public final class EventHubCaptureFileCreatedEventData
     /**
      * Creates an instance of EventHubCaptureFileCreatedEventData class.
      * 
+     * @param fileUrl the fileUrl value to set.
+     * @param fileType the fileType value to set.
+     * @param partitionId the partitionId value to set.
+     * @param sizeInBytes the sizeInBytes value to set.
+     * @param eventCount the eventCount value to set.
+     * @param firstSequenceNumber the firstSequenceNumber value to set.
+     * @param lastSequenceNumber the lastSequenceNumber value to set.
      * @param firstEnqueueTime the firstEnqueueTime value to set.
      * @param lastEnqueueTime the lastEnqueueTime value to set.
      */
     @Generated
-    private EventHubCaptureFileCreatedEventData(OffsetDateTime firstEnqueueTime, OffsetDateTime lastEnqueueTime) {
+    private EventHubCaptureFileCreatedEventData(String fileUrl, String fileType, String partitionId, int sizeInBytes,
+        int eventCount, int firstSequenceNumber, int lastSequenceNumber, OffsetDateTime firstEnqueueTime,
+        OffsetDateTime lastEnqueueTime) {
+        this.fileUrl = fileUrl;
+        this.fileType = fileType;
+        this.partitionId = partitionId;
+        this.sizeInBytes = sizeInBytes;
+        this.eventCount = eventCount;
+        this.firstSequenceNumber = firstSequenceNumber;
+        this.lastSequenceNumber = lastSequenceNumber;
         this.firstEnqueueTime = firstEnqueueTime;
         this.lastEnqueueTime = lastEnqueueTime;
     }
@@ -123,7 +139,7 @@ public final class EventHubCaptureFileCreatedEventData
      * @return the sizeInBytes value.
      */
     @Generated
-    public Integer getSizeInBytes() {
+    public int getSizeInBytes() {
         return this.sizeInBytes;
     }
 
@@ -133,7 +149,7 @@ public final class EventHubCaptureFileCreatedEventData
      * @return the eventCount value.
      */
     @Generated
-    public Integer getEventCount() {
+    public int getEventCount() {
         return this.eventCount;
     }
 
@@ -143,7 +159,7 @@ public final class EventHubCaptureFileCreatedEventData
      * @return the firstSequenceNumber value.
      */
     @Generated
-    public Integer getFirstSequenceNumber() {
+    public int getFirstSequenceNumber() {
         return this.firstSequenceNumber;
     }
 
@@ -153,7 +169,7 @@ public final class EventHubCaptureFileCreatedEventData
      * @return the lastSequenceNumber value.
      */
     @Generated
-    public Integer getLastSequenceNumber() {
+    public int getLastSequenceNumber() {
         return this.lastSequenceNumber;
     }
 
@@ -184,19 +200,19 @@ public final class EventHubCaptureFileCreatedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fileUrl", this.fileUrl);
+        jsonWriter.writeStringField("fileType", this.fileType);
+        jsonWriter.writeStringField("partitionId", this.partitionId);
+        jsonWriter.writeIntField("sizeInBytes", this.sizeInBytes);
+        jsonWriter.writeIntField("eventCount", this.eventCount);
+        jsonWriter.writeIntField("firstSequenceNumber", this.firstSequenceNumber);
+        jsonWriter.writeIntField("lastSequenceNumber", this.lastSequenceNumber);
         jsonWriter.writeStringField("firstEnqueueTime",
             this.firstEnqueueTime == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstEnqueueTime));
         jsonWriter.writeStringField("lastEnqueueTime",
             this.lastEnqueueTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastEnqueueTime));
-        jsonWriter.writeStringField("fileUrl", this.fileUrl);
-        jsonWriter.writeStringField("fileType", this.fileType);
-        jsonWriter.writeStringField("partitionId", this.partitionId);
-        jsonWriter.writeNumberField("sizeInBytes", this.sizeInBytes);
-        jsonWriter.writeNumberField("eventCount", this.eventCount);
-        jsonWriter.writeNumberField("firstSequenceNumber", this.firstSequenceNumber);
-        jsonWriter.writeNumberField("lastSequenceNumber", this.lastSequenceNumber);
         return jsonWriter.writeEndObject();
     }
 
@@ -212,54 +228,45 @@ public final class EventHubCaptureFileCreatedEventData
     @Generated
     public static EventHubCaptureFileCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OffsetDateTime firstEnqueueTime = null;
-            OffsetDateTime lastEnqueueTime = null;
             String fileUrl = null;
             String fileType = null;
             String partitionId = null;
-            Integer sizeInBytes = null;
-            Integer eventCount = null;
-            Integer firstSequenceNumber = null;
-            Integer lastSequenceNumber = null;
+            int sizeInBytes = 0;
+            int eventCount = 0;
+            int firstSequenceNumber = 0;
+            int lastSequenceNumber = 0;
+            OffsetDateTime firstEnqueueTime = null;
+            OffsetDateTime lastEnqueueTime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("firstEnqueueTime".equals(fieldName)) {
-                    firstEnqueueTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("lastEnqueueTime".equals(fieldName)) {
-                    lastEnqueueTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("fileUrl".equals(fieldName)) {
+                if ("fileUrl".equals(fieldName)) {
                     fileUrl = reader.getString();
                 } else if ("fileType".equals(fieldName)) {
                     fileType = reader.getString();
                 } else if ("partitionId".equals(fieldName)) {
                     partitionId = reader.getString();
                 } else if ("sizeInBytes".equals(fieldName)) {
-                    sizeInBytes = reader.getNullable(JsonReader::getInt);
+                    sizeInBytes = reader.getInt();
                 } else if ("eventCount".equals(fieldName)) {
-                    eventCount = reader.getNullable(JsonReader::getInt);
+                    eventCount = reader.getInt();
                 } else if ("firstSequenceNumber".equals(fieldName)) {
-                    firstSequenceNumber = reader.getNullable(JsonReader::getInt);
+                    firstSequenceNumber = reader.getInt();
                 } else if ("lastSequenceNumber".equals(fieldName)) {
-                    lastSequenceNumber = reader.getNullable(JsonReader::getInt);
+                    lastSequenceNumber = reader.getInt();
+                } else if ("firstEnqueueTime".equals(fieldName)) {
+                    firstEnqueueTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastEnqueueTime".equals(fieldName)) {
+                    lastEnqueueTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
-            EventHubCaptureFileCreatedEventData deserializedEventHubCaptureFileCreatedEventData
-                = new EventHubCaptureFileCreatedEventData(firstEnqueueTime, lastEnqueueTime);
-            deserializedEventHubCaptureFileCreatedEventData.fileUrl = fileUrl;
-            deserializedEventHubCaptureFileCreatedEventData.fileType = fileType;
-            deserializedEventHubCaptureFileCreatedEventData.partitionId = partitionId;
-            deserializedEventHubCaptureFileCreatedEventData.sizeInBytes = sizeInBytes;
-            deserializedEventHubCaptureFileCreatedEventData.eventCount = eventCount;
-            deserializedEventHubCaptureFileCreatedEventData.firstSequenceNumber = firstSequenceNumber;
-            deserializedEventHubCaptureFileCreatedEventData.lastSequenceNumber = lastSequenceNumber;
-
-            return deserializedEventHubCaptureFileCreatedEventData;
+            return new EventHubCaptureFileCreatedEventData(fileUrl, fileType, partitionId, sizeInBytes, eventCount,
+                firstSequenceNumber, lastSequenceNumber, firstEnqueueTime, lastEnqueueTime);
         });
     }
 }

@@ -13,27 +13,27 @@ public final class RevokeCertificateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RevokeCertificate model = BinaryData.fromString(
-            "{\"serialNumber\":\"rtumkdosvq\",\"thumbprint\":\"hbmdgbbjfdd\",\"effectiveAt\":\"2021-09-14T17:27:38Z\",\"reason\":\"bmbexppbhtqqro\",\"remarks\":\"p\"}")
+            "{\"serialNumber\":\"basyy\",\"thumbprint\":\"nddhsgcbacph\",\"effectiveAt\":\"2021-04-30T23:02:44Z\",\"reason\":\"koty\",\"remarks\":\"gou\"}")
             .toObject(RevokeCertificate.class);
-        Assertions.assertEquals("rtumkdosvq", model.serialNumber());
-        Assertions.assertEquals("hbmdgbbjfdd", model.thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T17:27:38Z"), model.effectiveAt());
-        Assertions.assertEquals("bmbexppbhtqqro", model.reason());
-        Assertions.assertEquals("p", model.remarks());
+        Assertions.assertEquals("basyy", model.serialNumber());
+        Assertions.assertEquals("nddhsgcbacph", model.thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T23:02:44Z"), model.effectiveAt());
+        Assertions.assertEquals("koty", model.reason());
+        Assertions.assertEquals("gou", model.remarks());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RevokeCertificate model = new RevokeCertificate().withSerialNumber("rtumkdosvq")
-            .withThumbprint("hbmdgbbjfdd")
-            .withEffectiveAt(OffsetDateTime.parse("2021-09-14T17:27:38Z"))
-            .withReason("bmbexppbhtqqro")
-            .withRemarks("p");
+        RevokeCertificate model = new RevokeCertificate().withSerialNumber("basyy")
+            .withThumbprint("nddhsgcbacph")
+            .withEffectiveAt(OffsetDateTime.parse("2021-04-30T23:02:44Z"))
+            .withReason("koty")
+            .withRemarks("gou");
         model = BinaryData.fromObject(model).toObject(RevokeCertificate.class);
-        Assertions.assertEquals("rtumkdosvq", model.serialNumber());
-        Assertions.assertEquals("hbmdgbbjfdd", model.thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T17:27:38Z"), model.effectiveAt());
-        Assertions.assertEquals("bmbexppbhtqqro", model.reason());
-        Assertions.assertEquals("p", model.remarks());
+        Assertions.assertEquals("basyy", model.serialNumber());
+        Assertions.assertEquals("nddhsgcbacph", model.thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T23:02:44Z"), model.effectiveAt());
+        Assertions.assertEquals("koty", model.reason());
+        Assertions.assertEquals("gou", model.remarks());
     }
 }

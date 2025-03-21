@@ -18,41 +18,41 @@ public final class BrokerDiagnosticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BrokerDiagnostics model = BinaryData.fromString(
-            "{\"logs\":{\"level\":\"jease\"},\"metrics\":{\"prometheusPort\":495940499},\"selfCheck\":{\"mode\":\"Enabled\",\"intervalSeconds\":1111118193,\"timeoutSeconds\":1242878165},\"traces\":{\"mode\":\"Disabled\",\"cacheSizeMegabytes\":1666003354,\"selfTracing\":{\"mode\":\"Disabled\",\"intervalSeconds\":1289591857},\"spanChannelCapacity\":798552756}}")
+            "{\"logs\":{\"level\":\"refovgmkqsleyyvx\"},\"metrics\":{\"prometheusPort\":704885083},\"selfCheck\":{\"mode\":\"Disabled\",\"intervalSeconds\":1721979703,\"timeoutSeconds\":738552235},\"traces\":{\"mode\":\"Enabled\",\"cacheSizeMegabytes\":1123309807,\"selfTracing\":{\"mode\":\"Disabled\",\"intervalSeconds\":822789925},\"spanChannelCapacity\":1452431495}}")
             .toObject(BrokerDiagnostics.class);
-        Assertions.assertEquals("jease", model.logs().level());
-        Assertions.assertEquals(495940499, model.metrics().prometheusPort());
-        Assertions.assertEquals(OperationalMode.ENABLED, model.selfCheck().mode());
-        Assertions.assertEquals(1111118193, model.selfCheck().intervalSeconds());
-        Assertions.assertEquals(1242878165, model.selfCheck().timeoutSeconds());
-        Assertions.assertEquals(OperationalMode.DISABLED, model.traces().mode());
-        Assertions.assertEquals(1666003354, model.traces().cacheSizeMegabytes());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.logs().level());
+        Assertions.assertEquals(704885083, model.metrics().prometheusPort());
+        Assertions.assertEquals(OperationalMode.DISABLED, model.selfCheck().mode());
+        Assertions.assertEquals(1721979703, model.selfCheck().intervalSeconds());
+        Assertions.assertEquals(738552235, model.selfCheck().timeoutSeconds());
+        Assertions.assertEquals(OperationalMode.ENABLED, model.traces().mode());
+        Assertions.assertEquals(1123309807, model.traces().cacheSizeMegabytes());
         Assertions.assertEquals(OperationalMode.DISABLED, model.traces().selfTracing().mode());
-        Assertions.assertEquals(1289591857, model.traces().selfTracing().intervalSeconds());
-        Assertions.assertEquals(798552756, model.traces().spanChannelCapacity());
+        Assertions.assertEquals(822789925, model.traces().selfTracing().intervalSeconds());
+        Assertions.assertEquals(1452431495, model.traces().spanChannelCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BrokerDiagnostics model = new BrokerDiagnostics().withLogs(new DiagnosticsLogs().withLevel("jease"))
-            .withMetrics(new Metrics().withPrometheusPort(495940499))
-            .withSelfCheck(new SelfCheck().withMode(OperationalMode.ENABLED)
-                .withIntervalSeconds(1111118193)
-                .withTimeoutSeconds(1242878165))
-            .withTraces(new Traces().withMode(OperationalMode.DISABLED)
-                .withCacheSizeMegabytes(1666003354)
-                .withSelfTracing(new SelfTracing().withMode(OperationalMode.DISABLED).withIntervalSeconds(1289591857))
-                .withSpanChannelCapacity(798552756));
+        BrokerDiagnostics model = new BrokerDiagnostics().withLogs(new DiagnosticsLogs().withLevel("refovgmkqsleyyvx"))
+            .withMetrics(new Metrics().withPrometheusPort(704885083))
+            .withSelfCheck(new SelfCheck().withMode(OperationalMode.DISABLED)
+                .withIntervalSeconds(1721979703)
+                .withTimeoutSeconds(738552235))
+            .withTraces(new Traces().withMode(OperationalMode.ENABLED)
+                .withCacheSizeMegabytes(1123309807)
+                .withSelfTracing(new SelfTracing().withMode(OperationalMode.DISABLED).withIntervalSeconds(822789925))
+                .withSpanChannelCapacity(1452431495));
         model = BinaryData.fromObject(model).toObject(BrokerDiagnostics.class);
-        Assertions.assertEquals("jease", model.logs().level());
-        Assertions.assertEquals(495940499, model.metrics().prometheusPort());
-        Assertions.assertEquals(OperationalMode.ENABLED, model.selfCheck().mode());
-        Assertions.assertEquals(1111118193, model.selfCheck().intervalSeconds());
-        Assertions.assertEquals(1242878165, model.selfCheck().timeoutSeconds());
-        Assertions.assertEquals(OperationalMode.DISABLED, model.traces().mode());
-        Assertions.assertEquals(1666003354, model.traces().cacheSizeMegabytes());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.logs().level());
+        Assertions.assertEquals(704885083, model.metrics().prometheusPort());
+        Assertions.assertEquals(OperationalMode.DISABLED, model.selfCheck().mode());
+        Assertions.assertEquals(1721979703, model.selfCheck().intervalSeconds());
+        Assertions.assertEquals(738552235, model.selfCheck().timeoutSeconds());
+        Assertions.assertEquals(OperationalMode.ENABLED, model.traces().mode());
+        Assertions.assertEquals(1123309807, model.traces().cacheSizeMegabytes());
         Assertions.assertEquals(OperationalMode.DISABLED, model.traces().selfTracing().mode());
-        Assertions.assertEquals(1289591857, model.traces().selfTracing().intervalSeconds());
-        Assertions.assertEquals(798552756, model.traces().spanChannelCapacity());
+        Assertions.assertEquals(822789925, model.traces().selfTracing().intervalSeconds());
+        Assertions.assertEquals(1452431495, model.traces().spanChannelCapacity());
     }
 }

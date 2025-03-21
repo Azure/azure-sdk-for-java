@@ -16,62 +16,16 @@ import java.io.IOException;
  */
 @Immutable
 public final class AppConfigurationSnapshotModifiedEventData extends AppConfigurationSnapshotEventData {
-    /*
-     * The sync token representing the server state after the event.
-     */
-    @Generated
-    private String syncToken;
-
-    /*
-     * The etag representing the new state of the snapshot.
-     */
-    @Generated
-    private String etag;
-
-    /*
-     * The name of the snapshot.
-     */
-    @Generated
-    private String name;
-
     /**
      * Creates an instance of AppConfigurationSnapshotModifiedEventData class.
-     */
-    @Generated
-    private AppConfigurationSnapshotModifiedEventData() {
-    }
-
-    /**
-     * Get the syncToken property: The sync token representing the server state after the event.
      * 
-     * @return the syncToken value.
+     * @param name the name value to set.
+     * @param etag the etag value to set.
+     * @param syncToken the syncToken value to set.
      */
     @Generated
-    @Override
-    public String getSyncToken() {
-        return this.syncToken;
-    }
-
-    /**
-     * Get the etag property: The etag representing the new state of the snapshot.
-     * 
-     * @return the etag value.
-     */
-    @Generated
-    @Override
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
-     * Get the name property: The name of the snapshot.
-     * 
-     * @return the name value.
-     */
-    @Generated
-    @Override
-    public String getName() {
-        return this.name;
+    private AppConfigurationSnapshotModifiedEventData(String name, String etag, String syncToken) {
+        super(name, etag, syncToken);
     }
 
     /**
@@ -93,29 +47,30 @@ public final class AppConfigurationSnapshotModifiedEventData extends AppConfigur
      * @param jsonReader The JsonReader being read.
      * @return An instance of AppConfigurationSnapshotModifiedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AppConfigurationSnapshotModifiedEventData.
      */
     @Generated
     public static AppConfigurationSnapshotModifiedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppConfigurationSnapshotModifiedEventData deserializedAppConfigurationSnapshotModifiedEventData
-                = new AppConfigurationSnapshotModifiedEventData();
+            String name = null;
+            String etag = null;
+            String syncToken = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedAppConfigurationSnapshotModifiedEventData.name = reader.getString();
+                    name = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedAppConfigurationSnapshotModifiedEventData.etag = reader.getString();
+                    etag = reader.getString();
                 } else if ("syncToken".equals(fieldName)) {
-                    deserializedAppConfigurationSnapshotModifiedEventData.syncToken = reader.getString();
+                    syncToken = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedAppConfigurationSnapshotModifiedEventData;
+            return new AppConfigurationSnapshotModifiedEventData(name, etag, syncToken);
         });
     }
 }

@@ -184,6 +184,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
         jsonWriter.writeStringField("status_details", this.statusDetails);
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeBooleanField("preserveCertOrder", this.preserveCertOrder);
         jsonWriter.writeStringField("request_id", this.requestId);
         return jsonWriter.writeEndObject();
     }
@@ -219,6 +220,8 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
                     deserializedCertificateOperation.error = CertificateOperationError.fromJson(reader);
                 } else if ("target".equals(fieldName)) {
                     deserializedCertificateOperation.target = reader.getString();
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    deserializedCertificateOperation.preserveCertOrder = reader.getNullable(JsonReader::getBoolean);
                 } else if ("request_id".equals(fieldName)) {
                     deserializedCertificateOperation.requestId = reader.getString();
                 } else {
@@ -322,6 +325,37 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     @Generated
     public CertificateOperation setError(CertificateOperationError error) {
         this.error = error;
+        return this;
+    }
+
+    /*
+     * Specifies whether the certificate chain preserves its original order. The default value is false, which sets the
+     * leaf certificate at index 0.
+     */
+    @Generated
+    private Boolean preserveCertOrder;
+
+    /**
+     * Get the preserveCertOrder property: Specifies whether the certificate chain preserves its original order. The
+     * default value is false, which sets the leaf certificate at index 0.
+     *
+     * @return the preserveCertOrder value.
+     */
+    @Generated
+    public Boolean isPreserveCertOrder() {
+        return this.preserveCertOrder;
+    }
+
+    /**
+     * Set the preserveCertOrder property: Specifies whether the certificate chain preserves its original order. The
+     * default value is false, which sets the leaf certificate at index 0.
+     *
+     * @param preserveCertOrder the preserveCertOrder value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setPreserveCertOrder(Boolean preserveCertOrder) {
+        this.preserveCertOrder = preserveCertOrder;
         return this;
     }
 }

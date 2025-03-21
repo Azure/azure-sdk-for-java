@@ -109,4 +109,22 @@ public final class JsonWebKeySignatureAlgorithm extends ExpandableStringEnum<Jso
     public static Collection<JsonWebKeySignatureAlgorithm> values() {
         return values(JsonWebKeySignatureAlgorithm.class);
     }
+
+    /**
+     * HMAC using SHA-256, as described in https://tools.ietf.org/html/rfc7518.
+     */
+    @Generated
+    public static final JsonWebKeySignatureAlgorithm HS256 = fromString("HS256");
+
+    /**
+     * HMAC using SHA-384, as described in https://tools.ietf.org/html/rfc7518.
+     */
+    @Generated
+    public static final JsonWebKeySignatureAlgorithm HS384 = fromString("HS384");
+
+    /**
+     * HMAC using SHA-512, as described in https://tools.ietf.org/html/rfc7518.
+     */
+    @Generated
+    public static final JsonWebKeySignatureAlgorithm HS512 = fromString("HS512");
 }

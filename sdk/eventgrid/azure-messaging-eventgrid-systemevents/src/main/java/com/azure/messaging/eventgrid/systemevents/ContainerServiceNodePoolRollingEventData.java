@@ -22,13 +22,16 @@ public class ContainerServiceNodePoolRollingEventData
      * The name of the node pool in the ManagedCluster resource
      */
     @Generated
-    private String nodePoolName;
+    private final String nodePoolName;
 
     /**
      * Creates an instance of ContainerServiceNodePoolRollingEventData class.
+     * 
+     * @param nodePoolName the nodePoolName value to set.
      */
     @Generated
-    protected ContainerServiceNodePoolRollingEventData() {
+    protected ContainerServiceNodePoolRollingEventData(String nodePoolName) {
+        this.nodePoolName = nodePoolName;
     }
 
     /**
@@ -39,18 +42,6 @@ public class ContainerServiceNodePoolRollingEventData
     @Generated
     public String getNodePoolName() {
         return this.nodePoolName;
-    }
-
-    /**
-     * Set the nodePoolName property: The name of the node pool in the ManagedCluster resource.
-     * 
-     * @param nodePoolName the nodePoolName value to set.
-     * @return the ContainerServiceNodePoolRollingEventData object itself.
-     */
-    @Generated
-    ContainerServiceNodePoolRollingEventData setNodePoolName(String nodePoolName) {
-        this.nodePoolName = nodePoolName;
-        return this;
     }
 
     /**
@@ -70,25 +61,24 @@ public class ContainerServiceNodePoolRollingEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of ContainerServiceNodePoolRollingEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerServiceNodePoolRollingEventData.
      */
     @Generated
     public static ContainerServiceNodePoolRollingEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerServiceNodePoolRollingEventData deserializedContainerServiceNodePoolRollingEventData
-                = new ContainerServiceNodePoolRollingEventData();
+            String nodePoolName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("nodePoolName".equals(fieldName)) {
-                    deserializedContainerServiceNodePoolRollingEventData.nodePoolName = reader.getString();
+                    nodePoolName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedContainerServiceNodePoolRollingEventData;
+            return new ContainerServiceNodePoolRollingEventData(nodePoolName);
         });
     }
 }

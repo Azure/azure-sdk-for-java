@@ -27,7 +27,7 @@ import java.util.Arrays;
  */
 public final class DataflowCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_FilterToTopic.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_FilterToTopic.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_FilterToTopic.
@@ -71,7 +71,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate.
@@ -121,7 +121,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_ComplexContextualization.
@@ -165,7 +165,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_ComplexEventHub.
@@ -229,7 +229,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_SimpleFabric.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_SimpleFabric.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_SimpleFabric.
@@ -266,7 +266,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_SimpleEventGrid.

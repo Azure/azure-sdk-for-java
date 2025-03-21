@@ -7,8 +7,8 @@ package com.azure.resourcemanager.servicenetworking.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.TrafficController;
@@ -22,21 +22,23 @@ public final class TrafficControllerInterfacesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"n\",\"ixisxyawjoy\",\"qcslyjpkiid\"],\"frontends\":[{\"id\":\"xznelixhnrztf\"},{\"id\":\"lhbnxkna\"},{\"id\":\"aulppggd\"}],\"associations\":[{\"id\":\"apnyiropuhpig\"},{\"id\":\"pgylg\"},{\"id\":\"git\"},{\"id\":\"medjvcslynqwwncw\"}],\"securityPolicies\":[{\"id\":\"xgk\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"gucnapkte\"}},\"provisioningState\":\"Succeeded\"},\"location\":\"wptfdy\",\"tags\":{\"huaoppp\":\"qbuaceopzfqr\",\"z\":\"qeqxo\",\"moizpos\":\"ahzxctobgbk\"},\"id\":\"mgrcfbu\",\"name\":\"rmfqjhhkxbpvj\",\"type\":\"mjh\"}]}";
+            = "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"jvp\",\"jqg\"],\"frontends\":[{\"id\":\"mocmbqfqvmk\"},{\"id\":\"xozap\"}],\"associations\":[{\"id\":\"lxprglyatddckcbc\"},{\"id\":\"ejrjxgciqibrho\"},{\"id\":\"xsdqrhzoymibmrqy\"},{\"id\":\"bahwfl\"}],\"securityPolicies\":[{\"id\":\"dtmhrkwofyyvoqa\"},{\"id\":\"piexpbtgiw\"},{\"id\":\"wo\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"ashrt\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"kcnqxwbpo\"}},\"provisioningState\":\"Updating\"},\"location\":\"iujwa\",\"tags\":{\"pqlpq\":\"pqiiobyuqe\",\"fbtkuwhhmhyk\":\"cciuqgbdbutau\",\"hkoymkcdyhbp\":\"joxafnndlpi\",\"reqnovvqfov\":\"kpw\"},\"id\":\"jxywsuws\",\"name\":\"rsndsytgadgvra\",\"type\":\"aeneqnzarrwl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrafficControllerManager manager = TrafficControllerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TrafficController> response
             = manager.trafficControllerInterfaces().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wptfdy", response.iterator().next().location());
-        Assertions.assertEquals("qbuaceopzfqr", response.iterator().next().tags().get("huaoppp"));
-        Assertions.assertEquals("gucnapkte",
+        Assertions.assertEquals("iujwa", response.iterator().next().location());
+        Assertions.assertEquals("pqiiobyuqe", response.iterator().next().tags().get("pqlpq"));
+        Assertions.assertEquals("ashrt",
             response.iterator().next().properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("kcnqxwbpo",
+            response.iterator().next().properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 }

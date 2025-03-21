@@ -172,6 +172,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
         jsonWriter.writeJsonField("policy", this.certificatePolicy);
         jsonWriter.writeJsonField("attributes", this.certificateAttributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("preserveCertOrder", this.preserveCertOrder);
         return jsonWriter.writeEndObject();
     }
 
@@ -192,6 +193,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
             CertificatePolicy certificatePolicy = null;
             CertificateAttributes certificateAttributes = null;
             Map<String, String> tags = null;
+            Boolean preserveCertOrder = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -205,6 +207,8 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
                     certificateAttributes = CertificateAttributes.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    preserveCertOrder = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -215,7 +219,39 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
             deserializedCertificateImportParameters.certificatePolicy = certificatePolicy;
             deserializedCertificateImportParameters.certificateAttributes = certificateAttributes;
             deserializedCertificateImportParameters.tags = tags;
+            deserializedCertificateImportParameters.preserveCertOrder = preserveCertOrder;
             return deserializedCertificateImportParameters;
         });
+    }
+
+    /*
+     * Specifies whether the certificate chain preserves its original order. The default value is false, which sets the
+     * leaf certificate at index 0.
+     */
+    @Generated
+    private Boolean preserveCertOrder;
+
+    /**
+     * Get the preserveCertOrder property: Specifies whether the certificate chain preserves its original order. The
+     * default value is false, which sets the leaf certificate at index 0.
+     *
+     * @return the preserveCertOrder value.
+     */
+    @Generated
+    public Boolean isPreserveCertOrder() {
+        return this.preserveCertOrder;
+    }
+
+    /**
+     * Set the preserveCertOrder property: Specifies whether the certificate chain preserves its original order. The
+     * default value is false, which sets the leaf certificate at index 0.
+     *
+     * @param preserveCertOrder the preserveCertOrder value to set.
+     * @return the CertificateImportParameters object itself.
+     */
+    @Generated
+    public CertificateImportParameters setPreserveCertOrder(Boolean preserveCertOrder) {
+        this.preserveCertOrder = preserveCertOrder;
+        return this;
     }
 }

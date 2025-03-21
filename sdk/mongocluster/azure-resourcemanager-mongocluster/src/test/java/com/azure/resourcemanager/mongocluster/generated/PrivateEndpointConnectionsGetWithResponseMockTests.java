@@ -6,8 +6,8 @@ package com.azure.resourcemanager.mongocluster.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mongocluster.MongoClusterManager;
 import com.azure.resourcemanager.mongocluster.models.PrivateEndpointConnectionResource;
@@ -22,23 +22,22 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"pwvlqdq\"],\"privateEndpoint\":{\"id\":\"qylihkaetckt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"vf\",\"actionsRequired\":\"kymuctqhjfbebr\"},\"provisioningState\":\"Succeeded\"},\"id\":\"rfuwutt\",\"name\":\"xfvjrbirp\",\"type\":\"xepcyvahfn\"}";
+            = "{\"properties\":{\"groupIds\":[\"lmuzy\",\"xaepdkzjancuxr\",\"d\",\"bavxbniwdjswzt\"],\"privateEndpoint\":{\"id\":\"pgn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"hpzxbzpfzab\",\"actionsRequired\":\"cuh\"},\"provisioningState\":\"Succeeded\"},\"id\":\"tyq\",\"name\":\"klbb\",\"type\":\"vplwzbhv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         MongoClusterManager manager = MongoClusterManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnectionResource response = manager.privateEndpointConnections()
-            .getWithResponse("uconuqszfkbey", "ewrmjmwvvjektc", "senhwlrs", com.azure.core.util.Context.NONE)
+            .getWithResponse("edckzywbiexzfey", "eaxib", "ujwb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("vf", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("kymuctqhjfbebr",
-            response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("hpzxbzpfzab", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("cuh", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

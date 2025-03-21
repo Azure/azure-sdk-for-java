@@ -6,16 +6,19 @@ package com.azure.resourcemanager.iotoperations.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iotoperations.IoTOperationsManager;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
+import com.azure.resourcemanager.iotoperations.models.InstanceFeature;
+import com.azure.resourcemanager.iotoperations.models.InstanceFeatureMode;
 import com.azure.resourcemanager.iotoperations.models.InstanceProperties;
 import com.azure.resourcemanager.iotoperations.models.InstanceResource;
 import com.azure.resourcemanager.iotoperations.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.iotoperations.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.iotoperations.models.OperationalMode;
 import com.azure.resourcemanager.iotoperations.models.SchemaRegistryRef;
 import com.azure.resourcemanager.iotoperations.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
@@ -30,36 +33,50 @@ public final class InstancesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"xedk\",\"provisioningState\":\"Succeeded\",\"version\":\"bqpc\",\"schemaRegistryRef\":{\"resourceId\":\"fkbw\"}},\"extendedLocation\":{\"name\":\"csnjvcdwxlpqekft\",\"type\":\"CustomLocation\"},\"identity\":{\"principalId\":\"jsyingwfqatm\",\"tenantId\":\"htmdvy\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"rvqqaatj\":{\"principalId\":\"gszywk\",\"clientId\":\"rryuzhlhkjo\"},\"jioolvrwxk\":{\"principalId\":\"rv\",\"clientId\":\"upmfiibfg\"},\"hvkzuh\":{\"principalId\":\"kkgll\",\"clientId\":\"jygvjayvbl\"}}},\"location\":\"vvyhg\",\"tags\":{\"uvwzfbnh\":\"byrqufeg\",\"bmhrixkwmyijejv\":\"mctlpdngitv\",\"ixexcc\":\"grhbpn\"},\"id\":\"dreaxh\",\"name\":\"exdrrvqahqkg\",\"type\":\"tpwijnh\"}";
+            = "{\"properties\":{\"description\":\"bxvvyhg\",\"provisioningState\":\"Succeeded\",\"version\":\"yrqufegxuvwz\",\"schemaRegistryRef\":{\"resourceId\":\"bnhlmc\"},\"features\":{\"rvqahqkghtpwi\":{\"mode\":\"Stable\",\"settings\":{\"vgbmhr\":\"Disabled\",\"kw\":\"Enabled\",\"ijejvegrhbpn\":\"Disabled\",\"xexccbdreaxhcexd\":\"Enabled\"}}}},\"extendedLocation\":{\"name\":\"nhyjsv\",\"type\":\"CustomLocation\"},\"identity\":{\"principalId\":\"z\",\"tenantId\":\"voowvr\",\"type\":\"None\",\"userAssignedIdentities\":{\"yhgfipnsx\":{\"clientId\":\"qp\",\"principalId\":\"ostronz\"},\"gumhjglikkxws\":{\"clientId\":\"cwaekrrjre\",\"principalId\":\"xt\"}}},\"location\":\"lbqpvuzlmvfelf\",\"tags\":{\"rnjwmw\":\"plcrpwjxeznoig\",\"saz\":\"pn\",\"sxtta\":\"jjoqkagf\",\"mkqjj\":\"gzxnfaazpxdtnk\"},\"id\":\"wuenvr\",\"name\":\"pyouaibrebqaays\",\"type\":\"kixqtnqtt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IoTOperationsManager manager = IoTOperationsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InstanceResource response = manager.instances()
-            .define("qxujxukndxd")
-            .withRegion("fhwygzlvdnkfxus")
-            .withExistingResourceGroup("ughftqsx")
+            .define("dhszfjv")
+            .withRegion("snjvcdwxlpqekftn")
+            .withExistingResourceGroup("lsj")
             .withExtendedLocation(
-                new ExtendedLocation().withName("phoszqz").withType(ExtendedLocationType.CUSTOM_LOCATION))
-            .withTags(mapOf("pfcqdp", "wzrmuh", "elvezrypq", "qxqvpsvuoymgc"))
-            .withProperties(new InstanceProperties().withDescription("jguufzdm")
-                .withSchemaRegistryRef(new SchemaRegistryRef().withResourceId("whbotzingamv")))
-            .withIdentity(
-                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("ccyajg", new UserAssignedIdentity())))
+                new ExtendedLocation().withName("vvsccyajguq").withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .withTags(mapOf("dhtmdvypgikd", "jsyingwfqatm", "hlhkjoqrvqqaatj", "szywkbirryu"))
+            .withProperties(new InstanceProperties().withDescription("ofel")
+                .withSchemaRegistryRef(new SchemaRegistryRef().withResourceId("jnalghf"))
+                .withFeatures(mapOf("wws", new InstanceFeature().withMode(InstanceFeatureMode.PREVIEW)
+                    .withSettings(mapOf("owueluqh", OperationalMode.DISABLED, "hhxvrhmzkwpj", OperationalMode.ENABLED)),
+                    "phoszqz",
+                    new InstanceFeature().withMode(InstanceFeatureMode.DISABLED)
+                        .withSettings(mapOf("qs", OperationalMode.ENABLED, "qxujxukndxd", OperationalMode.DISABLED,
+                            "rjguufzdmsyqtf", OperationalMode.DISABLED, "whbotzingamv", OperationalMode.DISABLED)),
+                    "npwzcjaes",
+                    new InstanceFeature().withMode(InstanceFeatureMode.STABLE)
+                        .withSettings(mapOf("mvdk", OperationalMode.DISABLED, "ynwcvtbv", OperationalMode.DISABLED,
+                            "yhmtnvyqiat", OperationalMode.DISABLED, "wp", OperationalMode.DISABLED)))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("elvezrypq", new UserAssignedIdentity(), "kobopgxed",
+                    new UserAssignedIdentity(), "fkbw", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("vvyhg", response.location());
-        Assertions.assertEquals("byrqufeg", response.tags().get("uvwzfbnh"));
-        Assertions.assertEquals("xedk", response.properties().description());
-        Assertions.assertEquals("fkbw", response.properties().schemaRegistryRef().resourceId());
-        Assertions.assertEquals("csnjvcdwxlpqekft", response.extendedLocation().name());
+        Assertions.assertEquals("lbqpvuzlmvfelf", response.location());
+        Assertions.assertEquals("plcrpwjxeznoig", response.tags().get("rnjwmw"));
+        Assertions.assertEquals("bxvvyhg", response.properties().description());
+        Assertions.assertEquals("bnhlmc", response.properties().schemaRegistryRef().resourceId());
+        Assertions.assertEquals(InstanceFeatureMode.STABLE,
+            response.properties().features().get("rvqahqkghtpwi").mode());
+        Assertions.assertEquals(OperationalMode.DISABLED,
+            response.properties().features().get("rvqahqkghtpwi").settings().get("vgbmhr"));
+        Assertions.assertEquals("nhyjsv", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 
     // Use "Map.of" if available

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fabric.generated;
  */
 public final class FabricCapacitiesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Get.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_Get.json
      */
     /**
      * Sample code: Get a capacity.

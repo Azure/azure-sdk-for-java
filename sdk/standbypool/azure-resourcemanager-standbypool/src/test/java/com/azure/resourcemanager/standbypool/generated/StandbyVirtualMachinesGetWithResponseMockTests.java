@@ -6,8 +6,8 @@ package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.standbypool.StandbyPoolManager;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachineResource;
@@ -21,19 +21,19 @@ public final class StandbyVirtualMachinesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"virtualMachineResourceId\":\"cuh\",\"provisioningState\":\"Succeeded\"},\"id\":\"tyq\",\"name\":\"klbb\",\"type\":\"vplwzbhv\"}";
+            = "{\"properties\":{\"virtualMachineResourceId\":\"bxzpuzycisp\",\"provisioningState\":\"Deleting\"},\"id\":\"hmgkbrpyy\",\"name\":\"hibnuqqkpika\",\"type\":\"rgvtqag\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StandbyPoolManager manager = StandbyPoolManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StandbyVirtualMachineResource response = manager.standbyVirtualMachines()
-            .getWithResponse("bavxbniwdjswzt", "dbpgnxytxhp", "xbzpfzab", com.azure.core.util.Context.NONE)
+            .getWithResponse("mpvecxgodebfqk", "rbmpukgri", "flz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cuh", response.properties().virtualMachineResourceId());
+        Assertions.assertEquals("bxzpuzycisp", response.properties().virtualMachineResourceId());
     }
 }

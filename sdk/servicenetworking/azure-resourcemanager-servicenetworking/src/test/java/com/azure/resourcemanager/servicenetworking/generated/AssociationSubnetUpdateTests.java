@@ -12,14 +12,14 @@ public final class AssociationSubnetUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssociationSubnetUpdate model
-            = BinaryData.fromString("{\"id\":\"lhqgnufooojy\"}").toObject(AssociationSubnetUpdate.class);
-        Assertions.assertEquals("lhqgnufooojy", model.id());
+            = BinaryData.fromString("{\"id\":\"esaagdfm\"}").toObject(AssociationSubnetUpdate.class);
+        Assertions.assertEquals("esaagdfm", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssociationSubnetUpdate model = new AssociationSubnetUpdate().withId("lhqgnufooojy");
+        AssociationSubnetUpdate model = new AssociationSubnetUpdate().withId("esaagdfm");
         model = BinaryData.fromObject(model).toObject(AssociationSubnetUpdate.class);
-        Assertions.assertEquals("lhqgnufooojy", model.id());
+        Assertions.assertEquals("esaagdfm", model.id());
     }
 }

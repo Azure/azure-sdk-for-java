@@ -14,18 +14,18 @@ public final class ProfileDiagnosticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProfileDiagnostics model = BinaryData
-            .fromString("{\"logs\":{\"level\":\"lpstdbhhxsrzdz\"},\"metrics\":{\"prometheusPort\":566185577}}")
+            .fromString("{\"logs\":{\"level\":\"kcjhwqytjrybnwj\"},\"metrics\":{\"prometheusPort\":2026519653}}")
             .toObject(ProfileDiagnostics.class);
-        Assertions.assertEquals("lpstdbhhxsrzdz", model.logs().level());
-        Assertions.assertEquals(566185577, model.metrics().prometheusPort());
+        Assertions.assertEquals("kcjhwqytjrybnwj", model.logs().level());
+        Assertions.assertEquals(2026519653, model.metrics().prometheusPort());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProfileDiagnostics model = new ProfileDiagnostics().withLogs(new DiagnosticsLogs().withLevel("lpstdbhhxsrzdz"))
-            .withMetrics(new Metrics().withPrometheusPort(566185577));
+        ProfileDiagnostics model = new ProfileDiagnostics().withLogs(new DiagnosticsLogs().withLevel("kcjhwqytjrybnwj"))
+            .withMetrics(new Metrics().withPrometheusPort(2026519653));
         model = BinaryData.fromObject(model).toObject(ProfileDiagnostics.class);
-        Assertions.assertEquals("lpstdbhhxsrzdz", model.logs().level());
-        Assertions.assertEquals(566185577, model.metrics().prometheusPort());
+        Assertions.assertEquals("kcjhwqytjrybnwj", model.logs().level());
+        Assertions.assertEquals(2026519653, model.metrics().prometheusPort());
     }
 }

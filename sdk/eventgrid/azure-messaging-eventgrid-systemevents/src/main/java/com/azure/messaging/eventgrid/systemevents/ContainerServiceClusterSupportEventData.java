@@ -22,13 +22,16 @@ public class ContainerServiceClusterSupportEventData
      * The Kubernetes version of the ManagedCluster resource
      */
     @Generated
-    private String kubernetesVersion;
+    private final String kubernetesVersion;
 
     /**
      * Creates an instance of ContainerServiceClusterSupportEventData class.
+     * 
+     * @param kubernetesVersion the kubernetesVersion value to set.
      */
     @Generated
-    protected ContainerServiceClusterSupportEventData() {
+    protected ContainerServiceClusterSupportEventData(String kubernetesVersion) {
+        this.kubernetesVersion = kubernetesVersion;
     }
 
     /**
@@ -39,18 +42,6 @@ public class ContainerServiceClusterSupportEventData
     @Generated
     public String getKubernetesVersion() {
         return this.kubernetesVersion;
-    }
-
-    /**
-     * Set the kubernetesVersion property: The Kubernetes version of the ManagedCluster resource.
-     * 
-     * @param kubernetesVersion the kubernetesVersion value to set.
-     * @return the ContainerServiceClusterSupportEventData object itself.
-     */
-    @Generated
-    ContainerServiceClusterSupportEventData setKubernetesVersion(String kubernetesVersion) {
-        this.kubernetesVersion = kubernetesVersion;
-        return this;
     }
 
     /**
@@ -70,25 +61,24 @@ public class ContainerServiceClusterSupportEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of ContainerServiceClusterSupportEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerServiceClusterSupportEventData.
      */
     @Generated
     public static ContainerServiceClusterSupportEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerServiceClusterSupportEventData deserializedContainerServiceClusterSupportEventData
-                = new ContainerServiceClusterSupportEventData();
+            String kubernetesVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("kubernetesVersion".equals(fieldName)) {
-                    deserializedContainerServiceClusterSupportEventData.kubernetesVersion = reader.getString();
+                    kubernetesVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedContainerServiceClusterSupportEventData;
+            return new ContainerServiceClusterSupportEventData(kubernetesVersion);
         });
     }
 }

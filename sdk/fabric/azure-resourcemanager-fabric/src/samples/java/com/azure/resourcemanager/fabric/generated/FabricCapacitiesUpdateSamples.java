@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class FabricCapacitiesUpdateSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Update.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_Update.json
      */
     /**
      * Sample code: Update capacity properties.

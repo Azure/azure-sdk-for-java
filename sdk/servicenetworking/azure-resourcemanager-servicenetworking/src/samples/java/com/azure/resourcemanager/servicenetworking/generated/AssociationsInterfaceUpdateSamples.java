@@ -14,7 +14,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationUpdatePrope
  */
 public final class AssociationsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/AssociationPatch.json
+     * x-ms-original-file: 2025-03-01-preview/AssociationPatch.json
      */
     /**
      * Sample code: Update Association.

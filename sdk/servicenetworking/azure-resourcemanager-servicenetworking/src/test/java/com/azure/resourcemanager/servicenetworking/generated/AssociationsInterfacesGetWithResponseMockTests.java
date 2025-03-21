@@ -6,8 +6,8 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Association;
@@ -22,22 +22,22 @@ public final class AssociationsInterfacesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"ruwiqzbqjvsov\"},\"provisioningState\":\"Provisioning\"},\"location\":\"acspkwl\",\"tags\":{\"hrk\":\"obpxjmflbvvn\",\"ajiwkuo\":\"ciwwzjuqkhr\",\"sauuimj\":\"oskg\",\"rfbyaosvexcso\":\"vxieduugidyj\"},\"id\":\"pclhocohslk\",\"name\":\"vleggzfbuhfmvfax\",\"type\":\"ffeii\"}";
+            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"ihkaetcktvfc\"},\"provisioningState\":\"Deleting\"},\"location\":\"nkymuctqhjfbebrj\",\"tags\":{\"xfvjrbirp\":\"rfuwutt\",\"jky\":\"xepcyvahfn\",\"ljyoxgvcltb\":\"xjvuujqgidokg\"},\"id\":\"sncghkjeszz\",\"name\":\"bijhtxfvgxbf\",\"type\":\"mxnehmp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrafficControllerManager manager = TrafficControllerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Association response = manager.associationsInterfaces()
-            .getWithResponse("oczvy", "fqrvkdvjsllrmvvd", "watkpnpulexxb", com.azure.core.util.Context.NONE)
+            .getWithResponse("wrmjmwvvjektc", "senhwlrs", "frzpwvlqdqgb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("acspkwl", response.location());
-        Assertions.assertEquals("obpxjmflbvvn", response.tags().get("hrk"));
+        Assertions.assertEquals("nkymuctqhjfbebrj", response.location());
+        Assertions.assertEquals("rfuwutt", response.tags().get("xfvjrbirp"));
         Assertions.assertEquals(AssociationType.SUBNETS, response.properties().associationType());
-        Assertions.assertEquals("ruwiqzbqjvsov", response.properties().subnet().id());
+        Assertions.assertEquals("ihkaetcktvfc", response.properties().subnet().id());
     }
 }

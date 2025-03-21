@@ -229,7 +229,7 @@ public final class MongoClusterManagementClientImpl implements MongoClusterManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-07-01";
+        this.apiVersion = "2024-10-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.mongoClusters = new MongoClustersClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);

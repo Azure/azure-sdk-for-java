@@ -35,9 +35,9 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
     /*
      * Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
      * Possible values can be
-     * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
+     * [TimeZoneInfo.Id](https://learn.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
      * value from time zones returned by
-     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
+     * [TimeZoneInfo.GetSystemTimeZones](https://learn.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      */
     private String timeZone;
 
@@ -125,9 +125,9 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
     /**
      * Get the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
      * Possible values can be
-     * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
+     * [TimeZoneInfo.Id](https://learn.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
      * value from time zones returned by
-     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
+     * [TimeZoneInfo.GetSystemTimeZones](https://learn.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      * 
      * @return the timeZone value.
      */
@@ -138,9 +138,9 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
     /**
      * Set the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
      * Possible values can be
-     * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
+     * [TimeZoneInfo.Id](https://learn.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
      * value from time zones returned by
-     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
+     * [TimeZoneInfo.GetSystemTimeZones](https://learn.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      * 
      * @param timeZone the timeZone value to set.
      * @return the WindowsConfiguration object itself.

@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class FabricCapacitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_CreateOrUpdate.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a capacity.

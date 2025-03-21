@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fabric.generated;
  */
 public final class FabricCapacitiesSuspendSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Suspend.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_Suspend.json
      */
     /**
      * Sample code: Suspend capacity.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
  */
 public final class FrontendsInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/FrontendPut.json
+     * x-ms-original-file: 2025-03-01-preview/FrontendPut.json
      */
     /**
      * Sample code: Put Frontend.

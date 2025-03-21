@@ -201,7 +201,7 @@ public interface Frontend {
     /**
      * The template for Frontend update.
      */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -233,6 +233,19 @@ public interface Frontend {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Frontend update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(FrontendUpdateProperties properties);
         }
     }
 

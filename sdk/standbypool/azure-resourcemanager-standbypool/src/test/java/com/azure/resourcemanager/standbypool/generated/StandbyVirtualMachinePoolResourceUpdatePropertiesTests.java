@@ -14,11 +14,11 @@ public final class StandbyVirtualMachinePoolResourceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyVirtualMachinePoolResourceUpdateProperties model = BinaryData.fromString(
-            "{\"elasticityProfile\":{\"maxReadyCapacity\":8711878802176602351,\"minReadyCapacity\":947899804697083962},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"qpsoacctazak\"}")
+            "{\"elasticityProfile\":{\"maxReadyCapacity\":8711878802176602351,\"minReadyCapacity\":947899804697083962},\"virtualMachineState\":\"Hibernated\",\"attachedVirtualMachineScaleSetId\":\"qpsoacctazak\"}")
             .toObject(StandbyVirtualMachinePoolResourceUpdateProperties.class);
         Assertions.assertEquals(8711878802176602351L, model.elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(947899804697083962L, model.elasticityProfile().minReadyCapacity());
-        Assertions.assertEquals(VirtualMachineState.DEALLOCATED, model.virtualMachineState());
+        Assertions.assertEquals(VirtualMachineState.HIBERNATED, model.virtualMachineState());
         Assertions.assertEquals("qpsoacctazak", model.attachedVirtualMachineScaleSetId());
     }
 
@@ -29,12 +29,12 @@ public final class StandbyVirtualMachinePoolResourceUpdatePropertiesTests {
                 .withElasticityProfile(
                     new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(8711878802176602351L)
                         .withMinReadyCapacity(947899804697083962L))
-                .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
+                .withVirtualMachineState(VirtualMachineState.HIBERNATED)
                 .withAttachedVirtualMachineScaleSetId("qpsoacctazak");
         model = BinaryData.fromObject(model).toObject(StandbyVirtualMachinePoolResourceUpdateProperties.class);
         Assertions.assertEquals(8711878802176602351L, model.elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(947899804697083962L, model.elasticityProfile().minReadyCapacity());
-        Assertions.assertEquals(VirtualMachineState.DEALLOCATED, model.virtualMachineState());
+        Assertions.assertEquals(VirtualMachineState.HIBERNATED, model.virtualMachineState());
         Assertions.assertEquals("qpsoacctazak", model.attachedVirtualMachineScaleSetId());
     }
 }

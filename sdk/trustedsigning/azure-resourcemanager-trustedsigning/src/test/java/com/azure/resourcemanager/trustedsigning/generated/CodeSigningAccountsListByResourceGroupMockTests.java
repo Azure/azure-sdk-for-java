@@ -7,8 +7,8 @@ package com.azure.resourcemanager.trustedsigning.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.trustedsigning.TrustedSigningManager;
 import com.azure.resourcemanager.trustedsigning.models.CodeSigningAccount;
@@ -23,20 +23,20 @@ public final class CodeSigningAccountsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"accountUri\":\"mnteiwao\",\"sku\":{\"name\":\"Basic\"},\"provisioningState\":\"Deleting\"},\"location\":\"c\",\"tags\":{\"fsrpymzidnse\":\"dcuf\"},\"id\":\"cxtbzsg\",\"name\":\"yc\",\"type\":\"sne\"}]}";
+            = "{\"value\":[{\"properties\":{\"accountUri\":\"awrlyx\",\"sku\":{\"name\":\"Basic\"},\"provisioningState\":\"Canceled\"},\"location\":\"bnwbxgjvtbvpyssz\",\"tags\":{\"guhmuouqfpr\":\"uj\",\"nguitnwuizgazxu\":\"zw\"},\"id\":\"izuckyfihrfidfvz\",\"name\":\"dzuhtymwi\",\"type\":\"dkfthwxmnt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrustedSigningManager manager = TrustedSigningManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CodeSigningAccount> response
-            = manager.codeSigningAccounts().listByResourceGroup("ymwisdkft", com.azure.core.util.Context.NONE);
+            = manager.codeSigningAccounts().listByResourceGroup("lnerkujysvleju", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("c", response.iterator().next().location());
-        Assertions.assertEquals("dcuf", response.iterator().next().tags().get("fsrpymzidnse"));
+        Assertions.assertEquals("bnwbxgjvtbvpyssz", response.iterator().next().location());
+        Assertions.assertEquals("uj", response.iterator().next().tags().get("guhmuouqfpr"));
         Assertions.assertEquals(SkuName.BASIC, response.iterator().next().properties().sku().name());
     }
 }

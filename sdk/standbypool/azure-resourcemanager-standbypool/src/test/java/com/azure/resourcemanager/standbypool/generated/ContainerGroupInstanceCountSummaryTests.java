@@ -6,15 +6,17 @@ package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.standbypool.models.ContainerGroupInstanceCountSummary;
+import com.azure.resourcemanager.standbypool.models.PoolContainerGroupState;
 import org.junit.jupiter.api.Assertions;
 
 public final class ContainerGroupInstanceCountSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerGroupInstanceCountSummary model = BinaryData.fromString(
-            "{\"instanceCountsByState\":[{\"state\":\"wtruwiqzbqjvsovm\",\"count\":7669458407160761212},{\"state\":\"acspkwl\",\"count\":9019954696773982094},{\"state\":\"obpxjmflbvvn\",\"count\":2925444529354115235},{\"state\":\"kcciwwzjuqkhr\",\"count\":7673218472879006284}]}")
+            "{\"zone\":6238145769223006535,\"instanceCountsByState\":[{\"state\":\"Creating\",\"count\":3208959223974394461},{\"state\":\"Deleting\",\"count\":8436976750184221107}]}")
             .toObject(ContainerGroupInstanceCountSummary.class);
-        Assertions.assertEquals("wtruwiqzbqjvsovm", model.instanceCountsByState().get(0).state());
-        Assertions.assertEquals(7669458407160761212L, model.instanceCountsByState().get(0).count());
+        Assertions.assertEquals(6238145769223006535L, model.zone());
+        Assertions.assertEquals(PoolContainerGroupState.CREATING, model.instanceCountsByState().get(0).state());
+        Assertions.assertEquals(3208959223974394461L, model.instanceCountsByState().get(0).count());
     }
 }

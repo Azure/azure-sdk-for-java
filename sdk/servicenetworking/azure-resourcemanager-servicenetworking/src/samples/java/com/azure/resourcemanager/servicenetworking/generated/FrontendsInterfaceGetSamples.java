@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
  */
 public final class FrontendsInterfaceGetSamples {
     /*
-     * x-ms-original-file: 2025-01-01/FrontendGet.json
+     * x-ms-original-file: 2025-03-01-preview/FrontendGet.json
      */
     /**
      * Sample code: Get Frontend.

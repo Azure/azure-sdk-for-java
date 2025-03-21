@@ -13,14 +13,14 @@ public final class GenerateResourceLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenerateResourceLimits model
-            = BinaryData.fromString("{\"cpu\":\"Disabled\"}").toObject(GenerateResourceLimits.class);
-        Assertions.assertEquals(OperationalMode.DISABLED, model.cpu());
+            = BinaryData.fromString("{\"cpu\":\"Enabled\"}").toObject(GenerateResourceLimits.class);
+        Assertions.assertEquals(OperationalMode.ENABLED, model.cpu());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateResourceLimits model = new GenerateResourceLimits().withCpu(OperationalMode.DISABLED);
+        GenerateResourceLimits model = new GenerateResourceLimits().withCpu(OperationalMode.ENABLED);
         model = BinaryData.fromObject(model).toObject(GenerateResourceLimits.class);
-        Assertions.assertEquals(OperationalMode.DISABLED, model.cpu());
+        Assertions.assertEquals(OperationalMode.ENABLED, model.cpu());
     }
 }

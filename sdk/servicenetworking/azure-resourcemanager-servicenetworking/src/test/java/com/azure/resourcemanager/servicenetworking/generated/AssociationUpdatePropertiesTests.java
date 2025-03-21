@@ -14,19 +14,19 @@ public final class AssociationUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssociationUpdateProperties model
-            = BinaryData.fromString("{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"nq\"}}")
+            = BinaryData.fromString("{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"jywif\"}}")
                 .toObject(AssociationUpdateProperties.class);
         Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("nq", model.subnet().id());
+        Assertions.assertEquals("jywif", model.subnet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssociationUpdateProperties model
             = new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnetUpdate().withId("nq"));
+                .withSubnet(new AssociationSubnetUpdate().withId("jywif"));
         model = BinaryData.fromObject(model).toObject(AssociationUpdateProperties.class);
         Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("nq", model.subnet().id());
+        Assertions.assertEquals("jywif", model.subnet().id());
     }
 }

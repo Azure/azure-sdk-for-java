@@ -6,8 +6,8 @@ package com.azure.resourcemanager.healthdataaiservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthdataaiservices.HealthDataAIServicesManager;
 import com.azure.resourcemanager.healthdataaiservices.models.DeidService;
@@ -28,14 +28,14 @@ public final class DeidServicesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"ivkrtsw\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"zjf\",\"uvjfdxxive\",\"vtcqaqtdo\",\"mcbxvwvxysl\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"xoblytkbl\",\"name\":\"pe\",\"type\":\"wwfbkrvrnsvshq\"},{\"properties\":{\"groupIds\":[\"crsbfovasr\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"hsqfsubcgjbirxbp\",\"name\":\"bsrfbj\",\"type\":\"dtws\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"pvjzbe\",\"tenantId\":\"l\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ruoujmk\":{\"principalId\":\"q\",\"clientId\":\"wpmqt\"},\"ewgdrjervn\":{\"principalId\":\"hwqytj\",\"clientId\":\"bnw\"},\"mifthnzdnd\":{\"principalId\":\"nqpeh\",\"clientId\":\"doy\"},\"bgycduiertgccym\":{\"principalId\":\"gnayqigynduh\",\"clientId\":\"hqlkthumaqo\"}}},\"location\":\"olpsslqlf\",\"tags\":{\"bglzpswi\":\"n\",\"cwyhzdxssa\":\"d\",\"od\":\"bzmnvdfznud\"},\"id\":\"xzb\",\"name\":\"cblylpstdbhhxsr\",\"type\":\"dzu\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"ivkrtsw\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"zjf\",\"uvjfdxxive\",\"vtcqaqtdo\",\"mcbxvwvxysl\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"xoblytkbl\",\"name\":\"pe\",\"type\":\"wwfbkrvrnsvshq\"},{\"properties\":{\"groupIds\":[\"crsbfovasr\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"hsqfsubcgjbirxbp\",\"name\":\"bsrfbj\",\"type\":\"dtws\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"pvjzbe\",\"tenantId\":\"l\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ruoujmk\":{\"clientId\":\"q\",\"principalId\":\"wpmqt\"},\"ewgdrjervn\":{\"clientId\":\"hwqytj\",\"principalId\":\"bnw\"},\"mifthnzdnd\":{\"clientId\":\"nqpeh\",\"principalId\":\"doy\"},\"bgycduiertgccym\":{\"clientId\":\"gnayqigynduh\",\"principalId\":\"hqlkthumaqo\"}}},\"location\":\"olpsslqlf\",\"tags\":{\"bglzpswi\":\"n\",\"cwyhzdxssa\":\"d\",\"od\":\"bzmnvdfznud\"},\"id\":\"xzb\",\"name\":\"cblylpstdbhhxsr\",\"type\":\"dzu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HealthDataAIServicesManager manager = HealthDataAIServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeidService response = manager.deidServices()
             .define("it")

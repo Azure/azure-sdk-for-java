@@ -6,8 +6,8 @@ package com.azure.resourcemanager.trustedsigning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.trustedsigning.TrustedSigningManager;
 import com.azure.resourcemanager.trustedsigning.models.CodeSigningAccount;
@@ -22,21 +22,21 @@ public final class CodeSigningAccountsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"accountUri\":\"sszdnru\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Canceled\"},\"location\":\"uouq\",\"tags\":{\"uizga\":\"wzwbnguitn\",\"fizuckyf\":\"x\"},\"id\":\"hr\",\"name\":\"idf\",\"type\":\"zwdzuh\"}";
+            = "{\"properties\":{\"accountUri\":\"ugpbkw\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Accepted\"},\"location\":\"qktapspwgcuert\",\"tags\":{\"dgmb\":\"dosvqwhbmdgbbjf\",\"tq\":\"bexppb\"},\"id\":\"rolfpfp\",\"name\":\"algbquxigjyjg\",\"type\":\"jaoyfhrtx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrustedSigningManager manager = TrustedSigningManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CodeSigningAccount response = manager.codeSigningAccounts()
-            .getByResourceGroupWithResponse("xwjkcprbnwbxg", "vtb", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("uflmm", "kzsmodm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uouq", response.location());
-        Assertions.assertEquals("wzwbnguitn", response.tags().get("uizga"));
+        Assertions.assertEquals("qktapspwgcuert", response.location());
+        Assertions.assertEquals("dosvqwhbmdgbbjf", response.tags().get("dgmb"));
         Assertions.assertEquals(SkuName.PREMIUM, response.properties().sku().name());
     }
 }

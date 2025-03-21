@@ -88,6 +88,11 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     private BackupProperties backup;
 
     /*
+     * The Data API properties of the mongo cluster.
+     */
+    private DataApiProperties dataApi;
+
+    /*
      * List of private endpoint connections.
      */
     private List<PrivateEndpointConnection> privateEndpointConnections;
@@ -363,6 +368,26 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
+     * Get the dataApi property: The Data API properties of the mongo cluster.
+     * 
+     * @return the dataApi value.
+     */
+    public DataApiProperties dataApi() {
+        return this.dataApi;
+    }
+
+    /**
+     * Set the dataApi property: The Data API properties of the mongo cluster.
+     * 
+     * @param dataApi the dataApi value to set.
+     * @return the MongoClusterProperties object itself.
+     */
+    public MongoClusterProperties withDataApi(DataApiProperties dataApi) {
+        this.dataApi = dataApi;
+        return this;
+    }
+
+    /**
      * Get the privateEndpointConnections property: List of private endpoint connections.
      * 
      * @return the privateEndpointConnections value.
@@ -439,6 +464,9 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
         if (backup() != null) {
             backup().validate();
         }
+        if (dataApi() != null) {
+            dataApi().validate();
+        }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
@@ -465,6 +493,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
         jsonWriter.writeJsonField("sharding", this.sharding);
         jsonWriter.writeJsonField("compute", this.compute);
         jsonWriter.writeJsonField("backup", this.backup);
+        jsonWriter.writeJsonField("dataApi", this.dataApi);
         jsonWriter.writeArrayField("previewFeatures", this.previewFeatures,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
@@ -518,6 +547,8 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
                     deserializedMongoClusterProperties.compute = ComputeProperties.fromJson(reader);
                 } else if ("backup".equals(fieldName)) {
                     deserializedMongoClusterProperties.backup = BackupProperties.fromJson(reader);
+                } else if ("dataApi".equals(fieldName)) {
+                    deserializedMongoClusterProperties.dataApi = DataApiProperties.fromJson(reader);
                 } else if ("privateEndpointConnections".equals(fieldName)) {
                     List<PrivateEndpointConnection> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnection.fromJson(reader1));

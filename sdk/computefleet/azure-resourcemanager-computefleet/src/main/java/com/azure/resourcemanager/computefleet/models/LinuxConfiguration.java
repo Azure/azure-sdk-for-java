@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Specifies the Linux operating system settings on the virtual machine. For a
  * list of supported Linux distributions, see [Linux on Azure-Endorsed
- * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
+ * Distributions](https://learn.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
  */
 @Fluent
 public final class LinuxConfiguration implements JsonSerializable<LinuxConfiguration> {

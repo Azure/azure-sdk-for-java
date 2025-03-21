@@ -12,27 +12,27 @@ public final class ImageReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageReference model = BinaryData.fromString(
-            "{\"publisher\":\"kknryrtihf\",\"offer\":\"ijbpzvgnwzsymgl\",\"sku\":\"fcyzkohdbihanufh\",\"version\":\"bj\",\"id\":\"a\"}")
+            "{\"publisher\":\"trg\",\"offer\":\"bpf\",\"sku\":\"s\",\"version\":\"zgvfcjrwz\",\"id\":\"xjtfelluwfzit\"}")
             .toObject(ImageReference.class);
-        Assertions.assertEquals("kknryrtihf", model.publisher());
-        Assertions.assertEquals("ijbpzvgnwzsymgl", model.offer());
-        Assertions.assertEquals("fcyzkohdbihanufh", model.sku());
-        Assertions.assertEquals("bj", model.version());
-        Assertions.assertEquals("a", model.id());
+        Assertions.assertEquals("trg", model.publisher());
+        Assertions.assertEquals("bpf", model.offer());
+        Assertions.assertEquals("s", model.sku());
+        Assertions.assertEquals("zgvfcjrwz", model.version());
+        Assertions.assertEquals("xjtfelluwfzit", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageReference model = new ImageReference().withPublisher("kknryrtihf")
-            .withOffer("ijbpzvgnwzsymgl")
-            .withSku("fcyzkohdbihanufh")
-            .withVersion("bj")
-            .withId("a");
+        ImageReference model = new ImageReference().withPublisher("trg")
+            .withOffer("bpf")
+            .withSku("s")
+            .withVersion("zgvfcjrwz")
+            .withId("xjtfelluwfzit");
         model = BinaryData.fromObject(model).toObject(ImageReference.class);
-        Assertions.assertEquals("kknryrtihf", model.publisher());
-        Assertions.assertEquals("ijbpzvgnwzsymgl", model.offer());
-        Assertions.assertEquals("fcyzkohdbihanufh", model.sku());
-        Assertions.assertEquals("bj", model.version());
-        Assertions.assertEquals("a", model.id());
+        Assertions.assertEquals("trg", model.publisher());
+        Assertions.assertEquals("bpf", model.offer());
+        Assertions.assertEquals("s", model.sku());
+        Assertions.assertEquals("zgvfcjrwz", model.version());
+        Assertions.assertEquals("xjtfelluwfzit", model.id());
     }
 }

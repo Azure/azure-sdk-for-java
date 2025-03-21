@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.servicenetworking.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,12 +14,17 @@ import java.io.IOException;
 /**
  * Frontend Properties.
  */
-@Immutable
+@Fluent
 public final class FrontendProperties implements JsonSerializable<FrontendProperties> {
     /*
      * The Fully Qualified Domain Name of the DNS record associated to a Traffic Controller frontend.
      */
     private String fqdn;
+
+    /*
+     * Frontend Security Policy Configuration
+     */
+    private SecurityPolicyConfigurations securityPolicyConfigurations;
 
     /*
      * Provisioning State of Traffic Controller Frontend Resource
@@ -43,6 +48,27 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
     }
 
     /**
+     * Get the securityPolicyConfigurations property: Frontend Security Policy Configuration.
+     * 
+     * @return the securityPolicyConfigurations value.
+     */
+    public SecurityPolicyConfigurations securityPolicyConfigurations() {
+        return this.securityPolicyConfigurations;
+    }
+
+    /**
+     * Set the securityPolicyConfigurations property: Frontend Security Policy Configuration.
+     * 
+     * @param securityPolicyConfigurations the securityPolicyConfigurations value to set.
+     * @return the FrontendProperties object itself.
+     */
+    public FrontendProperties
+        withSecurityPolicyConfigurations(SecurityPolicyConfigurations securityPolicyConfigurations) {
+        this.securityPolicyConfigurations = securityPolicyConfigurations;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning State of Traffic Controller Frontend Resource.
      * 
      * @return the provisioningState value.
@@ -57,6 +83,9 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (securityPolicyConfigurations() != null) {
+            securityPolicyConfigurations().validate();
+        }
     }
 
     /**
@@ -65,6 +94,7 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("securityPolicyConfigurations", this.securityPolicyConfigurations);
         return jsonWriter.writeEndObject();
     }
 
@@ -85,6 +115,9 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
 
                 if ("fqdn".equals(fieldName)) {
                     deserializedFrontendProperties.fqdn = reader.getString();
+                } else if ("securityPolicyConfigurations".equals(fieldName)) {
+                    deserializedFrontendProperties.securityPolicyConfigurations
+                        = SecurityPolicyConfigurations.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedFrontendProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else {

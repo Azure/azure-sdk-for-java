@@ -44,25 +44,25 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     /**
      * The service client containing this operation class.
      */
-    private final StandbyPoolClientImpl client;
+    private final StandbyPoolManagementClientImpl client;
 
     /**
      * Initializes an instance of StandbyContainerGroupPoolRuntimeViewsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    StandbyContainerGroupPoolRuntimeViewsClientImpl(StandbyPoolClientImpl client) {
+    StandbyContainerGroupPoolRuntimeViewsClientImpl(StandbyPoolManagementClientImpl client) {
         this.service = RestProxy.create(StandbyContainerGroupPoolRuntimeViewsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StandbyPoolClientStandbyContainerGroupPoolRuntimeViews to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for StandbyPoolManagementClientStandbyContainerGroupPoolRuntimeViews to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "StandbyPoolClientSta")
+    @ServiceInterface(name = "StandbyPoolManagemen")
     public interface StandbyContainerGroupPoolRuntimeViewsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}/runtimeViews/{runtimeView}")
