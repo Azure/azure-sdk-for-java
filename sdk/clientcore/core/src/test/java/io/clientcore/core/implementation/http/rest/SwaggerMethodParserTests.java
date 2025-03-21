@@ -12,19 +12,18 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.utils.Base64Uri;
-import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.UriBuilder;
 import org.junit.jupiter.api.Test;
@@ -67,10 +66,7 @@ public class SwaggerMethodParserTests {
         void getMethod();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        void getMethodWithContext(Context context);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        void getMethodWithRequestOptions(RequestOptions requestOptions);
+        void getMethodWithRequestContext(SdkRequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "test")
         void putMethod();
@@ -514,30 +510,31 @@ public class SwaggerMethodParserTests {
     }
 
     @ParameterizedTest
-    @MethodSource("setRequestOptionsSupplier")
-    public void setRequestOptions(SwaggerMethodParser swaggerMethodParser, Object[] arguments,
-        RequestOptions expectedRequestOptions) {
-        assertEquals(expectedRequestOptions, swaggerMethodParser.setRequestOptions(arguments));
+    @MethodSource("setRequestContextSupplier")
+    public void setRequestContext(SwaggerMethodParser swaggerMethodParser, Object[] arguments,
+        SdkRequestContext expectedRequestContext) {
+        assertEquals(expectedRequestContext, swaggerMethodParser.setRequestContext(arguments));
     }
 
-    private static Stream<Arguments> setRequestOptionsSupplier() throws NoSuchMethodException {
-        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestOptions", RequestOptions.class);
+    private static Stream<Arguments> setRequestContextSupplier() throws NoSuchMethodException {
+        Method method
+            = OperationMethods.class.getDeclaredMethod("getMethodWithRequestContext", SdkRequestContext.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        RequestOptions bodyOptions = new RequestOptions().setBody(BinaryData.fromString("{\"id\":\"123\"}"));
+        SdkRequestContext emptyOptions = SdkRequestContext.none();
 
-        RequestOptions headerQueryOptions
-            = new RequestOptions().addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
-                .addQueryParam("foo", "bar");
+        SdkRequestContext headerQueryOptions = SdkRequestContext.create(new RequestOptions()
+            .addRequestCallback(r -> r.getHeaders().add(HttpHeaderName.fromString("x-ms-foo"), "bar"))
+            .addQueryParam("foo", "bar"));
 
-        RequestOptions uriOptions
-            = new RequestOptions().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com"));
+        SdkRequestContext uriOptions = SdkRequestContext
+            .create(new RequestOptions().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com")));
 
         // Add this test back if error options is ever made public.
         // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
 
         return Stream.of(Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
-            Arguments.of(swaggerMethodParser, toObjectArray(bodyOptions), bodyOptions),
+            Arguments.of(swaggerMethodParser, toObjectArray(emptyOptions), emptyOptions),
             Arguments.of(swaggerMethodParser, toObjectArray(headerQueryOptions), headerQueryOptions),
             Arguments.of(swaggerMethodParser, toObjectArray(uriOptions), uriOptions)
         // Arguments.of(swaggerMethodParser, toObjectArray(statusOptionOptions), statusOptionOptions)

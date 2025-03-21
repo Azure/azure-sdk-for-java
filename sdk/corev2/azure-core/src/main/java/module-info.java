@@ -6,6 +6,7 @@
  */
 module com.azure.v2.core {
     requires transitive io.clientcore.core;
+    requires jdk.httpserver;
 
     // public API surface area
     exports com.azure.v2.core.credentials;

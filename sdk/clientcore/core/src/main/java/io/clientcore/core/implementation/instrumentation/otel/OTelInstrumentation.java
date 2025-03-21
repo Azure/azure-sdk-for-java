@@ -4,6 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopAttributes;
@@ -220,32 +221,27 @@ public class OTelInstrumentation implements Instrumentation {
 
     @Override
     public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<RequestOptions, TResponse> operation) {
+        Function<SdkRequestContext, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
-        if (!shouldInstrument(SpanKind.CLIENT,
-            requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
-            return operation.apply(requestOptions);
-        }
-
-        if (requestOptions == null || requestOptions == RequestOptions.none()) {
-            requestOptions = new RequestOptions();
+        InstrumentationContext context = requestOptions == null ? null : requestOptions.getInstrumentationContext();
+        if (!shouldInstrument(SpanKind.CLIENT, context)) {
+            return operation.apply(SdkRequestContext.create(requestOptions));
         }
 
         long startTimeNs = callDurationMetric.isEnabled() ? System.nanoTime() : 0;
         InstrumentationAttributes commonAttributes = getOrCreateCommonAttributes(operationName);
-        Span span = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestOptions.getInstrumentationContext())
+        Span span = tracer.spanBuilder(operationName, SpanKind.CLIENT, context)
             .setAllAttributes(commonAttributes)
             .startSpan();
 
         TracingScope scope = span.makeCurrent();
         RuntimeException error = null;
+        SdkRequestContext requestContext = SdkRequestContext.create(requestOptions, span.getInstrumentationContext());
+
         try {
-            if (span.getInstrumentationContext().isValid()) {
-                requestOptions.setInstrumentationContext(span.getInstrumentationContext());
-            }
-            return operation.apply(requestOptions);
+            return operation.apply(requestContext);
         } catch (RuntimeException t) {
             error = t;
             throw t;
@@ -255,7 +251,7 @@ public class OTelInstrumentation implements Instrumentation {
                     ? commonAttributes
                     : commonAttributes.put(ERROR_TYPE_KEY, error.getClass().getCanonicalName());
                 callDurationMetric.record((System.nanoTime() - startTimeNs) / 1e9, attributes,
-                    requestOptions.getInstrumentationContext());
+                    requestContext.getInstrumentationContext());
             }
             span.end(error);
             scope.close();

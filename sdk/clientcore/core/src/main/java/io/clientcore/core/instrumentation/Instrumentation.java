@@ -4,6 +4,7 @@
 package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation;
@@ -125,14 +126,14 @@ public interface Instrumentation {
      *
      * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
      *                      or OpenAPI operationId.
-     * @param requestOptions the initial request options.
-     * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
+     * @param requestOptions the request context.
+     * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request context passed to it.
      * @param <TResponse> the type of the response.
      * @return the response.
      * @throws RuntimeException if the call throws a runtime exception.
      */
     <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<RequestOptions, TResponse> operation);
+        Function<SdkRequestContext, TResponse> operation);
 
     /**
      * Instruments a client call which includes distributed tracing and duration metric.
@@ -147,13 +148,14 @@ public interface Instrumentation {
      *
      * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
      *                      or OpenAPI operationId.
-     * @param requestOptions the initial request options.
-     * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
+     * @param requestOptions the request context.
+     * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request context passed to it.
      * @throws RuntimeException if the call throws a runtime exception.
      */
-    default void instrument(String operationName, RequestOptions requestOptions, Consumer<RequestOptions> operation) {
-        instrumentWithResponse(operationName, requestOptions, options -> {
-            operation.accept(options);
+    default void instrument(String operationName, RequestOptions requestOptions,
+        Consumer<SdkRequestContext> operation) {
+        instrumentWithResponse(operationName, requestOptions, context -> {
+            operation.accept(context);
             return null;
         });
     }

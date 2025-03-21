@@ -4,6 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.fallback;
 
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.instrumentation.Instrumentation;
@@ -96,35 +97,30 @@ public class FallbackInstrumentation implements Instrumentation {
 
     @Override
     public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<RequestOptions, TResponse> operation) {
+        Function<SdkRequestContext, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
-        if (!shouldInstrument(SpanKind.CLIENT,
-            requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
-            return operation.apply(requestOptions);
-        }
+        InstrumentationContext context = requestOptions == null ? null : requestOptions.getInstrumentationContext();
 
-        if (requestOptions == null || requestOptions == RequestOptions.none()) {
-            requestOptions = new RequestOptions();
+        if (!shouldInstrument(SpanKind.CLIENT, context)) {
+            return operation.apply(SdkRequestContext.create(requestOptions));
         }
 
         SpanBuilder builder
-            = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestOptions.getInstrumentationContext())
-                .setAttribute(SERVER_ADDRESS_KEY, serviceHost);
+            = tracer.spanBuilder(operationName, SpanKind.CLIENT, context).setAttribute(SERVER_ADDRESS_KEY, serviceHost);
 
         if (servicePort > 0) {
             builder.setAttribute(SERVER_PORT_KEY, servicePort);
         }
 
         Span span = builder.startSpan();
-        if (span.getInstrumentationContext().isValid()) {
-            requestOptions.setInstrumentationContext(span.getInstrumentationContext());
-        }
+
+        SdkRequestContext requestContext = SdkRequestContext.create(requestOptions, span.getInstrumentationContext());
 
         TracingScope scope = span.makeCurrent();
         try {
-            TResponse response = operation.apply(requestOptions);
+            TResponse response = operation.apply(requestContext);
             span.end();
             return response;
         } catch (RuntimeException t) {
