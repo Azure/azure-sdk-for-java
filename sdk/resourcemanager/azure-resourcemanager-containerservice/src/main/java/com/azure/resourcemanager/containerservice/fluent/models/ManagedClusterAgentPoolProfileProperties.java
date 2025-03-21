@@ -17,6 +17,7 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSetting
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
+import com.azure.resourcemanager.containerservice.models.GpuProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
@@ -316,6 +317,11 @@ public class ManagedClusterAgentPoolProfileProperties
      * The security settings of an agent pool.
      */
     private AgentPoolSecurityProfile securityProfile;
+
+    /*
+     * GPU settings for the Agent Pool.
+     */
+    private GpuProfile gpuProfile;
 
     /**
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
@@ -1373,6 +1379,26 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the gpuProfile property: GPU settings for the Agent Pool.
+     * 
+     * @return the gpuProfile value.
+     */
+    public GpuProfile gpuProfile() {
+        return this.gpuProfile;
+    }
+
+    /**
+     * Set the gpuProfile property: GPU settings for the Agent Pool.
+     * 
+     * @param gpuProfile the gpuProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withGpuProfile(GpuProfile gpuProfile) {
+        this.gpuProfile = gpuProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1401,6 +1427,9 @@ public class ManagedClusterAgentPoolProfileProperties
         }
         if (securityProfile() != null) {
             securityProfile().validate();
+        }
+        if (gpuProfile() != null) {
+            gpuProfile().validate();
         }
     }
 
@@ -1459,6 +1488,7 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("windowsProfile", this.windowsProfile);
         jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("gpuProfile", this.gpuProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1601,6 +1631,8 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("securityProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.securityProfile
                         = AgentPoolSecurityProfile.fromJson(reader);
+                } else if ("gpuProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.gpuProfile = GpuProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
