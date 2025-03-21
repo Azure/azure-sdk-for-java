@@ -737,45 +737,6 @@
           "code" : "java.method.removed",
           "old" : "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
           "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
-          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
-          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
-        },
-        {
-          "regex": true,
-          "ignore": true,
-          "code": "java.class.nowFinal",
-          "new": "class com\\.azure\\.resourcemanager\\.eventgrid\\.models\\.(DeadLetterWithResourceIdentity|DeliveryWithResourceIdentity|EventSubscriptionIdentity)",
-          "justification": "User should not be able to extend these classes."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.returnTypeTypeParametersChanged",
-          "old" : "method java.util.List<com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem> com.azure.resourcemanager.eventgrid.models.TopicTypeInfo::supportedScopesForSource()",
-          "new" : "method java.util.List<com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope> com.azure.resourcemanager.eventgrid.models.TopicTypeInfo::supportedScopesForSource()",
-          "justification": "Service swagger fix. Anonymous enum being named."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem",
-          "justification": "Service swagger fix. Anonymous enum being named."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.visibilityIncreased",
-          "old" : "method void com.azure.communication.callautomation.models.ChoiceResult::<init>()",
-          "new" : "method void com.azure.communication.callautomation.models.ChoiceResult::<init>()",
-          "justification": "Now we generate default constructor explicitly."
         }
       ]
     }
