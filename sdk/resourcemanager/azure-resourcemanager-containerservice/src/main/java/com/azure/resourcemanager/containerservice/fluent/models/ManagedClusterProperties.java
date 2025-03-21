@@ -19,6 +19,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPool
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterBootstrapProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile;
@@ -272,6 +273,11 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * Optional cluster metrics configuration.
      */
     private ManagedClusterMetricsProfile metricsProfile;
+
+    /*
+     * Profile of the cluster bootstrap configuration.
+     */
+    private ManagedClusterBootstrapProfile bootstrapProfile;
 
     /**
      * Creates an instance of ManagedClusterProperties class.
@@ -1079,6 +1085,26 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
+     * Get the bootstrapProfile property: Profile of the cluster bootstrap configuration.
+     * 
+     * @return the bootstrapProfile value.
+     */
+    public ManagedClusterBootstrapProfile bootstrapProfile() {
+        return this.bootstrapProfile;
+    }
+
+    /**
+     * Set the bootstrapProfile property: Profile of the cluster bootstrap configuration.
+     * 
+     * @param bootstrapProfile the bootstrapProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withBootstrapProfile(ManagedClusterBootstrapProfile bootstrapProfile) {
+        this.bootstrapProfile = bootstrapProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1167,6 +1193,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         if (metricsProfile() != null) {
             metricsProfile().validate();
         }
+        if (bootstrapProfile() != null) {
+            bootstrapProfile().validate();
+        }
     }
 
     /**
@@ -1213,6 +1242,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("azureMonitorProfile", this.azureMonitorProfile);
         jsonWriter.writeJsonField("serviceMeshProfile", this.serviceMeshProfile);
         jsonWriter.writeJsonField("metricsProfile", this.metricsProfile);
+        jsonWriter.writeJsonField("bootstrapProfile", this.bootstrapProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1339,6 +1369,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                     deserializedManagedClusterProperties.resourceUid = reader.getString();
                 } else if ("metricsProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.metricsProfile = ManagedClusterMetricsProfile.fromJson(reader);
+                } else if ("bootstrapProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.bootstrapProfile
+                        = ManagedClusterBootstrapProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
