@@ -11,14 +11,13 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.UriBuilder;
 
@@ -48,7 +47,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     private final ObjectSerializer serializer;
     private final String endpoint;
     private final HttpHeaderName operationLocationHeaderName;
-    private final Context context;
+    private final SdkRequestContext requestContext;
     private final String serviceVersion;
 
     /**
@@ -70,7 +69,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
         String operationLocationHeaderName) {
-        this(httpPipeline, serializer, operationLocationHeaderName, Context.none());
+        this(httpPipeline, serializer, operationLocationHeaderName, SdkRequestContext.none());
     }
 
     /**
@@ -79,11 +78,11 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
      * @param operationLocationHeaderName a custom header for polling the long-running operation
-     * @param context an instance of {@link io.clientcore.core.utils.Context}
+     * @param requestContext an instance of {@link SdkRequestContext}
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
-        String operationLocationHeaderName, Context context) {
-        this(httpPipeline, null, serializer, operationLocationHeaderName, context);
+        String operationLocationHeaderName, SdkRequestContext requestContext) {
+        this(httpPipeline, null, serializer, operationLocationHeaderName, requestContext);
     }
 
     /**
@@ -93,14 +92,14 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      * @param endpoint an endpoint for creating an absolute path when the path itself is relative.
      * @param serializer a custom serializer for serializing and deserializing polling responses.
      * @param operationLocationHeaderName a custom header for polling the long-running operation.
-     * @param context an instance of {@link io.clientcore.core.utils.Context}.
+     * @param requestContext an instance of {@link SdkRequestContext}.
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
-        String operationLocationHeaderName, Context context) {
+        String operationLocationHeaderName, SdkRequestContext requestContext) {
         this(operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
             new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
                 .setSerializer(serializer)
-                .setContext(context));
+                .setRequestContext(requestContext));
     }
 
     /**
@@ -122,8 +121,8 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             = (operationLocationHeaderName == null) ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
 
         this.serviceVersion = pollingStrategyOptions.getServiceVersion();
-        this.context
-            = pollingStrategyOptions.getContext() == null ? Context.none() : pollingStrategyOptions.getContext();
+        this.requestContext
+            = pollingStrategyOptions.getRequestContext() == null ? SdkRequestContext.none() : pollingStrategyOptions.getRequestContext();
     }
 
     @Override
@@ -171,7 +170,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         url = setServiceVersionQueryParam(url);
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
             .setUri(url)
-            .setRequestOptions(new RequestOptions().setContext(context));
+            .setRequestContext(requestContext);
 
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
@@ -222,7 +221,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
             .setUri(finalGetUrl)
-            .setRequestOptions(new RequestOptions().setContext(context));
+            .setRequestContext(requestContext);
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
             return PollingUtils.deserializeResponse(responseBody, serializer, resultType);
