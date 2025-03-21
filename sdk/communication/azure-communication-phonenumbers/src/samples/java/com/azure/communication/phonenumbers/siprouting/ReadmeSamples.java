@@ -5,6 +5,8 @@ package com.azure.communication.phonenumbers.siprouting;
 
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
+import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
+
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -93,7 +95,7 @@ public class ReadmeSamples {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
         // BEGIN: readme-sample-listTrunksAndRoutes
-        PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks();
+        PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks(ExpandEnum.TRUNKS_HEALTH);
         PagedIterable<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
         for (SipTrunk trunk : trunks) {
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
@@ -115,7 +117,7 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-getTrunk
         String fqdn = "<trunk fqdn>";
-        SipTrunk trunk = sipRoutingClient.getTrunk(fqdn);
+        SipTrunk trunk = sipRoutingClient.getTrunk(fqdn, ExpandEnum.TRUNKS_HEALTH);
         if (trunk != null) {
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
         } else {

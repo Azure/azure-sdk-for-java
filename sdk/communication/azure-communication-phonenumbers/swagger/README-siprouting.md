@@ -30,9 +30,9 @@ To update generated files for Sip Routing service, run the following command
 ### Code generation settings
 ```yaml
 title: Azure Communication Phone Numbers SIP Routing Service
-tag: package-2023-03
+tag: package-2024-11-15-preview
 use: '@autorest/java@4.1.29'
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/communication/data-plane/SipRouting/readme.md
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2f4175af8e79fe3957f71c4d0c9c79d865622698/specification/communication/data-plane/SipRouting/readme.md
 override-client-name: SipRoutingAdminClient
 custom-types-subpackage: models
 models-subpackage: implementation.models
