@@ -5,12 +5,6 @@ package io.clientcore.core.utils;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.serialization.SerializationFormat;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.MethodSource;
-
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
@@ -28,10 +22,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static io.clientcore.core.utils.CoreUtils.serializationFormatFromContentType;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
+
+import static io.clientcore.core.utils.CoreUtils.serializationFormatFromContentType;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -282,18 +282,26 @@ public class CoreUtilsTests {
         assertEquals(expected, serializationFormatFromContentType(headers));
     }
 
-    /**
-     * Test that appendQueryParam correctly appends a query parameter when no query string exists.
-     */
     @ParameterizedTest
-    @CsvSource({
-        "https://example.com, api-version, 1.0, https://example.com?api-version=1.0",  // No query string
-        "https://example.com?existingParam=value, api-version, 1.0, https://example.com?existingParam=value&api-version=1.0",  // Query string exists
-        "'', api-version, 1.0, '?api-version=1.0'"  // Empty URL
-    })
-    void testAppendQueryParam(String url, String key, String value, String expected) {
-        String result = CoreUtils.appendQueryParam(url, key, value);
+    @MethodSource("provideTestCases")
+    void testAppendQueryParam(String url, String key, Object value, char delimiter, String expected) {
+        String result = CoreUtils.appendQueryParam(url, key, value, delimiter);
         assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
+    }
+
+    private static Stream<Arguments> provideTestCases() {
+        return Stream.of(
+            Arguments.of("https://example.com", "api-version", "1.0", ',', "https://example.com?api-version=1.0"),  // No query string
+            Arguments.of("https://example.com?existingParam=value", "api-version", "1.0", ',',
+                "https://example.com?existingParam=value&api-version=1.0"),  // Query string exists
+            Arguments.of("", "api-version", "1.0", ',', "?api-version=1.0"),  // Empty URL
+            Arguments.of("https://example.com", "api-version", Arrays.asList("1.0", "2.0"), ',',
+                "https://example.com?api-version=1.0,2.0"),  // List value with comma delimiter
+            Arguments.of("https://example.com", "api-version", Arrays.asList("1.0", "2.0"), ';',
+                "https://example.com?api-version=1.0;2.0"),  // List value with semicolon delimiter
+            Arguments.of("https://example.com", "api-version", Arrays.asList("1.0", "2.0"), '|',
+                "https://example.com?api-version=1.0|2.0")  // List value with pipe delimiter
+        );
     }
 
     @Test
@@ -302,7 +310,7 @@ public class CoreUtilsTests {
         String key = "name";
         String expected = "https://example.com";
         // Null value for parameter
-        String result = CoreUtils.appendQueryParam(url, key, null);
+        String result = CoreUtils.appendQueryParam(url, key, null, '.');
         assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
     }
 

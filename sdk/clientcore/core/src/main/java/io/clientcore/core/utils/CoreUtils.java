@@ -6,7 +6,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.SerializationFormat;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
@@ -432,19 +431,36 @@ public final class CoreUtils {
      * @param url the base URL to which the query parameter will be appended.
      * @param key the name of the query parameter (e.g., "api-version", "name", "After").
      * @param value the value of the query parameter
+     * @param delimiter The delimiter to use if the value is a list.
      * @return the updated URL with the appended query parameter.
      */
-    public static String appendQueryParam(String url, String key, String value) {
-        if (value == null) {
+    public static String appendQueryParam(String url, String key, Object value, char delimiter) {
+        if (url == null || key == null || value == null) {
             return url;
         }
 
-        // Append query parameter to URL
-        if (url.contains("?")) {
-            return url + "&" + key + "=" + value;
-        } else {
-            return url + "?" + key + "=" + value;
+        StringBuilder newUrl = new StringBuilder(url);
+        if (!url.contains("?")) {
+            newUrl.append("?");
+        } else if (!url.endsWith("&") && !url.endsWith("?")) {
+            newUrl.append("&");
         }
+
+        newUrl.append(key).append("=");
+
+        if (value instanceof List) {
+            List<?> values = (List<?>) value;
+            for (int i = 0; i < values.size(); i++) {
+                if (i > 0) {
+                    newUrl.append(delimiter);
+                }
+                newUrl.append(values.get(i));
+            }
+        } else {
+            newUrl.append(value);
+        }
+
+        return newUrl.toString();
     }
 
     /*

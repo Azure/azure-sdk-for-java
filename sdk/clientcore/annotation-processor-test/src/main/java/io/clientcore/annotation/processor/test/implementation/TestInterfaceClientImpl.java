@@ -93,7 +93,7 @@ public final class TestInterfaceClientImpl {
                                                       RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
-        Response<List<Foo>> listFoo(@HostParam("uri") String uri, RequestOptions requestOptions);
+        Response<List<Foo>> listFoo(@HostParam("uri") String uri, @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,

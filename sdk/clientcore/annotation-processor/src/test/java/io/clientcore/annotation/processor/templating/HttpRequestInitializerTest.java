@@ -49,10 +49,9 @@ public class HttpRequestInitializerTest {
 
         // Ensure each query parameter is appended correctly
         String expectedQueryStatement1 = "newUrl = CoreUtils.appendQueryParam(url, \"" + queryKey1 + "\", "
-            + queryValue1 + "); if (newUrl != null) { url = newUrl; }";
+            + queryValue1 + ", ','); if (newUrl != null) { url = newUrl; }";
         String expectedQueryStatement2 = "newUrl = CoreUtils.appendQueryParam(url, \"" + queryKey2 + "\", "
-            + queryValue2 + "); if (newUrl != null) { url = newUrl; }";
-
+            + queryValue2 + ", ','); if (newUrl != null) { url = newUrl; }";
         assertTrue(normalizedBody.contains(expectedQueryStatement1));
         assertTrue(normalizedBody.contains(expectedQueryStatement2));
 
