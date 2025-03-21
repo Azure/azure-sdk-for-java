@@ -17,31 +17,32 @@ public final class CustomDomainOwnershipValidationResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomDomainOwnershipValidationResultInner model = BinaryData.fromString(
-            "{\"customDomainsForTopicsConfiguration\":[{\"fullyQualifiedDomainName\":\"ohikkgqogjwpinde\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"hmedeilbjywfcfxz\"},\"certificateUrl\":\"zzihvwy\",\"expectedTxtRecordName\":\"suvjslcz\",\"expectedTxtRecordValue\":\"iid\"},{\"fullyQualifiedDomainName\":\"sllfryvdmvxad\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"awba\"},\"certificateUrl\":\"fbktyjmfczlf\",\"expectedTxtRecordName\":\"qkfrbzgowoxqmj\",\"expectedTxtRecordValue\":\"jcx\"}],\"customDomainsForTopicSpacesConfiguration\":[{\"fullyQualifiedDomainName\":\"gxhlusr\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"ceagbjqvlsumywz\"},\"certificateUrl\":\"hxgonoyjf\",\"expectedTxtRecordName\":\"puby\",\"expectedTxtRecordValue\":\"clkfkee\"}]}")
+            "{\"customDomainsForTopicsConfiguration\":[{\"fullyQualifiedDomainName\":\"qllizstac\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"ftkwq\"},\"certificateUrl\":\"pmvssehaep\",\"expectedTxtRecordName\":\"mcxtczhu\",\"expectedTxtRecordValue\":\"uknijduyye\"},{\"fullyQualifiedDomainName\":\"pydjfboc\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"tywikd\"},\"certificateUrl\":\"lakuflgbhgauacd\",\"expectedTxtRecordName\":\"mxu\",\"expectedTxtRecordValue\":\"sryjqgdkfno\"}],\"customDomainsForTopicSpacesConfiguration\":[{\"fullyQualifiedDomainName\":\"oqbvjhvefgwbmqj\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"ay\"},\"certificateUrl\":\"b\",\"expectedTxtRecordName\":\"pzealbmqkyojw\",\"expectedTxtRecordValue\":\"fkmbtsuahxsgxj\"},{\"fullyQualifiedDomainName\":\"mmzrrscub\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"xqw\"},\"certificateUrl\":\"iffjxcjrm\",\"expectedTxtRecordName\":\"abwibvjogjo\",\"expectedTxtRecordValue\":\"cyefoyzbamwine\"},{\"fullyQualifiedDomainName\":\"fvfkak\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"vboclzhzjk\"},\"certificateUrl\":\"uxgvttxpnr\",\"expectedTxtRecordName\":\"zaamrdixtrekid\",\"expectedTxtRecordValue\":\"yskbruff\"},{\"fullyQualifiedDomainName\":\"l\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"lxhrp\"},\"certificateUrl\":\"vmblcouqe\",\"expectedTxtRecordName\":\"hbcdsziry\",\"expectedTxtRecordValue\":\"ndo\"}]}")
             .toObject(CustomDomainOwnershipValidationResultInner.class);
-        Assertions.assertEquals("ohikkgqogjwpinde",
+        Assertions.assertEquals("qllizstac",
             model.customDomainsForTopicsConfiguration().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.PENDING,
+        Assertions.assertEquals(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD,
             model.customDomainsForTopicsConfiguration().get(0).validationState());
         Assertions.assertEquals(CustomDomainIdentityType.SYSTEM_ASSIGNED,
             model.customDomainsForTopicsConfiguration().get(0).identity().type());
-        Assertions.assertEquals("hmedeilbjywfcfxz",
+        Assertions.assertEquals("ftkwq",
             model.customDomainsForTopicsConfiguration().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("zzihvwy", model.customDomainsForTopicsConfiguration().get(0).certificateUrl());
-        Assertions.assertEquals("suvjslcz", model.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("iid", model.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordValue());
-        Assertions.assertEquals("gxhlusr",
+        Assertions.assertEquals("pmvssehaep", model.customDomainsForTopicsConfiguration().get(0).certificateUrl());
+        Assertions.assertEquals("mcxtczhu", model.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordName());
+        Assertions.assertEquals("uknijduyye",
+            model.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordValue());
+        Assertions.assertEquals("oqbvjhvefgwbmqj",
             model.customDomainsForTopicSpacesConfiguration().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.PENDING,
+        Assertions.assertEquals(CustomDomainValidationState.APPROVED,
             model.customDomainsForTopicSpacesConfiguration().get(0).validationState());
-        Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals(CustomDomainIdentityType.SYSTEM_ASSIGNED,
             model.customDomainsForTopicSpacesConfiguration().get(0).identity().type());
-        Assertions.assertEquals("ceagbjqvlsumywz",
+        Assertions.assertEquals("ay",
             model.customDomainsForTopicSpacesConfiguration().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("hxgonoyjf", model.customDomainsForTopicSpacesConfiguration().get(0).certificateUrl());
-        Assertions.assertEquals("puby",
+        Assertions.assertEquals("b", model.customDomainsForTopicSpacesConfiguration().get(0).certificateUrl());
+        Assertions.assertEquals("pzealbmqkyojw",
             model.customDomainsForTopicSpacesConfiguration().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("clkfkee",
+        Assertions.assertEquals("fkmbtsuahxsgxj",
             model.customDomainsForTopicSpacesConfiguration().get(0).expectedTxtRecordValue());
     }
 
@@ -49,52 +50,74 @@ public final class CustomDomainOwnershipValidationResultInnerTests {
     public void testSerialize() throws Exception {
         CustomDomainOwnershipValidationResultInner model = new CustomDomainOwnershipValidationResultInner()
             .withCustomDomainsForTopicsConfiguration(Arrays.asList(
-                new CustomDomainConfiguration().withFullyQualifiedDomainName("ohikkgqogjwpinde")
-                    .withValidationState(CustomDomainValidationState.PENDING)
+                new CustomDomainConfiguration().withFullyQualifiedDomainName("qllizstac")
+                    .withValidationState(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD)
                     .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentity("hmedeilbjywfcfxz"))
-                    .withCertificateUrl("zzihvwy")
-                    .withExpectedTxtRecordName("suvjslcz")
-                    .withExpectedTxtRecordValue("iid"),
-                new CustomDomainConfiguration().withFullyQualifiedDomainName("sllfryvdmvxad")
-                    .withValidationState(CustomDomainValidationState.PENDING)
-                    .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentity("awba"))
-                    .withCertificateUrl("fbktyjmfczlf")
-                    .withExpectedTxtRecordName("qkfrbzgowoxqmj")
-                    .withExpectedTxtRecordValue("jcx")))
-            .withCustomDomainsForTopicSpacesConfiguration(
-                Arrays.asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("gxhlusr")
+                        .withUserAssignedIdentity("ftkwq"))
+                    .withCertificateUrl("pmvssehaep")
+                    .withExpectedTxtRecordName("mcxtczhu")
+                    .withExpectedTxtRecordValue("uknijduyye"),
+                new CustomDomainConfiguration().withFullyQualifiedDomainName("pydjfboc")
                     .withValidationState(CustomDomainValidationState.PENDING)
                     .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentity("ceagbjqvlsumywz"))
-                    .withCertificateUrl("hxgonoyjf")
-                    .withExpectedTxtRecordName("puby")
-                    .withExpectedTxtRecordValue("clkfkee")));
+                        .withUserAssignedIdentity("tywikd"))
+                    .withCertificateUrl("lakuflgbhgauacd")
+                    .withExpectedTxtRecordName("mxu")
+                    .withExpectedTxtRecordValue("sryjqgdkfno")))
+            .withCustomDomainsForTopicSpacesConfiguration(Arrays.asList(
+                new CustomDomainConfiguration().withFullyQualifiedDomainName("oqbvjhvefgwbmqj")
+                    .withValidationState(CustomDomainValidationState.APPROVED)
+                    .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentity("ay"))
+                    .withCertificateUrl("b")
+                    .withExpectedTxtRecordName("pzealbmqkyojw")
+                    .withExpectedTxtRecordValue("fkmbtsuahxsgxj"),
+                new CustomDomainConfiguration().withFullyQualifiedDomainName("mmzrrscub")
+                    .withValidationState(CustomDomainValidationState.APPROVED)
+                    .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentity("xqw"))
+                    .withCertificateUrl("iffjxcjrm")
+                    .withExpectedTxtRecordName("abwibvjogjo")
+                    .withExpectedTxtRecordValue("cyefoyzbamwine"),
+                new CustomDomainConfiguration().withFullyQualifiedDomainName("fvfkak")
+                    .withValidationState(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD)
+                    .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentity("vboclzhzjk"))
+                    .withCertificateUrl("uxgvttxpnr")
+                    .withExpectedTxtRecordName("zaamrdixtrekid")
+                    .withExpectedTxtRecordValue("yskbruff"),
+                new CustomDomainConfiguration().withFullyQualifiedDomainName("l")
+                    .withValidationState(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD)
+                    .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentity("lxhrp"))
+                    .withCertificateUrl("vmblcouqe")
+                    .withExpectedTxtRecordName("hbcdsziry")
+                    .withExpectedTxtRecordValue("ndo")));
         model = BinaryData.fromObject(model).toObject(CustomDomainOwnershipValidationResultInner.class);
-        Assertions.assertEquals("ohikkgqogjwpinde",
+        Assertions.assertEquals("qllizstac",
             model.customDomainsForTopicsConfiguration().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.PENDING,
+        Assertions.assertEquals(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD,
             model.customDomainsForTopicsConfiguration().get(0).validationState());
         Assertions.assertEquals(CustomDomainIdentityType.SYSTEM_ASSIGNED,
             model.customDomainsForTopicsConfiguration().get(0).identity().type());
-        Assertions.assertEquals("hmedeilbjywfcfxz",
+        Assertions.assertEquals("ftkwq",
             model.customDomainsForTopicsConfiguration().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("zzihvwy", model.customDomainsForTopicsConfiguration().get(0).certificateUrl());
-        Assertions.assertEquals("suvjslcz", model.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("iid", model.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordValue());
-        Assertions.assertEquals("gxhlusr",
+        Assertions.assertEquals("pmvssehaep", model.customDomainsForTopicsConfiguration().get(0).certificateUrl());
+        Assertions.assertEquals("mcxtczhu", model.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordName());
+        Assertions.assertEquals("uknijduyye",
+            model.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordValue());
+        Assertions.assertEquals("oqbvjhvefgwbmqj",
             model.customDomainsForTopicSpacesConfiguration().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.PENDING,
+        Assertions.assertEquals(CustomDomainValidationState.APPROVED,
             model.customDomainsForTopicSpacesConfiguration().get(0).validationState());
-        Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals(CustomDomainIdentityType.SYSTEM_ASSIGNED,
             model.customDomainsForTopicSpacesConfiguration().get(0).identity().type());
-        Assertions.assertEquals("ceagbjqvlsumywz",
+        Assertions.assertEquals("ay",
             model.customDomainsForTopicSpacesConfiguration().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("hxgonoyjf", model.customDomainsForTopicSpacesConfiguration().get(0).certificateUrl());
-        Assertions.assertEquals("puby",
+        Assertions.assertEquals("b", model.customDomainsForTopicSpacesConfiguration().get(0).certificateUrl());
+        Assertions.assertEquals("pzealbmqkyojw",
             model.customDomainsForTopicSpacesConfiguration().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("clkfkee",
+        Assertions.assertEquals("fkmbtsuahxsgxj",
             model.customDomainsForTopicSpacesConfiguration().get(0).expectedTxtRecordValue());
     }
 }

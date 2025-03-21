@@ -13,18 +13,18 @@ public final class CustomDomainIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomDomainIdentity model
-            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"cy\"}")
+            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"mpipaslthaqfxs\"}")
                 .toObject(CustomDomainIdentity.class);
         Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("cy", model.userAssignedIdentity());
+        Assertions.assertEquals("mpipaslthaqfxs", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomDomainIdentity model = new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentity("cy");
+            .withUserAssignedIdentity("mpipaslthaqfxs");
         model = BinaryData.fromObject(model).toObject(CustomDomainIdentity.class);
         Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("cy", model.userAssignedIdentity());
+        Assertions.assertEquals("mpipaslthaqfxs", model.userAssignedIdentity());
     }
 }

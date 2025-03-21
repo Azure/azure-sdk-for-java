@@ -19,61 +19,68 @@ public final class SystemTopicsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemTopicsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"source\":\"v\",\"topicType\":\"tod\",\"metricResourceId\":\"pyapucygvoav\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"lghieegjlgvvpase\",\"tenantId\":\"gbuxantuygdh\",\"userAssignedIdentities\":{\"mjnlexwhcb\":{\"principalId\":\"pirpiwrqof\",\"clientId\":\"o\"},\"toyint\":{\"principalId\":\"ibkeph\",\"clientId\":\"uerct\"}}},\"location\":\"pbrlcyrduczkgofx\",\"tags\":{\"vjeaqnrmvvfkoxml\":\"rucvcrrpcjttbs\",\"lpdwwexymzvlazi\":\"hktuidvrma\",\"uzivensrpmeyyvp\":\"bhpwvqsgnyy\",\"gsksrfhf\":\"patlbijp\"},\"id\":\"olmk\",\"name\":\"bnxwc\",\"type\":\"ommpvfqaw\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"source\":\"ttuiaclkiexhajl\",\"topicType\":\"t\",\"metricResourceId\":\"qfyuttd\"},\"identity\":{\"type\":\"None\",\"principalId\":\"n\",\"tenantId\":\"wmtxkyctwwgz\",\"userAssignedIdentities\":{\"moqqtlffhzbk\":{\"principalId\":\"mecvogygzyvneeza\",\"clientId\":\"gh\"},\"idbz\":{\"principalId\":\"jjjavfqnvhnq\",\"clientId\":\"wdogiyetesyp\"}}},\"location\":\"jhqt\",\"tags\":{\"etnjuhpsprkz\":\"vnynkb\",\"cxnafbwqrooh\":\"aupia\",\"mghihp\":\"uovmaonurjt\",\"jxl\":\"ecmslclbl\"},\"id\":\"bsjuscvsfx\",\"name\":\"gctmgxuupbezq\",\"type\":\"cydrtceukdqkk\"}],\"nextLink\":\"hztgeqmgqzgwld\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"source\":\"wrbfdpyflubh\",\"topicType\":\"glrocuy\",\"metricResourceId\":\"whhmemhooc\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"memczjkmmyk\",\"tenantId\":\"jxsglhsr\",\"userAssignedIdentities\":{\"wlpxuzzjg\":{\"principalId\":\"jylmbkzudnigr\",\"clientId\":\"hotj\"},\"rkwpzdqtvhcspod\":{\"principalId\":\"efqyhqotoihiqaky\",\"clientId\":\"wf\"},\"dlpnfpubn\":{\"principalId\":\"axsipietgb\",\"clientId\":\"jfulbmoic\"},\"attcju\":{\"principalId\":\"batzviqsows\",\"clientId\":\"el\"}}},\"location\":\"plrvkmjcwmjvlg\",\"tags\":{\"sfxsf\":\"cvkyylizrzbj\",\"ukoveofi\":\"ztlvtmvagbwidqlv\"},\"id\":\"rvjfnmjmvlw\",\"name\":\"z\",\"type\":\"iblkujr\"},{\"properties\":{\"provisioningState\":\"Updating\",\"source\":\"uidjpuuyjucej\",\"topicType\":\"zoeovvtzejet\",\"metricResourceId\":\"ln\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"zkdbqzolx\",\"tenantId\":\"vhqjwtrhtgvg\",\"userAssignedIdentities\":{\"itlhguyn\":{\"principalId\":\"rkolawjm\",\"clientId\":\"mwrokcdxfzzzwyja\"}}},\"location\":\"chl\",\"tags\":{\"hmoz\":\"txd\",\"ns\":\"sgzv\",\"fpafolpymwamxq\":\"nj\"},\"id\":\"rag\",\"name\":\"gdphtvdula\",\"type\":\"vl\"}],\"nextLink\":\"c\"}")
             .toObject(SystemTopicsListResult.class);
-        Assertions.assertEquals("pbrlcyrduczkgofx", model.value().get(0).location());
-        Assertions.assertEquals("rucvcrrpcjttbs", model.value().get(0).tags().get("vjeaqnrmvvfkoxml"));
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("lghieegjlgvvpase", model.value().get(0).identity().principalId());
-        Assertions.assertEquals("gbuxantuygdh", model.value().get(0).identity().tenantId());
-        Assertions.assertEquals("pirpiwrqof",
-            model.value().get(0).identity().userAssignedIdentities().get("mjnlexwhcb").principalId());
-        Assertions.assertEquals("o",
-            model.value().get(0).identity().userAssignedIdentities().get("mjnlexwhcb").clientId());
-        Assertions.assertEquals("v", model.value().get(0).source());
-        Assertions.assertEquals("tod", model.value().get(0).topicType());
-        Assertions.assertEquals("hztgeqmgqzgwld", model.nextLink());
+        Assertions.assertEquals("plrvkmjcwmjvlg", model.value().get(0).location());
+        Assertions.assertEquals("cvkyylizrzbj", model.value().get(0).tags().get("sfxsf"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("memczjkmmyk", model.value().get(0).identity().principalId());
+        Assertions.assertEquals("jxsglhsr", model.value().get(0).identity().tenantId());
+        Assertions.assertEquals("jylmbkzudnigr",
+            model.value().get(0).identity().userAssignedIdentities().get("wlpxuzzjg").principalId());
+        Assertions.assertEquals("hotj",
+            model.value().get(0).identity().userAssignedIdentities().get("wlpxuzzjg").clientId());
+        Assertions.assertEquals("wrbfdpyflubh", model.value().get(0).source());
+        Assertions.assertEquals("glrocuy", model.value().get(0).topicType());
+        Assertions.assertEquals("c", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SystemTopicsListResult model = new SystemTopicsListResult().withValue(Arrays.asList(
-            new SystemTopicInner().withLocation("pbrlcyrduczkgofx")
-                .withTags(mapOf("vjeaqnrmvvfkoxml", "rucvcrrpcjttbs", "lpdwwexymzvlazi", "hktuidvrma",
-                    "uzivensrpmeyyvp", "bhpwvqsgnyy", "gsksrfhf", "patlbijp"))
-                .withIdentity(new IdentityInfo().withType(IdentityType.USER_ASSIGNED)
-                    .withPrincipalId("lghieegjlgvvpase")
-                    .withTenantId("gbuxantuygdh")
-                    .withUserAssignedIdentities(mapOf("mjnlexwhcb",
-                        new UserIdentityProperties().withPrincipalId("pirpiwrqof").withClientId("o"), "toyint",
-                        new UserIdentityProperties().withPrincipalId("ibkeph").withClientId("uerct"))))
-                .withSource("v")
-                .withTopicType("tod"),
-            new SystemTopicInner().withLocation("jhqt")
-                .withTags(mapOf("etnjuhpsprkz", "vnynkb", "cxnafbwqrooh", "aupia", "mghihp", "uovmaonurjt", "jxl",
-                    "ecmslclbl"))
-                .withIdentity(new IdentityInfo().withType(IdentityType.NONE)
-                    .withPrincipalId("n")
-                    .withTenantId("wmtxkyctwwgz")
-                    .withUserAssignedIdentities(mapOf("moqqtlffhzbk",
-                        new UserIdentityProperties().withPrincipalId("mecvogygzyvneeza").withClientId("gh"), "idbz",
-                        new UserIdentityProperties().withPrincipalId("jjjavfqnvhnq").withClientId("wdogiyetesyp"))))
-                .withSource("ttuiaclkiexhajl")
-                .withTopicType("t")))
-            .withNextLink("hztgeqmgqzgwld");
+        SystemTopicsListResult model
+            = new SystemTopicsListResult()
+                .withValue(
+                    Arrays.asList(
+                        new SystemTopicInner().withLocation("plrvkmjcwmjvlg")
+                            .withTags(mapOf("sfxsf", "cvkyylizrzbj", "ukoveofi", "ztlvtmvagbwidqlv"))
+                            .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
+                                .withPrincipalId("memczjkmmyk")
+                                .withTenantId("jxsglhsr")
+                                .withUserAssignedIdentities(mapOf("wlpxuzzjg",
+                                    new UserIdentityProperties().withPrincipalId("jylmbkzudnigr").withClientId("hotj"),
+                                    "rkwpzdqtvhcspod",
+                                    new UserIdentityProperties().withPrincipalId("efqyhqotoihiqaky").withClientId("wf"),
+                                    "dlpnfpubn",
+                                    new UserIdentityProperties().withPrincipalId("axsipietgb")
+                                        .withClientId("jfulbmoic"),
+                                    "attcju",
+                                    new UserIdentityProperties().withPrincipalId("batzviqsows").withClientId("el"))))
+                            .withSource("wrbfdpyflubh")
+                            .withTopicType("glrocuy"),
+                        new SystemTopicInner().withLocation("chl")
+                            .withTags(mapOf("hmoz", "txd", "ns", "sgzv", "fpafolpymwamxq", "nj"))
+                            .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
+                                .withPrincipalId("zkdbqzolx")
+                                .withTenantId("vhqjwtrhtgvg")
+                                .withUserAssignedIdentities(mapOf("itlhguyn",
+                                    new UserIdentityProperties().withPrincipalId("rkolawjm")
+                                        .withClientId("mwrokcdxfzzzwyja"))))
+                            .withSource("uidjpuuyjucej")
+                            .withTopicType("zoeovvtzejet")))
+                .withNextLink("c");
         model = BinaryData.fromObject(model).toObject(SystemTopicsListResult.class);
-        Assertions.assertEquals("pbrlcyrduczkgofx", model.value().get(0).location());
-        Assertions.assertEquals("rucvcrrpcjttbs", model.value().get(0).tags().get("vjeaqnrmvvfkoxml"));
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("lghieegjlgvvpase", model.value().get(0).identity().principalId());
-        Assertions.assertEquals("gbuxantuygdh", model.value().get(0).identity().tenantId());
-        Assertions.assertEquals("pirpiwrqof",
-            model.value().get(0).identity().userAssignedIdentities().get("mjnlexwhcb").principalId());
-        Assertions.assertEquals("o",
-            model.value().get(0).identity().userAssignedIdentities().get("mjnlexwhcb").clientId());
-        Assertions.assertEquals("v", model.value().get(0).source());
-        Assertions.assertEquals("tod", model.value().get(0).topicType());
-        Assertions.assertEquals("hztgeqmgqzgwld", model.nextLink());
+        Assertions.assertEquals("plrvkmjcwmjvlg", model.value().get(0).location());
+        Assertions.assertEquals("cvkyylizrzbj", model.value().get(0).tags().get("sfxsf"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("memczjkmmyk", model.value().get(0).identity().principalId());
+        Assertions.assertEquals("jxsglhsr", model.value().get(0).identity().tenantId());
+        Assertions.assertEquals("jylmbkzudnigr",
+            model.value().get(0).identity().userAssignedIdentities().get("wlpxuzzjg").principalId());
+        Assertions.assertEquals("hotj",
+            model.value().get(0).identity().userAssignedIdentities().get("wlpxuzzjg").clientId());
+        Assertions.assertEquals("wrbfdpyflubh", model.value().get(0).source());
+        Assertions.assertEquals("glrocuy", model.value().get(0).topicType());
+        Assertions.assertEquals("c", model.nextLink());
     }
 
     // Use "Map.of" if available

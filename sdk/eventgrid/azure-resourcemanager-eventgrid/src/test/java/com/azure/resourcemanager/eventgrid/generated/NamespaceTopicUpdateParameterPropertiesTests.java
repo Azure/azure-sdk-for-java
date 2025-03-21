@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NamespaceTopicUpdateParameterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NamespaceTopicUpdateParameterProperties model = BinaryData.fromString("{\"eventRetentionInDays\":808991328}")
+        NamespaceTopicUpdateParameterProperties model = BinaryData.fromString("{\"eventRetentionInDays\":647279453}")
             .toObject(NamespaceTopicUpdateParameterProperties.class);
-        Assertions.assertEquals(808991328, model.eventRetentionInDays());
+        Assertions.assertEquals(647279453, model.eventRetentionInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NamespaceTopicUpdateParameterProperties model
-            = new NamespaceTopicUpdateParameterProperties().withEventRetentionInDays(808991328);
+            = new NamespaceTopicUpdateParameterProperties().withEventRetentionInDays(647279453);
         model = BinaryData.fromObject(model).toObject(NamespaceTopicUpdateParameterProperties.class);
-        Assertions.assertEquals(808991328, model.eventRetentionInDays());
+        Assertions.assertEquals(647279453, model.eventRetentionInDays());
     }
 }

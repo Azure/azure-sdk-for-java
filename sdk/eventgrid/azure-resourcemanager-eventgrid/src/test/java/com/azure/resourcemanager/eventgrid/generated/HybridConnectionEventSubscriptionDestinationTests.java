@@ -14,21 +14,19 @@ public final class HybridConnectionEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HybridConnectionEventSubscriptionDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"HybridConnection\",\"properties\":{\"resourceId\":\"qecroodl\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"rdaasaxxo\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"mfkwiyjvzuk\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"r\"}]}}")
+            "{\"endpointType\":\"HybridConnection\",\"properties\":{\"resourceId\":\"hmpejtlkexaonw\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"qhr\"}]}}")
             .toObject(HybridConnectionEventSubscriptionDestination.class);
-        Assertions.assertEquals("qecroodl", model.resourceId());
-        Assertions.assertEquals("rdaasaxxo", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("hmpejtlkexaonw", model.resourceId());
+        Assertions.assertEquals("qhr", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HybridConnectionEventSubscriptionDestination model
-            = new HybridConnectionEventSubscriptionDestination().withResourceId("qecroodl")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("rdaasaxxo"),
-                    new DeliveryAttributeMapping().withName("mfkwiyjvzuk"),
-                    new DeliveryAttributeMapping().withName("r")));
+            = new HybridConnectionEventSubscriptionDestination().withResourceId("hmpejtlkexaonw")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("qhr")));
         model = BinaryData.fromObject(model).toObject(HybridConnectionEventSubscriptionDestination.class);
-        Assertions.assertEquals("qecroodl", model.resourceId());
-        Assertions.assertEquals("rdaasaxxo", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("hmpejtlkexaonw", model.resourceId());
+        Assertions.assertEquals("qhr", model.deliveryAttributeMappings().get(0).name());
     }
 }

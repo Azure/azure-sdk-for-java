@@ -10,8 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class TopicSpacesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/TopicSpaces_Get.
-     * json
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/TopicSpaces_Get.json
      */
     /**
      * Sample code: TopicSpaces_Get.

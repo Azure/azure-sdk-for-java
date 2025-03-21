@@ -12,22 +12,22 @@ public final class StorageQueueEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageQueueEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"snlaimoux\",\"queueName\":\"sqmu\",\"queueMessageTimeToLiveInSeconds\":2937834527529214478}")
+            "{\"resourceId\":\"az\",\"queueName\":\"mtggmu\",\"queueMessageTimeToLiveInSeconds\":1948579345841432177}")
             .toObject(StorageQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("snlaimoux", model.resourceId());
-        Assertions.assertEquals("sqmu", model.queueName());
-        Assertions.assertEquals(2937834527529214478L, model.queueMessageTimeToLiveInSeconds());
+        Assertions.assertEquals("az", model.resourceId());
+        Assertions.assertEquals("mtggmu", model.queueName());
+        Assertions.assertEquals(1948579345841432177L, model.queueMessageTimeToLiveInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageQueueEventSubscriptionDestinationProperties model
-            = new StorageQueueEventSubscriptionDestinationProperties().withResourceId("snlaimoux")
-                .withQueueName("sqmu")
-                .withQueueMessageTimeToLiveInSeconds(2937834527529214478L);
+            = new StorageQueueEventSubscriptionDestinationProperties().withResourceId("az")
+                .withQueueName("mtggmu")
+                .withQueueMessageTimeToLiveInSeconds(1948579345841432177L);
         model = BinaryData.fromObject(model).toObject(StorageQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("snlaimoux", model.resourceId());
-        Assertions.assertEquals("sqmu", model.queueName());
-        Assertions.assertEquals(2937834527529214478L, model.queueMessageTimeToLiveInSeconds());
+        Assertions.assertEquals("az", model.resourceId());
+        Assertions.assertEquals("mtggmu", model.queueName());
+        Assertions.assertEquals(1948579345841432177L, model.queueMessageTimeToLiveInSeconds());
     }
 }

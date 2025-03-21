@@ -25,7 +25,7 @@ public final class CaCertificateInner extends ProxyResource {
     private CaCertificateProperties innerProperties;
 
     /*
-     * The system metadata relating to the CaCertificate resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -60,7 +60,7 @@ public final class CaCertificateInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to the CaCertificate resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

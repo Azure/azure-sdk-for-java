@@ -13,20 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientCertificateAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientCertificateAuthentication model = BinaryData.fromString(
-            "{\"validationScheme\":\"ThumbprintMatch\",\"allowedThumbprints\":[\"zrkgqhcjrefovg\",\"kqsleyyvxy\",\"jpkcattpng\",\"cr\"]}")
+        ClientCertificateAuthentication model = BinaryData
+            .fromString("{\"validationScheme\":\"DnsMatchesAuthenticationName\",\"allowedThumbprints\":[\"igeho\"]}")
             .toObject(ClientCertificateAuthentication.class);
-        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH, model.validationScheme());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME,
+            model.validationScheme());
+        Assertions.assertEquals("igeho", model.allowedThumbprints().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClientCertificateAuthentication model = new ClientCertificateAuthentication()
-            .withValidationScheme(ClientCertificateValidationScheme.THUMBPRINT_MATCH)
-            .withAllowedThumbprints(Arrays.asList("zrkgqhcjrefovg", "kqsleyyvxy", "jpkcattpng", "cr"));
+            .withValidationScheme(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME)
+            .withAllowedThumbprints(Arrays.asList("igeho"));
         model = BinaryData.fromObject(model).toObject(ClientCertificateAuthentication.class);
-        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH, model.validationScheme());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME,
+            model.validationScheme());
+        Assertions.assertEquals("igeho", model.allowedThumbprints().get(0));
     }
 }

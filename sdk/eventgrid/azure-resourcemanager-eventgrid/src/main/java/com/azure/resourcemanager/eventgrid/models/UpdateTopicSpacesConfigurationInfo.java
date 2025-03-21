@@ -34,11 +34,6 @@ public final class UpdateTopicSpacesConfigurationInfo implements JsonSerializabl
     private RoutingEnrichments routingEnrichments;
 
     /*
-     * Client authentication settings for topic spaces configuration.
-     */
-    private ClientAuthenticationSettings clientAuthentication;
-
-    /*
      * The maximum session expiry in hours. The property default value is 1 hour.
      * Min allowed value is 1 hour and max allowed value is 8 hours.
      */
@@ -125,27 +120,6 @@ public final class UpdateTopicSpacesConfigurationInfo implements JsonSerializabl
      */
     public UpdateTopicSpacesConfigurationInfo withRoutingEnrichments(RoutingEnrichments routingEnrichments) {
         this.routingEnrichments = routingEnrichments;
-        return this;
-    }
-
-    /**
-     * Get the clientAuthentication property: Client authentication settings for topic spaces configuration.
-     * 
-     * @return the clientAuthentication value.
-     */
-    public ClientAuthenticationSettings clientAuthentication() {
-        return this.clientAuthentication;
-    }
-
-    /**
-     * Set the clientAuthentication property: Client authentication settings for topic spaces configuration.
-     * 
-     * @param clientAuthentication the clientAuthentication value to set.
-     * @return the UpdateTopicSpacesConfigurationInfo object itself.
-     */
-    public UpdateTopicSpacesConfigurationInfo
-        withClientAuthentication(ClientAuthenticationSettings clientAuthentication) {
-        this.clientAuthentication = clientAuthentication;
         return this;
     }
 
@@ -247,9 +221,6 @@ public final class UpdateTopicSpacesConfigurationInfo implements JsonSerializabl
         if (routingEnrichments() != null) {
             routingEnrichments().validate();
         }
-        if (clientAuthentication() != null) {
-            clientAuthentication().validate();
-        }
         if (routingIdentityInfo() != null) {
             routingIdentityInfo().validate();
         }
@@ -267,7 +238,6 @@ public final class UpdateTopicSpacesConfigurationInfo implements JsonSerializabl
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("routeTopicResourceId", this.routeTopicResourceId);
         jsonWriter.writeJsonField("routingEnrichments", this.routingEnrichments);
-        jsonWriter.writeJsonField("clientAuthentication", this.clientAuthentication);
         jsonWriter.writeNumberField("maximumSessionExpiryInHours", this.maximumSessionExpiryInHours);
         jsonWriter.writeNumberField("maximumClientSessionsPerAuthenticationName",
             this.maximumClientSessionsPerAuthenticationName);
@@ -300,9 +270,6 @@ public final class UpdateTopicSpacesConfigurationInfo implements JsonSerializabl
                 } else if ("routingEnrichments".equals(fieldName)) {
                     deserializedUpdateTopicSpacesConfigurationInfo.routingEnrichments
                         = RoutingEnrichments.fromJson(reader);
-                } else if ("clientAuthentication".equals(fieldName)) {
-                    deserializedUpdateTopicSpacesConfigurationInfo.clientAuthentication
-                        = ClientAuthenticationSettings.fromJson(reader);
                 } else if ("maximumSessionExpiryInHours".equals(fieldName)) {
                     deserializedUpdateTopicSpacesConfigurationInfo.maximumSessionExpiryInHours
                         = reader.getNullable(JsonReader::getInt);

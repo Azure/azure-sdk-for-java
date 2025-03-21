@@ -34,11 +34,6 @@ public final class DomainUpdateParameters implements JsonSerializable<DomainUpda
      */
     private IdentityInfo identity;
 
-    /*
-     * The Sku pricing tier for the domain.
-     */
-    private ResourceSku sku;
-
     /**
      * Creates an instance of DomainUpdateParameters class.
      */
@@ -91,26 +86,6 @@ public final class DomainUpdateParameters implements JsonSerializable<DomainUpda
      */
     public DomainUpdateParameters withIdentity(IdentityInfo identity) {
         this.identity = identity;
-        return this;
-    }
-
-    /**
-     * Get the sku property: The Sku pricing tier for the domain.
-     * 
-     * @return the sku value.
-     */
-    public ResourceSku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The Sku pricing tier for the domain.
-     * 
-     * @param sku the sku value to set.
-     * @return the DomainUpdateParameters object itself.
-     */
-    public DomainUpdateParameters withSku(ResourceSku sku) {
-        this.sku = sku;
         return this;
     }
 
@@ -375,9 +350,6 @@ public final class DomainUpdateParameters implements JsonSerializable<DomainUpda
         if (identity() != null) {
             identity().validate();
         }
-        if (sku() != null) {
-            sku().validate();
-        }
     }
 
     /**
@@ -389,7 +361,6 @@ public final class DomainUpdateParameters implements JsonSerializable<DomainUpda
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("identity", this.identity);
-        jsonWriter.writeJsonField("sku", this.sku);
         return jsonWriter.writeEndObject();
     }
 
@@ -416,8 +387,6 @@ public final class DomainUpdateParameters implements JsonSerializable<DomainUpda
                         = DomainUpdateParameterProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedDomainUpdateParameters.identity = IdentityInfo.fromJson(reader);
-                } else if ("sku".equals(fieldName)) {
-                    deserializedDomainUpdateParameters.sku = ResourceSku.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
