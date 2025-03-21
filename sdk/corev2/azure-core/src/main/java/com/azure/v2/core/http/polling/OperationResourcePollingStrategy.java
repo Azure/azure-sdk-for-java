@@ -121,8 +121,9 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             = (operationLocationHeaderName == null) ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
 
         this.serviceVersion = pollingStrategyOptions.getServiceVersion();
-        this.requestContext
-            = pollingStrategyOptions.getRequestContext() == null ? SdkRequestContext.none() : pollingStrategyOptions.getRequestContext();
+        this.requestContext = pollingStrategyOptions.getRequestContext() == null
+            ? SdkRequestContext.none()
+            : pollingStrategyOptions.getRequestContext();
     }
 
     @Override
@@ -168,9 +169,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     public PollResponse<T> poll(PollingContext<T> pollingContext, Type pollResponseType) {
         String url = pollingContext.getData(operationLocationHeaderName.getCaseSensitiveName());
         url = setServiceVersionQueryParam(url);
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(url)
-            .setRequestContext(requestContext);
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(url).setRequestContext(requestContext);
 
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
@@ -219,9 +218,8 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         }
         finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
 
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(finalGetUrl)
-            .setRequestContext(requestContext);
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.GET).setUri(finalGetUrl).setRequestContext(requestContext);
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
             return PollingUtils.deserializeResponse(responseBody, serializer, resultType);
