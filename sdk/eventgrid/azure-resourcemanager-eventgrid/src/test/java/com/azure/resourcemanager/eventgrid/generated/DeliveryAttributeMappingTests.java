@@ -12,15 +12,15 @@ public final class DeliveryAttributeMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryAttributeMapping model
-            = BinaryData.fromString("{\"type\":\"DeliveryAttributeMapping\",\"name\":\"mncwsobqwcsdb\"}")
+            = BinaryData.fromString("{\"type\":\"DeliveryAttributeMapping\",\"name\":\"jmygtdsslswtmwer\"}")
                 .toObject(DeliveryAttributeMapping.class);
-        Assertions.assertEquals("mncwsobqwcsdb", model.name());
+        Assertions.assertEquals("jmygtdsslswtmwer", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeliveryAttributeMapping model = new DeliveryAttributeMapping().withName("mncwsobqwcsdb");
+        DeliveryAttributeMapping model = new DeliveryAttributeMapping().withName("jmygtdsslswtmwer");
         model = BinaryData.fromObject(model).toObject(DeliveryAttributeMapping.class);
-        Assertions.assertEquals("mncwsobqwcsdb", model.name());
+        Assertions.assertEquals("jmygtdsslswtmwer", model.name());
     }
 }

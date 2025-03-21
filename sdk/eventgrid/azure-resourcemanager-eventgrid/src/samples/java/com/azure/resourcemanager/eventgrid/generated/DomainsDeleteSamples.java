@@ -10,8 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class DomainsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Domains_Delete.
-     * json
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Domains_Delete.json
      */
     /**
      * Sample code: Domains_Delete.

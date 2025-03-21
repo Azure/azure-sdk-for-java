@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.VerifiedPartner;
@@ -23,28 +23,25 @@ public final class VerifiedPartnersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"956d353d-d339-4e58-b435-d60464fb55c7\",\"organizationName\":\"lndyclwgycv\",\"partnerDisplayName\":\"nzjcyqqzhembtbw\",\"partnerTopicDetails\":{\"description\":\"ba\",\"longDescription\":\"isj\",\"setupUri\":\"eajvmvvlooubsfx\"},\"partnerDestinationDetails\":{\"description\":\"eopsk\",\"longDescription\":\"cjomlupf\",\"setupUri\":\"usjcd\"},\"provisioningState\":\"Canceled\"},\"id\":\"gdw\",\"name\":\"rgdqyxaj\",\"type\":\"lgrcavqcwyzoqzkm\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"f5878924-ddba-4c66-9bd0-0813e9cbe417\",\"organizationName\":\"exduetbapfczew\",\"partnerDisplayName\":\"rlqbpxyazkjpir\",\"partnerTopicDetails\":{\"description\":\"vbczwhyegb\",\"longDescription\":\"msritjbuiggr\",\"setupUri\":\"ozfvualjt\"},\"provisioningState\":\"Creating\"},\"id\":\"sdwsngkrfi\",\"name\":\"sc\",\"type\":\"vakmhzbhwahfbw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VerifiedPartner response
-            = manager.verifiedPartners().getWithResponse("wpsibxovuqoq", com.azure.core.util.Context.NONE).getValue();
+            = manager.verifiedPartners().getWithResponse("vab", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(UUID.fromString("956d353d-d339-4e58-b435-d60464fb55c7"),
+        Assertions.assertEquals(UUID.fromString("f5878924-ddba-4c66-9bd0-0813e9cbe417"),
             response.partnerRegistrationImmutableId());
-        Assertions.assertEquals("lndyclwgycv", response.organizationName());
-        Assertions.assertEquals("nzjcyqqzhembtbw", response.partnerDisplayName());
-        Assertions.assertEquals("ba", response.partnerTopicDetails().description());
-        Assertions.assertEquals("isj", response.partnerTopicDetails().longDescription());
-        Assertions.assertEquals("eajvmvvlooubsfx", response.partnerTopicDetails().setupUri());
-        Assertions.assertEquals("eopsk", response.partnerDestinationDetails().description());
-        Assertions.assertEquals("cjomlupf", response.partnerDestinationDetails().longDescription());
-        Assertions.assertEquals("usjcd", response.partnerDestinationDetails().setupUri());
-        Assertions.assertEquals(VerifiedPartnerProvisioningState.CANCELED, response.provisioningState());
+        Assertions.assertEquals("exduetbapfczew", response.organizationName());
+        Assertions.assertEquals("rlqbpxyazkjpir", response.partnerDisplayName());
+        Assertions.assertEquals("vbczwhyegb", response.partnerTopicDetails().description());
+        Assertions.assertEquals("msritjbuiggr", response.partnerTopicDetails().longDescription());
+        Assertions.assertEquals("ozfvualjt", response.partnerTopicDetails().setupUri());
+        Assertions.assertEquals(VerifiedPartnerProvisioningState.CREATING, response.provisioningState());
     }
 }

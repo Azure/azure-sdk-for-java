@@ -48,7 +48,7 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
      * 
      * @return the innerProperties value.
      */
-    private HybridConnectionEventSubscriptionDestinationProperties innerProperties() {
+    HybridConnectionEventSubscriptionDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

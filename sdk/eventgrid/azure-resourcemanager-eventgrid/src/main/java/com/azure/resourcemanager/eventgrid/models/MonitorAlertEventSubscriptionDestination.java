@@ -48,7 +48,7 @@ public final class MonitorAlertEventSubscriptionDestination extends EventSubscri
      * 
      * @return the innerProperties value.
      */
-    private MonitorAlertEventSubscriptionDestinationProperties innerProperties() {
+    MonitorAlertEventSubscriptionDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

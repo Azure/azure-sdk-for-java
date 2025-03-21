@@ -26,7 +26,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
     private VerifiedPartnerProperties innerProperties;
 
     /*
-     * The system metadata relating to Verified Partner resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -61,7 +61,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to Verified Partner resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
@@ -188,29 +188,6 @@ public final class VerifiedPartnerInner extends ProxyResource {
             this.innerProperties = new VerifiedPartnerProperties();
         }
         this.innerProperties().withPartnerTopicDetails(partnerTopicDetails);
-        return this;
-    }
-
-    /**
-     * Get the partnerDestinationDetails property: Details of the partner destination scenario.
-     * 
-     * @return the partnerDestinationDetails value.
-     */
-    public PartnerDetails partnerDestinationDetails() {
-        return this.innerProperties() == null ? null : this.innerProperties().partnerDestinationDetails();
-    }
-
-    /**
-     * Set the partnerDestinationDetails property: Details of the partner destination scenario.
-     * 
-     * @param partnerDestinationDetails the partnerDestinationDetails value to set.
-     * @return the VerifiedPartnerInner object itself.
-     */
-    public VerifiedPartnerInner withPartnerDestinationDetails(PartnerDetails partnerDestinationDetails) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VerifiedPartnerProperties();
-        }
-        this.innerProperties().withPartnerDestinationDetails(partnerDestinationDetails);
         return this;
     }
 

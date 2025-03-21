@@ -47,11 +47,6 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     public static final EndpointType AZURE_FUNCTION = fromString("AzureFunction");
 
     /**
-     * Static value PartnerDestination for EndpointType.
-     */
-    public static final EndpointType PARTNER_DESTINATION = fromString("PartnerDestination");
-
-    /**
      * Static value MonitorAlert for EndpointType.
      */
     public static final EndpointType MONITOR_ALERT = fromString("MonitorAlert");

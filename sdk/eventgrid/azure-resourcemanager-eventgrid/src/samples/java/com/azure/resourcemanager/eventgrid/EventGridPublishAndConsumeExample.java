@@ -135,9 +135,9 @@ public class EventGridPublishAndConsumeExample {
             System.out.println("EventGrid topic created with name " + eventGridTopic.name());
 
             // 4. Create an event grid subscription.
-            EventSubscription eventSubscription = eventGridManager.topicEventSubscriptions()
+            EventSubscription eventSubscription = eventGridManager.eventSubscriptions()
                 .define(EVENT_SUBSCRIPTION_NAME)
-                .withExistingTopic(resourceGroup.name(), eventGridTopic.name())
+                .withExistingScope(eventGridTopic.id())
                 .withDestination(new EventHubEventSubscriptionDestination()
                     .withResourceId(eventHub.id()))
                 .withFilter(new EventSubscriptionFilter()

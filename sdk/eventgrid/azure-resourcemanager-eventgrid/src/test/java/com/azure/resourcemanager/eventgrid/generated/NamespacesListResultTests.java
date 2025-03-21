@@ -7,10 +7,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.eventgrid.models.AlternativeAuthenticationNameSource;
-import com.azure.resourcemanager.eventgrid.models.ClientAuthenticationSettings;
 import com.azure.resourcemanager.eventgrid.models.CustomDomainConfiguration;
-import com.azure.resourcemanager.eventgrid.models.CustomJwtAuthenticationSettings;
 import com.azure.resourcemanager.eventgrid.models.DynamicRoutingEnrichment;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.IdentityType;
@@ -38,226 +35,202 @@ public final class NamespacesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespacesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"rhubskhud\",\"name\":\"goo\",\"type\":\"kkqfqjbvle\"},{\"properties\":{},\"id\":\"fmluiqtqzfavyvn\",\"name\":\"qybaryeua\",\"type\":\"jkqa\"},{\"properties\":{},\"id\":\"gzslesjcbhernnti\",\"name\":\"w\",\"type\":\"jcvb\"},{\"properties\":{},\"id\":\"wr\",\"name\":\"ehwagoh\",\"type\":\"uffkmrqemvvh\"}],\"provisioningState\":\"DeleteFailed\",\"topicsConfiguration\":{\"hostname\":\"jfutacoebj\",\"customDomains\":[{\"fullyQualifiedDomainName\":\"zcjznmwcpmgua\"},{\"fullyQualifiedDomainName\":\"draufactkah\"},{\"fullyQualifiedDomainName\":\"ovajjziuxxps\"},{\"fullyQualifiedDomainName\":\"neekulfg\"}]},\"topicSpacesConfiguration\":{\"state\":\"Disabled\",\"routeTopicResourceId\":\"kwdlenrdsutujba\",\"hostname\":\"juohminyflnorw\",\"routingEnrichments\":{\"static\":[{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"}],\"dynamic\":[{},{}]},\"clientAuthentication\":{\"alternativeAuthenticationNameSources\":[\"ClientCertificateUri\",\"ClientCertificateUri\"],\"customJwtAuthentication\":{}},\"maximumSessionExpiryInHours\":1194335789,\"maximumClientSessionsPerAuthenticationName\":1138704794,\"routingIdentityInfo\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"chisze\"},\"customDomains\":[{\"fullyQualifiedDomainName\":\"bjcrxgibbdaxco\"}]},\"isZoneRedundant\":true,\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"sukokwbqplhl\",\"action\":\"Allow\"},{\"ipMask\":\"epzl\",\"action\":\"Allow\"},{\"ipMask\":\"zsoldwey\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.2\"},\"sku\":{\"name\":\"Standard\",\"capacity\":1255734454},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"ork\",\"tenantId\":\"lywjhh\",\"userAssignedIdentities\":{\"dieuzaofj\":{\"principalId\":\"xmsivfomiloxggdu\",\"clientId\":\"q\"},\"cubiipuipw\":{\"principalId\":\"vcyy\",\"clientId\":\"fgdo\"}}},\"location\":\"onmacjekniz\",\"tags\":{\"gmblrri\":\"vcimpev\"},\"id\":\"bywdxsmicc\",\"name\":\"rwfscjfnynszquj\",\"type\":\"zdvoqytibyowbb\"},{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"utp\",\"name\":\"hjoxo\",\"type\":\"smsks\"}],\"provisioningState\":\"Failed\",\"topicsConfiguration\":{\"hostname\":\"qolj\",\"customDomains\":[{\"fullyQualifiedDomainName\":\"gxxlxsffgcvizq\"},{\"fullyQualifiedDomainName\":\"dwl\"}]},\"topicSpacesConfiguration\":{\"state\":\"Enabled\",\"routeTopicResourceId\":\"upfgfbk\",\"hostname\":\"bdyhgkfminsgowz\",\"routingEnrichments\":{\"static\":[{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"}],\"dynamic\":[{}]},\"clientAuthentication\":{\"alternativeAuthenticationNameSources\":[\"ClientCertificateSubject\"],\"customJwtAuthentication\":{}},\"maximumSessionExpiryInHours\":1941309010,\"maximumClientSessionsPerAuthenticationName\":520028629,\"routingIdentityInfo\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"zukxitmmqtgqq\"},\"customDomains\":[{\"fullyQualifiedDomainName\":\"rnxrxcpj\"},{\"fullyQualifiedDomainName\":\"isavok\"}]},\"isZoneRedundant\":false,\"publicNetworkAccess\":\"Disabled\",\"inboundIpRules\":[{\"ipMask\":\"vjlfrqtt\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.1\"},\"sku\":{\"name\":\"Standard\",\"capacity\":1264491301},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"id\",\"tenantId\":\"qfkuvscxkdmli\",\"userAssignedIdentities\":{\"bteoybf\":{\"principalId\":\"brxk\",\"clientId\":\"loazuruocbgoo\"},\"b\":{\"principalId\":\"xakvvjgslor\",\"clientId\":\"lmywwtkgkxnyed\"},\"bvpa\":{\"principalId\":\"vudtjuewbcihx\",\"clientId\":\"whcjyxcc\"},\"stcyohpfkyrkdbd\":{\"principalId\":\"kkudzp\",\"clientId\":\"wjplma\"}}},\"location\":\"ogsjkmnwqjno\",\"tags\":{\"egfnmntfpmvmemfn\":\"yhddvia\",\"lchpodbzevwrdn\":\"zdwvvbalxl\"},\"id\":\"fukuvsjcswsmystu\",\"name\":\"uqypfcvle\",\"type\":\"chpqbmfpjba\"},{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"cxsspuunnoxyh\",\"name\":\"xgqddrih\",\"type\":\"fhoqca\"}],\"provisioningState\":\"Canceled\",\"topicsConfiguration\":{\"hostname\":\"omdjvlpjxxkzbrm\",\"customDomains\":[{\"fullyQualifiedDomainName\":\"ivsiy\"},{\"fullyQualifiedDomainName\":\"zkdnc\"},{\"fullyQualifiedDomainName\":\"dxonbzoggculap\"}]},\"topicSpacesConfiguration\":{\"state\":\"Enabled\",\"routeTopicResourceId\":\"gogtqxepnylbf\",\"hostname\":\"jlyjtlvofq\",\"routingEnrichments\":{\"static\":[{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"}],\"dynamic\":[{},{}]},\"clientAuthentication\":{\"alternativeAuthenticationNameSources\":[\"ClientCertificateSubject\"],\"customJwtAuthentication\":{}},\"maximumSessionExpiryInHours\":1566451113,\"maximumClientSessionsPerAuthenticationName\":1105067830,\"routingIdentityInfo\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"dwxf\"},\"customDomains\":[{\"fullyQualifiedDomainName\":\"ivwzjbhyzs\"},{\"fullyQualifiedDomainName\":\"jrkambtrnegvmnv\"},{\"fullyQualifiedDomainName\":\"q\"},{\"fullyQualifiedDomainName\":\"qvldspastjbkkd\"}]},\"isZoneRedundant\":false,\"publicNetworkAccess\":\"Disabled\",\"inboundIpRules\":[{\"ipMask\":\"jlxr\",\"action\":\"Allow\"},{\"ipMask\":\"zapeewchpx\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.2\"},\"sku\":{\"name\":\"Standard\",\"capacity\":1190990500},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"ufuztcktyhjtq\",\"tenantId\":\"cgzulwmmrqzzr\",\"userAssignedIdentities\":{\"vtoepryutnw\":{\"principalId\":\"gl\",\"clientId\":\"zgkrvqe\"},\"adflgzu\":{\"principalId\":\"pzdm\",\"clientId\":\"zvfvaawz\"}}},\"location\":\"glae\",\"tags\":{\"t\":\"dticokpvzml\",\"x\":\"ld\"},\"id\":\"bf\",\"name\":\"rclnpkc\",\"type\":\"ayzri\"}],\"nextLink\":\"hya\"}")
+            "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"f\",\"name\":\"cxzbfvoowvr\",\"type\":\"mtg\"},{\"properties\":{},\"id\":\"ppyostronzmyhgf\",\"name\":\"pnsxkmcwaek\",\"type\":\"rjreafxts\"},{\"properties\":{},\"id\":\"mhjglikkxwslolb\",\"name\":\"pvuzlmv\",\"type\":\"elfk\"}],\"provisioningState\":\"CreateFailed\",\"topicsConfiguration\":{\"hostname\":\"rpw\",\"customDomains\":[{\"fullyQualifiedDomainName\":\"znoigbrn\"},{\"fullyQualifiedDomainName\":\"w\"}]},\"topicSpacesConfiguration\":{\"state\":\"Disabled\",\"routeTopicResourceId\":\"bsazejjoqka\",\"hostname\":\"hsxttaugzxnf\",\"routingEnrichments\":{\"static\":[{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"}],\"dynamic\":[{},{}]},\"maximumSessionExpiryInHours\":159219307,\"maximumClientSessionsPerAuthenticationName\":504912220,\"routingIdentityInfo\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"jlwuenvrkp\"},\"customDomains\":[{\"fullyQualifiedDomainName\":\"aibrebqaaysjkixq\"},{\"fullyQualifiedDomainName\":\"nqttezl\"},{\"fullyQualifiedDomainName\":\"fffiak\"},{\"fullyQualifiedDomainName\":\"jpqqmted\"}]},\"isZoneRedundant\":false,\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"eozphv\",\"action\":\"Allow\"},{\"ipMask\":\"qncygupkvi\",\"action\":\"Allow\"},{\"ipMask\":\"cwxqu\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.0\"},\"sku\":{\"name\":\"Standard\",\"capacity\":2019400372},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"ujbypelmcuvhixb\",\"tenantId\":\"yfwnylr\",\"userAssignedIdentities\":{\"kbnujr\":{\"principalId\":\"sttp\",\"clientId\":\"w\"}}},\"location\":\"vtylbfpncu\",\"tags\":{\"htywubxcbihwq\":\"iwii\",\"wjchrdg\":\"nfdn\",\"uu\":\"ihxumwctondzj\"},\"id\":\"fdlwg\",\"name\":\"ytsbwtovv\",\"type\":\"gseinq\"},{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"qknp\",\"name\":\"rgnepttwqmsniffc\",\"type\":\"mqnrojlpijnkr\"},{\"properties\":{},\"id\":\"rddh\",\"name\":\"ratiz\",\"type\":\"ronasxift\"},{\"properties\":{},\"id\":\"qyzhf\",\"name\":\"wesgogczh\",\"type\":\"nnxk\"},{\"properties\":{},\"id\":\"gnyhmossxkkg\",\"name\":\"h\",\"type\":\"rghxjb\"}],\"provisioningState\":\"UpdatedFailed\",\"topicsConfiguration\":{\"hostname\":\"cx\",\"customDomains\":[{\"fullyQualifiedDomainName\":\"pdso\"},{\"fullyQualifiedDomainName\":\"bshrnsvbuswd\"}]},\"topicSpacesConfiguration\":{\"state\":\"Enabled\",\"routeTopicResourceId\":\"ycnunvjsrtk\",\"hostname\":\"wnopqgikyzirtx\",\"routingEnrichments\":{\"static\":[{\"valueType\":\"StaticRoutingEnrichment\"}],\"dynamic\":[{}]},\"maximumSessionExpiryInHours\":893551586,\"maximumClientSessionsPerAuthenticationName\":953757935,\"routingIdentityInfo\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"ioilqukrydxtq\"},\"customDomains\":[{\"fullyQualifiedDomainName\":\"ox\"},{\"fullyQualifiedDomainName\":\"rgguf\"},{\"fullyQualifiedDomainName\":\"yaomtb\"},{\"fullyQualifiedDomainName\":\"hhavgrvkffovjz\"}]},\"isZoneRedundant\":false,\"publicNetworkAccess\":\"Disabled\",\"inboundIpRules\":[{\"ipMask\":\"mfxumvfcluyovw\",\"action\":\"Allow\"},{\"ipMask\":\"fezzxscyhwzdg\",\"action\":\"Allow\"},{\"ipMask\":\"bzbomvzzbtdcqvpn\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.0\"},\"sku\":{\"name\":\"Standard\",\"capacity\":812377845},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"snrbgyefrymsgao\",\"tenantId\":\"mwn\",\"userAssignedIdentities\":{\"piwyczuhxacpqjl\":{\"principalId\":\"rfh\",\"clientId\":\"ctymoxoftp\"}}},\"location\":\"hyus\",\"tags\":{\"fwdgzxulucvp\":\"asdvl\",\"ytxifqjzgxmrh\":\"mrsreuzvxurisjnh\"},\"id\":\"blwpcesutrgj\",\"name\":\"pauutpw\",\"type\":\"qhih\"},{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"zpnfqntcypsxj\",\"name\":\"foimwkslircizjxv\",\"type\":\"dfcea\"}],\"provisioningState\":\"DeleteFailed\",\"topicsConfiguration\":{\"hostname\":\"ygdyftumrtw\",\"customDomains\":[{\"fullyQualifiedDomainName\":\"jslb\"},{\"fullyQualifiedDomainName\":\"wkojgcyztsfmzn\"},{\"fullyQualifiedDomainName\":\"aeqphchqnr\"},{\"fullyQualifiedDomainName\":\"rpxeh\"}]},\"topicSpacesConfiguration\":{\"state\":\"Enabled\",\"routeTopicResourceId\":\"qgaifmviklbydv\",\"hostname\":\"bejdznxcv\",\"routingEnrichments\":{\"static\":[{\"valueType\":\"StaticRoutingEnrichment\"},{\"valueType\":\"StaticRoutingEnrichment\"}],\"dynamic\":[{},{},{}]},\"maximumSessionExpiryInHours\":1345680301,\"maximumClientSessionsPerAuthenticationName\":1229018312,\"routingIdentityInfo\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"v\"},\"customDomains\":[{\"fullyQualifiedDomainName\":\"gemjdftuljltdu\"},{\"fullyQualifiedDomainName\":\"eamtmcz\"},{\"fullyQualifiedDomainName\":\"o\"},{\"fullyQualifiedDomainName\":\"ejwcwwqiok\"}]},\"isZoneRedundant\":false,\"publicNetworkAccess\":\"Disabled\",\"inboundIpRules\":[{\"ipMask\":\"sv\",\"action\":\"Allow\"},{\"ipMask\":\"rvkwc\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.0\"},\"sku\":{\"name\":\"Standard\",\"capacity\":1494813827},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"dbsdshm\",\"tenantId\":\"maehvbbxurip\",\"userAssignedIdentities\":{\"wrck\":{\"principalId\":\"htba\",\"clientId\":\"gx\"},\"uudl\":{\"principalId\":\"kl\",\"clientId\":\"pluodpv\"},\"lhpl\":{\"principalId\":\"ibthostgktstvd\",\"clientId\":\"clzedqbcvh\"}}},\"location\":\"qkdlw\",\"tags\":{\"kxtrq\":\"bum\",\"rtawcoezb\":\"fsmlmbtxhwgfw\"},\"id\":\"hubskhudygooo\",\"name\":\"kqfqjbvl\",\"type\":\"orfmluiqt\"}],\"nextLink\":\"fa\"}")
             .toObject(NamespacesListResult.class);
-        Assertions.assertEquals("onmacjekniz", model.value().get(0).location());
-        Assertions.assertEquals("vcimpev", model.value().get(0).tags().get("gmblrri"));
+        Assertions.assertEquals("vtylbfpncu", model.value().get(0).location());
+        Assertions.assertEquals("iwii", model.value().get(0).tags().get("htywubxcbihwq"));
         Assertions.assertEquals(SkuName.STANDARD, model.value().get(0).sku().name());
-        Assertions.assertEquals(1255734454, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(2019400372, model.value().get(0).sku().capacity());
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("ork", model.value().get(0).identity().principalId());
-        Assertions.assertEquals("lywjhh", model.value().get(0).identity().tenantId());
-        Assertions.assertEquals("xmsivfomiloxggdu",
-            model.value().get(0).identity().userAssignedIdentities().get("dieuzaofj").principalId());
-        Assertions.assertEquals("q",
-            model.value().get(0).identity().userAssignedIdentities().get("dieuzaofj").clientId());
-        Assertions.assertEquals("zcjznmwcpmgua",
+        Assertions.assertEquals("ujbypelmcuvhixb", model.value().get(0).identity().principalId());
+        Assertions.assertEquals("yfwnylr", model.value().get(0).identity().tenantId());
+        Assertions.assertEquals("sttp",
+            model.value().get(0).identity().userAssignedIdentities().get("kbnujr").principalId());
+        Assertions.assertEquals("w", model.value().get(0).identity().userAssignedIdentities().get("kbnujr").clientId());
+        Assertions.assertEquals("znoigbrn",
             model.value().get(0).topicsConfiguration().customDomains().get(0).fullyQualifiedDomainName());
         Assertions.assertEquals(TopicSpacesConfigurationState.DISABLED,
             model.value().get(0).topicSpacesConfiguration().state());
-        Assertions.assertEquals("kwdlenrdsutujba",
-            model.value().get(0).topicSpacesConfiguration().routeTopicResourceId());
-        Assertions.assertEquals(AlternativeAuthenticationNameSource.CLIENT_CERTIFICATE_URI,
-            model.value()
-                .get(0)
-                .topicSpacesConfiguration()
-                .clientAuthentication()
-                .alternativeAuthenticationNameSources()
-                .get(0));
-        Assertions.assertEquals(1194335789,
+        Assertions.assertEquals("bsazejjoqka", model.value().get(0).topicSpacesConfiguration().routeTopicResourceId());
+        Assertions.assertEquals(159219307,
             model.value().get(0).topicSpacesConfiguration().maximumSessionExpiryInHours());
-        Assertions.assertEquals(1138704794,
+        Assertions.assertEquals(504912220,
             model.value().get(0).topicSpacesConfiguration().maximumClientSessionsPerAuthenticationName());
-        Assertions.assertEquals(RoutingIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals(RoutingIdentityType.USER_ASSIGNED,
             model.value().get(0).topicSpacesConfiguration().routingIdentityInfo().type());
-        Assertions.assertEquals("chisze",
+        Assertions.assertEquals("jlwuenvrkp",
             model.value().get(0).topicSpacesConfiguration().routingIdentityInfo().userAssignedIdentity());
-        Assertions.assertEquals("bjcrxgibbdaxco",
+        Assertions.assertEquals("aibrebqaaysjkixq",
             model.value().get(0).topicSpacesConfiguration().customDomains().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(true, model.value().get(0).isZoneRedundant());
+        Assertions.assertEquals(false, model.value().get(0).isZoneRedundant());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.value().get(0).publicNetworkAccess());
-        Assertions.assertEquals("sukokwbqplhl", model.value().get(0).inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("eozphv", model.value().get(0).inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.value().get(0).inboundIpRules().get(0).action());
-        Assertions.assertEquals(TlsVersion.ONE_TWO, model.value().get(0).minimumTlsVersionAllowed());
-        Assertions.assertEquals("hya", model.nextLink());
+        Assertions.assertEquals(TlsVersion.ONE_ZERO, model.value().get(0).minimumTlsVersionAllowed());
+        Assertions.assertEquals("fa", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespacesListResult model = new NamespacesListResult()
-            .withValue(Arrays.asList(
-                new NamespaceInner().withLocation("onmacjekniz")
-                    .withTags(mapOf("gmblrri", "vcimpev"))
-                    .withSku(new NamespaceSku().withName(SkuName.STANDARD).withCapacity(1255734454))
-                    .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
-                        .withPrincipalId("ork")
-                        .withTenantId("lywjhh")
-                        .withUserAssignedIdentities(mapOf("dieuzaofj",
-                            new UserIdentityProperties().withPrincipalId("xmsivfomiloxggdu").withClientId("q"),
-                            "cubiipuipw", new UserIdentityProperties().withPrincipalId("vcyy").withClientId("fgdo"))))
-                    .withPrivateEndpointConnections(
-                        Arrays.asList(new PrivateEndpointConnectionInner(), new PrivateEndpointConnectionInner(),
+        NamespacesListResult model
+            = new NamespacesListResult()
+                .withValue(Arrays.asList(
+                    new NamespaceInner().withLocation("vtylbfpncu")
+                        .withTags(mapOf("htywubxcbihwq", "iwii", "wjchrdg", "nfdn", "uu", "ihxumwctondzj"))
+                        .withSku(new NamespaceSku().withName(SkuName.STANDARD).withCapacity(2019400372))
+                        .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
+                            .withPrincipalId("ujbypelmcuvhixb")
+                            .withTenantId("yfwnylr")
+                            .withUserAssignedIdentities(mapOf("kbnujr",
+                                new UserIdentityProperties().withPrincipalId("sttp").withClientId("w"))))
+                        .withPrivateEndpointConnections(Arrays.asList(new PrivateEndpointConnectionInner(),
                             new PrivateEndpointConnectionInner(), new PrivateEndpointConnectionInner()))
-                    .withTopicsConfiguration(new TopicsConfiguration().withCustomDomains(
-                        Arrays.asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("zcjznmwcpmgua"),
-                            new CustomDomainConfiguration().withFullyQualifiedDomainName("draufactkah"),
-                            new CustomDomainConfiguration()
-                                .withFullyQualifiedDomainName("ovajjziuxxps"),
-                            new CustomDomainConfiguration().withFullyQualifiedDomainName("neekulfg"))))
-                    .withTopicSpacesConfiguration(new TopicSpacesConfiguration()
-                        .withState(TopicSpacesConfigurationState.DISABLED)
-                        .withRouteTopicResourceId("kwdlenrdsutujba")
-                        .withRoutingEnrichments(new RoutingEnrichments()
-                            .withStaticProperty(
-                                Arrays.asList(new StaticRoutingEnrichment(), new StaticRoutingEnrichment(),
-                                    new StaticRoutingEnrichment(), new StaticRoutingEnrichment()))
-                            .withDynamic(Arrays.asList(new DynamicRoutingEnrichment(), new DynamicRoutingEnrichment())))
-                        .withClientAuthentication(new ClientAuthenticationSettings()
-                            .withAlternativeAuthenticationNameSources(
-                                Arrays.asList(AlternativeAuthenticationNameSource.CLIENT_CERTIFICATE_URI,
-                                    AlternativeAuthenticationNameSource.CLIENT_CERTIFICATE_URI))
-                            .withCustomJwtAuthentication(new CustomJwtAuthenticationSettings()))
-                        .withMaximumSessionExpiryInHours(1194335789)
-                        .withMaximumClientSessionsPerAuthenticationName(1138704794)
-                        .withRoutingIdentityInfo(new RoutingIdentityInfo().withType(RoutingIdentityType.SYSTEM_ASSIGNED)
-                            .withUserAssignedIdentity("chisze"))
-                        .withCustomDomains(Arrays
-                            .asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("bjcrxgibbdaxco"))))
-                    .withIsZoneRedundant(true)
-                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                    .withInboundIpRules(
-                        Arrays.asList(new InboundIpRule().withIpMask("sukokwbqplhl").withAction(IpActionType.ALLOW),
-                            new InboundIpRule().withIpMask("epzl")
-                                .withAction(IpActionType.ALLOW),
-                            new InboundIpRule().withIpMask("zsoldwey").withAction(IpActionType.ALLOW)))
-                    .withMinimumTlsVersionAllowed(TlsVersion.ONE_TWO),
-                new NamespaceInner().withLocation("ogsjkmnwqjno")
-                    .withTags(mapOf("egfnmntfpmvmemfn", "yhddvia", "lchpodbzevwrdn", "zdwvvbalxl"))
-                    .withSku(new NamespaceSku().withName(SkuName.STANDARD).withCapacity(1264491301))
-                    .withIdentity(
-                        new IdentityInfo().withType(IdentityType.USER_ASSIGNED)
-                            .withPrincipalId("id")
-                            .withTenantId("qfkuvscxkdmli")
-                            .withUserAssignedIdentities(mapOf("bteoybf",
-                                new UserIdentityProperties().withPrincipalId("brxk").withClientId("loazuruocbgoo"), "b",
-                                new UserIdentityProperties().withPrincipalId("xakvvjgslor")
-                                    .withClientId("lmywwtkgkxnyed"),
-                                "bvpa",
-                                new UserIdentityProperties().withPrincipalId("vudtjuewbcihx").withClientId("whcjyxcc"),
-                                "stcyohpfkyrkdbd",
-                                new UserIdentityProperties().withPrincipalId("kkudzp").withClientId("wjplma"))))
-                    .withPrivateEndpointConnections(Arrays.asList(new PrivateEndpointConnectionInner()))
-                    .withTopicsConfiguration(new TopicsConfiguration().withCustomDomains(Arrays.asList(
-                        new CustomDomainConfiguration().withFullyQualifiedDomainName("gxxlxsffgcvizq"),
-                        new CustomDomainConfiguration().withFullyQualifiedDomainName("dwl"))))
-                    .withTopicSpacesConfiguration(
-                        new TopicSpacesConfiguration().withState(TopicSpacesConfigurationState.ENABLED)
-                            .withRouteTopicResourceId("upfgfbk")
-                            .withRoutingEnrichments(new RoutingEnrichments()
-                                .withStaticProperty(Arrays.asList(new StaticRoutingEnrichment(),
-                                    new StaticRoutingEnrichment(), new StaticRoutingEnrichment()))
-                                .withDynamic(Arrays.asList(new DynamicRoutingEnrichment())))
-                            .withClientAuthentication(new ClientAuthenticationSettings()
-                                .withAlternativeAuthenticationNameSources(
-                                    Arrays.asList(AlternativeAuthenticationNameSource.CLIENT_CERTIFICATE_SUBJECT))
-                                .withCustomJwtAuthentication(new CustomJwtAuthenticationSettings()))
-                            .withMaximumSessionExpiryInHours(1941309010)
-                            .withMaximumClientSessionsPerAuthenticationName(520028629)
-                            .withRoutingIdentityInfo(
-                                new RoutingIdentityInfo().withType(RoutingIdentityType.USER_ASSIGNED)
-                                    .withUserAssignedIdentity("zukxitmmqtgqq"))
-                            .withCustomDomains(
-                                Arrays.asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("rnxrxcpj"),
-                                    new CustomDomainConfiguration().withFullyQualifiedDomainName("isavok"))))
-                    .withIsZoneRedundant(false)
-                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-                    .withInboundIpRules(
-                        Arrays.asList(new InboundIpRule().withIpMask("vjlfrqtt").withAction(IpActionType.ALLOW)))
-                    .withMinimumTlsVersionAllowed(TlsVersion.ONE_ONE),
-                new NamespaceInner().withLocation("glae")
-                    .withTags(mapOf("t", "dticokpvzml", "x", "ld"))
-                    .withSku(new NamespaceSku().withName(SkuName.STANDARD).withCapacity(1190990500))
-                    .withIdentity(new IdentityInfo().withType(IdentityType.USER_ASSIGNED)
-                        .withPrincipalId("ufuztcktyhjtq")
-                        .withTenantId("cgzulwmmrqzzr")
-                        .withUserAssignedIdentities(mapOf("vtoepryutnw",
-                            new UserIdentityProperties().withPrincipalId("gl").withClientId("zgkrvqe"), "adflgzu",
-                            new UserIdentityProperties().withPrincipalId("pzdm").withClientId("zvfvaawz"))))
-                    .withPrivateEndpointConnections(Arrays.asList(new PrivateEndpointConnectionInner()))
-                    .withTopicsConfiguration(new TopicsConfiguration().withCustomDomains(
-                        Arrays.asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("ivsiy"),
-                            new CustomDomainConfiguration()
-                                .withFullyQualifiedDomainName("zkdnc"),
-                            new CustomDomainConfiguration().withFullyQualifiedDomainName("dxonbzoggculap"))))
-                    .withTopicSpacesConfiguration(new TopicSpacesConfiguration()
-                        .withState(TopicSpacesConfigurationState.ENABLED)
-                        .withRouteTopicResourceId("gogtqxepnylbf")
-                        .withRoutingEnrichments(new RoutingEnrichments()
-                            .withStaticProperty(
-                                Arrays.asList(new StaticRoutingEnrichment(), new StaticRoutingEnrichment(),
-                                    new StaticRoutingEnrichment(), new StaticRoutingEnrichment()))
-                            .withDynamic(Arrays.asList(new DynamicRoutingEnrichment(), new DynamicRoutingEnrichment())))
-                        .withClientAuthentication(new ClientAuthenticationSettings()
-                            .withAlternativeAuthenticationNameSources(
-                                Arrays.asList(AlternativeAuthenticationNameSource.CLIENT_CERTIFICATE_SUBJECT))
-                            .withCustomJwtAuthentication(new CustomJwtAuthenticationSettings()))
-                        .withMaximumSessionExpiryInHours(1566451113)
-                        .withMaximumClientSessionsPerAuthenticationName(1105067830)
-                        .withRoutingIdentityInfo(new RoutingIdentityInfo().withType(RoutingIdentityType.SYSTEM_ASSIGNED)
-                            .withUserAssignedIdentity("dwxf"))
-                        .withCustomDomains(
-                            Arrays.asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("ivwzjbhyzs"),
-                                new CustomDomainConfiguration().withFullyQualifiedDomainName("jrkambtrnegvmnv"),
-                                new CustomDomainConfiguration().withFullyQualifiedDomainName("q"),
-                                new CustomDomainConfiguration().withFullyQualifiedDomainName("qvldspastjbkkd"))))
-                    .withIsZoneRedundant(false)
-                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-                    .withInboundIpRules(
-                        Arrays.asList(new InboundIpRule().withIpMask("jlxr").withAction(IpActionType.ALLOW),
-                            new InboundIpRule().withIpMask("zapeewchpx").withAction(IpActionType.ALLOW)))
-                    .withMinimumTlsVersionAllowed(TlsVersion.ONE_TWO)))
-            .withNextLink("hya");
+                        .withTopicsConfiguration(new TopicsConfiguration().withCustomDomains(
+                            Arrays.asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("znoigbrn"),
+                                new CustomDomainConfiguration().withFullyQualifiedDomainName("w"))))
+                        .withTopicSpacesConfiguration(
+                            new TopicSpacesConfiguration().withState(TopicSpacesConfigurationState.DISABLED)
+                                .withRouteTopicResourceId("bsazejjoqka")
+                                .withRoutingEnrichments(new RoutingEnrichments()
+                                    .withStaticProperty(Arrays.asList(new StaticRoutingEnrichment(),
+                                        new StaticRoutingEnrichment(), new StaticRoutingEnrichment()))
+                                    .withDynamic(
+                                        Arrays.asList(new DynamicRoutingEnrichment(), new DynamicRoutingEnrichment())))
+                                .withMaximumSessionExpiryInHours(159219307)
+                                .withMaximumClientSessionsPerAuthenticationName(504912220)
+                                .withRoutingIdentityInfo(
+                                    new RoutingIdentityInfo().withType(RoutingIdentityType.USER_ASSIGNED)
+                                        .withUserAssignedIdentity("jlwuenvrkp"))
+                                .withCustomDomains(
+                                    Arrays.asList(
+                                        new CustomDomainConfiguration()
+                                            .withFullyQualifiedDomainName("aibrebqaaysjkixq"),
+                                        new CustomDomainConfiguration().withFullyQualifiedDomainName("nqttezl"),
+                                        new CustomDomainConfiguration().withFullyQualifiedDomainName("fffiak"),
+                                        new CustomDomainConfiguration().withFullyQualifiedDomainName("jpqqmted"))))
+                        .withIsZoneRedundant(false)
+                        .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                        .withInboundIpRules(
+                            Arrays.asList(new InboundIpRule().withIpMask("eozphv").withAction(IpActionType.ALLOW),
+                                new InboundIpRule().withIpMask("qncygupkvi").withAction(IpActionType.ALLOW),
+                                new InboundIpRule().withIpMask("cwxqu").withAction(IpActionType.ALLOW)))
+                        .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO),
+                    new NamespaceInner().withLocation("hyus")
+                        .withTags(mapOf("fwdgzxulucvp", "asdvl", "ytxifqjzgxmrh", "mrsreuzvxurisjnh"))
+                        .withSku(new NamespaceSku().withName(SkuName.STANDARD).withCapacity(812377845))
+                        .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                            .withPrincipalId("snrbgyefrymsgao")
+                            .withTenantId("mwn")
+                            .withUserAssignedIdentities(mapOf("piwyczuhxacpqjl",
+                                new UserIdentityProperties().withPrincipalId("rfh").withClientId("ctymoxoftp"))))
+                        .withPrivateEndpointConnections(
+                            Arrays.asList(new PrivateEndpointConnectionInner(), new PrivateEndpointConnectionInner(),
+                                new PrivateEndpointConnectionInner(), new PrivateEndpointConnectionInner()))
+                        .withTopicsConfiguration(
+                            new TopicsConfiguration()
+                                .withCustomDomains(
+                                    Arrays.asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("pdso"),
+                                        new CustomDomainConfiguration().withFullyQualifiedDomainName("bshrnsvbuswd"))))
+                        .withTopicSpacesConfiguration(
+                            new TopicSpacesConfiguration().withState(TopicSpacesConfigurationState.ENABLED)
+                                .withRouteTopicResourceId("ycnunvjsrtk")
+                                .withRoutingEnrichments(new RoutingEnrichments()
+                                    .withStaticProperty(Arrays.asList(new StaticRoutingEnrichment()))
+                                    .withDynamic(Arrays.asList(new DynamicRoutingEnrichment())))
+                                .withMaximumSessionExpiryInHours(893551586)
+                                .withMaximumClientSessionsPerAuthenticationName(953757935)
+                                .withRoutingIdentityInfo(
+                                    new RoutingIdentityInfo().withType(RoutingIdentityType.USER_ASSIGNED)
+                                        .withUserAssignedIdentity("ioilqukrydxtq"))
+                                .withCustomDomains(
+                                    Arrays.asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("ox"),
+                                        new CustomDomainConfiguration().withFullyQualifiedDomainName("rgguf"),
+                                        new CustomDomainConfiguration().withFullyQualifiedDomainName("yaomtb"),
+                                        new CustomDomainConfiguration()
+                                            .withFullyQualifiedDomainName("hhavgrvkffovjz"))))
+                        .withIsZoneRedundant(false)
+                        .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                        .withInboundIpRules(Arrays
+                            .asList(new InboundIpRule().withIpMask("mfxumvfcluyovw").withAction(IpActionType.ALLOW),
+                                new InboundIpRule().withIpMask("fezzxscyhwzdg")
+                                    .withAction(IpActionType.ALLOW),
+                                new InboundIpRule().withIpMask("bzbomvzzbtdcqvpn").withAction(IpActionType.ALLOW)))
+                        .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO),
+                    new NamespaceInner().withLocation("qkdlw")
+                        .withTags(mapOf("kxtrq", "bum", "rtawcoezb", "fsmlmbtxhwgfw"))
+                        .withSku(new NamespaceSku().withName(SkuName.STANDARD).withCapacity(1494813827))
+                        .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
+                            .withPrincipalId("dbsdshm")
+                            .withTenantId("maehvbbxurip")
+                            .withUserAssignedIdentities(mapOf("wrck",
+                                new UserIdentityProperties().withPrincipalId("htba").withClientId("gx"), "uudl",
+                                new UserIdentityProperties().withPrincipalId("kl").withClientId("pluodpv"), "lhpl",
+                                new UserIdentityProperties().withPrincipalId("ibthostgktstvd")
+                                    .withClientId("clzedqbcvh"))))
+                        .withPrivateEndpointConnections(Arrays.asList(new PrivateEndpointConnectionInner()))
+                        .withTopicsConfiguration(new TopicsConfiguration().withCustomDomains(
+                            Arrays.asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("jslb"),
+                                new CustomDomainConfiguration().withFullyQualifiedDomainName("wkojgcyztsfmzn"),
+                                new CustomDomainConfiguration()
+                                    .withFullyQualifiedDomainName("aeqphchqnr"),
+                                new CustomDomainConfiguration().withFullyQualifiedDomainName("rpxeh"))))
+                        .withTopicSpacesConfiguration(
+                            new TopicSpacesConfiguration().withState(TopicSpacesConfigurationState.ENABLED)
+                                .withRouteTopicResourceId("qgaifmviklbydv")
+                                .withRoutingEnrichments(new RoutingEnrichments()
+                                    .withStaticProperty(
+                                        Arrays.asList(new StaticRoutingEnrichment(), new StaticRoutingEnrichment()))
+                                    .withDynamic(Arrays.asList(new DynamicRoutingEnrichment(),
+                                        new DynamicRoutingEnrichment(), new DynamicRoutingEnrichment())))
+                                .withMaximumSessionExpiryInHours(1345680301)
+                                .withMaximumClientSessionsPerAuthenticationName(1229018312)
+                                .withRoutingIdentityInfo(
+                                    new RoutingIdentityInfo().withType(RoutingIdentityType.USER_ASSIGNED)
+                                        .withUserAssignedIdentity("v"))
+                                .withCustomDomains(Arrays.asList(
+                                    new CustomDomainConfiguration().withFullyQualifiedDomainName("gemjdftuljltdu"),
+                                    new CustomDomainConfiguration().withFullyQualifiedDomainName("eamtmcz"),
+                                    new CustomDomainConfiguration().withFullyQualifiedDomainName("o"),
+                                    new CustomDomainConfiguration().withFullyQualifiedDomainName("ejwcwwqiok"))))
+                        .withIsZoneRedundant(false)
+                        .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                        .withInboundIpRules(
+                            Arrays.asList(new InboundIpRule().withIpMask("sv").withAction(IpActionType.ALLOW),
+                                new InboundIpRule().withIpMask("rvkwc").withAction(IpActionType.ALLOW)))
+                        .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)))
+                .withNextLink("fa");
         model = BinaryData.fromObject(model).toObject(NamespacesListResult.class);
-        Assertions.assertEquals("onmacjekniz", model.value().get(0).location());
-        Assertions.assertEquals("vcimpev", model.value().get(0).tags().get("gmblrri"));
+        Assertions.assertEquals("vtylbfpncu", model.value().get(0).location());
+        Assertions.assertEquals("iwii", model.value().get(0).tags().get("htywubxcbihwq"));
         Assertions.assertEquals(SkuName.STANDARD, model.value().get(0).sku().name());
-        Assertions.assertEquals(1255734454, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(2019400372, model.value().get(0).sku().capacity());
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("ork", model.value().get(0).identity().principalId());
-        Assertions.assertEquals("lywjhh", model.value().get(0).identity().tenantId());
-        Assertions.assertEquals("xmsivfomiloxggdu",
-            model.value().get(0).identity().userAssignedIdentities().get("dieuzaofj").principalId());
-        Assertions.assertEquals("q",
-            model.value().get(0).identity().userAssignedIdentities().get("dieuzaofj").clientId());
-        Assertions.assertEquals("zcjznmwcpmgua",
+        Assertions.assertEquals("ujbypelmcuvhixb", model.value().get(0).identity().principalId());
+        Assertions.assertEquals("yfwnylr", model.value().get(0).identity().tenantId());
+        Assertions.assertEquals("sttp",
+            model.value().get(0).identity().userAssignedIdentities().get("kbnujr").principalId());
+        Assertions.assertEquals("w", model.value().get(0).identity().userAssignedIdentities().get("kbnujr").clientId());
+        Assertions.assertEquals("znoigbrn",
             model.value().get(0).topicsConfiguration().customDomains().get(0).fullyQualifiedDomainName());
         Assertions.assertEquals(TopicSpacesConfigurationState.DISABLED,
             model.value().get(0).topicSpacesConfiguration().state());
-        Assertions.assertEquals("kwdlenrdsutujba",
-            model.value().get(0).topicSpacesConfiguration().routeTopicResourceId());
-        Assertions.assertEquals(AlternativeAuthenticationNameSource.CLIENT_CERTIFICATE_URI,
-            model.value()
-                .get(0)
-                .topicSpacesConfiguration()
-                .clientAuthentication()
-                .alternativeAuthenticationNameSources()
-                .get(0));
-        Assertions.assertEquals(1194335789,
+        Assertions.assertEquals("bsazejjoqka", model.value().get(0).topicSpacesConfiguration().routeTopicResourceId());
+        Assertions.assertEquals(159219307,
             model.value().get(0).topicSpacesConfiguration().maximumSessionExpiryInHours());
-        Assertions.assertEquals(1138704794,
+        Assertions.assertEquals(504912220,
             model.value().get(0).topicSpacesConfiguration().maximumClientSessionsPerAuthenticationName());
-        Assertions.assertEquals(RoutingIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals(RoutingIdentityType.USER_ASSIGNED,
             model.value().get(0).topicSpacesConfiguration().routingIdentityInfo().type());
-        Assertions.assertEquals("chisze",
+        Assertions.assertEquals("jlwuenvrkp",
             model.value().get(0).topicSpacesConfiguration().routingIdentityInfo().userAssignedIdentity());
-        Assertions.assertEquals("bjcrxgibbdaxco",
+        Assertions.assertEquals("aibrebqaaysjkixq",
             model.value().get(0).topicSpacesConfiguration().customDomains().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(true, model.value().get(0).isZoneRedundant());
+        Assertions.assertEquals(false, model.value().get(0).isZoneRedundant());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.value().get(0).publicNetworkAccess());
-        Assertions.assertEquals("sukokwbqplhl", model.value().get(0).inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("eozphv", model.value().get(0).inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.value().get(0).inboundIpRules().get(0).action());
-        Assertions.assertEquals(TlsVersion.ONE_TWO, model.value().get(0).minimumTlsVersionAllowed());
-        Assertions.assertEquals("hya", model.nextLink());
+        Assertions.assertEquals(TlsVersion.ONE_ZERO, model.value().get(0).minimumTlsVersionAllowed());
+        Assertions.assertEquals("fa", model.nextLink());
     }
 
     // Use "Map.of" if available
