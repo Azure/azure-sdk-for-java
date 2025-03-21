@@ -2071,7 +2071,12 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
         FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
 
-        StepVerifier.create(client.uploadFile(fileDetails, null)).expectError(HttpResponseException.class).verify();
+        StepVerifier.create(client.uploadFile(fileDetails, null)).verifyErrorSatisfies(error -> {
+            assertInstanceOf(HttpResponseException.class, error);
+            HttpResponseException httpResponseException = (HttpResponseException) error;
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            assertNotNull(httpResponseException.getMessage());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2105,8 +2110,12 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             translationOptions.setFilename(null);
 
             StepVerifier.create(client.getAudioTranslationAsResponseObject(deploymentName, translationOptions))
-                .expectError(HttpResponseException.class)
-                .verify();
+                .verifyErrorSatisfies(error -> {
+                    assertInstanceOf(HttpResponseException.class, error);
+                    HttpResponseException httpResponseException = (HttpResponseException) error;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    assertNotNull(httpResponseException.getMessage());
+                });
         });
     }
 
@@ -2141,8 +2150,12 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             transcriptionOptions.setFilename(null);
 
             StepVerifier.create(client.getAudioTranscriptionAsResponseObject(deploymentName, transcriptionOptions))
-                .expectError(HttpResponseException.class)
-                .verify();
+                .verifyErrorSatisfies(error -> {
+                    assertInstanceOf(HttpResponseException.class, error);
+                    HttpResponseException httpResponseException = (HttpResponseException) error;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    assertNotNull(httpResponseException.getMessage());
+                });
         });
     }
 
@@ -2181,8 +2194,12 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             StepVerifier
                 .create(client.getAudioTranslationTextWithResponse(deploymentName, "test-file.txt",
                     audioTranslationOptions, new RequestOptions()))
-                .expectError(HttpResponseException.class)
-                .verify();
+                .verifyErrorSatisfies(error -> {
+                    assertInstanceOf(HttpResponseException.class, error);
+                    HttpResponseException httpResponseException = (HttpResponseException) error;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    assertNotNull(httpResponseException.getMessage());
+                });
         });
     }
 
@@ -2223,8 +2240,12 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             StepVerifier
                 .create(client.getAudioTranscriptionTextWithResponse(deploymentName, "test-file.txt",
                     transcriptionOptions, new RequestOptions()))
-                .expectError(HttpResponseException.class)
-                .verify();
+                .verifyErrorSatisfies(error -> {
+                    assertInstanceOf(HttpResponseException.class, error);
+                    HttpResponseException httpResponseException = (HttpResponseException) error;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    assertNotNull(httpResponseException.getMessage());
+                });
         });
     }
 
@@ -2294,6 +2315,11 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testListBatchesFailure(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
-        StepVerifier.create(client.listBatches("40", 20)).expectError(HttpResponseException.class).verify();
+        StepVerifier.create(client.listBatches("40", 20)).verifyErrorSatisfies(error -> {
+            assertInstanceOf(HttpResponseException.class, error);
+            HttpResponseException httpResponseException = (HttpResponseException) error;
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            assertNotNull(httpResponseException.getMessage());
+        });
     }
 }
