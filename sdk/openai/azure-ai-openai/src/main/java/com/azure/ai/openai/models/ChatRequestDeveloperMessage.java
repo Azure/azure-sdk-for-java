@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -74,6 +75,17 @@ public final class ChatRequestDeveloperMessage extends ChatRequestMessage {
         this.content = BinaryData.fromObject(content);
         this.stringContent = null;
         this.chatMessageContentItems = content;
+    }
+
+    /**
+     * Creates a new instance of ChatRequestDeveloperMessage using a collection of structured content.
+     *
+     * @param content The collection of structured content associated with the message.
+     */
+    public ChatRequestDeveloperMessage(ChatMessageContentItem[] content) {
+        this.content = BinaryData.fromObject(content);
+        this.chatMessageContentItems = Arrays.asList(content);
+        this.stringContent = null;
     }
 
     /**

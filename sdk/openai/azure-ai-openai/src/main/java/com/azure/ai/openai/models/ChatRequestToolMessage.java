@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -211,5 +212,18 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
         this.toolCallId = toolCallId;
         this.stringContent = null;
         this.chatMessageContentItems = content;
+    }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param content the List of ChatMessageContentItem content value to set.
+     * @param toolCallId the toolCallId value to set.
+     */
+    public ChatRequestToolMessage(ChatMessageContentItem[] content, String toolCallId) {
+        this.content = BinaryData.fromObject(content);
+        this.toolCallId = toolCallId;
+        this.stringContent = null;
+        this.chatMessageContentItems = Arrays.asList(content);
     }
 }
