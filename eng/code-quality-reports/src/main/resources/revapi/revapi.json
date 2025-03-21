@@ -757,6 +757,13 @@
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem",
           "justification": "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityIncreased",
+          "old" : "method void com.azure.communication.callautomation.models.ChoiceResult::<init>()",
+          "new" : "method void com.azure.communication.callautomation.models.ChoiceResult::<init>()",
+          "justification": "The method visibility increased."
         }
       ]
     }
