@@ -33,11 +33,13 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
+import io.clientcore.core.utils.CoreUtils;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -259,7 +261,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         setContentType(body, method);
         boolean serializationFormatSet = RequestBodyHandler.configureRequestBody(body, method.getBody(), processingEnv);
         addRequestContextToRequestIfPresent(body, method);
-
+        addStaticHeaders(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
 
         internalMethod.setBody(body);
@@ -443,5 +445,56 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(RuntimeException.class);
         body.addStatement(StaticJavaParser.parseStatement("if (!expectedResponse) {"
             + " throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
+    }
+
+    void addStaticHeaders(BlockStmt body, HttpRequestContext method) {
+        // Headers from HttpRequestInformation always take precedence over inferred headers from body types
+        if (!CoreUtils.isNullOrEmpty(method.getHeaders())) {
+            String[] requestHeaders = method.getHeaders();
+            StringBuilder statementBuilder = new StringBuilder("httpRequest.getHeaders()");
+            for (String requestHeader : requestHeaders) {
+                int colonIndex = requestHeader.indexOf(":");
+
+                if (colonIndex < 0) {
+                    throw new IllegalArgumentException(
+                        "Invalid HTTP header: missing ':' separator for " + requestHeader);
+                }
+
+                String headerName = requestHeader.substring(0, colonIndex).trim();
+                String headerValue = requestHeader.substring(colonIndex + 1).trim();
+
+                if (headerName.isEmpty()) {
+                    throw new IllegalArgumentException(
+                        "Invalid HTTP header: header name cannot be empty for " + requestHeader);
+                }
+
+                String constantName
+                    = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerName.toLowerCase(Locale.ROOT));
+                String headerReference = (constantName != null)
+                    ? "HttpHeaderName." + constantName
+                    : "HttpHeaderName.fromString(\"" + headerName + "\")";
+
+                if (!headerValue.isEmpty()) {
+                    if (headerValue.contains(",")) {
+                        compilationUnit.tryAddImportToParentCompilationUnit(Arrays.class);
+                        statementBuilder.append(".set(")
+                            .append(headerReference)
+                            .append(", Arrays.asList(\"")
+                            .append(headerValue.replace(",", "\", \""))
+                            .append("\"))");
+                    } else {
+                        statementBuilder.append(".set(")
+                            .append(headerReference)
+                            .append(", \"")
+                            .append(headerValue)
+                            .append("\")");
+                    }
+                } else {
+                    statementBuilder.append(".set(").append(headerReference).append(", \"\")"); // Explicitly set empty value for headers like "Header-Name:"
+                }
+            }
+            statementBuilder.append(";");
+            body.addStatement(statementBuilder.toString());
+        }
     }
 }
