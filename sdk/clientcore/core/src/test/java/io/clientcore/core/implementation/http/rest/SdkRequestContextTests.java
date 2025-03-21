@@ -84,7 +84,7 @@ public class SdkRequestContextTests {
 
     @Test
     public void invalidParams() {
-        SdkRequestContext requestContext = SdkRequestContext.create(RequestOptions.none());
+        SdkRequestContext requestContext = SdkRequestContext.none();
         assertThrows(NullPointerException.class, () -> requestContext.getData(null));
     }
 
@@ -100,8 +100,8 @@ public class SdkRequestContextTests {
         assertSame(progressReporter, requestContext.getProgressReporter());
 
         options.putData("progressReporter", null);
-
         assertNull(options.getData("progressReporter"));
+
         assertSame(progressReporter, requestContext.getProgressReporter());
     }
 
@@ -119,6 +119,22 @@ public class SdkRequestContextTests {
         SdkRequestContext noInstrumentationContext = SdkRequestContext.create(innerRequestContext);
         assertSame(innerRequestContext.getInstrumentationContext(),
             noInstrumentationContext.getInstrumentationContext());
+    }
+
+    @Test
+    public void updateProgressReporter() {
+        ProgressReporter progressReporter = ProgressReporter.withProgressListener(value -> {
+        });
+        SdkRequestContext outerRequestContext = SdkRequestContext.create(RequestOptions.none(), progressReporter);
+        assertSame(progressReporter, outerRequestContext.getProgressReporter());
+
+        ProgressReporter childReporter = progressReporter.createChild();
+        SdkRequestContext innerRequestContext = SdkRequestContext.create(outerRequestContext, childReporter);
+
+        assertSame(childReporter, innerRequestContext.getProgressReporter());
+
+        SdkRequestContext noExplicitProgressReporter  = SdkRequestContext.create(innerRequestContext);
+        assertSame(childReporter, noExplicitProgressReporter.getProgressReporter());
     }
 
     private static Span startSpan() {

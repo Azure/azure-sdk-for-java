@@ -3,7 +3,6 @@
 
 package io.clientcore.core.http;
 
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.SdkRequestContext;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -32,14 +31,8 @@ import static io.clientcore.core.utils.TestUtils.findFirstOfType;
 public class RestProxySpecialParametersBenchmark {
     // Context is last as it's usually the last parameter in the generated interface.
     // There isn't an exact known size of parameters but 7 is a good rough estimate for the average.
-    private static final Object[] REST_PROXY_PARAMETERS = new Object[] {
-        "a string",
-        1,
-        1.5D,
-        "another string",
-        new Object(),
-        -7,
-        SdkRequestContext.create(RequestOptions.none()) };
+    private static final Object[] REST_PROXY_PARAMETERS
+        = new Object[] { "a string", 1, 1.5D, "another string", new Object(), -7, SdkRequestContext.none() };
 
     /**
      * Benchmarks retrieving @link RequestOptions} from the parameters array passed into

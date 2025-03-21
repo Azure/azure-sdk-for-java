@@ -81,10 +81,10 @@ public class OperationInstrumentationTests {
     @Test
     public void invalidArguments() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, libraryInstrumentationOptions);
-        assertThrows(NullPointerException.class, () -> instrumentation.instrumentWithResponse(null,
-            SdkRequestContext.create(RequestOptions.none()), o -> "done"));
         assertThrows(NullPointerException.class,
-            () -> instrumentation.instrument("call", SdkRequestContext.create(RequestOptions.none()), null));
+            () -> instrumentation.instrumentWithResponse(null, SdkRequestContext.none(), o -> "done"));
+        assertThrows(NullPointerException.class,
+            () -> instrumentation.instrument("call", SdkRequestContext.none(), null));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class OperationInstrumentationTests {
             = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
 
         AtomicReference<Span> current = new AtomicReference<>();
-        instrumentation.instrument("call", SdkRequestContext.create(RequestOptions.none()), options -> {
+        instrumentation.instrument("call", SdkRequestContext.none(), options -> {
             current.set(Span.current());
             assertTrue(current.get().getSpanContext().isValid());
             assertEquals(current.get().getSpanContext().getTraceId(), options.getInstrumentationContext().getTraceId());
@@ -114,10 +114,9 @@ public class OperationInstrumentationTests {
         Instrumentation instrumentation
             = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
         RuntimeException error = new RuntimeException("Test error");
-        assertThrows(RuntimeException.class,
-            () -> instrumentation.instrument("call", SdkRequestContext.create(RequestOptions.none()), o -> {
-                throw error;
-            }));
+        assertThrows(RuntimeException.class, () -> instrumentation.instrument("call", SdkRequestContext.none(), o -> {
+            throw error;
+        }));
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -130,7 +129,7 @@ public class OperationInstrumentationTests {
     @Test
     public void noEndpoint() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, libraryInstrumentationOptions);
-        instrumentation.instrument("call", SdkRequestContext.create(RequestOptions.none()), __ -> {
+        instrumentation.instrument("call", SdkRequestContext.none(), __ -> {
         });
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -146,7 +145,7 @@ public class OperationInstrumentationTests {
     public void testEndpoints(String endpoint) {
         Instrumentation instrumentation
             = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(endpoint));
-        instrumentation.instrument("Call", SdkRequestContext.create(RequestOptions.none()), __ -> {
+        instrumentation.instrument("Call", SdkRequestContext.none(), __ -> {
         });
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -165,7 +164,7 @@ public class OperationInstrumentationTests {
         otelOptions.setTracingEnabled(false);
         Instrumentation instrumentation
             = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
-        instrumentation.instrument("call", SdkRequestContext.create(RequestOptions.none()), __ -> {
+        instrumentation.instrument("call", SdkRequestContext.none(), __ -> {
             assertFalse(Span.current().getSpanContext().isValid());
         });
 
@@ -180,7 +179,7 @@ public class OperationInstrumentationTests {
         otelOptions.setMetricsEnabled(false);
         Instrumentation instrumentation
             = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
-        instrumentation.instrument("call", SdkRequestContext.create(RequestOptions.none()), __ -> {
+        instrumentation.instrument("call", SdkRequestContext.none(), __ -> {
         });
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -194,7 +193,7 @@ public class OperationInstrumentationTests {
         otelOptions.setMetricsEnabled(false);
         Instrumentation instrumentation
             = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
-        instrumentation.instrument("call", SdkRequestContext.create(RequestOptions.none()), __ -> {
+        instrumentation.instrument("call", SdkRequestContext.none(), __ -> {
         });
         assertEquals(0, exporter.getFinishedSpanItems().size());
         assertEquals(0, meterReader.collectAllMetrics().size());
