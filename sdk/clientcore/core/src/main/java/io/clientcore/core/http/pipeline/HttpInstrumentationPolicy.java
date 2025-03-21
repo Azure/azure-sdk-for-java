@@ -8,7 +8,6 @@ import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
@@ -248,7 +247,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         Map<String, Object> metricAttributes = isMetricsEnabled ? new HashMap<>(8) : null;
         if (request.getRequestContext() == null) {
-            request.setRequestContext(SdkRequestContext.create(RequestOptions.none()));
+            request.setRequestContext(SdkRequestContext.none());
         }
 
         InstrumentationContext parentContext = request.getRequestContext().getInstrumentationContext();

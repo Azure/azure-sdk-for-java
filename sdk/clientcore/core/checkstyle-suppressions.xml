@@ -15,6 +15,7 @@
   <suppress files="io.clientcore.core.implementation.ReflectionSerializable.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="io.clientcore.core.http.client.JdkHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="io.clientcore.core.http.models.SdkRequestContext.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.MethodHandleReflectiveInvoker.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />

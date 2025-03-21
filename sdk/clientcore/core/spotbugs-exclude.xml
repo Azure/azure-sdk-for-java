@@ -198,6 +198,7 @@
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.CharTypes" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.ContentReference" />
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
+      <Class name="io.clientcore.core.http.models.SdkRequestContext" />
     </Or>
   </Match>
   <Match>

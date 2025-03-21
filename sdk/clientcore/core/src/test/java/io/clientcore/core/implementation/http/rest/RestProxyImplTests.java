@@ -13,7 +13,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -65,7 +64,7 @@ public class RestProxyImplTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
-        testInterface.testVoidMethod(SdkRequestContext.create(RequestOptions.none()));
+        testInterface.testVoidMethod(SdkRequestContext.none());
 
         assertTrue(client.lastResponseClosed);
     }
@@ -78,7 +77,7 @@ public class RestProxyImplTests {
         byte[] bytes = "hello".getBytes();
         Response<Void> response
             = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
-                "application/json", (long) bytes.length, SdkRequestContext.create(RequestOptions.none()));
+                "application/json", (long) bytes.length, SdkRequestContext.none());
 
         assertEquals(200, response.getStatusCode());
     }
