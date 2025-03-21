@@ -21,6 +21,7 @@ import java.time.temporal.TemporalQuery;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -461,19 +462,23 @@ public final class CoreUtils {
         }
 
         StringBuilder newUrl = new StringBuilder(url);
-        if (!url.contains("?")) {
+
+        // Determine if we need to append '?' or '&' at the beginning of the query part
+        boolean hasQuery = url.indexOf('?') != -1;
+        if (!hasQuery) {
             newUrl.append("?");
-        } else if (!url.endsWith("&") && !url.endsWith("?")) {
+        } else if (!url.endsWith("?") && !url.endsWith("&")) {
             newUrl.append("&");
         }
 
         newUrl.append(key).append("=");
 
-        for (int i = 0; i < value.size(); i++) {
-            if (i > 0) {
-                newUrl.append(delimiter);
+        String delimiterStr = String.valueOf(delimiter);
+        for (Iterator<?> iterator = value.iterator(); iterator.hasNext();) {
+            newUrl.append(iterator.next());
+            if (iterator.hasNext()) {
+                newUrl.append(delimiterStr);
             }
-            newUrl.append(value.get(i));
         }
 
         return newUrl.toString();

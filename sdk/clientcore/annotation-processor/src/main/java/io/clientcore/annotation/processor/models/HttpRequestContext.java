@@ -393,6 +393,7 @@ public final class HttpRequestContext {
     public static class QueryParameter {
         private final String value;
         private final boolean isMultiple;
+        private char delimiter;
 
         /**
          * Constructs a new QueryParameter.
@@ -403,6 +404,7 @@ public final class HttpRequestContext {
         public QueryParameter(String value, boolean isMultiple) {
             this.value = value;
             this.isMultiple = isMultiple;
+            delimiter = ',';
         }
 
         /**
@@ -421,6 +423,22 @@ public final class HttpRequestContext {
          */
         public boolean isMultiple() {
             return isMultiple;
+        }
+
+        /**
+         * The delimiter to use for concatenating the String query param values.
+         * @return the delimiter to use.
+         */
+        public char getDelimiter() {
+            return delimiter;
+        }
+
+        /**
+         * Sets the delimiter to use for concatenating the String query param values
+         * @param delimiter the delimiter to use.
+         */
+        public void setDelimiter(char delimiter) {
+            this.delimiter = delimiter;
         }
     }
 }
