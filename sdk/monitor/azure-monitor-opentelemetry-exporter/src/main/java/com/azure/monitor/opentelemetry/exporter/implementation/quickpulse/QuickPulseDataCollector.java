@@ -3,19 +3,10 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.StackFrame;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseDependencyDocument;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseDocument;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseExceptionDocument;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseRequestDocument;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.*;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.CpuPerformanceCounterCalculator;
+import io.opentelemetry.api.common.AttributeKey;
 import reactor.util.annotation.Nullable;
 
 import java.lang.management.ManagementFactory;
@@ -23,10 +14,8 @@ import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
 import java.lang.management.OperatingSystemMXBean;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,14 +28,24 @@ final class QuickPulseDataCollector {
     private static final OperatingSystemMXBean operatingSystemMxBean = ManagementFactory.getOperatingSystemMXBean();
 
     private final AtomicReference<Counters> counters = new AtomicReference<>(null);
+
     private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator
         = getCpuPerformanceCounterCalculator();
+
+    private QuickPulseConfiguration quickPulseConfiguration;
+
+    private OtelMetricsStorage metricsStorage = new OtelMetricsStorage();
+
+    private final boolean useNormalizedValueForNonNormalizedCpuPercentage;
 
     private volatile QuickPulseStatus quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    QuickPulseDataCollector() {
+    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage,
+        QuickPulseConfiguration quickPulseConfiguration) {
+        this.useNormalizedValueForNonNormalizedCpuPercentage = useNormalizedValueForNonNormalizedCpuPercentage;
+        this.quickPulseConfiguration = quickPulseConfiguration;
     }
 
     private static CpuPerformanceCounterCalculator getCpuPerformanceCounterCalculator() {
@@ -55,6 +54,7 @@ final class QuickPulseDataCollector {
 
     synchronized void disable() {
         counters.set(null);
+        metricsStorage.clearMetrics();
         quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
     }
 
@@ -90,6 +90,32 @@ final class QuickPulseDataCollector {
             return new FinalCounters(currentCounters);
         }
         return null;
+    }
+
+    void addOtelMetric(TelemetryItem telemetryItem) {
+        if (!isEnabled()) {
+            // quick pulse is not enabled or quick pulse data sender is not enabled
+            return;
+        }
+
+        if (!telemetryItem.getInstrumentationKey().equals(instrumentationKeySupplier.get())) {
+            return;
+        }
+
+        Float sampleRate = telemetryItem.getSampleRate();
+        if (sampleRate != null && sampleRate == 0) {
+            // sampleRate should never be zero (how could it be captured if sampling set to zero percent?)
+            return;
+        }
+
+        if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")),
+            "opentelemetry")) {
+            MonitorDomain data = telemetryItem.getData().getBaseData();
+            MetricsData metricsData = (MetricsData) data;
+            MetricDataPoint point = metricsData.getMetrics().get(0);
+            this.metricsStorage.addMetric(point.getName(), point.getValue(), metricsData.getProperties());
+        }
+
     }
 
     void add(TelemetryItem telemetryItem) {
@@ -308,6 +334,18 @@ final class QuickPulseDataCollector {
         return x;
     }
 
+    public ArrayList<QuickPulseMetrics> retrieveOtelMetrics() {
+        return metricsStorage.processMetrics();
+    }
+
+    public ConcurrentHashMap<String, OTelMetric> getOtelMetrics() {
+        return metricsStorage.getMetrics();
+    }
+
+    public void flushOtelMetrics() {
+        metricsStorage.clearMetrics();
+    }
+
     class FinalCounters {
 
         final int exceptions;
@@ -403,5 +441,105 @@ final class QuickPulseDataCollector {
         static CountAndDuration decodeCountAndDuration(long countAndDuration) {
             return new CountAndDuration(countAndDuration >> 44, countAndDuration & MAX_DURATION);
         }
+    }
+
+    class OtelMetricsStorage {
+        private volatile ConcurrentHashMap<String, OTelMetric> metrics = new ConcurrentHashMap<>();
+        // setting most amount of OTel metrics a user can stream to this. will review if users surpass threshold.
+        private final int maxMetricsLimit = 50;
+
+        public void addMetric(String metricName, double value, Map<String, String> dimensions) {
+            OTelMetric metric = metrics.get(metricName);
+            if (metric == null) {
+                // create new metric and add to metrics map
+                // (if we have reached the limit, we will block the metric from being created
+                if (metrics.size() <= maxMetricsLimit) {
+                    metric = new OTelMetric(metricName);
+                    metric.addDataPoint(value, dimensions == null ? new HashMap<>() : new HashMap<>(dimensions));
+                    metrics.putIfAbsent(metricName, metric);
+                }
+            } else {
+                metric.addDataPoint(value, dimensions == null ? new HashMap<>() : new HashMap<>(dimensions));
+            }
+        }
+
+        public ArrayList<QuickPulseMetrics> processMetrics() {
+            ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> requestedMetrics
+                = quickPulseConfiguration.getDerivedMetrics();
+            ArrayList<QuickPulseMetrics> processedMetrics = new ArrayList<>();
+            if (requestedMetrics.get("Metric") != null) {
+                for (QuickPulseConfiguration.DerivedMetricInfo metricInfo : requestedMetrics.get("Metric")) {
+                    if (this.getMetrics().get(metricInfo.getProjection()) != null) {
+                        QuickPulseMetrics processedMetric
+                            = processMetric(this.getMetrics().get(metricInfo.getProjection()), metricInfo);
+                        processedMetrics.add(processedMetric);
+                    }
+                }
+            }
+
+            this.clearMetrics();
+            return processedMetrics;
+        }
+
+        public QuickPulseMetrics processMetric(OTelMetric metric,
+            QuickPulseConfiguration.DerivedMetricInfo metricInfo) {
+
+            if (metric.getDataPoints().isEmpty()) {
+                return new QuickPulseMetrics(metricInfo.getId(), 0, 1);
+            }
+
+            String aggregation = metricInfo.getAggregation();
+            ArrayList<Double> filteredValues = new ArrayList<>();
+            for (OTelDataPoint dataPoint : metric.getDataPoints()) {
+                boolean passedFilter = true;
+                for (QuickPulseConfiguration.FilterGroup filterGroup : metricInfo.getFilterGroups()) {
+                    String fieldName = filterGroup.getFieldName();
+                    String operator = filterGroup.getOperator();
+                    String comparand = filterGroup.getComparand();
+                    if (Objects.equals(operator, "Equal")) {
+                        String fieldValue = dataPoint.getDimensions().get(fieldName);
+                        if (fieldValue == null || !fieldValue.equals(comparand)) {
+                            passedFilter = false;
+                            break;
+                            // Handle the case where the value is null or does not equal the operator
+                        }
+                    }
+                }
+                if (passedFilter) {
+                    filteredValues.add(dataPoint.getValue());
+                }
+            }
+
+            switch (aggregation) {
+                case "Sum":
+                    double sum = filteredValues.stream().mapToDouble(Double::doubleValue).sum();
+                    return new QuickPulseMetrics(metricInfo.getId(), sum, 1);
+
+                case "Avg":
+                    double avg = filteredValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+                    return new QuickPulseMetrics(metricInfo.getId(), avg, filteredValues.size());
+
+                case "Min":
+                    double min = filteredValues.stream().mapToDouble(Double::doubleValue).min().orElse(0);
+                    return new QuickPulseMetrics(metricInfo.getId(), min, 1);
+
+                case "Max":
+                    double max = filteredValues.stream().mapToDouble(Double::doubleValue).max().orElse(0);
+                    return new QuickPulseMetrics(metricInfo.getId(), max, 1);
+
+                default:
+                    throw new IllegalArgumentException("Aggregation type not supported: " + aggregation);
+            }
+        }
+
+        public void clearMetrics() {
+            this.metrics.clear();
+        }
+
+        //for testing
+        public ConcurrentHashMap<String, OTelMetric> getMetrics() {
+            return metrics;
+        }
+
     }
 }

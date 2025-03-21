@@ -5,11 +5,11 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
-
 import java.util.Date;
 
 final class QuickPulseNetworkHelper {
@@ -26,11 +26,13 @@ final class QuickPulseNetworkHelper {
     private static final HttpHeaderName QPS_STREAM_ID = HttpHeaderName.fromString("x-ms-qps-stream-id");
     private static final HttpHeaderName QPS_INSTANCE_NAME = HttpHeaderName.fromString("x-ms-qps-instance-name");
     private static final HttpHeaderName QPS_INVARIANT_VERSION = HttpHeaderName.fromString("x-ms-qps-invariant-version");
+    private static final HttpHeaderName QPS_CONFIGURATION_ETAG_HEADER
+        = HttpHeaderName.fromString("x-ms-qps-configuration-etag");
 
     HttpRequest buildPingRequest(Date currentDate, String address, String quickPulseId, String machineName,
         String roleName, String instanceName) {
 
-        HttpRequest request = buildRequest(currentDate, address);
+        HttpRequest request = buildRequest(currentDate, address, "");
         request.setHeader(QPS_ROLE_NAME, roleName);
         request.setHeader(QPS_MACHINE_NAME, machineName);
         request.setHeader(QPS_STREAM_ID, quickPulseId);
@@ -39,11 +41,12 @@ final class QuickPulseNetworkHelper {
         return request;
     }
 
-    HttpRequest buildRequest(Date currentDate, String address) {
+    HttpRequest buildRequest(Date currentDate, String address, String etag) {
         long ticks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, address);
         request.setHeader(HEADER_TRANSMISSION_TIME, String.valueOf(ticks));
+        request.setHeader(QPS_CONFIGURATION_ETAG_HEADER, etag);
         return request;
     }
 
@@ -73,4 +76,11 @@ final class QuickPulseNetworkHelper {
         return new QuickPulseHeaderInfo(status, headers.getValue(QPS_SERVICE_ENDPOINT_REDIRECT),
             servicePollingIntervalHint);
     }
+
+    String getEtagHeaderValue(HttpResponse response) {
+        HttpHeaders headers = response.getHeaders();
+        HttpHeader etagHeader = headers.get(QPS_CONFIGURATION_ETAG_HEADER);
+        return etagHeader != null ? etagHeader.getValue() : null;
+    }
+
 }
