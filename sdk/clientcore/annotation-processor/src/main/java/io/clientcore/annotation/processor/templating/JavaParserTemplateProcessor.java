@@ -358,7 +358,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             body.addStatement(newUrlDeclaration);
 
             method.getQueryParams().forEach((key, value) -> {
-                body.addStatement(String.format("newUrl = CoreUtils.appendQueryParam(url, \"%s\", %s,  ',');", key, value));
+                if (value.isMultiple()) {
+                    // If multiple values exist for the key, append each one separately
+                    body.addStatement(String.format("newUrl = CoreUtils.appendMultiQueryParam(url, \"%s\", %s, ',');",
+                        key, value.getValue()));
+                } else {
+                    body.addStatement(
+                        String.format("newUrl = CoreUtils.appendQueryParam(url, \"%s\", %s);", key, value.getValue()));
+                }
                 body.addStatement("if (newUrl != null) { url = newUrl; }");
             });
         }

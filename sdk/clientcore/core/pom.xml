@@ -46,7 +46,6 @@
       --add-opens io.clientcore.core/io.clientcore.core.http=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.annotations=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.client=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.http.exceptions=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.models=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.pipeline=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED

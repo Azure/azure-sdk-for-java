@@ -22,7 +22,10 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.models.binarydata.BinaryData;
-
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -32,10 +35,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Annotation processor that generates client code based on annotated interfaces.
@@ -178,8 +177,8 @@ public class AnnotationProcessor extends AbstractProcessor {
             } else if (headerParam != null) {
                 method.addHeader(headerParam.value(), param.getSimpleName().toString());
             } else if (queryParam != null) {
-                method.addQueryParam(queryParam.value(), param.getSimpleName().toString());
-                // TODO: Add support for multipleQueryParams and encoded handling
+                method.addQueryParam(param.getSimpleName().toString(), queryParam.value(),
+                    queryParam.multipleQueryParams());
             } else if (bodyParam != null) {
                 method.setBody(new HttpRequestContext.Body(bodyParam.value(), param.asType().toString(),
                     param.getSimpleName().toString()));

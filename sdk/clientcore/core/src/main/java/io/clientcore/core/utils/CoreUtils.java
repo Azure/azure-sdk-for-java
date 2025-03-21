@@ -431,10 +431,31 @@ public final class CoreUtils {
      * @param url the base URL to which the query parameter will be appended.
      * @param key the name of the query parameter (e.g., "api-version", "name", "After").
      * @param value the value of the query parameter
+     * @return the updated URL with the appended query parameter.
+     */
+    public static String appendQueryParam(String url, String key, String value) {
+        if (value == null) {
+            return url;
+        }
+
+        // Append query parameter to URL
+        if (url.contains("?")) {
+            return url + "&" + key + "=" + value;
+        } else {
+            return url + "?" + key + "=" + value;
+        }
+    }
+
+    /**
+     * Appends the query parameter list values to the given host URL.
+     *
+     * @param url the base URL to which the query parameter will be appended.
+     * @param key the name of the query parameter (e.g., "api-version", "name", "After").
+     * @param value the value of the query parameter.
      * @param delimiter The delimiter to use if the value is a list.
      * @return the updated URL with the appended query parameter.
      */
-    public static String appendQueryParam(String url, String key, Object value, char delimiter) {
+    public static String appendMultiQueryParam(String url, String key, List<?> value, char delimiter) {
         if (url == null || key == null || value == null) {
             return url;
         }
@@ -448,16 +469,11 @@ public final class CoreUtils {
 
         newUrl.append(key).append("=");
 
-        if (value instanceof List) {
-            List<?> values = (List<?>) value;
-            for (int i = 0; i < values.size(); i++) {
-                if (i > 0) {
-                    newUrl.append(delimiter);
-                }
-                newUrl.append(values.get(i));
+        for (int i = 0; i < value.size(); i++) {
+            if (i > 0) {
+                newUrl.append(delimiter);
             }
-        } else {
-            newUrl.append(value);
+            newUrl.append(value.get(i));
         }
 
         return newUrl.toString();
