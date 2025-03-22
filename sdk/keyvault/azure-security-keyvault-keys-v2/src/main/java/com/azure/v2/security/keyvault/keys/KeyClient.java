@@ -23,7 +23,6 @@ import com.azure.v2.security.keyvault.keys.models.DeletedKey;
 import com.azure.v2.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.v2.security.keyvault.keys.models.JsonWebKey;
 import com.azure.v2.security.keyvault.keys.models.KeyCurveName;
-import com.azure.v2.security.keyvault.keys.models.KeyExportEncryptionAlgorithm;
 import com.azure.v2.security.keyvault.keys.models.KeyOperation;
 import com.azure.v2.security.keyvault.keys.models.KeyProperties;
 import com.azure.v2.security.keyvault.keys.models.KeyRotationPolicy;
@@ -34,33 +33,24 @@ import com.azure.v2.security.keyvault.keys.models.ReleaseKeyResult;
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceClient;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.exceptions.HttpResponseException;
-import io.clientcore.core.http.models.PagedIterable;
-import io.clientcore.core.http.models.PagedResponse;
-import io.clientcore.core.http.models.PagingOptions;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.implementation.http.HttpResponse;
+import io.clientcore.core.http.paging.PagedIterable;
+import io.clientcore.core.http.paging.PagedResponse;
+import io.clientcore.core.http.paging.PagingOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Context;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.v2.security.keyvault.keys.implementation.KeyVaultKeysUtils.EMPTY_OPTIONS;
-import static com.azure.v2.security.keyvault.keys.implementation.KeyVaultKeysUtils.callWithMappedException;
 import static com.azure.v2.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createDeletedKey;
 import static com.azure.v2.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createKeyAttributes;
 import static com.azure.v2.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createKeyVaultKey;
@@ -68,7 +58,7 @@ import static com.azure.v2.security.keyvault.keys.implementation.models.KeyVault
 import static com.azure.v2.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.mapKeyReleasePolicy;
 import static com.azure.v2.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.mapKeyRotationPolicy;
 import static com.azure.v2.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.mapKeyRotationPolicyImpl;
-import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * This class provides synchronous methods to manage {@link KeyVaultKey keys} in Azure Key Vault or Managed HSM. The
@@ -179,7 +169,7 @@ public final class KeyClient {
      * @return An instance of {@link CryptographyClient} associated with the latest version of a key with the
      * provided name.
      *
-     * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
+     * @throws IllegalArgumentException If the provided {@code keyName} is {@code null} or empty.
      */
     /*public CryptographyClient getCryptographyClient(String keyName) {
         return getCryptographyClient(keyName, null);
@@ -193,7 +183,7 @@ public final class KeyClient {
      * @return An instance of {@link CryptographyClient} associated with a key with the provided name and version.
      * If {@code keyVersion} is {@code null} or empty, the client will use the latest version of the key.
      *
-     * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
+     * @throws IllegalArgumentException If the provided {@code keyName} is {@code null} or empty.
      */
     /*public CryptographyClient getCryptographyClient(String keyName, String keyVersion) {
         return KeyVaultKeysUtils
@@ -219,11 +209,15 @@ public final class KeyClient {
      * @param keyType The type of key. For valid values, see {@link KeyType}.
      * @return The newly created key.
      *
-     * @throws HttpResponseException If {@code keyType} is {@code null}.
+     * @throws HttpResponseException If the provided {@code keyType} is {@code null} or invalid.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createKey(String name, KeyType keyType) {
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+
         return createKey(new CreateKeyOptions(name, keyType));
     }
 
@@ -251,29 +245,28 @@ public final class KeyClient {
      * created.
      * @return The newly created key.
      *
-     * @throws HttpResponseException If {@link CreateKeyOptions#getKeyType()} is {@code null}.
-     * @throws IllegalArgumentException If the provided {@link CreateKeyOptions#getName()} is {@code null} or an empty
-     * string.
+     * @throws HttpResponseException If {@code createKeyOptions} is malformed.
+     * @throws IllegalArgumentException If {@link CreateKeyOptions#getName()} is {@code null} or an empty string.
      * @throws NullPointerException If {@code createKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createKey(CreateKeyOptions createKeyOptions) {
         try {
-            Objects.requireNonNull(createKeyOptions, "'createKeyOptions' cannot be null.");
+            if (createKeyOptions == null) {
+                throw new NullPointerException("'createKeyOptions' cannot be null.");
+            }
 
             if (isNullOrEmpty(createKeyOptions.getName())) {
                 throw new IllegalArgumentException("'createKeyOptions.getName()' cannot be null or empty.");
             }
 
-            KeyCreateParameters keyCreateParameters = new KeyCreateParameters(
-                createKeyOptions.getKeyType()).setKeyAttributes(createKeyAttributes(createKeyOptions))
+            KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createKeyOptions.getKeyType())
+                .setKeyAttributes(createKeyAttributes(createKeyOptions))
                 .setKeyOps(createKeyOptions.getKeyOperations())
                 .setTags(createKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(
-                implClient.createKeyWithResponse(createKeyOptions.getName(), BinaryData.fromObject(keyCreateParameters),
-                    RequestOptions.none()).getValue());
+            return createKeyVaultKey(implClient.createKey(createKeyOptions.getName(), keyCreateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -304,8 +297,8 @@ public final class KeyClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the newly created key.
      *
-     * @throws HttpResponseException If {@code createKeyOptions} is malformed or if {@link CreateKeyOptions#getName()}
-     * is an empty string.
+     * @throws HttpResponseException If {@code createKeyOptions} is malformed.
+     * @throws IllegalArgumentException If {@link CreateKeyOptions#getName()} is {@code null} or an empty string.
      * @throws NullPointerException If {@code createKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -313,20 +306,23 @@ public final class KeyClient {
         RequestOptions requestOptions) {
 
         try {
-            Objects.requireNonNull(createKeyOptions, "'createKeyOptions' cannot be null.");
+            if (createKeyOptions == null) {
+                throw new NullPointerException("'createKeyOptions' cannot be null.");
+            }
+
+            if (isNullOrEmpty(createKeyOptions.getName())) {
+                throw new IllegalArgumentException("'createKeyOptions.getName()' cannot be null or empty.");
+            }
 
             KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createKeyOptions.getKeyType())
                 .setKeyAttributes(createKeyAttributes(createKeyOptions))
                 .setKeyOps(createKeyOptions.getKeyOperations())
-                .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()))
                 .setTags(createKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
 
-            Response<KeyBundle> response = implClient.createKeyWithResponse(createKeyOptions.getName(),
-                BinaryData.fromObject(keyCreateParameters), requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createKeyVaultKey(response.getValue()));
+            return mapResponse(
+                implClient.createKeyWithResponse(createKeyOptions.getName(), keyCreateParameters, requestOptions),
+                KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -356,16 +352,18 @@ public final class KeyClient {
      * key being created.
      * @return The newly created RSA key.
      *
-     * @throws HttpResponseException If {@code createRsaKeyOptions} is malformed or if
-     * {@link CreateRsaKeyOptions#getName()} is an empty string.
-     * @throws NullPointerException If either of {@code createRsaKeyOptions} or {@link CreateRsaKeyOptions#getName()} is
-     * {@code null}.
+     * @throws HttpResponseException If {@code createRsaKeyOptions} is malformed.
+     * @throws IllegalArgumentException If {@link CreateRsaKeyOptions#getName()} is {@code null} or an empty string.
+     * @throws NullPointerException If {@code createRsaKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createRsaKey(CreateRsaKeyOptions createRsaKeyOptions) {
         try {
             Objects.requireNonNull(createRsaKeyOptions, "'createRsaKeyOptions' cannot be null.");
-            Objects.requireNonNull(createRsaKeyOptions.getName(), "'createRsaKeyOptions.getName()' cannot be null.");
+
+            if (isNullOrEmpty(createRsaKeyOptions.getName())) {
+                throw new IllegalArgumentException("'createRsaKeyOptions.getName()' cannot be null or empty.");
+            }
 
             KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createRsaKeyOptions.getKeyType())
                 .setKeySize(createRsaKeyOptions.getKeySize())
@@ -375,8 +373,7 @@ public final class KeyClient {
                 .setTags(createRsaKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(implClient.createKeyWithResponse(createRsaKeyOptions.getName(),
-                BinaryData.fromObject(keyCreateParameters), RequestOptions.none()).getValue());
+            return createKeyVaultKey(implClient.createKey(createRsaKeyOptions.getName(), keyCreateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -407,18 +404,22 @@ public final class KeyClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the newly created RSA key.
      *
-     * @throws HttpResponseException If {@code createRsaKeyOptions} is malformed or if
-     * {@link CreateRsaKeyOptions#getName()} is an empty string.
-     * @throws NullPointerException If either of {@code createRsaKeyOptions} or {@link CreateRsaKeyOptions#getName()} is
-     * {@code null}.
+     * @throws HttpResponseException If {@code createRsaKeyOptions} is malformed.
+     * @throws IllegalArgumentException If {@link CreateRsaKeyOptions#getName()} is {@code null} or an empty string.
+     * @throws NullPointerException If either of {@code createRsaKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions,
         RequestOptions requestOptions) {
 
         try {
-            Objects.requireNonNull(createRsaKeyOptions, "'createRsaKeyOptions' cannot be null.");
-            Objects.requireNonNull(createRsaKeyOptions.getName(), "'createRsaKeyOptions.getName()' cannot be null.");
+            if (createRsaKeyOptions == null) {
+                throw new NullPointerException("'createRsaKeyOptions' cannot be null.");
+            }
+
+            if (isNullOrEmpty(createRsaKeyOptions.getName())) {
+                throw new IllegalArgumentException("'createRsaKeyOptions.getName()' cannot be null or empty.");
+            }
 
             KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createRsaKeyOptions.getKeyType())
                 .setKeySize(createRsaKeyOptions.getKeySize())
@@ -428,11 +429,9 @@ public final class KeyClient {
                 .setTags(createRsaKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()));
 
-            Response<KeyBundle> response = implClient.createKeyWithResponse(createRsaKeyOptions.getName(),
-                BinaryData.fromObject(keyCreateParameters), requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createKeyVaultKey(response.getValue()));
+            return mapResponse(
+                implClient.createKeyWithResponse(createRsaKeyOptions.getName(), keyCreateParameters, requestOptions),
+                KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -445,7 +444,7 @@ public final class KeyClient {
      *
      * <p>The {@code createEcKeyOptions} parameter and its {@link CreateEcKeyOptions#getName() name} value are required.
      * The {@link CreateEcKeyOptions#getCurveName() key curve} can be optionally specified. If not specified, the
-     * default value {@link KeyCurveName#P256 P-256} is used. The {@link CreateEcKeyOptions#getExpiresOn() expires} and
+     * default value {@link KeyCurveName#P_256 P-256} is used. The {@link CreateEcKeyOptions#getExpiresOn() expires} and
      * {@link CreateEcKeyOptions#getNotBefore() notBefore} values are optional. The
      * {@link CreateEcKeyOptions#isEnabled()} enabled} field is set to {@code true} by default if not specified.</p>
      *
@@ -453,7 +452,7 @@ public final class KeyClient {
      * {@link KeyType#EC_HSM EC-HSM}</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Creates a new EC key with a {@link KeyCurveName#P384 P-384} web key curve which activates in one day and
+     * <p>Creates a new EC key with a {@link KeyCurveName#P_384 P-384} web key curve which activates in one day and
      * expires in one year. Prints out the details of the newly created EC key returned in the response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createEcKey#CreateOctKeyOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createEcKey#CreateOctKeyOptions -->
@@ -462,16 +461,18 @@ public final class KeyClient {
      * being created.
      * @return The newly created EC key.
      *
-     * @throws HttpResponseException If {@code createEcKeyOptions} is malformed or if
-     * {@link CreateEcKeyOptions#getName()} is an empty string.
-     * @throws NullPointerException If either of {@code createEcKeyOptions} or {@link CreateEcKeyOptions#getName()} is
-     * {@code null}.
+     * @throws HttpResponseException If {@code createEcKeyOptions} is malformed.
+     * @throws IllegalArgumentException If {@link CreateEcKeyOptions#getName()} is {@code null} or an empty string.
+     * @throws NullPointerException If either of {@code createEcKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createEcKey(CreateEcKeyOptions createEcKeyOptions) {
         try {
             Objects.requireNonNull(createEcKeyOptions, "'createEcKeyOptions' cannot be null.");
-            Objects.requireNonNull(createEcKeyOptions.getName(), "'createEcKeyOptions.getName()' cannot be null.");
+
+            if (isNullOrEmpty(createEcKeyOptions.getName())) {
+                throw new IllegalArgumentException("'createEcKeyOptions.getName()' cannot be null or empty.");
+            }
 
             KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createEcKeyOptions.getKeyType())
                 .setKeyOps(createEcKeyOptions.getKeyOperations())
@@ -480,8 +481,7 @@ public final class KeyClient {
                 .setCurve(createEcKeyOptions.getCurveName())
                 .setReleasePolicy(mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(implClient.createKeyWithResponse(createEcKeyOptions.getName(),
-                BinaryData.fromObject(keyCreateParameters), new RequestOptions()).getValue());
+            return createKeyVaultKey(implClient.createKey(createEcKeyOptions.getName(), keyCreateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -494,7 +494,7 @@ public final class KeyClient {
      *
      * <p>The {@code createEcKeyOptions} parameter and its {@link CreateEcKeyOptions#getName() name} value are required.
      * The {@link CreateEcKeyOptions#getCurveName() key curve} can be optionally specified. If not specified, the
-     * default value {@link KeyCurveName#P256 P-256} is used. The {@link CreateEcKeyOptions#getExpiresOn() expires} and
+     * default value {@link KeyCurveName#P_256 P-256} is used. The {@link CreateEcKeyOptions#getExpiresOn() expires} and
      * {@link CreateEcKeyOptions#getNotBefore() notBefore} values are optional. The
      * {@link CreateEcKeyOptions#isEnabled()} enabled} field is set to {@code true} by default if not specified.</p>
      *
@@ -502,7 +502,7 @@ public final class KeyClient {
      * {@link KeyType#EC_HSM EC-HSM}</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Creates a new EC key with a {@link KeyCurveName#P384 P-384} web key curve which activates in one day and
+     * <p>Creates a new EC key with a {@link KeyCurveName#P_384 P-384} web key curve which activates in one day and
      * expires in one year. Prints out the details of the newly created EC key returned in the response.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createEcKeyWithResponse#CreateEcKeyOptions-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createEcKeyWithResponse#CreateEcKeyOptions-RequestOptions -->
@@ -523,7 +523,10 @@ public final class KeyClient {
 
         try {
             Objects.requireNonNull(createEcKeyOptions, "'createEcKeyOptions' cannot be null.");
-            Objects.requireNonNull(createEcKeyOptions.getName(), "'createEcKeyOptions.getName()' cannot be null.");
+
+            if (isNullOrEmpty(createEcKeyOptions.getName())) {
+                throw new IllegalArgumentException("'createEcKeyOptions.getName()' cannot be null or empty.");
+            }
 
             KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createEcKeyOptions.getKeyType())
                 .setKeyOps(createEcKeyOptions.getKeyOperations())
@@ -532,11 +535,9 @@ public final class KeyClient {
                 .setCurve(createEcKeyOptions.getCurveName())
                 .setReleasePolicy(mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()));
 
-            Response<KeyBundle> response = implClient.createKeyWithResponse(createEcKeyOptions.getName(),
-                BinaryData.fromObject(keyCreateParameters), requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createKeyVaultKey(response.getValue()));
+            return mapResponse(
+                implClient.createKeyWithResponse(createEcKeyOptions.getName(), keyCreateParameters, requestOptions),
+                KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -564,16 +565,18 @@ public final class KeyClient {
      * symmetric key being created.
      * @return The newly created symmetric key.
      *
-     * @throws HttpResponseException If {@code createOctKeyOptions} is malformed or if
-     * {@link CreateOctKeyOptions#getName()} is an empty string.
-     * @throws NullPointerException If either of {@code createOctKeyOptions} or {@link CreateOctKeyOptions#getName()} is
-     * {@code null}.
+     * @throws HttpResponseException If {@code createOctKeyOptions} is malformed.
+     * @throws IllegalArgumentException If {@link CreateOctKeyOptions#getName()} is {@code null} or an empty string.
+     * @throws NullPointerException If either of {@code createOctKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createOctKey(CreateOctKeyOptions createOctKeyOptions) {
         try {
             Objects.requireNonNull(createOctKeyOptions, "'createOctKeyOptions' cannot be null.");
-            Objects.requireNonNull(createOctKeyOptions.getName(), "'createOctKeyOptions.getName()' cannot be null.");
+
+            if (isNullOrEmpty(createOctKeyOptions.getName())) {
+                throw new IllegalArgumentException("'createOctKeyOptions.getName()' cannot be null or empty.");
+            }
 
             KeyCreateParameters keyCreateParameters = new KeyCreateParameters(
                 createOctKeyOptions.getKeyType()).setKeySize(createOctKeyOptions.getKeySize())
@@ -582,8 +585,7 @@ public final class KeyClient {
                 .setTags(createOctKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(implClient.createKeyWithResponse(createOctKeyOptions.getName(),
-                BinaryData.fromObject(keyCreateParameters), RequestOptions.none()).getValue());
+            return createKeyVaultKey(implClient.createKey(createOctKeyOptions.getName(), keyCreateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -612,10 +614,9 @@ public final class KeyClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return The newly created symmetric key.
      *
-     * @throws HttpResponseException If {@code createOctKeyOptions} is malformed or if
-     * {@link CreateOctKeyOptions#getName()} is an empty string.
-     * @throws NullPointerException If either of {@code createOctKeyOptions} or {@link CreateOctKeyOptions#getName()} is
-     * {@code null}.
+     * @throws HttpResponseException If {@code createOctKeyOptions} is malformed.
+     * @throws IllegalArgumentException If {@link CreateOctKeyOptions#getName()} is {@code null} or an empty string.
+     * @throws NullPointerException If either of {@code createOctKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions,
@@ -623,7 +624,10 @@ public final class KeyClient {
 
         try {
             Objects.requireNonNull(createOctKeyOptions, "'createOctKeyOptions' cannot be null.");
-            Objects.requireNonNull(createOctKeyOptions.getName(), "'createOctKeyOptions.getName()' cannot be null.");
+
+            if (isNullOrEmpty(createOctKeyOptions.getName())) {
+                throw new IllegalArgumentException("'createOctKeyOptions.getName()' cannot be null or empty.");
+            }
 
             KeyCreateParameters keyCreateParameters = new KeyCreateParameters(
                 createOctKeyOptions.getKeyType()).setKeySize(createOctKeyOptions.getKeySize())
@@ -632,11 +636,9 @@ public final class KeyClient {
                 .setTags(createOctKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()));
 
-            Response<KeyBundle> response = implClient.createKeyWithResponse(createOctKeyOptions.getName(),
-                    BinaryData.fromObject(keyCreateParameters), requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createKeyVaultKey(response.getValue()));
+            return mapResponse(
+                implClient.createKeyWithResponse(createOctKeyOptions.getName(), keyCreateParameters, requestOptions),
+                KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -668,9 +670,7 @@ public final class KeyClient {
 
             Objects.requireNonNull(keyMaterial, "'keyMaterial' cannot be null.");
 
-            return createKeyVaultKey(implClient.importKeyWithResponse(name,
-                    BinaryData.fromObject(new KeyImportParameters(mapJsonWebKey(keyMaterial))), RequestOptions.none())
-                .getValue());
+            return createKeyVaultKey(implClient.importKey(name, new KeyImportParameters(mapJsonWebKey(keyMaterial))));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -718,9 +718,7 @@ public final class KeyClient {
                 .setTags(importKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(
-                implClient.importKeyWithResponse(importKeyOptions.getName(), BinaryData.fromObject(keyImportParameters),
-                    RequestOptions.none()).getValue());
+            return createKeyVaultKey(implClient.importKey(importKeyOptions.getName(), keyImportParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -772,11 +770,9 @@ public final class KeyClient {
                 .setTags(importKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
 
-            Response<KeyBundle> response = implClient.importKeyWithResponse(importKeyOptions.getName(),
-                BinaryData.fromObject(keyImportParameters), requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createKeyVaultKey(response.getValue()));
+            return mapResponse(
+                implClient.importKeyWithResponse(importKeyOptions.getName(), keyImportParameters, requestOptions),
+                KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -827,7 +823,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return createKeyVaultKey(implClient.getKeyWithResponse(name, version, RequestOptions.none()).getValue());
+            return createKeyVaultKey(implClient.getKey(name, version));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -859,10 +855,8 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            Response<KeyBundle> response = implClient.getKeyWithResponse(name, version, RequestOptions.none());
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createKeyVaultKey(response.getValue()));
+            return mapResponse(implClient.getKeyWithResponse(name, version, requestOptions),
+                KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -901,8 +895,7 @@ public final class KeyClient {
                 .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
             return createKeyVaultKey(
-                implClient.updateKeyWithResponse(keyProperties.getName(), keyProperties.getVersion(),
-                    BinaryData.fromObject(keyUpdateParameters), RequestOptions.none()).getValue());
+                implClient.updateKey(keyProperties.getName(), keyProperties.getVersion(), keyUpdateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -943,11 +936,8 @@ public final class KeyClient {
                 .setTags(keyProperties.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
-            Response<KeyBundle> response = implClient.updateKeyWithResponse(keyProperties.getName(),
-                keyProperties.getVersion(), BinaryData.fromObject(keyUpdateParameters), requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createKeyVaultKey(response.getValue()));
+            return mapResponse(implClient.updateKeyWithResponse(keyProperties.getName(), keyProperties.getVersion(),
+                keyUpdateParameters, requestOptions), KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -956,7 +946,7 @@ public final class KeyClient {
     /**
      * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
      * in the deleted state and requires to be purged for permanent deletion. Otherwise, the key is permanently deleted.
-     * The delete operation applies to any key but it cannot be applied to an individual version of a key. This
+     * The delete operation applies to any key, but it cannot be applied to an individual version of a key. This
      * operation removes the cryptographic material associated with the key, which means the key is not usable for
      * {@code Sign/Verify}, {@code Wrap/Unwrap} or {@code Encrypt/Decrypt} operations. This operation requires the
      * {@code keys/delete} permission.
@@ -1038,7 +1028,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return createDeletedKey(implClient.getDeletedKeyWithResponse(name, RequestOptions.none()).getValue());
+            return createDeletedKey(implClient.getDeletedKey(name));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1068,10 +1058,8 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            Response<DeletedKeyBundle> response = implClient.getDeletedKeyWithResponse(name, requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createDeletedKey(response.getValue()));
+            return mapResponse(implClient.getDeletedKeyWithResponse(name, requestOptions),
+                KeyVaultKeysModelsUtils::createDeletedKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1093,17 +1081,14 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedKey(String name) {
-        if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
-        }
+        try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
 
-        // Using try-with-resources to ensure the response is closed.
-        try (Response<Void> response = purgeDeletedKeyWithResponse(name, RequestOptions.none())){
-            // Ignored
+            implClient.purgeDeletedKey(name);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -1150,8 +1135,8 @@ public final class KeyClient {
      * @param name The name of the deleted key to be recovered.
      * @return A {@link Poller} to poll on and retrieve recovered key with.
      *
-     * @throws HttpResponseException If a key with the given {@code name} doesn't exist in the key vault or if the
-     * provided {@code name} is an empty string.
+     * @throws HttpResponseException If a key with the given {@code name} doesn't exist in the key vault.
+     * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
@@ -1217,17 +1202,14 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] backupKey(String name) {
-        if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
-        }
+        try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
 
-        // Using try-with-resources to ensure the response is closed.
-        try (Response<BackupKeyResult> response = implClient.backupKeyWithResponse(name, RequestOptions.none())) {
-            return response.getValue().getValue();
+            return implClient.backupKey(name).getValue();
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -1258,18 +1240,14 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupKeyWithResponse(String name, RequestOptions requestOptions) {
-        if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
-        }
+        try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
 
-        // Using try-with-resources to ensure the response is closed.
-        try (Response<BackupKeyResult> response = implClient.backupKeyWithResponse(name, requestOptions)) {
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue().getValue());
+            return mapResponse(implClient.backupKeyWithResponse(name, requestOptions), BackupKeyResult::getValue);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -1293,16 +1271,16 @@ public final class KeyClient {
      * @return The restored key.
      *
      * @throws HttpResponseException If the {@code backup} blob is malformed.
+     * @throws NullPointerException If the provided {@code backup} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey restoreKeyBackup(byte[] backup) {
-        // Using try-with-resources to ensure the response is closed.
-        try (Response<KeyVaultKey> response = restoreKeyBackupWithResponse(backup, RequestOptions.none())) {
-            return response.getValue();
+        try {
+            Objects.requireNonNull(backup, "'backup' cannot be null.");
+
+            return createKeyVaultKey(implClient.restoreKey(new KeyRestoreParameters(backup)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -1328,17 +1306,15 @@ public final class KeyClient {
      * @return A response object whose {@link Response#getValue() value} contains the restored key.
      *
      * @throws HttpResponseException If the {@code backup} blob is malformed.
+     * @throws NullPointerException If the provided {@code backup} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> restoreKeyBackupWithResponse(byte[] backup, RequestOptions requestOptions) {
         try {
-            KeyRestoreParameters keyRestoreParameters = new KeyRestoreParameters(backup);
+            Objects.requireNonNull(backup, "'backup' cannot be null.");
 
-            Response<KeyBundle> response = implClient.restoreKeyWithResponse(
-                BinaryData.fromObject(keyRestoreParameters), requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createKeyVaultKey(response.getValue()));
+            return mapResponse(implClient.restoreKeyWithResponse(new KeyRestoreParameters(backup), requestOptions),
+                KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1399,7 +1375,7 @@ public final class KeyClient {
                 ? requestOptions.getContext()
                 : Context.none());
 
-            return mapPage((pagingOptions) -> implClient.getKeysSinglePage(requestOptions),
+            return mapPages(pagingOptions -> implClient.getKeysSinglePage(null, requestOptions),
                 (pagingOptions, nextLink) -> implClient.getKeysNextSinglePage(nextLink, requestOptionsForNextPage),
                 KeyVaultKeysModelsUtils::createKeyProperties);
         } catch (RuntimeException e) {
@@ -1454,7 +1430,7 @@ public final class KeyClient {
                 ? requestOptions.getContext()
                 : Context.none());
 
-            return mapPage((pagingOptions) -> implClient.getDeletedKeysSinglePage(requestOptions),
+            return mapPages(pagingOptions -> implClient.getDeletedKeysSinglePage(null, requestOptions),
                 (pagingOptions, nextLink) -> implClient.getDeletedKeysNextSinglePage(nextLink,
                     requestOptionsForNextPage),
                 KeyVaultKeysModelsUtils::createDeletedKey);
@@ -1528,7 +1504,7 @@ public final class KeyClient {
                 ? requestOptions.getContext()
                 : Context.none());
 
-            return mapPage((pagingOptions) -> implClient.getKeyVersionsSinglePage(name, requestOptions),
+            return mapPages(pagingOptions -> implClient.getKeyVersionsSinglePage(name, null, requestOptions),
                 (pagingOptions, nextLink) -> implClient.getKeyVersionsNextSinglePage(nextLink,
                     requestOptionsForNextPage),
                 KeyVaultKeysModelsUtils::createKeyProperties);
@@ -1552,10 +1528,8 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] getRandomBytes(int count) {
         try {
-            GetRandomBytesRequest getRandomBytesRequest = new GetRandomBytesRequest(count);
-
-            return implClient.getRandomBytesWithResponse(
-                BinaryData.fromObject(getRandomBytesRequest), RequestOptions.none()).getValue().getValue();
+            return implClient.getRandomBytesWithResponse(new GetRandomBytesRequest(count), RequestOptions.none())
+                .getValue().getValue();
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1578,13 +1552,8 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> getRandomBytesWithResponse(int count, RequestOptions requestOptions) {
         try {
-            GetRandomBytesRequest getRandomBytesRequest = new GetRandomBytesRequest(count);
-
-            Response<RandomBytes> response = implClient.getRandomBytesWithResponse(
-                BinaryData.fromObject(getRandomBytesRequest), requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue().getValue());
+            return mapResponse(implClient.getRandomBytesWithResponse(new GetRandomBytesRequest(count), requestOptions),
+                RandomBytes::getValue);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1603,25 +1572,20 @@ public final class KeyClient {
      * @param targetAttestationToken The attestation assertion for the target of the key release.
      * @return A result object containing the released key.
      *
-     * @throws HttpResponseException If the key for the provided {@code name} does not exist.
-     * @throws IllegalArgumentException If the provided {@code name} or {@code targetAttestationToken} are {@code null}
-     * or empty.
+     * @throws HttpResponseException If a key with the given {@code name} doesn't exist in the key vault.
+     * @throws IllegalArgumentException If either of the provided {@code name} or {@code targetAttestationToken} is
+     * {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReleaseKeyResult releaseKey(String name, String targetAttestationToken) {
-        if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
-        }
+        try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
 
-        // Using try-with-resources to ensure the response is closed.
-        try (Response<ReleaseKeyResult> response = releaseKeyWithResponse(name, null, targetAttestationToken,
-            new ReleaseKeyOptions(), RequestOptions.none())) {
-
-            return response.getValue();
+            return implClient.release(name, "", new KeyReleaseParameters(targetAttestationToken));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -1640,25 +1604,20 @@ public final class KeyClient {
      * @param targetAttestationToken The attestation assertion for the target of the key release.
      * @return A result object containing the released key.
      *
-     * @throws HttpResponseException If the key for the provided {@code name} does not exist.
-     * @throws IllegalArgumentException If the provided {@code name} or {@code targetAttestationToken} are {@code null}
-     * or empty.
+     * @throws HttpResponseException If a key with the given {@code name} and {@code version} doesn't exist in the key
+     * vault.
+     * @throws IllegalArgumentException If either the provided {@code name} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReleaseKeyResult releaseKey(String name, String version, String targetAttestationToken) {
-        if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
-        }
+        try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
 
-        // Using try-with-resources to ensure the response is closed.
-        try (Response<ReleaseKeyResult> response = releaseKeyWithResponse(name, version, targetAttestationToken,
-            new ReleaseKeyOptions(), RequestOptions.none())) {
-
-            return response.getValue();
+            return implClient.release(name, version, new KeyReleaseParameters(targetAttestationToken));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -1679,9 +1638,8 @@ public final class KeyClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains an object containing the released key.
      *
-     * @throws HttpResponseException If the key for the provided {@code name} does not exist.
-     * @throws IllegalArgumentException If the provided {@code name} or {@code targetAttestationToken} are {@code null}
-     * or empty.
+     * @throws HttpResponseException If a key with the given {@code name} does not exist in the key vault.
+     * @throws IllegalArgumentException If either of the provided {@code name} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReleaseKeyResult> releaseKeyWithResponse(String name, String version, String targetAttestationToken,
@@ -1692,18 +1650,11 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            if (isNullOrEmpty(targetAttestationToken)) {
-                throw new IllegalArgumentException("'targetAttestationToken' cannot be null or empty.");
-            }
-
             KeyReleaseParameters keyReleaseParameters = new KeyReleaseParameters(targetAttestationToken)
                 .setEnc(releaseKeyOptions == null ? null : releaseKeyOptions.getAlgorithm())
                 .setNonce(releaseKeyOptions == null ? null : releaseKeyOptions.getNonce());
-            Response<ReleaseKeyResult> response = implClient.releaseWithResponse(name, version,
-                BinaryData.fromObject(keyReleaseParameters), requestOptions);
 
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue());
+            return implClient.releaseWithResponse(name, version, keyReleaseParameters, requestOptions);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1721,22 +1672,19 @@ public final class KeyClient {
      * @param name The name of key to be rotated. The service will generate a new version in the specified key.
      * @return The new version of the rotated key.
      *
-     * @throws HttpResponseException If the key for the provided {@code name} does not exist.
+     * @throws HttpResponseException If a key with the given {@code name} does not exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey rotateKey(String name) {
-        if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
-        }
+        try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
 
-        // Using try-with-resources to ensure the response is closed.
-        try (Response<KeyBundle> response = implClient.rotateKeyWithResponse(name, RequestOptions.none())){
-            return createKeyVaultKey(response.getValue());
+            return createKeyVaultKey(implClient.rotateKey(name));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -1753,23 +1701,20 @@ public final class KeyClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the new version of the rotated key.
      *
-     * @throws HttpResponseException If the key for the provided {@code name} does not exist.
+     * @throws HttpResponseException If a key with the given {@code name} does not exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> rotateKeyWithResponse(String name, RequestOptions requestOptions) {
-        if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
-        }
+        try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
 
-        // Using try-with-resources to ensure the response is closed.
-        try (Response<KeyBundle> response = implClient.rotateKeyWithResponse(name, requestOptions)) {
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createKeyVaultKey(response.getValue()));
+            return mapResponse(implClient.rotateKeyWithResponse(name, requestOptions),
+                KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -1794,8 +1739,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'keyName' cannot be null or empty.");
             }
 
-            return mapKeyRotationPolicyImpl(
-                implClient.getKeyRotationPolicyWithResponse(keyName, RequestOptions.none()).getValue());
+            return mapKeyRotationPolicyImpl(implClient.getKeyRotationPolicy(keyName));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1823,11 +1767,8 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'keyName' cannot be null or empty.");
             }
 
-            Response<com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy> response =
-                implClient.getKeyRotationPolicyWithResponse(keyName, requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                mapKeyRotationPolicyImpl(response.getValue()));
+            return mapResponse(implClient.getKeyRotationPolicyWithResponse(keyName, requestOptions),
+                KeyVaultKeysModelsUtils::mapKeyRotationPolicyImpl);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1845,7 +1786,7 @@ public final class KeyClient {
      * @param keyRotationPolicy The rotation policy to update.
      * @return The updated key's rotation policy.
      *
-     * @throws HttpResponseException If the key for the provided {@code name} does not exist.
+     * @throws HttpResponseException If a key with the given {@code name} does not exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1855,8 +1796,8 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'keyName' cannot be null or empty.");
             }
 
-            return mapKeyRotationPolicyImpl(implClient.updateKeyRotationPolicyWithResponse(keyName,
-                BinaryData.fromObject(mapKeyRotationPolicy(keyRotationPolicy)), RequestOptions.none()).getValue());
+            return mapKeyRotationPolicyImpl(
+                implClient.updateKeyRotationPolicy(keyName, mapKeyRotationPolicy(keyRotationPolicy)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1875,7 +1816,7 @@ public final class KeyClient {
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the updated key's rotation policy.
      *
-     * @throws HttpResponseException If the key for the provided {@code name} does not exist.
+     * @throws HttpResponseException If a key with the given {@code name} does not exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1887,18 +1828,24 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'keyName' cannot be null or empty.");
             }
 
-            Response<com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy> response =
-                implClient.updateKeyRotationPolicyWithResponse(keyName,
-                    BinaryData.fromObject(mapKeyRotationPolicy(keyRotationPolicy)), requestOptions);
-
-            return new HttpResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                mapKeyRotationPolicyImpl(response.getValue()));
+            return mapResponse(
+                implClient.updateKeyRotationPolicyWithResponse(keyName, mapKeyRotationPolicy(keyRotationPolicy),
+                    requestOptions), KeyVaultKeysModelsUtils::mapKeyRotationPolicyImpl);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
     }
 
-    public <T, S> PagedIterable<S> mapPage(Function<PagingOptions, PagedResponse<T>> firstPageRetriever,
+    private static <T, S> Response<S> mapResponse(Response<T> response, Function<T, S> mapper) {
+        if (response == null) {
+            return null;
+        }
+
+        return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            mapper.apply(response.getValue()));
+    }
+
+    private static <T, S> PagedIterable<S> mapPages(Function<PagingOptions, PagedResponse<T>> firstPageRetriever,
         BiFunction<PagingOptions, String, PagedResponse<T>> nextPageRetriever, Function<T, S> mapper) {
 
         return new PagedIterable<>(pageSize -> mapPagedResponse(firstPageRetriever.apply(pageSize), mapper),
@@ -1912,9 +1859,11 @@ public final class KeyClient {
         }
 
         return new PagedResponse<>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
-            pagedResponse.getHeaders(), pagedResponse.getBody(),
-            pagedResponse.getValue().stream().map(mapper).collect(
-                Collectors.toCollection(() -> new ArrayList<>(pagedResponse.getValue().size()))),
+            pagedResponse.getHeaders(),
+            pagedResponse.getValue()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toCollection(() -> new ArrayList<>(pagedResponse.getValue().size()))),
             pagedResponse.getContinuationToken(), null, null, null, null);
     }
 }
