@@ -14936,6 +14936,8 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileResponseHeaderProperties getTaskFileProperties(String jobId, String taskId, String filePath,
@@ -14973,6 +14975,8 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileResponseHeaderProperties getTaskFileProperties(String jobId, String taskId, String filePath) {
@@ -16016,6 +16020,8 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileResponseHeaderProperties getNodeFileProperties(String poolId, String nodeId, String filePath,
@@ -16052,6 +16058,8 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileResponseHeaderProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
