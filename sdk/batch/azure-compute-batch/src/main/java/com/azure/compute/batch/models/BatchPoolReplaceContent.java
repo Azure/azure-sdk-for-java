@@ -27,6 +27,20 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
     private BatchStartTask startTask;
 
     /*
+     * This list replaces any existing Certificate references configured on the Pool.
+     * If you specify an empty collection, any existing Certificate references are removed from the Pool.
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     */
+    @Generated
+    private final List<BatchCertificateReference> certificateReferences;
+
+    /*
      * The list of Application Packages to be installed on each Compute Node in the Pool. The list replaces any existing
      * Application Package references on the Pool. Changes to Application Package references affect all new Compute
      * Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or
@@ -53,6 +67,21 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
     private BatchNodeCommunicationMode targetNodeCommunicationMode;
 
     /**
+     * Creates an instance of BatchPoolReplaceContent class.
+     *
+     * @param certificateReferences the certificateReferences value to set.
+     * @param applicationPackageReferences the applicationPackageReferences value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    public BatchPoolReplaceContent(List<BatchCertificateReference> certificateReferences,
+        List<BatchApplicationPackageReference> applicationPackageReferences, List<MetadataItem> metadata) {
+        this.certificateReferences = certificateReferences;
+        this.applicationPackageReferences = applicationPackageReferences;
+        this.metadata = metadata;
+    }
+
+    /**
      * Get the startTask property: A Task to run on each Compute Node as it joins the Pool. The Task runs when the
      * Compute Node is added to the Pool or when the Compute Node is restarted. If this element is present, it
      * overwrites any existing StartTask. If omitted, any existing StartTask is removed from the Pool.
@@ -76,6 +105,25 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
     public BatchPoolReplaceContent setStartTask(BatchStartTask startTask) {
         this.startTask = startTask;
         return this;
+    }
+
+    /**
+     * Get the certificateReferences property: This list replaces any existing Certificate references configured on the
+     * Pool.
+     * If you specify an empty collection, any existing Certificate references are removed from the Pool.
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @return the certificateReferences value.
+     */
+    @Generated
+    public List<BatchCertificateReference> getCertificateReferences() {
+        return this.certificateReferences;
     }
 
     /**
@@ -133,13 +181,12 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        // Initialize an empty list for certificateReferences to satisfy Batch API requirements
-        // TODO: Remove this and re-add @Generated tag once certificateReferences is removed from the server side
-        jsonWriter.writeStartArray("certificateReferences");
-        jsonWriter.writeEndArray();
+        jsonWriter.writeArrayField("certificateReferences", this.certificateReferences,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
@@ -161,6 +208,7 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
     @Generated
     public static BatchPoolReplaceContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            List<BatchCertificateReference> certificateReferences = null;
             List<BatchApplicationPackageReference> applicationPackageReferences = null;
             List<MetadataItem> metadata = null;
             BatchStartTask startTask = null;
@@ -168,7 +216,9 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("applicationPackageReferences".equals(fieldName)) {
+                if ("certificateReferences".equals(fieldName)) {
+                    certificateReferences = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
+                } else if ("applicationPackageReferences".equals(fieldName)) {
                     applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
                 } else if ("metadata".equals(fieldName)) {
@@ -182,23 +232,10 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
                 }
             }
             BatchPoolReplaceContent deserializedBatchPoolReplaceContent
-                = new BatchPoolReplaceContent(applicationPackageReferences, metadata);
+                = new BatchPoolReplaceContent(certificateReferences, applicationPackageReferences, metadata);
             deserializedBatchPoolReplaceContent.startTask = startTask;
             deserializedBatchPoolReplaceContent.targetNodeCommunicationMode = targetNodeCommunicationMode;
             return deserializedBatchPoolReplaceContent;
         });
-    }
-
-    /**
-     * Creates an instance of BatchPoolReplaceContent class.
-     *
-     * @param applicationPackageReferences the applicationPackageReferences value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    public BatchPoolReplaceContent(List<BatchApplicationPackageReference> applicationPackageReferences,
-        List<MetadataItem> metadata) {
-        this.applicationPackageReferences = applicationPackageReferences;
-        this.metadata = metadata;
     }
 }

@@ -96,6 +96,24 @@ public final class BatchNodeState extends ExpandableStringEnum<BatchNodeState> {
     public static final BatchNodeState PREEMPTED = fromString("preempted");
 
     /**
+     * The Compute Node is undergoing an OS upgrade operation.
+     */
+    @Generated
+    public static final BatchNodeState UPGRADING_OS = fromString("upgradingos");
+
+    /**
+     * The Compute Node is deallocated.
+     */
+    @Generated
+    public static final BatchNodeState DEALLOCATED = fromString("deallocated");
+
+    /**
+     * The Compute Node is deallocating.
+     */
+    @Generated
+    public static final BatchNodeState DEALLOCATING = fromString("deallocating");
+
+    /**
      * Creates a new instance of BatchNodeState value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -125,22 +143,4 @@ public final class BatchNodeState extends ExpandableStringEnum<BatchNodeState> {
     public static Collection<BatchNodeState> values() {
         return values(BatchNodeState.class);
     }
-
-    /**
-     * The Compute Node is undergoing an OS upgrade operation.
-     */
-    @Generated
-    public static final BatchNodeState UPGRADING_OS = fromString("upgradingos");
-
-    /**
-     * The Compute Node is deallocated.
-     */
-    @Generated
-    public static final BatchNodeState DEALLOCATED = fromString("deallocated");
-
-    /**
-     * The Compute Node is deallocating.
-     */
-    @Generated
-    public static final BatchNodeState DEALLOCATING = fromString("deallocating");
 }

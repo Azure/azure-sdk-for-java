@@ -425,7 +425,8 @@ public class PoolTests extends BatchClientTestBase {
                 = new BatchNodeDeallocateContent().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
             DeallocateBatchNodeOptions options = new DeallocateBatchNodeOptions();
             options.setTimeOutInSeconds(30);
-            batchClient.deallocateNode(poolId, nodeId, options, deallocateContent);
+            options.setParameters(deallocateContent);
+            batchClient.deallocateNode(poolId, nodeId, options);
 
             // Wait for the node to be deallocated
             boolean isDeallocated = false;

@@ -42,6 +42,18 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     private final OffsetDateTime lastUpdateTime;
 
     /*
+     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
+     */
+    @Generated
+    private final Duration userCpuTime;
+
+    /*
+     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
+     */
+    @Generated
+    private final Duration kernelCpuTime;
+
+    /*
      * The total wall clock time of the Task. The wall clock time is the elapsed time from when the Task started running
      * on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not
      * finished by then). If the Task was retried, this includes the wall clock time of all the Task retries.
@@ -82,6 +94,38 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     private final Duration waitTime;
 
     /**
+     * Creates an instance of BatchTaskStatistics class.
+     *
+     * @param url the url value to set.
+     * @param startTime the startTime value to set.
+     * @param lastUpdateTime the lastUpdateTime value to set.
+     * @param userCpuTime the userCpuTime value to set.
+     * @param kernelCpuTime the kernelCpuTime value to set.
+     * @param wallClockTime the wallClockTime value to set.
+     * @param readIOps the readIOps value to set.
+     * @param writeIOps the writeIOps value to set.
+     * @param readIOGiB the readIOGiB value to set.
+     * @param writeIOGiB the writeIOGiB value to set.
+     * @param waitTime the waitTime value to set.
+     */
+    @Generated
+    private BatchTaskStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
+        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIOps, long writeIOps,
+        double readIOGiB, double writeIOGiB, Duration waitTime) {
+        this.url = url;
+        this.startTime = startTime;
+        this.lastUpdateTime = lastUpdateTime;
+        this.userCpuTime = userCpuTime;
+        this.kernelCpuTime = kernelCpuTime;
+        this.wallClockTime = wallClockTime;
+        this.readIOps = readIOps;
+        this.writeIOps = writeIOps;
+        this.readIOGiB = readIOGiB;
+        this.writeIOGiB = writeIOGiB;
+        this.waitTime = waitTime;
+    }
+
+    /**
      * Get the url property: The URL of the statistics.
      *
      * @return the url value.
@@ -110,6 +154,28 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     @Generated
     public OffsetDateTime getLastUpdateTime() {
         return this.lastUpdateTime;
+    }
+
+    /**
+     * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by the Task.
+     *
+     * @return the userCpuTime value.
+     */
+    @Generated
+    public Duration getUserCpuTime() {
+        return this.userCpuTime;
+    }
+
+    /**
+     * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by the Task.
+     *
+     * @return the kernelCpuTime value.
+     */
+    @Generated
+    public Duration getKernelCpuTime() {
+        return this.kernelCpuTime;
     }
 
     /**
@@ -175,72 +241,6 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     @Generated
     public Duration getWaitTime() {
         return this.waitTime;
-    }
-
-    /*
-     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
-     */
-    @Generated
-    private final Duration kernelCpuTime;
-
-    /**
-     * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by the Task.
-     *
-     * @return the kernelCpuTime value.
-     */
-    @Generated
-    public Duration getKernelCpuTime() {
-        return this.kernelCpuTime;
-    }
-
-    /*
-     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
-     */
-    @Generated
-    private final Duration userCpuTime;
-
-    /**
-     * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by the Task.
-     *
-     * @return the userCpuTime value.
-     */
-    @Generated
-    public Duration getUserCpuTime() {
-        return this.userCpuTime;
-    }
-
-    /**
-     * Creates an instance of BatchTaskStatistics class.
-     *
-     * @param url the url value to set.
-     * @param startTime the startTime value to set.
-     * @param lastUpdateTime the lastUpdateTime value to set.
-     * @param userCpuTime the userCpuTime value to set.
-     * @param kernelCpuTime the kernelCpuTime value to set.
-     * @param wallClockTime the wallClockTime value to set.
-     * @param readIOps the readIOps value to set.
-     * @param writeIOps the writeIOps value to set.
-     * @param readIOGiB the readIOGiB value to set.
-     * @param writeIOGiB the writeIOGiB value to set.
-     * @param waitTime the waitTime value to set.
-     */
-    @Generated
-    private BatchTaskStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
-        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIOps, long writeIOps,
-        double readIOGiB, double writeIOGiB, Duration waitTime) {
-        this.url = url;
-        this.startTime = startTime;
-        this.lastUpdateTime = lastUpdateTime;
-        this.userCpuTime = userCpuTime;
-        this.kernelCpuTime = kernelCpuTime;
-        this.wallClockTime = wallClockTime;
-        this.readIOps = readIOps;
-        this.writeIOps = writeIOps;
-        this.readIOGiB = readIOGiB;
-        this.writeIOGiB = writeIOGiB;
-        this.waitTime = waitTime;
     }
 
     /**

@@ -18,9 +18,10 @@ import java.io.IOException;
 public final class AutoUserSpecification implements JsonSerializable<AutoUserSpecification> {
 
     /*
-     * The scope for the auto user. The default value is pool. If the pool is running Windows, a value of Task should be
-     * specified if stricter isolation between tasks is required, such as if the task mutates the registry in a way
-     * which could impact other tasks.
+     * The scope for the auto user. The default value is pool. If the pool is running Windows a value of Task should be
+     * specified if stricter isolation between tasks is required. For example, if the task mutates the registry in a way
+     * which could impact other tasks, or if certificates have been specified on the pool which should not be accessible
+     * by normal tasks but should be accessible by StartTasks.
      */
     @Generated
     private AutoUserScope scope;
@@ -39,9 +40,10 @@ public final class AutoUserSpecification implements JsonSerializable<AutoUserSpe
     }
 
     /**
-     * Get the scope property: The scope for the auto user. The default value is pool. If the pool is running Windows, a
-     * value of Task should be specified if stricter isolation between tasks is required, such as if the task mutates
-     * the registry in a way which could impact other tasks.
+     * Get the scope property: The scope for the auto user. The default value is pool. If the pool is running Windows a
+     * value of Task should be specified if stricter isolation between tasks is required. For example, if the task
+     * mutates the registry in a way which could impact other tasks, or if certificates have been specified on the pool
+     * which should not be accessible by normal tasks but should be accessible by StartTasks.
      *
      * @return the scope value.
      */
@@ -51,9 +53,10 @@ public final class AutoUserSpecification implements JsonSerializable<AutoUserSpe
     }
 
     /**
-     * Set the scope property: The scope for the auto user. The default value is pool. If the pool is running Windows, a
-     * value of Task should be specified if stricter isolation between tasks is required, such as if the task mutates
-     * the registry in a way which could impact other tasks.
+     * Set the scope property: The scope for the auto user. The default value is pool. If the pool is running Windows a
+     * value of Task should be specified if stricter isolation between tasks is required. For example, if the task
+     * mutates the registry in a way which could impact other tasks, or if certificates have been specified on the pool
+     * which should not be accessible by normal tasks but should be accessible by StartTasks.
      *
      * @param scope the scope value to set.
      * @return the AutoUserSpecification object itself.

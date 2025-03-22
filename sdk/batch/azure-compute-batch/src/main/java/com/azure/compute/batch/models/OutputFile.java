@@ -47,6 +47,20 @@ public final class OutputFile implements JsonSerializable<OutputFile> {
     private final OutputFileUploadConfig uploadOptions;
 
     /**
+     * Creates an instance of OutputFile class.
+     *
+     * @param filePattern the filePattern value to set.
+     * @param destination the destination value to set.
+     * @param uploadOptions the uploadOptions value to set.
+     */
+    @Generated
+    public OutputFile(String filePattern, OutputFileDestination destination, OutputFileUploadConfig uploadOptions) {
+        this.filePattern = filePattern;
+        this.destination = destination;
+        this.uploadOptions = uploadOptions;
+    }
+
+    /**
      * Get the filePattern property: A pattern indicating which file(s) to upload. Both relative and absolute paths are
      * supported. Relative paths are relative to the Task working directory. The following wildcards are supported: *
      * matches 0 or more characters (for example pattern abc* would match abc or abcdef), ** matches any directory, ?
@@ -85,20 +99,6 @@ public final class OutputFile implements JsonSerializable<OutputFile> {
     @Generated
     public OutputFileUploadConfig getUploadOptions() {
         return this.uploadOptions;
-    }
-
-    /**
-     * Creates an instance of OutputFile class.
-     *
-     * @param filePattern the filePattern value to set.
-     * @param destination the destination value to set.
-     * @param uploadOptions the uploadOptions value to set.
-     */
-    @Generated
-    public OutputFile(String filePattern, OutputFileDestination destination, OutputFileUploadConfig uploadOptions) {
-        this.filePattern = filePattern;
-        this.destination = destination;
-        this.uploadOptions = uploadOptions;
     }
 
     /**

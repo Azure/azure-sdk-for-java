@@ -106,6 +106,21 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
     @Generated
     private OSDisk osDisk;
 
+    /*
+     * Specifies the security profile settings for the virtual machine or virtual machine scale set.
+     */
+    @Generated
+    private SecurityProfile securityProfile;
+
+    /*
+     * Specifies the service artifact reference id used to set same image version for all virtual machines in the scale
+     * set when using 'latest' image version. The service artifact reference id in the form of
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
+     * }/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+     */
+    @Generated
+    private ServiceArtifactReference serviceArtifactReference;
+
     /**
      * Creates an instance of VirtualMachineConfiguration class.
      *
@@ -363,21 +378,6 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
         this.osDisk = osDisk;
         return this;
     }
-
-    /*
-     * Specifies the security profile settings for the virtual machine or virtual machine scale set.
-     */
-    @Generated
-    private SecurityProfile securityProfile;
-
-    /*
-     * Specifies the service artifact reference id used to set same image version for all virtual machines in the scale
-     * set when using 'latest' image version. The service artifact reference id in the form of
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
-     * }/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
-     */
-    @Generated
-    private ServiceArtifactReference serviceArtifactReference;
 
     /**
      * Get the securityProfile property: Specifies the security profile settings for the virtual machine or virtual

@@ -20,248 +20,6 @@ import java.util.Map;
 public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolUpdateContent> {
 
     /*
-     * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool
-     * or when the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If
-     * omitted, any existing StartTask is left unchanged.
-     */
-    @Generated
-    private BatchStartTask startTask;
-
-    /*
-     * A list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all new
-     * Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or
-     * reimaged. If this element is present, it replaces any existing Package references. If you specify an empty
-     * collection, then all Package references are removed from the Pool. If omitted, any existing Package references
-     * are left unchanged.
-     */
-    @Generated
-    private List<BatchApplicationPackageReference> applicationPackageReferences;
-
-    /*
-     * A list of name-value pairs associated with the Pool as metadata. If this element is present, it replaces any
-     * existing metadata configured on the Pool. If you specify an empty collection, any metadata is removed from the
-     * Pool. If omitted, any existing metadata is left unchanged.
-     */
-    @Generated
-    private List<MetadataItem> metadata;
-
-    /*
-     * The desired node communication mode for the pool. If this element is present, it replaces the existing
-     * targetNodeCommunicationMode configured on the Pool. If omitted, any existing metadata is left unchanged.
-     */
-    @Generated
-    private BatchNodeCommunicationMode targetNodeCommunicationMode;
-
-    /**
-     * Creates an instance of BatchPoolUpdateContent class.
-     */
-    @Generated
-    public BatchPoolUpdateContent() {
-    }
-
-    /**
-     * Get the startTask property: A Task to run on each Compute Node as it joins the Pool. The Task runs when the
-     * Compute Node is added to the Pool or when the Compute Node is restarted. If this element is present, it
-     * overwrites any existing StartTask. If omitted, any existing StartTask is left unchanged.
-     *
-     * @return the startTask value.
-     */
-    @Generated
-    public BatchStartTask getStartTask() {
-        return this.startTask;
-    }
-
-    /**
-     * Set the startTask property: A Task to run on each Compute Node as it joins the Pool. The Task runs when the
-     * Compute Node is added to the Pool or when the Compute Node is restarted. If this element is present, it
-     * overwrites any existing StartTask. If omitted, any existing StartTask is left unchanged.
-     *
-     * @param startTask the startTask value to set.
-     * @return the BatchPoolUpdateContent object itself.
-     */
-    @Generated
-    public BatchPoolUpdateContent setStartTask(BatchStartTask startTask) {
-        this.startTask = startTask;
-        return this;
-    }
-
-    /**
-     * Get the applicationPackageReferences property: A list of Packages to be installed on each Compute Node in the
-     * Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that
-     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing
-     * Package references. If you specify an empty collection, then all Package references are removed from the Pool. If
-     * omitted, any existing Package references are left unchanged.
-     *
-     * @return the applicationPackageReferences value.
-     */
-    @Generated
-    public List<BatchApplicationPackageReference> getApplicationPackageReferences() {
-        return this.applicationPackageReferences;
-    }
-
-    /**
-     * Set the applicationPackageReferences property: A list of Packages to be installed on each Compute Node in the
-     * Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that
-     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing
-     * Package references. If you specify an empty collection, then all Package references are removed from the Pool. If
-     * omitted, any existing Package references are left unchanged.
-     *
-     * @param applicationPackageReferences the applicationPackageReferences value to set.
-     * @return the BatchPoolUpdateContent object itself.
-     */
-    @Generated
-    public BatchPoolUpdateContent
-        setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
-        this.applicationPackageReferences = applicationPackageReferences;
-        return this;
-    }
-
-    /**
-     * Get the metadata property: A list of name-value pairs associated with the Pool as metadata. If this element is
-     * present, it replaces any existing metadata configured on the Pool. If you specify an empty collection, any
-     * metadata is removed from the Pool. If omitted, any existing metadata is left unchanged.
-     *
-     * @return the metadata value.
-     */
-    @Generated
-    public List<MetadataItem> getMetadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata property: A list of name-value pairs associated with the Pool as metadata. If this element is
-     * present, it replaces any existing metadata configured on the Pool. If you specify an empty collection, any
-     * metadata is removed from the Pool. If omitted, any existing metadata is left unchanged.
-     *
-     * @param metadata the metadata value to set.
-     * @return the BatchPoolUpdateContent object itself.
-     */
-    @Generated
-    public BatchPoolUpdateContent setMetadata(List<MetadataItem> metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Get the targetNodeCommunicationMode property: The desired node communication mode for the pool. If this element
-     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing
-     * metadata is left unchanged.
-     *
-     * @return the targetNodeCommunicationMode value.
-     */
-    @Generated
-    public BatchNodeCommunicationMode getTargetNodeCommunicationMode() {
-        return this.targetNodeCommunicationMode;
-    }
-
-    /**
-     * Set the targetNodeCommunicationMode property: The desired node communication mode for the pool. If this element
-     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing
-     * metadata is left unchanged.
-     *
-     * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
-     * @return the BatchPoolUpdateContent object itself.
-     */
-    @Generated
-    public BatchPoolUpdateContent
-        setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
-        this.targetNodeCommunicationMode = targetNodeCommunicationMode;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeStringField("vmSize", this.vmSize);
-        jsonWriter.writeBooleanField("enableInterNodeCommunication", this.enableInterNodeCommunication);
-        jsonWriter.writeJsonField("startTask", this.startTask);
-        jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("virtualMachineConfiguration", this.virtualMachineConfiguration);
-        jsonWriter.writeStringField("targetNodeCommunicationMode",
-            this.targetNodeCommunicationMode == null ? null : this.targetNodeCommunicationMode.toString());
-        jsonWriter.writeNumberField("taskSlotsPerNode", this.taskSlotsPerNode);
-        jsonWriter.writeJsonField("taskSchedulingPolicy", this.taskSchedulingPolicy);
-        jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
-        jsonWriter.writeMapField("resourceTags", this.resourceTags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("userAccounts", this.userAccounts, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("mountConfiguration", this.mountConfiguration,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("upgradePolicy", this.upgradePolicy);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of BatchPoolUpdateContent from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchPoolUpdateContent if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the BatchPoolUpdateContent.
-     */
-    @Generated
-    public static BatchPoolUpdateContent fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            BatchPoolUpdateContent deserializedBatchPoolUpdateContent = new BatchPoolUpdateContent();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("displayName".equals(fieldName)) {
-                    deserializedBatchPoolUpdateContent.displayName = reader.getString();
-                } else if ("vmSize".equals(fieldName)) {
-                    deserializedBatchPoolUpdateContent.vmSize = reader.getString();
-                } else if ("enableInterNodeCommunication".equals(fieldName)) {
-                    deserializedBatchPoolUpdateContent.enableInterNodeCommunication
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("startTask".equals(fieldName)) {
-                    deserializedBatchPoolUpdateContent.startTask = BatchStartTask.fromJson(reader);
-                } else if ("applicationPackageReferences".equals(fieldName)) {
-                    List<BatchApplicationPackageReference> applicationPackageReferences
-                        = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
-                    deserializedBatchPoolUpdateContent.applicationPackageReferences = applicationPackageReferences;
-                } else if ("metadata".equals(fieldName)) {
-                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
-                    deserializedBatchPoolUpdateContent.metadata = metadata;
-                } else if ("virtualMachineConfiguration".equals(fieldName)) {
-                    deserializedBatchPoolUpdateContent.virtualMachineConfiguration
-                        = VirtualMachineConfiguration.fromJson(reader);
-                } else if ("targetNodeCommunicationMode".equals(fieldName)) {
-                    deserializedBatchPoolUpdateContent.targetNodeCommunicationMode
-                        = BatchNodeCommunicationMode.fromString(reader.getString());
-                } else if ("taskSlotsPerNode".equals(fieldName)) {
-                    deserializedBatchPoolUpdateContent.taskSlotsPerNode = reader.getNullable(JsonReader::getInt);
-                } else if ("taskSchedulingPolicy".equals(fieldName)) {
-                    deserializedBatchPoolUpdateContent.taskSchedulingPolicy
-                        = BatchTaskSchedulingPolicy.fromJson(reader);
-                } else if ("networkConfiguration".equals(fieldName)) {
-                    deserializedBatchPoolUpdateContent.networkConfiguration = NetworkConfiguration.fromJson(reader);
-                } else if ("resourceTags".equals(fieldName)) {
-                    Map<String, String> resourceTags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedBatchPoolUpdateContent.resourceTags = resourceTags;
-                } else if ("userAccounts".equals(fieldName)) {
-                    List<UserAccount> userAccounts = reader.readArray(reader1 -> UserAccount.fromJson(reader1));
-                    deserializedBatchPoolUpdateContent.userAccounts = userAccounts;
-                } else if ("mountConfiguration".equals(fieldName)) {
-                    List<MountConfiguration> mountConfiguration
-                        = reader.readArray(reader1 -> MountConfiguration.fromJson(reader1));
-                    deserializedBatchPoolUpdateContent.mountConfiguration = mountConfiguration;
-                } else if ("upgradePolicy".equals(fieldName)) {
-                    deserializedBatchPoolUpdateContent.upgradePolicy = UpgradePolicy.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedBatchPoolUpdateContent;
-        });
-    }
-
-    /*
      * The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a
      * maximum length of 1024. This field can be updated only when the pool is empty.
      */
@@ -287,11 +45,58 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
     private Boolean enableInterNodeCommunication;
 
     /*
+     * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool
+     * or when the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If
+     * omitted, any existing StartTask is left unchanged.
+     */
+    @Generated
+    private BatchStartTask startTask;
+
+    /*
+     * If this element is present, it replaces any existing Certificate references configured on the Pool.
+     * If omitted, any existing Certificate references are left unchanged.
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     */
+    @Generated
+    private List<BatchCertificateReference> certificateReferences;
+
+    /*
+     * A list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all new
+     * Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or
+     * reimaged. If this element is present, it replaces any existing Package references. If you specify an empty
+     * collection, then all Package references are removed from the Pool. If omitted, any existing Package references
+     * are left unchanged.
+     */
+    @Generated
+    private List<BatchApplicationPackageReference> applicationPackageReferences;
+
+    /*
+     * A list of name-value pairs associated with the Pool as metadata. If this element is present, it replaces any
+     * existing metadata configured on the Pool. If you specify an empty collection, any metadata is removed from the
+     * Pool. If omitted, any existing metadata is left unchanged.
+     */
+    @Generated
+    private List<MetadataItem> metadata;
+
+    /*
      * The virtual machine configuration for the Pool. This property must be specified.<br /><br />This field can be
      * updated only when the pool is empty.
      */
     @Generated
     private VirtualMachineConfiguration virtualMachineConfiguration;
+
+    /*
+     * The desired node communication mode for the pool. If this element is present, it replaces the existing
+     * targetNodeCommunicationMode configured on the Pool. If omitted, any existing metadata is left unchanged.
+     */
+    @Generated
+    private BatchNodeCommunicationMode targetNodeCommunicationMode;
 
     /*
      * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The
@@ -344,6 +149,13 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
      */
     @Generated
     private UpgradePolicy upgradePolicy;
+
+    /**
+     * Creates an instance of BatchPoolUpdateContent class.
+     */
+    @Generated
+    public BatchPoolUpdateContent() {
+    }
 
     /**
      * Get the displayName property: The display name for the Pool. The display name need not be unique and can contain
@@ -426,6 +238,129 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
     }
 
     /**
+     * Get the startTask property: A Task to run on each Compute Node as it joins the Pool. The Task runs when the
+     * Compute Node is added to the Pool or when the Compute Node is restarted. If this element is present, it
+     * overwrites any existing StartTask. If omitted, any existing StartTask is left unchanged.
+     *
+     * @return the startTask value.
+     */
+    @Generated
+    public BatchStartTask getStartTask() {
+        return this.startTask;
+    }
+
+    /**
+     * Set the startTask property: A Task to run on each Compute Node as it joins the Pool. The Task runs when the
+     * Compute Node is added to the Pool or when the Compute Node is restarted. If this element is present, it
+     * overwrites any existing StartTask. If omitted, any existing StartTask is left unchanged.
+     *
+     * @param startTask the startTask value to set.
+     * @return the BatchPoolUpdateContent object itself.
+     */
+    @Generated
+    public BatchPoolUpdateContent setStartTask(BatchStartTask startTask) {
+        this.startTask = startTask;
+        return this;
+    }
+
+    /**
+     * Get the certificateReferences property: If this element is present, it replaces any existing Certificate
+     * references configured on the Pool.
+     * If omitted, any existing Certificate references are left unchanged.
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @return the certificateReferences value.
+     */
+    @Generated
+    public List<BatchCertificateReference> getCertificateReferences() {
+        return this.certificateReferences;
+    }
+
+    /**
+     * Set the certificateReferences property: If this element is present, it replaces any existing Certificate
+     * references configured on the Pool.
+     * If omitted, any existing Certificate references are left unchanged.
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @param certificateReferences the certificateReferences value to set.
+     * @return the BatchPoolUpdateContent object itself.
+     */
+    @Generated
+    public BatchPoolUpdateContent setCertificateReferences(List<BatchCertificateReference> certificateReferences) {
+        this.certificateReferences = certificateReferences;
+        return this;
+    }
+
+    /**
+     * Get the applicationPackageReferences property: A list of Packages to be installed on each Compute Node in the
+     * Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that
+     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing
+     * Package references. If you specify an empty collection, then all Package references are removed from the Pool. If
+     * omitted, any existing Package references are left unchanged.
+     *
+     * @return the applicationPackageReferences value.
+     */
+    @Generated
+    public List<BatchApplicationPackageReference> getApplicationPackageReferences() {
+        return this.applicationPackageReferences;
+    }
+
+    /**
+     * Set the applicationPackageReferences property: A list of Packages to be installed on each Compute Node in the
+     * Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that
+     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing
+     * Package references. If you specify an empty collection, then all Package references are removed from the Pool. If
+     * omitted, any existing Package references are left unchanged.
+     *
+     * @param applicationPackageReferences the applicationPackageReferences value to set.
+     * @return the BatchPoolUpdateContent object itself.
+     */
+    @Generated
+    public BatchPoolUpdateContent
+        setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
+        this.applicationPackageReferences = applicationPackageReferences;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: A list of name-value pairs associated with the Pool as metadata. If this element is
+     * present, it replaces any existing metadata configured on the Pool. If you specify an empty collection, any
+     * metadata is removed from the Pool. If omitted, any existing metadata is left unchanged.
+     *
+     * @return the metadata value.
+     */
+    @Generated
+    public List<MetadataItem> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: A list of name-value pairs associated with the Pool as metadata. If this element is
+     * present, it replaces any existing metadata configured on the Pool. If you specify an empty collection, any
+     * metadata is removed from the Pool. If omitted, any existing metadata is left unchanged.
+     *
+     * @param metadata the metadata value to set.
+     * @return the BatchPoolUpdateContent object itself.
+     */
+    @Generated
+    public BatchPoolUpdateContent setMetadata(List<MetadataItem> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
      * Get the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property must
      * be specified.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
      *
@@ -447,6 +382,33 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
     public BatchPoolUpdateContent
         setVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the targetNodeCommunicationMode property: The desired node communication mode for the pool. If this element
+     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing
+     * metadata is left unchanged.
+     *
+     * @return the targetNodeCommunicationMode value.
+     */
+    @Generated
+    public BatchNodeCommunicationMode getTargetNodeCommunicationMode() {
+        return this.targetNodeCommunicationMode;
+    }
+
+    /**
+     * Set the targetNodeCommunicationMode property: The desired node communication mode for the pool. If this element
+     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing
+     * metadata is left unchanged.
+     *
+     * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
+     * @return the BatchPoolUpdateContent object itself.
+     */
+    @Generated
+    public BatchPoolUpdateContent
+        setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
+        this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;
     }
 
@@ -626,5 +588,103 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
     public BatchPoolUpdateContent setUpgradePolicy(UpgradePolicy upgradePolicy) {
         this.upgradePolicy = upgradePolicy;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeBooleanField("enableInterNodeCommunication", this.enableInterNodeCommunication);
+        jsonWriter.writeJsonField("startTask", this.startTask);
+        jsonWriter.writeArrayField("certificateReferences", this.certificateReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("virtualMachineConfiguration", this.virtualMachineConfiguration);
+        jsonWriter.writeStringField("targetNodeCommunicationMode",
+            this.targetNodeCommunicationMode == null ? null : this.targetNodeCommunicationMode.toString());
+        jsonWriter.writeNumberField("taskSlotsPerNode", this.taskSlotsPerNode);
+        jsonWriter.writeJsonField("taskSchedulingPolicy", this.taskSchedulingPolicy);
+        jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
+        jsonWriter.writeMapField("resourceTags", this.resourceTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("userAccounts", this.userAccounts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("mountConfiguration", this.mountConfiguration,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("upgradePolicy", this.upgradePolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolUpdateContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolUpdateContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchPoolUpdateContent.
+     */
+    @Generated
+    public static BatchPoolUpdateContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchPoolUpdateContent deserializedBatchPoolUpdateContent = new BatchPoolUpdateContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("displayName".equals(fieldName)) {
+                    deserializedBatchPoolUpdateContent.displayName = reader.getString();
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedBatchPoolUpdateContent.vmSize = reader.getString();
+                } else if ("enableInterNodeCommunication".equals(fieldName)) {
+                    deserializedBatchPoolUpdateContent.enableInterNodeCommunication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("startTask".equals(fieldName)) {
+                    deserializedBatchPoolUpdateContent.startTask = BatchStartTask.fromJson(reader);
+                } else if ("certificateReferences".equals(fieldName)) {
+                    List<BatchCertificateReference> certificateReferences
+                        = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
+                    deserializedBatchPoolUpdateContent.certificateReferences = certificateReferences;
+                } else if ("applicationPackageReferences".equals(fieldName)) {
+                    List<BatchApplicationPackageReference> applicationPackageReferences
+                        = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
+                    deserializedBatchPoolUpdateContent.applicationPackageReferences = applicationPackageReferences;
+                } else if ("metadata".equals(fieldName)) {
+                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    deserializedBatchPoolUpdateContent.metadata = metadata;
+                } else if ("virtualMachineConfiguration".equals(fieldName)) {
+                    deserializedBatchPoolUpdateContent.virtualMachineConfiguration
+                        = VirtualMachineConfiguration.fromJson(reader);
+                } else if ("targetNodeCommunicationMode".equals(fieldName)) {
+                    deserializedBatchPoolUpdateContent.targetNodeCommunicationMode
+                        = BatchNodeCommunicationMode.fromString(reader.getString());
+                } else if ("taskSlotsPerNode".equals(fieldName)) {
+                    deserializedBatchPoolUpdateContent.taskSlotsPerNode = reader.getNullable(JsonReader::getInt);
+                } else if ("taskSchedulingPolicy".equals(fieldName)) {
+                    deserializedBatchPoolUpdateContent.taskSchedulingPolicy
+                        = BatchTaskSchedulingPolicy.fromJson(reader);
+                } else if ("networkConfiguration".equals(fieldName)) {
+                    deserializedBatchPoolUpdateContent.networkConfiguration = NetworkConfiguration.fromJson(reader);
+                } else if ("resourceTags".equals(fieldName)) {
+                    Map<String, String> resourceTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBatchPoolUpdateContent.resourceTags = resourceTags;
+                } else if ("userAccounts".equals(fieldName)) {
+                    List<UserAccount> userAccounts = reader.readArray(reader1 -> UserAccount.fromJson(reader1));
+                    deserializedBatchPoolUpdateContent.userAccounts = userAccounts;
+                } else if ("mountConfiguration".equals(fieldName)) {
+                    List<MountConfiguration> mountConfiguration
+                        = reader.readArray(reader1 -> MountConfiguration.fromJson(reader1));
+                    deserializedBatchPoolUpdateContent.mountConfiguration = mountConfiguration;
+                } else if ("upgradePolicy".equals(fieldName)) {
+                    deserializedBatchPoolUpdateContent.upgradePolicy = UpgradePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchPoolUpdateContent;
+        });
     }
 }

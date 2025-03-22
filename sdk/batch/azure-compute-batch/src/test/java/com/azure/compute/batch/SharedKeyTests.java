@@ -80,7 +80,7 @@ public class SharedKeyTests extends BatchClientTestBase {
             updatedMetadata.add(new MetadataItem("foo", "bar"));
 
             BatchPoolReplaceContent poolReplaceContent
-                = new BatchPoolReplaceContent(new ArrayList<>(), updatedMetadata);
+                = new BatchPoolReplaceContent(new ArrayList<>(), new ArrayList<>(), updatedMetadata);
 
             poolReplaceContent.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
 
