@@ -36,9 +36,6 @@ import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.Writer;
@@ -51,6 +48,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.type.TypeMirror;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
 
@@ -357,11 +356,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             Statement newUrlDeclaration = StaticJavaParser.parseStatement("String newUrl;");
             newUrlDeclaration.setComment(new LineComment("\n Append non-null query parameters"));
             body.addStatement(newUrlDeclaration);
+            body.tryAddImportToParentCompilationUnit(HashMap.class);
+            body.addStatement("HashMap<String, Object> queryParamMap = new HashMap<>();");
 
             method.getQueryParams().forEach((key, value) -> {
-                body.addStatement(String.format("newUrl = CoreUtils.appendQueryParam(url, \"%s\", %s);", key, value));
-                body.addStatement("if (newUrl != null) { url = newUrl; }");
+                body.addStatement("queryParamMap.put(\"" + key + "\", " + value.getValue() + ");");
             });
+            body.addStatement("newUrl = CoreUtils.appendQueryParams(url, queryParamMap);");
+            body.addStatement("if (newUrl != null) { url = newUrl; }");
         }
 
         Statement statement

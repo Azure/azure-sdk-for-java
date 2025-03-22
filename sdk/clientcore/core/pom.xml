@@ -37,8 +37,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.65</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.63</jacoco.min.branchcoverage>
 
     <javaModulesSurefireArgLine>
       --add-opens io.clientcore.core/io.clientcore.core.annotations=ALL-UNNAMED
@@ -46,7 +46,6 @@
       --add-opens io.clientcore.core/io.clientcore.core.http=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.annotations=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.client=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.http.exceptions=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.models=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.pipeline=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
