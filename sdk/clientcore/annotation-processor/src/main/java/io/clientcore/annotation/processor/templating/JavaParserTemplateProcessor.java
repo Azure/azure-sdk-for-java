@@ -362,7 +362,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             method.getQueryParams().forEach((key, value) -> {
                 body.addStatement("queryParamMap.put(\"" + key + "\", " + value.getValue() + ");");
             });
-            body.addStatement("newUrl = CoreUtils.appendQueryParam(url, queryParamMap, ',');");
+            body.addStatement("newUrl = CoreUtils.appendQueryParams(url, queryParamMap);");
             body.addStatement("if (newUrl != null) { url = newUrl; }");
         }
 

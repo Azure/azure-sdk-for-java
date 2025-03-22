@@ -8,11 +8,8 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.SerializationFormat;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -433,10 +430,9 @@ public final class CoreUtils {
      *
      * @param host The base URL to which the query parameter will be appended.
      * @param queryParams A map containing the query parameters and their values.
-     * @param delimiter The delimiter to use if the value is a list.
      * @return The URL with the appended query parameter.
      */
-    public static String appendQueryParam(String host, Map<String, Object> queryParams, char delimiter) {
+    public static String appendQueryParams(String host, Map<String, Object> queryParams) {
         if (queryParams == null || queryParams.isEmpty()) {
             return host;  // No parameters to append
         }
@@ -446,7 +442,7 @@ public final class CoreUtils {
 
         // Process each key-value pair in the queryParams map
         for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
-            String key = encodeValue(entry.getKey());
+            String key = entry.getKey();
             Object value = entry.getValue();
             String valueString;
 
@@ -454,10 +450,9 @@ public final class CoreUtils {
                 List<?> valueList = (List<?>) value;
                 valueString = valueList.stream()
                     .map(Object::toString)
-                    .map(CoreUtils::encodeValue)  // Encoding each value
-                    .collect(Collectors.joining(String.valueOf(delimiter)));  // Join with delimiter
+                    .collect(Collectors.joining(String.valueOf(',')));  // Join with delimiter
             } else {
-                valueString = encodeValue(value.toString());
+                valueString = value.toString();
             }
 
             // Append '&' or '?' depending on whether a query string already exists
@@ -467,14 +462,6 @@ public final class CoreUtils {
         }
 
         return urlBuilder.toString();
-    }
-
-    private static String encodeValue(String value) {
-        try {
-            return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException("UTF-8 encoding is not supported", e));
-        }
     }
 
     /*
