@@ -52,10 +52,6 @@ extends:
       groupId: com.azure
       safeName: azuremixedrealityremoterendering
       ServiceDirectory: remoterendering
-    - name: azure-health-insights-radiologyinsights
-      groupId: com.azure
-      safeName: azurehealthinsightsradiologyinsights
-      ServiceDirectory: healthinsights
     - name: azure-search-documents
       groupId: com.azure
       safeName: azuresearch
