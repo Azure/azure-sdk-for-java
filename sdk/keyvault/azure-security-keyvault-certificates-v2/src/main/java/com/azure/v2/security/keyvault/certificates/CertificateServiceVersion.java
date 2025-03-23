@@ -9,7 +9,7 @@ import io.clientcore.core.http.models.ServiceVersion;
 /**
  * Service version of KeyVaultClient.
  */
-public enum KeyVaultServiceVersion implements ServiceVersion {
+public enum CertificateServiceVersion implements ServiceVersion {
     /**
      * Enum value 7.5.
      */
@@ -17,7 +17,7 @@ public enum KeyVaultServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    KeyVaultServiceVersion(String version) {
+    CertificateServiceVersion(String version) {
         this.version = version;
     }
 
@@ -32,9 +32,9 @@ public enum KeyVaultServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      * 
-     * @return The latest {@link KeyVaultServiceVersion}.
+     * @return The latest {@link CertificateServiceVersion}.
      */
-    public static KeyVaultServiceVersion getLatest() {
+    public static CertificateServiceVersion getLatest() {
         return V7_5;
     }
 }
