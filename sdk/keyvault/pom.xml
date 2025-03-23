@@ -11,7 +11,9 @@
   <modules>
     <module>azure-security-test-keyvault-jca</module>
     <module>azure-security-keyvault-administration</module>
+    <module>azure-security-keyvault-administration-v2</module>
     <module>azure-security-keyvault-certificates</module>
+    <module>azure-security-keyvault-certificates-v2</module>
     <module>azure-security-keyvault-jca</module>
     <module>azure-security-keyvault-keys</module>
     <module>azure-security-keyvault-keys-v2</module>
