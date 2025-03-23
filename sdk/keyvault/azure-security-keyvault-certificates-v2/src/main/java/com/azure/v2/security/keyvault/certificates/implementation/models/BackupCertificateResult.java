@@ -10,6 +10,8 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.utils.Base64Uri;
+
 import java.io.IOException;
 
 /**
@@ -21,7 +23,7 @@ public final class BackupCertificateResult implements JsonSerializable<BackupCer
      * The backup blob containing the backed up certificate.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String value;
+    private Base64Uri value;
 
     /**
      * Creates an instance of BackupCertificateResult class.

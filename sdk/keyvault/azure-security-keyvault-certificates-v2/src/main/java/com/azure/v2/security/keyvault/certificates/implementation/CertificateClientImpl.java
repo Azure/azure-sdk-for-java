@@ -4,18 +4,17 @@
 
 package com.azure.v2.security.keyvault.certificates.implementation;
 
-import com.azure.v2.security.keyvault.certificates.KeyVaultServiceVersion;
-import com.azure.v2.security.keyvault.certificates.implementation.implementation.models.CertificateIssuerListResult;
-import com.azure.v2.security.keyvault.certificates.implementation.implementation.models.CertificateListResult;
-import com.azure.v2.security.keyvault.certificates.implementation.implementation.models.DeletedCertificateListResult;
+import com.azure.v2.security.keyvault.certificates.CertificateServiceVersion;
 import com.azure.v2.security.keyvault.certificates.implementation.models.BackupCertificateResult;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateBundle;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateCreateParameters;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateImportParameters;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateIssuerItem;
+import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateIssuerListResult;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateIssuerSetParameters;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateIssuerUpdateParameters;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateItem;
+import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateListResult;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateMergeParameters;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperationUpdateParameter;
@@ -25,6 +24,7 @@ import com.azure.v2.security.keyvault.certificates.implementation.models.Certifi
 import com.azure.v2.security.keyvault.certificates.implementation.models.Contacts;
 import com.azure.v2.security.keyvault.certificates.implementation.models.DeletedCertificateBundle;
 import com.azure.v2.security.keyvault.certificates.implementation.models.DeletedCertificateItem;
+import com.azure.v2.security.keyvault.certificates.implementation.models.DeletedCertificateListResult;
 import com.azure.v2.security.keyvault.certificates.implementation.models.IssuerBundle;
 import com.azure.v2.security.keyvault.certificates.implementation.models.KeyVaultError;
 import io.clientcore.core.annotations.ReturnType;
@@ -72,14 +72,14 @@ public final class CertificateClientImpl {
     /**
      * Service version.
      */
-    private final KeyVaultServiceVersion serviceVersion;
+    private final CertificateServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public KeyVaultServiceVersion getServiceVersion() {
+    public CertificateServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -105,7 +105,7 @@ public final class CertificateClientImpl {
      * @param serviceVersion Service version.
      */
     public CertificateClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl,
-        KeyVaultServiceVersion serviceVersion) {
+        CertificateServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;

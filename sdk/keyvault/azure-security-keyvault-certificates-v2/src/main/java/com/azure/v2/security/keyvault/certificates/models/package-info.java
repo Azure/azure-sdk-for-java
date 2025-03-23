@@ -6,4 +6,4 @@
  * Package containing the data models for KeyVault.
  * The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
  */
-package com.azure.v2.security.keyvault.certificates.implementation.implementation.models;
+package com.azure.v2.security.keyvault.certificates.models;

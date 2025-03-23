@@ -10,6 +10,8 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.utils.Base64Uri;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -22,7 +24,7 @@ public final class CertificateRestoreParameters implements JsonSerializable<Cert
      * The backup blob associated with a certificate bundle.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private final String certificateBundleBackup;
+    private final Base64Uri certificateBundleBackup;
 
     /**
      * Creates an instance of CertificateRestoreParameters class.
@@ -34,7 +36,7 @@ public final class CertificateRestoreParameters implements JsonSerializable<Cert
         if (certificateBundleBackup == null) {
             this.certificateBundleBackup = null;
         } else {
-            this.certificateBundleBackup = String.encode(certificateBundleBackup);
+            this.certificateBundleBackup = Base64Uri.encode(certificateBundleBackup);
         }
     }
 
@@ -80,7 +82,7 @@ public final class CertificateRestoreParameters implements JsonSerializable<Cert
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    String certificateBundleBackupHolder
+                    Base64Uri certificateBundleBackupHolder
                         = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                     if (certificateBundleBackupHolder != null) {
                         certificateBundleBackup = certificateBundleBackupHolder.decodedBytes();

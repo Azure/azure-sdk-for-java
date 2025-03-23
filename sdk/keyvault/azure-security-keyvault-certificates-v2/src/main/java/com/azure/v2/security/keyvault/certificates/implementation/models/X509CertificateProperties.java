@@ -4,6 +4,8 @@
 
 package com.azure.v2.security.keyvault.certificates.implementation.models;
 
+import com.azure.v2.security.keyvault.certificates.models.CertificateKeyUsage;
+import com.azure.v2.security.keyvault.certificates.models.SubjectAlternativeNames;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
