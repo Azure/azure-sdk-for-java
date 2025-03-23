@@ -4,6 +4,7 @@
 
 package com.azure.v2.security.keyvault.certificates.implementation.models;
 
+import com.azure.v2.security.keyvault.certificates.models.CertificateOperationError;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -57,7 +58,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * Error encountered, if any, during the certificate operation.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private KeyVaultErrorError error;
+    private CertificateOperationError error;
 
     /*
      * Location which contains the result of the certificate operation.
@@ -204,7 +205,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the error value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public KeyVaultErrorError getError() {
+    public CertificateOperationError getError() {
         return this.error;
     }
 
@@ -215,7 +216,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the CertificateOperation object itself.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public CertificateOperation setError(KeyVaultErrorError error) {
+    public CertificateOperation setError(CertificateOperationError error) {
         this.error = error;
         return this;
     }
@@ -311,7 +312,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
                 } else if ("status_details".equals(fieldName)) {
                     deserializedCertificateOperation.statusDetails = reader.getString();
                 } else if ("error".equals(fieldName)) {
-                    deserializedCertificateOperation.error = KeyVaultErrorError.fromJson(reader);
+                    deserializedCertificateOperation.error = CertificateOperationError.fromJson(reader);
                 } else if ("target".equals(fieldName)) {
                     deserializedCertificateOperation.target = reader.getString();
                 } else if ("request_id".equals(fieldName)) {

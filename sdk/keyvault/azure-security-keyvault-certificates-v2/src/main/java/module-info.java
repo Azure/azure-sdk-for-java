@@ -7,7 +7,8 @@ module com.azure.v2.security.keyvault.certificates {
     requires transitive com.azure.v2.core;
 
     exports com.azure.v2.security.keyvault.certificates;
+    exports com.azure.v2.security.keyvault.certificates.models;
 
+    opens com.azure.v2.security.keyvault.certificates.models to io.clientcore.core;
     opens com.azure.v2.security.keyvault.certificates.implementation.models to io.clientcore.core;
-    opens com.azure.v2.security.keyvault.certificates.implementation.implementation.models to io.clientcore.core;
 }

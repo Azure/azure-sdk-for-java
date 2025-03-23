@@ -10,6 +10,8 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.utils.Base64Uri;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -44,7 +46,7 @@ public final class DeletedCertificateItem implements JsonSerializable<DeletedCer
      * Thumbprint of the certificate.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String x509Thumbprint;
+    private Base64Uri x509Thumbprint;
 
     /*
      * The url of the recovery object, used to identify and recover the deleted certificate.

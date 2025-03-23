@@ -4,6 +4,7 @@
 
 package com.azure.v2.security.keyvault.certificates.implementation.models;
 
+import com.azure.v2.security.keyvault.certificates.models.CertificateOperationError;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -21,7 +22,7 @@ public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
      * The key vault server error.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private KeyVaultErrorError error;
+    private CertificateOperationError error;
 
     /**
      * Creates an instance of KeyVaultError class.
@@ -36,7 +37,7 @@ public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
      * @return the error value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public KeyVaultErrorError getError() {
+    public CertificateOperationError getError() {
         return this.error;
     }
 
@@ -67,7 +68,7 @@ public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
                 reader.nextToken();
 
                 if ("error".equals(fieldName)) {
-                    deserializedKeyVaultError.error = KeyVaultErrorError.fromJson(reader);
+                    deserializedKeyVaultError.error = CertificateOperationError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
