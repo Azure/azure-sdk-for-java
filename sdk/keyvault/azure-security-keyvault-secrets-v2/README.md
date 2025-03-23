@@ -1,5 +1,4 @@
 # Azure Key Vault Secrets client library for Java
-
 Azure Key Vault is a cloud service that provides secure storage for secrets, such as passwords and database connection
 strings.
 
@@ -15,7 +14,7 @@ Use the Azure Key Vault Secrets client library to create and manage secrets.
 
 ### Prerequisites
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
-    - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
+    - Here are details about [Java 8 client compatibility with Azure Certificate Authority][azure_ca].
 - An [Azure Subscription][azure_subscription].
 - An existing [Azure Key Vault][azure_keyvault]. If you need to create a key vault, you can do so in the Azure Portal by
 following the steps in [this document][azure_keyvault_portal]. Alternatively, you can use the Azure CLI by following the
@@ -24,8 +23,9 @@ steps in [this document][azure_keyvault_cli].
 ### Adding the package to your product
 
 #### Use the Azure SDK BOM
-Please include the `azure-sdk-bom` to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
-To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+Please include the `azure-sdk-bom` to your project to take dependency on the General Availability (GA) version of the
+library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number. To learn
+more about the BOM, see the [AZURE SDK BOM README][azure_sdk_bom].
 
 ```xml
 <dependencyManagement>
@@ -78,7 +78,7 @@ You can find more information on different ways of authenticating and their corr
 
 #### Create secret client
 Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced
-**your-key-vault-endpoint** with the URI for your key vault, you can create a `SecretClient`:
+**your-key-vault-endpoint** with the URL for your key vault, you can create a `SecretClient`:
 
 ```java readme-sample-createSecretClient
 SecretClient secretClient = new SecretClientBuilder()
@@ -156,7 +156,7 @@ SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSe
 // Deleted secret is accessible as soon as polling begins.
 PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
-// Deletion date only works for a SoftDelete-enabled Key Vault.
+// Deletion date only works for a SoftDelete-enabled key vault.
 System.out.printf("Deletion date: %s%n", deletedSecretPollResponse.getValue().getDeletedOn());
 
 // Secret is being deleted on server.
@@ -164,7 +164,7 @@ deletedSecretPoller.waitForCompletion();
 ```
 
 ### List secrets
-List the secrets in the Azure Key Vault by calling `listPropertiesOfSecrets`.
+List the secrets in the key vault by calling `listPropertiesOfSecrets`.
 
 ```java readme-sample-listSecrets
 // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to
@@ -197,9 +197,9 @@ aligns with the service's versioning policy.
 See our [troubleshooting guide][troubleshooting_guide] for details on how to diagnose various failure scenarios.
 
 ### General
-Azure Key Vault Secret clients raise exceptions. For example, if you try to retrieve a secret after it is deleted a
-`404` error is returned, indicating the resource was not found. In the following snippet, the error is handled
-gracefully by catching the exception and displaying additional information about the error.
+Azure Key Vault clients raise exceptions. For example, if you try to retrieve a secret after it is deleted a `404` error
+is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by
+catching the exception and displaying additional information about the error.
 
 ```java readme-sample-troubleshooting
 try {
@@ -223,8 +223,8 @@ better performance compared to the default SSL implementation within the JDK. Fo
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
-Several Key Vault Java SDK sampls are available to you in the SDK's GitHub repository. These samples provide example
-code for additional scenarios commonly encountered while working with Azure Key Vault.
+Several Azure Key Vault Java client library samples are available to you in the SDK's GitHub repository. These samples
+provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
 
 ## Next steps samples
 Samples are explained in detail [here][samples_readme].
@@ -233,7 +233,6 @@ Samples are explained in detail [here][samples_readme].
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
 
 ## Contributing
-
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License
 Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For
 details, visit https://cla.microsoft.com.
@@ -257,11 +256,13 @@ For details on contributing to this repository, see the [contributing guide][con
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://learn.microsoft.com/azure/key-vault/
 [azkeyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
+[azure_ca]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_keyvault]: https://learn.microsoft.com/azure/key-vault/general/overview
 [azure_keyvault_cli]: https://learn.microsoft.com/azure/key-vault/general/quick-create-cli
 [azure_keyvault_portal]: https://learn.microsoft.com/azure/key-vault/general/quick-create-portal
 [azure_subscription]: https://azure.microsoft.com/free/
+[azure_sdk_bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md
 [contributing_guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [default_azure_credential]: https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential
 [http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients
