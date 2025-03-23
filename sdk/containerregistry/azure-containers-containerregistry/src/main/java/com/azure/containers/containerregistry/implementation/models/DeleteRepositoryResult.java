@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Deleted repository.
- */
+/** Deleted repository. */
 @Immutable
 public final class DeleteRepositoryResult implements JsonSerializable<DeleteRepositoryResult> {
     /*
@@ -27,15 +25,13 @@ public final class DeleteRepositoryResult implements JsonSerializable<DeleteRepo
      */
     private List<String> deletedTags;
 
-    /**
-     * Creates an instance of DeleteRepositoryResult class.
-     */
+    /** Creates an instance of DeleteRepositoryResult class. */
     public DeleteRepositoryResult() {
     }
 
     /**
      * Get the deletedManifests property: SHA of the deleted image.
-     * 
+     *
      * @return the deletedManifests value.
      */
     public List<String> getDeletedManifests() {
@@ -44,28 +40,28 @@ public final class DeleteRepositoryResult implements JsonSerializable<DeleteRepo
 
     /**
      * Get the deletedTags property: Tag of the deleted image.
-     * 
+     *
      * @return the deletedTags value.
      */
     public List<String> getDeletedTags() {
         return this.deletedTags;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("manifestsDeleted", this.deletedManifests,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("tagsDeleted", this.deletedTags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of DeleteRepositoryResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeleteRepositoryResult if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeleteRepositoryResult.
      */
     public static DeleteRepositoryResult fromJson(JsonReader jsonReader) throws IOException {

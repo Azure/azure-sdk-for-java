@@ -138,10 +138,6 @@ public class SemanticSearchExample {
 
         SemanticSearchResults semanticSearchResults = results.getSemanticResults();
 
-        System.out.println("Semantic Query Rewrites Result Type: " + semanticSearchResults.getSemanticQueryRewritesResultType());
-
-
-
         System.out.println("Semantic Results Type: " + semanticSearchResults.getResultsType());
 
         if (semanticSearchResults.getErrorReason() != null) {

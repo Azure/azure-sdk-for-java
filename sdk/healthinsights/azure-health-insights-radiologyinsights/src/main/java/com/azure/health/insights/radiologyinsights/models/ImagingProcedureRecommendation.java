@@ -76,6 +76,23 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
         return this.imagingProcedures;
     }
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -125,7 +142,7 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
             }
             ImagingProcedureRecommendation deserializedImagingProcedureRecommendation
                 = new ImagingProcedureRecommendation(imagingProcedures);
-            deserializedImagingProcedureRecommendation.setExtension(extension);
+            deserializedImagingProcedureRecommendation.extension = extension;
             deserializedImagingProcedureRecommendation.kind = kind;
             deserializedImagingProcedureRecommendation.procedureCodes = procedureCodes;
             return deserializedImagingProcedureRecommendation;

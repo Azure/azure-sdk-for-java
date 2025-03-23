@@ -152,14 +152,14 @@ public class SecretClientBuilderTest {
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        SecretClientBuilder secretClientBuilder = new SecretClientBuilder().vaultUrl(vaultUrl)
+        SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
-            .addPolicy(new TestUtils.PerRetryPolicy());
+            .addPolicy(new TestUtils.PerRetryPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .buildAsyncClient();
 
-        secretClientBuilder.buildClient();
-
-        HttpPipeline pipeline = secretClientBuilder.getPipelineForTest();
+        HttpPipeline pipeline = secretAsyncClient.getHttpPipeline();
 
         int retryPolicyPosition = -1, perCallPolicyPosition = -1, perRetryPolicyPosition = -1;
 

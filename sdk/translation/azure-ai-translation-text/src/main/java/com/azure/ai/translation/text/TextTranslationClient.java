@@ -1232,14 +1232,14 @@ public final class TextTranslationClient {
         if (scopes == null) {
             return null;
         }
-        StringBuilder result = new StringBuilder();
+        String result = "";
         for (LanguageScope scope : scopes) {
-            if (result.length() > 0) {
-                result.append(",");
+            if (!result.isEmpty()) {
+                result += ",";
             }
-            result.append(scope.toString());
+            result += scope.toString();
         }
-        return result.toString();
+        return result;
     }
 
     /**

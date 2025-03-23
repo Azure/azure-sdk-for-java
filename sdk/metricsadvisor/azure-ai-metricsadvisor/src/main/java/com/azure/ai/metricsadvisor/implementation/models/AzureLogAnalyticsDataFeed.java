@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,54 +20,14 @@ import java.util.UUID;
 @Fluent
 public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /*
-     * data source type
-     */
-    private DataSourceType dataSourceType = DataSourceType.AZURE_LOG_ANALYTICS;
-
-    /*
      * The dataSourceParameter property.
      */
     private AzureLogAnalyticsParameter dataSourceParameter;
-
-    /*
-     * data feed created time
-     */
-    private OffsetDateTime createdTime;
-
-    /*
-     * data feed status
-     */
-    private EntityStatus status;
-
-    /*
-     * data feed creator
-     */
-    private String creator;
-
-    /*
-     * the query user is one of data feed administrator or not
-     */
-    private Boolean isAdmin;
-
-    /*
-     * data feed unique id
-     */
-    private UUID dataFeedId;
 
     /**
      * Creates an instance of AzureLogAnalyticsDataFeed class.
      */
     public AzureLogAnalyticsDataFeed() {
-    }
-
-    /**
-     * Get the dataSourceType property: data source type.
-     * 
-     * @return the dataSourceType value.
-     */
-    @Override
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
     }
 
     /**
@@ -89,56 +48,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     public AzureLogAnalyticsDataFeed setDataSourceParameter(AzureLogAnalyticsParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
-    }
-
-    /**
-     * Get the createdTime property: data feed created time.
-     * 
-     * @return the createdTime value.
-     */
-    @Override
-    public OffsetDateTime getCreatedTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the status property: data feed status.
-     * 
-     * @return the status value.
-     */
-    @Override
-    public EntityStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Get the creator property: data feed creator.
-     * 
-     * @return the creator value.
-     */
-    @Override
-    public String getCreator() {
-        return this.creator;
-    }
-
-    /**
-     * Get the isAdmin property: the query user is one of data feed administrator or not.
-     * 
-     * @return the isAdmin value.
-     */
-    @Override
-    public Boolean isAdmin() {
-        return this.isAdmin;
-    }
-
-    /**
-     * Get the dataFeedId property: data feed unique id.
-     * 
-     * @return the dataFeedId value.
-     */
-    @Override
-    public UUID getDataFeedId() {
-        return this.dataFeedId;
     }
 
     /**
@@ -357,12 +266,11 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.AZURE_LOG_ANALYTICS == null ? null : DataSourceType.AZURE_LOG_ANALYTICS.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());
@@ -393,8 +301,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
-        jsonWriter.writeStringField("dataSourceType",
-            this.dataSourceType == null ? null : this.dataSourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -404,7 +310,8 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureLogAnalyticsDataFeed if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureLogAnalyticsDataFeed.
      */
     public static AzureLogAnalyticsDataFeed fromJson(JsonReader jsonReader) throws IOException {
@@ -414,7 +321,14 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    String dataSourceType = reader.getString();
+                    if (!"AzureLogAnalytics".equals(dataSourceType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceType' was expected to be non-null and equal to 'AzureLogAnalytics'. The found 'dataSourceType' was '"
+                                + dataSourceType + "'.");
+                    }
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed.setDataFeedName(reader.getString());
                 } else if ("granularityName".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed
@@ -423,11 +337,11 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedAzureLogAnalyticsDataFeed.setMetrics(metrics);
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsDataFeed.setDataStartFrom(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedAzureLogAnalyticsDataFeed.setDataStartFrom(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsDataFeed.dataFeedId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedAzureLogAnalyticsDataFeed
+                        .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed.setDataFeedDescription(reader.getString());
                 } else if ("granularityAmount".equals(fieldName)) {
@@ -473,14 +387,14 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
                     List<String> viewers = reader.readArray(reader1 -> reader1.getString());
                     deserializedAzureLogAnalyticsDataFeed.setViewers(viewers);
                 } else if ("isAdmin".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsDataFeed.isAdmin = reader.getNullable(JsonReader::getBoolean);
+                    deserializedAzureLogAnalyticsDataFeed.setIsAdmin(reader.getNullable(JsonReader::getBoolean));
                 } else if ("creator".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsDataFeed.creator = reader.getString();
+                    deserializedAzureLogAnalyticsDataFeed.setCreator(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsDataFeed.status = EntityStatus.fromString(reader.getString());
+                    deserializedAzureLogAnalyticsDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsDataFeed.createdTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedAzureLogAnalyticsDataFeed.setCreatedTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {
@@ -491,9 +405,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed.dataSourceParameter
                         = AzureLogAnalyticsParameter.fromJson(reader);
-                } else if ("dataSourceType".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsDataFeed.dataSourceType
-                        = DataSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -95,6 +95,23 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
         return this.orderedProcedure;
     }
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -148,7 +165,7 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
             }
             RadiologyProcedureInference deserializedRadiologyProcedureInference
                 = new RadiologyProcedureInference(imagingProcedures, orderedProcedure);
-            deserializedRadiologyProcedureInference.setExtension(extension);
+            deserializedRadiologyProcedureInference.extension = extension;
             deserializedRadiologyProcedureInference.kind = kind;
             deserializedRadiologyProcedureInference.procedureCodes = procedureCodes;
             return deserializedRadiologyProcedureInference;

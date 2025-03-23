@@ -61,6 +61,23 @@ public final class CriticalResultInference extends RadiologyInsightsInference {
         return this.result;
     }
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -103,7 +120,7 @@ public final class CriticalResultInference extends RadiologyInsightsInference {
                 }
             }
             CriticalResultInference deserializedCriticalResultInference = new CriticalResultInference(result);
-            deserializedCriticalResultInference.setExtension(extension);
+            deserializedCriticalResultInference.extension = extension;
             deserializedCriticalResultInference.kind = kind;
             return deserializedCriticalResultInference;
         });

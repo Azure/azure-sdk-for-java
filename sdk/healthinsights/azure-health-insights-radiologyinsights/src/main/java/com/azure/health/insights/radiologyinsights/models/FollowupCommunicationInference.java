@@ -96,6 +96,23 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
         return this.acknowledged;
     }
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -150,7 +167,7 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
             }
             FollowupCommunicationInference deserializedFollowupCommunicationInference
                 = new FollowupCommunicationInference(acknowledged);
-            deserializedFollowupCommunicationInference.setExtension(extension);
+            deserializedFollowupCommunicationInference.extension = extension;
             deserializedFollowupCommunicationInference.kind = kind;
             deserializedFollowupCommunicationInference.communicatedAt = communicatedAt;
             deserializedFollowupCommunicationInference.recipient = recipient;

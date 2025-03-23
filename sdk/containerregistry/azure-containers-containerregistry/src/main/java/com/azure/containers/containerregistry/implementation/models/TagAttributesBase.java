@@ -5,18 +5,15 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
-/**
- * Tag attribute details.
- */
+/** Tag attribute details. */
 @Fluent
 public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
     /*
@@ -59,15 +56,13 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
      */
     private Boolean readEnabled;
 
-    /**
-     * Creates an instance of TagAttributesBase class.
-     */
+    /** Creates an instance of TagAttributesBase class. */
     public TagAttributesBase() {
     }
 
     /**
      * Get the name property: Tag name.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -76,7 +71,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Set the name property: Tag name.
-     * 
+     *
      * @param name the name value to set.
      * @return the TagAttributesBase object itself.
      */
@@ -87,7 +82,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Get the digest property: Tag digest.
-     * 
+     *
      * @return the digest value.
      */
     public String getDigest() {
@@ -96,7 +91,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Set the digest property: Tag digest.
-     * 
+     *
      * @param digest the digest value to set.
      * @return the TagAttributesBase object itself.
      */
@@ -107,7 +102,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Get the createdOn property: Tag created time.
-     * 
+     *
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
@@ -116,7 +111,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Set the createdOn property: Tag created time.
-     * 
+     *
      * @param createdOn the createdOn value to set.
      * @return the TagAttributesBase object itself.
      */
@@ -127,7 +122,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Get the lastUpdatedOn property: Tag last update time.
-     * 
+     *
      * @return the lastUpdatedOn value.
      */
     public OffsetDateTime getLastUpdatedOn() {
@@ -136,7 +131,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Set the lastUpdatedOn property: Tag last update time.
-     * 
+     *
      * @param lastUpdatedOn the lastUpdatedOn value to set.
      * @return the TagAttributesBase object itself.
      */
@@ -147,7 +142,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Get the deleteEnabled property: Delete enabled.
-     * 
+     *
      * @return the deleteEnabled value.
      */
     public Boolean isDeleteEnabled() {
@@ -156,7 +151,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Set the deleteEnabled property: Delete enabled.
-     * 
+     *
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the TagAttributesBase object itself.
      */
@@ -167,7 +162,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Get the writeEnabled property: Write enabled.
-     * 
+     *
      * @return the writeEnabled value.
      */
     public Boolean isWriteEnabled() {
@@ -176,7 +171,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Set the writeEnabled property: Write enabled.
-     * 
+     *
      * @param writeEnabled the writeEnabled value to set.
      * @return the TagAttributesBase object itself.
      */
@@ -187,7 +182,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Get the listEnabled property: List enabled.
-     * 
+     *
      * @return the listEnabled value.
      */
     public Boolean isListEnabled() {
@@ -196,7 +191,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Set the listEnabled property: List enabled.
-     * 
+     *
      * @param listEnabled the listEnabled value to set.
      * @return the TagAttributesBase object itself.
      */
@@ -207,7 +202,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Get the readEnabled property: Read enabled.
-     * 
+     *
      * @return the readEnabled value.
      */
     public Boolean isReadEnabled() {
@@ -216,7 +211,7 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Set the readEnabled property: Read enabled.
-     * 
+     *
      * @param readEnabled the readEnabled value to set.
      * @return the TagAttributesBase object itself.
      */
@@ -225,18 +220,13 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("digest", this.digest);
-        jsonWriter.writeStringField("createdTime",
-            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
-        jsonWriter.writeStringField("lastUpdateTime",
-            this.lastUpdatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedOn));
+        jsonWriter.writeStringField("createdTime", Objects.toString(this.createdOn, null));
+        jsonWriter.writeStringField("lastUpdateTime", Objects.toString(this.lastUpdatedOn, null));
         if (deleteEnabled != null || writeEnabled != null || listEnabled != null || readEnabled != null) {
             jsonWriter.writeStartObject("changeableAttributes");
             jsonWriter.writeBooleanField("deleteEnabled", this.deleteEnabled);
@@ -250,10 +240,10 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
 
     /**
      * Reads an instance of TagAttributesBase from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of TagAttributesBase if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TagAttributesBase.
      */
@@ -269,11 +259,11 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
                 } else if ("digest".equals(fieldName)) {
                     deserializedTagAttributesBase.digest = reader.getString();
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedTagAttributesBase.createdOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedTagAttributesBase.createdOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("lastUpdateTime".equals(fieldName)) {
-                    deserializedTagAttributesBase.lastUpdatedOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedTagAttributesBase.lastUpdatedOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("changeableAttributes".equals(fieldName)
                     && reader.currentToken() == JsonToken.START_OBJECT) {
                     while (reader.nextToken() != JsonToken.END_OBJECT) {

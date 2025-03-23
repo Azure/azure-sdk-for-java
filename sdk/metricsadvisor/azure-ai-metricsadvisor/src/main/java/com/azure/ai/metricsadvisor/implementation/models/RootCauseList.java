@@ -48,9 +48,6 @@ public final class RootCauseList implements JsonSerializable<RootCauseList> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

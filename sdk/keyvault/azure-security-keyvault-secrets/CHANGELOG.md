@@ -1,14 +1,15 @@
 # Release History
 
-## 4.10.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 4.9.4 (2025-03-19)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
 
 ## 4.9.3 (2025-03-04)
 
@@ -33,6 +34,7 @@
 
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
 
 ## 4.9.0 (2024-10-15)
 
