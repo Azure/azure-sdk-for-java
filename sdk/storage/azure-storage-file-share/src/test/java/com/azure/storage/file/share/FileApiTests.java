@@ -3276,8 +3276,9 @@ class FileApiTests extends FileShareTestBase {
         Response<ShareFileSymbolicLinkInfo> getSymLinkResponse = symlink.getSymbolicLinkWithResponse(null, null);
 
         // Assert
-        assertNull(null, getSymLinkResponse.getValue().getETag());
-        assertNull(null, getSymLinkResponse.getValue().getLastModified().toString());
+        assertNotNull(getSymLinkResponse.getValue().getETag());
+        assertNotNull(getSymLinkResponse.getValue().getLastModified().toString());
+
         try {
             assertEquals(source.getFileUrl(),
                 URLDecoder.decode(getSymLinkResponse.getValue().getLinkText(), StandardCharsets.UTF_8.toString()));

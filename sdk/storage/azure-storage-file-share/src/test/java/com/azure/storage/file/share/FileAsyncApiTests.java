@@ -2095,22 +2095,23 @@ public class FileAsyncApiTests extends FileShareTestBase {
         // Arrange
         String shareName = generateShareName();
 
-        Mono<ShareFileSymbolicLinkInfo> testMono
-            = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
-                ShareDirectoryAsyncClient directory = premiumShareClient.getDirectoryClient(generatePathName());
-                ShareFileAsyncClient source = directory.getFileClient(generatePathName());
-                ShareFileAsyncClient symlink = directory.getFileClient(generatePathName());
+        Mono<Boolean> createAndGetErrors = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
+            ShareDirectoryAsyncClient directory = premiumShareClient.getDirectoryClient(generatePathName());
+            ShareFileAsyncClient source = directory.getFileClient(generatePathName());
+            ShareFileAsyncClient symlink = directory.getFileClient(generatePathName());
 
-                // Act & Assert: Try creating a symbolic link before creating the directory to force ParentNotFound error.
-                return symlink.createSymbolicLink(source.getFileUrl()).then(symlink.getSymbolicLink()); // Try fetching the symlink right after creation
+            return symlink.createSymbolicLink(source.getFileUrl()).then(Mono.just(false)).onErrorResume(e -> {
+                ShareStorageException createError = assertInstanceOf(ShareStorageException.class, e);
+                assertEquals(ShareErrorCode.PARENT_NOT_FOUND, createError.getErrorCode());
+                return symlink.getSymbolicLink().then(Mono.just(false));
+            }).onErrorResume(e -> {
+                ShareStorageException getError = assertInstanceOf(ShareStorageException.class, e);
+                assertEquals(ShareErrorCode.PARENT_NOT_FOUND, getError.getErrorCode());
+                return Mono.just(true);
             });
-
-        // StepVerifier: Ensure both operations fail with ParentNotFound error
-        StepVerifier.create(testMono).verifyErrorSatisfies(error -> {
-            assertTrue(error instanceof ShareStorageException);
-            ShareStorageException storageException = (ShareStorageException) error;
-            assertEquals(ShareErrorCode.PARENT_NOT_FOUND, storageException.getErrorCode());
         });
+
+        StepVerifier.create(createAndGetErrors).assertNext(Assertions::assertTrue).verifyComplete();
 
         // Cleanup
         premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
