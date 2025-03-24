@@ -49,9 +49,8 @@ public class HttpRequestInitializerTest {
 
         // Ensure each query parameter is appended correctly
         String expectedQueryStatement = "HashMap<String, Object> queryParamMap = new HashMap<>(); "
-            + "queryParamMap.put(\"" + queryKey1 + "\", " + queryValue1 + "); "
-            + "queryParamMap.put(\"" + queryKey2 + "\", " + queryValue2 + "); "
-            + "newUrl = CoreUtils.appendQueryParams(url, queryParamMap, ',');";
+            + "queryParamMap.put(\"" + queryKey1 + "\", " + queryValue1 + "); " + "queryParamMap.put(\"" + queryKey2
+            + "\", " + queryValue2 + "); " + "newUrl = CoreUtils.appendQueryParams(url, queryParamMap);";
         assertTrue(normalizedBody.contains(expectedQueryStatement));
 
         // Ensure the final HttpRequest construction is correct

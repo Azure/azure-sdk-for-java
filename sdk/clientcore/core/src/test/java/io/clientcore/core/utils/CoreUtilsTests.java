@@ -303,12 +303,15 @@ public class CoreUtilsTests {
 
             // Test cases with existing query string
             Arguments.of("https://example.com?existingParam=value", "api-version", Collections.singletonList("1.0"),
-                 "https://example.com?existingParam=value&api-version=1.0"),
+                "https://example.com?existingParam=value&api-version=1.0"),
             Arguments.of("https://example.com?existingParam=value", "api-version", Arrays.asList("1.0", "2.0"),
                 "https://example.com?existingParam=value&api-version=1.0,2.0"),
 
             // Test cases with empty URL
-            Arguments.of("", "api-version", Collections.singletonList("1.0"), "?api-version=1.0"));
+            Arguments.of("", "api-version", Collections.singletonList("1.0"), "?api-version=1.0"),
+
+            // Test case with a non-empty map and one of the keys having a null value
+            Arguments.of("https://example.com", "api-version", null, "https://example.com"));
     }
 
     @Test

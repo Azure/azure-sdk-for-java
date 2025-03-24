@@ -444,13 +444,16 @@ public final class CoreUtils {
         for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-            String valueString;
 
+            // Skip null values
+            if (value == null) {
+                continue;
+            }
+
+            String valueString;
             if (value instanceof List<?>) {
                 List<?> valueList = (List<?>) value;
-                valueString = valueList.stream()
-                    .map(Object::toString)
-                    .collect(Collectors.joining(String.valueOf(',')));  // Join with delimiter
+                valueString = valueList.stream().map(Object::toString).collect(Collectors.joining(String.valueOf(',')));  // Join with delimiter
             } else {
                 valueString = value.toString();
             }
