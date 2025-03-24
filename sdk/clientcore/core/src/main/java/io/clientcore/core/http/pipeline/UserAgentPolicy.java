@@ -43,14 +43,13 @@ import io.clientcore.core.utils.configuration.Configuration;
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
 public class UserAgentPolicy implements HttpPipelinePolicy {
-    private static final String APPLICATION_ID_KEY = "application.id";
     private final String userAgent;
 
     /**
      * Creates a {@link UserAgentPolicy} with a default user agent string.
      */
     public UserAgentPolicy() {
-        this(null);
+        this((String) null);
     }
 
     /**
@@ -70,12 +69,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Creates a UserAgentPolicy with the {@code sdkName} and {@code sdkVersion} in the User-Agent header value.
      *
-     * @param sdkName Name of the client library.
-     * @param sdkVersion Version of the client library.
-     * @param configuration The configuration with additional properties of the user agent string.
+     * @param userAgentOptions Options allowing to customize the user agent string.
      */
-    public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration) {
-        this.userAgent = toUserAgentString(sdkName, sdkVersion, configuration);
+    public UserAgentPolicy(UserAgentOptions userAgentOptions) {
+        this.userAgent = toUserAgentString(userAgentOptions);
     }
 
     @Override
@@ -102,20 +99,15 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Return user agent string for the given sdk name and version.
      *
-     * @param sdkName Name of the SDK.
-     * @param sdkVersion Version of the SDK.
-     * @param configuration The configuration with additional properties of the user agent string.
-     * @return User agent string as specified in design guidelines.
+     * @param userAgentOptions Options allowing to customize the user agent string.
      *
      * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
      * length.
      */
-    private static String toUserAgentString(String sdkName, String sdkVersion, Configuration configuration) {
+    private static String toUserAgentString(UserAgentOptions userAgentOptions) {
         StringBuilder userAgentBuilder = new StringBuilder();
 
-        Configuration config = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
-
-        String applicationId = config.get(APPLICATION_ID_KEY);
+        String applicationId = userAgentOptions.getApplicationId();
 
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
@@ -128,7 +120,11 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         }
 
         // Add the required default User-Agent string.
-        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER).append("-").append(sdkName).append("/").append(sdkVersion);
+        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER)
+            .append("-")
+            .append(userAgentOptions.getSdkName())
+            .append("/")
+            .append(userAgentOptions.getSdkVersion());
         appendPlatformInfo(userAgentBuilder);
 
         return userAgentBuilder.toString();
