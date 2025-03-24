@@ -133,7 +133,7 @@
     "com.azure.developer.loadtesting.LoadTestRunClient.stopTestRun": "Customizations.TestRunOperations.stop",
     "com.azure.developer.loadtesting.LoadTestRunClient.stopTestRunWithResponse": "Customizations.TestRunOperations.stop",
     "com.azure.developer.loadtesting.LoadTestRunClientBuilder": "Customizations.TestRunOperations",
-    "com.azure.developer.loadtesting.models.Aggregation": "Microsoft.LoadTestService.Aggregation",
+    "com.azure.developer.loadtesting.models.AggregationType": "Microsoft.LoadTestService.Aggregation",
     "com.azure.developer.loadtesting.models.ArtifactsContainerInfo": "Microsoft.LoadTestService.ArtifactsContainerInfo",
     "com.azure.developer.loadtesting.models.AutoStopCriteria": "Microsoft.LoadTestService.AutoStopCriteria",
     "com.azure.developer.loadtesting.models.CertificateType": "Microsoft.LoadTestService.CertificateType",
