@@ -37,8 +37,6 @@ public final class PathBuilder {
             throw new NullPointerException("method cannot be null");
         }
 
-        boolean hasQueryParams = !method.getQueryParams().isEmpty();
-
         // Pattern for substitution placeholders
         Pattern pattern = Pattern.compile("\\{(.+?)}");
         Matcher matcher = pattern.matcher(rawHost);
@@ -65,25 +63,12 @@ public final class PathBuilder {
 
         matcher.appendTail(buffer);
 
-        if (hasQueryParams) {
-            buffer.append("?");
-
-            method.getQueryParams().forEach((key, value) -> {
-                if (key.isEmpty() || value.isEmpty()) {
-                    throw new IllegalArgumentException("Query parameter key and value must not be empty");
-                }
-                buffer.append(key).append("=\" + ").append(Objects.toString(value, "null")).append(" + \"&");
-            });
-
-            // Remove the trailing '&'
-            buffer.setLength(buffer.length() - 1);
-        }
-
         // Ensure the output is properly quoted
         if (buffer.charAt(0) != '"' && !rawHost.startsWith("{")) {
             buffer.insert(0, '"');
         }
-        if (!hasQueryParams && buffer.charAt(buffer.length() - 1) != '"' && !rawHost.endsWith("}")) {
+
+        if (buffer.charAt(buffer.length() - 1) != '"' && !rawHost.endsWith("}")) {
             buffer.append('"');
         }
 

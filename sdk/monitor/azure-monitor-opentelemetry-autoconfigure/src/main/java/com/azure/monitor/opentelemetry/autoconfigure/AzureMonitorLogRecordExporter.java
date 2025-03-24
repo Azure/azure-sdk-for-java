@@ -9,6 +9,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.SemanticAttr
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryItemExporter;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulse;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.logs.data.LogRecordData;
@@ -33,14 +34,17 @@ class AzureMonitorLogRecordExporter implements LogRecordExporter {
     private final AtomicBoolean stopped = new AtomicBoolean();
     private final LogDataMapper mapper;
     private final TelemetryItemExporter telemetryItemExporter;
+    private final QuickPulse quickPulse;
 
     /**
      * Creates an instance of log exporter that is configured with given exporter client that sends
      * telemetry events to Application Insights resource identified by the instrumentation key.
      */
-    AzureMonitorLogRecordExporter(LogDataMapper mapper, TelemetryItemExporter telemetryItemExporter) {
+    AzureMonitorLogRecordExporter(LogDataMapper mapper, TelemetryItemExporter telemetryItemExporter,
+        QuickPulse quickPulse) {
         this.mapper = mapper;
         this.telemetryItemExporter = telemetryItemExporter;
+        this.quickPulse = quickPulse;
     }
 
     /**
@@ -61,7 +65,11 @@ class AzureMonitorLogRecordExporter implements LogRecordExporter {
             LOGGER.verbose("exporting log: {}", log);
             try {
                 String stack = log.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
-                telemetryItems.add(mapper.map(log, stack, null));
+                TelemetryItem telemetryItem = mapper.map(log, stack, null);
+                telemetryItems.add(telemetryItem);
+                if (quickPulse != null && quickPulse.isEnabled()) {
+                    quickPulse.add(telemetryItem);
+                }
                 OPERATION_LOGGER.recordSuccess();
             } catch (Throwable t) {
                 OPERATION_LOGGER.recordFailure(t.getMessage(), t, AzureMonitorMsgId.EXPORTER_MAPPING_ERROR);

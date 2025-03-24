@@ -19,7 +19,7 @@ public final class HttpRequestContext {
 
     // Request Configuration
     private String methodName;
-    private String methodReturnType;
+    private TypeMirror methodReturnType;
     private final List<MethodParameter> parameters;
     private HttpMethod httpMethod;
     private boolean isConvenience;
@@ -34,7 +34,7 @@ public final class HttpRequestContext {
     private String path;
 
     private final Map<String, String> headers;
-    private final Map<String, String> queryParams;
+    private final Map<String, QueryParameter> queryParams;
 
     private final Map<String, Substitution> substitutions;
 
@@ -75,7 +75,7 @@ public final class HttpRequestContext {
      *
      * @return the method return type.
      */
-    public String getMethodReturnType() {
+    public TypeMirror getMethodReturnType() {
         return methodReturnType;
     }
 
@@ -84,7 +84,7 @@ public final class HttpRequestContext {
      *
      * @param methodReturnType the method return type to set.
      */
-    public void setMethodReturnType(String methodReturnType) {
+    public void setMethodReturnType(TypeMirror methodReturnType) {
         this.methodReturnType = methodReturnType;
     }
 
@@ -184,7 +184,7 @@ public final class HttpRequestContext {
      *
      * @return the query parameters.
      */
-    public Map<String, String> getQueryParams() {
+    public Map<String, QueryParameter> getQueryParams() {
         return queryParams;
     }
 
@@ -193,13 +193,15 @@ public final class HttpRequestContext {
      *
      * @param key the query parameter key.
      * @param value the query parameter value.
+     * @param isMultiple boolean indicating whether this query parameter list values should be sent as individual query
+     * params or as a single Json
      * @throws IllegalArgumentException if a duplicate query parameter is added.
      */
-    public void addQueryParam(String key, String value) {
+    public void addQueryParam(String key, String value, boolean isMultiple) {
         if (queryParams.containsKey(key)) {
             throw new IllegalArgumentException("Cannot add duplicate query parameter '" + key + "'");
         }
-        queryParams.put(key, value);
+        queryParams.put(key, new QueryParameter(value, isMultiple));
     }
 
     /**
@@ -382,6 +384,43 @@ public final class HttpRequestContext {
          */
         public String getParameterName() {
             return parameterName;
+        }
+    }
+
+    /**
+     * Represents a query parameter.
+     */
+    public static class QueryParameter {
+        private final String value;
+        private final boolean isMultiple;
+
+        /**
+         * Constructs a new QueryParameter.
+         *
+         * @param value the value of the query parameter.
+         * @param isMultiple whether the parameter can accept multiple values.
+         */
+        public QueryParameter(String value, boolean isMultiple) {
+            this.value = value;
+            this.isMultiple = isMultiple;
+        }
+
+        /**
+         * Gets the value of the query parameter.
+         *
+         * @return the value.
+         */
+        public String getValue() {
+            return value;
+        }
+
+        /**
+         * Checks whether the query parameter allows multiple values.
+         *
+         * @return true if the parameter can accept multiple values, otherwise false.
+         */
+        public boolean isMultiple() {
+            return isMultiple;
         }
     }
 }

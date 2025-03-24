@@ -3,11 +3,15 @@
 
 package io.clientcore.core.serialization.json;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 /**
  * Contains configuration options for creating a {@link JsonReader} or {@link JsonWriter}.
  *
  * @see io.clientcore.core.serialization.json
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class JsonOptions {
 
     private boolean isJsoncSupported;

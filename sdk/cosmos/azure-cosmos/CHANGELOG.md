@@ -1,8 +1,24 @@
 ## Release History
 
-### 4.67.0 (2025-02-20)
+### 4.69.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 4.68.0 (2025-03-20)
+
+#### Bugs Fixed
+* Fixed applications possibly not closing gracefully due to thread `partition-availability-staleness-check` not being a daemon thread. - [PR 44441](https://github.com/Azure/azure-sdk-for-java/pull/44441).
+* Fixed an issue, which could result in missing to create lease documents when errors happen during the first initialization of the `ChangeFeedProcessor`. This would result in not processing change events for those partitions. - [PR 44648](https://github.com/Azure/azure-sdk-for-java/pull/44648).
+
+### 4.67.0 (2025-02-20)
+
+#### Other Changes
 * Block `ChangeFeedProcessor` from starting by throwing an `IllegalStateException` when the lease container contains leases with the same lease prefix but different `ChangeFeedMode` - [PR 43798](https://github.com/Azure/azure-sdk-for-java/pull/43798).
 
 ### 4.66.1 (2025-02-08)

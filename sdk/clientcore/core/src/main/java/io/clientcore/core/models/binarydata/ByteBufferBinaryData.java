@@ -3,6 +3,8 @@
 
 package io.clientcore.core.models.binarydata;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -20,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 /**
  * A {@link BinaryData} implementation backed by a {@link ByteBuffer}.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 final class ByteBufferBinaryData extends BinaryData {
     private final ByteBuffer content;
 

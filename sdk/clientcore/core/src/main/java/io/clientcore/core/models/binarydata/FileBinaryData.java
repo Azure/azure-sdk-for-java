@@ -3,6 +3,8 @@
 
 package io.clientcore.core.models.binarydata;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.utils.SliceInputStream;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -30,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 /**
  * A {@link BinaryData} implementation backed by a file.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class FileBinaryData extends BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(FileBinaryData.class);
     private final Path file;

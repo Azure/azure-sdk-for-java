@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.utils.ServerSentEventHelper;
+import io.clientcore.core.models.ServerSentResult;
 
 import java.io.BufferedReader;
 import java.io.IOException;

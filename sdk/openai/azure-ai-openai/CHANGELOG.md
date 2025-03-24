@@ -1,5 +1,32 @@
 # Release History
 
+## 1.0.0-beta.16 (Unreleased)
+
+### Features Added
+
+- Added `ServiceTier` and `ServiceTierOptions` for `ChatCompletions` and `ChatCompletionsOptions` respectively. This is exclusively a non-Azure OpenAI issue and was requested in [this issue](https://github.com/Azure/azure-sdk-for-java/issues/41695#issuecomment-2736037879).
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- The serialization and the subsequent serialization of any subclass of `ChatRequestMessage` (namely, `ChatRequestAssistantMessage`, `ChatRequestDeveloperMessage`, `ChatRequestFunctionMessage`, `ChatRequestSystemMessage`, `ChatRequestToolMessage`, `ChatRequestUserMessage`) was faulty. The `content` member of most of these classes was lost. Related issues are [42882](https://github.com/Azure/azure-sdk-for-java/issues/42882) and [44094](https://github.com/Azure/azure-sdk-for-java/issues/44094).
+
+### Other Changes
+
+## 1.0.0-beta.15 (2025-03-14)
+
+### Features Added
+
+- New subpackage `com.azure.ai.openai.responses` contains support for OpenAI's recently released Responses functionality.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` to version `1.15.11`.
+
 ## 1.0.0-beta.14 (2025-02-21)
 
 ### Features Added

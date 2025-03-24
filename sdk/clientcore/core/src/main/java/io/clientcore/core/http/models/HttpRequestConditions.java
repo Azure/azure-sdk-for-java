@@ -4,7 +4,7 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.time.OffsetDateTime;
 
@@ -23,7 +23,7 @@ import java.time.OffsetDateTime;
  * @see HttpMatchConditions
  * @see OffsetDateTime
  */
-@Metadata(conditions = TypeConditions.FLUENT)
+@Metadata(properties = MetadataProperties.FLUENT)
 public class HttpRequestConditions extends HttpMatchConditions {
     private OffsetDateTime ifModifiedSince;
     private OffsetDateTime ifUnmodifiedSince;

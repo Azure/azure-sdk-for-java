@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -35,13 +37,14 @@ import java.util.Objects;
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .httpClient&#40;HttpClient.getNewInstance&#40;&#41;&#41;
- *     .policies&#40;new HttpRetryPolicy&#40;&#41;&#41;
+ *     .addPolicy&#40;new HttpRetryPolicy&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->
  *
  * @see HttpPipeline
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class HttpPipelineBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineBuilder.class);
 
@@ -104,7 +107,7 @@ public class HttpPipelineBuilder {
         if (httpClient != null) {
             client = httpClient;
         } else {
-            if (Configuration.getGlobalConfiguration().get("ENABLE_HTTP_CLIENT_SHARING", Boolean.TRUE)) {
+            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_HTTP_CLIENT_SHARING"))) {
                 client = HttpClient.getSharedInstance();
             } else {
                 client = HttpClient.getNewInstance();
