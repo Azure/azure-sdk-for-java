@@ -163,17 +163,14 @@ public class AnnotationProcessor extends AbstractProcessor {
             // Switch based on annotations
             if (hostParam != null) {
                 method.addSubstitution(
-                    new Substitution(hostParam.value(), param.getSimpleName().toString(), hostParam.encoded()));
+                    new Substitution(hostParam.value(), param.getSimpleName().toString(), !hostParam.encoded()));
             } else if (pathParam != null) {
-                if (pathParam.encoded()) {
-                    isEncoded = true;
-                }
                 if (pathParam.value() == null) {
                     throw new IllegalArgumentException(
                         "Path parameter '" + param.getSimpleName().toString() + "' must not be null.");
                 }
                 method.addSubstitution(
-                    new Substitution(pathParam.value(), param.getSimpleName().toString(), pathParam.encoded()));
+                    new Substitution(pathParam.value(), param.getSimpleName().toString(), !pathParam.encoded()));
             } else if (headerParam != null) {
                 method.addHeader(headerParam.value(), param.getSimpleName().toString());
             } else if (queryParam != null) {
@@ -191,12 +188,12 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         // Pre-compute host substitutions
-        method.setHost(getHost(method, isEncoded));
+        method.setHost(getHost(method));
 
         return method;
     }
 
-    private static String getHost(HttpRequestContext method, boolean isEncoded) {
+    private static String getHost(HttpRequestContext method) {
         String path = method.getPath();
         // Set the path after host, concatenating the path segment in the host.
         if (path != null && !path.isEmpty() && !"/".equals(path)) {
@@ -212,6 +209,6 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
         }
 
-        return PathBuilder.buildPath(method.getPath(), method, isEncoded);
+        return PathBuilder.buildPath(method.getPath(), method);
     }
 }

@@ -6,5 +6,4 @@
   <suppress files="io.clientcore.annotation.processor.utils.ResponseHandler.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="io.clientcore.annotation.processor.AnnotationProcessor.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.annotation.processor.models.HttpRequestContext.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="io.clientcore.annotation.processor.templating.JavaParserTemplateProcessor.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

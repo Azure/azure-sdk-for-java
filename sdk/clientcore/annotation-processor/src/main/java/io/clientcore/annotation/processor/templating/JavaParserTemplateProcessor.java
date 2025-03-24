@@ -27,6 +27,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -35,14 +36,11 @@ import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -344,6 +342,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .stream()
             .anyMatch(parameter -> "uri".equals(parameter.getName()) && "String".equals(parameter.getShortTypeName()));
 
+        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
         String urlStatement = useProvidedUri
             ? String.format("String url = uri + \"/\" + %s;", method.getHost())
             : String.format("String url = %s;", method.getHost());
@@ -361,13 +360,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
             method.getQueryParams().forEach((key, value) -> {
                 if (value.isEncoded()) {
-                    try {
-                        String encodedKey = URLEncoder.encode(key, StandardCharsets.UTF_8.name());
-                        String encodedValue = URLEncoder.encode(value.getValue(), StandardCharsets.UTF_8.name());
-                        body.addStatement("queryParamMap.put(\"" + encodedKey + "\", \"" + encodedValue + "\");");
-                    } catch (UnsupportedEncodingException e) {
-                        throw new RuntimeException(e);
-                    }
+                    String encodedValue = UriEscapers.QUERY_ESCAPER.escape(value.getValue());
+                    body.addStatement("queryParamMap.put(\"" + key + "\", \"" + encodedValue + "\");");
                 } else {
                     body.addStatement("queryParamMap.put(\"" + key + "\", " + value.getValue() + ");");
                 }

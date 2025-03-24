@@ -20,8 +20,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
-
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -111,7 +109,7 @@ public final class TestInterfaceClientImpl {
         // Service 2
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/{numberOfBytes}", expectedStatusCodes = { 200 })
         byte[] getByteArray(@HostParam("scheme") String scheme, @HostParam("hostName") String hostName,
-                            @PathParam("numberOfBytes") int numberOfBytes);
+                            @PathParam(value = "numberOfBytes", encoded = true) int numberOfBytes);
 
         // Service 3
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = { 200 })

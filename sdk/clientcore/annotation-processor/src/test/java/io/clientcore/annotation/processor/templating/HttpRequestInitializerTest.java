@@ -5,9 +5,7 @@ package io.clientcore.annotation.processor.templating;
 
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -23,7 +21,7 @@ public class HttpRequestInitializerTest {
         "GET, \"/my/uri/path\", key1, {value1}, key2, value2",
         "POST, \"/my/uri/path2\", key3, value3, key4, value4" })
     public void testInitializeHttpRequestWithParameterizedQueryParams(String httpMethod, String url, String queryKey1,
-        String queryValue1, String queryKey2, String queryValue2) throws UnsupportedEncodingException {
+        String queryValue1, String queryKey2, String queryValue2) {
 
         com.github.javaparser.ast.stmt.BlockStmt body = new com.github.javaparser.ast.stmt.BlockStmt();
         HttpRequestContext method = new HttpRequestContext();
@@ -52,9 +50,9 @@ public class HttpRequestInitializerTest {
 
         // Ensure each query parameter is appended correctly
         String expectedQueryStatement = "HashMap<String, Object> queryParamMap = new HashMap<>(); "
-            + "queryParamMap.put(\"" + queryKey1 + "\", \""
-            + URLEncoder.encode(queryValue1, StandardCharsets.UTF_8.name()) + "\"); " + "queryParamMap.put(\""
-            + queryKey2 + "\", " + queryValue2 + "); " + "newUrl = CoreUtils.appendQueryParams(url, queryParamMap);";
+            + "queryParamMap.put(\"" + queryKey1 + "\", \"" + UriEscapers.QUERY_ESCAPER.escape(queryValue1) + "\"); "
+            + "queryParamMap.put(\"" + queryKey2 + "\", " + queryValue2 + "); "
+            + "newUrl = CoreUtils.appendQueryParams(url, queryParamMap);";
 
         assertTrue(normalizedBody.contains(expectedQueryStatement));
 
