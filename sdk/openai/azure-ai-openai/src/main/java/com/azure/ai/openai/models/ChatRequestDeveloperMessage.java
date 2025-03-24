@@ -61,7 +61,7 @@ public final class ChatRequestDeveloperMessage extends ChatRequestMessage {
      * @param content the content value to set.
      */
     public ChatRequestDeveloperMessage(String content) {
-        this.content = content == null ? null : BinaryData.fromString(content);
+        this.content = BinaryData.fromString(content);
         this.stringContent = content;
         this.chatMessageContentItems = null;
     }
