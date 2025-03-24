@@ -489,3 +489,25 @@ unreleased_com.azure:azure-core-test;1.26.0-beta.1
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+
+# SDK versions for spring 2:
+spring_com.azure:azure-cosmos;4.67.0
+spring_com.azure:azure-core;1.55.2
+spring_com.azure:azure-data-appconfiguration;1.7.4
+spring_com.azure:azure-messaging-eventhubs;5.20.1
+spring_com.azure:azure-security-keyvault-certificates;4.7.3
+spring_com.azure:azure-security-keyvault-secrets;4.9.3
+spring_com.azure:azure-storage-blob;12.29.1
+spring_com.azure:azure-storage-file-share;12.25.2
+spring_com.azure:azure-storage-queue;12.24.1
+spring_com.azure:azure-identity;1.15.3
+spring_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.20.5
+spring_com.azure:azure-messaging-servicebus;7.17.9
+spring_com.azure:azure-messaging-eventhubs;5.20.1
+spring_com.azure:azure-messaging-eventgrid;4.29.0
+spring_com.azure:azure-identity-extensions;1.2.1
+spring_com.azure:azure-core-amqp;2.9.15
+spring_com.azure:azure-core-management;1.16.2
+spring_com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.32
+spring_com.azure:azure-core-test;1.27.0-beta.7
+spring_com.azure:azure-core-serializer-json-jackson;1.5.7
