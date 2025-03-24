@@ -165,7 +165,7 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
                         content = null;
                     } else {
                         throw new IllegalStateException("Unexpected 'content' type found when deserializing"
-                            + " ChatRequestUserMessage JSON object: " + reader.currentToken());
+                            + " ChatRequestSystemMessage JSON object: " + reader.currentToken());
                     }
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
