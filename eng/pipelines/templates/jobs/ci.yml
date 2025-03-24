@@ -100,6 +100,15 @@ jobs:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
 
+      - task: PowerShell@2
+        displayName: Generate CG Scan POM
+        inputs:
+          pwsh: true
+          filePath: eng/pipelines/scripts/generate-cg-scan-pom.ps1
+          arguments: -OutputFolder $(Agent.BuildDirectory)/cgscandir
+        env:
+          PACKAGEINFODIR: $(Build.ArtifactStagingDirectory)/PackageInfo
+
       - task: UsePythonVersion@0
         displayName: 'Use Python $(PythonVersion)'
         inputs:
