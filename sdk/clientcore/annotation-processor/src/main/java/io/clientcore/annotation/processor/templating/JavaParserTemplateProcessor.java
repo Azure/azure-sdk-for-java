@@ -18,6 +18,7 @@ import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -27,6 +28,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -41,6 +43,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,7 +51,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
 
@@ -103,8 +110,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         addImports(templateInput);
         addOrphanComments();
         setPackageDeclaration(packageName);
+        createClass(serviceInterfaceImplShortName, serviceInterfaceShortName, templateInput, processingEnv);
 
-        createClass(serviceInterfaceImplShortName, serviceInterfaceShortName, templateInput);
         try (Writer fileWriter = processingEnv.getFiler()
             .createSourceFile(packageName + "." + serviceInterfaceImplShortName)
             .openWriter()) {
@@ -129,7 +136,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     void createClass(String serviceInterfaceImplShortName, String serviceInterfaceShortName,
-        TemplateInput templateInput) {
+        TemplateInput templateInput, ProcessingEnvironment processingEnv) {
         classBuilder = compilationUnit.addClass(serviceInterfaceImplShortName, Modifier.Keyword.PUBLIC);
         classBuilder.setJavadocComment("Initializes a new instance of the " + serviceInterfaceImplShortName + " type.");
         String serviceInterfacePackage = templateInput.getServiceInterfaceFQN()
@@ -163,8 +170,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         for (HttpRequestContext method : templateInput.getHttpRequestContexts()) {
             if (!method.isConvenience()) {
-                configureInternalMethod(classBuilder.addMethod(method.getMethodName(), Modifier.Keyword.PUBLIC),
-                    method);
+                configureInternalMethod(classBuilder.addMethod(method.getMethodName(), Modifier.Keyword.PUBLIC), method,
+                    processingEnv);
             }
         }
 
@@ -235,11 +242,12 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
      * @param contentType The content type of the request
      * @param parameterName The name of the parameter
      * @param isContentTypeSetInHeaders Whether the content type is set in the headers
+     *
      * @return boolean indicating if serializationFormat set and used in request body
      */
-    boolean configureBodyWithContentType(BlockStmt body, String parameterType, String contentType, String parameterName,
-        boolean isContentTypeSetInHeaders) {
-
+    boolean configureBodyWithContentType(BlockStmt body, TypeMirror parameterType, String contentType,
+        String parameterName, boolean isContentTypeSetInHeaders, Elements elementUtils, Types typeUtils) {
+        boolean isSerializationFormatSet;
         if (parameterType == null) {
             // No body content to set
             body.addStatement(
@@ -247,51 +255,38 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             return false;
         }
 
-        if (contentType == null || contentType.isEmpty()) {
-            // TODO (alzimmer): Why is String octet-stream?
-            contentType = ("byte[]".equals(parameterType) || "String".equals(parameterType))
-                ? APPLICATION_OCTET_STREAM
-                : APPLICATION_JSON;
-        }
+        contentType = determineContentType(contentType, parameterType, elementUtils, typeUtils);
 
         // Set the content type header if it is not already set in the headers
         if (!isContentTypeSetInHeaders) {
-            body.addStatement(StaticJavaParser
-                .parseStatement("httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, \"" + contentType + "\");"));
-        }
-
-        if ("io.clientcore.core.models.binarydata.BinaryData".equals(parameterType)) {
-            body.tryAddImportToParentCompilationUnit(BinaryData.class);
-            body.addStatement(StaticJavaParser.parseStatement("BinaryData binaryData = " + parameterName + ";"));
-            body.addStatement(StaticJavaParser.parseStatement("if (binaryData.getLength() != null) {"
-                + "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(binaryData.getLength()));"
-                + "httpRequest.setBody(binaryData); }"));
-            return false;
-        }
-
-        if ("byte[]".equals(parameterType)) {
-            body.addStatement(StaticJavaParser
-                .parseStatement("httpRequest.setBody(BinaryData.fromBytes((byte[]) " + parameterName + "));"));
-        } else if ("String".equals(parameterType)) {
-            body.addStatement(StaticJavaParser
-                .parseStatement("httpRequest.setBody(BinaryData.fromString((String) " + parameterName + "));"));
-        } else if ("ByteBuffer".equals(parameterType)) {
-            body.tryAddImportToParentCompilationUnit(ByteBuffer.class);
             body.addStatement(StaticJavaParser.parseStatement(
-                "httpRequest.setBody(BinaryData.fromBytes(((ByteBuffer) " + parameterName + ").array()));"));
+                String.format("httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, \"%s\");", contentType)));
+        }
+
+        if (parameterType.getKind().isPrimitive()) {
+            boolean isJson = Arrays.stream(contentType.split(";"))
+                .map(String::trim)
+                .anyMatch(part -> part.equalsIgnoreCase(ContentType.APPLICATION_JSON));
+            isSerializationFormatSet
+                = addRequestBody(body, parameterType, parameterName, isJson, elementUtils, typeUtils);
         } else {
-            body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
-            body.addStatement(StaticJavaParser.parseStatement(
-                "SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());"));
-            body.addStatement(StaticJavaParser.parseStatement("if (xmlSerializer.supportsFormat(serializationFormat)) {"
-                + "httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", xmlSerializer));" + "} else {"
-                + "httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", jsonSerializer));" + "}"));
-            return true;
+            // Check if the parameter at runtime is not null
+            BlockStmt ifBlock = new BlockStmt();
+            IfStmt ifStatement
+                = new IfStmt(StaticJavaParser.parseExpression(parameterName + " != null"), ifBlock, null);
+            boolean isJson = Arrays.stream(contentType.split(";"))
+                .map(String::trim)
+                .anyMatch(part -> part.equalsIgnoreCase(ContentType.APPLICATION_JSON));
+            isSerializationFormatSet
+                = addRequestBody(ifBlock, parameterType, parameterName, isJson, elementUtils, typeUtils);
+            body.addStatement(ifStatement);
         }
-        return false;
+
+        return isSerializationFormatSet;
     }
 
-    private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method) {
+    private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method,
+        ProcessingEnvironment processingEnv) {
         // TODO (alzimmer): For now throw @SuppressWarnings({"unchecked", "cast"}) on generated methods while we
         //  improve / fix the generated code to no longer need it.
         internalMethod.setName(method.getMethodName())
@@ -307,7 +302,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         BlockStmt body = internalMethod.getBody().get();
 
         initializeHttpRequest(body, method);
-        boolean serializationFormatSet = addRequestBody(body, method);
+        boolean serializationFormatSet = addRequestBody(body, method, processingEnv);
         addRequestOptionsToRequestIfPresent(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
 
@@ -425,7 +420,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.addStatement(StaticJavaParser.parseStatement(httpRequestBuilder.toString() + ";"));
     }
 
-    private boolean addRequestBody(BlockStmt body, HttpRequestContext method) {
+    private boolean addRequestBody(BlockStmt body, HttpRequestContext method, ProcessingEnvironment processingEnv) {
         int index = body.getStatements().size();
 
         HttpRequestContext.Body requestBody = method.getBody();
@@ -434,7 +429,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         boolean serializationFormatSet;
         if (requestBody != null) {
             serializationFormatSet = configureBodyWithContentType(body, requestBody.getParameterType(),
-                requestBody.getContentType(), requestBody.getParameterName(), isContentTypeSetInHeaders);
+                requestBody.getContentType(), requestBody.getParameterName(), isContentTypeSetInHeaders,
+                processingEnv.getElementUtils(), processingEnv.getTypeUtils());
         } else {
             body.addStatement(
                 StaticJavaParser.parseStatement("httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, \"0\");"));
@@ -481,5 +477,62 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(RuntimeException.class);
         body.addStatement(StaticJavaParser.parseStatement("if (!expectedResponse) {"
             + " throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
+    }
+
+    private boolean addRequestBody(BlockStmt body, TypeMirror parameterType, String parameterName, boolean isJson,
+        Elements elementUtils, Types typeUtils) {
+
+        if (typeUtils.isSameType(parameterType,
+            elementUtils.getTypeElement("io.clientcore.core.models.binarydata.BinaryData").asType())) {
+            body.tryAddImportToParentCompilationUnit(BinaryData.class);
+            body.addStatement(
+                StaticJavaParser.parseStatement(String.format("BinaryData binaryData = %s;", parameterName)));
+            body.addStatement(StaticJavaParser.parseStatement("if (binaryData.getLength() != null) {"
+                + "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(binaryData.getLength()));"
+                + "httpRequest.setBody(binaryData); }"));
+        } else if (isJson) {
+            body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
+            body.addStatement(StaticJavaParser
+                .parseStatement("httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", jsonSerializer));"));
+        } else if (parameterType.getKind() == TypeKind.ARRAY) {
+            ArrayType arrayType = (ArrayType) parameterType;
+            if (arrayType.getComponentType().toString().equals("byte")) {
+                body.addStatement(StaticJavaParser
+                    .parseStatement(String.format("httpRequest.setBody(BinaryData.fromBytes(%s));", parameterName)));
+            }
+        } else if (typeUtils.isSameType(parameterType, elementUtils.getTypeElement("java.lang.String").asType())) {
+            body.addStatement(StaticJavaParser
+                .parseStatement(String.format("httpRequest.setBody(BinaryData.fromString(%s));", parameterName)));
+        } else if (typeUtils.isSameType(parameterType, elementUtils.getTypeElement("java.nio.ByteBuffer").asType())) {
+            body.tryAddImportToParentCompilationUnit(ByteBuffer.class);
+            body.addStatement(StaticJavaParser.parseStatement(
+                String.format("httpRequest.setBody(BinaryData.fromBytes(%s.array()));", parameterName)));
+        } else {
+            handleSerialization(body, parameterName);
+            return true;
+        }
+        return false;
+    }
+
+    private String determineContentType(String contentType, TypeMirror parameterType, Elements elementUtils,
+        Types typeUtils) {
+        if (contentType == null || contentType.isEmpty()) {
+            contentType = (typeUtils.isSameType(parameterType, elementUtils.getTypeElement("byte[]").asType())
+                || typeUtils.isSameType(parameterType, elementUtils.getTypeElement("java.lang.String").asType()))
+                    ? APPLICATION_OCTET_STREAM
+                    : APPLICATION_JSON;
+        }
+        return contentType;
+    }
+
+    private void handleSerialization(BlockStmt body, String parameterName) {
+        body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
+        body.addStatement(StaticJavaParser.parseStatement(
+            "SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());"));
+        body.addStatement(StaticJavaParser.parseStatement(String.format(
+            "if (xmlSerializer.supportsFormat(serializationFormat)) {"
+                + "httpRequest.setBody(BinaryData.fromObject(%s, xmlSerializer));" + "} else {"
+                + "httpRequest.setBody(BinaryData.fromObject(%s, jsonSerializer));" + "}",
+            parameterName, parameterName)));
     }
 }
