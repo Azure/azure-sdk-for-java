@@ -68,7 +68,7 @@ import io.clientcore.core.utils.CoreUtils;
  *     .build&#40;&#41;;
  * </pre>
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  */
 public final class ManagedIdentityCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ManagedIdentityCredential.class);

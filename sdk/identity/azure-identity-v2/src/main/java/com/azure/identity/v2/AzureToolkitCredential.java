@@ -55,7 +55,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see AzureToolkitCredentialBuilder
  */
 public class AzureToolkitCredential implements TokenCredential {

@@ -37,9 +37,9 @@ import java.util.regex.Pattern;
 
 import static com.azure.identity.v2.implementation.util.IdentityUtil.isWindowsPlatform;
 
-public class DevToolslClient extends ClientBase {
+public class DevToolsClient extends ClientBase {
 
-    static final ClientLogger LOGGER = new ClientLogger(DevToolslClient.class);
+    static final ClientLogger LOGGER = new ClientLogger(DevToolsClient.class);
 
     static final String WINDOWS_STARTER = "cmd.exe";
     static final String LINUX_MAC_STARTER = "/bin/sh";
@@ -57,7 +57,7 @@ public class DevToolslClient extends ClientBase {
      *
      * @param clientOptions the options configuring the client.
      */
-    public DevToolslClient(DevToolsClientOptions clientOptions) {
+    public DevToolsClient(DevToolsClientOptions clientOptions) {
         super(clientOptions);
         this.clientOptions = clientOptions;
     }

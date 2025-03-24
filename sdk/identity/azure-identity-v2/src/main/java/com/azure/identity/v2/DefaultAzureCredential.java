@@ -50,11 +50,9 @@ import java.util.List;
  * the {@link DefaultAzureCredentialBuilder} to configure it. Once this credential is created, it
  * may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
  * <pre>
  * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
  *
  * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
  *
@@ -66,12 +64,10 @@ import java.util.List;
  * {@link DefaultAzureCredentialBuilder} to configure it. Once this credential is created, it
  * may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  * <pre>
  * TokenCredential dacWithUserAssignedManagedIdentity
  *     = new DefaultAzureCredentialBuilder&#40;&#41;.managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;.build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  *
  * @see com.azure.identity
  * @see DefaultAzureCredentialBuilder

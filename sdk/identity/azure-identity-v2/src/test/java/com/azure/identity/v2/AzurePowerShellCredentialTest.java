@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.client.DevToolslClient;
+import com.azure.identity.v2.implementation.client.DevToolsClient;
 import com.azure.identity.v2.implementation.models.DevToolsClientOptions;
 import com.azure.identity.v2.util.TestUtils;
 import com.azure.v2.core.credentials.TokenRequestContext;
@@ -28,8 +28,8 @@ public class AzurePowerShellCredentialTest {
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<DevToolslClient> identityClientMock
-            = mockConstruction(DevToolslClient.class, (devToolslClient, context) -> {
+        try (MockedConstruction<DevToolsClient> identityClientMock
+            = mockConstruction(DevToolsClient.class, (devToolslClient, context) -> {
                 when(devToolslClient.authenticateWithAzurePowerShell(request))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
             })) {
@@ -50,8 +50,8 @@ public class AzurePowerShellCredentialTest {
 
         // mock
 
-        try (MockedConstruction<DevToolslClient> devToolsClientMock
-            = mockConstruction(DevToolslClient.class, (devToolslClient, context) -> {
+        try (MockedConstruction<DevToolsClient> devToolsClientMock
+            = mockConstruction(DevToolsClient.class, (devToolslClient, context) -> {
                 when(devToolslClient.authenticateWithAzurePowerShell(request))
                     .thenThrow(new CredentialAuthenticationException("Azure PowerShell not installed"));
                 when(devToolslClient.getClientOptions()).thenReturn(new DevToolsClientOptions());

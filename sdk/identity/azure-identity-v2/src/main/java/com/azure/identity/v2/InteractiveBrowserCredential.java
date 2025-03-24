@@ -56,7 +56,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
  * parameter.</p>
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see InteractiveBrowserCredentialBuilder
  */
 public class InteractiveBrowserCredential implements TokenCredential {

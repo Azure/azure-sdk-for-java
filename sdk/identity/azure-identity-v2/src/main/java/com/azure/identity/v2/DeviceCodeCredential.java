@@ -63,13 +63,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
  * parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.devicecodecredential.construct -->
  * <pre>
  * TokenCredential deviceCodeCredential = new DeviceCodeCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.devicecodecredential.construct -->
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see DeviceCodeCredentialBuilder
  */
 public class DeviceCodeCredential implements TokenCredential {

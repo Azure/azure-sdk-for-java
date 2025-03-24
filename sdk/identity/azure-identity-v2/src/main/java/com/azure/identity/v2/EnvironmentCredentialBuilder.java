@@ -24,11 +24,9 @@ import java.util.concurrent.ExecutorService;
  * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
  * parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.environmentcredential.construct -->
  * <pre>
  * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.environmentcredential.construct -->
  *
  * @see EnvironmentCredential
  */

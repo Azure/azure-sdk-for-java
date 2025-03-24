@@ -48,7 +48,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  *     .build&#40;&#41;;
  * </pre>
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see ClientCertificateCredentialBuilder
  */
 public class ClientAssertionCredential implements TokenCredential {

@@ -31,7 +31,6 @@ import java.net.URISyntaxException;
  * {@link AuthorizationCodeCredential}. Once this credential is created, it may be passed into the builder of many of
  * the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.authorizationcodecredential.construct -->
  * <pre>
  * TokenCredential authorizationCodeCredential = new AuthorizationCodeCredentialBuilder&#40;&#41;.authorizationCode&#40;
  *         &quot;&#123;authorization-code-received-at-redirectURL&#125;&quot;&#41;
@@ -39,7 +38,6 @@ import java.net.URISyntaxException;
  *     .clientId&#40;&quot;&#123;clientId-of-application-being-authenticated&quot;&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.authorizationcodecredential.construct -->
  *
  * @see AuthorizationCodeCredential
  */

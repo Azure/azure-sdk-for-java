@@ -69,7 +69,7 @@ import java.util.Objects;
  *     .build&#40;&#41;;
  * </pre>
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see ClientCertificateCredentialBuilder
  */
 public class ClientCertificateCredential implements TokenCredential {

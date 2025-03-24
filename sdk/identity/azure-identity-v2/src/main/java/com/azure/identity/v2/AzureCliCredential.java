@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.client.DevToolslClient;
+import com.azure.identity.v2.implementation.client.DevToolsClient;
 import com.azure.identity.v2.implementation.models.DevToolsClientOptions;
 import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;
@@ -43,26 +43,24 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
  * parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
  * <pre>
  * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.azureclicredential.construct -->
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see AzureCliCredentialBuilder
  */
 public class AzureCliCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzureCliCredential.class);
 
-    private final DevToolslClient devToolslClient;
+    private final DevToolsClient devToolslClient;
 
     /**
      * Creates an AzureCliSecretCredential with default identity client options.
      * @param devToolsClientOptions the options to configure the dev tools client
      */
     AzureCliCredential(DevToolsClientOptions devToolsClientOptions) {
-        devToolslClient = new DevToolslClient(devToolsClientOptions);
+        devToolslClient = new DevToolsClient(devToolsClientOptions);
     }
 
     @Override

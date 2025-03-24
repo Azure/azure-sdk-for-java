@@ -415,7 +415,7 @@ public class ClientCertificateCredentialTest {
                 .additionallyAllowedTenants("RANDOM")
                 .build();
 
-            Assertions.assertThrows(CredentialUnavailableException.class, () -> credential.getToken(request));
+            Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
         }
     }
 
@@ -432,7 +432,7 @@ public class ClientCertificateCredentialTest {
                 .clientCertificate(inputStream)
                 .build();
 
-            Assertions.assertThrows(CredentialUnavailableException.class, () -> credential.getToken(request));
+            Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
         }
     }
 
@@ -449,7 +449,7 @@ public class ClientCertificateCredentialTest {
                 .clientCertificate(inputStream)
                 .additionallyAllowedTenants("*")
                 .build();
-            Assertions.assertThrows(MsalServiceException.class, () -> credential.getToken(request));
+            Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
         }
 
     }

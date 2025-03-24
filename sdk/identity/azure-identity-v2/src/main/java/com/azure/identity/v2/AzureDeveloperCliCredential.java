@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.client.DevToolslClient;
+import com.azure.identity.v2.implementation.client.DevToolsClient;
 import com.azure.identity.v2.implementation.models.DevToolsClientOptions;
 import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;
@@ -47,13 +47,13 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  * TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see AzureDeveloperCliCredentialBuilder
  */
 public class AzureDeveloperCliCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzureDeveloperCliCredential.class);
 
-    private final DevToolslClient devToolslClient;
+    private final DevToolsClient devToolslClient;
 
     /**
      * Creates an AzureDeveloperCliSecretCredential with default identity client options.
@@ -61,7 +61,7 @@ public class AzureDeveloperCliCredential implements TokenCredential {
      * @param clientOptions the options to configure the dev tools client
      */
     AzureDeveloperCliCredential(DevToolsClientOptions clientOptions) {
-        devToolslClient = new DevToolslClient(clientOptions);
+        devToolslClient = new DevToolsClient(clientOptions);
     }
 
     @Override

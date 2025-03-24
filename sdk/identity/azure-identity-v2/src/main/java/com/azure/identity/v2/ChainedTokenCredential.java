@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  *     .build&#40;&#41;;
  * </pre>
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see ChainedTokenCredentialBuilder
  */
 public class ChainedTokenCredential implements TokenCredential {

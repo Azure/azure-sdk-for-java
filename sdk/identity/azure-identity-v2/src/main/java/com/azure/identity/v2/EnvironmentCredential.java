@@ -50,7 +50,7 @@ import io.clientcore.core.instrumentation.logging.LogLevel;
  * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see EnvironmentCredentialBuilder
  */
 @SuppressWarnings("deprecation")

@@ -33,11 +33,9 @@ import java.util.Objects;
  * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
  * parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
  * <pre>
  * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.azureclicredential.construct -->
  *
  * @see AzureCliCredential
  */

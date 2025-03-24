@@ -21,12 +21,7 @@ public class EnvironmentCredentialTests {
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().configuration(configuration).build();
 
-        // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
-        Assertions.assertThrows(CredentialUnavailableException.class,
-            () -> new TokenRequestContext().addScopes("qux/.default"));
-
-        // Validate Sync flow.
-        Exception e = Assertions.assertThrows(Exception.class,
+        Exception e = Assertions.assertThrows(CredentialAuthenticationException.class,
             () -> credential.getToken(new TokenRequestContext().addScopes("qux/.default")));
 
         String message = e.getMessage();
@@ -44,8 +39,7 @@ public class EnvironmentCredentialTests {
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().configuration(configuration).build();
 
-        // Validate Sync flow.
-        Exception e = Assertions.assertThrows(Exception.class,
+        Exception e = Assertions.assertThrows(CredentialAuthenticationException.class,
             () -> credential.getToken(new TokenRequestContext().addScopes("qux/.default")));
 
         String message = e.getMessage();

@@ -34,7 +34,6 @@ import java.util.function.Supplier;
  * {@link OnBehalfOfCredentialBuilder}. Once this credential is created, it may be passed into the
  * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.obocredential.construct -->
  * <pre>
  * TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder&#40;&#41;.clientId&#40;&quot;&lt;app-client-ID&gt;&quot;&#41;
  *     .clientSecret&#40;&quot;&lt;app-Client-Secret&gt;&quot;&#41;
@@ -42,7 +41,6 @@ import java.util.function.Supplier;
  *     .userAssertion&#40;&quot;&lt;user-assertion&gt;&quot;&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.obocredential.construct -->
  *
  * @see OnBehalfOfCredential
  */

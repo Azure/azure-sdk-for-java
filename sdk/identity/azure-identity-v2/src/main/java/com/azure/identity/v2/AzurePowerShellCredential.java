@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.client.DevToolslClient;
+import com.azure.identity.v2.implementation.client.DevToolsClient;
 import com.azure.identity.v2.implementation.models.DevToolsClientOptions;
 import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;
@@ -44,22 +44,20 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
  * parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.azurepowershellcredential.construct -->
  * <pre>
  * TokenCredential powerShellCredential = new AzurePowerShellCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.azurepowershellcredential.construct -->
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see AzurePowerShellCredentialBuilder
  */
 public class AzurePowerShellCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePowerShellCredential.class);
 
-    private final DevToolslClient devToolslClient;
+    private final DevToolsClient devToolslClient;
 
     AzurePowerShellCredential(DevToolsClientOptions options) {
-        devToolslClient = new DevToolslClient(options);
+        devToolslClient = new DevToolsClient(options);
     }
 
     @Override

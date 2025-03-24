@@ -47,7 +47,7 @@ import java.time.Duration;
  *     .build&#40;&#41;;
  * </pre>
  *
- * @see com.azure.identity
+ * @see com.azure.identity.v2
  * @see WorkloadIdentityCredentialBuilder
  */
 public class WorkloadIdentityCredential implements TokenCredential {

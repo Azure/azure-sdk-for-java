@@ -37,33 +37,12 @@ import java.util.function.Supplier;
  * {@link ClientAssertionCredential}. Once this credential is created, it may be passed into the
  * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.clientassertioncredential.construct -->
  * <pre>
  * TokenCredential clientAssertionCredential = new ClientAssertionCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientAssertion&#40;&#40;&#41; -&gt; &quot;&lt;Client-Assertion&gt;&quot;&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.clientassertioncredential.construct -->
- *
- * <p><strong>Sample: Construct a ClientAssertionCredential behind a proxy</strong></p>
- *
- * <p>The following code sample demonstrates the creation of a {@link ClientAssertionCredential},
- * using the {@link ClientAssertionCredentialBuilder} to configure it. The {@code tenantId},
- * {@code clientId} and {@code clientAssertion} parameters are required to create
- * {@link ClientAssertionCredential}. THe {@code proxyOptions} can be optionally configured to
- * target a proxy. Once this credential is created, it may be passed into the builder of many of the Azure SDK for Java
- * client builders as the 'credential' parameter.</p>
- *
- * <!-- src_embed com.azure.identity.credential.clientassertioncredential.constructwithproxy -->
- * <pre>
- * TokenCredential assertionCredential = new ClientAssertionCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
- *     .clientId&#40;clientId&#41;
- *     .clientAssertion&#40;&#40;&#41; -&gt; &quot;&lt;Client-Assertion&gt;&quot;&#41;
- *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
- *     .build&#40;&#41;;
- * </pre>
- * <!-- end com.azure.identity.credential.clientassertioncredential.constructwithproxy -->
  *
  * @see ClientAssertionCredential
  */

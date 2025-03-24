@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.client.DevToolslClient;
+import com.azure.identity.v2.implementation.client.DevToolsClient;
 import com.azure.identity.v2.implementation.models.DevToolsClientOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.identity.v2.util.TestUtils;
@@ -31,8 +31,8 @@ public class AzureCliCredentialTest {
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<DevToolslClient> devToolsClientMock
-            = mockConstruction(DevToolslClient.class, (devToolsClient, context) -> {
+        try (MockedConstruction<DevToolsClient> devToolsClientMock
+            = mockConstruction(DevToolsClient.class, (devToolsClient, context) -> {
                 when(devToolsClient.authenticateWithAzureCli(request))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
             })) {
@@ -51,15 +51,15 @@ public class AzureCliCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotInstalled");
 
         // mock
-        try (MockedConstruction<DevToolslClient> devToolsClientMock
-            = mockConstruction(DevToolslClient.class, (devToolslClient, context) -> {
+        try (MockedConstruction<DevToolsClient> devToolsClientMock
+            = mockConstruction(DevToolsClient.class, (devToolslClient, context) -> {
                 when(devToolslClient.authenticateWithAzureCli(request))
-                    .thenThrow(new Exception("Azure CLI not installed"));
+                    .thenThrow(new CredentialAuthenticationException("Azure CLI not installed"));
                 when(devToolslClient.getClientOptions()).thenReturn(new DevToolsClientOptions());
             })) {
             // test
             AzureCliCredential credential = new AzureCliCredentialBuilder().build();
-            Assertions.assertThrows(Exception.class, () -> credential.getToken(request));
+            Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
             Assertions.assertNotNull(devToolsClientMock);
         }
     }
@@ -70,14 +70,14 @@ public class AzureCliCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotLogin");
 
         // mock
-        try (MockedConstruction<DevToolslClient> devToolsClientMock
-            = mockConstruction(DevToolslClient.class, (devToolslClient, context) -> {
-                when(devToolslClient.authenticateWithAzureCli(request)).thenThrow(new Exception("Azure not Login"));
+        try (MockedConstruction<DevToolsClient> devToolsClientMock
+            = mockConstruction(DevToolsClient.class, (devToolslClient, context) -> {
+                when(devToolslClient.authenticateWithAzureCli(request)).thenThrow(new CredentialAuthenticationException("Azure not Login"));
                 when(devToolslClient.getClientOptions()).thenReturn(new DevToolsClientOptions());
             })) {
             // test
             AzureCliCredential credential = new AzureCliCredentialBuilder().build();
-            Assertions.assertThrows(Exception.class, () -> credential.getToken(request));
+            Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
             Assertions.assertNotNull(devToolsClientMock);
         }
     }
@@ -88,14 +88,14 @@ public class AzureCliCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureCliCredentialAuthenticationFailed");
 
         // mock
-        try (MockedConstruction<DevToolslClient> devToolsClientMock
-            = mockConstruction(DevToolslClient.class, (devToolslClient, context) -> {
-                when(devToolslClient.authenticateWithAzureCli(request)).thenThrow(new Exception("other error"));
+        try (MockedConstruction<DevToolsClient> devToolsClientMock
+            = mockConstruction(DevToolsClient.class, (devToolslClient, context) -> {
+                when(devToolslClient.authenticateWithAzureCli(request)).thenThrow(new CredentialAuthenticationException("other error"));
                 when(devToolslClient.getClientOptions()).thenReturn(new DevToolsClientOptions());
             })) {
             // test
             AzureCliCredential credential = new AzureCliCredentialBuilder().build();
-            Assertions.assertThrows(Exception.class, () -> credential.getToken(request));
+            Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
             Assertions.assertNotNull(devToolsClientMock);
         }
     }
@@ -154,15 +154,15 @@ public class AzureCliCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default");
 
         // Mock
-        try (MockedConstruction<DevToolslClient> devToolsClientMock
-            = mockConstruction(DevToolslClient.class, (devToolslClient, context) -> {
-                when(devToolslClient.authenticateWithAzureCli(request)).thenThrow(new Exception("other error"));
+        try (MockedConstruction<DevToolsClient> devToolsClientMock
+            = mockConstruction(DevToolsClient.class, (devToolslClient, context) -> {
+                when(devToolslClient.authenticateWithAzureCli(request)).thenThrow(new CredentialAuthenticationException("other error"));
                 when(devToolslClient.getClientOptions()).thenReturn(new DevToolsClientOptions());
             })) {
 
             AzureCliCredential credential = new AzureCliCredentialBuilder().subscription(subscription).build();
 
-            Assertions.assertThrows(Exception.class, () -> credential.getToken(request));
+            Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
 
             Assertions.assertNotNull(devToolsClientMock);
         }
@@ -200,5 +200,24 @@ public class AzureCliCredentialTest {
         // Expect validation exception when an invalid subscription name is used
         Assertions.assertThrows(IllegalArgumentException.class,
             () -> new AzureCliCredentialBuilder().subscription(invalidSubscription));
+    }
+
+    public static void main(String[] args) {
+        // Setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default");
+
+        // Mock
+        try (MockedConstruction<DevToolsClient> devToolsClientMock
+                 = mockConstruction(DevToolsClient.class, (devToolslClient, context) -> {
+            when(devToolslClient.authenticateWithAzureCli(request)).thenThrow(new CredentialAuthenticationException("other error"));
+            when(devToolslClient.getClientOptions()).thenReturn(new DevToolsClientOptions());
+        })) {
+
+            AzureCliCredential credential = new AzureCliCredentialBuilder().subscription("sub_456").build();
+
+            Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
+
+            Assertions.assertNotNull(devToolsClientMock);
+        }
     }
 }
