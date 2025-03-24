@@ -323,7 +323,8 @@ public final class SearchClientBuilder
      * Sets the service endpoint for the Azure AI Search instance.
      *
      * @param endpoint The URL of the Azure AI Search instance.
-     * @return The updated SearchClientBuilder object.0ed into a valid URL.
+     * @return The updated SearchClientBuilder object.
+     * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     @Override
     public SearchClientBuilder endpoint(String endpoint) {

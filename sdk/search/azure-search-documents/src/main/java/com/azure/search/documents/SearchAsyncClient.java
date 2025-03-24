@@ -37,7 +37,6 @@ import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionType;
-import com.azure.search.documents.models.QueryRewrites;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -1321,10 +1320,7 @@ public final class SearchAsyncClient {
             .setSessionId(options.getSessionId())
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
-            .setTop(options.getTop())
-            .setQueryLanguage(options.getQueryLanguage())
-            .setSpeller(options.getSpeller())
-            .setDebug(options.getDebug());
+            .setTop(options.getTop());
 
         SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
         if (semanticSearchOptions != null) {
@@ -1336,8 +1332,7 @@ public final class SearchAsyncClient {
                 .setSemanticMaxWaitInMilliseconds(waitInMillis)
                 .setAnswers(createSearchRequestAnswers(semanticSearchOptions.getQueryAnswer()))
                 .setCaptions(createSearchRequestCaptions(semanticSearchOptions.getQueryCaption()))
-                .setSemanticQuery(semanticSearchOptions.getSemanticQuery())
-                .setQueryRewrites(createQueryRewrites(semanticSearchOptions.getQueryRewrites()));
+                .setSemanticQuery(semanticSearchOptions.getSemanticQuery());
         }
 
         VectorSearchOptions vectorSearchOptions = options.getVectorSearchOptions();
@@ -1357,39 +1352,23 @@ public final class SearchAsyncClient {
         QueryAnswerType queryAnswerType = queryAnswer.getAnswerType();
         Integer answersCount = queryAnswer.getCount();
         Double answerThreshold = queryAnswer.getThreshold();
-        Integer maxCharLength = queryAnswer.getMaxCharLength();
 
         // No answer has been defined.
         if (queryAnswerType == null) {
             return null;
         }
 
-        String answerType = queryAnswerType.toString();
+        String answerString = queryAnswerType.toString();
 
-        if (queryAnswerType == QueryAnswerType.NONE
-            || (answersCount == null && answerThreshold == null && maxCharLength == null)) {
-            return answerType;
+        if (answersCount != null && answerThreshold != null) {
+            return answerString + "|count-" + answersCount + ",threshold-" + answerThreshold;
+        } else if (answersCount != null) {
+            return answerString + "|count-" + answersCount;
+        } else if (answerThreshold != null) {
+            return answerString + "|threshold-" + answerThreshold;
+        } else {
+            return answerString;
         }
-
-        StringBuilder answerStringBuilder = new StringBuilder(answerType).append('|');
-
-        if (answersCount != null) {
-            answerStringBuilder.append("count-").append(answersCount).append(",");
-        }
-
-        if (answerThreshold != null) {
-            answerStringBuilder.append("threshold-").append(answerThreshold).append(",");
-        }
-
-        if (maxCharLength != null) {
-            answerStringBuilder.append("maxCharLength-").append(maxCharLength).append(",");
-        }
-
-        if (answerStringBuilder.charAt(answerStringBuilder.length() - 1) == ',') {
-            answerStringBuilder.deleteCharAt(answerStringBuilder.length() - 1);
-        }
-
-        return answerStringBuilder.toString();
     }
 
     static String createSearchRequestCaptions(QueryCaption queryCaption) {
@@ -1399,41 +1378,15 @@ public final class SearchAsyncClient {
 
         QueryCaptionType queryCaptionType = queryCaption.getCaptionType();
         Boolean highlightEnabled = queryCaption.isHighlightEnabled();
-        Integer maxCharLength = queryCaption.getMaxCharLength();
 
         // No caption has been defined.
         if (queryCaptionType == null) {
             return null;
         }
 
-        String queryCaptionTypeString = queryCaptionType.toString();
-
-        if (queryCaptionType == QueryCaptionType.NONE || (highlightEnabled == null && maxCharLength == null)) {
-            return queryCaptionTypeString;
-        }
-
-        StringBuilder captionStringBuilder = new StringBuilder(queryCaptionTypeString).append('|');
-
-        if (highlightEnabled != null) {
-            captionStringBuilder.append("highlight-").append(highlightEnabled).append(",");
-        }
-
-        if (maxCharLength != null) {
-            captionStringBuilder.append("maxCharLength-").append(maxCharLength).append(",");
-        }
-
-        if (captionStringBuilder.charAt(captionStringBuilder.length() - 1) == ',') {
-            captionStringBuilder.deleteCharAt(captionStringBuilder.length() - 1);
-        }
-
-        return captionStringBuilder.toString();
-    }
-
-    static String createQueryRewrites(QueryRewrites queryRewrites) {
-        if (queryRewrites == null) {
-            return null;
-        }
-        return queryRewrites.toString();
+        return highlightEnabled == null
+            ? queryCaptionType.toString()
+            : queryCaptionType + "|highlight-" + highlightEnabled;
     }
 
     /**
