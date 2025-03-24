@@ -176,7 +176,7 @@ public final class CosmosVectorIndexSpec {
     public CosmosVectorIndexSpec setVectorIndexShardKeys(List<String> vectorIndexShardKeys) {
         if (validateIndexType(IndexProperty.VECTOR_INDEX_SHARD_KEYS) && vectorIndexShardKeys != null) {
             this.vectorIndexShardKeys = vectorIndexShardKeys;
-            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_SHARD_KEYS, this.vectorIndexShardKeys, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_SHARD_KEYS, this.vectorIndexShardKeys);
         } else {
             this.vectorIndexShardKeys = null;
         }
