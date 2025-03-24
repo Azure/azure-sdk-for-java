@@ -34,7 +34,7 @@ public interface ClientGroup {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to the ClientGroup resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
