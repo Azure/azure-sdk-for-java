@@ -17,39 +17,32 @@ public final class SystemTopicUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemTopicUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"sg\":\"yiaseqchkrttzraz\",\"nbwzohmnrxxbso\":\"kiuemv\",\"gnzxojpslsvj\":\"klinhmdptysprq\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"fiqwoy\",\"tenantId\":\"vapcoh\",\"userAssignedIdentities\":{\"cawetzqddt\":{\"principalId\":\"qpqojxcxzrzd\",\"clientId\":\"dzbenri\"},\"mizvgbgatzuuvbx\":{\"principalId\":\"fljhznamtua\",\"clientId\":\"zwcjjncqtj\"},\"lx\":{\"principalId\":\"rebwggahtt\",\"clientId\":\"swvajqfu\"},\"ryxameblydyvkfkm\":{\"principalId\":\"qzasunwqrjzfrgqh\",\"clientId\":\"hcmbuocnjrohmbp\"}}}}")
+            "{\"tags\":{\"aoaf\":\"hqykizmdk\",\"gc\":\"luqvoxmycjimryv\",\"hecbvopwndyq\":\"wpbmzgwesydsxwef\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"klmtkhlowkx\",\"tenantId\":\"vbrdfjmzsyzfho\",\"userAssignedIdentities\":{\"vuicp\":{\"principalId\":\"k\",\"clientId\":\"ychunsjlpjrtwszh\"}}}}")
             .toObject(SystemTopicUpdateParameters.class);
-        Assertions.assertEquals("yiaseqchkrttzraz", model.tags().get("sg"));
+        Assertions.assertEquals("hqykizmdk", model.tags().get("aoaf"));
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("fiqwoy", model.identity().principalId());
-        Assertions.assertEquals("vapcoh", model.identity().tenantId());
-        Assertions.assertEquals("qpqojxcxzrzd",
-            model.identity().userAssignedIdentities().get("cawetzqddt").principalId());
-        Assertions.assertEquals("dzbenri", model.identity().userAssignedIdentities().get("cawetzqddt").clientId());
+        Assertions.assertEquals("klmtkhlowkx", model.identity().principalId());
+        Assertions.assertEquals("vbrdfjmzsyzfho", model.identity().tenantId());
+        Assertions.assertEquals("k", model.identity().userAssignedIdentities().get("vuicp").principalId());
+        Assertions.assertEquals("ychunsjlpjrtwszh", model.identity().userAssignedIdentities().get("vuicp").clientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SystemTopicUpdateParameters model = new SystemTopicUpdateParameters()
-            .withTags(mapOf("sg", "yiaseqchkrttzraz", "nbwzohmnrxxbso", "kiuemv", "gnzxojpslsvj", "klinhmdptysprq"))
+            .withTags(mapOf("aoaf", "hqykizmdk", "gc", "luqvoxmycjimryv", "hecbvopwndyq", "wpbmzgwesydsxwef"))
             .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
-                .withPrincipalId("fiqwoy")
-                .withTenantId("vapcoh")
-                .withUserAssignedIdentities(mapOf("cawetzqddt",
-                    new UserIdentityProperties().withPrincipalId("qpqojxcxzrzd").withClientId("dzbenri"),
-                    "mizvgbgatzuuvbx",
-                    new UserIdentityProperties().withPrincipalId("fljhznamtua").withClientId("zwcjjncqtj"), "lx",
-                    new UserIdentityProperties().withPrincipalId("rebwggahtt").withClientId("swvajqfu"),
-                    "ryxameblydyvkfkm",
-                    new UserIdentityProperties().withPrincipalId("qzasunwqrjzfrgqh").withClientId("hcmbuocnjrohmbp"))));
+                .withPrincipalId("klmtkhlowkx")
+                .withTenantId("vbrdfjmzsyzfho")
+                .withUserAssignedIdentities(mapOf("vuicp",
+                    new UserIdentityProperties().withPrincipalId("k").withClientId("ychunsjlpjrtwszh"))));
         model = BinaryData.fromObject(model).toObject(SystemTopicUpdateParameters.class);
-        Assertions.assertEquals("yiaseqchkrttzraz", model.tags().get("sg"));
+        Assertions.assertEquals("hqykizmdk", model.tags().get("aoaf"));
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("fiqwoy", model.identity().principalId());
-        Assertions.assertEquals("vapcoh", model.identity().tenantId());
-        Assertions.assertEquals("qpqojxcxzrzd",
-            model.identity().userAssignedIdentities().get("cawetzqddt").principalId());
-        Assertions.assertEquals("dzbenri", model.identity().userAssignedIdentities().get("cawetzqddt").clientId());
+        Assertions.assertEquals("klmtkhlowkx", model.identity().principalId());
+        Assertions.assertEquals("vbrdfjmzsyzfho", model.identity().tenantId());
+        Assertions.assertEquals("k", model.identity().userAssignedIdentities().get("vuicp").principalId());
+        Assertions.assertEquals("ychunsjlpjrtwszh", model.identity().userAssignedIdentities().get("vuicp").clientId());
     }
 
     // Use "Map.of" if available

@@ -17,36 +17,35 @@ public final class QueueInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QueueInfo model = BinaryData.fromString(
-            "{\"receiveLockDurationInSeconds\":1334975440,\"maxDeliveryCount\":531629361,\"deadLetterDestinationWithResourceIdentity\":{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"bykutw\"},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"}},\"eventTimeToLive\":\"PT32H3M35S\"}")
+            "{\"receiveLockDurationInSeconds\":1360002238,\"maxDeliveryCount\":749760843,\"deadLetterDestinationWithResourceIdentity\":{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"dlxyjrxs\"},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"}},\"eventTimeToLive\":\"PT82H11M42S\"}")
             .toObject(QueueInfo.class);
-        Assertions.assertEquals(1334975440, model.receiveLockDurationInSeconds());
-        Assertions.assertEquals(531629361, model.maxDeliveryCount());
-        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals(1360002238, model.receiveLockDurationInSeconds());
+        Assertions.assertEquals(749760843, model.maxDeliveryCount());
+        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED,
             model.deadLetterDestinationWithResourceIdentity().identity().type());
-        Assertions.assertEquals("bykutw",
+        Assertions.assertEquals("dlxyjrxs",
             model.deadLetterDestinationWithResourceIdentity().identity().userAssignedIdentity());
-        Assertions.assertEquals(Duration.parse("PT32H3M35S"), model.eventTimeToLive());
+        Assertions.assertEquals(Duration.parse("PT82H11M42S"), model.eventTimeToLive());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QueueInfo model
-            = new QueueInfo().withReceiveLockDurationInSeconds(1334975440)
-                .withMaxDeliveryCount(531629361)
-                .withDeadLetterDestinationWithResourceIdentity(
-                    new DeadLetterWithResourceIdentity()
-                        .withIdentity(
-                            new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
-                                .withUserAssignedIdentity("bykutw"))
-                        .withDeadLetterDestination(new DeadLetterDestination()))
-                .withEventTimeToLive(Duration.parse("PT32H3M35S"));
+            = new QueueInfo().withReceiveLockDurationInSeconds(1360002238)
+                .withMaxDeliveryCount(749760843)
+                .withDeadLetterDestinationWithResourceIdentity(new DeadLetterWithResourceIdentity()
+                    .withIdentity(
+                        new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.SYSTEM_ASSIGNED)
+                            .withUserAssignedIdentity("dlxyjrxs"))
+                    .withDeadLetterDestination(new DeadLetterDestination()))
+                .withEventTimeToLive(Duration.parse("PT82H11M42S"));
         model = BinaryData.fromObject(model).toObject(QueueInfo.class);
-        Assertions.assertEquals(1334975440, model.receiveLockDurationInSeconds());
-        Assertions.assertEquals(531629361, model.maxDeliveryCount());
-        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals(1360002238, model.receiveLockDurationInSeconds());
+        Assertions.assertEquals(749760843, model.maxDeliveryCount());
+        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED,
             model.deadLetterDestinationWithResourceIdentity().identity().type());
-        Assertions.assertEquals("bykutw",
+        Assertions.assertEquals("dlxyjrxs",
             model.deadLetterDestinationWithResourceIdentity().identity().userAssignedIdentity());
-        Assertions.assertEquals(Duration.parse("PT32H3M35S"), model.eventTimeToLive());
+        Assertions.assertEquals(Duration.parse("PT82H11M42S"), model.eventTimeToLive());
     }
 }

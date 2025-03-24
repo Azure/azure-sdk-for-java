@@ -25,7 +25,7 @@ public final class PermissionBindingInner extends ProxyResource {
     private PermissionBindingProperties innerProperties;
 
     /*
-     * The system metadata relating to the PermissionBinding resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -60,7 +60,7 @@ public final class PermissionBindingInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to the PermissionBinding resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
