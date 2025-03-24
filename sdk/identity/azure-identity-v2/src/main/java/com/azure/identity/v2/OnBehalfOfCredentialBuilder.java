@@ -49,7 +49,7 @@ import java.util.function.Supplier;
 public class OnBehalfOfCredentialBuilder extends EntraIdCredentialBuilderBase<OnBehalfOfCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(OnBehalfOfCredentialBuilder.class);
     private static final String CLASS_NAME = OnBehalfOfCredentialBuilder.class.getSimpleName();
-    private ConfidentialClientOptions confidentialClientOptions;
+    private final ConfidentialClientOptions confidentialClientOptions;
 
     /**
      * Constructs an instance of OnBehalfOfCredentialBuilder.

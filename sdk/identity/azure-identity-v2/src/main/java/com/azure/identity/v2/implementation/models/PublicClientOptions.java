@@ -16,8 +16,8 @@ import java.util.function.Consumer;
 public class PublicClientOptions extends ClientOptions {
     private BrowserCustomizationOptions browserCustomizationOptions;
     private AuthenticationRecord authenticationRecord;
-    private Consumer<DeviceCodeInfo> challengeConsumer;
-    private boolean automaticAuthentication;
+    private Consumer<DeviceCodeInfo> challengeConsumer = deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
+    private boolean automaticAuthentication = true;
     private String authCode;
     private URI redirectUri;
     private String loginHint;

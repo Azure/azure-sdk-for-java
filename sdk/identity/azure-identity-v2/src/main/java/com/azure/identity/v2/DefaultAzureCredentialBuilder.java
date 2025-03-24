@@ -4,7 +4,11 @@
 package com.azure.identity.v2;
 
 import com.azure.identity.v2.implementation.client.IdentityLogOptionsImpl;
-import com.azure.identity.v2.implementation.models.*;
+import com.azure.identity.v2.implementation.models.ClientOptions;
+import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
+import com.azure.identity.v2.implementation.models.ManagedIdentityClientOptions;
+import com.azure.identity.v2.implementation.models.DevToolsClientOptions;
+import com.azure.identity.v2.implementation.models.PublicClientOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.v2.core.credentials.TokenCredential;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -55,17 +59,16 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String workloadIdentityClientId;
     private String managedIdentityResourceId;
     private Duration credentialProcessTimeout;
-    private List<String> additionallyAllowedTenants
-        = IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration());
-    private ClientOptions clientOptions;
+    private final ClientOptions clientOptions;
 
     /**
      * Creates an instance of a DefaultAzureCredentialBuilder.
      */
     public DefaultAzureCredentialBuilder() {
+        clientOptions = new ClientOptions();
         this.clientOptions.setIdentityLogOptions(new IdentityLogOptionsImpl(true));
         this.clientOptions.setChained(true);
-        clientOptions = new ClientOptions();
+        this.clientOptions.setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration()));
     }
 
     @Override
@@ -217,10 +220,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
             throw LOGGER.logThrowableAsError(new IllegalStateException(
                 "Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
-        }
-
-        if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {
-            clientOptions.setAdditionallyAllowedTenants(additionallyAllowedTenants);
         }
         return new DefaultAzureCredential(getCredentialsChain());
     }

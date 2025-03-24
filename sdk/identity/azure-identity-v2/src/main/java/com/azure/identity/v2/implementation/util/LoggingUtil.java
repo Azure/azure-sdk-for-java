@@ -13,7 +13,6 @@ import io.clientcore.core.utils.configuration.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Utilities to handle logging for credentials.

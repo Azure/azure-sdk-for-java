@@ -10,7 +10,9 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 
-import static com.azure.identity.v2.implementation.util.IdentityUtil.*;
+import static com.azure.identity.v2.implementation.util.IdentityUtil.PROPERTY_AZURE_TENANT_ID;
+import static com.azure.identity.v2.implementation.util.IdentityUtil.PROPERTY_AZURE_CLIENT_ID;
+import static com.azure.identity.v2.implementation.util.IdentityUtil.AZURE_FEDERATED_TOKEN_FILE;
 
 /**
  * Fluent credential builder for instantiating a {@link WorkloadIdentityCredential}.
@@ -48,7 +50,7 @@ public class WorkloadIdentityCredentialBuilder extends EntraIdCredentialBuilderB
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredentialBuilder.class);
     private String tokenFilePath;
 
-    private ConfidentialClientOptions confidentialClientOptions;
+    private final ConfidentialClientOptions confidentialClientOptions;
 
     /**
      * Creates an instance of a WorkloadIdentityCredentialBuilder.

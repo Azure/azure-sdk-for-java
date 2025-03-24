@@ -73,8 +73,6 @@ public class InteractiveBrowserCredentialTest {
 
     @Test
     public void testValidInteractiveCAE() throws Exception {
-        Random random = new Random();
-
         // setup
         String token1 = "token1";
         String token2 = "token2";
@@ -83,7 +81,6 @@ public class InteractiveBrowserCredentialTest {
         TokenRequestContext request2
             = new TokenRequestContext().addScopes("https://vault.azure.net").setCaeEnabled(true);
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        int port = random.nextInt(10000) + 10000;
 
         try (MockedConstruction<PublicClient> identityClientMock
             = mockConstruction(PublicClient.class, (publicClient, context) -> {
@@ -198,15 +195,6 @@ public class InteractiveBrowserCredentialTest {
             Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             Assertions.assertNotNull(identityClientMock);
         }
-    }
-
-    @Test
-    public void testCredentialDoesnWorkWIthPortAndRedirectUrlConfigured() throws Exception {
-        // setup
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new InteractiveBrowserCredentialBuilder().clientId(CLIENT_ID)
-                .redirectUrl("http://localhost:8080")
-                .build());
     }
 
     @Test

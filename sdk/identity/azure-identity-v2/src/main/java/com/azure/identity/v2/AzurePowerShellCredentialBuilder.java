@@ -43,9 +43,7 @@ import java.util.List;
 public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<AzurePowerShellCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePowerShellCredentialBuilder.class);
 
-    private String tenantId;
-
-    DevToolsClientOptions clientOptions;
+    private final DevToolsClientOptions clientOptions;
 
     /**
      * Constructs an instance of AzurePowerShellCredentialBuilder.

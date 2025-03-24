@@ -48,7 +48,7 @@ public class AuthorizationCodeCredentialBuilder
     private static final ClientLogger LOGGER = new ClientLogger(AuthorizationCodeCredentialBuilder.class);
     private static final String CLASS_NAME = AuthorizationCodeCredentialBuilder.class.getSimpleName();
     private String clientSecret;
-    private PublicClientOptions publicClientOptions;
+    private final PublicClientOptions publicClientOptions;
 
     /**
      * Constructs an instance of AuthorizationCodeCredentialBuilder.

@@ -3,12 +3,9 @@
 
 package com.azure.identity.v2.implementation.models;
 
-import com.microsoft.aad.msal4j.ClaimsRequest;
-import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.UserAssertion;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 
-import java.util.HashSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -73,32 +70,36 @@ public class ConfidentialClientOptions extends ClientOptions {
         return certificatePath;
     }
 
-    public void setCertificatePath(String certificatePath) {
+    public ConfidentialClientOptions setCertificatePath(String certificatePath) {
         this.certificatePath = certificatePath;
+        return this;
     }
 
     public byte[] getCertificateBytes() {
         return certificateBytes;
     }
 
-    public void setCertificateBytes(byte[] certificateBytes) {
+    public ConfidentialClientOptions setCertificateBytes(byte[] certificateBytes) {
         this.certificateBytes = certificateBytes;
+        return this;
     }
 
     public String getCertificatePassword() {
         return certificatePassword;
     }
 
-    public void setCertificatePassword(String certificatePassword) {
+    public ConfidentialClientOptions setCertificatePassword(String certificatePassword) {
         this.certificatePassword = certificatePassword;
+        return this;
     }
 
     public boolean isIncludeX5c() {
         return includeX5c;
     }
 
-    public void setIncludeX5c(boolean includeX5c) {
+    public ConfidentialClientOptions setIncludeX5c(boolean includeX5c) {
         this.includeX5c = includeX5c;
+        return this;
     }
 
     public ConfidentialClientOptions setUserAssertion(String userAssertion) {

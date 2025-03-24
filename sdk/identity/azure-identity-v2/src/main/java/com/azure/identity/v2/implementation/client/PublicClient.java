@@ -3,13 +3,26 @@
 
 package com.azure.identity.v2.implementation.client;
 
-import com.azure.identity.v2.*;
+import com.azure.identity.v2.TokenCachePersistenceOptions;
+import com.azure.identity.v2.BrowserCustomizationOptions;
+import com.azure.identity.v2.DeviceCodeInfo;
+import com.azure.identity.v2.CredentialUnavailableException;
+import com.azure.identity.v2.CredentialAuthenticationException;
 import com.azure.identity.v2.implementation.models.MsalToken;
 import com.azure.identity.v2.implementation.models.PublicClientOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.SilentParameters;
+import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.SystemBrowserOptions;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.Prompt;
+import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
+import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.utils.CoreUtils;
@@ -244,21 +257,19 @@ public class PublicClient extends ClientBase {
      * different device.
      *
      * @param request            the details of the token request
-     * @param deviceCodeConsumer the user provided closure that will consume the device code challenge
      * @return a Publisher that emits an AccessToken when the device challenge is met, or an exception if the device
      * code expires
      */
-    public MsalToken authenticateWithDeviceCode(TokenRequestContext request,
-        Consumer<DeviceCodeInfo> deviceCodeConsumer) {
+    public MsalToken authenticateWithDeviceCode(TokenRequestContext request) {
         PublicClientApplication pc = getClientInstance(request).getValue();
         DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder
-            = buildDeviceCodeFlowParameters(request, deviceCodeConsumer);
+            = buildDeviceCodeFlowParameters(request, options.getChallengeConsumer());
 
         try {
             return new MsalToken(pc.acquireToken(parametersBuilder.build()).get());
         } catch (Exception e) {
             throw LOGGER.logThrowableAsError(
-                new CredentialUnavailableException("Failed to acquire token with device code.", e));
+                new CredentialAuthenticationException("Failed to acquire token with device code.", e));
         }
     }
 

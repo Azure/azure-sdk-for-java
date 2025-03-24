@@ -80,7 +80,7 @@ public class DeviceCodeCredential implements TokenCredential {
     private boolean isCaeDisabledRequestCached;
     private boolean isCachePopulated;
 
-    private PublicClientOptions publicClientOptions;
+    private final PublicClientOptions publicClientOptions;
 
     /**
      * Creates a DeviceCodeCredential with the given identity client options.
@@ -116,7 +116,7 @@ public class DeviceCodeCredential implements TokenCredential {
                     + "code authentication.", request));
             }
             MsalToken accessToken
-                = publicClient.authenticateWithDeviceCode(request, publicClientOptions.getChallengeConsumer());
+                = publicClient.authenticateWithDeviceCode(request);
             updateCache(accessToken);
             if (request.isCaeEnabled()) {
                 isCaeEnabledRequestCached = true;
@@ -127,7 +127,7 @@ public class DeviceCodeCredential implements TokenCredential {
             return accessToken;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
-            throw e;
+            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
         }
     }
 
@@ -146,7 +146,7 @@ public class DeviceCodeCredential implements TokenCredential {
      * when credential was instantiated.
      */
     public AuthenticationRecord authenticate(TokenRequestContext request) {
-        this.updateCache(publicClient.authenticateWithDeviceCode(request, publicClientOptions.getChallengeConsumer()));
+        this.updateCache(publicClient.authenticateWithDeviceCode(request));
         return cachedToken.get().getAuthenticationRecord();
     }
 

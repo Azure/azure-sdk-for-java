@@ -60,6 +60,7 @@
   <suppress files="com.azure.identity.implementation.HttpPipelineAdapter.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.identity.implementation.IdentityLogOptionsImpl.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.identity.implementation.IntelliJAuthMethodDetails.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="com.azure.identity.implementation.IntelliJAuthMethodDetails.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.identity.implementation.LinuxKeyRingAccessor.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.identity.implementation.MsalAuthenticationAccount.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.identity.implementation.MsalToken.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />

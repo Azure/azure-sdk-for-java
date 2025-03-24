@@ -6,7 +6,13 @@ package com.azure.identity.v2.implementation.client;
 import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.HttpPipelineOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
-import io.clientcore.core.http.pipeline.*;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
+import io.clientcore.core.http.pipeline.HttpRedirectPolicy;
+import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -44,7 +44,7 @@ import java.util.Objects;
 public class AzureDeveloperCliCredentialBuilder extends CredentialBuilderBase<AzureDeveloperCliCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(AzureDeveloperCliCredentialBuilder.class);
 
-    private DevToolsClientOptions clientOptions;
+    private final DevToolsClientOptions clientOptions;
 
     /**
      * Constructs an instance of AzureDeveloperCliCredentialBuilder.

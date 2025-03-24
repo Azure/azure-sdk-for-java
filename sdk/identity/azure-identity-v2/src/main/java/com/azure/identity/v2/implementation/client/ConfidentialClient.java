@@ -4,20 +4,32 @@
 package com.azure.identity.v2.implementation.client;
 
 import com.azure.identity.v2.CredentialAuthenticationException;
-import com.azure.identity.v2.CredentialUnavailableException;
 import com.azure.identity.v2.TokenCachePersistenceOptions;
 import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
 import com.azure.identity.v2.implementation.models.MsalToken;
 import com.azure.identity.v2.implementation.util.CertificateUtil;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
+import com.microsoft.aad.msal4j.SilentParameters;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -79,7 +91,7 @@ public class ConfidentialClient extends ClientBase {
         try {
             return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
         }
     }
 
@@ -312,7 +324,7 @@ public class ConfidentialClient extends ClientBase {
             return new MsalToken(
                 getConfidentialClientInstance(request).getValue().acquireToken(parametersBuilder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
-            throw new CredentialUnavailableException("Failed to acquire token with authorization code", e);
+            throw new CredentialAuthenticationException("Failed to acquire token with authorization code", e);
         }
     }
 

@@ -5,8 +5,8 @@ package com.azure.identity.v2.implementation.client;
 
 import com.azure.identity.v2.CredentialAuthenticationException;
 import com.azure.identity.v2.CredentialUnavailableException;
-import com.azure.identity.v2.TokenCachePersistenceOptions;
-import com.azure.identity.v2.implementation.models.*;
+import com.azure.identity.v2.implementation.models.DevToolsClientOptions;
+import com.azure.identity.v2.implementation.models.AzureCliToken;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.identity.v2.implementation.util.ScopeUtil;
@@ -24,9 +24,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.time.*;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 

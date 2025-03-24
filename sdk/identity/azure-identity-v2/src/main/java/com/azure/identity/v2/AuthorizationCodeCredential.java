@@ -63,7 +63,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
     /**
      * Creates an AuthorizationCodeCredential with the given identity client options.
      *
-     * @param clientSecret        the client secret of the application
+     * @param clientSecret the client secret of the application
      * @param publicClientOptions the options for configuring the identity client
      */
     AuthorizationCodeCredential(String clientSecret, PublicClientOptions publicClientOptions) {
@@ -111,7 +111,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
             return accessToken;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
-            throw e;
+            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
         }
     }
 

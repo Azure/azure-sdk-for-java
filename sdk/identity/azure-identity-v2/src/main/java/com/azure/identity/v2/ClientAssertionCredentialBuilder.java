@@ -71,7 +71,7 @@ public class ClientAssertionCredentialBuilder extends EntraIdCredentialBuilderBa
     private static final ClientLogger LOGGER = new ClientLogger(ClientAssertionCredentialBuilder.class);
     private static final String CLASS_NAME = ClientAssertionCredentialBuilder.class.getSimpleName();
 
-    private ConfidentialClientOptions confidentialClientOptions;
+    private final ConfidentialClientOptions confidentialClientOptions;
 
     /**
      * Constructs an instance of ClientAssertionCredentialBuilder.

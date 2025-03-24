@@ -10,6 +10,7 @@ import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRedirectOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class HttpPipelineOptions implements Cloneable {
      * Creates an instance of HttpOptions with default settings.
      */
     public HttpPipelineOptions() {
+        httpPipelinePolicy = new ArrayList<>(1);
     }
 
     /**

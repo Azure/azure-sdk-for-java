@@ -6,11 +6,8 @@ package com.azure.identity.v2;
 import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.PublicClientOptions;
 import com.azure.identity.v2.implementation.util.IdentityConstants;
-import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.v2.core.credentials.TokenRequestContext;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -59,10 +56,6 @@ import java.util.function.Consumer;
  * @see DeviceCodeCredential
  */
 public class DeviceCodeCredentialBuilder extends EntraIdCredentialBuilderBase<DeviceCodeCredentialBuilder> {
-    private Consumer<DeviceCodeInfo> challengeConsumer
-        = deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
-
-    private boolean automaticAuthentication = true;
     private PublicClientOptions publicClientOptions;
 
     /**
@@ -101,7 +94,7 @@ public class DeviceCodeCredentialBuilder extends EntraIdCredentialBuilderBase<De
      * @return An updated instance of this builder with the challenge consumer configured.
      */
     public DeviceCodeCredentialBuilder challengeConsumer(Consumer<DeviceCodeInfo> challengeConsumer) {
-        this.challengeConsumer = challengeConsumer;
+        this.publicClientOptions.setChallengeConsumer(challengeConsumer);
         return this;
     }
 
@@ -142,7 +135,7 @@ public class DeviceCodeCredentialBuilder extends EntraIdCredentialBuilderBase<De
      * @return An updated instance of this builder with automatic authentication disabled.
      */
     public DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
-        this.automaticAuthentication = false;
+        this.publicClientOptions.setAutomaticAuthentication(false);
         return this;
     }
 

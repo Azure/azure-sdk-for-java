@@ -71,7 +71,7 @@ public class ClientCertificateCredentialBuilder
     extends EntraIdCredentialBuilderBase<ClientCertificateCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(ClientCertificateCredentialBuilder.class);
     private static final String CLASS_NAME = ClientCertificateCredentialBuilder.class.getSimpleName();
-    private ConfidentialClientOptions confidentialClientOptions;
+    private final ConfidentialClientOptions confidentialClientOptions;
 
     /**
      * Constructs an instance of ClientCertificateCredentialBuilder.

@@ -7,7 +7,6 @@ import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.CoreUtils;
 
 import java.util.concurrent.ExecutorService;
 
@@ -35,7 +34,7 @@ import java.util.concurrent.ExecutorService;
  */
 public class EnvironmentCredentialBuilder extends EntraIdCredentialBuilderBase<EnvironmentCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentCredentialBuilder.class);
-    private ConfidentialClientOptions confidentialClientOptions;
+    private final ConfidentialClientOptions confidentialClientOptions;
 
     /**
      * Constructs an instance of EnvironmentCredentialBuilder.

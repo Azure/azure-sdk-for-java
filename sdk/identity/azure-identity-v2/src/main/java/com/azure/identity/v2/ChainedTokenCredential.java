@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>ChainedTokenCredential allows you to chain together a set of TokenCredential instances. Each credential in the chain is attempted
@@ -72,7 +71,7 @@ public class ChainedTokenCredential implements TokenCredential {
                     selectedCredential.get());
                 return accessToken;
             } catch (Exception e) {
-                handleExceptionSync(e, selectedCredential.get(), exceptions,
+                handleException(e, selectedCredential.get(), exceptions,
                     "Azure Identity => Cached credential {} is unavailable.", selectedCredential.get());
             }
         } else {
@@ -84,7 +83,7 @@ public class ChainedTokenCredential implements TokenCredential {
                     return accessToken;
 
                 } catch (Exception e) {
-                    handleExceptionSync(e, credential, exceptions,
+                    handleException(e, credential, exceptions,
                         "Azure Identity => Attempted credential {} is unavailable.", credential);
                 }
             }
@@ -99,7 +98,7 @@ public class ChainedTokenCredential implements TokenCredential {
                         + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"
                     : ""));
         }
-        throw last;
+        throw LOGGER.logThrowableAsError(last);
     }
 
     private void logTokenMessage(String format, TokenCredential selectedCredential) {
@@ -112,10 +111,10 @@ public class ChainedTokenCredential implements TokenCredential {
             + t.getMessage();
     }
 
-    private void handleExceptionSync(Exception e, TokenCredential selectedCredential,
+    private void handleException(Exception e, TokenCredential selectedCredential,
         List<CredentialUnavailableException> exceptions, String logMessage, TokenCredential selectedCredential1) {
         if (e.getClass() != CredentialUnavailableException.class) {
-            throw new CredentialAuthenticationException(getCredUnavailableMessage(selectedCredential, e), e);
+            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(getCredUnavailableMessage(selectedCredential, e), e));
         } else {
             if (e instanceof CredentialUnavailableException) {
                 exceptions.add((CredentialUnavailableException) e);

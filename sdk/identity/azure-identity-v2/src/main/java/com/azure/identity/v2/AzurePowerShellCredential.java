@@ -4,7 +4,6 @@
 package com.azure.identity.v2;
 
 import com.azure.identity.v2.implementation.client.DevToolslClient;
-import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.DevToolsClientOptions;
 import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;

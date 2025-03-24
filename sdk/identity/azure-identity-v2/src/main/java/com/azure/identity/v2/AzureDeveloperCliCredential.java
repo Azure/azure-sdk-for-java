@@ -4,7 +4,6 @@
 package com.azure.identity.v2;
 
 import com.azure.identity.v2.implementation.client.DevToolslClient;
-import com.azure.identity.v2.implementation.models.ClientOptions;
 import com.azure.identity.v2.implementation.models.DevToolsClientOptions;
 import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;
@@ -12,17 +11,6 @@ import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 /**
  * <p>Azure Developer CLI is a command-line interface tool that allows developers to create, manage, and deploy

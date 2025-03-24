@@ -5,7 +5,6 @@ package com.azure.identity.v2;
 
 import com.azure.identity.v2.implementation.client.SynchronousAccessor;
 import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
-import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
@@ -54,7 +53,7 @@ import java.time.Duration;
 public class WorkloadIdentityCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredential.class);
     private final ConfidentialClientOptions confidentialClientOptions;
-    private ClientAssertionCredential clientAssertionCredential;
+    private final ClientAssertionCredential clientAssertionCredential;
 
     /**
      * WorkloadIdentityCredential supports Azure workload identity on Kubernetes.
@@ -93,8 +92,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
     @Override
     public AccessToken getToken(TokenRequestContext request) {
         if (clientAssertionCredential == null) {
-            throw LoggingUtil.logCredentialUnavailableException(LOGGER,
-                new CredentialUnavailableException("WorkloadIdentityCredential"
+            throw LOGGER.logThrowableAsError(new CredentialUnavailableException("WorkloadIdentityCredential"
                     + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
                     + " guide for more information."
                     + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot"));

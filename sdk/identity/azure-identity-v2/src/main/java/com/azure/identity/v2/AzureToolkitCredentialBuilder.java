@@ -43,7 +43,7 @@ public class AzureToolkitCredentialBuilder extends CredentialBuilderBase<AzureTo
     private static final ClientLogger LOGGER = new ClientLogger(AzureToolkitCredentialBuilder.class);
 
     private String tenantId;
-    private PublicClientOptions publicClientOptions;
+    private final PublicClientOptions publicClientOptions;
 
     /**
      * Constructs an instance of IntelliJCredentialBuilder.

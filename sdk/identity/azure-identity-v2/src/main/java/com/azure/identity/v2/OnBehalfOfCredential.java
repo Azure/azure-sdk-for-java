@@ -72,7 +72,7 @@ public class OnBehalfOfCredential implements TokenCredential {
             return token;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
-            throw e;
+            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
         }
     }
 
