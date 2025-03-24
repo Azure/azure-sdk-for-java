@@ -38,12 +38,6 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
     private String subnetId;
 
     /*
-     * The scope of dynamic vnet assignment.
-     */
-    @Generated
-    private DynamicVNetAssignmentScope dynamicVNetAssignmentScope;
-
-    /*
      * The configuration for endpoints on Compute Nodes in the Batch Pool.
      */
     @Generated
@@ -117,28 +111,6 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
     @Generated
     public NetworkConfiguration setSubnetId(String subnetId) {
         this.subnetId = subnetId;
-        return this;
-    }
-
-    /**
-     * Get the dynamicVNetAssignmentScope property: The scope of dynamic vnet assignment.
-     *
-     * @return the dynamicVNetAssignmentScope value.
-     */
-    @Generated
-    public DynamicVNetAssignmentScope getDynamicVNetAssignmentScope() {
-        return this.dynamicVNetAssignmentScope;
-    }
-
-    /**
-     * Set the dynamicVNetAssignmentScope property: The scope of dynamic vnet assignment.
-     *
-     * @param dynamicVNetAssignmentScope the dynamicVNetAssignmentScope value to set.
-     * @return the NetworkConfiguration object itself.
-     */
-    @Generated
-    public NetworkConfiguration setDynamicVNetAssignmentScope(DynamicVNetAssignmentScope dynamicVNetAssignmentScope) {
-        this.dynamicVNetAssignmentScope = dynamicVNetAssignmentScope;
         return this;
     }
 
@@ -226,7 +198,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("subnetId", this.subnetId);
         jsonWriter.writeStringField("dynamicVNetAssignmentScope",
-            this.dynamicVNetAssignmentScope == null ? null : this.dynamicVNetAssignmentScope.toString());
+            this.dynamicVnetAssignmentScope == null ? null : this.dynamicVnetAssignmentScope.toString());
         jsonWriter.writeJsonField("endpointConfiguration", this.endpointConfiguration);
         jsonWriter.writeJsonField("publicIPAddressConfiguration", this.publicIpAddressConfiguration);
         jsonWriter.writeBooleanField("enableAcceleratedNetworking", this.enableAcceleratedNetworking);
@@ -251,7 +223,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
                 if ("subnetId".equals(fieldName)) {
                     deserializedNetworkConfiguration.subnetId = reader.getString();
                 } else if ("dynamicVNetAssignmentScope".equals(fieldName)) {
-                    deserializedNetworkConfiguration.dynamicVNetAssignmentScope
+                    deserializedNetworkConfiguration.dynamicVnetAssignmentScope
                         = DynamicVNetAssignmentScope.fromString(reader.getString());
                 } else if ("endpointConfiguration".equals(fieldName)) {
                     deserializedNetworkConfiguration.endpointConfiguration
@@ -268,5 +240,33 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
             }
             return deserializedNetworkConfiguration;
         });
+    }
+
+    /*
+     * The scope of dynamic vnet assignment.
+     */
+    @Generated
+    private DynamicVNetAssignmentScope dynamicVnetAssignmentScope;
+
+    /**
+     * Get the dynamicVnetAssignmentScope property: The scope of dynamic vnet assignment.
+     *
+     * @return the dynamicVnetAssignmentScope value.
+     */
+    @Generated
+    public DynamicVNetAssignmentScope getDynamicVnetAssignmentScope() {
+        return this.dynamicVnetAssignmentScope;
+    }
+
+    /**
+     * Set the dynamicVnetAssignmentScope property: The scope of dynamic vnet assignment.
+     *
+     * @param dynamicVnetAssignmentScope the dynamicVnetAssignmentScope value to set.
+     * @return the NetworkConfiguration object itself.
+     */
+    @Generated
+    public NetworkConfiguration setDynamicVnetAssignmentScope(DynamicVNetAssignmentScope dynamicVnetAssignmentScope) {
+        this.dynamicVnetAssignmentScope = dynamicVnetAssignmentScope;
+        return this;
     }
 }
