@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -226,9 +225,6 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -268,7 +264,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
                     deserializedSeriesResult.series = SeriesIdentity.fromJson(reader);
                 } else if ("timestampList".equals(fieldName)) {
                     List<OffsetDateTime> timestampList = reader.readArray(reader1 -> reader1
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                        .getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                     deserializedSeriesResult.timestampList = timestampList;
                 } else if ("valueList".equals(fieldName)) {
                     List<Double> valueList = reader.readArray(reader1 -> reader1.getDouble());

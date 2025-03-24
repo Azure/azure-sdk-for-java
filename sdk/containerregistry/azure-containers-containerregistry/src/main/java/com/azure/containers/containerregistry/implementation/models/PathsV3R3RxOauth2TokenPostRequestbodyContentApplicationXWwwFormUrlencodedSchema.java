@@ -10,10 +10,9 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Objects;
 
-/**
- * The PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema model.
- */
+/** The PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema model. */
 @Fluent
 public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
     implements JsonSerializable<PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema> {
@@ -38,15 +37,13 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      */
     private TokenGrantType grantType = TokenGrantType.REFRESH_TOKEN;
 
-    /**
-     * Creates an instance of PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema class.
-     */
+    /** Creates an instance of PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema class. */
     public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {
     }
 
     /**
      * Get the service property: Indicates the name of your Azure container registry.
-     * 
+     *
      * @return the service value.
      */
     public String getService() {
@@ -55,7 +52,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
 
     /**
      * Set the service property: Indicates the name of your Azure container registry.
-     * 
+     *
      * @param service the service value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
@@ -67,7 +64,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
     /**
      * Get the scope property: Which is expected to be a valid scope, and can be specified more than once for multiple
      * scope requests. You obtained this from the Www-Authenticate response header from the challenge.
-     * 
+     *
      * @return the scope value.
      */
     public String getScope() {
@@ -77,7 +74,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
     /**
      * Set the scope property: Which is expected to be a valid scope, and can be specified more than once for multiple
      * scope requests. You obtained this from the Www-Authenticate response header from the challenge.
-     * 
+     *
      * @param scope the scope value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
@@ -88,7 +85,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
 
     /**
      * Get the acrRefreshToken property: Must be a valid ACR refresh token.
-     * 
+     *
      * @return the acrRefreshToken value.
      */
     public String getAcrRefreshToken() {
@@ -97,7 +94,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
 
     /**
      * Set the acrRefreshToken property: Must be a valid ACR refresh token.
-     * 
+     *
      * @param acrRefreshToken the acrRefreshToken value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
@@ -109,7 +106,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
 
     /**
      * Get the grantType property: Grant type is expected to be refresh_token.
-     * 
+     *
      * @return the grantType value.
      */
     public TokenGrantType getGrantType() {
@@ -118,7 +115,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
 
     /**
      * Set the grantType property: Grant type is expected to be refresh_token.
-     * 
+     *
      * @param grantType the grantType value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
@@ -128,29 +125,26 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("service", this.service);
         jsonWriter.writeStringField("scope", this.scope);
         jsonWriter.writeStringField("refresh_token", this.acrRefreshToken);
-        jsonWriter.writeStringField("grant_type", this.grantType == null ? null : this.grantType.toString());
+        jsonWriter.writeStringField("grant_type", Objects.toString(this.grantType, null));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema from the
      * JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema if the
-     * JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     *     JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the
-     * PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema.
+     *     PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema.
      */
     public static PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
         fromJson(JsonReader jsonReader) throws IOException {

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The ContainerRegistryBlobsDeleteBlobHeaders model.
- */
+/** The ContainerRegistryBlobsDeleteBlobHeaders model. */
 @Fluent
 public final class ContainerRegistryBlobsDeleteBlobHeaders {
     /*
@@ -23,7 +21,7 @@ public final class ContainerRegistryBlobsDeleteBlobHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainerRegistryBlobsDeleteBlobHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsDeleteBlobHeaders(HttpHeaders rawHeaders) {
@@ -32,7 +30,7 @@ public final class ContainerRegistryBlobsDeleteBlobHeaders {
 
     /**
      * Get the dockerContentDigest property: The Docker-Content-Digest property.
-     * 
+     *
      * @return the dockerContentDigest value.
      */
     public String getDockerContentDigest() {
@@ -41,7 +39,7 @@ public final class ContainerRegistryBlobsDeleteBlobHeaders {
 
     /**
      * Set the dockerContentDigest property: The Docker-Content-Digest property.
-     * 
+     *
      * @param dockerContentDigest the dockerContentDigest value to set.
      * @return the ContainerRegistryBlobsDeleteBlobHeaders object itself.
      */
