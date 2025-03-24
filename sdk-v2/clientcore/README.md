@@ -1,0 +1,1 @@
+# Client Core shared library for Java
