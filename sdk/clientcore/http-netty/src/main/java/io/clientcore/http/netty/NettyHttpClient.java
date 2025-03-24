@@ -51,16 +51,8 @@ class NettyHttpClient implements HttpClient {
     private final Class<? extends Channel> socketChannelClass;
 
     NettyHttpClient() {
-        //        if (Epoll.isAvailable()) {
-        //            this.group = new EpollEventLoopGroup();
-        //            this.socketChannelClass = io.netty.channel.epoll.EpollSocketChannel.class;
-        //            LOGGER.atLevel(ClientLogger.LogLevel.INFORMATIONAL)
-        //                .log("Using EpollEventLoopGroup for improved performance on Linux.");
-        //        } else {
         this.group = new NioEventLoopGroup();
         this.socketChannelClass = NioSocketChannel.class;
-        LOGGER.atLevel(LogLevel.INFORMATIONAL).log("Using NioEventLoopGroup for cross-platform compatibility.");
-        //        }
     }
 
     @Override
