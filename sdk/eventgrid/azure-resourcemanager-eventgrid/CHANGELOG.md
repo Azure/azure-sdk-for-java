@@ -1,10 +1,21 @@
 # Release History
 
-## 1.2.0 (2025-03-21)
+## 1.2.0 (2025-03-24)
 
 - Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2025-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
 
 #### `models.TopicTypePropertiesSupportedScopesForSourceItem` was removed
 
@@ -394,72 +405,35 @@
 
 * `models.ClientGroup$DefinitionStages` was added
 
-#### `models.EventSubscriptionsListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.PrivateEndpoint` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
 #### `models.SystemTopic` was modified
 
 * `resourceGroupName()` was added
 
 #### `models.StringNotBeginsWithAdvancedFilter` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `operatorType()` was added
-
-#### `models.ConnectionState` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.WebhookEventSubscriptionDestination` was modified
 
 * `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
 * `endpointType()` was added
 * `minimumTlsVersionAllowed()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.StringEndsWithAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.NumberInRangeAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.IsNotNullAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.ServiceBusQueueEventSubscriptionDestination` was modified
 
 * `endpointType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.PrivateEndpointConnectionListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.UserIdentityProperties` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.TopicUpdateParameters` was modified
 
@@ -468,31 +442,17 @@
 * `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
 * `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
 * `eventTypeInfo()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `minimumTlsVersionAllowed()` was added
 
 #### `models.IsNullOrUndefinedAdvancedFilter` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `operatorType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.OperationsListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.Domain$Update` was modified
 
 * `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
 * `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
 * `withEventTypeInfo(models.EventTypeInfo)` was added
-
-#### `models.DomainsListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.Topic$Definition` was modified
 
@@ -503,13 +463,9 @@
 #### `models.StringBeginsWithAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.DeliveryAttributeMapping` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `type()` was added
 
 #### `models.DomainUpdateParameters` was modified
@@ -517,40 +473,25 @@
 * `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
 * `withEventTypeInfo(models.EventTypeInfo)` was added
 * `dataResidencyBoundary()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `eventTypeInfo()` was added
 * `minimumTlsVersionAllowed()` was added
 
 #### `models.StringNotEndsWithAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.NumberGreaterThanAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.BoolEqualsAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.StringNotInAdvancedFilter` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `operatorType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.TopicsListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.Topic$Update` was modified
 
@@ -561,36 +502,18 @@
 #### `models.NumberLessThanAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.StaticDeliveryAttributeMapping` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `type()` was added
 
 #### `models.EventSubscriptionDestination` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `endpointType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.DomainTopicsListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.DeliveryWithResourceIdentity` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.AzureFunctionEventSubscriptionDestination` was modified
 
 * `endpointType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.Domain` was modified
 
@@ -601,26 +524,15 @@
 
 #### `models.DeadLetterDestination` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `endpointType()` was added
 
 #### `models.DynamicDeliveryAttributeMapping` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `type()` was added
 
 #### `models.StorageBlobDeadLetterDestination` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `endpointType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.JsonField` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `EventGridManager` was modified
 
@@ -644,26 +556,9 @@
 * `domainEventSubscriptions()` was added
 * `clientGroups()` was added
 
-#### `models.RetryPolicy` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
 #### `models.JsonInputSchemaMapping` was modified
 
 * `inputSchemaMappingType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.EventTypesListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.EventSubscriptionIdentity` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.Topic` was modified
 
@@ -672,119 +567,49 @@
 * `minimumTlsVersionAllowed()` was added
 * `eventTypeInfo()` was added
 
-#### `models.EventSubscriptionFilter` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.InboundIpRule` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.DeadLetterWithResourceIdentity` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.PrivateLinkResourcesListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
 #### `models.StorageQueueEventSubscriptionDestination` was modified
 
 * `endpointType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.OperationInfo` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.StringInAdvancedFilter` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `operatorType()` was added
 
 #### `models.StringContainsAdvancedFilter` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `operatorType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.DomainRegenerateKeyRequest` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.NumberNotInRangeAdvancedFilter` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `operatorType()` was added
-
-#### `models.IdentityInfo` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.NumberNotInAdvancedFilter` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `operatorType()` was added
 
 #### `models.ServiceBusTopicEventSubscriptionDestination` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `endpointType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.SystemTopicUpdateParameters` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.AdvancedFilter` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `operatorType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.Operation` was modified
 
 * `isDataAction()` was added
 
-#### `models.TopicRegenerateKeyRequest` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.SystemTopicsListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
 #### `models.NumberGreaterThanOrEqualsAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.HybridConnectionEventSubscriptionDestination` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `endpointType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.InputSchemaMapping` was modified
 
 * `inputSchemaMappingType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.TopicTypeInfo` was modified
 
@@ -794,14 +619,10 @@
 #### `models.StringNotContainsAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.EventHubEventSubscriptionDestination` was modified
 
 * `endpointType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.TopicTypesListResult` was modified
 
@@ -811,8 +632,6 @@
 #### `models.NumberLessThanOrEqualsAdvancedFilter` was modified
 
 * `operatorType()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.Domain$Definition` was modified
 
@@ -820,25 +639,13 @@
 * `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
 * `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
 
-#### `models.JsonFieldWithDefault` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
 #### `EventGridManager$Configurable` was modified
 
 * `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
 
 #### `models.NumberInAdvancedFilter` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `operatorType()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.EventSubscriptionUpdateParameters` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.2.0-beta.7 (2024-12-04)
 
