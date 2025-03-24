@@ -101,6 +101,7 @@
     <revapi.skip>true</revapi.skip>
 
     <jacoco.min.linecoverage>0.36</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.25</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>

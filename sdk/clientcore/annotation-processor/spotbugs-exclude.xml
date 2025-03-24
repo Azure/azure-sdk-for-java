@@ -10,8 +10,4 @@
     <Bug pattern="DCN_NULLPOINTER_EXCEPTION" />
     <Class name="io.clientcore.annotation.processor.utils.PathBuilderTest" />
   </Match>
-  <Match>
-    <Bug pattern="NM_CONFUSING" />
-    <Class name="io.clientcore.annotation.processor.templating.BodyContentTypeProcessorTest" />
-  </Match>
 </FindBugsFilter>
