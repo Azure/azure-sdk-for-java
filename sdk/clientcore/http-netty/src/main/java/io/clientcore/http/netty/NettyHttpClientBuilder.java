@@ -1,7 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.http.netty;
 
+import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
@@ -22,10 +26,15 @@ public class NettyHttpClientBuilder {
     ProxyOptions proxyOptions;
 
     private EventLoopGroup eventLoopGroup;
-    private int port = 80;
     private Duration connectTimeout;
     private Duration readTimeout;
     private Duration writeTimeout;
+
+    /**
+     * Creates a new instance of {@link NettyHttpClientBuilder}.
+     */
+    public NettyHttpClientBuilder() {
+    }
 
     /**
      * Sets the event loop group for the Netty client.
@@ -87,7 +96,7 @@ public class NettyHttpClientBuilder {
      *
      * @return A configured NettyHttpClient instance.
      */
-    public NettyHttpClient build() {
+    public HttpClient build() {
         EventLoopGroup group
             = eventLoopGroup != null ? eventLoopGroup : new NioEventLoopGroup(new DefaultThreadFactory("netty-client"));
         Bootstrap bootstrap = new Bootstrap().group(group).channel(NioSocketChannel.class);
@@ -111,7 +120,6 @@ public class NettyHttpClientBuilder {
             });
         }
 
-        LOGGER.atLevel(ClientLogger.LogLevel.INFORMATIONAL).log("NettyHttpClient built with port: " + port);
         return new NettyHttpClient(); // Customize with additional bootstrap configurations if needed.
     }
 }

@@ -4,4 +4,4 @@
 /**
  * Package containing Netty HTTP client plugin for Client Core.
  */
-package io.clientcore.http.okhttp3;
+package io.clientcore.http.netty;

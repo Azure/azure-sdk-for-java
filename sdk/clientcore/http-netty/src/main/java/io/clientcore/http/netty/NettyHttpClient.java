@@ -1,31 +1,45 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.http.netty;
 
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.models.*;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.http.netty.implementation.NettyHttpResponse;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.*;
-import io.netty.channel.epoll.Epoll;
-import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpClientCodec;
+import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 
 import java.io.IOException;
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static io.clientcore.core.http.models.HttpMethod.HEAD;
 
 /**
  * HttpClient implementation using synchronous Netty operations.
@@ -37,21 +51,20 @@ class NettyHttpClient implements HttpClient {
     private final Class<? extends Channel> socketChannelClass;
 
     NettyHttpClient() {
-        if (Epoll.isAvailable()) {
-            this.group = new EpollEventLoopGroup();
-            this.socketChannelClass = io.netty.channel.epoll.EpollSocketChannel.class;
-            LOGGER.atLevel(ClientLogger.LogLevel.INFORMATIONAL)
-                .log("Using EpollEventLoopGroup for improved performance on Linux.");
-        } else {
-            this.group = new NioEventLoopGroup();
-            this.socketChannelClass = NioSocketChannel.class;
-            LOGGER.atLevel(ClientLogger.LogLevel.INFORMATIONAL)
-                .log("Using NioEventLoopGroup for cross-platform compatibility.");
-        }
+        //        if (Epoll.isAvailable()) {
+        //            this.group = new EpollEventLoopGroup();
+        //            this.socketChannelClass = io.netty.channel.epoll.EpollSocketChannel.class;
+        //            LOGGER.atLevel(ClientLogger.LogLevel.INFORMATIONAL)
+        //                .log("Using EpollEventLoopGroup for improved performance on Linux.");
+        //        } else {
+        this.group = new NioEventLoopGroup();
+        this.socketChannelClass = NioSocketChannel.class;
+        LOGGER.atLevel(LogLevel.INFORMATIONAL).log("Using NioEventLoopGroup for cross-platform compatibility.");
+        //        }
     }
 
     @Override
-    public Response<?> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) throws IOException {
         URI uri = request.getUri();
         String host = uri.getHost();
         int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
@@ -63,7 +76,8 @@ class NettyHttpClient implements HttpClient {
                 ChannelPipeline pipeline = ch.pipeline();
 
                 if ("https".equalsIgnoreCase(uri.getScheme())) {
-                    SslContext sslContext = SslContextBuilder.forClient().build();
+                    SslContext sslContext
+                        = SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS").build();
                     pipeline.addLast(sslContext.newHandler(ch.alloc(), host, port));
                 }
 
@@ -72,7 +86,7 @@ class NettyHttpClient implements HttpClient {
             }
         });
 
-        AtomicReference<Response<?>> responseReference = new AtomicReference<>();
+        AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
         try {
@@ -81,7 +95,7 @@ class NettyHttpClient implements HttpClient {
             FullHttpRequest nettyRequest = toNettyRequest(request);
             channel.writeAndFlush(nettyRequest).addListener(future -> {
                 if (!future.isSuccess()) {
-                    LOGGER.atLevel(ClientLogger.LogLevel.ERROR).log("Failed to send request", future.cause());
+                    LOGGER.atLevel(LogLevel.ERROR).log("Failed to send request", future.cause());
                     latch.countDown();
                 }
             });
@@ -95,7 +109,7 @@ class NettyHttpClient implements HttpClient {
 
                 @Override
                 public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-                    LOGGER.atLevel(ClientLogger.LogLevel.ERROR).log("Error processing response", cause);
+                    LOGGER.atLevel(LogLevel.ERROR).log("Error processing response", cause);
                     latch.countDown();
                 }
             });
@@ -104,7 +118,7 @@ class NettyHttpClient implements HttpClient {
             channel.close();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new IOException("Request interrupted", e);
+            throw LOGGER.logThrowableAsError(new IOException("Request interrupted", e));
         }
 
         return responseReference.get();
@@ -122,12 +136,12 @@ class NettyHttpClient implements HttpClient {
         FullHttpRequest nettyRequest = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, content);
 
         HttpHeaders headers = nettyRequest.headers();
-        for (HttpHeader header : request.getHeaders()) {
+        request.getHeaders().stream().forEach(header -> {
             List<String> values = header.getValues();
             for (String value : values) {
                 headers.add(header.getName().toString(), value);
             }
-        }
+        });
 
         headers.set(HttpHeaderNames.HOST, request.getUri().getHost());
         if (content.readableBytes() > 0) {
@@ -137,21 +151,11 @@ class NettyHttpClient implements HttpClient {
         return nettyRequest;
     }
 
-    private Response<?> processResponse(HttpRequest request, FullHttpResponse response) {
-        RequestOptions options = request.getRequestOptions();
-        ResponseBodyMode responseBodyMode = null;
+    private Response<BinaryData> processResponse(HttpRequest request, FullHttpResponse response) {
         HttpHeaders responseHeaders = response.headers();
 
-        if (options != null) {
-            responseBodyMode = options.getResponseBodyMode();
-        }
-
-        if (responseBodyMode == null) {
-            responseBodyMode = determineResponseBodyMode(request, responseHeaders);
-        }
-
-        BinaryData body = null;
-        switch (responseBodyMode) {
+        BinaryData body = BinaryData.empty();
+        switch (getBodyHandling(request, responseHeaders)) {
             case IGNORE:
                 if (response.content().isReadable()) {
                     response.content().release();
@@ -163,7 +167,6 @@ class NettyHttpClient implements HttpClient {
             //                break;
 
             case BUFFER:
-            case DESERIALIZE:
                 body = BinaryData.fromBytes(response.content().nioBuffer().array());
                 break;
 
@@ -175,15 +178,20 @@ class NettyHttpClient implements HttpClient {
         return new NettyHttpResponse(body, response.status().code(), request, response);
     }
 
-    private ResponseBodyMode determineResponseBodyMode(HttpRequest request, HttpHeaders responseHeaders) {
-        String contentType = responseHeaders.get(HttpHeaderNames.CONTENT_TYPE.toString());
-        if (request.getHttpMethod() == io.clientcore.core.http.models.HttpMethod.HEAD) {
-            return ResponseBodyMode.IGNORE;
-        } else if (contentType != null && contentType.contains("application/octet-stream")) {
-            return ResponseBodyMode.STREAM;
+    private BodyHandling getBodyHandling(HttpRequest request, HttpHeaders responseHeaders) {
+        String contentType = responseHeaders.get(HttpHeaderNames.CONTENT_TYPE);
+
+        if (request.getHttpMethod() == HEAD) {
+            return BodyHandling.IGNORE;
+        } else if ("application/octet-stream".equalsIgnoreCase(contentType)) {
+            return BodyHandling.STREAM;
         } else {
-            return ResponseBodyMode.BUFFER;
+            return BodyHandling.BUFFER;
         }
+    }
+
+    private enum BodyHandling {
+        IGNORE, STREAM, BUFFER
     }
 
     public void close() {

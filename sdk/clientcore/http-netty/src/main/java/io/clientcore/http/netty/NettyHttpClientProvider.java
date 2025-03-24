@@ -1,18 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.http.netty;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.HttpClientProvider;
-import io.clientcore.core.util.ClientLogger;
 
 /**
  * Provider class for creating instances of HttpClient using plain Netty.
  */
 public final class NettyHttpClientProvider extends HttpClientProvider {
-    private static final boolean ENABLE_HTTP_CLIENT_SHARING
-        = Boolean.parseBoolean(System.getProperty("ENABLE_HTTP_CLIENT_SHARING", "false"));
-    private static final ClientLogger LOGGER = new ClientLogger(NettyHttpClientProvider.class);
-    private static final int DEFAULT_MAX_CONNECTIONS = 500;
-
     private enum GlobalNettyHttpClient {
         HTTP_CLIENT(new NettyHttpClientBuilder().build());
 
@@ -25,18 +22,6 @@ public final class NettyHttpClientProvider extends HttpClientProvider {
         public HttpClient getHttpClient() {
             return httpClient;
         }
-    }
-
-    /**
-     * Creates a new HttpClient instance based on the configuration.
-     *
-     * @return A new HttpClient instance or a shared one if sharing is enabled.
-     */
-    public HttpClient createInstance() {
-        if (ENABLE_HTTP_CLIENT_SHARING) {
-            return GlobalNettyHttpClient.HTTP_CLIENT.getHttpClient();
-        }
-        return new NettyHttpClient();
     }
 
     /**
