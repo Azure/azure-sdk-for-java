@@ -8,11 +8,15 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openrewrite.Tree;
+import org.openrewrite.java.JavaParser;
+import org.openrewrite.style.NamedStyles;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 import org.openrewrite.test.SourceSpecs;
 import org.openrewrite.test.TypeValidation;
 
+import javax.swing.text.StyleContext;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -20,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,9 +76,32 @@ public class FullSampleMigrationTest implements RewriteTest {
             .filter(Files::isRegularFile).collect(Collectors.toList()).stream();
     }
 
+
+
+    private static List<NamedStyles> getStyles() {
+        return Collections.singletonList(
+            new NamedStyles(
+                Tree.randomId(),
+                "com.azure.openrewrite.style",
+                "Azure OpenRewrite Style",
+                "The sytle for Azure OpenRewrite",
+                Collections.emptySet(),
+                Collections.singletonList(
+                    new org.openrewrite.java.style.ImportLayoutStyle(
+                        9999,
+                        9999,
+                        Collections.emptyList(),
+                        Collections.emptyList()
+                    )
+                )
+            )
+        );
+    }
+
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipeFromResources(RECIPE_NAME)
+
+        spec.recipeFromResources(RECIPE_NAME )
             .typeValidationOptions(TypeValidation.none());
     }
 
@@ -123,6 +151,9 @@ public class FullSampleMigrationTest implements RewriteTest {
 
         try  {
             rewriteRun(
+                spec -> spec
+                    .parser(JavaParser.fromJavaVersion().classpath("azure-core", "core").styles(getStyles()))
+                    .recipeFromResources(RECIPE_NAME),
                 sourceSpecs.toArray(new SourceSpecs[sourceSpecs.size()])
             );
         } catch (AssertionError e) {

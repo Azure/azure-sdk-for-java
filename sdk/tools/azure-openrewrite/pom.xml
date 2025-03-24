@@ -176,6 +176,21 @@
               </executions>
             </plugin>
 
+            <plugin>
+              <groupId>org.openrewrite.maven</groupId>
+              <artifactId>rewrite-maven-plugin</artifactId>
+              <version>6.3.2</version>
+              <configuration>
+                <activeRecipes>
+                  <!-- Recipes here -->
+                </activeRecipes>
+                <activeStyles>
+                  <!-- This style is made up for sake of example. It isn't packaged with OpenRewrite -->
+                  <style>com.azure.openrewrite.style</style>
+                </activeStyles>
+              </configuration>
+            </plugin>
+
             <!-- Copy the pom file to output -->
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
