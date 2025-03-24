@@ -63,13 +63,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
      */
     WorkloadIdentityCredential(ConfidentialClientOptions confidentialClientOptions, String federatedTokenFilePath) {
         this.confidentialClientOptions = confidentialClientOptions;
-        clientAssertionCredential = new ClientAssertionCredential(confidentialClientOptions);
         ValidationUtil.validateTenantIdCharacterRange(confidentialClientOptions.getTenantId(), LOGGER);
-
-        Configuration configuration = confidentialClientOptions.getConfiguration() == null
-            ? Configuration.getGlobalConfiguration()
-            : confidentialClientOptions.getConfiguration();
-
         String tenantIdInput = confidentialClientOptions.getTenantId();
 
         String federatedTokenFilePathInput = federatedTokenFilePath;

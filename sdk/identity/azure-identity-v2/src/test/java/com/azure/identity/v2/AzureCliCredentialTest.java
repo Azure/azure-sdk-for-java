@@ -60,6 +60,7 @@ public class AzureCliCredentialTest {
             // test
             AzureCliCredential credential = new AzureCliCredentialBuilder().build();
             Assertions.assertThrows(Exception.class, () -> credential.getToken(request));
+            Assertions.assertNotNull(devToolsClientMock);
         }
     }
 
