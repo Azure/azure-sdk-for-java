@@ -6,7 +6,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.SerializationFormat;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
@@ -427,24 +426,45 @@ public final class CoreUtils {
     }
 
     /**
-     * Appends a query parameter to the given host URL.
+     * Appends a query parameter to the given URL.
      *
-     * @param url the base URL to which the query parameter will be appended.
-     * @param key the name of the query parameter (e.g., "api-version", "name", "After").
-     * @param value the value of the query parameter
-     * @return the updated URL with the appended query parameter.
+     * @param host The base URL to which the query parameter will be appended.
+     * @param queryParams A map containing the query parameters and their values.
+     * @return The URL with the appended query parameter.
      */
-    public static String appendQueryParam(String url, String key, String value) {
-        if (value == null) {
-            return url;
+    public static String appendQueryParams(String host, Map<String, Object> queryParams) {
+        if (queryParams == null || queryParams.isEmpty()) {
+            return host;  // No parameters to append
         }
 
-        // Append query parameter to URL
-        if (url.contains("?")) {
-            return url + "&" + key + "=" + value;
-        } else {
-            return url + "?" + key + "=" + value;
+        StringBuilder urlBuilder = new StringBuilder(host);
+        boolean hasExistingQuery = host.contains("?");
+
+        // Process each key-value pair in the queryParams map
+        for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+
+            // Skip null values
+            if (value == null) {
+                continue;
+            }
+
+            String valueString;
+            if (value instanceof List<?>) {
+                List<?> valueList = (List<?>) value;
+                valueString = valueList.stream().map(Object::toString).collect(Collectors.joining(String.valueOf(',')));  // Join with delimiter
+            } else {
+                valueString = value.toString();
+            }
+
+            // Append '&' or '?' depending on whether a query string already exists
+            urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(valueString);
+
+            hasExistingQuery = true; // Ensure subsequent parameters use '&'
         }
+
+        return urlBuilder.toString();
     }
 
     /*
