@@ -223,11 +223,12 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
                     reader.skipChildren();
                 }
             }
-            ChatCompletions deserializedChatCompletions = new ChatCompletions(id, createdAt, choices, usage);
+            ChatCompletions deserializedChatCompletions = new ChatCompletions(id, createdAt, choices);
             deserializedChatCompletions.model = model;
             deserializedChatCompletions.promptFilterResults = promptFilterResults;
             deserializedChatCompletions.systemFingerprint = systemFingerprint;
             deserializedChatCompletions.serviceTier = serviceTier;
+            deserializedChatCompletions.usage = usage;
             return deserializedChatCompletions;
         });
     }
