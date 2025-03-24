@@ -52,6 +52,18 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
     private String fileMode;
 
     /**
+     * Creates an instance of FileProperties class.
+     *
+     * @param lastModified the lastModified value to set.
+     * @param contentLength the contentLength value to set.
+     */
+    @Generated
+    private FileProperties(OffsetDateTime lastModified, long contentLength) {
+        this.lastModified = lastModified;
+        this.contentLength = contentLength;
+    }
+
+    /**
      * Get the creationTime property: The file creation time. The creation time is not returned for files on Linux
      * Compute Nodes.
      *
@@ -162,17 +174,5 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
             deserializedFileProperties.fileMode = fileMode;
             return deserializedFileProperties;
         });
-    }
-
-    /**
-     * Creates an instance of FileProperties class.
-     *
-     * @param lastModified the lastModified value to set.
-     * @param contentLength the contentLength value to set.
-     */
-    @Generated
-    private FileProperties(OffsetDateTime lastModified, long contentLength) {
-        this.lastModified = lastModified;
-        this.contentLength = contentLength;
     }
 }
