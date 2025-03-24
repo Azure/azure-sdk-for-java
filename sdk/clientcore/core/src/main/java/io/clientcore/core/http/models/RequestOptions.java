@@ -230,7 +230,8 @@ public class RequestOptions {
      * An empty {@link RequestOptions} used in situations where there is no request-specific
      * configuration to pass into the request.
      *
-     * @return The singleton instance of an empty {@link RequestOptions}.
+     * @return The immutable instance of an empty {@link RequestOptions}. Attempts to modify this instance will
+     * throw an {@link IllegalStateException}.
      */
     public static RequestOptions none() {
         return SdkRequestContext.NONE;
