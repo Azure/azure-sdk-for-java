@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.storage.file.datalake.implementation.util.AccessorUtility;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -23,6 +25,29 @@ public final class PathSystemProperties {
     private final String group;
     private final PathPermissions permissions;
 
+    static {
+        AccessorUtility.setPathSystemPropertiesAccessor(PathSystemProperties::new);
+    }
+
+    /**
+     * Default constructor
+     */
+    public PathSystemProperties() {
+        this.creationTime = null;
+        this.lastModified = null;
+        this.eTag = null;
+        this.fileSize = null;
+        this.isDirectory = null;
+        this.isServerEncrypted = null;
+        this.encryptionKeySha256 = null;
+        this.expiresOn = null;
+        this.encryptionScope = null;
+        this.encryptionContext = null;
+        this.owner = null;
+        this.group = null;
+        this.permissions = null;
+    }
+
     /**
      * Constructs a {@link PathSystemProperties}
      * @param creationTime The creation time of the path.
@@ -39,7 +64,7 @@ public final class PathSystemProperties {
      * @param group The group of the path.
      * @param permissions The {@link PathPermissions}
      */
-    public PathSystemProperties(OffsetDateTime creationTime, OffsetDateTime lastModified, String eTag, Long fileSize,
+    PathSystemProperties(OffsetDateTime creationTime, OffsetDateTime lastModified, String eTag, Long fileSize,
         Boolean isDirectory, Boolean isServerEncrypted, String encryptionKeySha256, OffsetDateTime expiresOn,
         String encryptionScope, String encryptionContext, String owner, String group, PathPermissions permissions) {
         this.creationTime = creationTime;

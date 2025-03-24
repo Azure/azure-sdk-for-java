@@ -5,7 +5,11 @@ package com.azure.storage.file.datalake.implementation.util;
 
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.PathItem;
+import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
+
+import java.time.OffsetDateTime;
 
 /**
  * Helper to access package-private methods of {@link PathProperties}, {@link FileSystemProperties} and
@@ -16,6 +20,7 @@ public final class AccessorUtility {
     private static PathPropertiesAccessor pathPropertiesAccessor;
     private static FileSystemPropertiesAccessor fileSystemPropertiesAccessor;
     private static PathItemAccessor pathItemAccessor;
+    private static PathSystemPropertiesAccessor pathSystemPropertiesAccessor;
 
     private AccessorUtility() {
 
@@ -96,6 +101,43 @@ public final class AccessorUtility {
      */
     public static PathItemAccessor getPathItemAccessor() {
         return pathItemAccessor;
+    }
+
+    /**
+     * Type defining the methods to set the non-public properties of a {@link PathSystemProperties} instance.
+     */
+    public interface PathSystemPropertiesAccessor {
+        PathSystemProperties create(OffsetDateTime creationTime, OffsetDateTime lastModified, String eTag,
+            Long fileSize, Boolean isDirectory, Boolean isServerEncrypted, String encryptionKeySha256,
+            OffsetDateTime expiresOn, String encryptionScope, String encryptionContext, String owner, String group,
+            PathPermissions permissions);
+    }
+
+    /**
+     * Sets the {@link PathSystemPropertiesAccessor} instance.
+     *
+     * @param accessor the accessor instance.
+     */
+    public static void setPathSystemPropertiesAccessor(final PathSystemPropertiesAccessor accessor) {
+        pathSystemPropertiesAccessor = accessor;
+    }
+
+    /**
+     * Returns the accessor for {@link PathSystemProperties}.
+     *
+     * @return the {@link PathSystemPropertiesAccessor}.
+     */
+    public static PathSystemProperties create(OffsetDateTime creationTime, OffsetDateTime lastModified, String eTag,
+        Long fileSize, Boolean isDirectory, Boolean isServerEncrypted, String encryptionKeySha256,
+        OffsetDateTime expiresOn, String encryptionScope, String encryptionContext, String owner, String group,
+        PathPermissions permissions) {
+        if (pathSystemPropertiesAccessor == null) {
+            new PathSystemProperties();
+        }
+        assert pathSystemPropertiesAccessor != null;
+        return pathSystemPropertiesAccessor.create(creationTime, lastModified, eTag, fileSize, isDirectory,
+            isServerEncrypted, encryptionKeySha256, expiresOn, encryptionScope, encryptionContext, owner, group,
+            permissions);
     }
 
 }

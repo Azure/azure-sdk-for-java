@@ -234,7 +234,7 @@ public class ModelHelper {
         String permissions = headers.getXMsPermissions();
         PathPermissions parsedPermissions = permissions != null ? PathPermissions.parseSymbolic(permissions) : null;
 
-        return new PathSystemProperties(creationTime, lastModified, eTag, fileSize, isDirectory, isServerEncrypted,
+        return AccessorUtility.create(creationTime, lastModified, eTag, fileSize, isDirectory, isServerEncrypted,
             encryptionKeySha256, expiresOn, encryptionScope, encryptionContext, owner, group, parsedPermissions);
     }
 
