@@ -8,16 +8,16 @@ import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestAdministrationClient;
 import com.azure.developer.loadtesting.LoadTestAdministrationClientBuilder;
 import com.azure.developer.loadtesting.models.AutoStopCriteria;
+import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
 import com.azure.developer.loadtesting.models.LoadTestingManagedIdentityType;
-import com.azure.developer.loadtesting.models.PFMetrics;
 import com.azure.developer.loadtesting.models.PassFailAction;
 import com.azure.developer.loadtesting.models.PassFailAggregationFunction;
 import com.azure.developer.loadtesting.models.PassFailCriteria;
 import com.azure.developer.loadtesting.models.PassFailMetric;
 import com.azure.developer.loadtesting.models.PassFailServerMetric;
+import com.azure.developer.loadtesting.models.PfMetrics;
 import com.azure.developer.loadtesting.models.SecretType;
-import com.azure.developer.loadtesting.models.Test;
 import com.azure.developer.loadtesting.models.TestSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.Duration;
@@ -32,13 +32,13 @@ public class CreateOrUpdateALoadTest {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.developer.loadtesting.generated.createorupdatetest.createorupdatealoadtest
-        Test response = loadTestAdministrationClient.createOrUpdateTest("12345678-1234-1234-1234-123456789012",
-            new Test()
+        LoadTest response = loadTestAdministrationClient.createOrUpdateTest("12345678-1234-1234-1234-123456789012",
+            new LoadTest()
                 .setPassFailCriteria(new PassFailCriteria()
                     .setPassFailMetrics(mapOf(
                         "fefd759d-7fe8-4f83-8b6d-aeebe0f491fe",
                         new PassFailMetric()
-                            .setClientMetric(PFMetrics.RESPONSE_TIME_IN_MILLISECONDS)
+                            .setClientMetric(PfMetrics.RESPONSE_TIME_IN_MILLISECONDS)
                             .setAggregate(PassFailAggregationFunction.PERCENTAGE)
                             .setCondition(">")
                             .setValue(20.0D)

@@ -10,66 +10,66 @@ import java.util.Collection;
 /**
  * Metrics for pass/fail criteria.
  */
-public final class PFMetrics extends ExpandableStringEnum<PFMetrics> {
+public final class PfMetrics extends ExpandableStringEnum<PfMetrics> {
 
     /**
      * Pass fail criteria for latency metric in milliseconds.
      */
     @Generated
-    public static final PFMetrics LATENCY = fromString("latency");
+    public static final PfMetrics LATENCY = fromString("latency");
 
     /**
      * Pass fail criteria for error metric.
      */
     @Generated
-    public static final PFMetrics ERROR = fromString("error");
+    public static final PfMetrics ERROR = fromString("error");
 
     /**
      * Pass fail criteria for total requests.
      */
     @Generated
-    public static final PFMetrics REQUESTS = fromString("requests");
+    public static final PfMetrics REQUESTS = fromString("requests");
 
     /**
-     * Creates a new instance of PFMetrics value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public PFMetrics() {
-    }
-
-    /**
-     * Creates or finds a PFMetrics from its string representation.
+     * Creates or finds a PfMetrics from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding PFMetrics.
+     * @return the corresponding PfMetrics.
      */
     @Generated
-    public static PFMetrics fromString(String name) {
-        return fromString(name, PFMetrics.class);
+    public static PfMetrics fromString(String name) {
+        return fromString(name, PfMetrics.class);
     }
 
     /**
-     * Gets known PFMetrics values.
+     * Gets known PfMetrics values.
      *
-     * @return known PFMetrics values.
+     * @return known PfMetrics values.
      */
     @Generated
-    public static Collection<PFMetrics> values() {
-        return values(PFMetrics.class);
+    public static Collection<PfMetrics> values() {
+        return values(PfMetrics.class);
     }
 
     /**
      * Pass fail criteria for response time metric in milliseconds.
      */
     @Generated
-    public static final PFMetrics RESPONSE_TIME_IN_MILLISECONDS = fromString("response_time_ms");
+    public static final PfMetrics RESPONSE_TIME_IN_MILLISECONDS = fromString("response_time_ms");
 
     /**
      * Pass fail criteria for request per second.
      */
     @Generated
-    public static final PFMetrics REQUESTS_PER_SECOND = fromString("requests_per_sec");
+    public static final PfMetrics REQUESTS_PER_SECOND = fromString("requests_per_sec");
+
+    /**
+     * Creates a new instance of PfMetrics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Generated
+    @Deprecated
+    public PfMetrics() {
+    }
 }

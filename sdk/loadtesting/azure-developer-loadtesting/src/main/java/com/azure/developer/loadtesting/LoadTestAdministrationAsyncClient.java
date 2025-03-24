@@ -22,8 +22,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationClientImpl;
-import com.azure.developer.loadtesting.models.FileType;
-import com.azure.developer.loadtesting.models.Test;
+import com.azure.developer.loadtesting.models.LoadTest;
+import com.azure.developer.loadtesting.models.LoadTestingFileType;
 import com.azure.developer.loadtesting.models.TestAppComponents;
 import com.azure.developer.loadtesting.models.TestFileInfo;
 import com.azure.developer.loadtesting.models.TestProfile;
@@ -1181,34 +1181,6 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
-     * Create a new test or update an existing test by providing the test Id.
-     *
-     * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
-     * underscore or hyphen characters.
-     * @param body The resource instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load test model on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Test> createOrUpdateTest(String testId, Test body) {
-        // Generated convenience method for createOrUpdateTestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getTestAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getTestAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateTestWithResponse(testId, bodyInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Test.class));
-    }
-
-    /**
      * Add an app component to a test.
      *
      * Add an app component to a test by providing the resource Id, name and type.
@@ -1299,11 +1271,11 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Test> getTest(String testId) {
+    public Mono<LoadTest> getTest(String testId) {
         // Generated convenience method for getTestWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getTestWithResponse(testId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Test.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(LoadTest.class));
     }
 
     /**
@@ -1386,7 +1358,7 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Test> listTests(String orderBy, String search, OffsetDateTime lastModifiedStartTime,
+    public PagedFlux<LoadTest> listTests(String orderBy, String search, OffsetDateTime lastModifiedStartTime,
         OffsetDateTime lastModifiedEndTime) {
         // Generated convenience method for listTests
         RequestOptions requestOptions = new RequestOptions();
@@ -1407,11 +1379,11 @@ public final class LoadTestAdministrationAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Test>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, LoadTest>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Test.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(LoadTest.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -1432,7 +1404,7 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Test> listTests() {
+    public PagedFlux<LoadTest> listTests() {
         // Generated convenience method for listTests
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTests(requestOptions);
@@ -1440,44 +1412,14 @@ public final class LoadTestAdministrationAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Test>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, LoadTest>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Test.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(LoadTest.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Upload input file for a given test Id. File size can't be more than 50 MB.
-     * Existing file with same name for the given test will be overwritten. File
-     * should be provided in the request body as application/octet-stream.
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic,
-     * numeric, underscore or hyphen characters.
-     * @param fileName Unique name for test file with file extension like : App.jmx.
-     * @param body The file content as application/octet-stream.
-     * @param fileType File type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test file info on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TestFileInfo> uploadTestFile(String testId, String fileName, BinaryData body, FileType fileType) {
-        // Generated convenience method for uploadTestFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (fileType != null) {
-            requestOptions.addQueryParam("fileType", fileType.toString(), false);
-        }
-        return uploadTestFileWithResponse(testId, fileName, body, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TestFileInfo.class));
     }
 
     /**
@@ -1749,5 +1691,64 @@ public final class LoadTestAdministrationAsyncClient {
         return createOrUpdateServerMetricsConfigWithResponse(testId, bodyInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TestServerMetricsConfiguration.class));
+    }
+
+    /**
+     * Create a new test or update an existing test by providing the test Id.
+     *
+     * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
+     * underscore or hyphen characters.
+     * @param body The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return load test model on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LoadTest> createOrUpdateTest(String testId, LoadTest body) {
+        // Generated convenience method for createOrUpdateTestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getLoadTestAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getLoadTestAccessor().prepareModelForJsonMergePatch(body, false);
+        return createOrUpdateTestWithResponse(testId, bodyInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(LoadTest.class));
+    }
+
+    /**
+     * Upload input file for a given test Id. File size can't be more than 50 MB.
+     * Existing file with same name for the given test will be overwritten. File
+     * should be provided in the request body as application/octet-stream.
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
+     * @param fileType File type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return test file info on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TestFileInfo> uploadTestFile(String testId, String fileName, BinaryData body,
+        LoadTestingFileType fileType) {
+        // Generated convenience method for uploadTestFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (fileType != null) {
+            requestOptions.addQueryParam("fileType", fileType.toString(), false);
+        }
+        return uploadTestFileWithResponse(testId, fileName, body, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TestFileInfo.class));
     }
 }

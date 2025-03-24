@@ -35,7 +35,7 @@ public final class TestFileInfo implements JsonSerializable<TestFileInfo> {
      * File type
      */
     @Generated
-    private FileType fileType;
+    private LoadTestingFileType fileType;
 
     /*
      * Validation status of the file
@@ -82,7 +82,7 @@ public final class TestFileInfo implements JsonSerializable<TestFileInfo> {
      * @return the fileType value.
      */
     @Generated
-    public FileType getFileType() {
+    public LoadTestingFileType getFileType() {
         return this.fileType;
     }
 
@@ -137,7 +137,7 @@ public final class TestFileInfo implements JsonSerializable<TestFileInfo> {
                 } else if ("url".equals(fieldName)) {
                     deserializedTestFileInfo.url = reader.getString();
                 } else if ("fileType".equals(fieldName)) {
-                    deserializedTestFileInfo.fileType = FileType.fromString(reader.getString());
+                    deserializedTestFileInfo.fileType = LoadTestingFileType.fromString(reader.getString());
                 } else if ("expireDateTime".equals(fieldName)) {
                     deserializedTestFileInfo.expiresOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

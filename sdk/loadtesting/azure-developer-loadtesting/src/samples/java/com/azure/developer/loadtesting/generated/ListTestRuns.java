@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestRunClient;
 import com.azure.developer.loadtesting.LoadTestRunClientBuilder;
-import com.azure.developer.loadtesting.models.TestRun;
+import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
 
@@ -19,7 +19,7 @@ public class ListTestRuns {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.developer.loadtesting.generated.listtestruns.listtestruns
-        PagedIterable<TestRun> response
+        PagedIterable<LoadTestRun> response
             = loadTestRunClient.listTestRuns("executedDateTime", "Performance_LoadTest_Run1",
                 "12345678-1234-1234-1234-123456789012", OffsetDateTime.parse("2021-12-05T16:43:48.805Z"),
                 OffsetDateTime.parse("2021-12-05T16:43:48.805Z"), "DONE,EXECUTING");

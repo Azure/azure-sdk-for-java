@@ -7,7 +7,7 @@ package com.azure.developer.loadtesting.generated;
 import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestAdministrationClient;
 import com.azure.developer.loadtesting.LoadTestAdministrationClientBuilder;
-import com.azure.developer.loadtesting.models.Test;
+import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GetALoadTest {
@@ -17,7 +17,7 @@ public class GetALoadTest {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.developer.loadtesting.generated.gettest.getaloadtest
-        Test response = loadTestAdministrationClient.getTest("12345678-1234-1234-1234-123456789012");
+        LoadTest response = loadTestAdministrationClient.getTest("12345678-1234-1234-1234-123456789012");
         // END:com.azure.developer.loadtesting.generated.gettest.getaloadtest
     }
 }

@@ -7,7 +7,7 @@ package com.azure.developer.loadtesting.generated;
 import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestRunClient;
 import com.azure.developer.loadtesting.LoadTestRunClientBuilder;
-import com.azure.developer.loadtesting.models.TestRun;
+import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class StopTestRunByName {
@@ -17,7 +17,7 @@ public class StopTestRunByName {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.developer.loadtesting.generated.stoptestrun.stoptestrunbyname
-        TestRun response = loadTestRunClient.stopTestRun("12316678-1234-1234-1234-122451189012");
+        LoadTestRun response = loadTestRunClient.stopTestRun("12316678-1234-1234-1234-122451189012");
         // END:com.azure.developer.loadtesting.generated.stoptestrun.stoptestrunbyname
     }
 }

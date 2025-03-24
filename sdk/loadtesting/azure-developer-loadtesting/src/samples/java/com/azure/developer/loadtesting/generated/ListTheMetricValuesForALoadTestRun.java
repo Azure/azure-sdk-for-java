@@ -9,7 +9,7 @@ import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestRunClient;
 import com.azure.developer.loadtesting.LoadTestRunClientBuilder;
 import com.azure.developer.loadtesting.models.DimensionFilter;
-import com.azure.developer.loadtesting.models.MetricRequestPayload;
+import com.azure.developer.loadtesting.models.MetricsFilters;
 import com.azure.developer.loadtesting.models.TimeGrain;
 import com.azure.developer.loadtesting.models.TimeSeriesElement;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -24,8 +24,7 @@ public class ListTheMetricValuesForALoadTestRun {
         // BEGIN:com.azure.developer.loadtesting.generated.listmetrics.listthemetricvaluesforaloadtestrun
         PagedIterable<TimeSeriesElement> response = loadTestRunClient.listMetrics(
             "12316678-1234-1234-1234-122451189012", "ActiveThreads", "LoadTestRunMetrics",
-            "2022-09-24T19:00:40Z/2022-09-25T19:28:40Z", "Average", TimeGrain.ONE_HOUR,
-            new MetricRequestPayload().setFilters(
+            "2022-09-24T19:00:40Z/2022-09-25T19:28:40Z", "Average", TimeGrain.ONE_HOUR, new MetricsFilters().setFilters(
                 Arrays.asList(new DimensionFilter().setName("SamplerName").setValues(Arrays.asList("HTTP Request")))));
         // END:com.azure.developer.loadtesting.generated.listmetrics.listthemetricvaluesforaloadtestrun
     }

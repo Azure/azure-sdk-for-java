@@ -8,7 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestAdministrationClient;
 import com.azure.developer.loadtesting.LoadTestAdministrationClientBuilder;
-import com.azure.developer.loadtesting.models.FileType;
+import com.azure.developer.loadtesting.models.LoadTestingFileType;
 import com.azure.developer.loadtesting.models.TestFileInfo;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +22,7 @@ public class UploadInputFileForAGivenTestName {
         // BEGIN:com.azure.developer.loadtesting.generated.uploadtestfile.uploadinputfileforagiventestname
         TestFileInfo response = loadTestAdministrationClient.uploadTestFile("12345678-1234-1234-1234-123456789012",
             "sample.jmx", BinaryData.fromBytes("application/octet-stream content".getBytes(StandardCharsets.UTF_8)),
-            FileType.ADDITIONAL_ARTIFACTS);
+            LoadTestingFileType.ADDITIONAL_ARTIFACTS);
         // END:com.azure.developer.loadtesting.generated.uploadtestfile.uploadinputfileforagiventestname
     }
 }

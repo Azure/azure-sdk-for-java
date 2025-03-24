@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestAdministrationClient;
 import com.azure.developer.loadtesting.LoadTestAdministrationClientBuilder;
-import com.azure.developer.loadtesting.models.Test;
+import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GetAllLoadTests {
@@ -18,7 +18,7 @@ public class GetAllLoadTests {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.developer.loadtesting.generated.listtests.getallloadtests
-        PagedIterable<Test> response
+        PagedIterable<LoadTest> response
             = loadTestAdministrationClient.listTests("executedDateTime", "Performance_LoadTest", null, null);
         // END:com.azure.developer.loadtesting.generated.listtests.getallloadtests
     }

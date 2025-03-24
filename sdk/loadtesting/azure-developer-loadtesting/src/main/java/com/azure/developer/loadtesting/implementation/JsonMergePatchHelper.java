@@ -5,9 +5,10 @@
 package com.azure.developer.loadtesting.implementation;
 
 import com.azure.developer.loadtesting.models.AutoStopCriteria;
-import com.azure.developer.loadtesting.models.CertificateMetadata;
 import com.azure.developer.loadtesting.models.FunctionFlexConsumptionResourceConfiguration;
+import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
+import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.developer.loadtesting.models.LoadTestingAppComponent;
 import com.azure.developer.loadtesting.models.OptionalLoadTestConfiguration;
 import com.azure.developer.loadtesting.models.PassFailCriteria;
@@ -16,11 +17,10 @@ import com.azure.developer.loadtesting.models.PassFailServerMetric;
 import com.azure.developer.loadtesting.models.RegionalConfiguration;
 import com.azure.developer.loadtesting.models.ResourceMetric;
 import com.azure.developer.loadtesting.models.TargetResourceConfigurations;
-import com.azure.developer.loadtesting.models.Test;
 import com.azure.developer.loadtesting.models.TestAppComponents;
+import com.azure.developer.loadtesting.models.TestCertificate;
 import com.azure.developer.loadtesting.models.TestProfile;
 import com.azure.developer.loadtesting.models.TestProfileRun;
-import com.azure.developer.loadtesting.models.TestRun;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
 import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
 import com.azure.developer.loadtesting.models.TestSecret;
@@ -30,20 +30,20 @@ import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
  * This is the Helper class to enable json merge patch serialization for a model.
  */
 public class JsonMergePatchHelper {
-    private static TestAccessor testAccessor;
+    private static LoadTestAccessor loadTestAccessor;
 
-    public interface TestAccessor {
-        Test prepareModelForJsonMergePatch(Test test, boolean jsonMergePatchEnabled);
+    public interface LoadTestAccessor {
+        LoadTest prepareModelForJsonMergePatch(LoadTest loadTest, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(Test test);
+        boolean isJsonMergePatch(LoadTest loadTest);
     }
 
-    public static void setTestAccessor(TestAccessor accessor) {
-        testAccessor = accessor;
+    public static void setLoadTestAccessor(LoadTestAccessor accessor) {
+        loadTestAccessor = accessor;
     }
 
-    public static TestAccessor getTestAccessor() {
-        return testAccessor;
+    public static LoadTestAccessor getLoadTestAccessor() {
+        return loadTestAccessor;
     }
 
     private static PassFailCriteriaAccessor passFailCriteriaAccessor;
@@ -129,21 +129,20 @@ public class JsonMergePatchHelper {
         return testSecretAccessor;
     }
 
-    private static CertificateMetadataAccessor certificateMetadataAccessor;
+    private static TestCertificateAccessor testCertificateAccessor;
 
-    public interface CertificateMetadataAccessor {
-        CertificateMetadata prepareModelForJsonMergePatch(CertificateMetadata certificateMetadata,
-            boolean jsonMergePatchEnabled);
+    public interface TestCertificateAccessor {
+        TestCertificate prepareModelForJsonMergePatch(TestCertificate testCertificate, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(CertificateMetadata certificateMetadata);
+        boolean isJsonMergePatch(TestCertificate testCertificate);
     }
 
-    public static void setCertificateMetadataAccessor(CertificateMetadataAccessor accessor) {
-        certificateMetadataAccessor = accessor;
+    public static void setTestCertificateAccessor(TestCertificateAccessor accessor) {
+        testCertificateAccessor = accessor;
     }
 
-    public static CertificateMetadataAccessor getCertificateMetadataAccessor() {
-        return certificateMetadataAccessor;
+    public static TestCertificateAccessor getTestCertificateAccessor() {
+        return testCertificateAccessor;
     }
 
     private static LoadTestConfigurationAccessor loadTestConfigurationAccessor;
@@ -318,20 +317,20 @@ public class JsonMergePatchHelper {
         return functionFlexConsumptionResourceConfigurationAccessor;
     }
 
-    private static TestRunAccessor testRunAccessor;
+    private static LoadTestRunAccessor loadTestRunAccessor;
 
-    public interface TestRunAccessor {
-        TestRun prepareModelForJsonMergePatch(TestRun testRun, boolean jsonMergePatchEnabled);
+    public interface LoadTestRunAccessor {
+        LoadTestRun prepareModelForJsonMergePatch(LoadTestRun loadTestRun, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(TestRun testRun);
+        boolean isJsonMergePatch(LoadTestRun loadTestRun);
     }
 
-    public static void setTestRunAccessor(TestRunAccessor accessor) {
-        testRunAccessor = accessor;
+    public static void setLoadTestRunAccessor(LoadTestRunAccessor accessor) {
+        loadTestRunAccessor = accessor;
     }
 
-    public static TestRunAccessor getTestRunAccessor() {
-        return testRunAccessor;
+    public static LoadTestRunAccessor getLoadTestRunAccessor() {
+        return loadTestRunAccessor;
     }
 
     private static TestRunAppComponentsAccessor testRunAppComponentsAccessor;

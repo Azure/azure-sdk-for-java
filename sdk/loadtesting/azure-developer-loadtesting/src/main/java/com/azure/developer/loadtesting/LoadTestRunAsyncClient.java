@@ -22,10 +22,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
 import com.azure.developer.loadtesting.implementation.LoadTestRunClientImpl;
+import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.developer.loadtesting.models.MetricDefinitionCollection;
 import com.azure.developer.loadtesting.models.MetricNamespaceCollection;
 import com.azure.developer.loadtesting.models.TestProfileRun;
-import com.azure.developer.loadtesting.models.TestRun;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
 import com.azure.developer.loadtesting.models.TestRunFileInfo;
 import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
@@ -1724,69 +1724,6 @@ public final class LoadTestRunAsyncClient {
     }
 
     /**
-     * Create and start a new test run with the given test run Id.
-     *
-     * @param testRunId Unique test run identifier for the load test run, must contain only lower-case alphabetic,
-     * numeric, underscore or hyphen characters.
-     * @param body The resource instance.
-     * @param oldTestRunId Existing test run identifier that should be rerun, if this is provided, the
-     * test will run with the JMX file, configuration and app components from the
-     * existing test run. You can override the configuration values for new test run
-     * in the request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load test run model on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TestRun> createOrUpdateTestRun(String testRunId, TestRun body, String oldTestRunId) {
-        // Generated convenience method for createOrUpdateTestRunWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (oldTestRunId != null) {
-            requestOptions.addQueryParam("oldTestRunId", oldTestRunId, false);
-        }
-        JsonMergePatchHelper.getTestRunAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getTestRunAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateTestRunWithResponse(testRunId, bodyInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TestRun.class));
-    }
-
-    /**
-     * Create and start a new test run with the given test run Id.
-     *
-     * @param testRunId Unique test run identifier for the load test run, must contain only lower-case alphabetic,
-     * numeric, underscore or hyphen characters.
-     * @param body The resource instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load test run model on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TestRun> createOrUpdateTestRun(String testRunId, TestRun body) {
-        // Generated convenience method for createOrUpdateTestRunWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getTestRunAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getTestRunAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateTestRunWithResponse(testRunId, bodyInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TestRun.class));
-    }
-
-    /**
      * Add an app component to a test run.
      *
      * Add an app component to a test run by providing the resource Id, name and type.
@@ -1901,11 +1838,11 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TestRun> getTestRun(String testRunId) {
+    public Mono<LoadTestRun> getTestRun(String testRunId) {
         // Generated convenience method for getTestRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getTestRunWithResponse(testRunId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TestRun.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(LoadTestRun.class));
     }
 
     /**
@@ -2082,8 +2019,8 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TestRun> listTestRuns(String orderBy, String search, String testId, OffsetDateTime executionFrom,
-        OffsetDateTime executionTo, String status) {
+    public PagedFlux<LoadTestRun> listTestRuns(String orderBy, String search, String testId,
+        OffsetDateTime executionFrom, OffsetDateTime executionTo, String status) {
         // Generated convenience method for listTestRuns
         RequestOptions requestOptions = new RequestOptions();
         if (orderBy != null) {
@@ -2109,11 +2046,11 @@ public final class LoadTestRunAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, TestRun>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, LoadTestRun>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(TestRun.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(LoadTestRun.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -2131,7 +2068,7 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TestRun> listTestRuns() {
+    public PagedFlux<LoadTestRun> listTestRuns() {
         // Generated convenience method for listTestRuns
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTestRuns(requestOptions);
@@ -2139,11 +2076,11 @@ public final class LoadTestRunAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, TestRun>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, LoadTestRun>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(TestRun.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(LoadTestRun.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -2164,11 +2101,11 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TestRun> stopTestRun(String testRunId) {
+    public Mono<LoadTestRun> stopTestRun(String testRunId) {
         // Generated convenience method for stopTestRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return stopTestRunWithResponse(testRunId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TestRun.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(LoadTestRun.class));
     }
 
     /**
@@ -2462,5 +2399,68 @@ public final class LoadTestRunAsyncClient {
         return createOrUpdateServerMetricsConfigWithResponse(testRunId, bodyInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TestRunServerMetricsConfiguration.class));
+    }
+
+    /**
+     * Create and start a new test run with the given test run Id.
+     *
+     * @param testRunId Unique test run identifier for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param body The resource instance.
+     * @param oldTestRunId Existing test run identifier that should be rerun, if this is provided, the
+     * test will run with the JMX file, configuration and app components from the
+     * existing test run. You can override the configuration values for new test run
+     * in the request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return load test run model on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LoadTestRun> createOrUpdateTestRun(String testRunId, LoadTestRun body, String oldTestRunId) {
+        // Generated convenience method for createOrUpdateTestRunWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (oldTestRunId != null) {
+            requestOptions.addQueryParam("oldTestRunId", oldTestRunId, false);
+        }
+        JsonMergePatchHelper.getLoadTestRunAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getLoadTestRunAccessor().prepareModelForJsonMergePatch(body, false);
+        return createOrUpdateTestRunWithResponse(testRunId, bodyInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(LoadTestRun.class));
+    }
+
+    /**
+     * Create and start a new test run with the given test run Id.
+     *
+     * @param testRunId Unique test run identifier for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param body The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return load test run model on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LoadTestRun> createOrUpdateTestRun(String testRunId, LoadTestRun body) {
+        // Generated convenience method for createOrUpdateTestRunWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getLoadTestRunAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getLoadTestRunAccessor().prepareModelForJsonMergePatch(body, false);
+        return createOrUpdateTestRunWithResponse(testRunId, bodyInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(LoadTestRun.class));
     }
 }

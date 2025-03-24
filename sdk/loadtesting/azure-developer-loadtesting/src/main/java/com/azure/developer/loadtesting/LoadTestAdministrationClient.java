@@ -18,8 +18,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
-import com.azure.developer.loadtesting.models.FileType;
-import com.azure.developer.loadtesting.models.Test;
+import com.azure.developer.loadtesting.models.LoadTest;
+import com.azure.developer.loadtesting.models.LoadTestingFileType;
 import com.azure.developer.loadtesting.models.TestAppComponents;
 import com.azure.developer.loadtesting.models.TestFileInfo;
 import com.azure.developer.loadtesting.models.TestProfile;
@@ -1164,33 +1164,6 @@ public final class LoadTestAdministrationClient {
     }
 
     /**
-     * Create a new test or update an existing test by providing the test Id.
-     *
-     * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
-     * underscore or hyphen characters.
-     * @param body The resource instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load test model.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Test createOrUpdateTest(String testId, Test body) {
-        // Generated convenience method for createOrUpdateTestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getTestAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getTestAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateTestWithResponse(testId, bodyInBinaryData, requestOptions).getValue().toObject(Test.class);
-    }
-
-    /**
      * Add an app component to a test.
      *
      * Add an app component to a test by providing the resource Id, name and type.
@@ -1278,10 +1251,10 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Test getTest(String testId) {
+    public LoadTest getTest(String testId) {
         // Generated convenience method for getTestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTestWithResponse(testId, requestOptions).getValue().toObject(Test.class);
+        return getTestWithResponse(testId, requestOptions).getValue().toObject(LoadTest.class);
     }
 
     /**
@@ -1350,7 +1323,7 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Test> listTests(String orderBy, String search, OffsetDateTime lastModifiedStartTime,
+    public PagedIterable<LoadTest> listTests(String orderBy, String search, OffsetDateTime lastModifiedStartTime,
         OffsetDateTime lastModifiedEndTime) {
         // Generated convenience method for listTests
         return new PagedIterable<>(client.listTests(orderBy, search, lastModifiedStartTime, lastModifiedEndTime));
@@ -1371,39 +1344,9 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Test> listTests() {
+    public PagedIterable<LoadTest> listTests() {
         // Generated convenience method for listTests
         return new PagedIterable<>(client.listTests());
-    }
-
-    /**
-     * Upload input file for a given test Id. File size can't be more than 50 MB.
-     * Existing file with same name for the given test will be overwritten. File
-     * should be provided in the request body as application/octet-stream.
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic,
-     * numeric, underscore or hyphen characters.
-     * @param fileName Unique name for test file with file extension like : App.jmx.
-     * @param body The file content as application/octet-stream.
-     * @param fileType File type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test file info.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestFileInfo uploadTestFile(String testId, String fileName, BinaryData body, FileType fileType) {
-        // Generated convenience method for uploadTestFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (fileType != null) {
-            requestOptions.addQueryParam("fileType", fileType.toString(), false);
-        }
-        return uploadTestFileWithResponse(testId, fileName, body, requestOptions).getValue()
-            .toObject(TestFileInfo.class);
     }
 
     /**
@@ -1624,5 +1567,63 @@ public final class LoadTestAdministrationClient {
         JsonMergePatchHelper.getTestServerMetricsConfigurationAccessor().prepareModelForJsonMergePatch(body, false);
         return createOrUpdateServerMetricsConfigWithResponse(testId, bodyInBinaryData, requestOptions).getValue()
             .toObject(TestServerMetricsConfiguration.class);
+    }
+
+    /**
+     * Create a new test or update an existing test by providing the test Id.
+     *
+     * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
+     * underscore or hyphen characters.
+     * @param body The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return load test model.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LoadTest createOrUpdateTest(String testId, LoadTest body) {
+        // Generated convenience method for createOrUpdateTestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getLoadTestAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getLoadTestAccessor().prepareModelForJsonMergePatch(body, false);
+        return createOrUpdateTestWithResponse(testId, bodyInBinaryData, requestOptions).getValue()
+            .toObject(LoadTest.class);
+    }
+
+    /**
+     * Upload input file for a given test Id. File size can't be more than 50 MB.
+     * Existing file with same name for the given test will be overwritten. File
+     * should be provided in the request body as application/octet-stream.
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
+     * @param fileType File type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return test file info.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestFileInfo uploadTestFile(String testId, String fileName, BinaryData body, LoadTestingFileType fileType) {
+        // Generated convenience method for uploadTestFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (fileType != null) {
+            requestOptions.addQueryParam("fileType", fileType.toString(), false);
+        }
+        return uploadTestFileWithResponse(testId, fileName, body, requestOptions).getValue()
+            .toObject(TestFileInfo.class);
     }
 }

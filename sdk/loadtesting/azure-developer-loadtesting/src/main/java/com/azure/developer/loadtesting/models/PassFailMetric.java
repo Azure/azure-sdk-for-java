@@ -24,7 +24,7 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
      * The client metric on which the criteria should be applied.
      */
     @Generated
-    private PFMetrics clientMetric;
+    private PfMetrics clientMetric;
 
     /*
      * The aggregation function to be applied on the client metric. Allowed functions
@@ -115,21 +115,8 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
      * @return the clientMetric value.
      */
     @Generated
-    public PFMetrics getClientMetric() {
+    public PfMetrics getClientMetric() {
         return this.clientMetric;
-    }
-
-    /**
-     * Set the clientMetric property: The client metric on which the criteria should be applied.
-     *
-     * @param clientMetric the clientMetric value to set.
-     * @return the PassFailMetric object itself.
-     */
-    @Generated
-    public PassFailMetric setClientMetric(PFMetrics clientMetric) {
-        this.clientMetric = clientMetric;
-        this.updatedProperties.add("clientMetric");
-        return this;
     }
 
     /**
@@ -331,7 +318,7 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("clientMetric".equals(fieldName)) {
-                    deserializedPassFailMetric.clientMetric = PFMetrics.fromString(reader.getString());
+                    deserializedPassFailMetric.clientMetric = PfMetrics.fromString(reader.getString());
                 } else if ("aggregate".equals(fieldName)) {
                     deserializedPassFailMetric.aggregate = PassFailAggregationFunction.fromString(reader.getString());
                 } else if ("condition".equals(fieldName)) {
@@ -380,6 +367,19 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
     public PassFailMetric setAction(PassFailAction action) {
         this.action = action;
         this.updatedProperties.add("action");
+        return this;
+    }
+
+    /**
+     * Set the clientMetric property: The client metric on which the criteria should be applied.
+     *
+     * @param clientMetric the clientMetric value to set.
+     * @return the PassFailMetric object itself.
+     */
+    @Generated
+    public PassFailMetric setClientMetric(PfMetrics clientMetric) {
+        this.clientMetric = clientMetric;
+        this.updatedProperties.add("clientMetric");
         return this;
     }
 }

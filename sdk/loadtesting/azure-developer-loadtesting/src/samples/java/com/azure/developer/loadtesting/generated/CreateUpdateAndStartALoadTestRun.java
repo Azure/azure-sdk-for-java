@@ -8,15 +8,15 @@ import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestRunClient;
 import com.azure.developer.loadtesting.LoadTestRunClientBuilder;
 import com.azure.developer.loadtesting.models.AutoStopCriteria;
-import com.azure.developer.loadtesting.models.PFMetrics;
+import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.developer.loadtesting.models.PassFailAction;
 import com.azure.developer.loadtesting.models.PassFailAggregationFunction;
 import com.azure.developer.loadtesting.models.PassFailCriteria;
 import com.azure.developer.loadtesting.models.PassFailMetric;
 import com.azure.developer.loadtesting.models.PassFailServerMetric;
+import com.azure.developer.loadtesting.models.PfMetrics;
 import com.azure.developer.loadtesting.models.RequestDataLevel;
 import com.azure.developer.loadtesting.models.SecretType;
-import com.azure.developer.loadtesting.models.TestRun;
 import com.azure.developer.loadtesting.models.TestSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.Duration;
@@ -30,37 +30,41 @@ public class CreateUpdateAndStartALoadTestRun {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.developer.loadtesting.generated.createorupdatetestrun.createupdateandstartaloadtestrun
-        TestRun response = loadTestRunClient.createOrUpdateTestRun("12316678-1234-1234-1234-122451189012", new TestRun()
-            .setPassFailCriteria(new PassFailCriteria()
-                .setPassFailMetrics(mapOf("fefd759d-7fe8-4f83-8b6d-aeebe0f491fe",
-                    new PassFailMetric().setClientMetric(PFMetrics.RESPONSE_TIME_IN_MILLISECONDS)
-                        .setAggregate(PassFailAggregationFunction.PERCENTAGE)
-                        .setCondition(">")
-                        .setValue(20.0D)
-                        .setAction(PassFailAction.CONTINUE)))
-                .setPassFailServerMetrics(mapOf("fefd759d-7fe8-4f83-8b6d-aeebe0f491fe",
-                    new PassFailServerMetric().setResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVM")
-                        .setMetricNamespace("Microsoft.Compute/virtualMachines")
-                        .setMetricName("Percentage CPU")
-                        .setAggregation("Average")
-                        .setCondition(">")
-                        .setValue(20.0)
-                        .setAction(PassFailAction.CONTINUE))))
-            .setAutoStopCriteria(new AutoStopCriteria().setAutoStopDisabled(true)
-                .setErrorRate(70.0D)
-                .setErrorRateTimeWindow(Duration.parse("60")))
-            .setSecrets(mapOf("secret1",
-                new TestSecret()
-                    .setValue(
-                        "https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827")
-                    .setType(SecretType.KEY_VAULT_SECRET_URI)))
-            .setEnvironmentVariables(mapOf("envvar1", "sampletext"))
-            .setDisplayName("Performance_LoadTest_Run1")
-            .setTestId("12345678-1234-1234-1234-123456789012")
-            .setDescription("sample description")
-            .setRequestDataLevel(RequestDataLevel.NONE)
-            .setDebugLogsEnabled(true), "12345678-1234-1234-1234-123456789012");
+        LoadTestRun response = loadTestRunClient.createOrUpdateTestRun("12316678-1234-1234-1234-122451189012",
+            new LoadTestRun()
+                .setPassFailCriteria(new PassFailCriteria()
+                    .setPassFailMetrics(mapOf(
+                        "fefd759d-7fe8-4f83-8b6d-aeebe0f491fe",
+                        new PassFailMetric()
+                            .setClientMetric(PfMetrics.RESPONSE_TIME_IN_MILLISECONDS)
+                            .setAggregate(PassFailAggregationFunction.PERCENTAGE)
+                            .setCondition(">")
+                            .setValue(20.0D)
+                            .setAction(PassFailAction.CONTINUE)))
+                    .setPassFailServerMetrics(mapOf("fefd759d-7fe8-4f83-8b6d-aeebe0f491fe",
+                        new PassFailServerMetric().setResourceId(
+                            "/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVM")
+                            .setMetricNamespace("Microsoft.Compute/virtualMachines")
+                            .setMetricName("Percentage CPU")
+                            .setAggregation("Average")
+                            .setCondition(">")
+                            .setValue(20.0)
+                            .setAction(PassFailAction.CONTINUE))))
+                .setAutoStopCriteria(new AutoStopCriteria().setAutoStopDisabled(true)
+                    .setErrorRate(70.0D)
+                    .setErrorRateTimeWindow(Duration.parse("60")))
+                .setSecrets(mapOf("secret1",
+                    new TestSecret()
+                        .setValue(
+                            "https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827")
+                        .setType(SecretType.KEY_VAULT_SECRET_URI)))
+                .setEnvironmentVariables(mapOf("envvar1", "sampletext"))
+                .setDisplayName("Performance_LoadTest_Run1")
+                .setTestId("12345678-1234-1234-1234-123456789012")
+                .setDescription("sample description")
+                .setRequestDataLevel(RequestDataLevel.NONE)
+                .setDebugLogsEnabled(true),
+            "12345678-1234-1234-1234-123456789012");
         // END:com.azure.developer.loadtesting.generated.createorupdatetestrun.createupdateandstartaloadtestrun
     }
 
