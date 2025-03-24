@@ -65,6 +65,15 @@ steps:
     ARTIFACTPACKAGENAMES: $(ArtifactPackageNames)
   condition: ne(variables['ArtifactPackageNames'], '')
 
+- task: PowerShell@2
+  displayName: Generate CG Scan POM
+  inputs:
+    pwsh: true
+    filePath: eng/pipelines/scripts/generate-cg-scan-pom.ps1
+    arguments: -OutputFolder $(Agent.BuildDirectory)/cgscandir
+  env:
+    PACKAGEINFODIR: $(Build.ArtifactStagingDirectory)/PackageInfo
+
 # The Cache task, when restoring, can have a miss and still pass but, if nothing is built, the
 # Post-Job Cache will fail because there's no .m2/repository
 - ${{ if eq(parameters.UseCache, 'true') }}:
