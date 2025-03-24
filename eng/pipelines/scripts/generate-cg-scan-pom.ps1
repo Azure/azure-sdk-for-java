@@ -61,7 +61,7 @@ $pom += @"
 </project>
 "@
 
-if (-not(Test-Path -Path $OutputFolder) {
+if (-not(Test-Path -Path $OutputFolder)) {
   New-Item -Path $OutputFolder -ItemType Directory
 }
 
