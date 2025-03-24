@@ -1109,7 +1109,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -1214,7 +1213,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -2281,7 +2279,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -2307,7 +2304,6 @@ public final class CertificateClientImpl {
      *         innererror (Optional): (recursive schema, see innererror above)
      *     }
      *     target: String (Optional)
-     *     preserveCertOrder: Boolean (Optional)
      *     request_id: String (Optional)
      * }
      * }
@@ -2407,7 +2403,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -2433,7 +2428,6 @@ public final class CertificateClientImpl {
      *         innererror (Optional): (recursive schema, see innererror above)
      *     }
      *     target: String (Optional)
-     *     preserveCertOrder: Boolean (Optional)
      *     request_id: String (Optional)
      * }
      * }
@@ -2535,7 +2529,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -2614,7 +2607,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -2717,7 +2709,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -2796,7 +2787,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -3671,7 +3661,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -3848,7 +3837,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -3950,7 +3938,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -4055,7 +4042,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -4116,7 +4102,6 @@ public final class CertificateClientImpl {
      *         innererror (Optional): (recursive schema, see innererror above)
      *     }
      *     target: String (Optional)
-     *     preserveCertOrder: Boolean (Optional)
      *     request_id: String (Optional)
      * }
      * }
@@ -4178,7 +4163,6 @@ public final class CertificateClientImpl {
      *         innererror (Optional): (recursive schema, see innererror above)
      *     }
      *     target: String (Optional)
-     *     preserveCertOrder: Boolean (Optional)
      *     request_id: String (Optional)
      * }
      * }
@@ -4228,7 +4212,6 @@ public final class CertificateClientImpl {
      *         innererror (Optional): (recursive schema, see innererror above)
      *     }
      *     target: String (Optional)
-     *     preserveCertOrder: Boolean (Optional)
      *     request_id: String (Optional)
      * }
      * }
@@ -4279,7 +4262,6 @@ public final class CertificateClientImpl {
      *         innererror (Optional): (recursive schema, see innererror above)
      *     }
      *     target: String (Optional)
-     *     preserveCertOrder: Boolean (Optional)
      *     request_id: String (Optional)
      * }
      * }
@@ -4329,7 +4311,6 @@ public final class CertificateClientImpl {
      *         innererror (Optional): (recursive schema, see innererror above)
      *     }
      *     target: String (Optional)
-     *     preserveCertOrder: Boolean (Optional)
      *     request_id: String (Optional)
      * }
      * }
@@ -4378,7 +4359,6 @@ public final class CertificateClientImpl {
      *         innererror (Optional): (recursive schema, see innererror above)
      *     }
      *     target: String (Optional)
-     *     preserveCertOrder: Boolean (Optional)
      *     request_id: String (Optional)
      * }
      * }
@@ -4503,7 +4483,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -4631,7 +4610,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -4805,7 +4783,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -4917,7 +4894,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -5253,7 +5229,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -5358,7 +5333,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -5508,7 +5482,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -5610,7 +5583,6 @@ public final class CertificateClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     preserveCertOrder: Boolean (Optional)
      * }
      * }
      * </pre>
