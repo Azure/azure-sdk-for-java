@@ -195,19 +195,22 @@ public final class HttpRequestContext {
      * @param value the query parameter value.
      * @param isMultiple boolean indicating whether this query parameter list values should be sent as individual query
      * params or as a single Json
+     * @param isEncoded boolean indicating whether the query parameter value is URL encoded.
+     *
      * @throws IllegalArgumentException if a duplicate query parameter is added.
      */
-    public void addQueryParam(String key, String value, boolean isMultiple) {
+    public void addQueryParam(String key, String value, boolean isMultiple, boolean isEncoded) {
         if (queryParams.containsKey(key)) {
             throw new IllegalArgumentException("Cannot add duplicate query parameter '" + key + "'");
         }
-        queryParams.put(key, new QueryParameter(value, isMultiple));
+        queryParams.put(key, new QueryParameter(value, isMultiple, isEncoded));
     }
 
     /**
      * Adds a substitution.
      *
      * @param substitution the substitution to add.
+     *
      * @throws IllegalArgumentException if a duplicate substitution is added.
      */
     public void addSubstitution(Substitution substitution) {
@@ -222,6 +225,7 @@ public final class HttpRequestContext {
      * Gets a substitution by parameter name.
      *
      * @param parameterName the parameter name.
+     *
      * @return the substitution.
      */
     public Substitution getSubstitution(String parameterName) {
@@ -269,6 +273,7 @@ public final class HttpRequestContext {
 
     /**
      * Gets the boolean to true if the provided method is a default method
+     *
      * @return the boolean to true if the provided method is a default method
      */
     public boolean isConvenience() {
@@ -277,6 +282,7 @@ public final class HttpRequestContext {
 
     /**
      * Sets the boolean to true if the provided method is a default method
+     *
      * @param isConvenience the provided method is a default method
      */
     public void setIsConvenience(boolean isConvenience) {
@@ -393,16 +399,19 @@ public final class HttpRequestContext {
     public static class QueryParameter {
         private final String value;
         private final boolean isMultiple;
+        private final boolean isEncoded;
 
         /**
          * Constructs a new QueryParameter.
          *
          * @param value the value of the query parameter.
          * @param isMultiple whether the parameter can accept multiple values.
+         * @param isEncoded whether the parameter and value is encoded
          */
-        public QueryParameter(String value, boolean isMultiple) {
+        public QueryParameter(String value, boolean isMultiple, boolean isEncoded) {
             this.value = value;
             this.isMultiple = isMultiple;
+            this.isEncoded = isEncoded;
         }
 
         /**
@@ -421,6 +430,15 @@ public final class HttpRequestContext {
          */
         public boolean isMultiple() {
             return isMultiple;
+        }
+
+        /**
+         * Checks whether the query parameter value is URL encoded.
+         *
+         * @return true if the parameter value is encoded, otherwise false.
+         */
+        public boolean isEncoded() {
+            return isEncoded;
         }
     }
 }

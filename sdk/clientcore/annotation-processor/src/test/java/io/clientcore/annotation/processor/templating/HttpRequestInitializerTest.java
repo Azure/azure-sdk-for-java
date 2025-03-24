@@ -5,6 +5,9 @@ package io.clientcore.annotation.processor.templating;
 
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -17,10 +20,10 @@ public class HttpRequestInitializerTest {
 
     @ParameterizedTest
     @CsvSource({
-        "GET, \"/my/uri/path\", key1, value1, key2, value2",
+        "GET, \"/my/uri/path\", key1, {value1}, key2, value2",
         "POST, \"/my/uri/path2\", key3, value3, key4, value4" })
     public void testInitializeHttpRequestWithParameterizedQueryParams(String httpMethod, String url, String queryKey1,
-        String queryValue1, String queryKey2, String queryValue2) {
+        String queryValue1, String queryKey2, String queryValue2) throws UnsupportedEncodingException {
 
         com.github.javaparser.ast.stmt.BlockStmt body = new com.github.javaparser.ast.stmt.BlockStmt();
         HttpRequestContext method = new HttpRequestContext();
@@ -29,8 +32,8 @@ public class HttpRequestInitializerTest {
         // Arrange: Set up method with query params
         method.setHost(url);
         method.setHttpMethod(HttpMethod.valueOf(httpMethod));
-        method.addQueryParam(queryKey1, queryValue1, false);
-        method.addQueryParam(queryKey2, queryValue2, true);
+        method.addQueryParam(queryKey1, queryValue1, false, true);
+        method.addQueryParam(queryKey2, queryValue2, true, false);
         method.addHeader("Content-Type", "application/json");
         method.addHeader("Content-Length", String.valueOf(0));
 
@@ -49,8 +52,10 @@ public class HttpRequestInitializerTest {
 
         // Ensure each query parameter is appended correctly
         String expectedQueryStatement = "HashMap<String, Object> queryParamMap = new HashMap<>(); "
-            + "queryParamMap.put(\"" + queryKey1 + "\", " + queryValue1 + "); " + "queryParamMap.put(\"" + queryKey2
-            + "\", " + queryValue2 + "); " + "newUrl = CoreUtils.appendQueryParams(url, queryParamMap);";
+            + "queryParamMap.put(\"" + queryKey1 + "\", \""
+            + URLEncoder.encode(queryValue1, StandardCharsets.UTF_8.name()) + "\"); " + "queryParamMap.put(\""
+            + queryKey2 + "\", " + queryValue2 + "); " + "newUrl = CoreUtils.appendQueryParams(url, queryParamMap);";
+
         assertTrue(normalizedBody.contains(expectedQueryStatement));
 
         // Ensure the final HttpRequest construction is correct
@@ -62,5 +67,4 @@ public class HttpRequestInitializerTest {
             = "httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(0)).add(HttpHeaderName.CONTENT_TYPE, String.valueOf(application / json));";
         assertTrue(normalizedBody.contains(expectedHttpRequestHeaderStatement));
     }
-
 }

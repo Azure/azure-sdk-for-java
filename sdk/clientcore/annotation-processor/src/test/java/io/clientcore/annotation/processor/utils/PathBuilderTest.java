@@ -20,7 +20,7 @@ public class PathBuilderTest {
     public void buildsPathWithHostSubstitution() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"/keys\"", result);
     }
 
@@ -29,7 +29,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path1", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}", context);
+        String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}", context, false);
         assertEquals("\"https://\" + myEndpoint + \"/keys/\" + myPath", result);
     }
 
@@ -39,7 +39,7 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
 
         try {
-            PathBuilder.buildPath("https://{endpoint}/keys/{path1}", context);
+            PathBuilder.buildPath("https://{endpoint}/keys/{path1}", context, false);
         } catch (MissingSubstitutionException e) {
             assertEquals("Could not find substitution for 'path1' in method 'null'", e.getMessage());
         }
@@ -48,7 +48,7 @@ public class PathBuilderTest {
     @Test
     public void buildsPathWithNullSubstitutions() {
         try {
-            PathBuilder.buildPath("https://{endpoint}/keys/{path1}", null);
+            PathBuilder.buildPath("https://{endpoint}/keys/{path1}", null, false);
         } catch (NullPointerException e) {
             assertEquals("method cannot be null", e.getMessage());
         }
@@ -60,14 +60,14 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path1", "myPath"));
         context.addSubstitution(new Substitution("path2", "myPath2"));
-        String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}/{path2}", context);
+        String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}/{path2}", context, false);
         assertEquals("\"https://\" + myEndpoint + \"/keys/\" + myPath + \"/\" + myPath2", result);
     }
 
     @Test
     public void buildsPathWithNoSubstitutions() {
         HttpRequestContext context = new HttpRequestContext();
-        String result = PathBuilder.buildPath("https://keys", context);
+        String result = PathBuilder.buildPath("https://keys", context, false);
         assertEquals("\"https://keys\"", result);
     }
 
@@ -75,7 +75,7 @@ public class PathBuilderTest {
     public void buildsPathWithNoQueryParameters() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"/keys\"", result);
     }
 
@@ -84,7 +84,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}/keys/{path}/{path}", context);
+        String result = PathBuilder.buildPath("https://{endpoint}/keys/{path}/{path}", context, false);
         assertEquals("\"https://\" + myEndpoint + \"/keys/\" + myPath + \"/\" + myPath", result);
     }
 
@@ -92,8 +92,8 @@ public class PathBuilderTest {
     public void buildsPathWithMultipleSameQueryParameters() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key", "value1", false);
-        assertThrows(IllegalArgumentException.class, () -> context.addQueryParam("key", "value2", false));
+        context.addQueryParam("key", "value1", false, false);
+        assertThrows(IllegalArgumentException.class, () -> context.addQueryParam("key", "value2", false, false));
     }
 
     @Test
@@ -109,23 +109,23 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         assertThrows(MissingSubstitutionException.class,
-            () -> PathBuilder.buildPath("https://{endpoint}/keys/{path1}", context));
+            () -> PathBuilder.buildPath("https://{endpoint}/keys/{path1}", context, false));
     }
 
     @Test
     public void buildsPathWithMissingQueryParameter() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1", false);
+        context.addQueryParam("key1", "value1", false, false);
         assertThrows(MissingSubstitutionException.class,
-            () -> PathBuilder.buildPath("https://{endpoint}/keys?key2={value2}", context));
+            () -> PathBuilder.buildPath("https://{endpoint}/keys?key2={value2}", context, false));
     }
 
     @Test
     public void buildsPathWithEmptySubstitutionValue() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", ""));
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}/keys", context, false);
         assertEquals("\"https://\" +  + \"/keys\"", result);
     }
 
@@ -133,7 +133,7 @@ public class PathBuilderTest {
     public void buildsPathWithSubstitutionNotSurroundedBySlashes() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        String result = PathBuilder.buildPath("https://{endpoint}.azure.com/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}.azure.com/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \".azure.com/keys\"", result);
     }
 
@@ -142,7 +142,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("domain", "azure"));
-        String result = PathBuilder.buildPath("https://{endpoint}.{domain}.com/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}.{domain}.com/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \".\" + azure + \".com/keys\"", result);
     }
 
@@ -151,7 +151,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("protocol", "protocol"));
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        String result = PathBuilder.buildPath("{protocol}://{endpoint}/keys", context);
+        String result = PathBuilder.buildPath("{protocol}://{endpoint}/keys", context, false);
         assertEquals("protocol + \"://\" + myEndpoint + \"/keys\"", result);
     }
 
@@ -160,7 +160,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("query", "myQuery"));
-        String result = PathBuilder.buildPath("https://{endpoint}/keys?{query}", context);
+        String result = PathBuilder.buildPath("https://{endpoint}/keys?{query}", context, false);
         assertEquals("\"https://\" + myEndpoint + \"/keys?\" + myQuery", result);
     }
 
@@ -169,7 +169,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}/{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}/{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"/\" + myPath + \"/keys\"", result);
     }
 
@@ -178,7 +178,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}-{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}-{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"-\" + myPath + \"/keys\"", result);
     }
 
@@ -187,7 +187,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}_{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}_{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"_\" + myPath + \"/keys\"", result);
     }
 
@@ -196,7 +196,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}%{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}%{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"%\" + myPath + \"/keys\"", result);
     }
 
@@ -205,7 +205,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}+{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}+{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"+\" + myPath + \"/keys\"", result);
     }
 
@@ -214,7 +214,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}1{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}1{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"1\" + myPath + \"/keys\"", result);
     }
 
@@ -223,7 +223,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}*{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}*{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"*\" + myPath + \"/keys\"", result);
     }
 
@@ -232,7 +232,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint} {path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint} {path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \" \" + myPath + \"/keys\"", result);
     }
 
@@ -241,7 +241,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}a{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}a{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"a\" + myPath + \"/keys\"", result);
     }
 
@@ -250,7 +250,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}\u00A9{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}\u00A9{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"\u00A9\" + myPath + \"/keys\"", result);
     }
 
@@ -259,7 +259,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}*1a{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}*1a{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"*1a\" + myPath + \"/keys\"", result);
     }
 
@@ -268,7 +268,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}*1a\u00A9{path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}*1a\u00A9{path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"*1a\u00A9\" + myPath + \"/keys\"", result);
     }
 
@@ -277,7 +277,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("https://{endpoint}*1a\u00A9 {path}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}*1a\u00A9 {path}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"*1a\u00A9 \" + myPath + \"/keys\"", result);
     }
 
@@ -288,7 +288,8 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("path1", "myPath1"));
         context.addSubstitution(new Substitution("path2", "myPath2"));
         context.addSubstitution(new Substitution("path3", "myPath3"));
-        String result = PathBuilder.buildPath("https://{endpoint}*1a{path1}\u00A9 {path2}/keys/{path3}", context);
+        String result
+            = PathBuilder.buildPath("https://{endpoint}*1a{path1}\u00A9 {path2}/keys/{path3}", context, false);
         assertEquals("\"https://\" + myEndpoint + \"*1a\" + myPath1 + \"\u00A9 \" + myPath2 + \"/keys/\" + myPath3",
             result);
     }
@@ -297,7 +298,7 @@ public class PathBuilderTest {
     public void buildsPathWithSubstitutionValueContainingSpecialCharacter() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint*"));
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
+        String result = PathBuilder.buildPath("https://{endpoint}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint* + \"/keys\"", result);
     }
 
@@ -307,7 +308,7 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
         assertThrows(MissingSubstitutionException.class,
-            () -> PathBuilder.buildPath("https://{{endpoint}/keys/{path}", context));
+            () -> PathBuilder.buildPath("https://{{endpoint}/keys/{path}", context, false));
     }
 
     @Test
@@ -316,7 +317,7 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
         assertThrows(MissingSubstitutionException.class,
-            () -> PathBuilder.buildPath("https://{endpoint/keys/{path}", context));
+            () -> PathBuilder.buildPath("https://{endpoint/keys/{path}", context, false));
     }
 
     @Test
@@ -325,7 +326,7 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
         assertThrows(MissingSubstitutionException.class,
-            () -> PathBuilder.buildPath("https://endpoint}/keys/{path}", context));
+            () -> PathBuilder.buildPath("https://endpoint}/keys/{path}", context, false));
     }
 
     @Test
@@ -333,7 +334,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint{", "myEndpoint"));
         assertThrows(MissingSubstitutionException.class,
-            () -> PathBuilder.buildPath("https://{endpoint{/keys", context));
+            () -> PathBuilder.buildPath("https://{endpoint{/keys", context, false));
     }
 
     @Test
@@ -341,7 +342,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint}", "myEndpoint"));
         assertThrows(MissingSubstitutionException.class,
-            () -> PathBuilder.buildPath("https://{endpoint}/keys", context));
+            () -> PathBuilder.buildPath("https://{endpoint}/keys", context, false));
     }
 
     @Test
@@ -349,7 +350,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint{}", "myEndpoint"));
         assertThrows(MissingSubstitutionException.class,
-            () -> PathBuilder.buildPath("https://{endpoint{}}/keys", context));
+            () -> PathBuilder.buildPath("https://{endpoint{}}/keys", context, false));
     }
 
     @Test
@@ -357,13 +358,14 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint{{}}", "myEndpoint"));
         assertThrows(MissingSubstitutionException.class,
-            () -> PathBuilder.buildPath("https://{endpoint{{}}}/keys", context));
+            () -> PathBuilder.buildPath("https://{endpoint{{}}}/keys", context, false));
     }
 
     @Test
     public void buildsPathWithoutProtocolWithNoSubstitutions() {
         HttpRequestContext context = new HttpRequestContext();
-        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("{endpoint}/keys", context));
+        assertThrows(MissingSubstitutionException.class,
+            () -> PathBuilder.buildPath("{endpoint}/keys", context, false));
     }
 
     @Test
@@ -371,7 +373,7 @@ public class PathBuilderTest {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         context.addSubstitution(new Substitution("path", "myPath"));
-        String result = PathBuilder.buildPath("{endpoint}/keys/{path}", context);
+        String result = PathBuilder.buildPath("{endpoint}/keys/{path}", context, false);
         assertEquals("myEndpoint + \"/keys/\" + myPath", result);
     }
 
@@ -391,8 +393,8 @@ public class PathBuilderTest {
     public void buildsPathWithNullQueryParameterValue() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", null, false);
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
+        context.addQueryParam("key1", null, false, false);
+        String result = PathBuilder.buildPath("https://{endpoint}/keys", context, false);
         assertEquals("\"https://\" + myEndpoint + \"/keys\"", result);
     }
 }

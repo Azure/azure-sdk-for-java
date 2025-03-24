@@ -178,7 +178,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                 method.addHeader(headerParam.value(), param.getSimpleName().toString());
             } else if (queryParam != null) {
                 method.addQueryParam(queryParam.value(), param.getSimpleName().toString(),
-                    queryParam.multipleQueryParams());
+                    queryParam.multipleQueryParams(), queryParam.encoded());
             } else if (bodyParam != null) {
                 method.setBody(new HttpRequestContext.Body(bodyParam.value(), param.asType().toString(),
                     param.getSimpleName().toString()));
@@ -191,24 +191,27 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         // Pre-compute host substitutions
-        method.setHost(getHost(templateInput, method, isEncoded));
+        method.setHost(getHost(method, isEncoded));
 
         return method;
     }
 
-    private static String getHost(TemplateInput templateInput, HttpRequestContext method, boolean isEncoded) {
-        String rawHost;
-        if (isEncoded) {
-            rawHost = method.getPath();
-        } else {
-            String host = templateInput.getHost();
-            String path = method.getPath();
-            if (!host.endsWith("/") && !path.startsWith("/")) {
-                rawHost = host + "/" + path;
+    private static String getHost(HttpRequestContext method, boolean isEncoded) {
+        String path = method.getPath();
+        // Set the path after host, concatenating the path segment in the host.
+        if (path != null && !path.isEmpty() && !"/".equals(path)) {
+            String hostPath = method.getHost();
+            if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
+                method.setPath(path);
             } else {
-                rawHost = host + path;
+                if (path.startsWith("/")) {
+                    method.setPath(hostPath + path);
+                } else {
+                    method.setPath(hostPath + "/" + path);
+                }
             }
         }
-        return PathBuilder.buildPath(rawHost, method);
+
+        return PathBuilder.buildPath(method.getPath(), method, isEncoded);
     }
 }

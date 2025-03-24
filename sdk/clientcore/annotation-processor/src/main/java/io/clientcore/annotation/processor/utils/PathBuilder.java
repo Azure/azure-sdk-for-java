@@ -6,7 +6,9 @@ package io.clientcore.annotation.processor.utils;
 import io.clientcore.annotation.processor.exceptions.MissingSubstitutionException;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.Substitution;
-
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,13 +28,18 @@ public final class PathBuilder {
     /**
      * Builds the path of the request URL by replacing the placeholders with the actual values.
      * @param rawHost The raw host string that contains {} delimited parameters.
-     * @param method The HttpRequestContext object that contains the method's configuration, parameters, headers, and other details.
+     * @param method The HttpRequestContext object that contains the method's configuration, parameters, headers, and
+     * other details.
+     * @param isEncoded boolean indicating whether the query parameter value is URL encoded.
+     *
      * @return The path of the request URL with the placeholders replaced with the actual values.
+     *
      * @throws NullPointerException If the method is null.
      * @throws MissingSubstitutionException If a substitution is missing for a placeholder in the raw host string.
      * @throws IllegalArgumentException If the query parameter key or value is empty.
+     * @throws RuntimeException If an encoding error occurs.
      */
-    public static String buildPath(String rawHost, HttpRequestContext method) {
+    public static String buildPath(String rawHost, HttpRequestContext method, boolean isEncoded) {
         if (method == null) {
             throw new NullPointerException("method cannot be null");
         }
@@ -48,7 +55,16 @@ public final class PathBuilder {
 
             if (substitution != null) {
                 String substitutionValue = substitution.getParameterVariableName();
-                String replacementValue = substitutionValue != null ? Objects.toString(substitutionValue, "null") : "";
+                String replacementValue;
+                if (isEncoded) {
+                    try {
+                        replacementValue = URLEncoder.encode(substitutionValue, StandardCharsets.UTF_8.name());
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    replacementValue = substitutionValue != null ? Objects.toString(substitutionValue, "null") : "";
+                }
 
                 matcher.appendReplacement(buffer, "");
                 if (buffer.length() != 0) {
@@ -92,7 +108,6 @@ public final class PathBuilder {
         if (openingBracesCount != closingBracesCount) {
             throw new MissingSubstitutionException("Mismatched braces in raw host: " + rawHost);
         }
-
         return result;
     }
 
