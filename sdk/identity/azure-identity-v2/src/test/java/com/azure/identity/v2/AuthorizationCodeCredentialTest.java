@@ -65,10 +65,10 @@ public class AuthorizationCodeCredentialTest {
                 .build();
             AccessToken accessToken = credential.getToken(request1);
             Assertions.assertTrue(token1.equals(accessToken.getToken())
-                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             accessToken = credential.getToken(request2);
             Assertions.assertTrue(token2.equals(accessToken.getToken())
-                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             Assertions.assertNotNull(identityclientMock);
         }
     }
@@ -115,26 +115,6 @@ public class AuthorizationCodeCredentialTest {
 
     @Test
     public void testValidMultiTenantAuth() throws Exception {
-        // setup
-        String badSecret = "badsecret";
-        String authCode1 = "authCode1";
-        URI redirectUri = new URI("http://foo.com/bar");
-
-        TokenRequestContext request
-            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
-
-        AuthorizationCodeCredential credential = new AuthorizationCodeCredentialBuilder().tenantId("tenant")
-            .clientId("clientId")
-            .clientSecret(badSecret)
-            .additionallyAllowedTenants("*")
-            .authorizationCode(authCode1)
-            .redirectUrl(redirectUri.toString())
-            .build();
-
-        Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
-    }
-
-    public static void main(String[] args) throws URISyntaxException {
         // setup
         String badSecret = "badsecret";
         String authCode1 = "authCode1";

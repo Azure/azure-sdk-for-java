@@ -92,10 +92,7 @@ public class EnvironmentCredential implements TokenCredential {
                     // 1.1 Attempt ClientSecretCredential
                     LOGGER.atLevel(LogLevel.INFORMATIONAL)
                         .log("Azure Identity => EnvironmentCredential invoking ClientSecretCredential");
-                    confidentialClientOptions
-                        .setClientSecret(clientSecret)
-                        .setClientId(clientId)
-                        .setTenantId(tenantId);
+                    confidentialClientOptions.setClientSecret(clientSecret).setClientId(clientId).setTenantId(tenantId);
                     targetCredential = new ClientSecretCredential(confidentialClientOptions);
                 } else if (verifyNotNull(certPath)) {
                     // 1.2 Attempt ClientCertificateCredential
@@ -106,10 +103,7 @@ public class EnvironmentCredential implements TokenCredential {
                         confidentialClientOptions.setIncludeX5c(true);
                     }
 
-                    confidentialClientOptions
-                        .setCertificatePath(certPath)
-                        .setClientId(clientId)
-                        .setTenantId(tenantId);
+                    confidentialClientOptions.setCertificatePath(certPath).setClientId(clientId).setTenantId(tenantId);
 
                     targetCredential = new ClientCertificateCredential(confidentialClientOptions);
                 } else {
@@ -152,8 +146,8 @@ public class EnvironmentCredential implements TokenCredential {
     @Override
     public AccessToken getToken(TokenRequestContext request) {
         if (tokenCredential == null) {
-            throw LOGGER.logThrowableAsError(new CredentialUnavailableException("EnvironmentCredential authentication unavailable."
-                    + " Environment variables are not fully configured."
+            throw LOGGER.logThrowableAsError(new CredentialUnavailableException(
+                "EnvironmentCredential authentication unavailable." + " Environment variables are not fully configured."
                     + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
                     + " https://aka.ms/azsdk/java/identity/environmentcredential/troubleshoot"));
         } else {

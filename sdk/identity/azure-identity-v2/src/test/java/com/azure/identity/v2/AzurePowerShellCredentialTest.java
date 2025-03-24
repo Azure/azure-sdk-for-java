@@ -38,7 +38,7 @@ public class AzurePowerShellCredentialTest {
             AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
             AccessToken accessToken = credential.getToken(request);
             Assertions.assertTrue(token1.equals(accessToken.getToken())
-                    && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond());
+                && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond());
             Assertions.assertNotNull(identityClientMock);
         }
     }
@@ -60,28 +60,6 @@ public class AzurePowerShellCredentialTest {
             AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
             Assertions.assertThrows(Exception.class, () -> credential.getToken(request));
             Assertions.assertNotNull(devToolsClientMock);
-        }
-    }
-
-    public static void main(String[] args) {
-        // setup
-        String token1 = "token1";
-        TokenRequestContext request = new TokenRequestContext().addScopes("resourcename");
-        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-
-        // mock
-        try (MockedConstruction<DevToolslClient> identityClientMock
-                 = mockConstruction(DevToolslClient.class, (devToolslClient, context) -> {
-                     when(devToolslClient.authenticateWithAzurePowerShell(request))
-                         .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-                 })) {
-
-            // test
-            AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
-            AccessToken accessToken = credential.getToken(request);
-            Assertions.assertTrue(token1.equals(accessToken.getToken())
-                && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assertions.assertNotNull(identityClientMock);
         }
     }
 }

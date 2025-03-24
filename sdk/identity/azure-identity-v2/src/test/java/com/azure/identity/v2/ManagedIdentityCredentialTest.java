@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 public class ManagedIdentityCredentialTest {
 
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+
     @Test
     public void testMiAuthFlow() {
         // setup
@@ -32,8 +33,7 @@ public class ManagedIdentityCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         Configuration configuration
-            = TestUtils.createTestConfiguration(new TestConfigurationSource()
-                .put("MSI_ENDPOINT", endpoint) // This must stay to signal we are in an app service context
+            = TestUtils.createTestConfiguration(new TestConfigurationSource().put("MSI_ENDPOINT", endpoint) // This must stay to signal we are in an app service context
                 .put("MSI_SECRET", secret)
                 .put("IDENTITY_ENDPOINT", endpoint)
                 .put("IDENTITY_HEADER", secret));
@@ -41,15 +41,14 @@ public class ManagedIdentityCredentialTest {
         // mock
         try (MockedConstruction<ManagedIdentityClient> managedIdentityMock
             = mockConstruction(ManagedIdentityClient.class, (miClient, context) -> {
-                when(miClient.authenticate(request1))
-                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+                when(miClient.authenticate(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             })) {
             // test
             ManagedIdentityCredential credential
                 = new ManagedIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
             AccessToken accessToken = credential.getToken(request1);
             Assertions.assertTrue(token1.equals(accessToken.getToken())
-                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             Assertions.assertNotNull(managedIdentityMock);
         }
     }

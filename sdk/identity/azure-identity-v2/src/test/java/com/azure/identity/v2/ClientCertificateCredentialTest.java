@@ -14,7 +14,6 @@ import org.mockito.MockedConstruction;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -122,8 +121,7 @@ public class ClientCertificateCredentialTest {
 
         try (MockedConstruction<ConfidentialClient> confidentialClientMock
             = mockConstruction(ConfidentialClient.class, (confidentialClient, context) -> {
-                when(confidentialClient.authenticateWithCache(any()))
-                    .thenThrow(new IllegalStateException("Test"));
+                when(confidentialClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
                 when(confidentialClient.authenticate(request1))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             })) {
@@ -152,8 +150,7 @@ public class ClientCertificateCredentialTest {
 
         try (MockedConstruction<ConfidentialClient> confidentialClientMock
             = mockConstruction(ConfidentialClient.class, (identityClient, context) -> {
-                when(identityClient.authenticateWithCache(any()))
-                    .thenThrow(new IllegalStateException("Test"));
+                when(identityClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
                 when(identityClient.authenticate(request1)).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                     if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
@@ -188,8 +185,7 @@ public class ClientCertificateCredentialTest {
 
         try (MockedConstruction<ConfidentialClient> confidentialClientMock
             = mockConstruction(ConfidentialClient.class, (confidentialClient, context) -> {
-                when(confidentialClient.authenticateWithCache(any()))
-                    .thenThrow(new IllegalStateException("Test"));
+                when(confidentialClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
                 when(confidentialClient.authenticate(request2))
                     .thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
 
@@ -219,8 +215,7 @@ public class ClientCertificateCredentialTest {
         // mock
         try (MockedConstruction<ConfidentialClient> confidentialClientMock
             = mockConstruction(ConfidentialClient.class, (confidentialClient, context) -> {
-                when(confidentialClient.authenticateWithCache(any()))
-                    .thenThrow(new IllegalStateException("Test"));
+                when(confidentialClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
                 when(confidentialClient.authenticate(request1))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             })) {
@@ -250,8 +245,7 @@ public class ClientCertificateCredentialTest {
 
         try (MockedConstruction<ConfidentialClient> confidentialClientMock
             = mockConstruction(ConfidentialClient.class, (confidentialClient, context) -> {
-                when(confidentialClient.authenticateWithCache(any()))
-                    .thenThrow(new IllegalStateException("Test"));
+                when(confidentialClient.authenticateWithCache(any())).thenThrow(new IllegalStateException("Test"));
                 when(confidentialClient.authenticate(request2))
                     .thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
             })) {
@@ -458,34 +452,5 @@ public class ClientCertificateCredentialTest {
             Assertions.assertThrows(MsalServiceException.class, () -> credential.getToken(request));
         }
 
-    }
-
-    public static void main(String[] args) throws IOException {
-        // setup
-        InputStream pemCert = new ByteArrayInputStream("fakepem".getBytes(StandardCharsets.UTF_8));
-        String token1 = "token1";
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
-        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-
-        // mock
-        try (MockedConstruction<ConfidentialClient> confidentialClientMock
-                 = mockConstruction(ConfidentialClient.class, (confidentialClient, context) -> {
-                     when(confidentialClient.authenticateWithCache(any()))
-                         .thenThrow(new IllegalStateException("Test"));
-                     when(confidentialClient.authenticate(request1))
-                         .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
-                 })) {
-            pemCert.reset();
-            // test
-            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(TENANT_ID)
-                .clientId(CLIENT_ID)
-                .clientCertificate(pemCert)
-                .build();
-
-            AccessToken accessToken = credential.getToken(request1);
-            Assertions.assertEquals(token1, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assertions.assertNotNull(confidentialClientMock);
-        }
     }
 }

@@ -44,7 +44,6 @@ public class EnvironmentCredentialTests {
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().configuration(configuration).build();
 
-
         // Validate Sync flow.
         Exception e = Assertions.assertThrows(Exception.class,
             () -> credential.getToken(new TokenRequestContext().addScopes("qux/.default")));
@@ -57,7 +56,8 @@ public class EnvironmentCredentialTests {
     @Test
     public void testInvalidAdditionalTenant() {
         // setup
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource().put(IdentityUtil.PROPERTY_AZURE_CLIENT_ID, "foo")
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put(IdentityUtil.PROPERTY_AZURE_CLIENT_ID, "foo")
                 .put(IdentityUtil.PROPERTY_AZURE_CLIENT_SECRET, "bar")
                 .put(IdentityUtil.PROPERTY_AZURE_TENANT_ID, "baz")
                 .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, "RANDOM"));

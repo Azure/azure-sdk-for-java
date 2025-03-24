@@ -93,9 +93,9 @@ public class WorkloadIdentityCredential implements TokenCredential {
     public AccessToken getToken(TokenRequestContext request) {
         if (clientAssertionCredential == null) {
             throw LOGGER.logThrowableAsError(new CredentialUnavailableException("WorkloadIdentityCredential"
-                    + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
-                    + " guide for more information."
-                    + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot"));
+                + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
+                + " guide for more information."
+                + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot"));
         }
         return clientAssertionCredential.getToken(request);
     }

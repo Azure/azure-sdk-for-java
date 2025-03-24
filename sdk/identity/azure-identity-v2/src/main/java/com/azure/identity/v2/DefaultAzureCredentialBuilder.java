@@ -68,7 +68,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         clientOptions = new ClientOptions();
         this.clientOptions.setIdentityLogOptions(new IdentityLogOptionsImpl(true));
         this.clientOptions.setChained(true);
-        this.clientOptions.setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration()));
+        this.clientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration()));
     }
 
     @Override

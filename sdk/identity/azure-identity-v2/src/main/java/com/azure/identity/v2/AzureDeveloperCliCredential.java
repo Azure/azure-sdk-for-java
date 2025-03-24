@@ -11,7 +11,6 @@ import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-
 /**
  * <p>Azure Developer CLI is a command-line interface tool that allows developers to create, manage, and deploy
  * resources in Azure. It's built on top of the Azure CLI and provides additional functionality specific

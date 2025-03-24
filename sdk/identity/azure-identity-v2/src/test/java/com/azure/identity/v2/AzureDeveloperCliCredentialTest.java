@@ -37,7 +37,7 @@ public class AzureDeveloperCliCredentialTest {
             AzureDeveloperCliCredential credential = new AzureDeveloperCliCredentialBuilder().build();
             AccessToken accessToken = credential.getToken(request);
             Assertions.assertTrue(token1.equals(accessToken.getToken())
-                    && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond());
+                && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond());
 
             Assertions.assertNotNull(devToolsClientMock);
         }

@@ -115,8 +115,7 @@ public class DeviceCodeCredential implements TokenCredential {
                     + "authentication is needed to acquire token. Call Authenticate to initiate the device "
                     + "code authentication.", request));
             }
-            MsalToken accessToken
-                = publicClient.authenticateWithDeviceCode(request);
+            MsalToken accessToken = publicClient.authenticateWithDeviceCode(request);
             updateCache(accessToken);
             if (request.isCaeEnabled()) {
                 isCaeEnabledRequestCached = true;

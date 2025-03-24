@@ -40,7 +40,7 @@ public class AzureCliCredentialTest {
             AzureCliCredential credential = new AzureCliCredentialBuilder().build();
             AccessToken accessToken = credential.getToken(request);
             Assertions.assertTrue(token1.equals(accessToken.getToken())
-                    && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond());
+                && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond());
             Assertions.assertNotNull(devToolsClientMock);
         }
     }
@@ -71,8 +71,7 @@ public class AzureCliCredentialTest {
         // mock
         try (MockedConstruction<DevToolslClient> devToolsClientMock
             = mockConstruction(DevToolslClient.class, (devToolslClient, context) -> {
-                when(devToolslClient.authenticateWithAzureCli(request))
-                    .thenThrow(new Exception("Azure not Login"));
+                when(devToolslClient.authenticateWithAzureCli(request)).thenThrow(new Exception("Azure not Login"));
                 when(devToolslClient.getClientOptions()).thenReturn(new DevToolsClientOptions());
             })) {
             // test
@@ -90,8 +89,7 @@ public class AzureCliCredentialTest {
         // mock
         try (MockedConstruction<DevToolslClient> devToolsClientMock
             = mockConstruction(DevToolslClient.class, (devToolslClient, context) -> {
-                when(devToolslClient.authenticateWithAzureCli(request))
-                    .thenThrow(new Exception("other error"));
+                when(devToolslClient.authenticateWithAzureCli(request)).thenThrow(new Exception("other error"));
                 when(devToolslClient.getClientOptions()).thenReturn(new DevToolsClientOptions());
             })) {
             // test
@@ -157,8 +155,7 @@ public class AzureCliCredentialTest {
         // Mock
         try (MockedConstruction<DevToolslClient> devToolsClientMock
             = mockConstruction(DevToolslClient.class, (devToolslClient, context) -> {
-                when(devToolslClient.authenticateWithAzureCli(request))
-                    .thenThrow(new Exception("other error"));
+                when(devToolslClient.authenticateWithAzureCli(request)).thenThrow(new Exception("other error"));
                 when(devToolslClient.getClientOptions()).thenReturn(new DevToolsClientOptions());
             })) {
 

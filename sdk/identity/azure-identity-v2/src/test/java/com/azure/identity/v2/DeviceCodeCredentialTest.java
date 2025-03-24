@@ -36,7 +36,6 @@ public class DeviceCodeCredentialTest {
         TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
-
         try (MockedConstruction<PublicClient> publicClientMock
             = mockConstruction(PublicClient.class, (publicClient, context) -> {
                 when(publicClient.authenticateWithDeviceCode(eq(request1)))
@@ -50,8 +49,7 @@ public class DeviceCodeCredentialTest {
                         && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         throw new UnsupportedOperationException("nothing cached");
                     } else {
-                        throw new InvalidUseOfMatchersException(
-                            String.format("Argument %s does not match", argument));
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", argument));
                     }
                 });
             })) {
@@ -98,8 +96,7 @@ public class DeviceCodeCredentialTest {
                         && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         throw new UnsupportedOperationException("nothing cached");
                     } else {
-                        throw new InvalidUseOfMatchersException(
-                            String.format("Argument %s does not match", argument));
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", argument));
                     }
                 });
             })) {
@@ -137,10 +134,9 @@ public class DeviceCodeCredentialTest {
             DeviceCodeCredential credential
                 = new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
             AuthenticationRecord authenticationRecord = credential.authenticate(request1);
-            Assertions.assertTrue(authenticationRecord.getAuthority()
-                    .equals("http://login.microsoftonline.com")
-                    && authenticationRecord.getUsername().equals("testuser")
-                    && authenticationRecord.getHomeAccountId() != null);
+            Assertions.assertTrue(authenticationRecord.getAuthority().equals("http://login.microsoftonline.com")
+                && authenticationRecord.getUsername().equals("testuser")
+                && authenticationRecord.getHomeAccountId() != null);
             Assertions.assertNotNull(identityClientMock);
         }
     }
@@ -167,10 +163,9 @@ public class DeviceCodeCredentialTest {
                 .build();
 
             AuthenticationRecord authenticationRecord = credential.authenticate(request1);
-            Assertions.assertTrue(authenticationRecord.getAuthority()
-                    .equals("http://login.microsoftonline.com")
-                    && authenticationRecord.getUsername().equals("testuser")
-                    && authenticationRecord.getHomeAccountId() != null);
+            Assertions.assertTrue(authenticationRecord.getAuthority().equals("http://login.microsoftonline.com")
+                && authenticationRecord.getUsername().equals("testuser")
+                && authenticationRecord.getHomeAccountId() != null);
             Assertions.assertNotNull(identityClientMock);
         }
     }

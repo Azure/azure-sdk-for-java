@@ -114,7 +114,8 @@ public class ChainedTokenCredential implements TokenCredential {
     private void handleException(Exception e, TokenCredential selectedCredential,
         List<CredentialUnavailableException> exceptions, String logMessage, TokenCredential selectedCredential1) {
         if (e.getClass() != CredentialUnavailableException.class) {
-            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(getCredUnavailableMessage(selectedCredential, e), e));
+            throw LOGGER.logThrowableAsError(
+                new CredentialAuthenticationException(getCredUnavailableMessage(selectedCredential, e), e));
         } else {
             if (e instanceof CredentialUnavailableException) {
                 exceptions.add((CredentialUnavailableException) e);
