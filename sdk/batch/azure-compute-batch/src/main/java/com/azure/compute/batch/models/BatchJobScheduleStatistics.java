@@ -65,18 +65,6 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
     private final Duration wallClockTime;
 
     /*
-     * The total number of disk read operations made by all Tasks in all Jobs created under the schedule.
-     */
-    @Generated
-    private final long readIOps;
-
-    /*
-     * The total number of disk write operations made by all Tasks in all Jobs created under the schedule.
-     */
-    @Generated
-    private final long writeIOps;
-
-    /*
      * The total gibibytes read from disk by all Tasks in all Jobs created under the schedule.
      */
     @Generated
@@ -126,8 +114,8 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
      * @param userCpuTime the userCpuTime value to set.
      * @param kernelCpuTime the kernelCpuTime value to set.
      * @param wallClockTime the wallClockTime value to set.
-     * @param readIOps the readIOps value to set.
-     * @param writeIOps the writeIOps value to set.
+     * @param readIops the readIops value to set.
+     * @param writeIops the writeIops value to set.
      * @param readIOGiB the readIOGiB value to set.
      * @param writeIOGiB the writeIOGiB value to set.
      * @param numSucceededTasks the numSucceededTasks value to set.
@@ -137,7 +125,7 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
      */
     @Generated
     private BatchJobScheduleStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
-        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIOps, long writeIOps,
+        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIops, long writeIops,
         double readIOGiB, double writeIOGiB, long numSucceededTasks, long numFailedTasks, long numTaskRetries,
         Duration waitTime) {
         this.url = url;
@@ -146,8 +134,8 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
         this.userCpuTime = userCpuTime;
         this.kernelCpuTime = kernelCpuTime;
         this.wallClockTime = wallClockTime;
-        this.readIOps = readIOps;
-        this.writeIOps = writeIOps;
+        this.readIops = readIops;
+        this.writeIops = writeIops;
         this.readIOGiB = readIOGiB;
         this.writeIOGiB = writeIOGiB;
         this.numSucceededTasks = numSucceededTasks;
@@ -220,28 +208,6 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
     @Generated
     public Duration getWallClockTime() {
         return this.wallClockTime;
-    }
-
-    /**
-     * Get the readIOps property: The total number of disk read operations made by all Tasks in all Jobs created under
-     * the schedule.
-     *
-     * @return the readIOps value.
-     */
-    @Generated
-    public long getReadIOps() {
-        return this.readIOps;
-    }
-
-    /**
-     * Get the writeIOps property: The total number of disk write operations made by all Tasks in all Jobs created under
-     * the schedule.
-     *
-     * @return the writeIOps value.
-     */
-    @Generated
-    public long getWriteIOps() {
-        return this.writeIOps;
     }
 
     /**
@@ -327,8 +293,8 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
         jsonWriter.writeStringField("userCPUTime", CoreUtils.durationToStringWithDays(this.userCpuTime));
         jsonWriter.writeStringField("kernelCPUTime", CoreUtils.durationToStringWithDays(this.kernelCpuTime));
         jsonWriter.writeStringField("wallClockTime", CoreUtils.durationToStringWithDays(this.wallClockTime));
-        jsonWriter.writeStringField("readIOps", Objects.toString(this.readIOps, null));
-        jsonWriter.writeStringField("writeIOps", Objects.toString(this.writeIOps, null));
+        jsonWriter.writeStringField("readIOps", Objects.toString(this.readIops, null));
+        jsonWriter.writeStringField("writeIOps", Objects.toString(this.writeIops, null));
         jsonWriter.writeDoubleField("readIOGiB", this.readIOGiB);
         jsonWriter.writeDoubleField("writeIOGiB", this.writeIOGiB);
         jsonWriter.writeStringField("numSucceededTasks", Objects.toString(this.numSucceededTasks, null));
@@ -356,8 +322,8 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
             Duration userCpuTime = null;
             Duration kernelCpuTime = null;
             Duration wallClockTime = null;
-            long readIOps = Long.parseLong("0");
-            long writeIOps = Long.parseLong("0");
+            long readIops = Long.parseLong("0");
+            long writeIops = Long.parseLong("0");
             double readIOGiB = 0.0;
             double writeIOGiB = 0.0;
             long numSucceededTasks = Long.parseLong("0");
@@ -382,9 +348,9 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
                 } else if ("wallClockTime".equals(fieldName)) {
                     wallClockTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("readIOps".equals(fieldName)) {
-                    readIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    readIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("writeIOps".equals(fieldName)) {
-                    writeIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    writeIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("readIOGiB".equals(fieldName)) {
                     readIOGiB = reader.getDouble();
                 } else if ("writeIOGiB".equals(fieldName)) {
@@ -402,8 +368,42 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
                 }
             }
             return new BatchJobScheduleStatistics(url, startTime, lastUpdateTime, userCpuTime, kernelCpuTime,
-                wallClockTime, readIOps, writeIOps, readIOGiB, writeIOGiB, numSucceededTasks, numFailedTasks,
+                wallClockTime, readIops, writeIops, readIOGiB, writeIOGiB, numSucceededTasks, numFailedTasks,
                 numTaskRetries, waitTime);
         });
+    }
+
+    /*
+     * The total number of disk read operations made by all Tasks in all Jobs created under the schedule.
+     */
+    @Generated
+    private final long readIops;
+
+    /*
+     * The total number of disk write operations made by all Tasks in all Jobs created under the schedule.
+     */
+    @Generated
+    private final long writeIops;
+
+    /**
+     * Get the readIops property: The total number of disk read operations made by all Tasks in all Jobs created under
+     * the schedule.
+     *
+     * @return the readIops value.
+     */
+    @Generated
+    public long getReadIops() {
+        return this.readIops;
+    }
+
+    /**
+     * Get the writeIops property: The total number of disk write operations made by all Tasks in all Jobs created under
+     * the schedule.
+     *
+     * @return the writeIops value.
+     */
+    @Generated
+    public long getWriteIops() {
+        return this.writeIops;
     }
 }
