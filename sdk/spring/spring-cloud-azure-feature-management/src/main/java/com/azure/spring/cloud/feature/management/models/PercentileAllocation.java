@@ -26,8 +26,9 @@ public class PercentileAllocation {
     /**
      * @param variant the variant to set
      */
-    public void setVariant(String variant) {
+    public PercentileAllocation setVariant(String variant) {
         this.variant = variant;
+        return this;
     }
 
     /**
@@ -40,8 +41,9 @@ public class PercentileAllocation {
     /**
      * @param from the from to set
      */
-    public void setFrom(Double from) {
+    public PercentileAllocation setFrom(Double from) {
         this.from = from;
+        return this;
     }
 
     /**
@@ -54,8 +56,9 @@ public class PercentileAllocation {
     /**
      * @param to the to to set
      */
-    public void setTo(Double to) {
+    public PercentileAllocation setTo(Double to) {
         this.to = to;
+        return this;
     }
 
 }

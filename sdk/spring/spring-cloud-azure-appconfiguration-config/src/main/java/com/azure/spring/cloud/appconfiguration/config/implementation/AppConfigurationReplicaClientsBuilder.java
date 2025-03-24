@@ -307,7 +307,6 @@ public class AppConfigurationReplicaClientsBuilder {
                 String segment = arg.trim();
                 if (ENDPOINT.regionMatches(true, 0, segment, 0, ENDPOINT.length())) {
                     try {
-                        baseUri = new URL(segment.substring(ENDPOINT.length()));
                     } catch (MalformedURLException ex) {
                         throw new IllegalArgumentException(ex);
                     }
