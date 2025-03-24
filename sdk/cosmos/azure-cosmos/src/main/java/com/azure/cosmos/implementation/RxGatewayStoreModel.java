@@ -66,7 +66,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private final QueryCompatibilityMode queryCompatibilityMode;
     protected final GlobalEndpointManager globalEndpointManager;
     private ConsistencyLevel defaultConsistencyLevel;
-    private ISessionContainer sessionContainer;
+    protected ISessionContainer sessionContainer;
     private ThroughputControlStore throughputControlStore;
     private boolean useMultipleWriteLocations;
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
@@ -326,7 +326,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 // For media read request, always use the write endpoint.
                 rootUri = this.globalEndpointManager.getWriteEndpoints().get(0).getGatewayRegionalEndpoint();
             } else {
-                rootUri = this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
+                rootUri = getRootUri(request);
             }
         }
 

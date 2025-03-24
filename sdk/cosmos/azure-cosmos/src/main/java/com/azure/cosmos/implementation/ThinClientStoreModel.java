@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
@@ -22,15 +23,12 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -151,9 +149,25 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         } else {
             logger.error("Updated EPK to value {}", HexConvert.bytesToHex(epk));
         }
+
+        // Add SessionToken header
+        String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+        if (StringUtils.isNotEmpty(sessionToken)) {
+            boolean setSessionToken = rntbdRequest.setHeaderValue(
+                RntbdConstants.RntbdRequestHeader.SessionToken,
+                sessionToken);
+            if (!setSessionToken) {
+                logger.error("Failed to update SessionToken to value {}", sessionToken);
+            } else {
+                logger.debug("Updated SessionToken to value {}", sessionToken);
+            }
+        }
+
         // todo: neharao1 - validate whether Java heap buffer is okay v/s Direct buffer
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
+
+        logger.error("HEADERS: {}", rntbdRequest.getHeaders().dumpTokens());
 
         // todo: lifting the logic from there to encode the RntbdRequest instance into a ByteBuf (ByteBuf is a network compatible format)
         // todo: double-check with fabianm to see if RntbdRequest across RNTBD over TCP (Direct connectivity mode) is same as that when using ThinClient proxy

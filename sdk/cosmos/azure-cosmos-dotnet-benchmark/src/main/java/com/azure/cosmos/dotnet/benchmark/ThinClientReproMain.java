@@ -5,6 +5,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -20,6 +21,8 @@ public class ThinClientReproMain {
             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             CosmosAsyncClient client = new CosmosClientBuilder()
+                //.key(TestConfigurations.MASTER_KEY)
+                //.endpoint(TestConfigurations.HOST)
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .userAgentSuffix("fabianmThinClientProxyTest")
@@ -34,19 +37,15 @@ public class ThinClientReproMain {
             doc.put("id", idValue);
             System.out.println("Document to be ingested - " + doc.toPrettyString());
 
-            while (true) {
-                try {
-                    // container.readItem(
-                    //                        "HelloWorld",
-                    //                        new PartitionKey("HelloWorld"),
-                    //                        ObjectNode.class)
-                    CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
-                    System.out.println("CREATE DIAGNOSTICS: " + createResponse.getDiagnostics());
-                    break;
-                } catch (CosmosException cosmosError) {
-                    System.out.println("COSMOS ERROR: " + cosmosError.getStatusCode() + "/" + cosmosError.getShortMessage());
-                    Thread.sleep(10_000);
-                }
+            try {
+                // container.readItem(
+                //                        "HelloWorld",
+                //                        new PartitionKey("HelloWorld"),
+                //                        ObjectNode.class)
+                CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
+                System.out.println("CREATE DIAGNOSTICS: " + createResponse.getDiagnostics());
+            } catch (CosmosException cosmosError) {
+                System.out.println("COSMOS ERROR: " + cosmosError.getStatusCode() + "/" + cosmosError.getShortMessage());
             }
 
             CosmosItemResponse<ObjectNode> response = container.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
@@ -54,7 +53,7 @@ public class ThinClientReproMain {
             ObjectNode readDoc = response.getItem();
 
             System.out.println("Document read - " + readDoc.toPrettyString());
-        } catch (CosmosException | InterruptedException cosmosException) {
+        } catch (CosmosException cosmosException) {
             System.out.println("COSMOS ERROR: " + cosmosException);
         }
     }

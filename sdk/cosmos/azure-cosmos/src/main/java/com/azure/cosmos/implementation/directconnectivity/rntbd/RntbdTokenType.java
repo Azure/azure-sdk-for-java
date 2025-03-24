@@ -7,8 +7,6 @@ import com.azure.cosmos.implementation.guava25.base.Utf8;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.CorruptedFrameException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -181,7 +179,7 @@ enum RntbdTokenType {
     }
 
     private static class RntbdBytes implements Codec {
-        private static final Logger logger = LoggerFactory.getLogger(RntbdBytes.class);
+
         public static final Codec codec = new RntbdBytes();
         private static final byte[] defaultValue = {};
 
@@ -214,12 +212,7 @@ enum RntbdTokenType {
         public Object read(final ByteBuf in) {
             final int length = in.readUnsignedShortLE();
             Codec.checkReadableBytes(in, length, 0xFFFF);
-            StringBuilder hexString = new StringBuilder();
-            for (int i = in.readerIndex(); i < in.readerIndex() + in.readableBytes(); i++) {
-                hexString.append(java.lang.String.format("%02X", in.getByte(i)));
-            }
-            ByteBuf returnValue = in.readBytes(length);
-            return returnValue;
+            return in.readBytes(length);
         }
 
         @Override

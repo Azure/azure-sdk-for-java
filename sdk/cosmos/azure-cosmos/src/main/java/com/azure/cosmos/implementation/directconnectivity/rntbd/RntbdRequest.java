@@ -7,8 +7,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.buffer.ByteBuf;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
@@ -90,6 +88,10 @@ public final class RntbdRequest {
         return new RntbdRequest(header, metadata, payload);
     }
 
+    public RntbdRequestHeaders getHeaders() {
+        return this.headers;
+    }
+
     public void encode(final ByteBuf out, boolean forThinClient) {
 
         // If payload exists it is encoded as prefix length (32-bit) + the raw payload
@@ -103,10 +105,10 @@ public final class RntbdRequest {
 
         int observedLength = out.writerIndex() - start;
 
-        /*checkState(observedLength == expectedLength,
+        checkState(observedLength == expectedLength,
             "encoding error: {\"expectedLength\": %s, \"observedLength\": %s}",
             expectedLength,
-            observedLength);*/
+            observedLength);
 
         if (this.payload.length > 0) {
             out.writeIntLE(this.payload.length);
@@ -119,8 +121,6 @@ public final class RntbdRequest {
                 expectedLength + effectivePayloadSize,
                 observedLength);
         }
-
-
     }
 
     public static RntbdRequest from(final RntbdRequestArgs args) {

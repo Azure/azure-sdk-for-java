@@ -207,6 +207,7 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
     }
 
     public Map<String, String> asMap(final String serverVersion, final UUID activityId) {
+
         checkNotNull(serverVersion, "Argument 'serverVersion' must not be null.");
         checkNotNull(activityId, "Argument 'activityId' must not be null.");
 

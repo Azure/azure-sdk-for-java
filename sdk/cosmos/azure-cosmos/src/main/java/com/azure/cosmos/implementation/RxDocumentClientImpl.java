@@ -1903,7 +1903,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
-        // TODO: Configs.isThinClientEnabled() && request.useGatewayMode -> false for some reason, fix it
         request.useThinProxy = Configs.isThinClientEnabled() &&  this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY ? true : false;
 
         if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
@@ -5737,6 +5736,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return Flux.defer(() -> {
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.DatabaseAccount, "", null, (Object) null);
+            request.useThinProxy = this.isThinClientEnabled && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY ? true : false;
             return this.populateHeadersAsync(request, RequestVerb.GET)
                 .flatMap(requestPopulated -> {
 

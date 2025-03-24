@@ -367,7 +367,6 @@ public final class RntbdResponse implements ReferenceCounted {
             new ByteBufInputStream(this.content.retain(), true),
             length);
     }
-
     // endregion
 
     // region Types
