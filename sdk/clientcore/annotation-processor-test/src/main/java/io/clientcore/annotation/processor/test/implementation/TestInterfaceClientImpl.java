@@ -79,6 +79,7 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
                                         RequestOptions requestOptions);
+<<<<<<< HEAD
         // HttpClientTests
         // Need to add RequestOptions to specify ResponseBodyMode, which is otherwise provided by convenience methods
         @SuppressWarnings({ "unchecked", "cast" })
@@ -133,5 +134,7 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
         HttpBinJSON getAnythingWithEncoded(@HostParam("uri") String uri,
             @QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
+=======
+>>>>>>> ec401f7b20f (updates with disabled tests)
     }
 }
