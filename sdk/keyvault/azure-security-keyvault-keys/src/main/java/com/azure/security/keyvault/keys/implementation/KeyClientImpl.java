@@ -682,28 +682,6 @@ public final class KeyClientImpl {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
             RequestOptions requestOptions, Context context);
 
-        @Get("/keys/{key-name}/{key-version}/attestation")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getKeyAttestation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/keys/{key-name}/{key-version}/attestation")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getKeyAttestationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -791,12 +769,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -846,12 +818,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -913,12 +879,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -968,12 +928,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1047,12 +1001,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1122,12 +1070,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1198,12 +1140,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1252,12 +1188,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1333,12 +1263,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1387,12 +1311,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1467,12 +1385,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1547,12 +1459,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1610,12 +1516,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1664,12 +1564,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1729,12 +1623,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1783,12 +1671,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1862,12 +1744,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1943,12 +1819,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2011,12 +1881,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2074,12 +1938,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2135,12 +1993,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2196,12 +2048,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2259,12 +2105,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2322,12 +2162,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2384,12 +2218,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2446,12 +2274,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2609,12 +2431,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2704,12 +2520,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2864,7 +2674,7 @@ public final class KeyClientImpl {
      * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
      * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
      * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
-     * https://learn.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
+     * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2922,7 +2732,7 @@ public final class KeyClientImpl {
      * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
      * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
      * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
-     * https://learn.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
+     * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2980,7 +2790,7 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
+     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
      *     value: Base64Url (Required)
      * }
      * }
@@ -3030,7 +2840,7 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
+     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
      *     value: Base64Url (Required)
      * }
      * }
@@ -3081,7 +2891,7 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
+     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
      *     digest: Base64Url (Required)
      *     value: Base64Url (Required)
      * }
@@ -3130,7 +2940,7 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
+     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
      *     digest: Base64Url (Required)
      *     value: Base64Url (Required)
      * }
@@ -3511,12 +3321,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3578,12 +3382,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3643,12 +3441,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3708,12 +3500,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3783,12 +3569,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3865,12 +3645,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3991,12 +3765,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4070,12 +3838,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4436,167 +4198,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Gets the public part of a stored key along with its attestation blob.
-     *
-     * The get key attestation operation returns the key along with its attestation blob. This operation requires the
-     * keys/get permission.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     key (Optional): {
-     *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
-     *         key_ops (Optional): [
-     *             String (Optional)
-     *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
-     *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
-     *     }
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *         exportable: Boolean (Optional)
-     *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     managed: Boolean (Optional)
-     *     release_policy (Optional): {
-     *         contentType: String (Optional)
-     *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param keyName The name of the key to retrieve attestation for.
-     * @param keyVersion Adding the version parameter retrieves attestation blob for specific version of a key. This URI
-     * fragment is optional. If not specified, the latest version of the key attestation blob is returned.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the public part of a stored key along with its attestation blob.
-     *
-     * The get key attestation operation returns the key along with its attestation blob along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getKeyAttestationWithResponseAsync(String keyName, String keyVersion,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getKeyAttestation(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), keyName, keyVersion, accept, requestOptions, context));
-    }
-
-    /**
-     * Gets the public part of a stored key along with its attestation blob.
-     *
-     * The get key attestation operation returns the key along with its attestation blob. This operation requires the
-     * keys/get permission.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     key (Optional): {
-     *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
-     *         key_ops (Optional): [
-     *             String (Optional)
-     *         ]
-     *         n: Base64Url (Optional)
-     *         e: Base64Url (Optional)
-     *         d: Base64Url (Optional)
-     *         dp: Base64Url (Optional)
-     *         dq: Base64Url (Optional)
-     *         qi: Base64Url (Optional)
-     *         p: Base64Url (Optional)
-     *         q: Base64Url (Optional)
-     *         k: Base64Url (Optional)
-     *         key_hsm: Base64Url (Optional)
-     *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
-     *         x: Base64Url (Optional)
-     *         y: Base64Url (Optional)
-     *     }
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *         exportable: Boolean (Optional)
-     *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     managed: Boolean (Optional)
-     *     release_policy (Optional): {
-     *         contentType: String (Optional)
-     *         immutable: Boolean (Optional)
-     *         data: Base64Url (Optional)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param keyName The name of the key to retrieve attestation for.
-     * @param keyVersion Adding the version parameter retrieves attestation blob for specific version of a key. This URI
-     * fragment is optional. If not specified, the latest version of the key attestation blob is returned.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the public part of a stored key along with its attestation blob.
-     *
-     * The get key attestation operation returns the key along with its attestation blob along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getKeyAttestationWithResponse(String keyName, String keyVersion,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getKeyAttestationSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
-            keyVersion, accept, requestOptions, Context.NONE);
-    }
-
-    /**
      * Retrieves a list of individual key versions with the same key name.
      *
      * Get the next page of items.
@@ -4616,12 +4217,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4669,12 +4264,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4721,12 +4310,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4774,12 +4357,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4826,12 +4403,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4883,12 +4454,6 @@ public final class KeyClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         exportable: Boolean (Optional)
      *         hsmPlatform: String (Optional)
-     *         attestation (Optional): {
-     *             certificatePemFile: Base64Url (Optional)
-     *             privateKeyAttestation: Base64Url (Optional)
-     *             publicKeyAttestation: Base64Url (Optional)
-     *             version: String (Optional)
-     *         }
      *     }
      *     tags (Optional): {
      *         String: String (Required)
