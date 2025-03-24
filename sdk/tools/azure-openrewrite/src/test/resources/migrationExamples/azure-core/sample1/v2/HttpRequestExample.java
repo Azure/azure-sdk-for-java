@@ -1,7 +1,7 @@
-import io.clientcore.core.http.Response;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
 
 public class HttpRequestExample {
     public static void main(String... args) {

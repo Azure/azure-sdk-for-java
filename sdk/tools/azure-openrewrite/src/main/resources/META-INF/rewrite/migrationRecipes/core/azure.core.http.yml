@@ -83,6 +83,8 @@ recipeList:
   # HttpHeaders
   # --------------------------------------------------------------------
 
+  - com.azure.openrewrite.core.http.HttpHeadersCustomRecipe
+
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpHeaders
       newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpHeaders
@@ -176,7 +178,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpResponse
-      newFullyQualifiedTypeName: io.clientcore.core.http.Response
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.Response
 
   # TODO: Migrate Methods and Fields
 

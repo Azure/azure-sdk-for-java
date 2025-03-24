@@ -59,6 +59,7 @@ public class ResponseRecipe extends Recipe {
             if (fullyQualified.equals("com.azure.core.http.rest.Response")) {
                 return TypeTree.build(" io.clientcore.core.http.models.Response");
             }
+            maybeAddImport("io.clientcore.core.http.models.Response");
             return visitedFieldAccess;
         }
     }

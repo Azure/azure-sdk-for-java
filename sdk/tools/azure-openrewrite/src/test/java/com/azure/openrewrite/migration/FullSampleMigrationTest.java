@@ -1,6 +1,8 @@
 package com.azure.openrewrite.migration;
 
-import org.junit.jupiter.api.*;
+
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
