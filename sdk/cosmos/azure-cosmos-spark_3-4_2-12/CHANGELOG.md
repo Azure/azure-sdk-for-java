@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.37.0-beta.1 (Unreleased)
+### 4.38.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,16 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.37.1 (2025-03-04)
+
+#### Features Added
+* Added config option `spark.cosmos.read.responseContinuationTokenLimitInKb` to reduce query continuation token size. - See [PR 44480](https://github.com/Azure/azure-sdk-for-java/pull/44480)
+
+### 4.37.0 (2025-02-20)
+
+#### Other Changes
+* Updated netty dependency
 
 ### 4.36.1 (2025-02-08)
 

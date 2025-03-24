@@ -3,12 +3,10 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-
-import java.net.URI;
 
 class SampleClientBuilder {
     private HttpInstrumentationOptions instrumentationOptions;
@@ -20,8 +18,8 @@ class SampleClientBuilder {
 
     public SampleClient build() {
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new HttpInstrumentationPolicy(instrumentationOptions))
+            .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
             .build();
-        return new SampleClient(instrumentationOptions, pipeline, URI.create("https://example.com"));
+        return new SampleClient(instrumentationOptions, pipeline, "https://example.com");
     }
 }

@@ -12,10 +12,10 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.Oper
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AksResourceAttributes;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.semconv.ServiceAttributes;
-import io.opentelemetry.semconv.incubating.ServiceIncubatingAttributes;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -167,14 +167,8 @@ public class TelemetryItemExporter {
     private static String maskIKeys(List<TelemetryItem> telemetryItems, String json) {
         Set<String> iKeys
             = telemetryItems.stream().map(TelemetryItem::getInstrumentationKey).collect(Collectors.toSet());
-        int charactersToKeepAtEnd = 13;
         for (String instrumentationKey : iKeys) {
-            // Tests could set  the connection string with a short one
-            if (instrumentationKey.length() > charactersToKeepAtEnd) {
-                String maskedIKey
-                    = "*" + instrumentationKey.substring(instrumentationKey.length() - charactersToKeepAtEnd);
-                json = json.replace(instrumentationKey, maskedIKey);
-            }
+            json = json.replace(instrumentationKey, IKeyMasker.mask(instrumentationKey));
         }
         return json;
     }
@@ -204,13 +198,13 @@ public class TelemetryItemExporter {
         telemetryItemBatchKey.resource.getAttributes().forEach((k, v) -> builder.addProperty(k.getKey(), v.toString()));
         String roleName = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE.toString());
         if (roleName != null) {
-            builder.addProperty(ServiceAttributes.SERVICE_NAME.getKey(), roleName);
+            builder.addProperty(AttributeKey.stringKey("service.name").getKey(), roleName);
             builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), roleName);
         }
         String roleInstance
             = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString());
         if (roleInstance != null) {
-            builder.addProperty(ServiceIncubatingAttributes.SERVICE_INSTANCE_ID.getKey(), roleInstance);
+            builder.addProperty(AttributeKey.stringKey("service.instance.id").getKey(), roleInstance);
             builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), roleInstance);
         }
         String internalSdkVersion

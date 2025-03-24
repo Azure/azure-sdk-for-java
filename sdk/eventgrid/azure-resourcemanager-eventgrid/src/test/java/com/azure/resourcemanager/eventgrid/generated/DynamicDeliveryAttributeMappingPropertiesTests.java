@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DynamicDeliveryAttributeMappingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynamicDeliveryAttributeMappingProperties model = BinaryData.fromString("{\"sourceField\":\"aabjkdtfohfao\"}")
+        DynamicDeliveryAttributeMappingProperties model = BinaryData.fromString("{\"sourceField\":\"gmvflnwyvqkx\"}")
             .toObject(DynamicDeliveryAttributeMappingProperties.class);
-        Assertions.assertEquals("aabjkdtfohfao", model.sourceField());
+        Assertions.assertEquals("gmvflnwyvqkx", model.sourceField());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DynamicDeliveryAttributeMappingProperties model
-            = new DynamicDeliveryAttributeMappingProperties().withSourceField("aabjkdtfohfao");
+            = new DynamicDeliveryAttributeMappingProperties().withSourceField("gmvflnwyvqkx");
         model = BinaryData.fromObject(model).toObject(DynamicDeliveryAttributeMappingProperties.class);
-        Assertions.assertEquals("aabjkdtfohfao", model.sourceField());
+        Assertions.assertEquals("gmvflnwyvqkx", model.sourceField());
     }
 }

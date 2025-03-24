@@ -12,33 +12,33 @@ public final class AnalysisDiagnosticTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AnalysisDiagnostic model = BinaryData.fromString(
-            "{\"id\":\"wrlyxwjkcprb\",\"directive\":\"wbxgjvt\",\"description\":\"vpys\",\"file\":\"zdn\",\"line\":7.3524117,\"message\":\"jq\",\"rule\":\"uhmuouqfprwzwbn\"}")
+            "{\"id\":\"n\",\"directive\":\"ulexxbczwtr\",\"description\":\"wiqzbqjvsovmyo\",\"file\":\"acspkwl\",\"line\":98.89727,\"message\":\"dobpxjmflbvvn\",\"rule\":\"hrk\"}")
             .toObject(AnalysisDiagnostic.class);
-        Assertions.assertEquals("wrlyxwjkcprb", model.id());
-        Assertions.assertEquals("wbxgjvt", model.directive());
-        Assertions.assertEquals("vpys", model.description());
-        Assertions.assertEquals("zdn", model.file());
-        Assertions.assertEquals(7.3524117f, model.line());
-        Assertions.assertEquals("jq", model.message());
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.rule());
+        Assertions.assertEquals("n", model.id());
+        Assertions.assertEquals("ulexxbczwtr", model.directive());
+        Assertions.assertEquals("wiqzbqjvsovmyo", model.description());
+        Assertions.assertEquals("acspkwl", model.file());
+        Assertions.assertEquals(98.89727f, model.line());
+        Assertions.assertEquals("dobpxjmflbvvn", model.message());
+        Assertions.assertEquals("hrk", model.rule());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AnalysisDiagnostic model = new AnalysisDiagnostic().withId("wrlyxwjkcprb")
-            .withDirective("wbxgjvt")
-            .withDescription("vpys")
-            .withFile("zdn")
-            .withLine(7.3524117f)
-            .withMessage("jq")
-            .withRule("uhmuouqfprwzwbn");
+        AnalysisDiagnostic model = new AnalysisDiagnostic().withId("n")
+            .withDirective("ulexxbczwtr")
+            .withDescription("wiqzbqjvsovmyo")
+            .withFile("acspkwl")
+            .withLine(98.89727f)
+            .withMessage("dobpxjmflbvvn")
+            .withRule("hrk");
         model = BinaryData.fromObject(model).toObject(AnalysisDiagnostic.class);
-        Assertions.assertEquals("wrlyxwjkcprb", model.id());
-        Assertions.assertEquals("wbxgjvt", model.directive());
-        Assertions.assertEquals("vpys", model.description());
-        Assertions.assertEquals("zdn", model.file());
-        Assertions.assertEquals(7.3524117f, model.line());
-        Assertions.assertEquals("jq", model.message());
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.rule());
+        Assertions.assertEquals("n", model.id());
+        Assertions.assertEquals("ulexxbczwtr", model.directive());
+        Assertions.assertEquals("wiqzbqjvsovmyo", model.description());
+        Assertions.assertEquals("acspkwl", model.file());
+        Assertions.assertEquals(98.89727f, model.line());
+        Assertions.assertEquals("dobpxjmflbvvn", model.message());
+        Assertions.assertEquals("hrk", model.rule());
     }
 }
