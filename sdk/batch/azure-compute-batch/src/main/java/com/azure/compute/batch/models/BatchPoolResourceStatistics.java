@@ -101,6 +101,43 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
     private final double networkWriteGiB;
 
     /**
+     * Creates an instance of BatchPoolResourceStatistics class.
+     *
+     * @param startTime the startTime value to set.
+     * @param lastUpdateTime the lastUpdateTime value to set.
+     * @param avgCpuPercentage the avgCpuPercentage value to set.
+     * @param avgMemoryGiB the avgMemoryGiB value to set.
+     * @param peakMemoryGiB the peakMemoryGiB value to set.
+     * @param avgDiskGiB the avgDiskGiB value to set.
+     * @param peakDiskGiB the peakDiskGiB value to set.
+     * @param diskReadIOps the diskReadIOps value to set.
+     * @param diskWriteIOps the diskWriteIOps value to set.
+     * @param diskReadGiB the diskReadGiB value to set.
+     * @param diskWriteGiB the diskWriteGiB value to set.
+     * @param networkReadGiB the networkReadGiB value to set.
+     * @param networkWriteGiB the networkWriteGiB value to set.
+     */
+    @Generated
+    private BatchPoolResourceStatistics(OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
+        double avgCpuPercentage, double avgMemoryGiB, double peakMemoryGiB, double avgDiskGiB, double peakDiskGiB,
+        long diskReadIOps, long diskWriteIOps, double diskReadGiB, double diskWriteGiB, double networkReadGiB,
+        double networkWriteGiB) {
+        this.startTime = startTime;
+        this.lastUpdateTime = lastUpdateTime;
+        this.avgCpuPercentage = avgCpuPercentage;
+        this.avgMemoryGiB = avgMemoryGiB;
+        this.peakMemoryGiB = peakMemoryGiB;
+        this.avgDiskGiB = avgDiskGiB;
+        this.peakDiskGiB = peakDiskGiB;
+        this.diskReadIOps = diskReadIOps;
+        this.diskWriteIOps = diskWriteIOps;
+        this.diskReadGiB = diskReadGiB;
+        this.diskWriteGiB = diskWriteGiB;
+        this.networkReadGiB = networkReadGiB;
+        this.networkWriteGiB = networkWriteGiB;
+    }
+
+    /**
      * Get the startTime property: The start time of the time range covered by the statistics.
      *
      * @return the startTime value.
@@ -233,43 +270,6 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
     @Generated
     public double getNetworkWriteGiB() {
         return this.networkWriteGiB;
-    }
-
-    /**
-     * Creates an instance of BatchPoolResourceStatistics class.
-     *
-     * @param startTime the startTime value to set.
-     * @param lastUpdateTime the lastUpdateTime value to set.
-     * @param avgCpuPercentage the avgCpuPercentage value to set.
-     * @param avgMemoryGiB the avgMemoryGiB value to set.
-     * @param peakMemoryGiB the peakMemoryGiB value to set.
-     * @param avgDiskGiB the avgDiskGiB value to set.
-     * @param peakDiskGiB the peakDiskGiB value to set.
-     * @param diskReadIOps the diskReadIOps value to set.
-     * @param diskWriteIOps the diskWriteIOps value to set.
-     * @param diskReadGiB the diskReadGiB value to set.
-     * @param diskWriteGiB the diskWriteGiB value to set.
-     * @param networkReadGiB the networkReadGiB value to set.
-     * @param networkWriteGiB the networkWriteGiB value to set.
-     */
-    @Generated
-    private BatchPoolResourceStatistics(OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
-        double avgCpuPercentage, double avgMemoryGiB, double peakMemoryGiB, double avgDiskGiB, double peakDiskGiB,
-        long diskReadIOps, long diskWriteIOps, double diskReadGiB, double diskWriteGiB, double networkReadGiB,
-        double networkWriteGiB) {
-        this.startTime = startTime;
-        this.lastUpdateTime = lastUpdateTime;
-        this.avgCpuPercentage = avgCpuPercentage;
-        this.avgMemoryGiB = avgMemoryGiB;
-        this.peakMemoryGiB = peakMemoryGiB;
-        this.avgDiskGiB = avgDiskGiB;
-        this.peakDiskGiB = peakDiskGiB;
-        this.diskReadIOps = diskReadIOps;
-        this.diskWriteIOps = diskWriteIOps;
-        this.diskReadGiB = diskReadGiB;
-        this.diskWriteGiB = diskWriteGiB;
-        this.networkReadGiB = networkReadGiB;
-        this.networkWriteGiB = networkWriteGiB;
     }
 
     /**

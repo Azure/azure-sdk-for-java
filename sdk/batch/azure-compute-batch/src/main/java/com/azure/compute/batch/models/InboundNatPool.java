@@ -71,6 +71,25 @@ public final class InboundNatPool implements JsonSerializable<InboundNatPool> {
     private List<NetworkSecurityGroupRule> networkSecurityGroupRules;
 
     /**
+     * Creates an instance of InboundNatPool class.
+     *
+     * @param name the name value to set.
+     * @param protocol the protocol value to set.
+     * @param backendPort the backendPort value to set.
+     * @param frontendPortRangeStart the frontendPortRangeStart value to set.
+     * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
+     */
+    @Generated
+    public InboundNatPool(String name, InboundEndpointProtocol protocol, int backendPort, int frontendPortRangeStart,
+        int frontendPortRangeEnd) {
+        this.name = name;
+        this.protocol = protocol;
+        this.backendPort = backendPort;
+        this.frontendPortRangeStart = frontendPortRangeStart;
+        this.frontendPortRangeEnd = frontendPortRangeEnd;
+    }
+
+    /**
      * Get the name property: The name of the endpoint. The name must be unique within a Batch Pool, can contain
      * letters, numbers, underscores, periods, and hyphens. Names must start with a letter or number, must end with a
      * letter, number, or underscore, and cannot exceed 77 characters. If any invalid values are provided the request
@@ -222,24 +241,5 @@ public final class InboundNatPool implements JsonSerializable<InboundNatPool> {
             deserializedInboundNatPool.networkSecurityGroupRules = networkSecurityGroupRules;
             return deserializedInboundNatPool;
         });
-    }
-
-    /**
-     * Creates an instance of InboundNatPool class.
-     *
-     * @param name the name value to set.
-     * @param protocol the protocol value to set.
-     * @param backendPort the backendPort value to set.
-     * @param frontendPortRangeStart the frontendPortRangeStart value to set.
-     * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
-     */
-    @Generated
-    public InboundNatPool(String name, InboundEndpointProtocol protocol, int backendPort, int frontendPortRangeStart,
-        int frontendPortRangeEnd) {
-        this.name = name;
-        this.protocol = protocol;
-        this.backendPort = backendPort;
-        this.frontendPortRangeStart = frontendPortRangeStart;
-        this.frontendPortRangeEnd = frontendPortRangeEnd;
     }
 }

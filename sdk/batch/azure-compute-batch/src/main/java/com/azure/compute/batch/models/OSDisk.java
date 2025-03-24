@@ -23,6 +23,31 @@ public final class OSDisk implements JsonSerializable<OSDisk> {
     @Generated
     private DiffDiskSettings ephemeralOSDiskSettings;
 
+    /*
+     * Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None
+     * for Standard storage. ReadOnly for Premium storage.
+     */
+    @Generated
+    private CachingType caching;
+
+    /*
+     * The initial disk size in GB when creating new OS disk.
+     */
+    @Generated
+    private Integer diskSizeGB;
+
+    /*
+     * The managed disk parameters.
+     */
+    @Generated
+    private ManagedDisk managedDisk;
+
+    /*
+     * Specifies whether writeAccelerator should be enabled or disabled on the disk.
+     */
+    @Generated
+    private Boolean writeAcceleratorEnabled;
+
     /**
      * Creates an instance of OSDisk class.
      */
@@ -53,31 +78,6 @@ public final class OSDisk implements JsonSerializable<OSDisk> {
         this.ephemeralOSDiskSettings = ephemeralOSDiskSettings;
         return this;
     }
-
-    /*
-     * Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None
-     * for Standard storage. ReadOnly for Premium storage.
-     */
-    @Generated
-    private CachingType caching;
-
-    /*
-     * The initial disk size in GB when creating new OS disk.
-     */
-    @Generated
-    private Integer diskSizeGB;
-
-    /*
-     * The managed disk parameters.
-     */
-    @Generated
-    private ManagedDisk managedDisk;
-
-    /*
-     * Specifies whether writeAccelerator should be enabled or disabled on the disk.
-     */
-    @Generated
-    private Boolean writeAcceleratorEnabled;
 
     /**
      * Get the caching property: Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The
