@@ -107,6 +107,25 @@ public final class AccessorUtility {
      * Type defining the methods to set the non-public properties of a {@link PathSystemProperties} instance.
      */
     public interface PathSystemPropertiesAccessor {
+        /**
+         * Creates a new instance of {@link PathSystemProperties}.
+         *
+         * @param creationTime The creation time of the path.
+         * @param lastModified The last modified time of the path.
+         * @param eTag The eTag of the path.
+         * @param fileSize Size of the resource.
+         * @param isDirectory A flag indicating if the path is a directory.
+         * @param isServerEncrypted A flag indicating if the path's content is encrypted on the server.
+         * @param encryptionKeySha256 The SHA256 of the customer provided encryption key used to encrypt the path on the server.
+         * @param expiresOn The time when the path is going to expire.
+         * @param encryptionScope The encryption scope of the path.
+         * @param encryptionContext The additional context for encryption operations on the path.
+         * @param owner The owner of the path.
+         * @param group The group of the path.
+         * @param permissions The {@link PathPermissions}
+         *
+         * @return A new instance of {@link PathSystemProperties}.
+         */
         PathSystemProperties create(OffsetDateTime creationTime, OffsetDateTime lastModified, String eTag,
             Long fileSize, Boolean isDirectory, Boolean isServerEncrypted, String encryptionKeySha256,
             OffsetDateTime expiresOn, String encryptionScope, String encryptionContext, String owner, String group,
