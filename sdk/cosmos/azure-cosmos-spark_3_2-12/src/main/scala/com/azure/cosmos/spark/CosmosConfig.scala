@@ -1325,13 +1325,13 @@ private object CosmosWriteConfig {
     helpMessage = s"Interval of checks whether any progress has been made when flushing write operations.")
 
   private val maxNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxNoProgressIntervalInSeconds,
-    defaultValue = Some(45 * 60),
+    defaultValue = Some(3 * 60),
     mandatory = false,
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval after which a writer fails when no progress has been made when flushing operations.")
 
   private val maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxRetryNoProgressIntervalInSeconds,
-    defaultValue = Some(3 * 60),
+    defaultValue = Some(45 * 60),
     mandatory = false,
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval after which a writer fails when no progress has been made when flushing operations in the second commit.")
