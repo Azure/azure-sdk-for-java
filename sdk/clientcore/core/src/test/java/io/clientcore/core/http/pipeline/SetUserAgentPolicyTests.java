@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -91,6 +92,7 @@ public class SetUserAgentPolicyTests {
             Configuration.getGlobalConfiguration().get("os.name"),
             Configuration.getGlobalConfiguration().get("os.version"));
 
+        Configuration config = Configuration.from(new TestConfigurationSource().put("application.id", applicationId));
         return Stream.of(
             // Tests using the default User-Agent
             Arguments.of(new UserAgentPolicy(), defaultUserAgent),
@@ -99,11 +101,11 @@ public class SetUserAgentPolicyTests {
             Arguments.of(new UserAgentPolicy("AutoRest-Java"), "AutoRest-Java"),
 
             // Tests using SDK name and version with platform information and without application ID
-            Arguments.of(new UserAgentPolicy(null, sdkName, sdkVersion),
+            Arguments.of(new UserAgentPolicy(sdkName, sdkVersion, null),
                 String.format("%s (%s)", baseUserAgent, platformInfo)),
 
             // Tests using SDK name and version with platform information and application ID
-            Arguments.of(new UserAgentPolicy(applicationId, sdkName, sdkVersion),
+            Arguments.of(new UserAgentPolicy(sdkName, sdkVersion, config),
                 String.format("%s %s (%s)", applicationId, baseUserAgent, platformInfo)));
     }
 

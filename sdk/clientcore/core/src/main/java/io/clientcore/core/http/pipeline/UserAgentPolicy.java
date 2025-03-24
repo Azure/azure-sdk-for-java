@@ -43,6 +43,7 @@ import io.clientcore.core.utils.configuration.Configuration;
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
 public class UserAgentPolicy implements HttpPipelinePolicy {
+    private static final String APPLICATION_ID_KEY = "application.id";
     private final String userAgent;
 
     /**
@@ -69,12 +70,12 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Creates a UserAgentPolicy with the {@code sdkName} and {@code sdkVersion} in the User-Agent header value.
      *
-     * @param applicationId User specified application Id.
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
+     * @param configuration The configuration with additional properties of the user agent string.
      */
-    public UserAgentPolicy(String applicationId, String sdkName, String sdkVersion) {
-        this.userAgent = toUserAgentString(applicationId, sdkName, sdkVersion);
+    public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration) {
+        this.userAgent = toUserAgentString(sdkName, sdkVersion, configuration);
     }
 
     @Override
@@ -90,8 +91,8 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
 
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
     private static final String INVALID_APPLICATION_ID_LENGTH
-        = "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
-    private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
+        = "'application.id' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_SPACE = "'application.id' cannot contain spaces.";
 
     /**
      * Default {@code UserAgent} header.
@@ -101,16 +102,20 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Return user agent string for the given sdk name and version.
      *
-     * @param applicationId Name of the application.
      * @param sdkName Name of the SDK.
      * @param sdkVersion Version of the SDK.
+     * @param configuration The configuration with additional properties of the user agent string.
      * @return User agent string as specified in design guidelines.
      *
      * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
      * length.
      */
-    private static String toUserAgentString(String applicationId, String sdkName, String sdkVersion) {
+    private static String toUserAgentString(String sdkName, String sdkVersion, Configuration configuration) {
         StringBuilder userAgentBuilder = new StringBuilder();
+
+        Configuration config = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
+
+        String applicationId = config.get(APPLICATION_ID_KEY);
 
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
