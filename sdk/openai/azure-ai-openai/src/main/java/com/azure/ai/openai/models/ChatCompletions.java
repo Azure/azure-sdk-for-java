@@ -41,7 +41,7 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
      * Usage information for tokens processed and generated as part of this completions operation.
      */
     @Generated
-    private final CompletionsUsage usage;
+    private CompletionsUsage usage;
 
     private ServiceTier serviceTier;
 
@@ -145,26 +145,6 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
         return this.systemFingerprint;
     }
 
-    /**
-     * Creates an instance of ChatCompletions class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param choices the choices value to set.
-     * @param usage the usage value to set.
-     */
-    @Generated
-    private ChatCompletions(String id, OffsetDateTime createdAt, List<ChatChoice> choices, CompletionsUsage usage) {
-        this.id = id;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.choices = choices;
-        this.usage = usage;
-    }
-
     /*
      * The model name used for this completions request.
      */
@@ -250,5 +230,23 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
             deserializedChatCompletions.serviceTier = serviceTier;
             return deserializedChatCompletions;
         });
+    }
+
+    /**
+     * Creates an instance of ChatCompletions class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param choices the choices value to set.
+     */
+    @Generated
+    private ChatCompletions(String id, OffsetDateTime createdAt, List<ChatChoice> choices) {
+        this.id = id;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.choices = choices;
     }
 }
