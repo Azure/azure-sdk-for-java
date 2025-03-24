@@ -4,9 +4,13 @@
 
 ### Features Added
 
+- Added `ServiceTier` and `ServiceTierOptions` for `ChatCompletions` and `ChatCompletionsOptions` respectively. This is exclusively a non-Azure OpenAI issue and was requested in [this issue](https://github.com/Azure/azure-sdk-for-java/issues/41695#issuecomment-2736037879).
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- The serialization and the subsequent serialization of any subclass of `ChatRequestMessage` (namely, `ChatRequestAssistantMessage`, `ChatRequestDeveloperMessage`, `ChatRequestFunctionMessage`, `ChatRequestSystemMessage`, `ChatRequestToolMessage`, `ChatRequestUserMessage`) was faulty. The `content` member of most of these classes was lost. Related issues are [42882](https://github.com/Azure/azure-sdk-for-java/issues/42882) and [44094](https://github.com/Azure/azure-sdk-for-java/issues/44094).
 
 ### Other Changes
 

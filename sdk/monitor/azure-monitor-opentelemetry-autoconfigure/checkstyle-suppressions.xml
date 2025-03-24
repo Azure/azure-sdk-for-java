@@ -70,6 +70,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigureTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporterBuilder.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.LiveMetrics.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExportersEndToEndTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorLogRecordExporter.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorMetricExporter.java" checks="IllegalImportCheck" />

@@ -159,7 +159,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       $artifactId = $xmlPomFile.project.artifactId
       $version = $xmlPomFile.project.version
       $pomFileDir = Split-Path -Path $pomFile -Parent
-      $pkgProp = [PackageProps]::new($artifactId, $version.ToString(), $pomFileDir, $serviceDirFromYml, $groupId)
+      $pkgProp = [PackageProps]::new($artifactId, $version.ToString(), $pomFileDir, $serviceDirFromYml, $groupId, $artifactId)
       if ($artifactId -match "mgmt" -or $artifactId -match "resourcemanager")
       {
         $pkgProp.SdkType = "mgmt"

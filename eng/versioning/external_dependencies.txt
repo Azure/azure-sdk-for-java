@@ -129,7 +129,7 @@ io.opentelemetry:opentelemetry-bom;1.48.0
 io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.14.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.14.0
 io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.14.0-alpha
-io.opentelemetry.semconv:opentelemetry-semconv-incubating;1.26.0-alpha
+io.opentelemetry:opentelemetry-semconv;0.14.1
 io.projectreactor:reactor-test;3.4.41
 io.github.hakky54:logcaptor;2.9.3
 com.squareup.okio:okio;3.9.1
@@ -210,11 +210,11 @@ org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.owasp:dependency-check-maven;11.1.1
 org.ow2.asm:asm;9.7.1
-org.revapi:revapi;0.14.4
-org.revapi:revapi-java;0.26.1
-org.revapi:revapi-java-spi;0.23.6
+org.revapi:revapi;0.15.0
+org.revapi:revapi-java;0.28.1
+org.revapi:revapi-java-spi;0.25.0
 org.revapi:revapi-reporter-json;0.5.0
-org.revapi:revapi-maven-plugin;0.14.6
+org.revapi:revapi-maven-plugin;0.15.0
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
