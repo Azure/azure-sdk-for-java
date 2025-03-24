@@ -503,7 +503,6 @@ spring_com.azure:azure-storage-queue;12.24.1
 spring_com.azure:azure-identity;1.15.3
 spring_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.20.5
 spring_com.azure:azure-messaging-servicebus;7.17.9
-spring_com.azure:azure-messaging-eventhubs;5.20.1
 spring_com.azure:azure-messaging-eventgrid;4.29.0
 spring_com.azure:azure-identity-extensions;1.2.1
 spring_com.azure:azure-core-amqp;2.9.15
