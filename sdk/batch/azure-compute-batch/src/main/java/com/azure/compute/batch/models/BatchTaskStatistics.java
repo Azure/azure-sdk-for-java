@@ -62,18 +62,6 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     private final Duration wallClockTime;
 
     /*
-     * The total number of disk read operations made by the Task.
-     */
-    @Generated
-    private final long readIOps;
-
-    /*
-     * The total number of disk write operations made by the Task.
-     */
-    @Generated
-    private final long writeIOps;
-
-    /*
      * The total gibibytes read from disk by the Task.
      */
     @Generated
@@ -102,15 +90,15 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
      * @param userCpuTime the userCpuTime value to set.
      * @param kernelCpuTime the kernelCpuTime value to set.
      * @param wallClockTime the wallClockTime value to set.
-     * @param readIOps the readIOps value to set.
-     * @param writeIOps the writeIOps value to set.
+     * @param readIops the readIops value to set.
+     * @param writeIops the writeIops value to set.
      * @param readIOGiB the readIOGiB value to set.
      * @param writeIOGiB the writeIOGiB value to set.
      * @param waitTime the waitTime value to set.
      */
     @Generated
     private BatchTaskStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
-        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIOps, long writeIOps,
+        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIops, long writeIops,
         double readIOGiB, double writeIOGiB, Duration waitTime) {
         this.url = url;
         this.startTime = startTime;
@@ -118,8 +106,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
         this.userCpuTime = userCpuTime;
         this.kernelCpuTime = kernelCpuTime;
         this.wallClockTime = wallClockTime;
-        this.readIOps = readIOps;
-        this.writeIOps = writeIOps;
+        this.readIops = readIops;
+        this.writeIops = writeIops;
         this.readIOGiB = readIOGiB;
         this.writeIOGiB = writeIOGiB;
         this.waitTime = waitTime;
@@ -192,26 +180,6 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     }
 
     /**
-     * Get the readIOps property: The total number of disk read operations made by the Task.
-     *
-     * @return the readIOps value.
-     */
-    @Generated
-    public long getReadIOps() {
-        return this.readIOps;
-    }
-
-    /**
-     * Get the writeIOps property: The total number of disk write operations made by the Task.
-     *
-     * @return the writeIOps value.
-     */
-    @Generated
-    public long getWriteIOps() {
-        return this.writeIOps;
-    }
-
-    /**
      * Get the readIOGiB property: The total gibibytes read from disk by the Task.
      *
      * @return the readIOGiB value.
@@ -258,8 +226,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
         jsonWriter.writeStringField("userCPUTime", CoreUtils.durationToStringWithDays(this.userCpuTime));
         jsonWriter.writeStringField("kernelCPUTime", CoreUtils.durationToStringWithDays(this.kernelCpuTime));
         jsonWriter.writeStringField("wallClockTime", CoreUtils.durationToStringWithDays(this.wallClockTime));
-        jsonWriter.writeStringField("readIOps", Objects.toString(this.readIOps, null));
-        jsonWriter.writeStringField("writeIOps", Objects.toString(this.writeIOps, null));
+        jsonWriter.writeStringField("readIOps", Objects.toString(this.readIops, null));
+        jsonWriter.writeStringField("writeIOps", Objects.toString(this.writeIops, null));
         jsonWriter.writeDoubleField("readIOGiB", this.readIOGiB);
         jsonWriter.writeDoubleField("writeIOGiB", this.writeIOGiB);
         jsonWriter.writeStringField("waitTime", CoreUtils.durationToStringWithDays(this.waitTime));
@@ -284,8 +252,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
             Duration userCpuTime = null;
             Duration kernelCpuTime = null;
             Duration wallClockTime = null;
-            long readIOps = Long.parseLong("0");
-            long writeIOps = Long.parseLong("0");
+            long readIops = Long.parseLong("0");
+            long writeIops = Long.parseLong("0");
             double readIOGiB = 0.0;
             double writeIOGiB = 0.0;
             Duration waitTime = null;
@@ -307,9 +275,9 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
                 } else if ("wallClockTime".equals(fieldName)) {
                     wallClockTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("readIOps".equals(fieldName)) {
-                    readIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    readIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("writeIOps".equals(fieldName)) {
-                    writeIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    writeIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("readIOGiB".equals(fieldName)) {
                     readIOGiB = reader.getDouble();
                 } else if ("writeIOGiB".equals(fieldName)) {
@@ -321,7 +289,39 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
                 }
             }
             return new BatchTaskStatistics(url, startTime, lastUpdateTime, userCpuTime, kernelCpuTime, wallClockTime,
-                readIOps, writeIOps, readIOGiB, writeIOGiB, waitTime);
+                readIops, writeIops, readIOGiB, writeIOGiB, waitTime);
         });
+    }
+
+    /*
+     * The total number of disk read operations made by the Task.
+     */
+    @Generated
+    private final long readIops;
+
+    /*
+     * The total number of disk write operations made by the Task.
+     */
+    @Generated
+    private final long writeIops;
+
+    /**
+     * Get the readIops property: The total number of disk read operations made by the Task.
+     *
+     * @return the readIops value.
+     */
+    @Generated
+    public long getReadIops() {
+        return this.readIops;
+    }
+
+    /**
+     * Get the writeIops property: The total number of disk write operations made by the Task.
+     *
+     * @return the writeIops value.
+     */
+    @Generated
+    public long getWriteIops() {
+        return this.writeIops;
     }
 }
