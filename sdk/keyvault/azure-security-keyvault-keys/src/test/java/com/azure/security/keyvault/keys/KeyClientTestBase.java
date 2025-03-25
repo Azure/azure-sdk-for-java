@@ -477,17 +477,17 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
 
         List<KeyRotationLifetimeAction> keyRotationLifetimeActionList = new ArrayList<>();
 
-        keyRotationLifetimeActionList.add(
-            new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE).setTimeAfterCreate("P2M"));
+        keyRotationLifetimeActionList
+            .add(new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE).setTimeAfterCreate("P2M"));
 
         // Notify is not supported on MHSM.
         if (!isHsmEnabled) {
-            keyRotationLifetimeActionList.add(
-                new KeyRotationLifetimeAction(KeyRotationPolicyAction.NOTIFY).setTimeBeforeExpiry("P7D"));
+            keyRotationLifetimeActionList
+                .add(new KeyRotationLifetimeAction(KeyRotationPolicyAction.NOTIFY).setTimeBeforeExpiry("P7D"));
         }
 
-        KeyRotationPolicy keyRotationPolicy = new KeyRotationPolicy().setLifetimeActions(keyRotationLifetimeActionList)
-            .setExpiresIn("P6M");
+        KeyRotationPolicy keyRotationPolicy
+            = new KeyRotationPolicy().setLifetimeActions(keyRotationLifetimeActionList).setExpiresIn("P6M");
 
         testRunner.accept(keyName, keyRotationPolicy);
     }
@@ -499,21 +499,21 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
         String keyName = testResourceNamer.randomName("rotateKey", 20);
 
         List<KeyRotationLifetimeAction> keyRotationLifetimeActionList = new ArrayList<>();
-        KeyRotationLifetimeAction rotateLifetimeAction = new KeyRotationLifetimeAction(
-            KeyRotationPolicyAction.ROTATE).setTimeAfterCreate("P2M");
+        KeyRotationLifetimeAction rotateLifetimeAction
+            = new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE).setTimeAfterCreate("P2M");
 
         keyRotationLifetimeActionList.add(rotateLifetimeAction);
 
-        KeyRotationPolicy keyRotationPolicy = new KeyRotationPolicy().setLifetimeActions(keyRotationLifetimeActionList)
-            .setExpiresIn("P6M");
+        KeyRotationPolicy keyRotationPolicy
+            = new KeyRotationPolicy().setLifetimeActions(keyRotationLifetimeActionList).setExpiresIn("P6M");
 
         testRunner.accept(keyName, keyRotationPolicy);
     }
 
     void getKeyAttestationRunner(Consumer<CreateKeyOptions> testRunner) {
         final KeyType keyType = runManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions createKeyOptions =
-            new CreateKeyOptions(testResourceNamer.randomName("testKey4", 20), keyType)
+        final CreateKeyOptions createKeyOptions
+            = new CreateKeyOptions(testResourceNamer.randomName("testKey4", 20), keyType)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(createKeyOptions);

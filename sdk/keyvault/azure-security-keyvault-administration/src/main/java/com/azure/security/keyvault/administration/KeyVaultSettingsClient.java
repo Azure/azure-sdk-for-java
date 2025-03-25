@@ -181,9 +181,9 @@ public final class KeyVaultSettingsClient {
                 settingValue = Boolean.toString(setting.asBoolean());
             }
 
-            return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
-                implClient.updateSettingWithResponse(
-                    setting.getName(), BinaryData.fromObject(new UpdateSettingRequest(settingValue)), EMPTY_OPTIONS)
+            return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(implClient
+                .updateSettingWithResponse(setting.getName(),
+                    BinaryData.fromObject(new UpdateSettingRequest(settingValue)), EMPTY_OPTIONS)
                 .getValue()
                 .toObject(Setting.class));
         } catch (RuntimeException e) {

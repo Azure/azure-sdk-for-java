@@ -51,7 +51,9 @@ public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAl
      */
     public static final EncryptionAlgorithm A256CBC = fromString("A256CBC");
 
-
+    /**
+     * 128-bit AES-CBC with PKCS padding.
+     */
     public static final EncryptionAlgorithm A128CBCPAD = fromString("A128CBCPAD");
 
     /**

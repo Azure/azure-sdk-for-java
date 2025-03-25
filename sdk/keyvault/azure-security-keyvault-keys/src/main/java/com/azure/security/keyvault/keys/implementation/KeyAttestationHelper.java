@@ -13,7 +13,7 @@ public final class KeyAttestationHelper {
     }
 
     public static KeyAttestation
-    createKeyAttestation(com.azure.security.keyvault.keys.implementation.models.KeyAttestation impl) {
+        createKeyAttestation(com.azure.security.keyvault.keys.implementation.models.KeyAttestation impl) {
         // If the class hasn't been loaded yet the accessor won't be set. Attempt to load the class before using the
         // accessor.
         if (accessor == null) {

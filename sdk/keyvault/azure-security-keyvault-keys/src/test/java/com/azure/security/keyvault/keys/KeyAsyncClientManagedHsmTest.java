@@ -142,7 +142,8 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
 
         getKeyAttestationRunner((keyToCreate) -> {
             StepVerifier.create(keyAsyncClient.createKey(keyToCreate))
-                .assertNext(createdKey -> assertKeyEquals(keyToCreate, createdKey)).verifyComplete();
+                .assertNext(createdKey -> assertKeyEquals(keyToCreate, createdKey))
+                .verifyComplete();
 
             StepVerifier.create(keyAsyncClient.getKeyAttestation(keyToCreate.getName())).assertNext(retrievedKey -> {
                 assertNotNull(retrievedKey);

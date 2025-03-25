@@ -17,7 +17,7 @@ public final class KeyAttestation {
         KeyAttestationHelper.setAccessor(new KeyAttestationHelper.KeyAttestationAccessor() {
             @Override
             public KeyAttestation
-            createKeyAttestation(com.azure.security.keyvault.keys.implementation.models.KeyAttestation impl) {
+                createKeyAttestation(com.azure.security.keyvault.keys.implementation.models.KeyAttestation impl) {
                 return new KeyAttestation(impl);
             }
         });

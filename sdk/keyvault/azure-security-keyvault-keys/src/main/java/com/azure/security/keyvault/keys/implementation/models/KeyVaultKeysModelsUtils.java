@@ -100,8 +100,8 @@ public final class KeyVaultKeysModelsUtils {
         return deletedKey;
     }
 
-    private static JsonWebKey mapJsonWebKeyFromImpl(
-        com.azure.security.keyvault.keys.implementation.models.JsonWebKey impl) {
+    private static JsonWebKey
+        mapJsonWebKeyFromImpl(com.azure.security.keyvault.keys.implementation.models.JsonWebKey impl) {
 
         if (impl == null) {
             return null;
@@ -214,8 +214,8 @@ public final class KeyVaultKeysModelsUtils {
         }
     }
 
-    public static com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy mapKeyReleasePolicy(
-        KeyReleasePolicy policy) {
+    public static com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy
+        mapKeyReleasePolicy(KeyReleasePolicy policy) {
 
         if (policy == null) {
             return null;
@@ -227,8 +227,8 @@ public final class KeyVaultKeysModelsUtils {
             .setEncodedPolicy(policy.getEncodedPolicy().toBytes());
     }
 
-    private static KeyReleasePolicy mapKeyReleasePolicyImpl(
-        com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy impl) {
+    private static KeyReleasePolicy
+        mapKeyReleasePolicyImpl(com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy impl) {
 
         if (impl == null) {
             return null;
@@ -238,14 +238,14 @@ public final class KeyVaultKeysModelsUtils {
             .setImmutable(impl.isImmutable());
     }
 
-    public static KeyRotationPolicy mapKeyRotationPolicyImpl(
-        com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
+    public static KeyRotationPolicy
+        mapKeyRotationPolicyImpl(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
 
         return (impl == null) ? null : KeyRotationPolicyHelper.createPolicy(impl);
     }
 
-    public static com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy mapKeyRotationPolicy(
-        KeyRotationPolicy policy) {
+    public static com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy
+        mapKeyRotationPolicy(KeyRotationPolicy policy) {
 
         if (policy == null) {
             return null;
@@ -254,8 +254,8 @@ public final class KeyVaultKeysModelsUtils {
         return KeyRotationPolicyHelper.getImpl(policy);
     }
 
-    private static KeyAttestation mapKeyAttestationImpl(
-        com.azure.security.keyvault.keys.implementation.models.KeyAttestation impl) {
+    private static KeyAttestation
+        mapKeyAttestationImpl(com.azure.security.keyvault.keys.implementation.models.KeyAttestation impl) {
 
         return (impl == null) ? null : KeyAttestationHelper.createKeyAttestation(impl);
     }

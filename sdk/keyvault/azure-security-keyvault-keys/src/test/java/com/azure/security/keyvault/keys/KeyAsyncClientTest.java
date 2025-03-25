@@ -700,19 +700,20 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void rotateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
 
-        rotateKeyRunner((keyName, keyRotationPolicy) ->
-            StepVerifier.create(keyAsyncClient.createRsaKey(new CreateRsaKeyOptions(keyName))
-                    // Making sure we set a rotation policy because MHSM keys do not come with one.
-                    .flatMap(createdKey -> Mono.zip(Mono.just(createdKey), keyAsyncClient.updateKeyRotationPolicy(keyName, keyRotationPolicy)))
-                    .flatMap(tuple -> Mono.zip(Mono.just(tuple.getT1()), keyAsyncClient.rotateKey(keyName))))
-                .assertNext(tuple -> {
-                    KeyVaultKey createdKey = tuple.getT1();
-                    KeyVaultKey rotatedKey = tuple.getT2();
+        rotateKeyRunner((keyName, keyRotationPolicy) -> StepVerifier
+            .create(keyAsyncClient.createRsaKey(new CreateRsaKeyOptions(keyName))
+                // Making sure we set a rotation policy because MHSM keys do not come with one.
+                .flatMap(createdKey -> Mono.zip(Mono.just(createdKey),
+                    keyAsyncClient.updateKeyRotationPolicy(keyName, keyRotationPolicy)))
+                .flatMap(tuple -> Mono.zip(Mono.just(tuple.getT1()), keyAsyncClient.rotateKey(keyName))))
+            .assertNext(tuple -> {
+                KeyVaultKey createdKey = tuple.getT1();
+                KeyVaultKey rotatedKey = tuple.getT2();
 
-                    assertEquals(createdKey.getName(), rotatedKey.getName());
-                    assertEquals(createdKey.getProperties().getTags(), rotatedKey.getProperties().getTags());
-                })
-                .verifyComplete());
+                assertEquals(createdKey.getName(), rotatedKey.getName());
+                assertEquals(createdKey.getProperties().getTags(), rotatedKey.getProperties().getTags());
+            })
+            .verifyComplete());
     }
 
     /**
