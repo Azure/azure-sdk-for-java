@@ -4,6 +4,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+
 import java.util.Base64;
 
 public class HttpBasicAuthExample {
@@ -11,7 +12,7 @@ public class HttpBasicAuthExample {
         HttpClient client = HttpClient.getSharedInstance();
         String auth = "username:password";
         String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
-        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.AUTHORIZATION, "Basic " + encodedAuth);
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.fromString("Authorization"), "Basic " + encodedAuth);
         HttpRequest request = new HttpRequest()
             .setMethod(HttpMethod.GET)
             .setUri("https://example.com")

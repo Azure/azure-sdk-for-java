@@ -10,7 +10,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.Tree;
 import org.openrewrite.java.JavaParser;
+import org.openrewrite.java.style.TabsAndIndentsStyle;
 import org.openrewrite.style.NamedStyles;
+import org.openrewrite.style.Style;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 import org.openrewrite.test.SourceSpecs;
@@ -79,6 +81,23 @@ public class FullSampleMigrationTest implements RewriteTest {
 
 
     private static List<NamedStyles> getStyles() {
+
+        List<Style> styles = new ArrayList<>();
+        styles.add(new org.openrewrite.java.style.ImportLayoutStyle(
+            9999,
+            9999,
+            Collections.emptyList(),
+            Collections.emptyList()
+        ));
+        styles.add(new org.openrewrite.java.style.TabsAndIndentsStyle(
+            false,
+            4,
+            4,
+            4,
+            true,
+            new TabsAndIndentsStyle.MethodDeclarationParameters(true)
+        ));
+
         return Collections.singletonList(
             new NamedStyles(
                 Tree.randomId(),
@@ -86,14 +105,7 @@ public class FullSampleMigrationTest implements RewriteTest {
                 "Azure OpenRewrite Style",
                 "The sytle for Azure OpenRewrite",
                 Collections.emptySet(),
-                Collections.singletonList(
-                    new org.openrewrite.java.style.ImportLayoutStyle(
-                        9999,
-                        9999,
-                        Collections.emptyList(),
-                        Collections.emptyList()
-                    )
-                )
+                styles
             )
         );
     }

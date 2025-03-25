@@ -1,7 +1,6 @@
 import com.azure.core.http.*;
 import com.azure.core.util.Context;
 
-
 public class HttpPostExample {
     public static void main(String... args) {
         HttpClient client = HttpClient.createDefault();
