@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Represents abstract base for Client Options used in Managed Identity OAuth Flow .
  */
-public class ClientOptions implements Cloneable {
+public class ClientOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ClientOptions.class);
     private HttpPipelineOptions httpPipelineOptions;
     private String authorityHost;
@@ -42,6 +42,26 @@ public class ClientOptions implements Cloneable {
         loadFromConfiguration(configuration);
         instanceDiscovery = true;
         additionallyAllowedTenants = new HashSet<>(2);
+    }
+
+    /**
+     * Creates a copy of client options from provided client options instance.
+     *
+     * @param clientOptions the client options to copy.
+     */
+    public ClientOptions(ClientOptions clientOptions) {
+        this.clientId = clientOptions.getClientId();
+        this.additionallyAllowedTenants = clientOptions.getAdditionallyAllowedTenants();
+        this.httpPipelineOptions = clientOptions.getHttpPipelineOptions();
+        this.configuration = clientOptions.getConfiguration();
+        this.identityLogOptions = clientOptions.getIdentityLogOptions();
+        this.authorityHost = clientOptions.getAuthorityHost();
+        this.executorService = clientOptions.getExecutorService();
+        this.instanceDiscovery = clientOptions.isInstanceDiscoveryEnabled();
+        this.isChained = clientOptions.isChained();
+        this.tenantId = clientOptions.getTenantId();
+        this.tokenCachePersistenceOptions = clientOptions.getTokenCacheOptions();
+        this.unsafeSupportLoggingEnabled = clientOptions.isUnsafeSupportLoggingEnabled();
     }
 
     /**
@@ -189,7 +209,7 @@ public class ClientOptions implements Cloneable {
     }
 
     /**
-     * Internal helper method for clone.
+     * Internal helper method for copy.
      *
      * @param additionallyAllowedTenants the additionally allowed Tenants.
      * @return the updated options
@@ -282,15 +302,6 @@ public class ClientOptions implements Cloneable {
         this.identityLogOptions = identityLogOptions;
         return this;
     }
-
-    /**
-     * Clones the client options.
-     *
-     * @return the cloned client options
-     */
-    public ClientOptions clone() {
-        return new ClientOptions();
-    };
 
     /**
      * Checks whether unsafe logging is enabled or not.

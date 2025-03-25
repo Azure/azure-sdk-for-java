@@ -17,10 +17,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.UncheckedIOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Arrays;
+import java.util.Objects;
 
 import static io.clientcore.core.serialization.json.JsonToken.END_OBJECT;
 
@@ -175,6 +176,7 @@ public final class IdentityUtil {
      * @throws UncheckedIOException if the parsing fails.
      */
     public static byte[] convertInputStreamToByteArray(InputStream inputStream) {
+        Objects.requireNonNull(inputStream);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
         try {

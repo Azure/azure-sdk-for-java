@@ -58,7 +58,7 @@ public class AzureDeveloperCliCredential implements TokenCredential {
     private final DevToolsClient devToolslClient;
 
     /**
-     * Creates an AzureDeveloperCliSecretCredential with default identity client options.
+     * Creates an AzureDeveloperClCredential with given dev tools client options.
      *
      * @param clientOptions the options to configure the dev tools client
      */

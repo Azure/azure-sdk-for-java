@@ -95,7 +95,7 @@ public class WorkloadIdentityCredentialBuilder extends EntraIdCredentialBuilderB
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput, "Tenant ID",
             tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
 
-        return new WorkloadIdentityCredential(confidentialClientOptions.clone(), tokenFilePath);
+        return new WorkloadIdentityCredential(new ConfidentialClientOptions(confidentialClientOptions), tokenFilePath);
     }
 
     @Override

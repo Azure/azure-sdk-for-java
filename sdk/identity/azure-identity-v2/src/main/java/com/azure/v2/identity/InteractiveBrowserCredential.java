@@ -4,6 +4,7 @@
 package com.azure.v2.identity;
 
 import com.azure.v2.identity.exceptions.CredentialUnavailableException;
+import com.azure.v2.identity.implementation.client.BrokeredAuthCache;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.implementation.models.MsalAuthenticationAccount;
 import com.azure.v2.identity.implementation.models.MsalToken;
@@ -15,9 +16,6 @@ import com.azure.v2.identity.models.AuthenticationRecord;
 import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>Interactive browser authentication is a type of authentication flow offered by
@@ -66,36 +64,30 @@ import java.util.concurrent.atomic.AtomicReference;
 public class InteractiveBrowserCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(InteractiveBrowserCredential.class);
     private final PublicClient publicClient;
-    private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final String authorityHost;
-    private boolean isCaeEnabledRequestCached;
-    private boolean isCaeDisabledRequestCached;
-    private boolean isCachePopulated;
     private final PublicClientOptions publicClientOptions;
+    private final BrokeredAuthCache cache;
 
     /**
-     * Creates a InteractiveBrowserCredential with the given identity client options and a listening port, for which
-     * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
+     * Creates a InteractiveBrowserCredential with the given identity client options.
      *
      * @param publicClientOptions the options for configuring the public client
      */
     InteractiveBrowserCredential(PublicClientOptions publicClientOptions) {
         this.publicClient = new PublicClient(publicClientOptions);
         this.publicClientOptions = publicClientOptions;
-
-        cachedToken = new AtomicReference<>();
+        this.cache = new BrokeredAuthCache();
         this.authorityHost = publicClientOptions.getAuthorityHost();
         if (publicClientOptions.getAuthenticationRecord() != null) {
-            cachedToken.set(new MsalAuthenticationAccount(publicClientOptions.getAuthenticationRecord()));
+            cache.setCachedAccount(new MsalAuthenticationAccount(publicClientOptions.getAuthenticationRecord()));
         }
     }
 
     @Override
     public AccessToken getToken(TokenRequestContext request) {
-        isCachePopulated = isCachePopulated(request);
-        if (isCachePopulated) {
+        if (cache.isCachePopulated(request)) {
             try {
-                MsalToken token = publicClient.authenticateWithPublicClientCache(request, cachedToken.get());
+                MsalToken token = publicClient.authenticateWithPublicClientCache(request, cache.getCachedAccount());
                 if (token != null) {
                     LoggingUtil.logTokenSuccess(LOGGER, request);
                     return token;
@@ -110,12 +102,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
                     + "code authentication.", request));
             }
             MsalToken accessToken = publicClient.authenticateWithBrowserInteraction(request);
-            updateCache(accessToken);
-            if (request.isCaeEnabled()) {
-                isCaeEnabledRequestCached = true;
-            } else {
-                isCaeDisabledRequestCached = true;
-            }
+            cache.updateCache(accessToken, publicClientOptions, request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
         } catch (Exception e) {
@@ -137,8 +124,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
      */
     public AuthenticationRecord authenticate(TokenRequestContext request) {
         MsalToken msalToken = publicClient.authenticateWithBrowserInteraction(request);
-        this.updateCache(msalToken);
-        return cachedToken.get().getAuthenticationRecord();
+        cache.updateCache(msalToken, publicClientOptions, request);
+        return cache.getCachedAccount().getAuthenticationRecord();
     }
 
     /**
@@ -157,21 +144,5 @@ public class InteractiveBrowserCredential implements TokenCredential {
                 "Authenticating in this " + "environment requires specifying a TokenRequestContext."));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
-    }
-
-    private AccessToken updateCache(MsalToken msalToken) {
-        IAuthenticationResult authenticationResult = msalToken.getAuthenticationResult();
-        cachedToken.set(new MsalAuthenticationAccount(
-            new AuthenticationRecord(authenticationResult.account().environment(),
-                authenticationResult.account().homeAccountId(), authenticationResult.account().username(),
-                publicClientOptions.getTenantId(), publicClientOptions.getClientId()),
-            msalToken.getAccount().getTenantProfiles()));
-        return msalToken;
-    }
-
-    private boolean isCachePopulated(TokenRequestContext request) {
-        return (cachedToken.get() != null)
-            && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
-                || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

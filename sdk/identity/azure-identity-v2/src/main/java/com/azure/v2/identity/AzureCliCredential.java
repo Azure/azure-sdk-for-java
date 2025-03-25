@@ -20,8 +20,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  * user and/or a service principal against
  * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>.
  * The AzureCliCredential authenticates in a development environment and acquires a token on behalf of the
- * logged-in user or service principal in Azure CLI. It acts as the Azure CLI logged in user or service principal
- * and executes an Azure CLI command underneath to authenticate the application against Microsoft Entra ID.</p>
+ * logged-in user or service principal in Azure CLI.</p>
  *
  * <h2>Configure AzureCliCredential</h2>
  *
@@ -34,9 +33,8 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  *     to authenticate as a service principal.</li>
  * </ol>
  *
- * <p>You may need to repeat this process after a certain time period, depending on the refresh token validity in your
- * organization. Generally, the refresh token validity period is a few weeks to a few months. AzureCliCredential will
- * prompt you to sign in again.</p>
+ * <p>You may need to repeat this process after a certain time period, depending on the refresh token policy in your
+ * organization. AzureCliCredential will prompt you to sign in again when your token expires.</p>
  *
  * <p><strong>Sample: Construct AzureCliCredential</strong></p>
  *
@@ -58,7 +56,7 @@ public class AzureCliCredential implements TokenCredential {
     private final DevToolsClient devToolslClient;
 
     /**
-     * Creates an AzureCliSecretCredential with default identity client options.
+     * Creates an AzureCliCredential with the given dev tools client options.
      * @param devToolsClientOptions the options to configure the dev tools client
      */
     AzureCliCredential(DevToolsClientOptions devToolsClientOptions) {

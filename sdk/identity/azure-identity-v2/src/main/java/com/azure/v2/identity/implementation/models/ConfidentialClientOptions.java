@@ -30,6 +30,32 @@ public class ConfidentialClientOptions extends ClientOptions {
     }
 
     /**
+     * Creates a copy of confidential client options from provided client options instance.
+     *
+     * @param clientOptions the confidential client options to copy.
+     */
+    public ConfidentialClientOptions(ConfidentialClientOptions clientOptions) {
+        super(clientOptions);
+        this.clientSecret = clientOptions.getClientSecret();
+        this.clientAssertionFunction = clientOptions.getClientAssertionFunction();
+        this.clientAssertionSupplier = clientOptions.getClientAssertionSupplier();
+        this.certificatePath = clientOptions.getCertificatePath();
+        this.certificateBytes = clientOptions.getCertificateBytes();
+        this.certificatePassword = clientOptions.getCertificatePassword();
+        this.includeX5c = clientOptions.isIncludeX5c();
+        this.userAssertion = clientOptions.getUserAssertion();
+    }
+
+    /**
+     * Creates a copy of confidential client options from provided client options instance.
+     *
+     * @param clientOptions the client options to copy.
+     */
+    public ConfidentialClientOptions(ClientOptions clientOptions) {
+        super(clientOptions);
+    }
+
+    /**
      * Gets the configured client secret.
      * @return the client secret
      */
@@ -186,21 +212,5 @@ public class ConfidentialClientOptions extends ClientOptions {
      */
     public UserAssertion getUserAssertion() {
         return userAssertion;
-    }
-
-    @Override
-    public ConfidentialClientOptions clone() {
-        ConfidentialClientOptions clone
-            = (ConfidentialClientOptions) new ConfidentialClientOptions().setClientSecret(this.clientSecret)
-                .setClientAssertionFunction(this.clientAssertionFunction)
-                .setClientAssertionSupplier(this.clientAssertionSupplier)
-                .setClientId(this.getClientId())
-                .setTenantId(this.getTenantId())
-                .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
-                .setExecutorService(this.getExecutorService())
-                .setAuthorityHost(this.getAuthorityHost())
-                .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())
-                .setTokenCacheOptions(this.getTokenCacheOptions());
-        return clone;
     }
 }

@@ -18,20 +18,14 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * <p>IntelliJ IDEA is an integrated development environment (IDE) developed by JetBrains, which provides a variety of
- * features to support software development, such as code completion, debugging, and testing.
- * Azure offers <a href="https://learn.microsoft.com/azure/developer/java/toolkit-for-intellij/">Azure Toolkit
- * for IntelliJ plugin</a> for the IntelliJ IDEA development environment. It
- * enables developers to create, test, and deploy Java applications to the Azure cloud platform. In order to
- * use the plugin authentication as a user or service principal against
- * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> is required.
- * The IntelliJCredential authenticates in a development environment and acquires a token on behalf of the
- * logged-in account in Azure Toolkit for IntelliJ. It uses the logged in user information on the IntelliJ IDE and uses
- * it to authenticate the application against Microsoft Entra ID.</p>
+ * <p>
+ * The AzureToolkitCredential authenticates in a development environment and acquires a token on behalf of the
+ * logged-in account in Azure Toolkit for IntelliJ/Eclipse. It uses the logged in user information on the
+ * IntelliJ/Eclipse IDE and uses it to authenticate the application against Microsoft Entra ID.</p>
  *
- * <h2>Configure IntelliJCredential</h2>
+ * <h2>Configure AzureToolkitCredential</h2>
  *
- * <p>Follow the steps outlined below:</p>
+ * <p>Follow the steps outlined below, if using IntelliJ:</p>
  *
  * <ol>
  *     <li>In your IntelliJ window, open File > Settings > Plugins.</li>
@@ -42,19 +36,22 @@ import java.util.concurrent.atomic.AtomicReference;
  *     Select the subscription with the resources that you want to access.</li>
  * </ol>
  *
- * <p> Once the developer has followed the steps above and authenticated successfully with
- * Azure Tools for IntelliJ plugin in the IntelliJ IDE then this credential can be used in the development code to
- * reuse the cached plugin credentials.</p>
+ * TODO: Add similar instructions for Eclipse IDE
  *
- * <p><strong>Sample: Construct IntelliJCredential</strong></p>
+ * <p> Once the developer has followed the steps above and authenticated successfully with
+ * Azure Tools for IntelliJ/Eclipse plugin in the IntelliJ/Eclipse IDE then this credential can be used in the
+ * development code to reuse the cached plugin credentials.</p>
+ *
+ * <p><strong>Sample: Construct AzureToolkitCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a {@link AzureToolkitCredential},
  * using the {@link AzureToolkitCredentialBuilder} to configure it. Once this credential is
  * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
  * parameter.</p>
  *
+ *
  * <pre>
- * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * TokenCredential azureToolkitCredential = new AzureToolkitCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  *
  * @see com.azure.v2.identity
@@ -62,12 +59,12 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class AzureToolkitCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzureToolkitCredential.class);
-    private static final String AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID = "61d65f5a-6e3b-468b-af73-a033f5098c5c";
+    private static final String AZURE_TOOLKIT_CLIENT_ID = "61d65f5a-6e3b-468b-af73-a033f5098c5c";
     private final PublicClient publicClient;
     private final AtomicReference<MsalToken> cachedToken;
 
     /**
-     * Creates an {@link AzureToolkitCredential} with default identity client options.
+     * Creates an {@link AzureToolkitCredential} with the given public client options.
      * @param publicClientOptions the options to configure the public client
      */
     AzureToolkitCredential(PublicClientOptions publicClientOptions) {

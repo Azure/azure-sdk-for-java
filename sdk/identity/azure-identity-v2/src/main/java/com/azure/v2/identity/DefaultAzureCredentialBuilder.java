@@ -239,18 +239,19 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
-        output.add(new EnvironmentCredential(((ConfidentialClientOptions) clientOptions.clone())));
+        output.add(new EnvironmentCredential(new ConfidentialClientOptions(clientOptions)));
         output.add(getWorkloadIdentityCredential());
-        output.add(new ManagedIdentityCredential(
-            ((ManagedIdentityClientOptions) clientOptions.clone().setClientId(managedIdentityClientId))
-                .setResourceId(managedIdentityResourceId)));
-        output.add(new AzureToolkitCredential(((PublicClientOptions) clientOptions.clone())));
+        output.add(
+            new ManagedIdentityCredential((ManagedIdentityClientOptions) new ManagedIdentityClientOptions(clientOptions)
+                .setResourceId(managedIdentityResourceId)
+                .setClientId(managedIdentityClientId)));
+        output.add(new AzureToolkitCredential(new PublicClientOptions(clientOptions)));
         output.add(new AzureCliCredential(
-            ((DevToolsClientOptions) clientOptions.clone()).setProcessTimeout(credentialProcessTimeout)));
+            new DevToolsClientOptions(clientOptions).setProcessTimeout(credentialProcessTimeout)));
         output.add(new AzurePowerShellCredential(
-            ((DevToolsClientOptions) clientOptions.clone()).setProcessTimeout(credentialProcessTimeout)));
+            new DevToolsClientOptions(clientOptions).setProcessTimeout(credentialProcessTimeout)));
         output.add(new AzureDeveloperCliCredential(
-            ((DevToolsClientOptions) clientOptions.clone()).setProcessTimeout(credentialProcessTimeout)));
+            new DevToolsClientOptions(clientOptions).setProcessTimeout(credentialProcessTimeout)));
         return output;
     }
 
@@ -267,7 +268,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             clientOptions.setAuthorityHost(azureAuthorityHost);
         }
 
-        return new WorkloadIdentityCredential(
-            ((ConfidentialClientOptions) clientOptions.clone().setClientId(workloadIdentityClientId)), null);
+        return new WorkloadIdentityCredential((ConfidentialClientOptions) new ConfidentialClientOptions(clientOptions)
+            .setClientId(workloadIdentityClientId), null);
     }
 }

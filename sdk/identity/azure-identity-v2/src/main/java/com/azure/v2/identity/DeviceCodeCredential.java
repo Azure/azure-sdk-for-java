@@ -5,6 +5,7 @@ package com.azure.v2.identity;
 
 import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import com.azure.v2.identity.exceptions.CredentialUnavailableException;
+import com.azure.v2.identity.implementation.client.BrokeredAuthCache;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.implementation.models.MsalAuthenticationAccount;
 import com.azure.v2.identity.implementation.models.MsalToken;
@@ -14,11 +15,8 @@ import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.identity.models.AuthenticationRecord;
 import com.azure.v2.identity.models.TokenCachePersistenceOptions;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>Device code authentication is a type of authentication flow offered by
@@ -32,11 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * with their credentials, such as a username and password or a multi-factor authentication (MFA) method.
  * Device code authentication can be initiated using various Microsoft Entra-supported protocols, such as OAuth 2.0 and
  * OpenID Connect, and it can be used with a wide range of Microsoft Entra-integrated applications.
- * The DeviceCodeCredential interactively authenticates a user and acquires a token on devices with limited UI.
- * It works by prompting the user to visit a login URL on a browser-enabled machine when the application attempts to
- * authenticate. The user then enters the device code mentioned in the instructions along with their login credentials.
- * Upon successful authentication, the application that requested authentication gets authenticated successfully on the
- * device it's running on. For more information refer to the
+ * For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/devicecodecredential/docs">device code authentication
  * documentation</a>.</p>
  *
@@ -78,11 +72,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DeviceCodeCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(DeviceCodeCredential.class);
     private final PublicClient publicClient;
-    private final AtomicReference<MsalAuthenticationAccount> cachedToken;
-    private boolean isCaeEnabledRequestCached;
-    private boolean isCaeDisabledRequestCached;
-    private boolean isCachePopulated;
-
+    private final BrokeredAuthCache cache;
     private final PublicClientOptions publicClientOptions;
 
     /**
@@ -93,18 +83,17 @@ public class DeviceCodeCredential implements TokenCredential {
     DeviceCodeCredential(PublicClientOptions publicClientOptions) {
         this.publicClientOptions = publicClientOptions;
         this.publicClient = new PublicClient(publicClientOptions);
-        this.cachedToken = new AtomicReference<>();
+        this.cache = new BrokeredAuthCache();
         if (publicClientOptions.getAuthenticationRecord() != null) {
-            cachedToken.set(new MsalAuthenticationAccount(publicClientOptions.getAuthenticationRecord()));
+            cache.setCachedAccount(new MsalAuthenticationAccount(publicClientOptions.getAuthenticationRecord()));
         }
     }
 
     @Override
     public AccessToken getToken(TokenRequestContext request) {
-        isCachePopulated = isCachePopulated(request);
-        if (isCachePopulated) {
+        if (cache.isCachePopulated(request)) {
             try {
-                MsalToken token = publicClient.authenticateWithPublicClientCache(request, cachedToken.get());
+                MsalToken token = publicClient.authenticateWithPublicClientCache(request, cache.getCachedAccount());
                 if (token != null) {
                     LoggingUtil.logTokenSuccess(LOGGER, request);
                     return token;
@@ -119,12 +108,7 @@ public class DeviceCodeCredential implements TokenCredential {
                     + "code authentication.", request));
             }
             MsalToken accessToken = publicClient.authenticateWithDeviceCode(request);
-            updateCache(accessToken);
-            if (request.isCaeEnabled()) {
-                isCaeEnabledRequestCached = true;
-            } else {
-                isCaeDisabledRequestCached = true;
-            }
+            cache.updateCache(accessToken, publicClientOptions, request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
         } catch (Exception e) {
@@ -148,8 +132,8 @@ public class DeviceCodeCredential implements TokenCredential {
      * when credential was instantiated.
      */
     public AuthenticationRecord authenticate(TokenRequestContext request) {
-        this.updateCache(publicClient.authenticateWithDeviceCode(request));
-        return cachedToken.get().getAuthenticationRecord();
+        this.cache.updateCache(publicClient.authenticateWithDeviceCode(request), publicClientOptions, request);
+        return cache.getCachedAccount().getAuthenticationRecord();
     }
 
     /**
@@ -171,21 +155,5 @@ public class DeviceCodeCredential implements TokenCredential {
                 "Authenticating in this " + "environment requires specifying a TokenRequestContext."));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
-    }
-
-    private AccessToken updateCache(MsalToken msalToken) {
-        IAuthenticationResult authenticationResult = msalToken.getAuthenticationResult();
-        cachedToken.set(new MsalAuthenticationAccount(
-            new AuthenticationRecord(authenticationResult.account().environment(),
-                authenticationResult.account().homeAccountId(), authenticationResult.account().username(),
-                publicClientOptions.getTenantId(), publicClientOptions.getClientId()),
-            msalToken.getAccount().getTenantProfiles()));
-        return msalToken;
-    }
-
-    private boolean isCachePopulated(TokenRequestContext request) {
-        return (cachedToken.get() != null)
-            && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
-                || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

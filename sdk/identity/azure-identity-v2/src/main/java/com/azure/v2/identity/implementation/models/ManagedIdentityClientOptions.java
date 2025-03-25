@@ -19,6 +19,27 @@ public class ManagedIdentityClientOptions extends ClientOptions {
     }
 
     /**
+     * Creates a copy of managed identity client options from provided client options instance.
+     *
+     * @param clientOptions the managed identity client options to copy.
+     */
+    public ManagedIdentityClientOptions(ManagedIdentityClientOptions clientOptions) {
+        super(clientOptions);
+        this.resourceId = clientOptions.getResourceId();
+        this.objectId = clientOptions.getObjectId();
+        this.useImdsRetryStrategy = clientOptions.getUseImdsRetryStrategy();
+    }
+
+    /**
+     * Creates a copy of managed identity client options from provided client options instance.
+     *
+     * @param clientOptions the client options to copy.
+     */
+    public ManagedIdentityClientOptions(ClientOptions clientOptions) {
+        super(clientOptions);
+    }
+
+    /**
      * Gets the configured resource ID.
      * @return the client secret
      */
@@ -52,21 +73,6 @@ public class ManagedIdentityClientOptions extends ClientOptions {
     public ManagedIdentityClientOptions setObjectId(String objectId) {
         this.objectId = objectId;
         return this;
-    }
-
-    @Override
-    public ManagedIdentityClientOptions clone() {
-        ManagedIdentityClientOptions clone
-            = (ManagedIdentityClientOptions) new ManagedIdentityClientOptions().setResourceId(resourceId)
-                .setObjectId(objectId)
-                .setClientId(this.getClientId())
-                .setTenantId(this.getTenantId())
-                .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
-                .setExecutorService(this.getExecutorService())
-                .setAuthorityHost(this.getAuthorityHost())
-                .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())
-                .setTokenCacheOptions(this.getTokenCacheOptions());
-        return clone;
     }
 
     /**

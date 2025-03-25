@@ -17,8 +17,7 @@ import java.util.function.Consumer;
 public class PublicClientOptions extends ClientOptions {
     private BrowserCustomizationOptions browserCustomizationOptions;
     private AuthenticationRecord authenticationRecord;
-    private Consumer<DeviceCodeInfo> challengeConsumer
-        = deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
+    private Consumer<DeviceCodeInfo> challengeConsumer;
     private boolean automaticAuthentication = true;
     private String authCode;
     private URI redirectUri;
@@ -30,6 +29,31 @@ public class PublicClientOptions extends ClientOptions {
     public PublicClientOptions() {
         super();
         this.browserCustomizationOptions = new BrowserCustomizationOptions();
+    }
+
+    /**
+     * Creates a copy of public client options from provided client options instance.
+     *
+     * @param clientOptions the public client options to copy.
+     */
+    public PublicClientOptions(PublicClientOptions clientOptions) {
+        super(clientOptions);
+        this.browserCustomizationOptions = clientOptions.getBrowserCustomizationOptions();
+        this.authenticationRecord = clientOptions.getAuthenticationRecord();
+        this.challengeConsumer = clientOptions.getChallengeConsumer();
+        this.automaticAuthentication = clientOptions.isAutomaticAuthentication();
+        this.authCode = clientOptions.getAuthCode();
+        this.redirectUri = clientOptions.getRedirectUri();
+        this.loginHint = clientOptions.getLoginHint();
+    }
+
+    /**
+     * Creates a copy of public client options from provided client options instance.
+     *
+     * @param clientOptions the client options to copy.
+     */
+    public PublicClientOptions(ClientOptions clientOptions) {
+        super(clientOptions);
     }
 
     /**
@@ -79,6 +103,9 @@ public class PublicClientOptions extends ClientOptions {
      * @return the challenge consumer
      */
     public Consumer<DeviceCodeInfo> getChallengeConsumer() {
+        if (challengeConsumer == null) {
+            challengeConsumer = deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
+        }
         return challengeConsumer;
     }
 

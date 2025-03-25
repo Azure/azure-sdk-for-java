@@ -20,6 +20,26 @@ public class DevToolsClientOptions extends ClientOptions {
     }
 
     /**
+     * Creates a copy of dev tools client options from provided client options instance.
+     *
+     * @param clientOptions the dev tools client options to copy.
+     */
+    public DevToolsClientOptions(DevToolsClientOptions clientOptions) {
+        super(clientOptions);
+        this.processTimeout = clientOptions.getProcessTimeout();
+        this.subscription = clientOptions.getSubscription();
+    }
+
+    /**
+     * Creates a copy of dev tools client options from provided client options instance.
+     *
+     * @param clientOptions the client options to copy.
+     */
+    public DevToolsClientOptions(ClientOptions clientOptions) {
+        super(clientOptions);
+    }
+
+    /**
      * Gets the configured process timeout.
      *
      * @return the process timeout.
@@ -57,19 +77,5 @@ public class DevToolsClientOptions extends ClientOptions {
     public DevToolsClientOptions setSubscription(String subscription) {
         this.subscription = subscription;
         return this;
-    }
-
-    @Override
-    public DevToolsClientOptions clone() {
-        DevToolsClientOptions clone
-            = (DevToolsClientOptions) new DevToolsClientOptions().setProcessTimeout(processTimeout)
-                .setClientId(this.getClientId())
-                .setTenantId(this.getTenantId())
-                .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
-                .setExecutorService(this.getExecutorService())
-                .setAuthorityHost(this.getAuthorityHost())
-                .setAdditionallyAllowedTenants(this.getAdditionallyAllowedTenants())
-                .setTokenCacheOptions(this.getTokenCacheOptions());
-        return clone;
     }
 }

@@ -4,22 +4,18 @@
 package com.azure.v2.identity;
 
 import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
+import com.azure.v2.identity.implementation.client.BrokeredAuthCache;
 import com.azure.v2.identity.implementation.client.ConfidentialClient;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.implementation.models.ConfidentialClientOptions;
-import com.azure.v2.identity.implementation.models.MsalAuthenticationAccount;
 import com.azure.v2.identity.implementation.models.MsalToken;
 import com.azure.v2.identity.implementation.models.PublicClientOptions;
 import com.azure.v2.identity.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.azure.v2.identity.models.AuthenticationRecord;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>Authorization Code authentication in Azure is a type of authentication mechanism that allows users to
@@ -56,10 +52,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
     private final ConfidentialClient confidentialClient;
     private final PublicClient publicClient;
     private final PublicClientOptions publicClientOptions;
-    private final AtomicReference<MsalAuthenticationAccount> cachedToken;
-    private boolean isCaeEnabledRequestCached;
-    private boolean isCaeDisabledRequestCached;
-    private boolean isCachePopulated;
+    private final BrokeredAuthCache cache;
 
     /**
      * Creates an AuthorizationCodeCredential with the given identity client options.
@@ -78,18 +71,16 @@ public class AuthorizationCodeCredential implements TokenCredential {
         } else {
             confidentialClient = null;
         }
-        this.cachedToken = new AtomicReference<>();
+        this.cache = new BrokeredAuthCache();
     }
 
     @Override
     public AccessToken getToken(TokenRequestContext request) {
-
-        isCachePopulated = isCachePopulated(request);
-        if (isCachePopulated) {
+        if (cache.isCachePopulated(request)) {
             if (confidentialClient != null) {
-                return confidentialClient.authenticateWithCache(request, cachedToken.get());
+                return confidentialClient.authenticateWithCache(request, cache.getCachedAccount());
             } else {
-                return publicClient.authenticateWithPublicClientCache(request, cachedToken.get());
+                return publicClient.authenticateWithPublicClientCache(request, cache.getCachedAccount());
             }
         }
 
@@ -102,33 +93,12 @@ public class AuthorizationCodeCredential implements TokenCredential {
             } else {
                 accessToken = publicClient.authenticateWithAuthorizationCode(request);
             }
-            updateCache(accessToken);
-            if (request.isCaeEnabled()) {
-                isCaeEnabledRequestCached = true;
-            } else {
-                isCaeDisabledRequestCached = true;
-            }
+            cache.updateCache(accessToken, publicClientOptions, request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
             throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
         }
-    }
-
-    private AccessToken updateCache(MsalToken msalToken) {
-        IAuthenticationResult authenticationResult = msalToken.getAuthenticationResult();
-        cachedToken.set(new MsalAuthenticationAccount(
-            new AuthenticationRecord(authenticationResult.account().environment(),
-                authenticationResult.account().homeAccountId(), authenticationResult.account().username(),
-                publicClientOptions.getTenantId(), publicClientOptions.getClientId()),
-            msalToken.getAccount().getTenantProfiles()));
-        return msalToken;
-    }
-
-    private boolean isCachePopulated(TokenRequestContext request) {
-        return (cachedToken.get() != null)
-            && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
-                || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

@@ -79,7 +79,7 @@ public class ClientCertificateCredential implements TokenCredential {
     private final ConfidentialClient confidentialClient;
 
     /**
-     * Creates a ClientCertificateCredential with default identity client options.
+     * Creates a ClientCertificateCredential with the given confidential client options.
      *
      * @param confidentialClientOptions the options to configure the confidential client
      */

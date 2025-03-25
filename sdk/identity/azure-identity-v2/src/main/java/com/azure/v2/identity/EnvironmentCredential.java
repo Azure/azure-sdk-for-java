@@ -124,18 +124,17 @@ public class EnvironmentCredential implements TokenCredential {
                         + "variable %s", IdentityUtil.PROPERTY_AZURE_TENANT_ID));
             }
 
-            // 3 - cannot determine scenario based on clientId alone
+            // 2 - cannot determine scenario based on clientId alone
             if (targetCredential == null) {
                 String msg = String.format("Azure Identity => ERROR in EnvironmentCredential: Failed to determine an "
                     + "authentication scheme based on the available environment variables. Please specify %1$s and "
-                    + "%2$s to authenticate through a ClientSecretCredential; %1$s and %3$s to authenticate through a "
-                    + "ClientCertificateCredential; or %4$s and %5$s to authenticate through a "
-                    + "UserPasswordCredential.", IdentityUtil.PROPERTY_AZURE_TENANT_ID,
+                    + "%2$s to authenticate through a ClientSecretCredential or %1$s and %3$s to authenticate through a "
+                    + "ClientCertificateCredential.", IdentityUtil.PROPERTY_AZURE_TENANT_ID,
                     IdentityUtil.PROPERTY_AZURE_CLIENT_SECRET, IdentityUtil.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
                 LoggingUtil.logError(LOGGER, msg);
             }
         } else {
-            // 4 - not even clientId is available
+            // 3 - not even clientId is available
             LoggingUtil.logError(LOGGER,
                 () -> String.format(
                     "Azure Identity => ERROR in EnvironmentCredential:" + " Missing required environment variable %s",

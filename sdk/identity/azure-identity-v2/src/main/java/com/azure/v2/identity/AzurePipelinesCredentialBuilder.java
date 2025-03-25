@@ -134,6 +134,7 @@ public class AzurePipelinesCredentialBuilder extends EntraIdCredentialBuilderBas
             options.addAllowedHeaderName(HttpHeaderName.fromString("x-msedge-ref"));
             confidentialClientOptions.getHttpPipelineOptions().setHttpInstrumentationOptions(options);
         }
-        return new AzurePipelinesCredential(requestUrl, systemAccessToken, confidentialClientOptions.clone());
+        return new AzurePipelinesCredential(requestUrl, systemAccessToken,
+            new ConfidentialClientOptions(confidentialClientOptions));
     }
 }
