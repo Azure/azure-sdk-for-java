@@ -18,6 +18,8 @@
   <suppress files="com.azure.v2.identity.implementation.client.AzureToolkitCacheAccessor.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.v2.identity.implementation.client.AzureToolkitCacheAccessor.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.v2.identity.implementation.client.AzureToolkitCacheAccessor.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-
+  <suppress files="com.azure.v2.identity.implementation.client.PersistentTokenCacheImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.v2.identity.implementation.client.PersistentTokenCacheImpl.java" checks="MissingJavadocTypeCheck" />
+  <suppress files="com.azure.v2.identity.implementation.models.PublicClientOptions.java" checks="GoodLoggingCheck" />
 
 </suppressions>

@@ -3,6 +3,7 @@
 
 package com.azure.v2.identity;
 
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.implementation.models.MsalAuthenticationAccount;
 import com.azure.v2.identity.implementation.models.MsalToken;
@@ -11,8 +12,10 @@ import com.azure.v2.identity.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.identity.models.AuthenticationRecord;
+import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -157,8 +160,11 @@ public class InteractiveBrowserCredential implements TokenCredential {
     }
 
     private AccessToken updateCache(MsalToken msalToken) {
-        cachedToken.set(new MsalAuthenticationAccount(new AuthenticationRecord(msalToken.getAuthenticationResult(),
-            publicClientOptions.getTenantId(), publicClientOptions.getClientId()),
+        IAuthenticationResult authenticationResult = msalToken.getAuthenticationResult();
+        cachedToken.set(new MsalAuthenticationAccount(
+            new AuthenticationRecord(authenticationResult.account().environment(),
+                authenticationResult.account().homeAccountId(), authenticationResult.account().username(),
+                publicClientOptions.getTenantId(), publicClientOptions.getClientId()),
             msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }

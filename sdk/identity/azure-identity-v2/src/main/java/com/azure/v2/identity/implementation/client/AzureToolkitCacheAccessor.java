@@ -3,7 +3,7 @@
 
 package com.azure.v2.identity.implementation.client;
 
-import com.azure.v2.identity.CredentialUnavailableException;
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.microsoft.aad.msal4jextensions.persistence.CacheFileAccessor;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;

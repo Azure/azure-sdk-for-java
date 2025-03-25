@@ -7,6 +7,7 @@ import com.azure.v2.identity.implementation.models.ClientOptions;
 import com.azure.v2.identity.implementation.models.ConfidentialClientOptions;
 import com.azure.v2.identity.implementation.util.IdentityUtil;
 import com.azure.v2.identity.implementation.util.ValidationUtil;
+import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.ByteArrayInputStream;

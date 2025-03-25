@@ -9,6 +9,8 @@ import com.azure.v2.identity.implementation.util.IdentityConstants;
 import com.azure.v2.identity.implementation.util.IdentityUtil;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.identity.models.AuthenticationRecord;
+import com.azure.v2.identity.models.BrowserCustomizationOptions;
+import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.net.URI;
@@ -48,7 +50,7 @@ import java.util.List;
 public class InteractiveBrowserCredentialBuilder
     extends EntraIdCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(InteractiveBrowserCredentialBuilder.class);
-    private PublicClientOptions publicClientOptions;
+    private final PublicClientOptions publicClientOptions;
 
     /**
      * Constructs an instance of InteractiveBrowserCredentialBuilder.

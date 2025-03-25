@@ -3,7 +3,7 @@
 
 package com.azure.v2.identity.implementation.util;
 
-import com.azure.v2.identity.CredentialUnavailableException;
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
@@ -44,15 +44,34 @@ public final class LoggingUtil {
     private LoggingUtil() {
     }
 
+    /**
+     * Logs {@link CredentialUnavailableException} as ERROR.
+     *
+     * @param logger the logger to be used for logging
+     * @param exception the cred unavailable exception
+     * @return the logged exception
+     */
     public static CredentialUnavailableException logCredentialUnavailableException(ClientLogger logger,
         CredentialUnavailableException exception) {
         throw logger.logThrowableAsError(exception);
     }
 
+    /**
+     * Logs the message at ERROR level.
+     *
+     * @param logger the logger to be used for logging
+     * @param message the error message to be logged
+     */
     public static void logError(ClientLogger logger, String message) {
         logger.atLevel(LogLevel.ERROR).log(message);
     }
 
+    /**
+     * Logs the message at ERROR level.
+     *
+     * @param logger the logger to be used for logging
+     * @param messageSupplier the error message supplier
+     */
     public static void logError(ClientLogger logger, Supplier<String> messageSupplier) {
         logger.atLevel(LogLevel.ERROR).log(messageSupplier.get());
     }
@@ -60,7 +79,9 @@ public final class LoggingUtil {
     /**
      * Log the names of the currently available environment variables among a list of useful environment variables for
      * Azure Identity authentications.
+     *
      * @param logger the logger to output the log message
+     * @param configuration the configuration store
      */
     public static void logAvailableEnvironmentVariables(ClientLogger logger, Configuration configuration) {
         String clientId = configuration.get(IdentityUtil.PROPERTY_AZURE_CLIENT_ID);

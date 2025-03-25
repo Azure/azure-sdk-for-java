@@ -3,8 +3,8 @@
 
 package com.azure.v2.identity.implementation.client;
 
-import com.azure.v2.identity.CredentialAuthenticationException;
-import com.azure.v2.identity.TokenCachePersistenceOptions;
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
+import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import com.azure.v2.identity.implementation.models.ConfidentialClientOptions;
 import com.azure.v2.identity.implementation.models.MsalToken;
 import com.azure.v2.identity.implementation.util.CertificateUtil;
@@ -45,6 +45,9 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
+/**
+ * The Confidential client holds authetnciation logic for MSAL Confidential client based auth flows.
+ */
 public class ConfidentialClient extends ClientBase {
 
     static final ClientLogger LOGGER = new ClientLogger(ConfidentialClient.class);
@@ -137,7 +140,7 @@ public class ConfidentialClient extends ClientBase {
             if (OffsetDateTime.now().isBefore(accessToken.getExpiresAt().minus(REFRESH_OFFSET))) {
                 return accessToken;
             } else {
-                throw new IllegalStateException("Received token is close to expiry.");
+                throw LOGGER.logThrowableAsError(new IllegalStateException("Received token is close to expiry."));
             }
         } catch (MalformedURLException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
@@ -307,6 +310,7 @@ public class ConfidentialClient extends ClientBase {
      * @param authorizationCode the oauth2 authorization code
      * @param redirectUrl the redirectUrl where the authorization code is sent to
      * @return a Publisher that emits an AccessToken
+     * @throws CredentialAuthenticationException if the authentication fails.
      */
     public MsalToken authenticateWithAuthorizationCode(TokenRequestContext request, String authorizationCode,
         URI redirectUrl) {
@@ -324,7 +328,8 @@ public class ConfidentialClient extends ClientBase {
             return new MsalToken(
                 getConfidentialClientInstance(request).getValue().acquireToken(parametersBuilder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
-            throw new CredentialAuthenticationException("Failed to acquire token with authorization code", e);
+            throw LOGGER.logThrowableAsError(
+                new CredentialAuthenticationException("Failed to acquire token with authorization code", e));
         }
     }
 

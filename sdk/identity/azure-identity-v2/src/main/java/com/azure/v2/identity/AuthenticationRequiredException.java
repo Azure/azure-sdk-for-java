@@ -4,6 +4,7 @@
 package com.azure.v2.identity;
 
 import com.azure.v2.core.credentials.TokenRequestContext;
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 
 /**
  * <p>The Authentication Required Exception is thrown by {@link InteractiveBrowserCredential}

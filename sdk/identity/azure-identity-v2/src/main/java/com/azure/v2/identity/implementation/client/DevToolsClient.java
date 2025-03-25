@@ -3,8 +3,8 @@
 
 package com.azure.v2.identity.implementation.client;
 
-import com.azure.v2.identity.CredentialAuthenticationException;
-import com.azure.v2.identity.CredentialUnavailableException;
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.identity.implementation.models.DevToolsClientOptions;
 import com.azure.v2.identity.implementation.models.AzureCliToken;
 import com.azure.v2.identity.implementation.util.IdentityUtil;

@@ -3,11 +3,10 @@
 
 package com.azure.v2.identity.implementation.util;
 
-import com.azure.v2.identity.BrowserCustomizationOptions;
+import com.azure.v2.identity.models.BrowserCustomizationOptions;
 import com.azure.v2.identity.implementation.models.ClientOptions;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.utils.CoreUtils;
@@ -25,8 +24,10 @@ import java.util.Map;
 
 import static io.clientcore.core.serialization.json.JsonToken.END_OBJECT;
 
+/**
+ * The utility class for general Identity auth flow operations.
+ */
 public final class IdentityUtil {
-    private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);
     public static final String ALL_TENANTS = "*";
     public static final String DEFAULT_TENANT = "organizations";
     public static final HttpHeaderName X_TFS_FED_AUTH_REDIRECT = HttpHeaderName.fromString("X-TFS-FedAuthRedirect");
@@ -53,6 +54,7 @@ public final class IdentityUtil {
      * @param requestContext the user passed in {@link TokenRequestContext}
      * @param options the identity client options bag.
      * on the credential or not.
+     * @return the resolved tenant ID.
      */
     public static String resolveTenantId(String currentTenantId, TokenRequestContext requestContext,
         ClientOptions options) {
@@ -68,6 +70,12 @@ public final class IdentityUtil {
         return currentTenantId;
     }
 
+    /**
+     * Resolves additionally allowed tenants input.
+     *
+     * @param additionallyAllowedTenants the additionally allowed tenants
+     * @return the resolved tenant list
+     */
     public static List<String> resolveAdditionalTenants(List<String> additionallyAllowedTenants) {
         if (additionallyAllowedTenants == null) {
             return Collections.emptyList();
@@ -84,7 +92,7 @@ public final class IdentityUtil {
      * Parses the "access_token" field out of a response body.
      * @param json the response body to parse.
      * @return the access_token value
-     * @throws IOException
+     * @throws IOException if the parsing fails.
      */
     public static String getAccessToken(String json) throws IOException {
         try (JsonReader jsonReader = JsonReader.fromString(json)) {
@@ -103,9 +111,9 @@ public final class IdentityUtil {
 
     /**
      * Parses a json string into a key:value map. Doesn't do anything smart for nested objects or arrays.
-     * @param json
+     * @param json the JSON input to be parsed
      * @return a map of the json fields
-     * @throws IOException
+     * @throws IOException if the parsing fails.
      */
     public static Map<String, String> parseJsonIntoMap(String json) throws IOException {
         try (JsonReader jsonReader = JsonReader.fromString(json)) {
@@ -121,23 +129,51 @@ public final class IdentityUtil {
         }
     }
 
+    /**
+     * Checks whether current OS is Windows or not.
+     *
+     * @return the boolean flag indicating OS being Windows or not.
+     */
     public static boolean isWindowsPlatform() {
         return System.getProperty("os.name").contains("Windows");
     }
 
+    /**
+     * Checks whether current OS is Linux or not.
+     *
+     * @return the boolean flag indicating OS being Linux or not.
+     */
     public static boolean isLinuxPlatform() {
         return System.getProperty("os.name").contains("Linux");
     }
 
+    /**
+     * Checks whether current OS is Mac  or not.
+     *
+     * @return the boolean flag indicating OS being Mac OS or not.
+     */
     public static boolean isMacPlatform() {
         return System.getProperty("os.name").contains("Mac");
     }
 
+    /**
+     * Checks whether browser customization properties are present or not.
+     *
+     * @param browserCustomizationOptions the browser customization options bag
+     * @return the boolean flag whether properties are set or not.
+     */
     public static boolean browserCustomizationOptionsPresent(BrowserCustomizationOptions browserCustomizationOptions) {
         return !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getErrorMessage())
             || !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getSuccessMessage());
     }
 
+    /**
+     * Converts input stream to byte array.
+     *
+     * @param inputStream the input stream
+     * @return the byte array
+     * @throws UncheckedIOException if the parsing fails.
+     */
     public static byte[] convertInputStreamToByteArray(InputStream inputStream) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
@@ -153,6 +189,12 @@ public final class IdentityUtil {
         return outputStream.toByteArray();
     }
 
+    /**
+     * Gets additional tenant IDs from env config.
+     *
+     * @param configuration the configuration store
+     * @return the list of tenants
+     */
     public static List<String> getAdditionalTenantsFromEnvironment(Configuration configuration) {
         String additionalTenantsFromEnv = configuration.get(AZURE_ADDITIONALLY_ALLOWED_TENANTS);
         if (!CoreUtils.isNullOrEmpty(additionalTenantsFromEnv)) {

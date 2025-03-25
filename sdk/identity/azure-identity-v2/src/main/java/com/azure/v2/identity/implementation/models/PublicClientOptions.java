@@ -4,8 +4,8 @@
 package com.azure.v2.identity.implementation.models;
 
 import com.azure.v2.identity.models.AuthenticationRecord;
-import com.azure.v2.identity.BrowserCustomizationOptions;
-import com.azure.v2.identity.DeviceCodeInfo;
+import com.azure.v2.identity.models.BrowserCustomizationOptions;
+import com.azure.v2.identity.models.DeviceCodeInfo;
 import com.azure.v2.identity.InteractiveBrowserCredential;
 
 import java.net.URI;

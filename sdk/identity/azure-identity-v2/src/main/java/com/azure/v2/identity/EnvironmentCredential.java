@@ -3,6 +3,7 @@
 
 package com.azure.v2.identity;
 
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.identity.implementation.models.ConfidentialClientOptions;
 import com.azure.v2.identity.implementation.util.IdentityUtil;
 import com.azure.v2.identity.implementation.util.LoggingUtil;

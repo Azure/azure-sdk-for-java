@@ -3,7 +3,7 @@
 
 package com.azure.v2.identity.implementation.client;
 
-import com.azure.v2.identity.CredentialAuthenticationException;
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import com.azure.v2.identity.implementation.util.IdentityUtil;
 import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.ITokenCacheAccessContext;
@@ -38,7 +38,7 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
     private String name;
     private PersistenceTokenCacheAccessAspect cacheAccessAspect;
 
-    private boolean caeEnabled;
+    private final boolean caeEnabled;
 
     public PersistentTokenCacheImpl(boolean caeEnabled) {
         super();

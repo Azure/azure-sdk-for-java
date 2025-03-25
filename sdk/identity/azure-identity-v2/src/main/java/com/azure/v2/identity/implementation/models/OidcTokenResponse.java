@@ -10,9 +10,17 @@ import io.clientcore.core.serialization.json.JsonWriter;
 
 import java.io.IOException;
 
+/**
+ * Represents OIDC token response and offers support to parse it from JSON.
+ */
 public class OidcTokenResponse implements JsonSerializable<OidcTokenResponse> {
     private String oidcToken;
 
+    /**
+     * Gets the oidc token.
+     *
+     * @return the oidc token
+     */
     public String getOidcToken() {
         return oidcToken;
     }
@@ -22,6 +30,13 @@ public class OidcTokenResponse implements JsonSerializable<OidcTokenResponse> {
         return jsonWriter.writeStartObject().writeStringField("oidcToken", oidcToken).writeEndObject();
     }
 
+    /**
+     * Parses OIDC token response from JSON.
+     *
+     * @param jsonReader the json reader
+     * @return the parsed OIDC token response
+     * @throws IOException if the parsing fails.
+     */
     public static OidcTokenResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OidcTokenResponse oidcTokenResponse = new OidcTokenResponse();

@@ -3,6 +3,7 @@
 
 package com.azure.v2.identity;
 
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import com.azure.v2.identity.implementation.client.ConfidentialClient;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.implementation.models.ConfidentialClientOptions;
@@ -13,6 +14,7 @@ import com.azure.v2.identity.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.identity.models.AuthenticationRecord;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
@@ -115,8 +117,11 @@ public class AuthorizationCodeCredential implements TokenCredential {
     }
 
     private AccessToken updateCache(MsalToken msalToken) {
-        cachedToken.set(new MsalAuthenticationAccount(new AuthenticationRecord(msalToken.getAuthenticationResult(),
-            publicClientOptions.getTenantId(), publicClientOptions.getClientId()),
+        IAuthenticationResult authenticationResult = msalToken.getAuthenticationResult();
+        cachedToken.set(new MsalAuthenticationAccount(
+            new AuthenticationRecord(authenticationResult.account().environment(),
+                authenticationResult.account().homeAccountId(), authenticationResult.account().username(),
+                publicClientOptions.getTenantId(), publicClientOptions.getClientId()),
             msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }

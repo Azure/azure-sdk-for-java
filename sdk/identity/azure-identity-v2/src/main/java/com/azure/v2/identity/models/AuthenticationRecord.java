@@ -5,7 +5,6 @@ package com.azure.v2.identity.models;
 
 import com.azure.v2.identity.InteractiveBrowserCredential;
 import com.azure.v2.identity.InteractiveBrowserCredentialBuilder;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -41,15 +40,17 @@ public final class AuthenticationRecord {
 
     private String clientId;
 
-    AuthenticationRecord() {
-    }
-
-    AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId, String clientId) {
-        this(authenticationResult.account().environment(), authenticationResult.account().homeAccountId(),
-            authenticationResult.account().username(), tenantId, clientId);
-    }
-
-    AuthenticationRecord(String authority, String homeAccountId, String userName, String tenantId, String clientId) {
+    /**
+     * Creates an instance of authentication record.
+     *
+     * @param authority the authority used to authenticate
+     * @param homeAccountId the account ID
+     * @param userName the username
+     * @param tenantId the tenant ID
+     * @param clientId the tenant ID
+     */
+    public AuthenticationRecord(String authority, String homeAccountId, String userName, String tenantId,
+        String clientId) {
         this.authority = authority;
         this.homeAccountId = homeAccountId;
         this.tenantId = tenantId;

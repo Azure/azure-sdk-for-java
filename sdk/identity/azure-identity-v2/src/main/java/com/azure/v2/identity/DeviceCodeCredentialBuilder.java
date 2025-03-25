@@ -8,6 +8,8 @@ import com.azure.v2.identity.implementation.models.PublicClientOptions;
 import com.azure.v2.identity.implementation.util.IdentityConstants;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.identity.models.AuthenticationRecord;
+import com.azure.v2.identity.models.DeviceCodeInfo;
+import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 
 import java.util.function.Consumer;
 
@@ -57,7 +59,7 @@ import java.util.function.Consumer;
  * @see DeviceCodeCredential
  */
 public class DeviceCodeCredentialBuilder extends EntraIdCredentialBuilderBase<DeviceCodeCredentialBuilder> {
-    private PublicClientOptions publicClientOptions;
+    private final PublicClientOptions publicClientOptions;
 
     /**
      * Constructs an instance of DeviceCodeCredentialBuilder.

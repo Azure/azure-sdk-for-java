@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents abstract client base holding common properties and methods for downstream client implementations.
+ */
 public abstract class ClientBase {
 
     final ClientOptions clientOptions;

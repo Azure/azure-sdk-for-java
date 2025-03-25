@@ -15,6 +15,15 @@ import java.util.List;
  */
 public final class ValidationUtil {
 
+    /**
+     * Validates input parameters
+     *
+     * @param className the class invoking the API
+     * @param logger the logger to be used for logging
+     * @param names the list holding param names
+     * @param values the list holding param values
+     * @throws IllegalArgumentException if the validation fails
+     */
     public static void validate(String className, ClientLogger logger, List<String> names, List<String> values) {
         String missing = "";
 
@@ -30,6 +39,16 @@ public final class ValidationUtil {
         }
     }
 
+    /**
+     * Validates input parameters
+     *
+     * @param logger the logger to be used for logging
+     * @param param1Name first parameter name
+     * @param param1 first parameter value
+     * @param param2Name second parameter name
+     * @param param2 second parameter value
+     * @throws IllegalArgumentException if the validation fails
+     */
     public static void validate(ClientLogger logger, String param1Name, Object param1, String param2Name,
         Object param2) {
         String missing = "";
@@ -48,6 +67,18 @@ public final class ValidationUtil {
         }
     }
 
+    /**
+     * Validates input parameters
+     *
+     * @param logger the logger to be used for logging
+     * @param param1Name first parameter name
+     * @param param1 first parameter value
+     * @param param2Name second parameter name
+     * @param param2 second parameter value
+     * @param param3Name third parameter name
+     * @param param3 third parameter value
+     * @throws IllegalArgumentException if the validation fails
+     */
     public static void validate(ClientLogger logger, String param1Name, Object param1, String param2Name, Object param2,
         String param3Name, Object param3) {
         String missing = "";
@@ -70,6 +101,13 @@ public final class ValidationUtil {
         }
     }
 
+    /**
+     * Validates authority host.
+     *
+     * @param authHost the authority host
+     * @param logger the logger to be used for logging
+     * @throws IllegalArgumentException if the validation fails
+     */
     public static void validateAuthHost(String authHost, ClientLogger logger) {
         try {
             new URI(authHost);
@@ -82,6 +120,13 @@ public final class ValidationUtil {
         }
     }
 
+    /**
+     * Validates the tenant id character range.
+     *
+     * @param id the tenant ID
+     * @param logger the logger to be used for logging
+     * @throws IllegalArgumentException if the validation fails.
+     */
     public static void validateTenantIdCharacterRange(String id, ClientLogger logger) {
         if (id != null) {
             for (int i = 0; i < id.length(); i++) {
@@ -94,10 +139,23 @@ public final class ValidationUtil {
         }
     }
 
+    /**
+     * Validates if the character is valid tenant character or not.
+     *
+     * @param c the input character
+     * @return the boolean indicating character valid or not
+     */
     private static boolean isValidTenantCharacter(char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '.') || (c == '-');
     }
 
+    /**
+     * Validates managed identity input parameters
+     *
+     * @param logger the logger to be used for logging
+     * @param miClientOptions the managed identity client options
+     * @throws IllegalStateException if the validation fails
+     */
     public static void validateManagedIdentityIdParams(ManagedIdentityClientOptions miClientOptions,
         ClientLogger logger) {
 
@@ -123,6 +181,19 @@ public final class ValidationUtil {
         }
     }
 
+    /**
+     * Validates input parameters
+     *
+     * @param className the class invoking the API
+     * @param logger the logger to be used for logging
+     * @param param1Name first parameter name
+     * @param param1 first parameter value
+     * @param param2Name second parameter name
+     * @param param2 second parameter value
+     * @param param3Name third parameter name
+     * @param param3 third parameter value
+     * @throws IllegalArgumentException if the validation fails
+     */
     public static void validate(String className, ClientLogger logger, String param1Name, Object param1,
         String param2Name, Object param2, String param3Name, Object param3) {
         String missing = "";
@@ -145,6 +216,17 @@ public final class ValidationUtil {
         }
     }
 
+    /**
+     * Validates input parameters
+     *
+     * @param className the class invoking the API
+     * @param logger the logger to be used for logging
+     * @param param1Name first parameter name
+     * @param param1 first parameter value
+     * @param param2Name second parameter name
+     * @param param2 second parameter value
+     * @throws IllegalArgumentException if the validation fails
+     */
     public static void validate(String className, ClientLogger logger, String param1Name, Object param1,
         String param2Name, Object param2) {
         String missing = "";
@@ -163,6 +245,11 @@ public final class ValidationUtil {
         }
     }
 
+    /**
+     * Validates if the character is allowed in a subscription ID/Name or not.
+     * @param c the input character
+     * @return the boolean indicating validation result
+     */
     private static boolean isValidSubscriptionCharacter(char c) {
         return (c >= 'a' && c <= 'z')
             || (c >= 'A' && c <= 'Z')
@@ -173,6 +260,13 @@ public final class ValidationUtil {
             || (c == ' ');
     }
 
+    /**
+     * Validates character range of subscription ID/Name.
+     *
+     * @param subscription the subscription ID/Name
+     * @param logger the logger to be used for logging
+     * @throws IllegalArgumentException if the validation fails
+     */
     public static void validateSubscriptionCharacterRange(String subscription, ClientLogger logger) {
         if (subscription != null) {
             for (int i = 0; i < subscription.length(); i++) {

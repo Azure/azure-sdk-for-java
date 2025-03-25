@@ -28,30 +28,64 @@ public final class AzureCliToken implements JsonSerializable<AzureCliToken> {
     private String tokenType;
     private OffsetDateTime tokenExpiry;
 
+    /**
+     * Gets the access token.
+     * @return the access token
+     */
     public String getAccessToken() {
         return accessToken;
     }
 
+    /**
+     * Gets the expiry time.
+     *
+     * @return the expiry time in String.
+     */
     public String getExpiresOn() {
         return expiresOn;
     }
 
+    /**
+     * Gets the expires on in Unix time.
+     *
+     * @return the expiry in Unix time
+     */
     public Long getExpiresOnUnixTime() {
         return expiresOnUnixTime;
     }
 
+    /**
+     * Gets the subscription.
+     *
+     * @return the subscription.
+     */
     public String getSubscription() {
         return subscription;
     }
 
+    /**
+     * Gets the tenant.
+     *
+     * @return the tenant
+     */
     public String getTenant() {
         return tenant;
     }
 
+    /**
+     * Gets the token type.
+     *
+     * @return the token type
+     */
     public String getTokenType() {
         return tokenType;
     }
 
+    /**
+     * Gets the token expiration time.
+     *
+     * @return the token expiration time
+     */
     public OffsetDateTime getTokenExpiration() {
         return tokenExpiry;
     }
@@ -66,6 +100,13 @@ public final class AzureCliToken implements JsonSerializable<AzureCliToken> {
         return tokenExpiry;
     }
 
+    /**
+     * Converts the token to JSON.
+     *
+     * @param jsonWriter Where the object's JSON will be written.
+     * @return the JsonWriter
+     * @throws IOException if conversion fails.
+     */
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("accessToken", accessToken);
@@ -78,6 +119,13 @@ public final class AzureCliToken implements JsonSerializable<AzureCliToken> {
         return jsonWriter;
     }
 
+    /**
+     * Parses JSON input to Az CLI token.
+     *
+     * @param jsonReader the JSON input
+     * @return the parsed Az CLI token
+     * @throws IOException if parsing fails.
+     */
     public static AzureCliToken fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureCliToken tokenHolder = new AzureCliToken();

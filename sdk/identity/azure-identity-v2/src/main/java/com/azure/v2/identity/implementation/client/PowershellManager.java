@@ -3,7 +3,7 @@
 
 package com.azure.v2.identity.implementation.client;
 
-import com.azure.v2.identity.CredentialUnavailableException;
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.sun.jna.Platform;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 

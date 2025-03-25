@@ -69,11 +69,22 @@ public class ManagedIdentityClientOptions extends ClientOptions {
         return clone;
     }
 
+    /**
+     * Sets the boolean flag indicating whether IMDS retry strategy should be used or not.
+     *
+     * @param useImdsRetryStrategy the boolean flag indicating to use IMDS retry strategy
+     * @return the updated options
+     */
     public ManagedIdentityClientOptions setUseImdsRetryStrategy(boolean useImdsRetryStrategy) {
         this.useImdsRetryStrategy = useImdsRetryStrategy;
         return this;
     }
 
+    /**
+     * Gets the retry strategy for the IMDS scenario.
+     *
+     * @return the imds retry strategy.
+     */
     public boolean getUseImdsRetryStrategy() {
         return this.useImdsRetryStrategy;
     }

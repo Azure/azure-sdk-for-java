@@ -5,6 +5,8 @@ package com.azure.v2.identity;
 
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;

@@ -3,6 +3,7 @@
 
 package com.azure.v2.identity;
 
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import com.azure.v2.identity.implementation.util.IdentityUtil;
 import com.azure.v2.identity.util.TestConfigurationSource;
 import com.azure.v2.identity.util.TestUtils;

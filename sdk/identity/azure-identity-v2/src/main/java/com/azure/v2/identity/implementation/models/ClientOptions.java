@@ -4,7 +4,7 @@
 package com.azure.v2.identity.implementation.models;
 
 import com.azure.v2.identity.AzureAuthorityHosts;
-import com.azure.v2.identity.TokenCachePersistenceOptions;
+import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import com.azure.v2.identity.implementation.client.IdentityLogOptionsImpl;
 import com.azure.v2.identity.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -57,7 +57,7 @@ public class ClientOptions implements Cloneable {
      * Sets the configuration store.
      *
      * @param configuration the configuration store
-     * @return the ClientOptionsBase itself.
+     * @return the updated options
      */
     public ClientOptions setConfigurationStore(Configuration configuration) {
         this.configuration = configuration;
@@ -79,7 +79,7 @@ public class ClientOptions implements Cloneable {
      * Sets the Http pipeline options.
      *
      * @param pipelineOptions the http pipeline options.
-     * @return the ClientOptionsBase itself.
+     * @return the updated options
      */
     ClientOptions setHttpPipelineOptions(HttpPipelineOptions pipelineOptions) {
         this.httpPipelineOptions = pipelineOptions;
@@ -96,7 +96,7 @@ public class ClientOptions implements Cloneable {
     /**
      * Specifies the Microsoft Entra endpoint to acquire tokens.
      * @param authorityHost the Microsoft Entra endpoint
-     * @return IdentityClientOptions
+     * @return the updated options
      */
     public ClientOptions setAuthorityHost(String authorityHost) {
         this.authorityHost = authorityHost;
@@ -111,7 +111,7 @@ public class ClientOptions implements Cloneable {
      * Azure SDK clients and should be shutdown before the application exits. </p>
      *
      * @param executorService the executor service to use for executing authentication requests.
-     * @return IdentityClientOptions
+     * @return the updated options
      */
     public ClientOptions setExecutorService(ExecutorService executorService) {
         this.executorService = executorService;
@@ -129,7 +129,7 @@ public class ClientOptions implements Cloneable {
      * Specifies the {@link TokenCachePersistenceOptions} to be used for token cache persistence.
      *
      * @param tokenCachePersistenceOptions the options configuration
-     * @return the updated identity client options
+     * @return the updated options
      */
     public ClientOptions setTokenCacheOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.tokenCachePersistenceOptions = tokenCachePersistenceOptions;
@@ -179,7 +179,7 @@ public class ClientOptions implements Cloneable {
      * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the application is installed.
      *
      * @param additionallyAllowedTenants the additionally allowed Tenants.
-     * @return An updated instance of this builder with the tenant id set as specified.
+     * @return the updated options
      */
     @SuppressWarnings("unchecked")
     public ClientOptions setAdditionallyAllowedTenants(List<String> additionallyAllowedTenants) {
@@ -192,7 +192,7 @@ public class ClientOptions implements Cloneable {
      * Internal helper method for clone.
      *
      * @param additionallyAllowedTenants the additionally allowed Tenants.
-     * @return An updated instance of this builder with the tenant id set as specified.
+     * @return the updated options
      */
     ClientOptions setAdditionallyAllowedTenants(Set<String> additionallyAllowedTenants) {
         this.additionallyAllowedTenants = additionallyAllowedTenants;
@@ -218,7 +218,7 @@ public class ClientOptions implements Cloneable {
     /**
      * Sets the Client ID.
      * @param clientId The client ID.
-     * @return the MsalConfigurationOptions itself.
+     * @return the updated options
      */
     public ClientOptions setClientId(String clientId) {
         this.clientId = clientId;
@@ -236,38 +236,79 @@ public class ClientOptions implements Cloneable {
     /**
      * Sets the Tenant ID.
      * @param tenantId The tenant ID.
-     * @return the MsalConfigurationOptions itself.
+     * @return the updated options
      */
     public ClientOptions setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
 
+    /**
+     * Checks whether credential is chained or not.
+     *
+     * @return the boolean flag indicating whether credential is chained or not.
+     */
     public boolean isChained() {
         return isChained;
     }
 
-    public void setChained(boolean chained) {
+    /**
+     * Sets whether credential is chained or not.
+     *
+     * @param chained the boolean flag to indicate whether credential is chained or not
+     * @return the updated options
+     */
+    public ClientOptions setChained(boolean chained) {
         isChained = chained;
+        return this;
     }
 
+    /**
+     * Gets the identity log options.
+     *
+     * @return the identity log options
+     */
     public IdentityLogOptionsImpl getIdentityLogOptions() {
         return identityLogOptions;
     }
 
-    public void setIdentityLogOptions(IdentityLogOptionsImpl identityLogOptions) {
+    /**
+     * Sets the identity log options.
+     *
+     * @param identityLogOptions the identity log options
+     * @return the updated options
+     */
+    public ClientOptions setIdentityLogOptions(IdentityLogOptionsImpl identityLogOptions) {
         this.identityLogOptions = identityLogOptions;
+        return this;
     }
 
+    /**
+     * Clones the client options.
+     *
+     * @return the cloned client options
+     */
     public ClientOptions clone() {
         return new ClientOptions();
     };
 
+    /**
+     * Checks whether unsafe logging is enabled or not.
+     *
+     * @return the boolean flag indicating whether unsafe logging is enabled or not
+     */
     public boolean isUnsafeSupportLoggingEnabled() {
         return unsafeSupportLoggingEnabled;
     }
 
-    public void setUnsafeSupportLoggingEnabled(boolean unsafeSupportLoggingEnabled) {
+    /**
+     * Sets the boolean flag indicating whether unsafe logging is enabled or not.
+     *
+     * @param unsafeSupportLoggingEnabled the boolean flag to indicate unsafe logging enabled or not
+     * @return the updated options
+     */
+    public ClientOptions setUnsafeSupportLoggingEnabled(boolean unsafeSupportLoggingEnabled) {
         this.unsafeSupportLoggingEnabled = unsafeSupportLoggingEnabled;
+        return this;
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.v2.identity;
 
 import com.azure.v2.core.credentials.TokenRequestContext;
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 

@@ -83,6 +83,11 @@ public final class CertificateUtil {
         return x509CertificateList;
     }
 
+    /**
+     * Checks whether the input cert is pem type or not.
+     * @param pem the input cert.
+     * @return the boolean flag indicating whether cert is pem or not.
+     */
     public static boolean isPem(byte[] pem) {
         return new String(pem, StandardCharsets.UTF_8).contains("-----BEGIN");
     }

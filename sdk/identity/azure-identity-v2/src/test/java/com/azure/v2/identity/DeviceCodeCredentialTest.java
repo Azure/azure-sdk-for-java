@@ -3,8 +3,10 @@
 
 package com.azure.v2.identity;
 
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.models.AuthenticationRecord;
+import com.azure.v2.identity.models.DeviceCodeInfo;
 import com.azure.v2.identity.util.TestUtils;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.credentials.oauth.AccessToken;

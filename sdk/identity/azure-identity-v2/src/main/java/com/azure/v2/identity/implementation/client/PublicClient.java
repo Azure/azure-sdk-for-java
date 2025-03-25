@@ -3,11 +3,11 @@
 
 package com.azure.v2.identity.implementation.client;
 
-import com.azure.v2.identity.TokenCachePersistenceOptions;
-import com.azure.v2.identity.BrowserCustomizationOptions;
-import com.azure.v2.identity.DeviceCodeInfo;
-import com.azure.v2.identity.CredentialUnavailableException;
-import com.azure.v2.identity.CredentialAuthenticationException;
+import com.azure.v2.identity.models.TokenCachePersistenceOptions;
+import com.azure.v2.identity.models.BrowserCustomizationOptions;
+import com.azure.v2.identity.models.DeviceCodeInfo;
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import com.azure.v2.identity.implementation.models.MsalToken;
 import com.azure.v2.identity.implementation.models.PublicClientOptions;
 import com.azure.v2.identity.implementation.util.IdentityUtil;
@@ -39,6 +39,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+/**
+ * Public client offers authentication APIs to authenticate via Msal's Public client auth flows.
+ */
 public class PublicClient extends ClientBase {
 
     static final ClientLogger LOGGER = new ClientLogger(PublicClient.class);
@@ -65,6 +68,12 @@ public class PublicClient extends ClientBase {
         this.clientAccessorWithCae = new SynchronousAccessor<>(() -> this.getClient(true));
     }
 
+    /**
+     * Gets the public client app in a thread safe manner.
+     *
+     * @param request the token request context
+     * @return the accessor holding public client app.
+     */
     private SynchronousAccessor<PublicClientApplication> getClientInstance(TokenRequestContext request) {
         return request.isCaeEnabled() ? clientAccessorWithCae : clientAccessor;
     }
@@ -86,6 +95,15 @@ public class PublicClient extends ClientBase {
         return token;
     }
 
+    /**
+     * Acquires token from the msal public client in memory cache if present.
+     *
+     * @param request the token request context
+     * @param pc the public client app
+     * @param account the cached account
+     * @param forceRefresh the boolean indicating force refresh
+     * @return the msal token
+     */
     private MsalToken acquireTokenFromPublicClientSilently(TokenRequestContext request, PublicClientApplication pc,
         IAccount account, boolean forceRefresh) {
         SilentParameters.SilentParametersBuilder parametersBuilder
@@ -120,6 +138,12 @@ public class PublicClient extends ClientBase {
         }
     }
 
+    /**
+     * Gets the public client to be used for auth flows.
+     *
+     * @param enableCae boolean indicating whether cae should be enabled or not.
+     * @return the Public Client Application
+     */
     PublicClientApplication getClient(boolean enableCae) {
         if (clientId == null) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException(
@@ -180,12 +204,12 @@ public class PublicClient extends ClientBase {
     }
 
     /**
-     * Synchronously acquire a token from Active Directory by opening a browser and wait for the user to login. The
+     * Acquire a token from MS Entra ID by opening a browser and wait for the user to login. The
      * credential will run a minimal local HttpServer at the given port, so {@code http://localhost:{port}} must be
      * listed as a valid reply URL for the application.
      *
-     * @param request     the details of the token request
-     * @return a Publisher that emits an AccessToken
+     * @param request the details of the token request
+     * @return the msal token
      */
     public MsalToken authenticateWithBrowserInteraction(TokenRequestContext request) {
         URI redirectUri;
@@ -218,6 +242,14 @@ public class PublicClient extends ClientBase {
         return token;
     }
 
+    /**
+     * Internal method to build interactive browser auth flow parameters.
+     *
+     * @param request the token request context
+     * @param loginHint the login hint
+     * @param redirectUri the redirect URI
+     * @return the interactive auth parameters
+     */
     InteractiveRequestParameters.InteractiveRequestParametersBuilder
         buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri) {
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder
@@ -252,13 +284,12 @@ public class PublicClient extends ClientBase {
     }
 
     /**
-     * Asynchronously acquire a token from Active Directory with a device code challenge. Active Directory will provide
+     * Acquirs a token from MS Entra ID with a device code challenge. MS Entra ID will provide
      * a device code for login and the user must meet the challenge by authenticating in a browser on the current or a
      * different device.
      *
-     * @param request            the details of the token request
-     * @return a Publisher that emits an AccessToken when the device challenge is met, or an exception if the device
-     * code expires
+     * @param request the details of the token request
+     * @return the msal token
      */
     public MsalToken authenticateWithDeviceCode(TokenRequestContext request) {
         PublicClientApplication pc = getClientInstance(request).getValue();
@@ -273,6 +304,13 @@ public class PublicClient extends ClientBase {
         }
     }
 
+    /**
+     * Internal method to build device code auth flow parameters.
+     *
+     * @param request the token request context
+     * @param deviceCodeConsumer the device code consumer logic
+     * @return the device code flow parameters.
+     */
     DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder buildDeviceCodeFlowParameters(TokenRequestContext request,
         Consumer<DeviceCodeInfo> deviceCodeConsumer) {
         DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder = DeviceCodeFlowParameters
@@ -293,6 +331,7 @@ public class PublicClient extends ClientBase {
      *
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
+     * @throws CredentialAuthenticationException if the authentication fails.
      */
     public MsalToken authenticateWithAuthorizationCode(TokenRequestContext request) {
         AuthorizationCodeParameters.AuthorizationCodeParametersBuilder parametersBuilder
@@ -309,10 +348,18 @@ public class PublicClient extends ClientBase {
         try {
             return new MsalToken(publicClient.getValue().acquireToken(parametersBuilder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
-            throw new CredentialAuthenticationException("Failed to acquire token with authorization code", e);
+            throw LOGGER.logThrowableAsError(
+                new CredentialAuthenticationException("Failed to acquire token with authorization code", e));
         }
     }
 
+    /**
+     * Authenticates with the azure toolkit auth flow.
+     *
+     * @param request the token request context
+     * @return the msal token
+     * @throws CredentialAuthenticationException if the authentication fails.
+     */
     public MsalToken authenticateWithAzureToolkit(TokenRequestContext request) {
         AzureToolkitCacheAccessor cacheAccessor = new AzureToolkitCacheAccessor();
         // Look for cached credential in msal cache first.
@@ -340,6 +387,10 @@ public class PublicClient extends ClientBase {
         return null;
     }
 
+    /**
+     * Gets the client options.
+     * @return the client options
+     */
     public PublicClientOptions getClientOptions() {
         return this.options;
     }

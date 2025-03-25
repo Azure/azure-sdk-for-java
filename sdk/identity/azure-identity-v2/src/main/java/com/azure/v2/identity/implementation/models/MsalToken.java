@@ -17,7 +17,7 @@ import java.time.ZoneOffset;
  */
 public final class MsalToken extends AccessToken {
 
-    private IAuthenticationResult authenticationResult;
+    private final IAuthenticationResult authenticationResult;
 
     /**
      * Creates an access token instance.
@@ -36,6 +36,12 @@ public final class MsalToken extends AccessToken {
         this.authenticationResult = authenticationResult;
     }
 
+    /**
+     * Creates an instance of Msal Token.
+     *
+     * @param msalResult the authentication result
+     * @param tokenType the type of token
+     */
     public MsalToken(IAuthenticationResult msalResult, String tokenType) {
         super(msalResult.accessToken(),
             OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC),

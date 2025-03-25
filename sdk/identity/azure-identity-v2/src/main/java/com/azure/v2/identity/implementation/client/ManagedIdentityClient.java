@@ -3,7 +3,7 @@
 
 package com.azure.v2.identity.implementation.client;
 
-import com.azure.v2.identity.CredentialAuthenticationException;
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import com.azure.v2.identity.implementation.models.MsalToken;
 import com.azure.v2.identity.implementation.models.ManagedIdentityClientOptions;
 import com.azure.v2.identity.implementation.util.ScopeUtil;
@@ -12,10 +12,15 @@ import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentityId;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import io.clientcore.core.credentials.oauth.AccessToken;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.SharedExecutorService;
 
+/**
+ * The Managed Identity Client offers authentication support for Managed Identity authentication flow.
+ */
 public class ManagedIdentityClient extends ClientBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedIdentityClient.class);
     final ManagedIdentityClientOptions managedIdentityClientOptions;
     final String resourceId;
     final String objectId;
@@ -36,6 +41,13 @@ public class ManagedIdentityClient extends ClientBase {
         this.miClientApplicationAccessor = new SynchronousAccessor<>(() -> this.getManagedIdentityClient());
     }
 
+    /**
+     * Authenticates the MI authentication request.
+     *
+     * @param request the token request context.
+     * @return the access token.
+     * @throws CredentialAuthenticationException if the authentication fails
+     */
     public AccessToken authenticate(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
 
@@ -46,7 +58,8 @@ public class ManagedIdentityClient extends ClientBase {
         try {
             return new MsalToken(managedIdentityApplication.acquireTokenForManagedIdentity(builder.build()).get());
         } catch (Exception e) {
-            throw new CredentialAuthenticationException("Managed Identity authentication is not available.", e);
+            throw LOGGER.logThrowableAsError(
+                new CredentialAuthenticationException("Managed Identity authentication is not available.", e));
         }
     }
 

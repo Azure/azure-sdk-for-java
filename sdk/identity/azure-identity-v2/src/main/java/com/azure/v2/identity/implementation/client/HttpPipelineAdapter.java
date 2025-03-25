@@ -44,11 +44,11 @@ class HttpPipelineAdapter implements IHttpClient {
     private static final String TENANT_ID_JSON_KEY = "tid";
     private static final String USER_PRINCIPAL_NAME_JSON_KEY = "upn";
     private final HttpPipeline httpPipeline;
-    private HttpPipelineOptions identityClientOptions;
+    private final HttpPipelineOptions httpPipelineOptions;
 
-    HttpPipelineAdapter(HttpPipeline httpPipeline, HttpPipelineOptions identityClientOptions) {
+    HttpPipelineAdapter(HttpPipeline httpPipeline, HttpPipelineOptions httpPipelineOptions) {
         this.httpPipeline = httpPipeline;
-        this.identityClientOptions = identityClientOptions;
+        this.httpPipelineOptions = httpPipelineOptions;
     }
 
     @Override

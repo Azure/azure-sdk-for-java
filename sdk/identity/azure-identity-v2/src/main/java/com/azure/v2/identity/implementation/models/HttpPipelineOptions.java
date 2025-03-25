@@ -23,7 +23,7 @@ public class HttpPipelineOptions implements Cloneable {
     private HttpInstrumentationOptions httpInstrumentationOptions;
     private HttpRetryOptions httpRetryOptions;
     private HttpRedirectOptions httpRedirectOptions;
-    private List<HttpPipelinePolicy> httpPipelinePolicy;
+    private final List<HttpPipelinePolicy> httpPipelinePolicy;
 
     /**
      * Creates an instance of HttpOptions with default settings.
@@ -49,7 +49,7 @@ public class HttpPipelineOptions implements Cloneable {
     /**
      * Specifies the HttpPipeline to send all requests. This setting overrides the others.
      * @param httpPipeline the HttpPipeline to send all requests
-     * @return The HttpOptions object itself
+     * @return the updated options
      */
     public HttpPipelineOptions setHttpPipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
@@ -59,7 +59,7 @@ public class HttpPipelineOptions implements Cloneable {
     /**
      * Specifies the HttpClient to send use for requests.
      * @param httpClient the http client to use for requests
-     * @return The HttpOptions object itself
+     * @return the updated options
      */
     public HttpPipelineOptions setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
@@ -79,6 +79,7 @@ public class HttpPipelineOptions implements Cloneable {
      * Sets the Http Instrumentation Options.
      *
      * @param httpInstrumentationOptions the Http instrumentation options to set.
+     * @return the updated options
      */
     public HttpPipelineOptions setHttpInstrumentationOptions(HttpInstrumentationOptions httpInstrumentationOptions) {
         this.httpInstrumentationOptions = httpInstrumentationOptions;
@@ -98,6 +99,7 @@ public class HttpPipelineOptions implements Cloneable {
      * Sets the Http Retry Options.
      *
      * @param httpRetryOptions the Http Retry Options.
+     * @return the updated options
      */
     public HttpPipelineOptions setHttpRetryOptions(HttpRetryOptions httpRetryOptions) {
         this.httpRetryOptions = httpRetryOptions;
@@ -117,6 +119,7 @@ public class HttpPipelineOptions implements Cloneable {
      * Sets the Http Redirect Options.
      *
      * @param httpRedirectOptions the Http Redirect Options.
+     * @return the updated options
      */
     public HttpPipelineOptions setHttpRedirectOptions(HttpRedirectOptions httpRedirectOptions) {
         this.httpRedirectOptions = httpRedirectOptions;
@@ -143,6 +146,11 @@ public class HttpPipelineOptions implements Cloneable {
         return this;
     }
 
+    /**
+     * Clones the HTTP Pipeline Options.
+     *
+     * @return the cloned http pipeline options.
+     */
     public HttpPipelineOptions clone() {
         HttpPipelineOptions clone = new HttpPipelineOptions().setHttpClient(this.httpClient)
             .setHttpPipeline(this.httpPipeline)

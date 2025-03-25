@@ -3,6 +3,7 @@
 
 package com.azure.v2.identity;
 
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.identity.implementation.client.ManagedIdentityClient;
 import com.azure.v2.identity.implementation.models.ManagedIdentityClientOptions;
 import com.azure.v2.identity.implementation.util.LoggingUtil;
