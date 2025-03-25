@@ -15,7 +15,7 @@ Azure SDK for Java repository. One can also input service directory like: /sdk/s
 
 param(
   [Parameter(Mandatory = $false)]
-  [string]$Directory
+  [string]$ServiceDirectories
 )
 
 function Reset-Repository {
@@ -24,80 +24,104 @@ function Reset-Repository {
   git clean -fd .
 }
 
-$tspYamls = Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse
-if ($tspYamls.Count -eq 0) {
+function Install-typespec-client-generator-cli {
   Write-Host "
 
   ===========================================
-  No TypeSpec files to regenerate
+  Installing typespec-client-generator-cli
   ===========================================
 
   "
-  exit 0
+  npm install -g @azure-tools/typespec-client-generator-cli
 }
 
-Write-Host "
+# Returns true if there's an error, false otherwise
+function TypeSpec-Compare-CurrentToCodegeneration {
+  param(
+    [Parameter(Mandatory=$true)]
+    $ServiceDirectory
+  )
 
-===========================================
-Installing typespec-client-generator-cli
-===========================================
+  $tspYamls = Get-ChildItem -Path $ServiceDirectory -Filter "tsp-location.yaml" -Recurse
+  if ($tspYamls.Count -eq 0) {
+    Write-Host "
 
-"
+    =========================================================
+    No TypeSpec files to regenerate for $ServiceDirectory
+    =========================================================
 
-npm install -g @azure-tools/typespec-client-generator-cli
-
-Write-Host "
-
-===========================================
-Invoking tsp-client update
-===========================================
-
-"
-
-$failedSdk = $null
-foreach ($tspLocationPath in $tspYamls) {
-  $sdkPath = (get-item $tspLocationPath).Directory.FullName
-  Write-Host "Generate SDK for $sdkPath"
-  Push-Location
-  Set-Location -Path $sdkPath
-  tsp-client update
-  if ($LastExitCode -ne 0) {
-    $failedSdk += $sdkPath
+    "
+    return $false
   }
-  Pop-Location
-}
 
-if ($failedSdk.Length -gt 0) {
-  Write-Host "Code generation failed for following modules: $failedSdk"
-  Reset-Repository
-  exit 1
-}
-
-Write-Host "
-
-==============
-Verify no diff
-==============
-
-"
-
-# prevent warning related to EOL differences which triggers an exception for some reason
-git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":
-(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java"
-
-if ($LastExitCode -ne 0) {
-  $status = git status -s | Out-String
   Write-Host "
-The following files are out of date:
-$status
-"
-  Reset-Repository
+
+  ===========================================================================
+  Invoking tsp-client update for tsp-location.yaml files in $ServiceDirectory
+  ===========================================================================
+
+  "
+
+  $failedSdk = $null
+  foreach ($tspLocationPath in $tspYamls) {
+    $sdkPath = (get-item $tspLocationPath).Directory.FullName
+    Write-Host "Generate SDK for $sdkPath"
+    Push-Location
+    Set-Location -Path $sdkPath
+    tsp-client update
+    if ($LastExitCode -ne 0) {
+      $failedSdk += $sdkPath
+    }
+    Pop-Location
+  }
+
+  if ($failedSdk.Length -gt 0) {
+    Write-Host "Code generation failed for following modules: $failedSdk"
+    return $true
+  }
+
+  Write-Host "
+
+  ================================================================
+  Verify no diff for TypeSpec generated files in $ServiceDirectory
+  ================================================================
+
+  "
+
+  # prevent warning related to EOL differences which triggers an exception for some reason
+  git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":
+  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java"
+
+  if ($LastExitCode -ne 0) {
+    $status = git status -s | Out-String
+    Write-Host "
+  The following files are out of date:
+  $status
+  "
+    return $true
+  }
+
+  # Delete out TypeSpec temporary folders if they still exist.
+  Get-ChildItem -Path $ServiceDirectory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
+    Remove-Item -Path $_.FullName -Recurse -Force
+  }
+}
+
+$hasError = $false
+if ($ServiceDirectories) {
+  Install-typespec-client-generator-cli
+  foreach ($ServiceDirectory in $ServiceDirectories.Split(',')) {
+    $path = "sdk/$ServiceDirectory"
+    $result = TypeSpec-Compare-CurrentToCodegeneration $path
+    if ($result) {
+      $hasError = $true
+    }
+  }
+} else {
+  Write-Host "The service directory list was empty for this PR, no TypeSpec files to regenerate"
+}
+Reset-Repository
+if ($hasError) {
   exit 1
 }
-
-# Delete out TypeSpec temporary folders if they still exist.
-Get-ChildItem -Path $Directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
-  Remove-Item -Path $_.FullName -Recurse -Force
-}
-
-Reset-Repository
+exit 0

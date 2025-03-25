@@ -17,55 +17,80 @@ Azure SDK for Java repository. CI jobs should use the 'ServiceDirectory', such a
 
 param(
   [Parameter(Mandatory = $false)]
-  [string]$Directory
+  [string]$ServiceDirectories
 )
 
-$path = ""
-if ($Directory) {
-  $path = $Directory
-}
+# Returns true if there's an error, false otherwise
+function Compare-CurrentToCodegeneration {
+  param(
+    [Parameter(Mandatory=$true)]
+    $ServiceDirectory
+  )
 
-$swaggers = Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse
-if ($swaggers.Count -eq 0) {
+  $swaggers = Get-ChildItem -Path $ServiceDirectory -Filter "Update-Codegeneration.ps1" -Recurse
+  if ($swaggers.Count -eq 0) {
+    Write-Host "
+
+    =========================================================
+    No Swagger files to regenerate for $ServiceDirectory
+    =========================================================
+
+    "
+    return $false
+  }
+
+
   Write-Host "
 
-  ===========================================
-  No Swagger files to regenerate
-  ===========================================
+  =========================================================
+  Invoking Autorest code regeneration for $ServiceDirectory
+  =========================================================
 
   "
-  exit 0
-}
 
+  foreach ($script in $swaggers) {
+    Write-Host "Calling Invoke-Expression $($script.FullName)"
+    Invoke-Expression $script.FullName
+  }
 
-Write-Host "
-
-===================================
-Invoking Autorest code regeneration
-===================================
-
-"
-
-foreach ($script in $swaggers) {
-  Invoke-Expression $script.FullName
-}
-
-Write-Host "
-
-==============
-Verify no diff
-==============
-
-"
-
-# prevent warning related to EOL differences which triggers an exception for some reason
-& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java"
-
-if ($LastExitCode -ne 0) {
-  $status = git status -s | Out-String
   Write-Host "
-The following files are out of date:
-$status
-"
+
+  =========================================================
+  Verify no diff for $ServiceDirectory
+  =========================================================
+
+  "
+
+  # prevent warning related to EOL differences which triggers an exception for some reason
+  & git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java"
+
+  if ($LastExitCode -ne 0) {
+    $status = git status -s | Out-String
+    Write-Host "
+  The following files in $ServiceDirectory are out of date:
+  $status
+  "
+    return $true
+  }
+}
+
+$hasError = $false
+
+# If a list of ServiceDirectories was passed in, process the entire list otherwise
+# pass in an empty string to verify everything
+if ($ServiceDirectories) {
+  foreach ($ServiceDirectory in $ServiceDirectories.Split(',')) {
+    $path = "sdk/$ServiceDirectory"
+    $result = Compare-CurrentToCodegeneration $path
+    if ($result) {
+      $hasError = $true
+    }
+  }
+} else {
+  Write-Host "The service directory list was empty for this PR, no Swagger files check"
+}
+
+if ($hasError) {
   exit 1
 }
+exit 0
