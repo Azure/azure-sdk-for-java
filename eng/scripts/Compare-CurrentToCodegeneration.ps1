@@ -72,6 +72,7 @@ function Compare-CurrentToCodegeneration {
   "
     return $true
   }
+  return $false
 }
 
 $hasError = $false

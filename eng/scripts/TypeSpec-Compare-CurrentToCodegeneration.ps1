@@ -105,6 +105,7 @@ function TypeSpec-Compare-CurrentToCodegeneration {
   Get-ChildItem -Path $ServiceDirectory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
     Remove-Item -Path $_.FullName -Recurse -Force
   }
+  return $false
 }
 
 $hasError = $false
