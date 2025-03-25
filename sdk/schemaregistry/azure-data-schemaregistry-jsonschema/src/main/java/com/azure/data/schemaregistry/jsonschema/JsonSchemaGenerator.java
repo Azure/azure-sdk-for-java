@@ -9,6 +9,11 @@ import com.azure.core.util.serializer.TypeReference;
  * <a href="https://json-schema.org/">JSON schema</a> aware class that can validate and generate JSON schemas.
  */
 public abstract class JsonSchemaGenerator {
+    /**
+     * Creates a new instance of {@link JsonSchemaGenerator}.
+     */
+    public JsonSchemaGenerator() {
+    }
 
     /**
      * True if the data matches its schema. Otherwise, false.
