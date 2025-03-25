@@ -1,8 +1,8 @@
 import com.openai.azure.credential.AzureApiKeyCredential;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
 public class AzureApiKeyCredentialSample {
 

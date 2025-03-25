@@ -3,8 +3,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
 public final class CompletionsExample {
     private CompletionsExample() {}

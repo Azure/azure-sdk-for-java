@@ -8,7 +8,14 @@ import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.core.JsonObject;
 import com.openai.core.JsonValue;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.*;
+import com.openai.models.ChatModel;
+import com.openai.models.FunctionDefinition;
+import com.openai.models.FunctionParameters;
+import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
+import com.openai.models.chat.completions.ChatCompletionTool;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

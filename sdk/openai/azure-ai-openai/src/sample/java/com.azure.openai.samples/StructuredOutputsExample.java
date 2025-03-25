@@ -4,8 +4,11 @@ import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.core.JsonValue;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.*;
+import com.openai.models.ChatModel;
+import com.openai.models.ResponseFormatJsonSchema;
 import com.openai.models.ResponseFormatJsonSchema.JsonSchema;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
+
 import java.util.Map;
 
 public final class StructuredOutputsExample {

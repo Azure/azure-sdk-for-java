@@ -3,8 +3,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.EmbeddingCreateParams;
-import com.openai.models.EmbeddingModel;
+import com.openai.models.embeddings.EmbeddingCreateParams;
+import com.openai.models.embeddings.EmbeddingModel;
 
 public final class EmbeddingsExample {
     private EmbeddingsExample() {}

@@ -15,24 +15,24 @@ import com.azure.identity.EnvironmentCredentialBuilder;
 import com.openai.azure.AzureOpenAIServiceVersion;
 import com.openai.core.JsonValue;
 import com.openai.errors.BadRequestException;
-import com.openai.models.ChatCompletion;
-import com.openai.models.ChatCompletionAssistantMessageParam;
-import com.openai.models.ChatCompletionContentPart;
-import com.openai.models.ChatCompletionContentPartImage;
-import com.openai.models.ChatCompletionContentPartText;
-import com.openai.models.ChatCompletionCreateParams;
-import com.openai.models.ChatCompletionFunctionCallOption;
-import com.openai.models.ChatCompletionFunctionMessageParam;
-import com.openai.models.ChatCompletionMessage;
-import com.openai.models.ChatCompletionMessageParam;
-import com.openai.models.ChatCompletionMessageToolCall;
-import com.openai.models.ChatCompletionSystemMessageParam;
-import com.openai.models.ChatCompletionTool;
-import com.openai.models.ChatCompletionToolMessageParam;
-import com.openai.models.ChatCompletionUserMessageParam;
-import com.openai.models.CompletionUsage;
 import com.openai.models.FunctionDefinition;
 import com.openai.models.FunctionParameters;
+import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionAssistantMessageParam;
+import com.openai.models.chat.completions.ChatCompletionContentPart;
+import com.openai.models.chat.completions.ChatCompletionContentPartImage;
+import com.openai.models.chat.completions.ChatCompletionContentPartText;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import com.openai.models.chat.completions.ChatCompletionFunctionCallOption;
+import com.openai.models.chat.completions.ChatCompletionFunctionMessageParam;
+import com.openai.models.chat.completions.ChatCompletionMessage;
+import com.openai.models.chat.completions.ChatCompletionMessageParam;
+import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
+import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
+import com.openai.models.chat.completions.ChatCompletionTool;
+import com.openai.models.chat.completions.ChatCompletionToolMessageParam;
+import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
+import com.openai.models.completions.CompletionUsage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -267,7 +267,7 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     ChatCompletionCreateParams addToolResponseToMessages(ChatCompletionCreateParams params,
-        List<ChatCompletionMessageToolCall> chatCompletionMessageToolCalls, ChatCompletion.Choice choice) {
+                                                         List<ChatCompletionMessageToolCall> chatCompletionMessageToolCalls, ChatCompletion.Choice choice) {
         // Create a new builder from the existing params
         ChatCompletionCreateParams.Builder paramsBuilder = params.toBuilder();
 

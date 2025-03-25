@@ -3,10 +3,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.ChatModel;
-import com.openai.models.Image;
-import com.openai.models.ImageGenerateParams;
-import com.openai.models.ImageModel;
+import com.openai.models.images.Image;
+import com.openai.models.images.ImageGenerateParams;
+import com.openai.models.images.ImageModel;
 
 import java.util.List;
 

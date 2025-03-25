@@ -3,9 +3,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.AudioModel;
-import com.openai.models.AudioTranscriptionCreateParams;
-import com.openai.models.Transcription;
+import com.openai.models.audio.AudioModel;
+import com.openai.models.audio.transcriptions.Transcription;
+import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -33,7 +34,7 @@ public final class AudioTranscriptionsExample {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         Path path = Paths.get(classloader.getResource("sports.wav").toURI());
 
-        AudioTranscriptionCreateParams createParams = AudioTranscriptionCreateParams.builder()
+        TranscriptionCreateParams createParams = TranscriptionCreateParams.builder()
                 .file(path)
                 .model(AudioModel.of("whisper"))
                 .build();
