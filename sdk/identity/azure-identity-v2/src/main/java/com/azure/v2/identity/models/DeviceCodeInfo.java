@@ -3,6 +3,9 @@
 
 package com.azure.v2.identity.models;
 
+import com.azure.v2.identity.DeviceCodeCredential;
+import com.azure.v2.identity.DeviceCodeCredentialBuilder;
+
 import java.time.OffsetDateTime;
 import java.util.function.Consumer;
 
