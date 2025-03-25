@@ -9,8 +9,7 @@ import io.clientcore.core.models.binarydata.BinaryData;
 public class HttpPostFormDataExample {
     public static void main(String... args) {
         HttpClient client = HttpClient.getSharedInstance();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaderName.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.fromString("Content-Type"), "application/x-www-form-urlencoded");
         String formData = "key1=value1&key2=value2";
         HttpRequest request = new HttpRequest()
             .setMethod(HttpMethod.POST)

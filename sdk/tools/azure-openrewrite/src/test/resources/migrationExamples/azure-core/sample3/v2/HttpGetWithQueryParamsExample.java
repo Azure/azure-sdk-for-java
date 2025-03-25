@@ -1,12 +1,11 @@
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 
 public class HttpGetWithQueryParamsExample {
     public static void main(String... args) {
-        HttpClient client = new JdkHttpClientBuilder().build();
+        HttpClient client = HttpClient.getSharedInstance();
         String url = "https://example.com?param1=value1&param2=value2";
         HttpRequest request = new HttpRequest()
             .setMethod(HttpMethod.GET)

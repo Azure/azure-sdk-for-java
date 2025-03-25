@@ -1,5 +1,3 @@
-package com.azure.core.http.netty.samples;
-
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -13,8 +11,8 @@ public class HttpPostFormDataExample {
         HttpHeaders headers = new HttpHeaders().set("Content-Type", "application/x-www-form-urlencoded");
         String formData = "key1=value1&key2=value2";
         HttpRequest request = new HttpRequest(HttpMethod.POST, "https://example.com")
-                .setHeaders(headers)
-                .setBody(formData);
+            .setHeaders(headers)
+            .setBody(formData);
 
         HttpResponse response = client.sendSync(request, Context.NONE);
         System.out.println("Status code: " + response.getStatusCode());
