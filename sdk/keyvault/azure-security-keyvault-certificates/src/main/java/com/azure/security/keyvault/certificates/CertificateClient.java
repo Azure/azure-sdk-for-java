@@ -1356,11 +1356,8 @@ public final class CertificateClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
-        CertificateUpdateParameters certificateUpdateParameters
-            = new CertificateUpdateParameters().setCertificatePolicy(getImplCertificatePolicy(policy));
-
         Response<BinaryData> response = implClient.updateCertificatePolicyWithResponse(certificateName,
-            BinaryData.fromObject(certificateUpdateParameters), new RequestOptions().setContext(context));
+            BinaryData.fromObject(getImplCertificatePolicy(policy)), new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, createCertificatePolicy(response.getValue()
             .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy.class)));

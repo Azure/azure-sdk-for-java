@@ -1596,12 +1596,9 @@ public final class CertificateAsyncClient {
         }
 
         try {
-            CertificateUpdateParameters certificateUpdateParameters
-                = new CertificateUpdateParameters().setCertificatePolicy(getImplCertificatePolicy(policy));
-
             return implClient
                 .updateCertificatePolicyWithResponseAsync(certificateName,
-                    BinaryData.fromObject(certificateUpdateParameters), EMPTY_OPTIONS)
+                    BinaryData.fromObject(getImplCertificatePolicy(policy)), EMPTY_OPTIONS)
                 .map(response -> new SimpleResponse<>(response,
                     createCertificatePolicy(response.getValue()
                         .toObject(
