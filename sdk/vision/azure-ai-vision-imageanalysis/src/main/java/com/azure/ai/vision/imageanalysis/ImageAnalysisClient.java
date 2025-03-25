@@ -267,7 +267,7 @@ public final class ImageAnalysisClient {
         return analyzeFromUrlWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).getValue()
-            .toObject(ImageAnalysisResult.class);
+                .toObject(ImageAnalysisResult.class);
     }
 
     /**
@@ -293,7 +293,7 @@ public final class ImageAnalysisClient {
         return analyzeFromUrlWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).getValue()
-            .toObject(ImageAnalysisResult.class);
+                .toObject(ImageAnalysisResult.class);
     }
 
     /**
