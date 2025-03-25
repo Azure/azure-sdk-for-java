@@ -41,7 +41,7 @@ extends:
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
       - name: azure-identity-v2
-        groupId: com.azure
+        groupId: com.azure.v2
         safeName: azureidentityv2
         releaseInBatch: ${{ parameters.release_azureidentityv2 }}
     LiveTestStages:
@@ -72,6 +72,6 @@ extends:
                 - $(sub-config-identity-test-resources)
           Artifacts:
             - name: azure-identity-v2
-              groupId: com.azure
+              groupId: com.azure.v2
               safeName: azureidentityv2
 
