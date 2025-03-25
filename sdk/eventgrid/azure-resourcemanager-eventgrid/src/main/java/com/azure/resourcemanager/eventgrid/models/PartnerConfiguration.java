@@ -34,7 +34,7 @@ public interface PartnerConfiguration {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to partner configuration resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

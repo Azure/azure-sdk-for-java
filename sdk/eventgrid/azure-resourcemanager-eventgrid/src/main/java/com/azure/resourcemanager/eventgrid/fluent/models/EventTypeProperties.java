@@ -27,7 +27,7 @@ public final class EventTypeProperties implements JsonSerializable<EventTypeProp
     private String description;
 
     /*
-     * Url of the schema for this event type.
+     * URL of the schema for this event type.
      */
     private String schemaUrl;
 
@@ -83,7 +83,7 @@ public final class EventTypeProperties implements JsonSerializable<EventTypeProp
     }
 
     /**
-     * Get the schemaUrl property: Url of the schema for this event type.
+     * Get the schemaUrl property: URL of the schema for this event type.
      * 
      * @return the schemaUrl value.
      */
@@ -92,7 +92,7 @@ public final class EventTypeProperties implements JsonSerializable<EventTypeProp
     }
 
     /**
-     * Set the schemaUrl property: Url of the schema for this event type.
+     * Set the schemaUrl property: URL of the schema for this event type.
      * 
      * @param schemaUrl the schemaUrl value to set.
      * @return the EventTypeProperties object itself.

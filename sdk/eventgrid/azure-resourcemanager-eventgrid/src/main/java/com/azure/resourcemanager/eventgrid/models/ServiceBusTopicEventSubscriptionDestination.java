@@ -48,7 +48,7 @@ public final class ServiceBusTopicEventSubscriptionDestination extends EventSubs
      * 
      * @return the innerProperties value.
      */
-    private ServiceBusTopicEventSubscriptionDestinationProperties innerProperties() {
+    ServiceBusTopicEventSubscriptionDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

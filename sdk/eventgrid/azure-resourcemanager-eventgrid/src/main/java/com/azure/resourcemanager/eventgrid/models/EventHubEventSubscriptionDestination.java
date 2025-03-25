@@ -48,7 +48,7 @@ public final class EventHubEventSubscriptionDestination extends EventSubscriptio
      * 
      * @return the innerProperties value.
      */
-    private EventHubEventSubscriptionDestinationProperties innerProperties() {
+    EventHubEventSubscriptionDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

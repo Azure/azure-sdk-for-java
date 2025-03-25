@@ -202,6 +202,7 @@
     "sdk/devcenter/azure-developer-devcenter/**",
     "sdk/loadtesting/azure-developer-loadtesting/**",
     "sdk/clientcore/core/**",
+    "sdk/clientcore/http-netty/**",
     "sdk/clientcore/http-okhttp3/**",
     "sdk/clientcore/annotation-processor/**",
     "sdk/clientcore/annotation-processor-test/**",

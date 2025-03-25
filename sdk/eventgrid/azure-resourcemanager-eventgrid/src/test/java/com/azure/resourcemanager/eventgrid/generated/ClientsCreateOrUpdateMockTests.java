@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.Client;
@@ -27,34 +27,33 @@ public final class ClientsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"qrdgrtw\",\"authenticationName\":\"wjzl\",\"clientCertificateAuthentication\":{\"validationScheme\":\"UriMatchesAuthenticationName\",\"allowedThumbprints\":[\"zzwjcayerzrran\",\"ybylpol\"]},\"state\":\"Disabled\",\"attributes\":{\"jwvuag\":\"datasrleinkfscjfn\",\"klzmijajw\":\"dataqwtltngvmreupt\",\"fsvagh\":\"datal\"},\"provisioningState\":\"Succeeded\"},\"id\":\"wl\",\"name\":\"lr\",\"type\":\"igt\"}";
+            = "{\"properties\":{\"description\":\"azvdhctmmkosz\",\"authenticationName\":\"blnsntrpcaqk\",\"clientCertificateAuthentication\":{\"validationScheme\":\"IpMatchesAuthenticationName\",\"allowedThumbprints\":[\"fmhklbnld\",\"vcb\",\"hez\",\"quwusq\"]},\"state\":\"Enabled\",\"attributes\":{\"mbjwcolbmxlb\":\"databrruyuuatv\",\"pcpahprzrvxhmtf\":\"dataw\"},\"provisioningState\":\"Succeeded\"},\"id\":\"xzcmjhngxno\",\"name\":\"rxtd\",\"type\":\"sn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Client response = manager.clients()
-            .define("hmkvfruwkudrb")
-            .withExistingNamespace("covdwzqaux", "a")
-            .withDescription("txudqyeme")
-            .withAuthenticationName("naucmcirtnee")
+            .define("valqjrhuzgfxo")
+            .withExistingNamespace("ixh", "fratqxmbjroumzz")
+            .withDescription("pusllywpv")
+            .withAuthenticationName("otz")
             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
                 .withValidationScheme(ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME)
-                .withAllowedThumbprints(Arrays.asList("cgxefnohaitraniz", "rwgudasmxub", "fbngfcocef")))
+                .withAllowedThumbprints(Arrays.asList("lgry", "qiuasigrows", "c", "equygdjboqgrmtq")))
             .withState(ClientState.DISABLED)
-            .withAttributes(mapOf("ud", "datalfmpztr"))
+            .withAttributes(mapOf("iidisczskoswoqiq", "dataadrmmwiuawvcmjzk", "amnppcce", "datazugamxzkrrcoiis"))
             .create();
 
-        Assertions.assertEquals("qrdgrtw", response.description());
-        Assertions.assertEquals("wjzl", response.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("azvdhctmmkosz", response.description());
+        Assertions.assertEquals("blnsntrpcaqk", response.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME,
             response.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("zzwjcayerzrran",
-            response.clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.DISABLED, response.state());
+        Assertions.assertEquals("fmhklbnld", response.clientCertificateAuthentication().allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientState.ENABLED, response.state());
     }
 
     // Use "Map.of" if available

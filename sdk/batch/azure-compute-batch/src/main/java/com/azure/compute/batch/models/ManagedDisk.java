@@ -23,6 +23,19 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
     @Generated
     private StorageAccountType storageAccountType;
 
+    /*
+     * Specifies the security profile settings for the managed disk.
+     */
+    @Generated
+    private VMDiskSecurityProfile securityProfile;
+
+    /**
+     * Creates an instance of ManagedDisk class.
+     */
+    @Generated
+    public ManagedDisk() {
+    }
+
     /**
      * Get the storageAccountType property: The storage account type for managed disk.
      *
@@ -31,6 +44,40 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
     @Generated
     public StorageAccountType getStorageAccountType() {
         return this.storageAccountType;
+    }
+
+    /**
+     * Set the storageAccountType property: The storage account type for managed disk.
+     *
+     * @param storageAccountType the storageAccountType value to set.
+     * @return the ManagedDisk object itself.
+     */
+    @Generated
+    public ManagedDisk setStorageAccountType(StorageAccountType storageAccountType) {
+        this.storageAccountType = storageAccountType;
+        return this;
+    }
+
+    /**
+     * Get the securityProfile property: Specifies the security profile settings for the managed disk.
+     *
+     * @return the securityProfile value.
+     */
+    @Generated
+    public VMDiskSecurityProfile getSecurityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: Specifies the security profile settings for the managed disk.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the ManagedDisk object itself.
+     */
+    @Generated
+    public ManagedDisk setSecurityProfile(VMDiskSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
     }
 
     /**
@@ -71,52 +118,5 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
             }
             return deserializedManagedDisk;
         });
-    }
-
-    /*
-     * Specifies the security profile settings for the managed disk.
-     */
-    @Generated
-    private VMDiskSecurityProfile securityProfile;
-
-    /**
-     * Creates an instance of ManagedDisk class.
-     */
-    @Generated
-    public ManagedDisk() {
-    }
-
-    /**
-     * Set the storageAccountType property: The storage account type for managed disk.
-     *
-     * @param storageAccountType the storageAccountType value to set.
-     * @return the ManagedDisk object itself.
-     */
-    @Generated
-    public ManagedDisk setStorageAccountType(StorageAccountType storageAccountType) {
-        this.storageAccountType = storageAccountType;
-        return this;
-    }
-
-    /**
-     * Get the securityProfile property: Specifies the security profile settings for the managed disk.
-     *
-     * @return the securityProfile value.
-     */
-    @Generated
-    public VMDiskSecurityProfile getSecurityProfile() {
-        return this.securityProfile;
-    }
-
-    /**
-     * Set the securityProfile property: Specifies the security profile settings for the managed disk.
-     *
-     * @param securityProfile the securityProfile value to set.
-     * @return the ManagedDisk object itself.
-     */
-    @Generated
-    public ManagedDisk setSecurityProfile(VMDiskSecurityProfile securityProfile) {
-        this.securityProfile = securityProfile;
-        return this;
     }
 }
