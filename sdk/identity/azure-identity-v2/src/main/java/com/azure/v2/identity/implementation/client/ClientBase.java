@@ -76,10 +76,9 @@ public abstract class ClientBase {
 
         policies.addAll(pipelineOptions.getHttpPipelinePolicy());
 
-        HttpInstrumentationOptions instrumentationOptions
-            = pipelineOptions.getHttpInstrumentationOptions() == null
-                ? new HttpInstrumentationOptions()
-                : pipelineOptions.getHttpInstrumentationOptions();
+        HttpInstrumentationOptions instrumentationOptions = pipelineOptions.getHttpInstrumentationOptions() == null
+            ? new HttpInstrumentationOptions()
+            : pipelineOptions.getHttpInstrumentationOptions();
 
         policies.add(new HttpInstrumentationPolicy(instrumentationOptions));
 
