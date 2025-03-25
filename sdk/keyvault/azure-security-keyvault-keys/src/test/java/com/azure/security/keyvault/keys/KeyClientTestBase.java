@@ -511,7 +511,7 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
     }
 
     void getKeyAttestationRunner(Consumer<CreateKeyOptions> testRunner) {
-        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
+        final KeyType keyType = runManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
         final CreateKeyOptions createKeyOptions =
             new CreateKeyOptions(testResourceNamer.randomName("testKey4", 20), keyType)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
