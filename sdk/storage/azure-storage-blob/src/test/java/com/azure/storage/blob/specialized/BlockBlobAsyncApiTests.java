@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -19,11 +20,14 @@ import com.azure.core.util.ProgressListener;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.ProgressReceiver;
+import com.azure.storage.blob.implementation.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobCopySourceTagsMode;
@@ -47,6 +51,7 @@ import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
@@ -58,6 +63,10 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.RequestAssertionPolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
+import com.azure.storage.file.share.ShareAsyncClient;
+import com.azure.storage.file.share.ShareDirectoryAsyncClient;
+import com.azure.storage.file.share.ShareFileAsyncClient;
+import com.azure.storage.file.share.ShareServiceAsyncClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -434,9 +443,9 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void stageBlockFromUrlSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-    
+
         String blockID = getBlockID();
-    
+
         StepVerifier.create(destBlob.stageBlockFromUrl(blockID, blockBlobAsyncClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -2393,7 +2402,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void uploadFromUrlSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-    
+
         StepVerifier.create(destBlob.uploadFromUrl(blockBlobAsyncClient.getBlobUrl()))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -2691,4 +2700,90 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(aadBlob.exists()).expectNext(true).verifyComplete();
     }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @LiveOnly
+    @Test
+    public void stageBlockFromUriSourceBearerTokenFilesSource() {
+        BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient();
+        String shareName = generateShareName();
+        ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
+
+        byte[] data = getRandomByteArray(Constants.KB);
+        Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
+
+        ShareDirectoryAsyncClient directoryAsyncClient = shareAsyncClient.getDirectoryClient(generateBlobName());
+        ShareFileAsyncClient fileAsyncClient = directoryAsyncClient.getFileClient(generateBlobName());
+
+        BlockBlobAsyncClient destBlob = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        String sourceBearerToken = getAuthToken();
+        HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
+        String blockId = getBlockID();
+
+        StepVerifier.create(
+                containerAsyncClient.create()
+                    .then(shareAsyncClient.create())
+                    .then(directoryAsyncClient.create())
+                    .then(fileAsyncClient.create(Constants.KB))
+                    .then(fileAsyncClient.upload(dataFlux, Constants.KB))
+                    .then(destBlob.stageBlockFromUrlWithResponse(
+                        new BlockBlobStageBlockFromUrlOptions(blockId, fileAsyncClient.getFileUrl())
+                            .setSourceAuthorization(sourceAuth)
+                            .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP), null))
+                    .then(destBlob.commitBlockList(Collections.singletonList(blockId)))
+                    .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download()))
+            )
+            .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
+            .verifyComplete();
+
+        // Cleanup
+        shareAsyncClient.delete().block();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @LiveOnly
+    @Test
+    public void uploadFromUriAsyncSourceBearerTokenFilesSource() {
+        BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient();
+        String shareName = generateShareName();
+        ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
+
+        byte[] data = getRandomByteArray(Constants.KB);
+        Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
+
+        ShareDirectoryAsyncClient directoryAsyncClient = shareAsyncClient.getDirectoryClient(generateBlobName());
+        ShareFileAsyncClient fileAsyncClient = directoryAsyncClient.getFileClient(generateBlobName());
+
+        BlockBlobAsyncClient destBlob = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        String sourceBearerToken = getAuthToken();
+        HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
+
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(fileAsyncClient.getFileUrl())
+            .setSourceAuthorization(sourceAuth)
+            .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+
+        StepVerifier.create(
+                containerAsyncClient.create()
+                    .then(shareAsyncClient.create())
+                    .then(directoryAsyncClient.create())
+                    .then(fileAsyncClient.create(Constants.KB))
+                    .then(fileAsyncClient.upload(dataFlux, Constants.KB))
+                    .then(destBlob.uploadFromUrlWithResponse(options, null))
+                    .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download()))
+            )
+            .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
+            .verifyComplete();
+
+        // Cleanup
+        shareAsyncClient.delete().block();
+    }
+
 }

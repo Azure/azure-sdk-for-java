@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -12,8 +13,11 @@ import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.implementation.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -35,12 +39,17 @@ import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
+import com.azure.storage.file.share.ShareAsyncClient;
+import com.azure.storage.file.share.ShareDirectoryAsyncClient;
+import com.azure.storage.file.share.ShareFileAsyncClient;
+import com.azure.storage.file.share.ShareServiceAsyncClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +61,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -1799,6 +1809,51 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl()).audience(audience).buildPageBlobAsyncClient();
 
         StepVerifier.create(aadBlob.exists()).expectNext(true).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @LiveOnly
+    public void uploadPagesFromUriSourceBearerTokenFilesSource() {
+        BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerAsyncClient
+            = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient();
+        String shareName = generateShareName();
+        ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
+
+        byte[] data = getRandomByteArray(Constants.KB);
+        Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
+
+        ShareDirectoryAsyncClient directoryAsyncClient = shareAsyncClient.getDirectoryClient(generateBlobName());
+        ShareFileAsyncClient fileAsyncClient = directoryAsyncClient.getFileClient(generateBlobName());
+
+        PageBlobAsyncClient destBlob
+            = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+
+        String sourceBearerToken = getAuthToken();
+        HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
+
+        StepVerifier
+            .create(containerAsyncClient.create()
+                .then(shareAsyncClient.create())
+                .then(directoryAsyncClient.create())
+                .then(fileAsyncClient.create(Constants.KB))
+                .then(fileAsyncClient.upload(dataFlux, Constants.KB))
+                .then(destBlob.create(Constants.KB))
+                .then(destBlob.uploadPagesFromUrlWithResponse(
+                    new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1),
+                        fileAsyncClient.getFileUrl()).setSourceAuthorization(sourceAuth)
+                            .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP),
+                    null))
+                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download())))
+            .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
+            .verifyComplete();
+
+        // Cleanup
+        shareAsyncClient.delete().block();
+
     }
 
 }

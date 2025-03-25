@@ -4,11 +4,15 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.implementation.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobAudience;
@@ -18,6 +22,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
@@ -27,6 +32,10 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
+import com.azure.storage.file.share.ShareAsyncClient;
+import com.azure.storage.file.share.ShareDirectoryAsyncClient;
+import com.azure.storage.file.share.ShareFileAsyncClient;
+import com.azure.storage.file.share.ShareServiceAsyncClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -534,7 +543,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void appendBlockFromURLSourceErrorAndStatusCodeNewTest() {
         AppendBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
-    
+
         StepVerifier.create(destBlob.createIfNotExists().then(destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES))))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -928,4 +937,54 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void getMaxBlocks() {
         assertEquals(MAX_APPEND_BLOCKS, bc.getMaxBlocks());
     }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @LiveOnly
+    @Test
+    public void appendBlockFromUrlSourceBearerTokenFileSource() {
+        BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient();
+        String shareName = generateShareName();
+        ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
+
+        byte[] data = getRandomByteArray(Constants.KB);
+        Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
+
+        ShareDirectoryAsyncClient directoryAsyncClient = shareAsyncClient.getDirectoryClient(generateBlobName());
+        ShareFileAsyncClient fileAsyncClient = directoryAsyncClient.getFileClient(generateBlobName());
+
+        AppendBlobAsyncClient destBlob = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+
+        String sourceBearerToken = getAuthToken();
+        HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
+
+        String sourceUrl = fileAsyncClient.getFileUrl();
+
+        AppendBlobAppendBlockFromUrlOptions appendOptions = new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
+            .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP)
+            .setSourceRange(null)
+            .setSourceContentMd5(null)
+            .setDestinationRequestConditions(null)
+            .setSourceRequestConditions(null)
+            .setSourceAuthorization(sourceAuth);
+
+        StepVerifier.create(
+                containerAsyncClient.create()
+                    .then(shareAsyncClient.create())
+                    .then(directoryAsyncClient.create())
+                    .then(fileAsyncClient.create(Constants.KB))
+                    .then(fileAsyncClient.upload(dataFlux, Constants.KB))
+                    .then(destBlob.createIfNotExists())
+                    .then(destBlob.appendBlockFromUrlWithResponse(appendOptions, null))
+                    .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download()))
+            )
+            .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
+            .verifyComplete();
+
+        // Cleanup
+        shareAsyncClient.delete().block();
+    }
+
 }
