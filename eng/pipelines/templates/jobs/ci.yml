@@ -401,7 +401,7 @@ jobs:
             pwsh: true
             filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
             arguments: >
-              -ServiceDirectories $(PRServiceDirectories)
+              -ServiceDirectories '$(PRServiceDirectories)'
       - ${{ else }}:
         - task: PowerShell@2
           displayName: Verify Code Generation
@@ -419,7 +419,7 @@ jobs:
             pwsh: true
             filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
             arguments: >
-              -ServiceDirectories $(PRServiceDirectories)
+              -ServiceDirectories '$(PRServiceDirectories)'
       - ${{ else }}:
         - task: PowerShell@2
           displayName: Verify TypeSpec Code Generation
