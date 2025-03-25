@@ -121,7 +121,6 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         CertificateClientBuilder builder = new CertificateClientBuilder().vaultUrl(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .httpClient(httpClient);
 
         if (!interceptorManager.isLiveMode()) {
