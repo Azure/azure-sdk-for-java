@@ -12,13 +12,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-import static io.clientcore.core.annotations.TypeConditions.FLUENT;
+import static io.clientcore.core.annotations.MetadataProperties.FLUENT;
 
 /**
  * The outgoing HTTP request. This class provides ways to construct it with an {@link HttpMethod}, {@link URI},
  * {@link HttpHeader} and request body.
  */
-@Metadata(conditions = FLUENT)
+@Metadata(properties = FLUENT)
 public class HttpRequest {
     // HttpRequest is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRequest.class);

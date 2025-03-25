@@ -14,16 +14,16 @@ public final class SnapshotsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotsList model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"eddgssofw\",\"properties\":{\"snapshotId\":\"qal\",\"created\":\"2021-10-24T21:45:29Z\",\"provisioningState\":\"jijpxac\"},\"id\":\"udfnbyxba\",\"name\":\"abjy\",\"type\":\"ayffim\"},{\"location\":\"zrtuzq\",\"properties\":{\"snapshotId\":\"exn\",\"created\":\"2021-10-08T20:33:25Z\",\"provisioningState\":\"nwnwme\"},\"id\":\"syyceuzsoibjud\",\"name\":\"frxtrthzvaytdwk\",\"type\":\"brqubp\"},{\"location\":\"xhexiilivpdti\",\"properties\":{\"snapshotId\":\"tdqoaxoruzfgsq\",\"created\":\"2021-04-24T02:41:36Z\",\"provisioningState\":\"rxxle\"},\"id\":\"ramxjezwlwnw\",\"name\":\"uqlcvydy\",\"type\":\"atdooaojkniod\"}]}")
+            "{\"value\":[{\"location\":\"aw\",\"properties\":{\"snapshotId\":\"ivx\",\"created\":\"2021-12-04T11:19:32Z\",\"provisioningState\":\"lpcirelsf\"},\"id\":\"enwabfatk\",\"name\":\"ddxbjhwuaanoz\",\"type\":\"osphyoul\"},{\"location\":\"jrvxaglrv\",\"properties\":{\"snapshotId\":\"wosytxitcskf\",\"created\":\"2021-07-26T14:22:18Z\",\"provisioningState\":\"umiekkezzi\"},\"id\":\"ly\",\"name\":\"jhdgqggebdunyga\",\"type\":\"qidbqfatpxllrxcy\"}]}")
             .toObject(SnapshotsList.class);
-        Assertions.assertEquals("eddgssofw", model.value().get(0).location());
+        Assertions.assertEquals("aw", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnapshotsList model = new SnapshotsList().withValue(Arrays.asList(new SnapshotInner().withLocation("eddgssofw"),
-            new SnapshotInner().withLocation("zrtuzq"), new SnapshotInner().withLocation("xhexiilivpdti")));
+        SnapshotsList model = new SnapshotsList().withValue(
+            Arrays.asList(new SnapshotInner().withLocation("aw"), new SnapshotInner().withLocation("jrvxaglrv")));
         model = BinaryData.fromObject(model).toObject(SnapshotsList.class);
-        Assertions.assertEquals("eddgssofw", model.value().get(0).location());
+        Assertions.assertEquals("aw", model.value().get(0).location());
     }
 }

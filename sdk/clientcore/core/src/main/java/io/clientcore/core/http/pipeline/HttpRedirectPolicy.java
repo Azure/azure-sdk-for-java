@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
@@ -10,6 +12,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -34,6 +37,7 @@ import static io.clientcore.core.implementation.instrumentation.LoggingEventName
  * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as a
  * {@link Response response}.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpRedirectPolicy.class);
     private final int maxAttempts;
@@ -81,7 +85,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUris for each individual request.
         InstrumentationContext instrumentationContext = httpRequest.getRequestOptions() == null
             ? null
@@ -100,12 +104,12 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URI.
      */
-    private Response<?> attemptRedirect(ClientLogger logger, final HttpPipelineNextPolicy next,
+    private Response<BinaryData> attemptRedirect(ClientLogger logger, final HttpPipelineNextPolicy next,
         final int redirectAttempt, LinkedHashSet<String> attemptedRedirectUris,
         InstrumentationContext instrumentationContext) {
 
         // Make sure the context is not modified during redirect, except for the URI
-        Response<?> response = next.copy().process();
+        Response<BinaryData> response = next.copy().process();
 
         HttpRedirectCondition requestRedirectCondition
             = new HttpRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
@@ -122,7 +126,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
 
     private boolean defaultShouldAttemptRedirect(ClientLogger logger, HttpRedirectCondition requestRedirectCondition,
         InstrumentationContext context) {
-        Response<?> response = requestRedirectCondition.getResponse();
+        Response<BinaryData> response = requestRedirectCondition.getResponse();
         int tryCount = requestRedirectCondition.getTryCount();
         Set<String> attemptedRedirectUris = requestRedirectCondition.getRedirectedUris();
         String redirectUri = response.getHeaders().getValue(this.locationHeader);

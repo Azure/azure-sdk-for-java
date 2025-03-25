@@ -5,6 +5,8 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.implementation.GenericParameterizedType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -13,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -303,10 +307,26 @@ public class UnionTests {
     }
 
     // Additional tests
-    @Test
-    void createUnionWithNullTypes() {
-        assertThrows(IllegalArgumentException.class, () -> Union.ofTypes((Type) null));
-        assertThrows(IllegalArgumentException.class, () -> Union.ofTypes(String.class, null, int.class));
+    @ParameterizedTest
+    @MethodSource("invalidUnionOfTypesSupplier")
+    public void invalidUnionOfTypes(Supplier<Union> unionSupplier) {
+        assertThrows(IllegalArgumentException.class, unionSupplier::get);
+    }
+
+    private static Stream<Supplier<Union>> invalidUnionOfTypesSupplier() {
+        return Stream.of(
+            // null array
+            () -> Union.ofTypes((Type[]) null),
+
+            // empty array
+            () -> Union.ofTypes(),
+
+            // null type in array
+            () -> Union.ofTypes(String.class, null, int.class),
+
+            // unknown type
+            () -> Union.ofTypes(new Type() {
+            }));
     }
 
     @Test
@@ -432,5 +452,23 @@ public class UnionTests {
         assertNotNull(unionValue);
         assertEquals(nestedUnion, unionValue);
         assertEquals(STRING_VALUE, unionValue.getValue());
+    }
+
+    @Test
+    public void getValueWithSuperType() {
+        Union union = Union.ofTypes(Long.class, Integer.class);
+        union.setValue(1L);
+
+        Number number = union.getValue(Number.class);
+        assertEquals(1L, number.longValue());
+    }
+
+    @Test
+    public void getValueWithSubType() {
+        Union union = Union.ofTypes(Number.class);
+        union.setValue(1L);
+
+        Long number = union.getValue(Long.class);
+        assertEquals(1L, number.longValue());
     }
 }

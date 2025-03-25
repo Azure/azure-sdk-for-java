@@ -3,6 +3,8 @@
 
 package io.clientcore.core.serialization.json.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -16,6 +18,7 @@ import java.util.Objects;
 /**
  * Model representing a JSON array.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class JsonArray extends JsonElement {
     private final List<JsonElement> elements;
 

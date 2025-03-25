@@ -10,6 +10,20 @@
 
 ### Other Changes
 
+## 1.55.3 (2025-03-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-json` from `1.4.0` to `1.5.0`.
+
+## 1.55.2 (2025-02-20)
+
+### Other Changes
+
+- Fix for the `1.55.1` release as Netty dependencies weren't updated.
+
 ## 1.55.1 (2025-02-12)
 
 ### Other Changes

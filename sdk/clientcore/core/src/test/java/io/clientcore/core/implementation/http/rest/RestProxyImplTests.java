@@ -4,19 +4,19 @@
 package io.clientcore.core.implementation.http.rest;
 
 import io.clientcore.core.annotations.ServiceInterface;
-import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Named;
@@ -86,7 +86,7 @@ public class RestProxyImplTests {
         private volatile boolean lastResponseClosed;
 
         @Override
-        public Response<?> send(HttpRequest request) {
+        public Response<BinaryData> send(HttpRequest request) {
             boolean success = request.getUri().getPath().equals("/my/uri/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
@@ -95,7 +95,7 @@ public class RestProxyImplTests {
                 success &= request.getHttpMethod().equals(HttpMethod.GET);
             }
 
-            return new MockHttpResponse(request, success ? 200 : 400) {
+            return new Response<BinaryData>(request, success ? 200 : 400, new HttpHeaders(), BinaryData.empty()) {
                 @Override
                 public void close() throws IOException {
                     lastResponseClosed = true;

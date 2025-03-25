@@ -97,7 +97,7 @@ public interface Volume {
     /**
      * Gets the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
@@ -202,7 +202,7 @@ public interface Volume {
 
     /**
      * Gets the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @return the volumeType value.
      */
@@ -215,16 +215,6 @@ public interface Volume {
      * @return the dataProtection value.
      */
     VolumePropertiesDataProtection dataProtection();
-
-    /**
-     * Gets the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
-     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
-     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
-     * clone volume, set the property as accepted.
-     * 
-     * @return the acceptGrowCapacityPoolForShortTermCloneSplit value.
-     */
-    AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit();
 
     /**
      * Gets the isRestoring property: Restoring.
@@ -358,14 +348,21 @@ public interface Volume {
     CoolAccessRetrievalPolicy coolAccessRetrievalPolicy();
 
     /**
+     * Gets the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @return the coolAccessTieringPolicy value.
+     */
+    CoolAccessTieringPolicy coolAccessTieringPolicy();
+
+    /**
      * Gets the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
-     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
-     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
-     * as its last saved value only.
+     * read/execute to group and other users.
      * 
      * @return the unixPermissions value.
      */
@@ -516,20 +513,6 @@ public interface Volume {
     String originatingResourceId();
 
     /**
-     * Gets the inheritedSizeInBytes property: Space shared by short term clone volume with parent volume in bytes.
-     * 
-     * @return the inheritedSizeInBytes value.
-     */
-    Long inheritedSizeInBytes();
-
-    /**
-     * Gets the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    VolumeLanguage language();
-
-    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -632,12 +615,12 @@ public interface Volume {
             /**
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
              * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
-             * For large volumes, valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
              * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
              * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-             * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
              * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
@@ -667,19 +650,20 @@ public interface Volume {
             DefinitionStages.WithServiceLevel, DefinitionStages.WithExportPolicy, DefinitionStages.WithProtocolTypes,
             DefinitionStages.WithSnapshotId, DefinitionStages.WithDeleteBaseSnapshot, DefinitionStages.WithBackupId,
             DefinitionStages.WithNetworkFeatures, DefinitionStages.WithVolumeType, DefinitionStages.WithDataProtection,
-            DefinitionStages.WithAcceptGrowCapacityPoolForShortTermCloneSplit, DefinitionStages.WithIsRestoring,
-            DefinitionStages.WithSnapshotDirectoryVisible, DefinitionStages.WithKerberosEnabled,
-            DefinitionStages.WithSecurityStyle, DefinitionStages.WithSmbEncryption,
-            DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
-            DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithThroughputMibps,
-            DefinitionStages.WithEncryptionKeySource, DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
-            DefinitionStages.WithLdapEnabled, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
-            DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithUnixPermissions,
-            DefinitionStages.WithAvsDataStore, DefinitionStages.WithIsDefaultQuotaEnabled,
-            DefinitionStages.WithDefaultUserQuotaInKiBs, DefinitionStages.WithDefaultGroupQuotaInKiBs,
-            DefinitionStages.WithCapacityPoolResourceId, DefinitionStages.WithProximityPlacementGroup,
-            DefinitionStages.WithVolumeSpecName, DefinitionStages.WithPlacementRules,
-            DefinitionStages.WithEnableSubvolumes, DefinitionStages.WithIsLargeVolume, DefinitionStages.WithLanguage {
+            DefinitionStages.WithIsRestoring, DefinitionStages.WithSnapshotDirectoryVisible,
+            DefinitionStages.WithKerberosEnabled, DefinitionStages.WithSecurityStyle,
+            DefinitionStages.WithSmbEncryption, DefinitionStages.WithSmbAccessBasedEnumeration,
+            DefinitionStages.WithSmbNonBrowsable, DefinitionStages.WithSmbContinuouslyAvailable,
+            DefinitionStages.WithThroughputMibps, DefinitionStages.WithEncryptionKeySource,
+            DefinitionStages.WithKeyVaultPrivateEndpointResourceId, DefinitionStages.WithLdapEnabled,
+            DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
+            DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithCoolAccessTieringPolicy,
+            DefinitionStages.WithUnixPermissions, DefinitionStages.WithAvsDataStore,
+            DefinitionStages.WithIsDefaultQuotaEnabled, DefinitionStages.WithDefaultUserQuotaInKiBs,
+            DefinitionStages.WithDefaultGroupQuotaInKiBs, DefinitionStages.WithCapacityPoolResourceId,
+            DefinitionStages.WithProximityPlacementGroup, DefinitionStages.WithVolumeSpecName,
+            DefinitionStages.WithPlacementRules, DefinitionStages.WithEnableSubvolumes,
+            DefinitionStages.WithIsLargeVolume {
             /**
              * Executes the create request.
              * 
@@ -823,10 +807,10 @@ public interface Volume {
         interface WithVolumeType {
             /**
              * Specifies the volumeType property: What type of volume is this. For destination volumes in Cross Region
-             * Replication, set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+             * Replication, set type to DataProtection.
              * 
              * @param volumeType What type of volume is this. For destination volumes in Cross Region Replication, set
-             * type to DataProtection. For creating clone volume, set type to ShortTermClone.
+             * type to DataProtection.
              * @return the next definition stage.
              */
             WithCreate withVolumeType(String volumeType);
@@ -845,26 +829,6 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withDataProtection(VolumePropertiesDataProtection dataProtection);
-        }
-
-        /**
-         * The stage of the Volume definition allowing to specify acceptGrowCapacityPoolForShortTermCloneSplit.
-         */
-        interface WithAcceptGrowCapacityPoolForShortTermCloneSplit {
-            /**
-             * Specifies the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term
-             * clone volume, if the parent pool does not have enough space to accommodate the volume after split, it
-             * will be automatically resized, which will lead to increased billing. To accept capacity pool size auto
-             * grow and create a short term clone volume, set the property as accepted..
-             * 
-             * @param acceptGrowCapacityPoolForShortTermCloneSplit While auto splitting the short term clone volume, if
-             * the parent pool does not have enough space to accommodate the volume after split, it will be
-             * automatically resized, which will lead to increased billing. To accept capacity pool size auto grow and
-             * create a short term clone volume, set the property as accepted.
-             * @return the next definition stage.
-             */
-            WithCreate withAcceptGrowCapacityPoolForShortTermCloneSplit(
-                AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit);
         }
 
         /**
@@ -1102,6 +1066,27 @@ public interface Volume {
         }
 
         /**
+         * The stage of the Volume definition allowing to specify coolAccessTieringPolicy.
+         */
+        interface WithCoolAccessTieringPolicy {
+            /**
+             * Specifies the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks
+             * are moved to cool tier. The possible values for this field are: Auto - Moves cold user data blocks in
+             * both the Snapshot copies and the active file system to the cool tier tier. This policy is the default.
+             * SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that are not associated with the
+             * active file system to the cool tier..
+             * 
+             * @param coolAccessTieringPolicy coolAccessTieringPolicy determines which cold data blocks are moved to
+             * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the
+             * Snapshot copies and the active file system to the cool tier tier. This policy is the default.
+             * SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that are not associated with the
+             * active file system to the cool tier.
+             * @return the next definition stage.
+             */
+            WithCreate withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy);
+        }
+
+        /**
          * The stage of the Volume definition allowing to specify unixPermissions.
          */
         interface WithUnixPermissions {
@@ -1110,19 +1095,13 @@ public interface Volume {
              * First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects
              * permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for
              * other users in the same group. the fourth for other users not in the group. 0755 - gives
-             * read/write/execute permissions to owner and read/execute to group and other users. Avoid passing null
-             * value for unixPermissions in volume update operation, As per the behavior, If Null value is passed then
-             * user-visible unixPermissions value will became null, and user will not be able to get unixPermissions
-             * value. On safer side, actual unixPermissions value on volume will remain as its last saved value only..
+             * read/write/execute permissions to owner and read/execute to group and other users..
              * 
              * @param unixPermissions UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
              * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission
              * for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users
              * in the same group. the fourth for other users not in the group. 0755 - gives read/write/execute
-             * permissions to owner and read/execute to group and other users. Avoid passing null value for
-             * unixPermissions in volume update operation, As per the behavior, If Null value is passed then
-             * user-visible unixPermissions value will became null, and user will not be able to get unixPermissions
-             * value. On safer side, actual unixPermissions value on volume will remain as its last saved value only.
+             * permissions to owner and read/execute to group and other users.
              * @return the next definition stage.
              */
             WithCreate withUnixPermissions(String unixPermissions);
@@ -1267,19 +1246,6 @@ public interface Volume {
              */
             WithCreate withIsLargeVolume(Boolean isLargeVolume);
         }
-
-        /**
-         * The stage of the Volume definition allowing to specify language.
-         */
-        interface WithLanguage {
-            /**
-             * Specifies the language property: Language supported for volume..
-             * 
-             * @param language Language supported for volume.
-             * @return the next definition stage.
-             */
-            WithCreate withLanguage(VolumeLanguage language);
-        }
     }
 
     /**
@@ -1297,8 +1263,9 @@ public interface Volume {
         UpdateStages.WithDataProtection, UpdateStages.WithIsDefaultQuotaEnabled,
         UpdateStages.WithDefaultUserQuotaInKiBs, UpdateStages.WithDefaultGroupQuotaInKiBs,
         UpdateStages.WithUnixPermissions, UpdateStages.WithCoolAccess, UpdateStages.WithCoolnessPeriod,
-        UpdateStages.WithCoolAccessRetrievalPolicy, UpdateStages.WithSnapshotDirectoryVisible,
-        UpdateStages.WithSmbAccessBasedEnumeration, UpdateStages.WithSmbNonBrowsable {
+        UpdateStages.WithCoolAccessRetrievalPolicy, UpdateStages.WithCoolAccessTieringPolicy,
+        UpdateStages.WithSnapshotDirectoryVisible, UpdateStages.WithSmbAccessBasedEnumeration,
+        UpdateStages.WithSmbNonBrowsable {
         /**
          * Executes the update request.
          * 
@@ -1352,12 +1319,12 @@ public interface Volume {
             /**
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
              * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
-             * For large volumes, valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
              * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
              * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-             * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
              * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
@@ -1540,6 +1507,27 @@ public interface Volume {
         }
 
         /**
+         * The stage of the Volume update allowing to specify coolAccessTieringPolicy.
+         */
+        interface WithCoolAccessTieringPolicy {
+            /**
+             * Specifies the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks
+             * are moved to cool tier. The possible values for this field are: Auto - Moves cold user data blocks in
+             * both the Snapshot copies and the active file system to the cool tier tier. This policy is the default.
+             * SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that are not associated with the
+             * active file system to the cool tier..
+             * 
+             * @param coolAccessTieringPolicy coolAccessTieringPolicy determines which cold data blocks are moved to
+             * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the
+             * Snapshot copies and the active file system to the cool tier tier. This policy is the default.
+             * SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that are not associated with the
+             * active file system to the cool tier.
+             * @return the next definition stage.
+             */
+            Update withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy);
+        }
+
+        /**
          * The stage of the Volume update allowing to specify snapshotDirectoryVisible.
          */
         interface WithSnapshotDirectoryVisible {
@@ -1672,28 +1660,6 @@ public interface Volume {
     void resetCifsPassword(Context context);
 
     /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void splitCloneFromParent();
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void splitCloneFromParent(Context context);
-
-    /**
      * Break file locks
      * 
      * Break all the file locks on a volume.
@@ -1743,30 +1709,6 @@ public interface Volume {
      */
     GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(GetGroupIdListForLdapUserRequest body,
         Context context);
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Report for volume.
-     */
-    ListQuotaReportResponse listQuotaReport();
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Report for volume.
-     */
-    ListQuotaReportResponse listQuotaReport(Context context);
 
     /**
      * Break volume replication

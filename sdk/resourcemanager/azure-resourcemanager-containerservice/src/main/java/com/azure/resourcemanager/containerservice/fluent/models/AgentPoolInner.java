@@ -17,6 +17,7 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSetting
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
+import com.azure.resourcemanager.containerservice.models.GpuProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
@@ -1221,6 +1222,29 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withSecurityProfile(securityProfile);
+        return this;
+    }
+
+    /**
+     * Get the gpuProfile property: GPU settings for the Agent Pool.
+     * 
+     * @return the gpuProfile value.
+     */
+    public GpuProfile gpuProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().gpuProfile();
+    }
+
+    /**
+     * Set the gpuProfile property: GPU settings for the Agent Pool.
+     * 
+     * @param gpuProfile the gpuProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withGpuProfile(GpuProfile gpuProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withGpuProfile(gpuProfile);
         return this;
     }
 

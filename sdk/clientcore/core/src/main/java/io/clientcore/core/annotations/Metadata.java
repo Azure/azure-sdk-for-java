@@ -19,16 +19,9 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 @Target({ TYPE, METHOD, CONSTRUCTOR, FIELD })
 public @interface Metadata {
     /**
-     * The conditions that apply to the annotated class.
+     * The properties that apply to the annotated class.
      *
-     * @return The conditions that apply to the annotated class.
+     * @return The properties that apply to the annotated class.
      */
-    TypeConditions[] conditions() default { };
-
-    /**
-     * Indicates whether the class was automatically generated.
-     *
-     * @return {@code true} if the class is automatically generated, {@code false} otherwise.
-     */
-    boolean generated() default false;
+    MetadataProperties[] properties() default { };
 }

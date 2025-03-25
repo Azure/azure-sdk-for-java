@@ -34,7 +34,8 @@ public interface Tracer {
      * &#125;
      *
      * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
-     *     clientCall&#40;requestOptions&#41;;
+     *     Response&lt;?&gt; response = clientCall&#40;requestOptions&#41;;
+     *     response.close&#40;&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     &#47;&#47; make sure to report any exceptions including unchecked ones.
      *     span.end&#40;getCause&#40;t&#41;&#41;;
@@ -64,7 +65,8 @@ public interface Tracer {
      *         sendSpan.setAttribute&#40;&quot;messaging.message.id&quot;, &quot;&#123;message-id&#125;&quot;&#41;;
      *     &#125;
      *
-     *     clientCall&#40;requestOptions&#41;;
+     *     Response&lt;?&gt; response = clientCall&#40;requestOptions&#41;;
+     *     response.close&#40;&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     sendSpan.end&#40;t&#41;;
      *     throw t;

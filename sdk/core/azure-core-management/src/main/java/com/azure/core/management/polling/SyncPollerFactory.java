@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.function.Supplier;
 
@@ -37,7 +38,7 @@ public final class SyncPollerFactory {
      * @return SyncPoller
      */
     public static <T, U> SyncPoller<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
-        HttpPipeline httpPipeline, Class<T> pollResultType, Class<U> finalResultType, Duration defaultPollDuration,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Duration defaultPollDuration,
         Supplier<Response<BinaryData>> lroInitialResponseSupplier) {
         return create(serializerAdapter, httpPipeline, pollResultType, finalResultType, defaultPollDuration,
             lroInitialResponseSupplier, Context.NONE);
@@ -59,7 +60,7 @@ public final class SyncPollerFactory {
      * @return SyncPoller
      */
     public static <T, U> SyncPoller<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
-        HttpPipeline httpPipeline, Class<T> pollResultType, Class<U> finalResultType, Duration defaultPollDuration,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Duration defaultPollDuration,
         Supplier<Response<BinaryData>> lroInitialResponseSupplier, Context context) {
         return SyncPoller.createPoller(defaultPollDuration,
             SyncPollOperation.activationFunction(serializerAdapter, pollResultType, lroInitialResponseSupplier),

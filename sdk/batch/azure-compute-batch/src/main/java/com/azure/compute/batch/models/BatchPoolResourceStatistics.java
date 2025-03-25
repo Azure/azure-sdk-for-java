@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * Statistics related to resource consumption by Compute Nodes in a Pool.
@@ -98,6 +99,43 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
      */
     @Generated
     private final double networkWriteGiB;
+
+    /**
+     * Creates an instance of BatchPoolResourceStatistics class.
+     *
+     * @param startTime the startTime value to set.
+     * @param lastUpdateTime the lastUpdateTime value to set.
+     * @param avgCpuPercentage the avgCpuPercentage value to set.
+     * @param avgMemoryGiB the avgMemoryGiB value to set.
+     * @param peakMemoryGiB the peakMemoryGiB value to set.
+     * @param avgDiskGiB the avgDiskGiB value to set.
+     * @param peakDiskGiB the peakDiskGiB value to set.
+     * @param diskReadIOps the diskReadIOps value to set.
+     * @param diskWriteIOps the diskWriteIOps value to set.
+     * @param diskReadGiB the diskReadGiB value to set.
+     * @param diskWriteGiB the diskWriteGiB value to set.
+     * @param networkReadGiB the networkReadGiB value to set.
+     * @param networkWriteGiB the networkWriteGiB value to set.
+     */
+    @Generated
+    private BatchPoolResourceStatistics(OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
+        double avgCpuPercentage, double avgMemoryGiB, double peakMemoryGiB, double avgDiskGiB, double peakDiskGiB,
+        long diskReadIOps, long diskWriteIOps, double diskReadGiB, double diskWriteGiB, double networkReadGiB,
+        double networkWriteGiB) {
+        this.startTime = startTime;
+        this.lastUpdateTime = lastUpdateTime;
+        this.avgCpuPercentage = avgCpuPercentage;
+        this.avgMemoryGiB = avgMemoryGiB;
+        this.peakMemoryGiB = peakMemoryGiB;
+        this.avgDiskGiB = avgDiskGiB;
+        this.peakDiskGiB = peakDiskGiB;
+        this.diskReadIOps = diskReadIOps;
+        this.diskWriteIOps = diskWriteIOps;
+        this.diskReadGiB = diskReadGiB;
+        this.diskWriteGiB = diskWriteGiB;
+        this.networkReadGiB = networkReadGiB;
+        this.networkWriteGiB = networkWriteGiB;
+    }
 
     /**
      * Get the startTime property: The start time of the time range covered by the statistics.
@@ -235,43 +273,6 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
     }
 
     /**
-     * Creates an instance of BatchPoolResourceStatistics class.
-     *
-     * @param startTime the startTime value to set.
-     * @param lastUpdateTime the lastUpdateTime value to set.
-     * @param avgCpuPercentage the avgCpuPercentage value to set.
-     * @param avgMemoryGiB the avgMemoryGiB value to set.
-     * @param peakMemoryGiB the peakMemoryGiB value to set.
-     * @param avgDiskGiB the avgDiskGiB value to set.
-     * @param peakDiskGiB the peakDiskGiB value to set.
-     * @param diskReadIOps the diskReadIOps value to set.
-     * @param diskWriteIOps the diskWriteIOps value to set.
-     * @param diskReadGiB the diskReadGiB value to set.
-     * @param diskWriteGiB the diskWriteGiB value to set.
-     * @param networkReadGiB the networkReadGiB value to set.
-     * @param networkWriteGiB the networkWriteGiB value to set.
-     */
-    @Generated
-    private BatchPoolResourceStatistics(OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
-        double avgCpuPercentage, double avgMemoryGiB, double peakMemoryGiB, double avgDiskGiB, double peakDiskGiB,
-        long diskReadIOps, long diskWriteIOps, double diskReadGiB, double diskWriteGiB, double networkReadGiB,
-        double networkWriteGiB) {
-        this.startTime = startTime;
-        this.lastUpdateTime = lastUpdateTime;
-        this.avgCpuPercentage = avgCpuPercentage;
-        this.avgMemoryGiB = avgMemoryGiB;
-        this.peakMemoryGiB = peakMemoryGiB;
-        this.avgDiskGiB = avgDiskGiB;
-        this.peakDiskGiB = peakDiskGiB;
-        this.diskReadIOps = diskReadIOps;
-        this.diskWriteIOps = diskWriteIOps;
-        this.diskReadGiB = diskReadGiB;
-        this.diskWriteGiB = diskWriteGiB;
-        this.networkReadGiB = networkReadGiB;
-        this.networkWriteGiB = networkWriteGiB;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -287,8 +288,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
         jsonWriter.writeDoubleField("peakMemoryGiB", this.peakMemoryGiB);
         jsonWriter.writeDoubleField("avgDiskGiB", this.avgDiskGiB);
         jsonWriter.writeDoubleField("peakDiskGiB", this.peakDiskGiB);
-        jsonWriter.writeLongField("diskReadIOps", this.diskReadIOps);
-        jsonWriter.writeLongField("diskWriteIOps", this.diskWriteIOps);
+        jsonWriter.writeStringField("diskReadIOps", Objects.toString(this.diskReadIOps, null));
+        jsonWriter.writeStringField("diskWriteIOps", Objects.toString(this.diskWriteIOps, null));
         jsonWriter.writeDoubleField("diskReadGiB", this.diskReadGiB);
         jsonWriter.writeDoubleField("diskWriteGiB", this.diskWriteGiB);
         jsonWriter.writeDoubleField("networkReadGiB", this.networkReadGiB);
@@ -305,8 +306,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchPoolResourceStatistics.
      */
+    @Generated
     public static BatchPoolResourceStatistics fromJson(JsonReader jsonReader) throws IOException {
-        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
         return jsonReader.readObject(reader -> {
             OffsetDateTime startTime = null;
             OffsetDateTime lastUpdateTime = null;
@@ -315,8 +316,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
             double peakMemoryGiB = 0.0;
             double avgDiskGiB = 0.0;
             double peakDiskGiB = 0.0;
-            long diskReadIOps = 0L;
-            long diskWriteIOps = 0L;
+            long diskReadIOps = Long.parseLong("0");
+            long diskWriteIOps = Long.parseLong("0");
             double diskReadGiB = 0.0;
             double diskWriteGiB = 0.0;
             double networkReadGiB = 0.0;
@@ -341,31 +342,9 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
                 } else if ("peakDiskGiB".equals(fieldName)) {
                     peakDiskGiB = reader.getDouble();
                 } else if ("diskReadIOps".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String diskReadIOpsStr = reader.getString();
-                        try {
-                            diskReadIOps = Long.parseLong(diskReadIOpsStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric diskReadIOps, but found: " + diskReadIOpsStr, e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        diskReadIOps = reader.getLong();
-                    } else {
-                        throw new IOException("Expected diskReadIOps to be a number or string, but found other type");
-                    }
+                    diskReadIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("diskWriteIOps".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String diskWriteIOpsStr = reader.getString();
-                        try {
-                            diskWriteIOps = Long.parseLong(diskWriteIOpsStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric diskWriteIOps, but found: " + diskWriteIOpsStr, e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        diskWriteIOps = reader.getLong();
-                    } else {
-                        throw new IOException("Expected diskWriteIOps to be a number or string, but found other type");
-                    }
+                    diskWriteIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("diskReadGiB".equals(fieldName)) {
                     diskReadGiB = reader.getDouble();
                 } else if ("diskWriteGiB".equals(fieldName)) {
