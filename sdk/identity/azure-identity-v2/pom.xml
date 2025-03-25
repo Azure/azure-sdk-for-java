@@ -9,7 +9,7 @@
     <relativePath>../../parents/azure-client-sdk-parent-v2</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.v2</groupId>
   <artifactId>azure-identity-v2</artifactId>
   <packaging>jar</packaging>
   <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-v2;current} -->
