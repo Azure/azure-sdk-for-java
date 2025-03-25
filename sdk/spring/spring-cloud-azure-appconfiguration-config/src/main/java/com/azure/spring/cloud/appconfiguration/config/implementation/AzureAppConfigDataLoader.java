@@ -65,6 +65,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             context.getBootstrapContext().registerIfAbsent(FeatureFlagClient.class,
                 InstanceSupplier.from(() -> featureFlagClient));
         }
+        // Reset telemetry usage for refresh
         featureFlagClient.resetTelemetry();
 
         List<EnumerablePropertySource<?>> sourceList = new ArrayList<>();
