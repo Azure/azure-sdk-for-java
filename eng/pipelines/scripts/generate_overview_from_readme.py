@@ -19,7 +19,6 @@ from bs4 import BeautifulSoup
 import pdb
 import markdown2
 import os.path
-import html
 from io import open
 import re
 
@@ -53,7 +52,7 @@ def generate_overview(readme_file, version, overview_file_path):
             cleaned_readme_content_lines.append(re.sub(pattern="``` *java +[a-zA-Z0-9.#\-_]*", repl="```java", string=line, flags=re.UNICODE))
 
         readme_content = ''.join(cleaned_readme_content_lines)
-        readme_content = re.sub(pattern='\B&\B', repl='&amp;', string=readme_content, flags=re.UNICODE)
+        readme_content = re.sub(pattern='\\B&\\B', repl='&amp;', string=readme_content, flags=re.UNICODE)
 
         # markdown2.markdown will create html from the readme.md file. The fenced-code-blocks
         # extras being passed into the markdown call is necessary to deal with the embedded
@@ -92,7 +91,7 @@ def generate_overview(readme_file, version, overview_file_path):
         f.write('Current version is {}, click <a href="https://azure.github.io/azure-sdk-for-java" target="new">here</a> for the index'.format(version))
         f.write('<br>')
         if (readme_exists):
-            f.write(html.escape(soup.encode(formatter="html5").decode('utf-8')))
+            f.write(str(soup.encode(formatter="html5").decode('utf-8')))
         f.write('</body>')
 
 

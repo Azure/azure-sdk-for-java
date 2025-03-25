@@ -73,7 +73,7 @@ CertificateClient certificateClient = new CertificateClientBuilder()
 
 ## Key concepts
 ### Certificate
-Azure Key Vault supports certificates with secret content types (`PKCS12` & `PEM`). The certificate can be backed by keys in Azure Key Vault of types (`EC` & `RSA`). In addition to the certificate policy, the following attributes may be specified:
+Azure Key Vault supports certificates with secret content types (`PKCS12` and `PEM`). The certificate can be backed by keys in Azure Key Vault of types (`EC` and `RSA`). In addition to the certificate policy, the following attributes may be specified:
 * enabled: Specifies whether the certificate is enabled and usable.
 * created: Indicates when this version of the certificate was created.
 * updated: Indicates when this version of the certificate was updated.

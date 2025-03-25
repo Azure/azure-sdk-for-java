@@ -90,7 +90,7 @@ CryptographyClient cryptoClient = new CryptographyClientBuilder()
 
 ## Key concepts
 ### Key
-Azure Key Vault supports multiple key types (`RSA` & `EC`) and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
+Azure Key Vault supports multiple key types (`RSA` and `EC`) and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
 * enabled: Specifies whether the key is enabled and usable for cryptographic operations.
 * not_before: Identifies the time before which the key must not be used for cryptographic operations.
 * expires: Identifies the expiration time on or after which the key MUST NOT be used for cryptographic operations.

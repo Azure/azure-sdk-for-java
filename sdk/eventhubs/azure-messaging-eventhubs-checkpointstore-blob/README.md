@@ -86,9 +86,9 @@ downstream applications, and to provide resiliency if a failover between readers
 It is possible to return to older data by specifying a lower offset from this checkpointing process. Through this
 mechanism, checkpointing enables both failover resiliency and event stream replay.
 
-### Offsets &amp; sequence numbers
+### Offsets and sequence numbers
 
-Both offset &amp; sequence number refer to the position of an event within a partition. You can think of them as a
+Both offset and sequence number refer to the position of an event within a partition. You can think of them as a
 client-side cursor. The offset is a byte numbering of the event. The offset/sequence number enables an event consumer
 (reader) to specify a point in the event stream from which they want to begin reading events. You can specify the
 timestamp such that you receive events that were enqueued only after the given timestamp. Consumers are responsible for
