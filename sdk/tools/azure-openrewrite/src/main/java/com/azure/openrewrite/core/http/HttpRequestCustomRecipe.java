@@ -25,9 +25,7 @@ public class HttpRequestCustomRecipe extends Recipe {
         return new JavaVisitor<ExecutionContext>() {
 
 
-            private final JavaTemplate template = JavaTemplate.builder("new HttpRequest()\n" +
-                    ".setMethod(#{any()})\n" +
-                    ".setUri(#{any()})\n")
+            private final JavaTemplate template = JavaTemplate.builder("new HttpRequest()\n.setMethod(#{any()})\n.setUri(#{any()})")
                 .contextSensitive()
                 .build();
 
@@ -36,12 +34,15 @@ public class HttpRequestCustomRecipe extends Recipe {
                 // replace HttpRequest constructor with fluent API
                 // Before: com.azure.core.http.HttpRequest <constructor>(io.clientcore.core.http.models.HttpMethod, java.lang.String)
                 // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.lang.String)
+                newClass = (J.NewClass) super.visitNewClass(newClass, ctx);
                 MethodMatcher methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(io.clientcore.core.http.models.HttpMethod, java.lang.String)");
                 if (!methodMatcher.matches(newClass)) {
                     return super.visitNewClass(newClass, ctx);
                 }
                 J n = template.apply(updateCursor(newClass), newClass.getCoordinates().replace(), newClass.getArguments().get(0), newClass.getArguments().get(1));
-                return super.visit(n, ctx);
+                Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
+                doAfterVisit(formatter.getVisitor());
+                return n;
             }
 
             @Override

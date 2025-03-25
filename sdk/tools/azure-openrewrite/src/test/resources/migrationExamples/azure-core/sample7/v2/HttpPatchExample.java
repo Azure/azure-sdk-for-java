@@ -9,8 +9,7 @@ import io.clientcore.core.models.binarydata.BinaryData;
 public class HttpPatchExample {
     public static void main(String... args) {
         HttpClient client = HttpClient.getSharedInstance();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaderName.CONTENT_TYPE, "application/json");
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.fromString("Content-Type"), "application/json");
         String jsonBody = "{\"key\":\"value\"}";
         HttpRequest request = new HttpRequest()
             .setMethod(HttpMethod.PATCH)

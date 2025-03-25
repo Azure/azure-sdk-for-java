@@ -8,8 +8,7 @@ import io.clientcore.core.http.models.Response;
 public class HttpCustomHeadersExample {
     public static void main(String... args) {
         HttpClient client = HttpClient.getSharedInstance();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaderName.fromString("CUSTOM_HEADER"), "CustomValue");
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.fromString("Custom-Header"), "CustomValue");
         HttpRequest request = new HttpRequest()
             .setMethod(HttpMethod.GET)
             .setUri("https://example.com");

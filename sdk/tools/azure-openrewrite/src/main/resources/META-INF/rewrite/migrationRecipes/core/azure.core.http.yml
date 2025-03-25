@@ -29,6 +29,11 @@ recipeList:
   # HttpClient
   # --------------------------------------------------------------------
 
+  - org.openrewrite.java.SimplifyMethodChain:
+      methodPatternChain: [ 'com.azure.core.http.HttpClient send(..)', 'reactor.core.publisher.Mono block()' ]
+      newMethodName: sendSync
+      matchOverrides: false
+
   - org.openrewrite.java.ChangeMethodName:
       methodPattern: com.azure.core.http.HttpClient#createDefault()
       newMethodName: getSharedInstance
@@ -40,6 +45,8 @@ recipeList:
   - org.openrewrite.java.ChangeMethodName:
       methodPattern: com.azure.core.http.HttpClient#sendSync(..)
       newMethodName: send
+
+
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpClient
@@ -163,6 +170,10 @@ recipeList:
 
   - com.azure.openrewrite.core.http.HttpRequestCustomRecipe
   - org.openrewrite.java.ShortenFullyQualifiedTypeReferences
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: 'com.azure.core.http.HttpRequest getUrl()'
+      newMethodName: 'getUri'
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpRequest
