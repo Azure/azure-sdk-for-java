@@ -134,9 +134,7 @@ public final class KeyVaultKeysModelsUtils {
 
         return new com.azure.security.keyvault.keys.implementation.models.JsonWebKey().setKid(key.getId())
             .setKty(key.getKeyType())
-            .setKeyOps(key.getKeyOps() == null
-                ? null
-                : key.getKeyOps().stream().map(KeyOperation::toString).collect(Collectors.toList()))
+            .setKeyOps(key.getKeyOps().stream().map(KeyOperation::toString).collect(Collectors.toList()))
             .setN(key.getN())
             .setE(key.getE())
             .setD(key.getD())
