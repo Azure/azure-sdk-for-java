@@ -5,7 +5,7 @@ package com.azure.v2.identity;
 
 import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import com.azure.v2.identity.exceptions.CredentialUnavailableException;
-import com.azure.v2.identity.implementation.client.BrokeredAuthCache;
+import com.azure.v2.identity.implementation.client.MsalAuthenticationAccountCache;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.implementation.models.MsalAuthenticationAccount;
 import com.azure.v2.identity.implementation.models.MsalToken;
@@ -72,7 +72,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 public class DeviceCodeCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(DeviceCodeCredential.class);
     private final PublicClient publicClient;
-    private final BrokeredAuthCache cache;
+    private final MsalAuthenticationAccountCache cache;
     private final PublicClientOptions publicClientOptions;
 
     /**
@@ -83,7 +83,7 @@ public class DeviceCodeCredential implements TokenCredential {
     DeviceCodeCredential(PublicClientOptions publicClientOptions) {
         this.publicClientOptions = publicClientOptions;
         this.publicClient = new PublicClient(publicClientOptions);
-        this.cache = new BrokeredAuthCache();
+        this.cache = new MsalAuthenticationAccountCache();
         if (publicClientOptions.getAuthenticationRecord() != null) {
             cache.setCachedAccount(new MsalAuthenticationAccount(publicClientOptions.getAuthenticationRecord()));
         }

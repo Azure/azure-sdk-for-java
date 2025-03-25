@@ -45,6 +45,9 @@ public class DevToolsClientOptions extends ClientOptions {
      * @return the process timeout.
      */
     public Duration getProcessTimeout() {
+        if (processTimeout == null) {
+            processTimeout = Duration.ofSeconds(10);
+        }
         return processTimeout;
     }
 

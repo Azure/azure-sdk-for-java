@@ -4,7 +4,7 @@
 package com.azure.v2.identity;
 
 import com.azure.v2.identity.exceptions.CredentialUnavailableException;
-import com.azure.v2.identity.implementation.client.BrokeredAuthCache;
+import com.azure.v2.identity.implementation.client.MsalAuthenticationAccountCache;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.implementation.models.MsalAuthenticationAccount;
 import com.azure.v2.identity.implementation.models.MsalToken;
@@ -66,7 +66,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
     private final PublicClient publicClient;
     private final String authorityHost;
     private final PublicClientOptions publicClientOptions;
-    private final BrokeredAuthCache cache;
+    private final MsalAuthenticationAccountCache cache;
 
     /**
      * Creates a InteractiveBrowserCredential with the given identity client options.
@@ -76,7 +76,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
     InteractiveBrowserCredential(PublicClientOptions publicClientOptions) {
         this.publicClient = new PublicClient(publicClientOptions);
         this.publicClientOptions = publicClientOptions;
-        this.cache = new BrokeredAuthCache();
+        this.cache = new MsalAuthenticationAccountCache();
         this.authorityHost = publicClientOptions.getAuthorityHost();
         if (publicClientOptions.getAuthenticationRecord() != null) {
             cache.setCachedAccount(new MsalAuthenticationAccount(publicClientOptions.getAuthenticationRecord()));

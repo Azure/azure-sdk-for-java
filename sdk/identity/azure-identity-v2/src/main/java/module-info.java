@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-module com.azure.identity {
+module com.azure.v2.identity {
     requires transitive com.azure.v2.core;
 
     requires com.microsoft.aad.msal4j;

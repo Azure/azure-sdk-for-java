@@ -88,7 +88,7 @@ public class ClientCertificateCredentialBuilder
      * @param certificatePath the password protected PFX file containing the certificate
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder clientCertificatePath(String certificatePath) {
+    public ClientCertificateCredentialBuilder clientCertificate(String certificatePath) {
         this.confidentialClientOptions.setCertificatePath(certificatePath);
         return this;
     }

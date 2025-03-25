@@ -14,17 +14,17 @@ import io.clientcore.core.credentials.oauth.AccessToken;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Brokered Auth Cache offers APIs to manage and read cache for Public client brokered auth flows.
+ * Msal Authentication Account Cache offers APIs to manage and read cache for Public client brokered auth flows.
  */
-public class BrokeredAuthCache {
+public class MsalAuthenticationAccountCache {
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private boolean isCaeEnabledRequestCached;
     private boolean isCaeDisabledRequestCached;
 
     /**
-     * Creates an instance of Brokered Auth Cache.
+     * Creates an instance of Msal Authentication Account Cache.
      */
-    public BrokeredAuthCache() {
+    public MsalAuthenticationAccountCache() {
         cachedToken = new AtomicReference<>();
     }
 
@@ -79,7 +79,7 @@ public class BrokeredAuthCache {
      * @param account the msal account
      * @return the updated cache.
      */
-    public BrokeredAuthCache setCachedAccount(MsalAuthenticationAccount account) {
+    public MsalAuthenticationAccountCache setCachedAccount(MsalAuthenticationAccount account) {
         cachedToken.set(account);
         return this;
     }

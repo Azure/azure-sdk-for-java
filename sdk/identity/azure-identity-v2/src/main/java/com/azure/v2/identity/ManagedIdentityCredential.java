@@ -3,6 +3,7 @@
 
 package com.azure.v2.identity;
 
+import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.identity.implementation.client.ManagedIdentityClient;
 import com.azure.v2.identity.implementation.models.ManagedIdentityClientOptions;
@@ -76,6 +77,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
     private final ManagedIdentityClient managedIdentityClient;
     private final String managedIdentityId;
+    private final ManagedIdentityClientOptions clientOptions;
 
     /**
      * Creates an instance of the ManagedIdentityCredential with the configured options.
@@ -84,7 +86,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
      */
     ManagedIdentityCredential(ManagedIdentityClientOptions miClientOptions) {
         this.managedIdentityId = fetchManagedIdentityId(miClientOptions);
-
+        this.clientOptions = miClientOptions;
         this.managedIdentityClient = new ManagedIdentityClient(miClientOptions);
     }
 
@@ -109,7 +111,13 @@ public final class ManagedIdentityCredential implements TokenCredential {
             return token;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            if (clientOptions.isChained()) {
+                throw LOGGER.logThrowableAsError(
+                    new CredentialUnavailableException("Managed Identity authentication is not available.", e));
+            } else {
+                throw LOGGER.logThrowableAsError(
+                    new CredentialAuthenticationException("Managed Identity authentication is not available.", e));
+            }
         }
     }
 

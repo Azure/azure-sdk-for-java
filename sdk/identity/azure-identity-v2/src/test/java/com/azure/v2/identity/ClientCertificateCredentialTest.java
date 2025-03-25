@@ -129,7 +129,7 @@ public class ClientCertificateCredentialTest {
             // test
             ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(TENANT_ID)
                 .clientId(CLIENT_ID)
-                .clientCertificatePath(pemPath)
+                .clientCertificate(pemPath)
                 .build();
 
             AccessToken accessToken = credential.getToken(request1);
@@ -165,7 +165,7 @@ public class ClientCertificateCredentialTest {
             // test
             ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(TENANT_ID)
                 .clientId(CLIENT_ID)
-                .clientCertificatePath(pemPath)
+                .clientCertificate(pemPath)
                 .build();
 
             AccessToken accessToken = credential.getToken(request1);
@@ -194,7 +194,7 @@ public class ClientCertificateCredentialTest {
             // test
             ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(TENANT_ID)
                 .clientId(CLIENT_ID)
-                .clientCertificatePath(pfxPath)
+                .clientCertificate(pfxPath)
                 .clientCertificatePassword(pfxPassword)
                 .build();
 
@@ -281,7 +281,7 @@ public class ClientCertificateCredentialTest {
             // test
             ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(TENANT_ID)
                 .clientId(CLIENT_ID)
-                .clientCertificatePath(pemPath)
+                .clientCertificate(pemPath)
                 .build();
 
             Assertions.assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request1));
@@ -306,7 +306,7 @@ public class ClientCertificateCredentialTest {
             // test
             ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(TENANT_ID)
                 .clientId(CLIENT_ID)
-                .clientCertificatePath(pfxPath)
+                .clientCertificate(pfxPath)
                 .clientCertificatePassword(pfxPassword)
                 .build();
 
@@ -381,13 +381,13 @@ public class ClientCertificateCredentialTest {
             })) {
             // test
             try {
-                new ClientCertificateCredentialBuilder().clientId(CLIENT_ID).clientCertificatePath(pemPath).build();
+                new ClientCertificateCredentialBuilder().clientId(CLIENT_ID).clientCertificate(pemPath).build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assertions.assertTrue(e.getMessage().contains("tenantId"));
             }
             try {
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientCertificatePath(pemPath).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientCertificate(pemPath).build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assertions.assertTrue(e.getMessage().contains("clientId"));

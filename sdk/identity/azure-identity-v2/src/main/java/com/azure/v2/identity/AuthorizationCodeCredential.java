@@ -4,7 +4,7 @@
 package com.azure.v2.identity;
 
 import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
-import com.azure.v2.identity.implementation.client.BrokeredAuthCache;
+import com.azure.v2.identity.implementation.client.MsalAuthenticationAccountCache;
 import com.azure.v2.identity.implementation.client.ConfidentialClient;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.implementation.models.ConfidentialClientOptions;
@@ -52,7 +52,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
     private final ConfidentialClient confidentialClient;
     private final PublicClient publicClient;
     private final PublicClientOptions publicClientOptions;
-    private final BrokeredAuthCache cache;
+    private final MsalAuthenticationAccountCache cache;
 
     /**
      * Creates an AuthorizationCodeCredential with the given identity client options.
@@ -71,7 +71,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
         } else {
             confidentialClient = null;
         }
-        this.cache = new BrokeredAuthCache();
+        this.cache = new MsalAuthenticationAccountCache();
     }
 
     @Override
