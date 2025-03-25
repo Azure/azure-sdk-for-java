@@ -3,6 +3,8 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -307,8 +309,10 @@ public class AppConfigurationReplicaClientsBuilder {
                 String segment = arg.trim();
                 if (ENDPOINT.regionMatches(true, 0, segment, 0, ENDPOINT.length())) {
                     try {
-                        baseUri = new URL(segment.substring(ENDPOINT.length()));
+                        baseUri = new URI(segment.substring(ENDPOINT.length())).toURL();
                     } catch (MalformedURLException ex) {
+                        throw new IllegalArgumentException(ex);
+                    } catch (URISyntaxException ex) {
                         throw new IllegalArgumentException(ex);
                     }
                 } else if (ID.regionMatches(true, 0, segment, 0, ID.length())) {
@@ -329,8 +333,10 @@ public class AppConfigurationReplicaClientsBuilder {
 
         protected ConnectionString setUri(String uri) {
             try {
-                this.baseUri = new URL(uri);
+                this.baseUri = new URI(uri).toURL();
             } catch (MalformedURLException ex) {
+                throw new IllegalArgumentException(ex);
+            } catch (URISyntaxException ex) {
                 throw new IllegalArgumentException(ex);
             }
             return this;
