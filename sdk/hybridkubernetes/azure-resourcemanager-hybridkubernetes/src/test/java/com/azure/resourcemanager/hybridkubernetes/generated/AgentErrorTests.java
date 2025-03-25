@@ -5,17 +5,19 @@
 package com.azure.resourcemanager.hybridkubernetes.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hybridkubernetes.models.CredentialResult;
+import com.azure.resourcemanager.hybridkubernetes.models.AgentError;
 
-public final class CredentialResultTests {
+public final class AgentErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CredentialResult model = BinaryData.fromString("{\"name\":\"zkrwfn\"}").toObject(CredentialResult.class);
+        AgentError model = BinaryData.fromString(
+            "{\"message\":\"k\",\"severity\":\"txukcdmp\",\"component\":\"cryuan\",\"time\":\"2021-11-26T19:11:40Z\"}")
+            .toObject(AgentError.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CredentialResult model = new CredentialResult();
-        model = BinaryData.fromObject(model).toObject(CredentialResult.class);
+        AgentError model = new AgentError();
+        model = BinaryData.fromObject(model).toObject(AgentError.class);
     }
 }
