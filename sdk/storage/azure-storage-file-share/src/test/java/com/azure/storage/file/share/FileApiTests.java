@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -3237,7 +3238,7 @@ class FileApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
     @Test
-    public void createGetSymbolicLink() {
+    public void createGetSymbolicLink() throws UnsupportedEncodingException {
         // Arrange
         ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
 
@@ -3282,12 +3283,14 @@ class FileApiTests extends FileShareTestBase {
         assertNotNull(getSymLinkResponse.getValue().getETag());
         assertNotNull(getSymLinkResponse.getValue().getLastModified().toString());
 
-        try {
+        if (getTestMode() != TestMode.PLAYBACK) {
             assertEquals(source.getFileUrl(),
                 URLDecoder.decode(getSymLinkResponse.getValue().getLinkText(), StandardCharsets.UTF_8.toString()));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        } else {
+            assertTrue(URLDecoder.decode(getSymLinkResponse.getValue().getLinkText(), StandardCharsets.UTF_8.toString())
+                .contains(source.getFilePath()));
         }
+
         premiumShareClient.delete();
     }
 

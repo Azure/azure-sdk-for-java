@@ -96,6 +96,8 @@ public class FileShareTestBase extends TestProxyTestBase {
                     new TestProxySanitizer("x-ms-copy-source-authorization", ".*", "REDACTED",
                         TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-file-rename-source-authorization", ".*", "REDACTED",
+                        TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-link-text", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
                         TestProxySanitizerType.HEADER)));
         }
 
