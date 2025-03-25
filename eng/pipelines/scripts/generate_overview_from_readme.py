@@ -49,10 +49,10 @@ def generate_overview(readme_file, version, overview_file_path):
         # the contents of the code fence. Replace '&' with '&amp;' to avoid issues with the HTML parser.
         cleaned_readme_content_lines = []
         for line in raw_readme_content_lines:
-            adjusted_line = re.sub(pattern='\\B&\\B', repl='&amp', string=line, flags=re.UNICODE) 
-            cleaned_readme_content_lines.append(re.sub(pattern="``` *java +[a-zA-Z0-9.#\\-_]*", repl="```java", string=adjusted_line, flags=re.UNICODE))
+            cleaned_readme_content_lines.append(re.sub(pattern="``` *java +[a-zA-Z0-9.#\-_]*", repl="```java", string=line, flags=re.UNICODE))
 
         readme_content = ''.join(cleaned_readme_content_lines)
+        readme_content = re.sub(pattern='\B&\B', repl='&amp;', string=readme_content, flags=re.UNICODE)
 
         # markdown2.markdown will create html from the readme.md file. The fenced-code-blocks
         # extras being passed into the markdown call is necessary to deal with the embedded
