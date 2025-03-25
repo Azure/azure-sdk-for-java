@@ -14,26 +14,14 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Managed service identity (system assigned and/or user assigned identities).
+ * Managed service identity (user assigned identities).
  */
 @Fluent
-public final class ManagedServiceIdentity implements JsonSerializable<ManagedServiceIdentity> {
-    /*
-     * The service principal ID of the system assigned identity. This property will only be provided for a system
-     * assigned identity.
-     */
-    private String principalId;
-
-    /*
-     * The tenant ID of the system assigned identity. This property will only be provided for a system assigned
-     * identity.
-     */
-    private String tenantId;
-
+public final class SAPVirtualInstanceIdentity implements JsonSerializable<SAPVirtualInstanceIdentity> {
     /*
      * The type of managed identity assigned to this resource.
      */
-    private ManagedServiceIdentityType type;
+    private SAPVirtualInstanceIdentityType type;
 
     /*
      * The identities assigned to this resource by the user.
@@ -41,29 +29,9 @@ public final class ManagedServiceIdentity implements JsonSerializable<ManagedSer
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
-     * Creates an instance of ManagedServiceIdentity class.
+     * Creates an instance of SAPVirtualInstanceIdentity class.
      */
-    public ManagedServiceIdentity() {
-    }
-
-    /**
-     * Get the principalId property: The service principal ID of the system assigned identity. This property will only
-     * be provided for a system assigned identity.
-     * 
-     * @return the principalId value.
-     */
-    public String principalId() {
-        return this.principalId;
-    }
-
-    /**
-     * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided for
-     * a system assigned identity.
-     * 
-     * @return the tenantId value.
-     */
-    public String tenantId() {
-        return this.tenantId;
+    public SAPVirtualInstanceIdentity() {
     }
 
     /**
@@ -71,7 +39,7 @@ public final class ManagedServiceIdentity implements JsonSerializable<ManagedSer
      * 
      * @return the type value.
      */
-    public ManagedServiceIdentityType type() {
+    public SAPVirtualInstanceIdentityType type() {
         return this.type;
     }
 
@@ -79,9 +47,9 @@ public final class ManagedServiceIdentity implements JsonSerializable<ManagedSer
      * Set the type property: The type of managed identity assigned to this resource.
      * 
      * @param type the type value to set.
-     * @return the ManagedServiceIdentity object itself.
+     * @return the SAPVirtualInstanceIdentity object itself.
      */
-    public ManagedServiceIdentity withType(ManagedServiceIdentityType type) {
+    public SAPVirtualInstanceIdentity withType(SAPVirtualInstanceIdentityType type) {
         this.type = type;
         return this;
     }
@@ -99,9 +67,10 @@ public final class ManagedServiceIdentity implements JsonSerializable<ManagedSer
      * Set the userAssignedIdentities property: The identities assigned to this resource by the user.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
-     * @return the ManagedServiceIdentity object itself.
+     * @return the SAPVirtualInstanceIdentity object itself.
      */
-    public ManagedServiceIdentity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
+    public SAPVirtualInstanceIdentity
+        withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
@@ -114,7 +83,8 @@ public final class ManagedServiceIdentity implements JsonSerializable<ManagedSer
     public void validate() {
         if (type() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property type in model ManagedServiceIdentity"));
+                .log(
+                    new IllegalArgumentException("Missing required property type in model SAPVirtualInstanceIdentity"));
         }
         if (userAssignedIdentities() != null) {
             userAssignedIdentities().values().forEach(e -> {
@@ -125,7 +95,7 @@ public final class ManagedServiceIdentity implements JsonSerializable<ManagedSer
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedServiceIdentity.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SAPVirtualInstanceIdentity.class);
 
     /**
      * {@inheritDoc}
@@ -140,37 +110,34 @@ public final class ManagedServiceIdentity implements JsonSerializable<ManagedSer
     }
 
     /**
-     * Reads an instance of ManagedServiceIdentity from the JsonReader.
+     * Reads an instance of SAPVirtualInstanceIdentity from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ManagedServiceIdentity if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of SAPVirtualInstanceIdentity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ManagedServiceIdentity.
+     * @throws IOException If an error occurs while reading the SAPVirtualInstanceIdentity.
      */
-    public static ManagedServiceIdentity fromJson(JsonReader jsonReader) throws IOException {
+    public static SAPVirtualInstanceIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ManagedServiceIdentity deserializedManagedServiceIdentity = new ManagedServiceIdentity();
+            SAPVirtualInstanceIdentity deserializedSAPVirtualInstanceIdentity = new SAPVirtualInstanceIdentity();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("type".equals(fieldName)) {
-                    deserializedManagedServiceIdentity.type = ManagedServiceIdentityType.fromString(reader.getString());
-                } else if ("principalId".equals(fieldName)) {
-                    deserializedManagedServiceIdentity.principalId = reader.getString();
-                } else if ("tenantId".equals(fieldName)) {
-                    deserializedManagedServiceIdentity.tenantId = reader.getString();
+                    deserializedSAPVirtualInstanceIdentity.type
+                        = SAPVirtualInstanceIdentityType.fromString(reader.getString());
                 } else if ("userAssignedIdentities".equals(fieldName)) {
                     Map<String, UserAssignedIdentity> userAssignedIdentities
                         = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
-                    deserializedManagedServiceIdentity.userAssignedIdentities = userAssignedIdentities;
+                    deserializedSAPVirtualInstanceIdentity.userAssignedIdentities = userAssignedIdentities;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedManagedServiceIdentity;
+            return deserializedSAPVirtualInstanceIdentity;
         });
     }
 }

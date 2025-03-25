@@ -25,7 +25,7 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
     /*
      * Managed service identity (user assigned identities)
      */
-    private ManagedServiceIdentity identity;
+    private SAPVirtualInstanceIdentity identity;
 
     /*
      * The update properties.
@@ -63,7 +63,7 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
      * 
      * @return the identity value.
      */
-    public ManagedServiceIdentity identity() {
+    public SAPVirtualInstanceIdentity identity() {
         return this.identity;
     }
 
@@ -73,7 +73,7 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
      * @param identity the identity value to set.
      * @return the UpdateSapVirtualInstanceRequest object itself.
      */
-    public UpdateSapVirtualInstanceRequest withIdentity(ManagedServiceIdentity identity) {
+    public UpdateSapVirtualInstanceRequest withIdentity(SAPVirtualInstanceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -144,7 +144,7 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedUpdateSapVirtualInstanceRequest.tags = tags;
                 } else if ("identity".equals(fieldName)) {
-                    deserializedUpdateSapVirtualInstanceRequest.identity = ManagedServiceIdentity.fromJson(reader);
+                    deserializedUpdateSapVirtualInstanceRequest.identity = SAPVirtualInstanceIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedUpdateSapVirtualInstanceRequest.properties
                         = UpdateSapVirtualInstanceProperties.fromJson(reader);
