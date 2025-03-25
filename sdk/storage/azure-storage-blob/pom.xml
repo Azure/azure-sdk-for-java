@@ -10,7 +10,7 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-
+<!-- JRS WILL NOT BE CHECKED IN -->
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob</artifactId>
   <version>12.30.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
