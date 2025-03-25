@@ -27,8 +27,8 @@ public class HttpRequestCustomRecipe extends Recipe {
 
             private final JavaTemplate template = JavaTemplate.builder("new HttpRequest()\n" +
                     ".setMethod(#{any()})\n" +
-                    ".setUri(#{any()})")
-                //.contextSensitive()
+                    ".setUri(#{any()})\n")
+                .contextSensitive()
                 .build();
 
             @Override

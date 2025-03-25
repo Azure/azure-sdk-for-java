@@ -9,7 +9,7 @@ public class HttpBearerTokenExample {
     public static void main(String... args) {
         HttpClient client = HttpClient.getSharedInstance();
         String token = "your_bearer_token";
-        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer " + token);
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.fromString("Authorization"), "Bearer " + token);
         HttpRequest request = new HttpRequest()
             .setMethod(HttpMethod.GET)
             .setUri("https://example.com")

@@ -7,8 +7,8 @@ public class HttpRequestExample {
     public static void main(String... args) {
         HttpClient client = HttpClient.getSharedInstance();
         HttpRequest request = new HttpRequest()
-                .setMethod(HttpMethod.GET)
-                .setUri("https://example.com");
+            .setMethod(HttpMethod.GET)
+            .setUri("https://example.com");
         Response response = client.send(request);
         System.out.println("Status code: " + response.getStatusCode());
     }
