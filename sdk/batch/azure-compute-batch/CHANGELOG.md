@@ -1,14 +1,18 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0 (2025-03-25)
 
-### Features Added
+This release is the first stable release of the Azure Compute Batch client library.
 
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Changed capitalization of the methods in some models
+  - In BatchJobNetworkConfiguration, isSkipWithdrawFromVNet() is now isSkipWithdrawFromVnet().
+  - In BatchJobScheduleStatistics, getReadIOps() is now getReadIops() and getWriteIOps() is now getWriteIops().
+  - In BatchJobStatistics, getReadIOps() is now getReadIops() and getWriteIOps() is now getWriteIops().
+  - In BatchPoolResourceStatistics, getDiskReadIOps() is now getDiskReadIops() and getDiskWriteIOps() is now getDiskWriteIops().
+  - In BatchTaskStatistics, getReadIOps() is now getReadIops() and getWriteIOps() is now getWriteIops().
+  - In NetworkConfiguration, getDynamicVNetAssignmentScope() is now getDynamicVnetAssignmentScope() and setDynamicVNetAssignmentScope(DynamicVNetAssignmentScope dynamicVNetAssignmentScope) is now setDynamicVnetAssignmentScope(DynamicVNetAssignmentScope dynamicVnetAssignmentScope).
 
 ## 1.0.0-beta.4 (2025-03-24)
 
