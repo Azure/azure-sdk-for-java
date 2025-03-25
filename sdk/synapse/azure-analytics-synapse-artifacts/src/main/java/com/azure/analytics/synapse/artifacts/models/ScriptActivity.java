@@ -39,6 +39,12 @@ public class ScriptActivity extends ExecutionActivity {
      */
     private ScriptActivityTypePropertiesLogSettings logSettings;
 
+    /*
+     * Enable to retrieve result sets from multiple SQL statements and the number of rows affected by the DML statement.
+     * Supported connector: SnowflakeV2. Type: boolean (or Expression with resultType boolean).
+     */
+    private Object returnMultistatementResult;
+
     /**
      * Creates an instance of ScriptActivity class.
      */
@@ -114,6 +120,30 @@ public class ScriptActivity extends ExecutionActivity {
      */
     public ScriptActivity setLogSettings(ScriptActivityTypePropertiesLogSettings logSettings) {
         this.logSettings = logSettings;
+        return this;
+    }
+
+    /**
+     * Get the returnMultistatementResult property: Enable to retrieve result sets from multiple SQL statements and the
+     * number of rows affected by the DML statement. Supported connector: SnowflakeV2. Type: boolean (or Expression with
+     * resultType boolean).
+     * 
+     * @return the returnMultistatementResult value.
+     */
+    public Object getReturnMultistatementResult() {
+        return this.returnMultistatementResult;
+    }
+
+    /**
+     * Set the returnMultistatementResult property: Enable to retrieve result sets from multiple SQL statements and the
+     * number of rows affected by the DML statement. Supported connector: SnowflakeV2. Type: boolean (or Expression with
+     * resultType boolean).
+     * 
+     * @param returnMultistatementResult the returnMultistatementResult value to set.
+     * @return the ScriptActivity object itself.
+     */
+    public ScriptActivity setReturnMultistatementResult(Object returnMultistatementResult) {
+        this.returnMultistatementResult = returnMultistatementResult;
         return this;
     }
 
@@ -206,11 +236,15 @@ public class ScriptActivity extends ExecutionActivity {
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeJsonField("policy", getPolicy());
         jsonWriter.writeStringField("type", this.type);
-        if (scriptBlockExecutionTimeout != null || scripts != null || logSettings != null) {
+        if (scriptBlockExecutionTimeout != null
+            || scripts != null
+            || logSettings != null
+            || returnMultistatementResult != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("scriptBlockExecutionTimeout", this.scriptBlockExecutionTimeout);
             jsonWriter.writeArrayField("scripts", this.scripts, (writer, element) -> writer.writeJson(element));
             jsonWriter.writeJsonField("logSettings", this.logSettings);
+            jsonWriter.writeUntypedField("returnMultistatementResult", this.returnMultistatementResult);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -274,6 +308,8 @@ public class ScriptActivity extends ExecutionActivity {
                         } else if ("logSettings".equals(fieldName)) {
                             deserializedScriptActivity.logSettings
                                 = ScriptActivityTypePropertiesLogSettings.fromJson(reader);
+                        } else if ("returnMultistatementResult".equals(fieldName)) {
+                            deserializedScriptActivity.returnMultistatementResult = reader.readUntyped();
                         } else {
                             reader.skipChildren();
                         }

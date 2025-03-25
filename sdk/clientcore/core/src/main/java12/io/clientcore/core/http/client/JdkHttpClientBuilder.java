@@ -4,6 +4,7 @@
 package io.clientcore.core.http.client;
 
 import io.clientcore.core.http.models.ProxyOptions;
+import io.clientcore.core.implementation.http.client.JdkHttpClient;
 import io.clientcore.core.implementation.http.client.JdkHttpClientProxySelector;
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -275,7 +276,7 @@ public class JdkHttpClientBuilder {
             }
         }
 
-        return new io.clientcore.core.implementation.http.client.DefaultHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
+        return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
             writeTimeout, responseTimeout, readTimeout);
     }
 
@@ -293,8 +294,10 @@ public class JdkHttpClientBuilder {
 
         // Read all allowed restricted headers from configuration
         Configuration config = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        String[] allowRestrictedHeadersSystemProperties
-            = config.get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
+        String allowRestrictedHeadersSystemPropertiesConfig = config.get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS);
+        String[] allowRestrictedHeadersSystemProperties = (allowRestrictedHeadersSystemPropertiesConfig == null)
+            ? new String[0]
+            : allowRestrictedHeadersSystemPropertiesConfig.split(",");
 
         // Combine the set of all allowed restricted headers from both sources
         for (String header : allowRestrictedHeadersSystemProperties) {

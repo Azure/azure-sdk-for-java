@@ -3,9 +3,13 @@
 
 package io.clientcore.core.http.paging;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 /**
  * The paging options for the pageable operation.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class PagingOptions {
 
     private Long offset;

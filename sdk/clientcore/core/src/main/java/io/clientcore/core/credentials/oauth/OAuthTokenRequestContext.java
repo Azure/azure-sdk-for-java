@@ -3,6 +3,8 @@
 
 package io.clientcore.core.credentials.oauth;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
 
@@ -36,6 +38,7 @@ import java.util.Objects;
  *
  * @see io.clientcore.core.credentials
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class OAuthTokenRequestContext {
     private static final ClientLogger LOGGER = new ClientLogger(OAuthTokenRequestContext.class);
 

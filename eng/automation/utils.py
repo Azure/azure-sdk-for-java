@@ -416,7 +416,7 @@ def get_latest_ga_version(group_id: str, module: str, previous_version: str) -> 
 
     response.raise_for_status()
 
-    ga_version_pattern = r"<a href=\"(\d+\.\d+\.\d+)\/?"
+    ga_version_pattern = r"<a href=\"(\d+\.\d+\.\d+)\/"
     ga_versions = [v.group(1) for v in re.finditer(ga_version_pattern, response.text, re.S)]
     previous_ga_versions = sorted(
         [v for v in ga_versions if compare_version(v, previous_version) < 0],

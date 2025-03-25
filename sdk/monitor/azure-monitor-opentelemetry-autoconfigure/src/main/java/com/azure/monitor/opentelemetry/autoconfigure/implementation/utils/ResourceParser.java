@@ -5,9 +5,8 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.utils;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.semconv.ServiceAttributes;
-import io.opentelemetry.semconv.incubating.ServiceIncubatingAttributes;
 
 import java.util.Locale;
 import java.util.Map;
@@ -53,13 +52,13 @@ public final class ResourceParser {
     }
 
     private String getRoleName(Resource resource) {
-        String serviceName = resource.getAttribute(ServiceAttributes.SERVICE_NAME);
+        String serviceName = resource.getAttribute(AttributeKey.stringKey("service.name"));
         if (serviceName == null || DEFAULT_SERVICE_NAME.equals(serviceName)) {
             if (websiteSiteName != null) {
                 serviceName = websiteSiteName;
             }
         }
-        String serviceNamespace = resource.getAttribute(ServiceIncubatingAttributes.SERVICE_NAMESPACE);
+        String serviceNamespace = resource.getAttribute(AttributeKey.stringKey("service.namespace"));
         if (serviceName != null && serviceNamespace != null) {
             return "[" + serviceNamespace + "]/" + serviceName;
         } else if (serviceName != null) {
@@ -71,7 +70,7 @@ public final class ResourceParser {
     }
 
     private String getRoleInstance(Resource resource) {
-        String roleInstance = resource.getAttribute(ServiceIncubatingAttributes.SERVICE_INSTANCE_ID);
+        String roleInstance = resource.getAttribute(AttributeKey.stringKey("service.instance.id"));
         if (roleInstance != null) {
             return roleInstance;
         }

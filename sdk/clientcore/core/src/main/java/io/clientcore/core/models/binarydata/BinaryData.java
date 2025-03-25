@@ -3,7 +3,9 @@
 
 package io.clientcore.core.models.binarydata;
 
-import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
 
@@ -113,6 +115,7 @@ import java.util.List;
  * @see ObjectSerializer
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public abstract class BinaryData implements Closeable {
     private static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
 
@@ -332,7 +335,7 @@ public abstract class BinaryData implements Closeable {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use the provided serializers.
-     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * final JsonSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
      *
      * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
@@ -591,7 +594,7 @@ public abstract class BinaryData implements Closeable {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use the provided serializers.
-     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * final JsonSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
      *
      * Person person = binaryData.toObject&#40;Person.class, serializer&#41;;
@@ -610,7 +613,7 @@ public abstract class BinaryData implements Closeable {
      * personList.add&#40;person1&#41;;
      * personList.add&#40;person2&#41;;
      *
-     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * final JsonSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;personList, serializer&#41;;
      *
      * &#47;&#47; Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the

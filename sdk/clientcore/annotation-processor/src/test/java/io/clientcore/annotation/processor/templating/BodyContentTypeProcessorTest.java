@@ -11,6 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,13 +25,13 @@ public class BodyContentTypeProcessorTest {
     }
 
     /**
-     * Test for the method configureRequestWithBodyAndContentType
+     * Test for the method configureBodyContentType
      */
     @Test
     public void bodyParamAnnotationPriorityOverContentTypeHeaderTest() {
         // Create a new HttpRequestContext
         HttpRequestContext context = new HttpRequestContext();
-        byte[] bytes = "hello".getBytes();
+        byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
 
         // Set the body
         // BodyParam annotation is set to "application/octet-stream"
@@ -43,8 +44,8 @@ public class BodyContentTypeProcessorTest {
         HttpRequestContext.Body requestBody = context.getBody();
 
         BlockStmt body = new BlockStmt();
-        processor.configureRequestWithBodyAndContentType(body, requestBody.getParameterType(),
-            requestBody.getContentType(), requestBody.getParameterName(), false);
+        processor.configureBodyWithContentType(body, requestBody.getParameterType(), requestBody.getContentType(),
+            requestBody.getParameterName(), false);
 
         // Expected output
         String expectedOutput = "httpRequest.setBody(BinaryData.fromBytes(((ByteBuffer) request).array()));";
@@ -62,8 +63,8 @@ public class BodyContentTypeProcessorTest {
     public void testConfigureRequestWithBodyAndParameterType(HttpRequestContext.Body requestBody,
         String expectedOutput) {
         BlockStmt body = new BlockStmt();
-        processor.configureRequestWithBodyAndContentType(body, requestBody.getParameterType(),
-            requestBody.getContentType(), requestBody.getParameterName(), false);
+        processor.configureBodyWithContentType(body, requestBody.getParameterType(), requestBody.getContentType(),
+            requestBody.getParameterName(), false);
 
         // Actual output
         String actualOutput = body.toString();
@@ -73,7 +74,7 @@ public class BodyContentTypeProcessorTest {
 
     @ParameterizedTest
     @MethodSource("knownContentTypesProvider")
-    public void testConfigureRequestWithBodyAndContentType(String parameterType, String expectedContentType) {
+    public void testConfigureBodyContentType(String parameterType, String expectedContentType) {
         // Create a new HttpRequestContext
         HttpRequestContext context = new HttpRequestContext();
 
@@ -81,7 +82,7 @@ public class BodyContentTypeProcessorTest {
         context.setBody(new HttpRequestContext.Body(null, parameterType, "request"));
 
         BlockStmt body = new BlockStmt();
-        processor.configureRequestWithBodyAndContentType(body, context.getBody().getParameterType(),
+        processor.configureBodyWithContentType(body, context.getBody().getParameterType(),
             context.getBody().getContentType(), context.getBody().getParameterName(), false);
 
         // Expected output
@@ -98,7 +99,7 @@ public class BodyContentTypeProcessorTest {
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
         // Create a new HttpRequestContext
         HttpRequestContext context = new HttpRequestContext();
-        byte[] bytes = "hello".getBytes();
+        byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
 
         // Set the body
         // BodyParam annotation is set to "application/octet-stream"
@@ -111,8 +112,8 @@ public class BodyContentTypeProcessorTest {
         HttpRequestContext.Body requestBody = context.getBody();
 
         BlockStmt body = new BlockStmt();
-        processor.configureRequestWithBodyAndContentType(body, requestBody.getParameterType(),
-            requestBody.getContentType(), requestBody.getParameterName(), true);
+        processor.configureBodyWithContentType(body, requestBody.getParameterType(), requestBody.getContentType(),
+            requestBody.getParameterName(), true);
 
         // Expected output
         String expectedOutput = "httpRequest.setBody(BinaryData.fromBytes(((ByteBuffer) request).array()));";
@@ -134,13 +135,13 @@ public class BodyContentTypeProcessorTest {
         return Stream.of(
             // scenario for isJson = true and parameterType == "ByteBuffer"
             Arguments.of(new HttpRequestContext.Body(null, "ByteBuffer", "request"),
-                "httpRequest.setBody(BinaryData.fromObject(request, serializer));"),
+                "httpRequest.setBody(BinaryData.fromBytes(((ByteBuffer) request).array()))"),
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "BinaryData", "request"),
-                "httpRequest.setBody(BinaryData.fromObject(request, serializer));"),
+                "httpRequest.setBody(BinaryData.fromObject(request, jsonSerializer));"),
             Arguments.of(new HttpRequestContext.Body("application/json", "BinaryData", "request"),
-                "httpRequest.setBody(BinaryData.fromObject(request, serializer));"),
+                "httpRequest.setBody(BinaryData.fromObject(request, jsonSerializer));"),
             Arguments.of(new HttpRequestContext.Body("application/json", "serializable", "request"),
-                "httpRequest.setBody(BinaryData.fromObject(request, serializer))"),
+                "httpRequest.setBody(BinaryData.fromObject(request, jsonSerializer))"),
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "byte[]", "request"),
                 "httpRequest.setBody(BinaryData.fromBytes((byte[]) request))"),
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "String", "request"),
@@ -148,7 +149,7 @@ public class BodyContentTypeProcessorTest {
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "ByteBuffer", "request"),
                 "httpRequest.setBody(BinaryData.fromBytes(((ByteBuffer) request).array()))"),
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "Object", "request"),
-                "httpRequest.setBody(BinaryData.fromObject(request, serializer))"),
+                "httpRequest.setBody(BinaryData.fromObject(request, jsonSerializer))"),
             // scenario for isJson = false and parameterType == "String"
             Arguments.of(new HttpRequestContext.Body("text/html", "String", "request"),
                 "httpRequest.setBody(BinaryData.fromString((String) request));"),

@@ -4,7 +4,7 @@
 package io.clientcore.core.models.geo;
 
 import io.clientcore.core.annotations.Metadata;
-import io.clientcore.core.annotations.TypeConditions;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -33,7 +33,7 @@ import java.util.Objects;
  * @see GeoPolygonCollection
  * @see GeoCollection
  */
-@Metadata(conditions = TypeConditions.IMMUTABLE)
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public abstract class GeoObject implements JsonSerializable<GeoObject> {
     private final GeoBoundingBox boundingBox;
     private final Map<String, Object> customProperties;

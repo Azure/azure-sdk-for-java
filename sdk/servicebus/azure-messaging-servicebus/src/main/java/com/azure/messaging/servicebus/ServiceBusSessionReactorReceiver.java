@@ -90,7 +90,12 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
     @Override
     public Flux<Message> receive() {
         if (hasIdleTimeout) {
-            return sessionLink.receive().doOnNext(m -> {
+            final Mono<Void> beginIdleTimer = Mono.defer(() -> {
+                nextItemIdleTimeoutSink.emitNext(true, Sinks.EmitFailureHandler.FAIL_FAST);
+                return Mono.empty();
+            });
+            final Flux<Message> messages = sessionLink.receive();
+            return beginIdleTimer.thenMany(messages).doOnNext(m -> {
                 nextItemIdleTimeoutSink.emitNext(true, Sinks.EmitFailureHandler.FAIL_FAST);
             });
         } else {

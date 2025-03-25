@@ -24,7 +24,7 @@ import java.util.Map;
 @Fluent
 public final class PolicySetDefinitionInner extends ProxyResource {
     /*
-     * The policy definition properties.
+     * The policy set definition properties.
      */
     private PolicySetDefinitionProperties innerProperties;
 
@@ -55,7 +55,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: The policy definition properties.
+     * Get the innerProperties property: The policy set definition properties.
      * 
      * @return the innerProperties value.
      */
@@ -103,8 +103,8 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
-     * and Static.
+     * Get the policyType property: The type of policy set definition. Possible values are NotSpecified, BuiltIn,
+     * Custom, and Static.
      * 
      * @return the policyType value.
      */
@@ -113,8 +113,8 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
-     * and Static.
+     * Set the policyType property: The type of policy set definition. Possible values are NotSpecified, BuiltIn,
+     * Custom, and Static.
      * 
      * @param policyType the policyType value to set.
      * @return the PolicySetDefinitionInner object itself.
@@ -268,6 +268,52 @@ public final class PolicySetDefinitionInner extends ProxyResource {
             this.innerProperties = new PolicySetDefinitionProperties();
         }
         this.innerProperties().withPolicyDefinitionGroups(policyDefinitionGroups);
+        return this;
+    }
+
+    /**
+     * Get the version property: The policy set definition version in #.#.# format.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Set the version property: The policy set definition version in #.#.# format.
+     * 
+     * @param version the version value to set.
+     * @return the PolicySetDefinitionInner object itself.
+     */
+    public PolicySetDefinitionInner withVersion(String version) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicySetDefinitionProperties();
+        }
+        this.innerProperties().withVersion(version);
+        return this;
+    }
+
+    /**
+     * Get the versions property: A list of available versions for this policy set definition.
+     * 
+     * @return the versions value.
+     */
+    public List<String> versions() {
+        return this.innerProperties() == null ? null : this.innerProperties().versions();
+    }
+
+    /**
+     * Set the versions property: A list of available versions for this policy set definition.
+     * 
+     * @param versions the versions value to set.
+     * @return the PolicySetDefinitionInner object itself.
+     */
+    public PolicySetDefinitionInner withVersions(List<String> versions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicySetDefinitionProperties();
+        }
+        this.innerProperties().withVersions(versions);
         return this;
     }
 

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package io.clientcore.core.utils;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
@@ -16,6 +18,7 @@ import java.util.Map;
  * <p>
  * Some challenge information may be optional, meaning the getters may return null or an empty collection.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class AuthenticateChallenge {
     private static final ClientLogger LOGGER = new ClientLogger(AuthenticateChallenge.class);
 

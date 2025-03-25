@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class ManagedClustersListClusterMonitoringUserCredentialsSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-01-01/examples/
      * ManagedClustersListClusterMonitoringUserCredentials.json
      */
     /**

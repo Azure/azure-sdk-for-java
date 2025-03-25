@@ -505,6 +505,15 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedClusterAgentPoolProfile withGpuProfile(GpuProfile gpuProfile) {
+        super.withGpuProfile(gpuProfile);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -539,6 +548,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         }
         if (securityProfile() != null) {
             securityProfile().validate();
+        }
+        if (gpuProfile() != null) {
+            gpuProfile().validate();
         }
     }
 
@@ -597,6 +609,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeJsonField("networkProfile", networkProfile());
         jsonWriter.writeJsonField("windowsProfile", windowsProfile());
         jsonWriter.writeJsonField("securityProfile", securityProfile());
+        jsonWriter.writeJsonField("gpuProfile", gpuProfile());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -733,6 +746,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                 } else if ("securityProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
                         .withSecurityProfile(AgentPoolSecurityProfile.fromJson(reader));
+                } else if ("gpuProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withGpuProfile(GpuProfile.fromJson(reader));
                 } else if ("name".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.name = reader.getString();
                 } else {

@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 package io.clientcore.core.utils;
 
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-
+import io.clientcore.core.serialization.SerializationFormat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
@@ -86,7 +88,7 @@ public final class CoreUtils {
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
-    public static byte[] clone(byte[] source) {
+    public static byte[] arrayCopy(byte[] source) {
         if (source == null) {
             return null;
         }
@@ -100,7 +102,7 @@ public final class CoreUtils {
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
-    public static int[] clone(int[] source) {
+    public static int[] arrayCopy(int[] source) {
         if (source == null) {
             return null;
         }
@@ -115,7 +117,7 @@ public final class CoreUtils {
      * @param <T> Generic representing the type of the source array.
      * @return A copy of the array or null if source was null.
      */
-    public static <T> T[] clone(T[] source) {
+    public static <T> T[] arrayCopy(T[] source) {
         if (source == null) {
             return null;
         }
@@ -288,7 +290,7 @@ public final class CoreUtils {
      * @param typeArguments The type arguments.
      * @return The instance of {@link ParameterizedType}.
      */
-    public static ParameterizedType getParameterizedType(Type rawType, Type... typeArguments) {
+    public static ParameterizedType createParameterizedType(Type rawType, Type... typeArguments) {
         return new ParameterizedType() {
             @Override
             public Type[] getActualTypeArguments() {
@@ -371,6 +373,137 @@ public final class CoreUtils {
             default:
                 return String.join(delimiter, values);
         }
+    }
+
+    /**
+     * Determines the serializer encoding to use based on the Content-Type header.
+     *
+     * @param headers the headers to get the Content-Type to check the encoding for.
+     * @return the serializer encoding to use for the body. {@link SerializationFormat#JSON} if there is no Content-Type
+     * header or an unrecognized Content-Type encoding is given.
+     */
+    public static SerializationFormat serializationFormatFromContentType(HttpHeaders headers) {
+        if (headers == null) {
+            return SerializationFormat.JSON;
+        }
+
+        String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
+        if (CoreUtils.isNullOrEmpty(contentType)) {
+            // When in doubt, JSON!
+            return SerializationFormat.JSON;
+        }
+
+        int contentTypeEnd = contentType.indexOf(';');
+        contentType = (contentTypeEnd == -1) ? contentType : contentType.substring(0, contentTypeEnd);
+        SerializationFormat encoding = checkForKnownEncoding(contentType);
+        if (encoding != null) {
+            return encoding;
+        }
+
+        int contentTypeTypeSplit = contentType.indexOf('/');
+        if (contentTypeTypeSplit == -1) {
+            return SerializationFormat.JSON;
+        }
+
+        // Check the suffix if it does not match the full types.
+        // Suffixes are defined by the Structured Syntax Suffix Registry
+        // https://www.rfc-editor.org/rfc/rfc6839
+        final String subtype = contentType.substring(contentTypeTypeSplit + 1);
+        final int lastIndex = subtype.lastIndexOf('+');
+        if (lastIndex == -1) {
+            return SerializationFormat.JSON;
+        }
+
+        // Only XML and JSON are supported suffixes, there is no suffix for TEXT.
+        final String mimeTypeSuffix = subtype.substring(lastIndex + 1);
+        if ("xml".equalsIgnoreCase(mimeTypeSuffix)) {
+            return SerializationFormat.XML;
+        } else if ("json".equalsIgnoreCase(mimeTypeSuffix)) {
+            return SerializationFormat.JSON;
+        }
+
+        return SerializationFormat.JSON;
+    }
+
+    /**
+     * Appends a query parameter to the given URL.
+     *
+     * @param host The base URL to which the query parameter will be appended.
+     * @param queryParams A map containing the query parameters and their values.
+     * @return The URL with the appended query parameter.
+     */
+    public static String appendQueryParams(String host, Map<String, Object> queryParams) {
+        if (queryParams == null || queryParams.isEmpty()) {
+            return host;  // No parameters to append
+        }
+
+        StringBuilder urlBuilder = new StringBuilder(host);
+        boolean hasExistingQuery = host.contains("?");
+
+        // Process each key-value pair in the queryParams map
+        for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+
+            // Skip null values
+            if (value == null) {
+                continue;
+            }
+
+            String valueString;
+            if (value instanceof List<?>) {
+                List<?> valueList = (List<?>) value;
+                valueString = valueList.stream().map(Object::toString).collect(Collectors.joining(String.valueOf(',')));  // Join with delimiter
+            } else {
+                valueString = value.toString();
+            }
+
+            // Append '&' or '?' depending on whether a query string already exists
+            urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(valueString);
+
+            hasExistingQuery = true; // Ensure subsequent parameters use '&'
+        }
+
+        return urlBuilder.toString();
+    }
+
+    /*
+     * There is a limited set of serialization encodings that are known ahead of time. Instead of using a TreeMap with
+     * a case-insensitive comparator, use an optimized search specifically for the known encodings.
+     */
+    private static SerializationFormat checkForKnownEncoding(String contentType) {
+        int length = contentType.length();
+
+        // Check the length of the content type first as it is a quick check.
+        if (length != 8 && length != 9 && length != 10 && length != 15 && length != 16) {
+            return null;
+        }
+
+        if ("text/".regionMatches(true, 0, contentType, 0, 5)) {
+            if (length == 8) {
+                if ("xml".regionMatches(true, 0, contentType, 5, 3)) {
+                    return SerializationFormat.XML;
+                } else if ("csv".regionMatches(true, 0, contentType, 5, 3)) {
+                    return SerializationFormat.TEXT;
+                } else if ("css".regionMatches(true, 0, contentType, 5, 3)) {
+                    return SerializationFormat.TEXT;
+                }
+            } else if (length == 9 && "html".regionMatches(true, 0, contentType, 5, 4)) {
+                return SerializationFormat.TEXT;
+            } else if (length == 10 && "plain".regionMatches(true, 0, contentType, 5, 5)) {
+                return SerializationFormat.TEXT;
+            } else if (length == 15 && "javascript".regionMatches(true, 0, contentType, 5, 10)) {
+                return SerializationFormat.TEXT;
+            }
+        } else if ("application/".regionMatches(true, 0, contentType, 0, 12)) {
+            if (length == 16 && "json".regionMatches(true, 0, contentType, 12, 4)) {
+                return SerializationFormat.JSON;
+            } else if (length == 15 && "xml".regionMatches(true, 0, contentType, 12, 3)) {
+                return SerializationFormat.XML;
+            }
+        }
+
+        return null;
     }
 
     private CoreUtils() {
