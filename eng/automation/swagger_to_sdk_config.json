@@ -13,7 +13,7 @@
       "path": "./eng/automation/generate.py",
       "logPrefix": "Java-Sdk-Automation",
       "stdout": {
-        "scriptError": "(.*\\[ERROR\\]\\s*).*"
+        "showInComment": "(.*\\[ERROR\\]\\s*).*"
       }
     }
   },
