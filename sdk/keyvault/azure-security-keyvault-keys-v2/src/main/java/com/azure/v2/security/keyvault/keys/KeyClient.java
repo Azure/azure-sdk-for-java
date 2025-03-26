@@ -5,9 +5,7 @@ package com.azure.v2.security.keyvault.keys;
 
 import com.azure.v2.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.v2.security.keyvault.keys.implementation.models.BackupKeyResult;
-import com.azure.v2.security.keyvault.keys.implementation.models.DeletedKeyBundle;
 import com.azure.v2.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
-import com.azure.v2.security.keyvault.keys.implementation.models.KeyBundle;
 import com.azure.v2.security.keyvault.keys.implementation.models.KeyCreateParameters;
 import com.azure.v2.security.keyvault.keys.implementation.models.KeyImportParameters;
 import com.azure.v2.security.keyvault.keys.implementation.models.KeyReleaseParameters;
@@ -42,8 +40,6 @@ import io.clientcore.core.http.paging.PagingOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.Context;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -61,10 +57,10 @@ import static com.azure.v2.security.keyvault.keys.implementation.models.KeyVault
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
- * This class provides synchronous methods to manage {@link KeyVaultKey keys} in Azure Key Vault or Managed HSM. The
- * client supports creating, retrieving, updating, deleting, purging, backing up, restoring, listing, releasing and
- * rotating the {@link KeyVaultKey keys}. The client also supports listing {@link DeletedKey deleted keys} for a
- * soft-delete enabled key vault or managed HSM.
+ * This class provides methods to manage {@link KeyVaultKey keys} in Azure Key Vault or Managed HSM. The client supports
+ * creating, retrieving, updating, deleting, purging, backing up, restoring, listing, releasing and rotating the
+ * {@link KeyVaultKey keys}. The client also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled
+ * key vault or managed HSM.
  *
  * <h2>Getting Started</h2>
  *
@@ -80,12 +76,11 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity documentation"</a>.</p>
  *
  * <p><strong>Sample: Construct KeyClient</strong></p>
- *
  * <p>The following code sample demonstrates the creation of a {@link KeyClient}, using the {@link KeyClientBuilder}
  * to configure it.</p>
- *
  * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.instantiation -->
  * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.instantiation -->
+ *
  * <br>
  * <hr>
  *
@@ -95,9 +90,9 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to create a cryptographic key in the key vault, using the
  * {@link KeyClient#createKey(String, KeyType)} API.</p>
- *
  * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
  * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
+ *
  * <br>
  * <hr>
  *
@@ -107,9 +102,9 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to retrieve a key from the key vault, using the
  * {@link KeyClient#getKey(String)} API.</p>
- *
  * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getKey#String -->
  * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.getKey#String -->
+ *
  * <br>
  * <hr>
  *
@@ -119,7 +114,6 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to delete a key from the key vault, using the
  * {/@link KeyClient#beginDeleteKey(String)} API.</p>
- *
  * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.deleteKey#String -->
  * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.deleteKey#String -->
  *
@@ -1517,8 +1511,8 @@ public final class KeyClient {
      * Get the requested number of bytes containing random values from a managed HSM.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets a number of bytes containing random values from a managed HSM. Prints out the retrieved bytes in
-     * Base64Uri format.</p>
+     * <p>Gets a number of bytes containing random values from a managed HSM. Prints out the retrieved bytes as a
+     * base64URL-encoded string.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getRandomBytes#int -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.getRandomBytes#int -->
      *
@@ -1539,8 +1533,8 @@ public final class KeyClient {
      * Get the requested number of bytes containing random values from a managed HSM.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets a number of bytes containing random values from a managed HSM. Prints out the response details and the
-     * retrieved bytes in Base64Uri format.</p>
+     * <p>Gets a number of bytes containing random values from a managed HSM. Prints out the retrieved bytes as a
+     * base64URL-encoded string.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-RequestOptions -->
      *

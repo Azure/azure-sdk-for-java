@@ -3,17 +3,19 @@
 
 package com.azure.v2.security.keyvault.keys.models;
 
-import com.azure.v2.security.keyvault.keys.implementation.KeyClient;
+import com.azure.v2.security.keyvault.keys.KeyClient;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Information about a {@link KeyVaultKey} parsed from the key URL. You can use this information when calling methods
- * of {@link KeyClient}.
+ * Information about a {@link KeyVaultKey} parsed from the key URL. You can use this information when calling
+ * methods of {@link KeyClient}.
  */
-//@Immutable
+@Metadata(properties = { MetadataProperties.IMMUTABLE })
 public final class KeyVaultKeyIdentifier {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultKeyIdentifier.class);
 
@@ -36,7 +38,7 @@ public final class KeyVaultKeyIdentifier {
      *
      * @param sourceId The identifier to extract information from.
      *
-     * @throws IllegalArgumentException If {@code sourceId} is an invalid Key Vault identifier.
+     * @throws IllegalArgumentException If {@code sourceId} is an invalid Key Vault Key identifier.
      * @throws NullPointerException If {@code sourceId} is {@code null}.
      */
     public KeyVaultKeyIdentifier(String sourceId) {
@@ -45,9 +47,9 @@ public final class KeyVaultKeyIdentifier {
         }
 
         try {
-            final URI url = new URI(sourceId);
+            final URI uri = new URI(sourceId);
             // We expect an sourceId with either 3 or 4 path segments: key vault + collection + name + "pending"/version
-            final String[] pathSegments = url.getPath().split("/");
+            final String[] pathSegments = uri.getPath().split("/");
 
             // More or less segments in the URI than expected.
             if (pathSegments.length != 3 && pathSegments.length != 4) {
@@ -56,7 +58,7 @@ public final class KeyVaultKeyIdentifier {
             }
 
             this.sourceId = sourceId;
-            this.endpoint = url.getScheme() + "://" + url.getHost();
+            this.endpoint = uri.getScheme() + "://" + uri.getHost();
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (URISyntaxException e) {
@@ -66,7 +68,7 @@ public final class KeyVaultKeyIdentifier {
     }
 
     /**
-     * Gets the key identifier used to create this object.
+     * Gets the key identifier used to create this object
      *
      * @return The key identifier.
      */
