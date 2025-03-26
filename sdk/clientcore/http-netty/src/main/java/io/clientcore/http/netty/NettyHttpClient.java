@@ -5,10 +5,12 @@ package io.clientcore.http.netty;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.http.netty.implementation.CoreHandler;
 import io.clientcore.http.netty.implementation.NettyHttpResponse;
 import io.clientcore.http.netty.implementation.WrappedHttpHeaders;
 import io.netty.bootstrap.Bootstrap;
@@ -20,8 +22,6 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -31,10 +31,12 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -46,13 +48,20 @@ import static io.clientcore.core.http.models.HttpMethod.HEAD;
  */
 class NettyHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(NettyHttpClient.class);
-    private final EventLoopGroup group;
 
-    private final Class<? extends Channel> socketChannelClass;
+    private final Bootstrap bootstrap;
+    private final ProxyOptions proxyOptions;
+    private final long readTimeoutMillis;
+    private final long responseTimeoutMillis;
+    private final long writeTimeoutMillis;
 
-    NettyHttpClient() {
-        this.group = new NioEventLoopGroup();
-        this.socketChannelClass = NioSocketChannel.class;
+    NettyHttpClient(Bootstrap bootstrap, ProxyOptions proxyOptions, long readTimeoutMillis, long responseTimeoutMillis,
+        long writeTimeoutMillis) {
+        this.bootstrap = bootstrap;
+        this.proxyOptions = proxyOptions;
+        this.readTimeoutMillis = readTimeoutMillis;
+        this.responseTimeoutMillis = responseTimeoutMillis;
+        this.writeTimeoutMillis = writeTimeoutMillis;
     }
 
     @Override
@@ -61,11 +70,20 @@ class NettyHttpClient implements HttpClient {
         String host = uri.getHost();
         int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
 
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(group).channel(socketChannelClass).handler(new ChannelInitializer<Channel>() {
+        bootstrap.handler(new ChannelInitializer<Channel>() {
             @Override
             protected void initChannel(Channel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
+
+                if (proxyOptions != null) {
+                    if (proxyOptions.getAddress() != null) {
+                        ch.pipeline()
+                            .addFirst(new HttpProxyHandler(
+                                new InetSocketAddress(proxyOptions.getAddress().getHostName(),
+                                    proxyOptions.getAddress().getPort()), proxyOptions.getUsername(),
+                                proxyOptions.getPassword()));
+                    }
+                }
 
                 if ("https".equalsIgnoreCase(uri.getScheme())) {
                     SslContext sslContext
@@ -75,6 +93,7 @@ class NettyHttpClient implements HttpClient {
 
                 pipeline.addLast(new HttpClientCodec());
                 pipeline.addLast(new HttpObjectAggregator(1048576));
+                pipeline.addLast(new CoreHandler(null, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
             }
         });
 
@@ -185,6 +204,9 @@ class NettyHttpClient implements HttpClient {
     }
 
     public void close() {
-        group.shutdownGracefully();
+        EventLoopGroup group = bootstrap.config().group();
+        if (group != null) {
+            group.shutdownGracefully();
+        }
     }
 }

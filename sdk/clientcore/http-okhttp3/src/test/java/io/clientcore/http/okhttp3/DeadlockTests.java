@@ -3,7 +3,13 @@
 
 package io.clientcore.http.okhttp3;
 
+import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.LocalTestServer;
+import io.clientcore.core.utils.SharedExecutorService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +17,15 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.servlet.ServletException;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class DeadlockTests {
@@ -46,27 +60,20 @@ public class DeadlockTests {
     }
 
     @Test
-    public void attemptToDeadlock() {
-        // TODO (vcolin7): Figure out how to attempt a deadlock without using Reactor.
-        /*HttpClient httpClient = new OkHttpHttpClientProvider().createInstance();
-        
+    public void attemptToDeadlock() throws InterruptedException, ExecutionException {
+        HttpClient httpClient = new OkHttpHttpClientProvider().getSharedInstance();
+
         String endpoint = server.getHttpUri() + GET_ENDPOINT;
-        
-        Mono<Tuple2<byte[], Integer>> request = Mono.just(httpClient.send(new HttpRequest(HttpMethod.GET, endpoint)))
-            .map(response -> Tuples.of(response.getBody().toBytes(), response.getStatusCode()));
-        
-        List<Tuple2<byte[], Integer>> results = Flux.range(0, 100)
-            .parallel()
-            .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> request)
-            .sequential()
-            .collectList()
-            .block();
-        
-        for (Tuple2<byte[], Integer> result : results) {
-            assertEquals(200, result.getT2());
-        
-            TestUtils.assertArraysEqual(expectedGetBytes, result.getT1());
-        }*/
+
+        List<Future<Response<BinaryData>>> futures = SharedExecutorService.getInstance().invokeAll(IntStream.range(0, 100)
+            .mapToObj(ignored -> (Callable<Response<BinaryData>>) () -> httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint)))
+            .collect(Collectors.toList()));
+
+        for (Future<Response<BinaryData>> future : futures) {
+            Response<BinaryData> response = future.get();
+
+            assertEquals(200, response.getStatusCode());
+            TestUtils.assertArraysEqual(expectedGetBytes, response.getValue().toBytes());
+        }
     }
 }

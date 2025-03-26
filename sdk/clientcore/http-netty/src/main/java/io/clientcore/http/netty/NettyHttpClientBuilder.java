@@ -5,29 +5,26 @@ package io.clientcore.http.netty;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelInitializer;
+import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
-import java.net.InetSocketAddress;
 import java.time.Duration;
 
 /**
  * Builder for creating instances of NettyHttpClient.
  */
 public class NettyHttpClientBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(NettyHttpClientBuilder.class);
-
-    ProxyOptions proxyOptions;
-
     private EventLoopGroup eventLoopGroup;
+    private Class<? extends Channel> channelClass;
+
+    private ProxyOptions proxyOptions;
     private Duration connectTimeout;
     private Duration readTimeout;
+    private Duration responseTimeout;
     private Duration writeTimeout;
 
     /**
@@ -44,6 +41,17 @@ public class NettyHttpClientBuilder {
      */
     public NettyHttpClientBuilder eventLoopGroup(EventLoopGroup eventLoopGroup) {
         this.eventLoopGroup = eventLoopGroup;
+        return this;
+    }
+
+    /**
+     * Sets the {@link Channel} type that will be used to create channels of that type.
+     *
+     * @param channelClass The {@link Channel} class to use.
+     * @return The updated builder.
+     */
+    public NettyHttpClientBuilder channelClass(Class<? extends Channel> channelClass) {
+        this.channelClass = channelClass;
         return this;
     }
 
@@ -66,6 +74,17 @@ public class NettyHttpClientBuilder {
      */
     public NettyHttpClientBuilder readTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the response timeout.
+     *
+     * @param responseTimeout The response timeout.
+     * @return The updated builder.
+     */
+    public NettyHttpClientBuilder responseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
         return this;
     }
 
@@ -99,27 +118,26 @@ public class NettyHttpClientBuilder {
     public HttpClient build() {
         EventLoopGroup group
             = eventLoopGroup != null ? eventLoopGroup : new NioEventLoopGroup(new DefaultThreadFactory("netty-client"));
-        Bootstrap bootstrap = new Bootstrap().group(group).channel(NioSocketChannel.class);
+        Class<? extends Channel> channelClass = this.channelClass == null ? NioSocketChannel.class : this.channelClass;
+        Bootstrap bootstrap = new Bootstrap().group(group).channel(channelClass);
 
         if (connectTimeout != null) {
             bootstrap.option(io.netty.channel.ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeout.toMillis());
         }
 
-        if (proxyOptions != null) {
-            bootstrap.handler(new ChannelInitializer<NioSocketChannel>() {
-                @Override
-                protected void initChannel(NioSocketChannel ch) {
-                    if (proxyOptions.getAddress() != null) {
-                        ch.pipeline()
-                            .addFirst(new HttpProxyHandler(
-                                new InetSocketAddress(proxyOptions.getAddress().getHostName(),
-                                    proxyOptions.getAddress().getPort()),
-                                proxyOptions.getUsername(), proxyOptions.getPassword()));
-                    }
-                }
-            });
+        return new NettyHttpClient(bootstrap, proxyOptions, getTimeoutMillis(readTimeout),
+            getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
+    }
+
+    private static long getTimeoutMillis(Duration duration) {
+        if (duration == null) {
+            return 60_000;
         }
 
-        return new NettyHttpClient(); // Customize with additional bootstrap configurations if needed.
+        if (duration.isNegative() || duration.isZero()) {
+            return 0;
+        }
+
+        return Math.max(1, duration.toMillis());
     }
 }
