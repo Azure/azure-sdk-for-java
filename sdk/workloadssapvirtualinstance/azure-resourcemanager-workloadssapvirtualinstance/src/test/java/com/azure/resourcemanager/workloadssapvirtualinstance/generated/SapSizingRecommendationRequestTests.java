@@ -18,14 +18,14 @@ public final class SapSizingRecommendationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapSizingRecommendationRequest model = BinaryData.fromString(
-            "{\"appLocation\":\"qlfmmdnbb\",\"environment\":\"Prod\",\"sapProduct\":\"S4HANA\",\"deploymentType\":\"ThreeTier\",\"saps\":5757404549174773833,\"dbMemory\":3740135590125473385,\"databaseType\":\"HANA\",\"dbScaleMethod\":\"ScaleUp\",\"highAvailabilityType\":\"AvailabilitySet\"}")
+            "{\"appLocation\":\"hhkxbp\",\"environment\":\"NonProd\",\"sapProduct\":\"S4HANA\",\"deploymentType\":\"SingleServer\",\"saps\":7630037301947416018,\"dbMemory\":7625908079442390330,\"databaseType\":\"HANA\",\"dbScaleMethod\":\"ScaleUp\",\"highAvailabilityType\":\"AvailabilitySet\"}")
             .toObject(SapSizingRecommendationRequest.class);
-        Assertions.assertEquals("qlfmmdnbb", model.appLocation());
-        Assertions.assertEquals(SapEnvironmentType.PROD, model.environment());
+        Assertions.assertEquals("hhkxbp", model.appLocation());
+        Assertions.assertEquals(SapEnvironmentType.NON_PROD, model.environment());
         Assertions.assertEquals(SapProductType.S4HANA, model.sapProduct());
-        Assertions.assertEquals(SapDeploymentType.THREE_TIER, model.deploymentType());
-        Assertions.assertEquals(5757404549174773833L, model.saps());
-        Assertions.assertEquals(3740135590125473385L, model.dbMemory());
+        Assertions.assertEquals(SapDeploymentType.SINGLE_SERVER, model.deploymentType());
+        Assertions.assertEquals(7630037301947416018L, model.saps());
+        Assertions.assertEquals(7625908079442390330L, model.dbMemory());
         Assertions.assertEquals(SapDatabaseType.HANA, model.databaseType());
         Assertions.assertEquals(SapDatabaseScaleMethod.SCALE_UP, model.dbScaleMethod());
         Assertions.assertEquals(SapHighAvailabilityType.AVAILABILITY_SET, model.highAvailabilityType());
@@ -33,22 +33,22 @@ public final class SapSizingRecommendationRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapSizingRecommendationRequest model = new SapSizingRecommendationRequest().withAppLocation("qlfmmdnbb")
-            .withEnvironment(SapEnvironmentType.PROD)
+        SapSizingRecommendationRequest model = new SapSizingRecommendationRequest().withAppLocation("hhkxbp")
+            .withEnvironment(SapEnvironmentType.NON_PROD)
             .withSapProduct(SapProductType.S4HANA)
-            .withDeploymentType(SapDeploymentType.THREE_TIER)
-            .withSaps(5757404549174773833L)
-            .withDbMemory(3740135590125473385L)
+            .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
+            .withSaps(7630037301947416018L)
+            .withDbMemory(7625908079442390330L)
             .withDatabaseType(SapDatabaseType.HANA)
             .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP)
             .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET);
         model = BinaryData.fromObject(model).toObject(SapSizingRecommendationRequest.class);
-        Assertions.assertEquals("qlfmmdnbb", model.appLocation());
-        Assertions.assertEquals(SapEnvironmentType.PROD, model.environment());
+        Assertions.assertEquals("hhkxbp", model.appLocation());
+        Assertions.assertEquals(SapEnvironmentType.NON_PROD, model.environment());
         Assertions.assertEquals(SapProductType.S4HANA, model.sapProduct());
-        Assertions.assertEquals(SapDeploymentType.THREE_TIER, model.deploymentType());
-        Assertions.assertEquals(5757404549174773833L, model.saps());
-        Assertions.assertEquals(3740135590125473385L, model.dbMemory());
+        Assertions.assertEquals(SapDeploymentType.SINGLE_SERVER, model.deploymentType());
+        Assertions.assertEquals(7630037301947416018L, model.saps());
+        Assertions.assertEquals(7625908079442390330L, model.dbMemory());
         Assertions.assertEquals(SapDatabaseType.HANA, model.databaseType());
         Assertions.assertEquals(SapDatabaseScaleMethod.SCALE_UP, model.dbScaleMethod());
         Assertions.assertEquals(SapHighAvailabilityType.AVAILABILITY_SET, model.highAvailabilityType());

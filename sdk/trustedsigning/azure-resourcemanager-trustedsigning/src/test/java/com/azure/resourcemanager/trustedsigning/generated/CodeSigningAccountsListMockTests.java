@@ -7,8 +7,8 @@ package com.azure.resourcemanager.trustedsigning.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.trustedsigning.TrustedSigningManager;
 import com.azure.resourcemanager.trustedsigning.models.CodeSigningAccount;
@@ -23,20 +23,20 @@ public final class CodeSigningAccountsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"accountUri\":\"wzjeiach\",\"sku\":{\"name\":\"Basic\"},\"provisioningState\":\"Canceled\"},\"location\":\"nrosfqpte\",\"tags\":{\"swjdkirso\":\"zvypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\",\"bznorcjxvsnby\":\"gr\",\"cyshurzafbljjgp\":\"qabnmoc\"},\"id\":\"toqcjmklja\",\"name\":\"bqidtqaj\",\"type\":\"yulpkudjkr\"}]}";
+            = "{\"value\":[{\"properties\":{\"accountUri\":\"aop\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Deleting\"},\"location\":\"mmxdcu\",\"tags\":{\"mzidnsezcxtb\":\"srp\",\"dwzjeiach\":\"sgfyccsnew\",\"sfqpteehz\":\"oosflnr\"},\"id\":\"vypyqrimzinpv\",\"name\":\"wjdk\",\"type\":\"rsoodqxhcrmnoh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrustedSigningManager manager = TrustedSigningManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CodeSigningAccount> response
             = manager.codeSigningAccounts().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nrosfqpte", response.iterator().next().location());
-        Assertions.assertEquals("zvypyqrimzinp", response.iterator().next().tags().get("swjdkirso"));
-        Assertions.assertEquals(SkuName.BASIC, response.iterator().next().properties().sku().name());
+        Assertions.assertEquals("mmxdcu", response.iterator().next().location());
+        Assertions.assertEquals("srp", response.iterator().next().tags().get("mzidnsezcxtb"));
+        Assertions.assertEquals(SkuName.PREMIUM, response.iterator().next().properties().sku().name());
     }
 }

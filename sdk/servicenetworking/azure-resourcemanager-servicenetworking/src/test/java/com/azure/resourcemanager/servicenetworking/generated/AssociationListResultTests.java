@@ -13,12 +13,12 @@ public final class AssociationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssociationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"esaagdfm\"},\"provisioningState\":\"Provisioning\"},\"location\":\"hjxri\",\"tags\":{\"pa\":\"mrvktsizntoc\",\"poyfdkfogkn\":\"uajpsquc\",\"eqsrdeupewnwreit\":\"gjofjd\",\"usarhmofc\":\"zyf\"},\"id\":\"hs\",\"name\":\"yurkdtmlxhekuksj\",\"type\":\"xukcdmpar\"},{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"anzwuxzdxta\"},\"provisioningState\":\"Accepted\"},\"location\":\"m\",\"tags\":{\"u\":\"pmrqobm\"},\"id\":\"knryrtihfxtij\",\"name\":\"pzvgnwzsymglzufc\",\"type\":\"zk\"},{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"ihanuf\"},\"provisioningState\":\"Canceled\"},\"location\":\"jysagith\",\"tags\":{\"npqxuh\":\"abifpikxwczbys\"},\"id\":\"vyq\",\"name\":\"iwbybrkxvdumjg\",\"type\":\"tfwvukxgaudc\"},{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"s\"},\"provisioningState\":\"Updating\"},\"location\":\"ejhkry\",\"tags\":{\"lokjyemkk\":\"apcz\",\"joxzjnchgejspodm\":\"ni\",\"h\":\"ilzyd\"},\"id\":\"jwyahuxinpmqnja\",\"name\":\"wixjsprozvcp\",\"type\":\"tegjvwmf\"}],\"nextLink\":\"t\"}")
+            "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"j\"},\"provisioningState\":\"Accepted\"},\"location\":\"kwm\",\"tags\":{\"psqucmpoyf\":\"tsizntocipaoua\",\"knygjofjddeq\":\"kfo\",\"upewnwreitjzy\":\"rd\",\"ofcqhsm\":\"lusarh\"},\"id\":\"urkdtmlx\",\"name\":\"ekuksjtx\",\"type\":\"kc\"}],\"nextLink\":\"parcry\"}")
             .toObject(AssociationListResult.class);
-        Assertions.assertEquals("hjxri", model.value().get(0).location());
-        Assertions.assertEquals("mrvktsizntoc", model.value().get(0).tags().get("pa"));
+        Assertions.assertEquals("kwm", model.value().get(0).location());
+        Assertions.assertEquals("tsizntocipaoua", model.value().get(0).tags().get("psqucmpoyf"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.value().get(0).properties().associationType());
-        Assertions.assertEquals("esaagdfm", model.value().get(0).properties().subnet().id());
-        Assertions.assertEquals("t", model.nextLink());
+        Assertions.assertEquals("j", model.value().get(0).properties().subnet().id());
+        Assertions.assertEquals("parcry", model.nextLink());
     }
 }
