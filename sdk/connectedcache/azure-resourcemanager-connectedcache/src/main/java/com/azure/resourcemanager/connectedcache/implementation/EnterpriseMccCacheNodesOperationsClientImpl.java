@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.connectedcache.fluent.EnterpriseMccCacheNodesOperationsClient;
@@ -85,6 +87,17 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnterpriseMccCacheNodeResourceInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -96,10 +109,32 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") EnterpriseMccCacheNodeResourceInner resource, Context context);
 
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EnterpriseMccCacheNodeResourceInner resource, Context context);
+
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EnterpriseMccCacheNodeResourceInner>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConnectedCachePatchResource properties, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnterpriseMccCacheNodeResourceInner> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customerResourceName") String customerResourceName,
@@ -119,10 +154,32 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EnterpriseMccCacheNodeResourceListResult>> listByEnterpriseMccCustomerResource(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnterpriseMccCacheNodeResourceListResult> listByEnterpriseMccCustomerResourceSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -142,10 +199,29 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}/getCacheNodeInstallDetails")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MccCacheNodeInstallDetailsInner> getCacheNodeInstallDetailsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EnterpriseMccCacheNodeResourceListResult>> listByEnterpriseMccCustomerResourceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnterpriseMccCacheNodeResourceListResult> listByEnterpriseMccCustomerResourceNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -269,7 +345,31 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnterpriseMccCacheNodeResourceInner> getWithResponse(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, customerResourceName, cacheNodeResourceName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        if (cacheNodeResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, customerResourceName, cacheNodeResourceName, accept, context);
     }
 
     /**
@@ -400,6 +500,107 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the high level Nodes needed to provision cache node resources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String customerResourceName,
+        String cacheNodeResourceName, EnterpriseMccCacheNodeResourceInner resource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        if (cacheNodeResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName,
+            contentType, accept, resource, Context.NONE);
+    }
+
+    /**
+     * This api creates an ispCacheNode with the specified create parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the high level Nodes needed to provision cache node resources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String customerResourceName,
+        String cacheNodeResourceName, EnterpriseMccCacheNodeResourceInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        if (cacheNodeResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName,
+            contentType, accept, resource, context);
+    }
+
+    /**
+     * This api creates an ispCacheNode with the specified create parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of represents the high level Nodes needed to provision cache node
      * resources.
      */
@@ -457,8 +658,11 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     public SyncPoller<PollResult<EnterpriseMccCacheNodeResourceInner>, EnterpriseMccCacheNodeResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String customerResourceName, String cacheNodeResourceName,
             EnterpriseMccCacheNodeResourceInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, customerResourceName, cacheNodeResourceName, resource)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, resource);
+        return this.client.<EnterpriseMccCacheNodeResourceInner, EnterpriseMccCacheNodeResourceInner>getLroResult(
+            response, EnterpriseMccCacheNodeResourceInner.class, EnterpriseMccCacheNodeResourceInner.class,
+            Context.NONE);
     }
 
     /**
@@ -479,9 +683,10 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     public SyncPoller<PollResult<EnterpriseMccCacheNodeResourceInner>, EnterpriseMccCacheNodeResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String customerResourceName, String cacheNodeResourceName,
             EnterpriseMccCacheNodeResourceInner resource, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, customerResourceName, cacheNodeResourceName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, customerResourceName,
+            cacheNodeResourceName, resource, context);
+        return this.client.<EnterpriseMccCacheNodeResourceInner, EnterpriseMccCacheNodeResourceInner>getLroResult(
+            response, EnterpriseMccCacheNodeResourceInner.class, EnterpriseMccCacheNodeResourceInner.class, context);
     }
 
     /**
@@ -541,7 +746,8 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnterpriseMccCacheNodeResourceInner createOrUpdate(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, EnterpriseMccCacheNodeResourceInner resource) {
-        return createOrUpdateAsync(resourceGroupName, customerResourceName, cacheNodeResourceName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, customerResourceName, cacheNodeResourceName, resource)
+            .getFinalResult();
     }
 
     /**
@@ -560,8 +766,8 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnterpriseMccCacheNodeResourceInner createOrUpdate(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, EnterpriseMccCacheNodeResourceInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, customerResourceName, cacheNodeResourceName, resource, context)
-            .block();
+        return beginCreateOrUpdate(resourceGroupName, customerResourceName, cacheNodeResourceName, resource, context)
+            .getFinalResult();
     }
 
     /**
@@ -701,8 +907,39 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     public Response<EnterpriseMccCacheNodeResourceInner> updateWithResponse(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName, ConnectedCachePatchResource properties,
         Context context) {
-        return updateWithResponseAsync(resourceGroupName, customerResourceName, cacheNodeResourceName, properties,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        if (cacheNodeResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName,
+            contentType, accept, properties, context);
     }
 
     /**
@@ -816,6 +1053,91 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String customerResourceName,
+        String cacheNodeResourceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        if (cacheNodeResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
+            Context.NONE);
+    }
+
+    /**
+     * This api deletes an existing ispCacheNode resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String customerResourceName,
+        String cacheNodeResourceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        if (cacheNodeResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
+            context);
+    }
+
+    /**
+     * This api deletes an existing ispCacheNode resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -863,7 +1185,9 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName) {
-        return this.beginDeleteAsync(resourceGroupName, customerResourceName, cacheNodeResourceName).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -881,8 +1205,9 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, customerResourceName, cacheNodeResourceName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -934,7 +1259,7 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String customerResourceName, String cacheNodeResourceName) {
-        deleteAsync(resourceGroupName, customerResourceName, cacheNodeResourceName).block();
+        beginDelete(resourceGroupName, customerResourceName, cacheNodeResourceName).getFinalResult();
     }
 
     /**
@@ -951,7 +1276,7 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String customerResourceName, String cacheNodeResourceName,
         Context context) {
-        deleteAsync(resourceGroupName, customerResourceName, cacheNodeResourceName, context).block();
+        beginDelete(resourceGroupName, customerResourceName, cacheNodeResourceName, context).getFinalResult();
     }
 
     /**
@@ -1081,13 +1406,94 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterpriseMccCacheNodeResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EnterpriseMccCacheNodeResourceInner>
+        listByEnterpriseMccCustomerResourceSinglePage(String resourceGroupName, String customerResourceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EnterpriseMccCacheNodeResourceListResult> res
+            = service.listByEnterpriseMccCustomerResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * This api retrieves information about all ispCacheNode resources under the given subscription and resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterpriseMccCacheNodeResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EnterpriseMccCacheNodeResourceInner> listByEnterpriseMccCustomerResourceSinglePage(
+        String resourceGroupName, String customerResourceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EnterpriseMccCacheNodeResourceListResult> res
+            = service.listByEnterpriseMccCustomerResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * This api retrieves information about all ispCacheNode resources under the given subscription and resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a EnterpriseMccCacheNodeResource list operation as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnterpriseMccCacheNodeResourceInner>
         listByEnterpriseMccCustomerResource(String resourceGroupName, String customerResourceName) {
-        return new PagedIterable<>(listByEnterpriseMccCustomerResourceAsync(resourceGroupName, customerResourceName));
+        return new PagedIterable<>(
+            () -> listByEnterpriseMccCustomerResourceSinglePage(resourceGroupName, customerResourceName, Context.NONE),
+            nextLink -> listByEnterpriseMccCustomerResourceNextSinglePage(nextLink));
     }
 
     /**
@@ -1106,7 +1512,8 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     public PagedIterable<EnterpriseMccCacheNodeResourceInner>
         listByEnterpriseMccCustomerResource(String resourceGroupName, String customerResourceName, Context context) {
         return new PagedIterable<>(
-            listByEnterpriseMccCustomerResourceAsync(resourceGroupName, customerResourceName, context));
+            () -> listByEnterpriseMccCustomerResourceSinglePage(resourceGroupName, customerResourceName, context),
+            nextLink -> listByEnterpriseMccCustomerResourceNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1228,8 +1635,32 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MccCacheNodeInstallDetailsInner> getCacheNodeInstallDetailsWithResponse(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName, Context context) {
-        return getCacheNodeInstallDetailsWithResponseAsync(resourceGroupName, customerResourceName,
-            cacheNodeResourceName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (customerResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
+        }
+        if (cacheNodeResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getCacheNodeInstallDetailsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
+            context);
     }
 
     /**
@@ -1306,4 +1737,63 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterpriseMccCacheNodeResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EnterpriseMccCacheNodeResourceInner>
+        listByEnterpriseMccCustomerResourceNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EnterpriseMccCacheNodeResourceListResult> res = service
+            .listByEnterpriseMccCustomerResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterpriseMccCacheNodeResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EnterpriseMccCacheNodeResourceInner>
+        listByEnterpriseMccCustomerResourceNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EnterpriseMccCacheNodeResourceListResult> res
+            = service.listByEnterpriseMccCustomerResourceNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EnterpriseMccCacheNodesOperationsClientImpl.class);
 }

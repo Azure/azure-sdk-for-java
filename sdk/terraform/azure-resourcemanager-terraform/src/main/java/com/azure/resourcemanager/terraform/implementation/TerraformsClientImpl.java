@@ -20,8 +20,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.terraform.fluent.TerraformsClient;
@@ -66,6 +68,14 @@ public final class TerraformsClientImpl implements TerraformsClient {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> exportTerraform(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BaseExportModel body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AzureTerraform/exportTerraform")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> exportTerraformSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BaseExportModel body, Context context);
@@ -142,6 +152,71 @@ public final class TerraformsClientImpl implements TerraformsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> exportTerraformWithResponse(BaseExportModel body) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.exportTerraformSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), contentType, accept, body, Context.NONE);
+    }
+
+    /**
+     * Exports the Terraform configuration of the specified resource(s).
+     * 
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> exportTerraformWithResponse(BaseExportModel body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.exportTerraformSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), contentType, accept, body, context);
+    }
+
+    /**
+     * Exports the Terraform configuration of the specified resource(s).
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -180,7 +255,8 @@ public final class TerraformsClientImpl implements TerraformsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportTerraform(BaseExportModel body) {
-        return this.beginExportTerraformAsync(body).getSyncPoller();
+        Response<BinaryData> response = exportTerraformWithResponse(body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -195,7 +271,8 @@ public final class TerraformsClientImpl implements TerraformsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportTerraform(BaseExportModel body, Context context) {
-        return this.beginExportTerraformAsync(body, context).getSyncPoller();
+        Response<BinaryData> response = exportTerraformWithResponse(body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -237,7 +314,7 @@ public final class TerraformsClientImpl implements TerraformsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void exportTerraform(BaseExportModel body) {
-        exportTerraformAsync(body).block();
+        beginExportTerraform(body).getFinalResult();
     }
 
     /**
@@ -251,6 +328,8 @@ public final class TerraformsClientImpl implements TerraformsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void exportTerraform(BaseExportModel body, Context context) {
-        exportTerraformAsync(body, context).block();
+        beginExportTerraform(body, context).getFinalResult();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TerraformsClientImpl.class);
 }

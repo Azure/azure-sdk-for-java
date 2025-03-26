@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicenetworking.fluent.SecurityPoliciesInterfacesClient;
@@ -83,6 +85,17 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             @PathParam("securityPolicyName") String securityPolicyName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SecurityPolicyInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName,
+            @PathParam("securityPolicyName") String securityPolicyName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -94,10 +107,32 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             @HeaderParam("Accept") String accept, @BodyParam("application/json") SecurityPolicyInner resource,
             Context context);
 
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName,
+            @PathParam("securityPolicyName") String securityPolicyName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SecurityPolicyInner resource,
+            Context context);
+
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityPolicyInner>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName,
+            @PathParam("securityPolicyName") String securityPolicyName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SecurityPolicyUpdate properties,
+            Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SecurityPolicyInner> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
@@ -117,6 +152,17 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName,
+            @PathParam("securityPolicyName") String securityPolicyName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -127,10 +173,28 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SecurityPolicyListResult> listByTrafficControllerSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityPolicyListResult>> listByTrafficControllerNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SecurityPolicyListResult> listByTrafficControllerNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -251,7 +315,31 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityPolicyInner> getWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, Context context) {
-        return getWithResponseAsync(resourceGroupName, trafficControllerName, securityPolicyName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (securityPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, trafficControllerName, securityPolicyName, accept, context);
     }
 
     /**
@@ -380,6 +468,107 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return securityPolicy Subresource of Traffic Controller along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
+        String securityPolicyName, SecurityPolicyInner resource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (securityPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, securityPolicyName, contentType,
+            accept, resource, Context.NONE);
+    }
+
+    /**
+     * Create a SecurityPolicy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param securityPolicyName SecurityPolicy.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return securityPolicy Subresource of Traffic Controller along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
+        String securityPolicyName, SecurityPolicyInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (securityPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, securityPolicyName, contentType,
+            accept, resource, context);
+    }
+
+    /**
+     * Create a SecurityPolicy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param securityPolicyName SecurityPolicy.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of securityPolicy Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -432,8 +621,10 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     public SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String trafficControllerName, String securityPolicyName,
         SecurityPolicyInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, securityPolicyName, resource)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, resource);
+        return this.client.<SecurityPolicyInner, SecurityPolicyInner>getLroResult(response, SecurityPolicyInner.class,
+            SecurityPolicyInner.class, Context.NONE);
     }
 
     /**
@@ -453,9 +644,10 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     public SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String trafficControllerName, String securityPolicyName, SecurityPolicyInner resource,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, securityPolicyName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, trafficControllerName,
+            securityPolicyName, resource, context);
+        return this.client.<SecurityPolicyInner, SecurityPolicyInner>getLroResult(response, SecurityPolicyInner.class,
+            SecurityPolicyInner.class, context);
     }
 
     /**
@@ -513,7 +705,8 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityPolicyInner createOrUpdate(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, SecurityPolicyInner resource) {
-        return createOrUpdateAsync(resourceGroupName, trafficControllerName, securityPolicyName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, securityPolicyName, resource)
+            .getFinalResult();
     }
 
     /**
@@ -532,8 +725,8 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityPolicyInner createOrUpdate(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, SecurityPolicyInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, trafficControllerName, securityPolicyName, resource, context)
-            .block();
+        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, securityPolicyName, resource, context)
+            .getFinalResult();
     }
 
     /**
@@ -670,8 +863,39 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityPolicyInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, SecurityPolicyUpdate properties, Context context) {
-        return updateWithResponseAsync(resourceGroupName, trafficControllerName, securityPolicyName, properties,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (securityPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, securityPolicyName, contentType,
+            accept, properties, context);
     }
 
     /**
@@ -785,6 +1009,91 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
+        String securityPolicyName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (securityPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, securityPolicyName, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Delete a SecurityPolicy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param securityPolicyName SecurityPolicy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
+        String securityPolicyName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (securityPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, securityPolicyName, accept,
+            context);
+    }
+
+    /**
+     * Delete a SecurityPolicy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param securityPolicyName SecurityPolicy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -832,7 +1141,9 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String securityPolicyName) {
-        return this.beginDeleteAsync(resourceGroupName, trafficControllerName, securityPolicyName).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, trafficControllerName, securityPolicyName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -850,8 +1161,9 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, trafficControllerName, securityPolicyName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -902,7 +1214,7 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String securityPolicyName) {
-        deleteAsync(resourceGroupName, trafficControllerName, securityPolicyName).block();
+        beginDelete(resourceGroupName, trafficControllerName, securityPolicyName).getFinalResult();
     }
 
     /**
@@ -919,7 +1231,7 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String securityPolicyName,
         Context context) {
-        deleteAsync(resourceGroupName, trafficControllerName, securityPolicyName, context).block();
+        beginDelete(resourceGroupName, trafficControllerName, securityPolicyName, context).getFinalResult();
     }
 
     /**
@@ -1046,12 +1358,93 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SecurityPolicy list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SecurityPolicyInner> listByTrafficControllerSinglePage(String resourceGroupName,
+        String trafficControllerName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SecurityPolicyListResult> res
+            = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List SecurityPolicy resources by TrafficController.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SecurityPolicy list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SecurityPolicyInner> listByTrafficControllerSinglePage(String resourceGroupName,
+        String trafficControllerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SecurityPolicyListResult> res
+            = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List SecurityPolicy resources by TrafficController.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a SecurityPolicy list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityPolicyInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName) {
-        return new PagedIterable<>(listByTrafficControllerAsync(resourceGroupName, trafficControllerName));
+        return new PagedIterable<>(
+            () -> listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName, Context.NONE),
+            nextLink -> listByTrafficControllerNextSinglePage(nextLink));
     }
 
     /**
@@ -1068,7 +1461,9 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityPolicyInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName, Context context) {
-        return new PagedIterable<>(listByTrafficControllerAsync(resourceGroupName, trafficControllerName, context));
+        return new PagedIterable<>(
+            () -> listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName, context),
+            nextLink -> listByTrafficControllerNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1126,4 +1521,61 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SecurityPolicy list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SecurityPolicyInner> listByTrafficControllerNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SecurityPolicyListResult> res
+            = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SecurityPolicy list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SecurityPolicyInner> listByTrafficControllerNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SecurityPolicyListResult> res
+            = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityPoliciesInterfacesClientImpl.class);
 }

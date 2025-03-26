@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicenetworking.fluent.FrontendsInterfacesClient;
@@ -82,10 +84,31 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             @PathParam("trafficControllerName") String trafficControllerName,
             @PathParam("frontendName") String frontendName, @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<FrontendInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName,
+            @PathParam("frontendName") String frontendName, @HeaderParam("Accept") String accept, Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName,
+            @PathParam("frontendName") String frontendName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") FrontendInner resource,
+            Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
@@ -104,11 +127,32 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             @HeaderParam("Accept") String accept, @BodyParam("application/json") FrontendUpdate properties,
             Context context);
 
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<FrontendInner> updateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName,
+            @PathParam("frontendName") String frontendName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") FrontendUpdate properties,
+            Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName,
+            @PathParam("frontendName") String frontendName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
@@ -125,10 +169,28 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<FrontendListResult> listByTrafficControllerSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("trafficControllerName") String trafficControllerName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FrontendListResult>> listByTrafficControllerNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<FrontendListResult> listByTrafficControllerNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -244,7 +306,31 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FrontendInner> getWithResponse(String resourceGroupName, String trafficControllerName,
         String frontendName, Context context) {
-        return getWithResponseAsync(resourceGroupName, trafficControllerName, frontendName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (frontendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter frontendName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, trafficControllerName, frontendName, accept, context);
     }
 
     /**
@@ -371,6 +457,107 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return frontend Sub Resource of Traffic Controller along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
+        String frontendName, FrontendInner resource) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (frontendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter frontendName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, contentType,
+            accept, resource, Context.NONE);
+    }
+
+    /**
+     * Create a Frontend.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param frontendName Frontends.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return frontend Sub Resource of Traffic Controller along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
+        String frontendName, FrontendInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (frontendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter frontendName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, contentType,
+            accept, resource, context);
+    }
+
+    /**
+     * Create a Frontend.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param frontendName Frontends.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -420,8 +607,10 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
         String trafficControllerName, String frontendName, FrontendInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, trafficControllerName, frontendName, resource);
+        return this.client.<FrontendInner, FrontendInner>getLroResult(response, FrontendInner.class,
+            FrontendInner.class, Context.NONE);
     }
 
     /**
@@ -440,8 +629,10 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
         String trafficControllerName, String frontendName, FrontendInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, trafficControllerName, frontendName, resource, context);
+        return this.client.<FrontendInner, FrontendInner>getLroResult(response, FrontendInner.class,
+            FrontendInner.class, context);
     }
 
     /**
@@ -499,7 +690,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
         FrontendInner resource) {
-        return createOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, frontendName, resource).getFinalResult();
     }
 
     /**
@@ -518,7 +709,8 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
         FrontendInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource, context).block();
+        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, frontendName, resource, context)
+            .getFinalResult();
     }
 
     /**
@@ -653,8 +845,39 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FrontendInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
         String frontendName, FrontendUpdate properties, Context context) {
-        return updateWithResponseAsync(resourceGroupName, trafficControllerName, frontendName, properties, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (frontendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter frontendName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, contentType,
+            accept, properties, context);
     }
 
     /**
@@ -764,6 +987,90 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
+        String frontendName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (frontendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter frontendName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Delete a Frontend.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param frontendName Frontends.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
+        String frontendName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        if (frontendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter frontendName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, accept, context);
+    }
+
+    /**
+     * Delete a Frontend.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param frontendName Frontends.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -811,7 +1118,8 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String frontendName) {
-        return this.beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, trafficControllerName, frontendName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -829,7 +1137,9 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String frontendName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName, context).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, trafficControllerName, frontendName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -880,7 +1190,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String frontendName) {
-        deleteAsync(resourceGroupName, trafficControllerName, frontendName).block();
+        beginDelete(resourceGroupName, trafficControllerName, frontendName).getFinalResult();
     }
 
     /**
@@ -896,7 +1206,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String frontendName, Context context) {
-        deleteAsync(resourceGroupName, trafficControllerName, frontendName, context).block();
+        beginDelete(resourceGroupName, trafficControllerName, frontendName, context).getFinalResult();
     }
 
     /**
@@ -1023,12 +1333,93 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Frontend list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FrontendInner> listByTrafficControllerSinglePage(String resourceGroupName,
+        String trafficControllerName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FrontendListResult> res
+            = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Frontend resources by TrafficController.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Frontend list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FrontendInner> listByTrafficControllerSinglePage(String resourceGroupName,
+        String trafficControllerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (trafficControllerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FrontendListResult> res
+            = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Frontend resources by TrafficController.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param trafficControllerName traffic controller name for path.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName) {
-        return new PagedIterable<>(listByTrafficControllerAsync(resourceGroupName, trafficControllerName));
+        return new PagedIterable<>(
+            () -> listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName, Context.NONE),
+            nextLink -> listByTrafficControllerNextSinglePage(nextLink));
     }
 
     /**
@@ -1045,7 +1436,9 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendInner> listByTrafficController(String resourceGroupName, String trafficControllerName,
         Context context) {
-        return new PagedIterable<>(listByTrafficControllerAsync(resourceGroupName, trafficControllerName, context));
+        return new PagedIterable<>(
+            () -> listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName, context),
+            nextLink -> listByTrafficControllerNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1103,4 +1496,61 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Frontend list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FrontendInner> listByTrafficControllerNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FrontendListResult> res
+            = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Frontend list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<FrontendInner> listByTrafficControllerNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<FrontendListResult> res
+            = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FrontendsInterfacesClientImpl.class);
 }

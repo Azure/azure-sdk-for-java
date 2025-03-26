@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computeschedule.fluent.ScheduledActionsClient;
 import com.azure.resourcemanager.computeschedule.fluent.models.CancelOperationsResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeallocateResourceOperationResponseInner;
@@ -81,10 +82,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitDeallocateRequest requestBody,
             Context context);
 
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitDeallocate")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DeallocateResourceOperationResponseInner> virtualMachinesSubmitDeallocateSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitDeallocateRequest requestBody,
+            Context context);
+
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitHibernate")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HibernateResourceOperationResponseInner>> virtualMachinesSubmitHibernate(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitHibernateRequest requestBody,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitHibernate")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<HibernateResourceOperationResponseInner> virtualMachinesSubmitHibernateSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
@@ -101,10 +122,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitStartRequest requestBody,
             Context context);
 
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitStart")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StartResourceOperationResponseInner> virtualMachinesSubmitStartSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitStartRequest requestBody,
+            Context context);
+
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDeallocate")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeallocateResourceOperationResponseInner>> virtualMachinesExecuteDeallocate(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteDeallocateRequest requestBody,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDeallocate")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DeallocateResourceOperationResponseInner> virtualMachinesExecuteDeallocateSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
@@ -121,10 +162,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteHibernateRequest requestBody,
             Context context);
 
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteHibernate")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<HibernateResourceOperationResponseInner> virtualMachinesExecuteHibernateSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteHibernateRequest requestBody,
+            Context context);
+
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteStart")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StartResourceOperationResponseInner>> virtualMachinesExecuteStart(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteStartRequest requestBody,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteStart")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StartResourceOperationResponseInner> virtualMachinesExecuteStartSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
@@ -141,6 +202,16 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationStatusRequest requestBody,
             Context context);
 
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationStatusRequest requestBody,
+            Context context);
+
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesCancelOperations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -151,10 +222,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HeaderParam("Accept") String accept, @BodyParam("application/json") CancelOperationsRequest requestBody,
             Context context);
 
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesCancelOperations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CancelOperationsResponseInner> virtualMachinesCancelOperationsSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CancelOperationsRequest requestBody,
+            Context context);
+
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationErrors")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GetOperationErrorsResponseInner>> virtualMachinesGetOperationErrors(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationErrorsRequest requestBody,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationErrors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<GetOperationErrorsResponseInner> virtualMachinesGetOperationErrorsSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
@@ -276,7 +367,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeallocateResourceOperationResponseInner> virtualMachinesSubmitDeallocateWithResponse(
         String locationparameter, SubmitDeallocateRequest requestBody, Context context) {
-        return virtualMachinesSubmitDeallocateWithResponseAsync(locationparameter, requestBody, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (locationparameter == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
+        }
+        if (requestBody == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
+        } else {
+            requestBody.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesSubmitDeallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
     /**
@@ -410,7 +524,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HibernateResourceOperationResponseInner> virtualMachinesSubmitHibernateWithResponse(
         String locationparameter, SubmitHibernateRequest requestBody, Context context) {
-        return virtualMachinesSubmitHibernateWithResponseAsync(locationparameter, requestBody, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (locationparameter == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
+        }
+        if (requestBody == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
+        } else {
+            requestBody.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesSubmitHibernateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
     /**
@@ -538,7 +675,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartResourceOperationResponseInner> virtualMachinesSubmitStartWithResponse(
         String locationparameter, SubmitStartRequest requestBody, Context context) {
-        return virtualMachinesSubmitStartWithResponseAsync(locationparameter, requestBody, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (locationparameter == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
+        }
+        if (requestBody == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
+        } else {
+            requestBody.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesSubmitStartSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
     /**
@@ -671,7 +831,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeallocateResourceOperationResponseInner> virtualMachinesExecuteDeallocateWithResponse(
         String locationparameter, ExecuteDeallocateRequest requestBody, Context context) {
-        return virtualMachinesExecuteDeallocateWithResponseAsync(locationparameter, requestBody, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (locationparameter == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
+        }
+        if (requestBody == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
+        } else {
+            requestBody.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesExecuteDeallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
     /**
@@ -805,7 +988,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HibernateResourceOperationResponseInner> virtualMachinesExecuteHibernateWithResponse(
         String locationparameter, ExecuteHibernateRequest requestBody, Context context) {
-        return virtualMachinesExecuteHibernateWithResponseAsync(locationparameter, requestBody, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (locationparameter == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
+        }
+        if (requestBody == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
+        } else {
+            requestBody.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesExecuteHibernateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
     /**
@@ -937,7 +1143,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartResourceOperationResponseInner> virtualMachinesExecuteStartWithResponse(
         String locationparameter, ExecuteStartRequest requestBody, Context context) {
-        return virtualMachinesExecuteStartWithResponseAsync(locationparameter, requestBody, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (locationparameter == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
+        }
+        if (requestBody == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
+        } else {
+            requestBody.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesExecuteStartSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
     /**
@@ -1067,7 +1296,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusWithResponse(
         String locationparameter, GetOperationStatusRequest requestBody, Context context) {
-        return virtualMachinesGetOperationStatusWithResponseAsync(locationparameter, requestBody, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (locationparameter == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
+        }
+        if (requestBody == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
+        } else {
+            requestBody.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesGetOperationStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
     /**
@@ -1196,7 +1448,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelOperationsResponseInner> virtualMachinesCancelOperationsWithResponse(String locationparameter,
         CancelOperationsRequest requestBody, Context context) {
-        return virtualMachinesCancelOperationsWithResponseAsync(locationparameter, requestBody, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (locationparameter == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
+        }
+        if (requestBody == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
+        } else {
+            requestBody.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesCancelOperationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
     /**
@@ -1329,7 +1604,30 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOperationErrorsResponseInner> virtualMachinesGetOperationErrorsWithResponse(
         String locationparameter, GetOperationErrorsRequest requestBody, Context context) {
-        return virtualMachinesGetOperationErrorsWithResponseAsync(locationparameter, requestBody, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (locationparameter == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
+        }
+        if (requestBody == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
+        } else {
+            requestBody.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesGetOperationErrorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, requestBody, context);
     }
 
     /**
@@ -1348,4 +1646,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         GetOperationErrorsRequest requestBody) {
         return virtualMachinesGetOperationErrorsWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScheduledActionsClientImpl.class);
 }

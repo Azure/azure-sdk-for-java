@@ -30,6 +30,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridconnectivity.fluent.EndpointsClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.EndpointAccessResourceInner;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.EndpointResourceInner;
@@ -83,6 +84,16 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam(value = "endpointName", encoded = true) String endpointName,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EndpointResourceInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam(value = "endpointName", encoded = true) String endpointName,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Put("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -93,10 +104,30 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") EndpointResourceInner endpointResource, Context context);
 
+        @Put("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EndpointResourceInner> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam(value = "endpointName", encoded = true) String endpointName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EndpointResourceInner endpointResource, Context context);
+
         @Patch("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EndpointResourceInner>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam(value = "endpointName", encoded = true) String endpointName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EndpointResourceInner endpointResource, Context context);
+
+        @Patch("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EndpointResourceInner> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
@@ -114,6 +145,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam(value = "endpointName", encoded = true) String endpointName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -123,10 +163,30 @@ public final class EndpointsClientImpl implements EndpointsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EndpointsList> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listCredentials")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EndpointAccessResourceInner>> listCredentials(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam(value = "endpointName", encoded = true) String endpointName,
+            @QueryParam("expiresin") Long expiresin, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ListCredentialsRequest listCredentialsRequest, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listCredentials")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EndpointAccessResourceInner> listCredentialsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
@@ -145,10 +205,32 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @BodyParam("application/json") ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Post("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listIngressGatewayCredentials")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<IngressGatewayResourceInner> listIngressGatewayCredentialsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam(value = "endpointName", encoded = true) String endpointName,
+            @QueryParam("expiresin") Long expiresin, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
+            Context context);
+
         @Post("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listManagedProxyDetails")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedProxyResourceInner>> listManagedProxyDetails(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam(value = "endpointName", encoded = true) String endpointName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ManagedProxyRequest managedProxyRequest, Context context);
+
+        @Post("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listManagedProxyDetails")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ManagedProxyResourceInner> listManagedProxyDetailsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
@@ -160,6 +242,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EndpointsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EndpointsList> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -250,7 +339,22 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointResourceInner> getWithResponse(String resourceUri, String endpointName, Context context) {
-        return getWithResponseAsync(resourceUri, endpointName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
+            accept, context);
     }
 
     /**
@@ -379,7 +483,29 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointResourceInner> createOrUpdateWithResponse(String resourceUri, String endpointName,
         EndpointResourceInner endpointResource, Context context) {
-        return createOrUpdateWithResponseAsync(resourceUri, endpointName, endpointResource, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        if (endpointResource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter endpointResource is required and cannot be null."));
+        } else {
+            endpointResource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            endpointName, contentType, accept, endpointResource, context);
     }
 
     /**
@@ -510,7 +636,29 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointResourceInner> updateWithResponse(String resourceUri, String endpointName,
         EndpointResourceInner endpointResource, Context context) {
-        return updateWithResponseAsync(resourceUri, endpointName, endpointResource, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        if (endpointResource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter endpointResource is required and cannot be null."));
+        } else {
+            endpointResource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
+            contentType, accept, endpointResource, context);
     }
 
     /**
@@ -616,7 +764,22 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String endpointName, Context context) {
-        return deleteWithResponseAsync(resourceUri, endpointName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
+            accept, context);
     }
 
     /**
@@ -723,11 +886,67 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of endpoints along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EndpointResourceInner> listSinglePage(String resourceUri) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EndpointsList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            resourceUri, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List of endpoints to the target resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of endpoints along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EndpointResourceInner> listSinglePage(String resourceUri, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EndpointsList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List of endpoints to the target resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointResourceInner> list(String resourceUri) {
-        return new PagedIterable<>(listAsync(resourceUri));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, Context.NONE),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -742,7 +961,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointResourceInner> list(String resourceUri, Context context) {
-        return new PagedIterable<>(listAsync(resourceUri, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -851,8 +1071,25 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointAccessResourceInner> listCredentialsWithResponse(String resourceUri, String endpointName,
         Long expiresin, ListCredentialsRequest listCredentialsRequest, Context context) {
-        return listCredentialsWithResponseAsync(resourceUri, endpointName, expiresin, listCredentialsRequest, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        if (listCredentialsRequest != null) {
+            listCredentialsRequest.validate();
+        }
+        final String accept = "application/json";
+        return service.listCredentialsSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            endpointName, expiresin, accept, listCredentialsRequest, context);
     }
 
     /**
@@ -984,8 +1221,25 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Response<IngressGatewayResourceInner> listIngressGatewayCredentialsWithResponse(String resourceUri,
         String endpointName, Long expiresin, ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
         Context context) {
-        return listIngressGatewayCredentialsWithResponseAsync(resourceUri, endpointName, expiresin,
-            listIngressGatewayCredentialsRequest, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        if (listIngressGatewayCredentialsRequest != null) {
+            listIngressGatewayCredentialsRequest.validate();
+        }
+        final String accept = "application/json";
+        return service.listIngressGatewayCredentialsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            resourceUri, endpointName, expiresin, accept, listIngressGatewayCredentialsRequest, context);
     }
 
     /**
@@ -1116,8 +1370,29 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedProxyResourceInner> listManagedProxyDetailsWithResponse(String resourceUri,
         String endpointName, ManagedProxyRequest managedProxyRequest, Context context) {
-        return listManagedProxyDetailsWithResponseAsync(resourceUri, endpointName, managedProxyRequest, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        if (managedProxyRequest == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter managedProxyRequest is required and cannot be null."));
+        } else {
+            managedProxyRequest.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.listManagedProxyDetailsSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            endpointName, contentType, accept, managedProxyRequest, context);
     }
 
     /**
@@ -1188,4 +1463,59 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of endpoints along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EndpointResourceInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EndpointsList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of endpoints along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EndpointResourceInner> listNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EndpointsList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EndpointsClientImpl.class);
 }
