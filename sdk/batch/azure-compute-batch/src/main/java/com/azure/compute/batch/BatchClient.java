@@ -11,6 +11,7 @@ import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchApplication;
 import com.azure.compute.batch.models.BatchCertificate;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
+import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateContent;
 import com.azure.compute.batch.models.BatchJobDisableContent;
@@ -45,7 +46,6 @@ import com.azure.compute.batch.models.BatchPoolUsageMetrics;
 import com.azure.compute.batch.models.BatchSubtask;
 import com.azure.compute.batch.models.BatchSupportedImage;
 import com.azure.compute.batch.models.BatchTask;
-import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
 import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.BatchTaskGroup;
@@ -8981,7 +8981,7 @@ public final class BatchClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of adding a collection of Tasks to a Job along with {@link Response}.
+     * @return the result of creating a collection of Tasks to a Job along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -14342,11 +14342,11 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of adding a collection of Tasks to a Job.
+     * @return the result of creating a collection of Tasks to a Job.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTaskAddCollectionResult createTaskCollection(String jobId, BatchTaskGroup taskCollection,
+    public BatchCreateTaskCollectionResult createTaskCollection(String jobId, BatchTaskGroup taskCollection,
         CreateBatchTaskCollectionOptions options) {
         // Generated convenience method for createTaskCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -14355,7 +14355,7 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions).getValue()
-            .toObject(BatchTaskAddCollectionResult.class);
+            .toObject(BatchCreateTaskCollectionResult.class);
     }
 
     /**
@@ -14384,15 +14384,15 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of adding a collection of Tasks to a Job.
+     * @return the result of creating a collection of Tasks to a Job.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTaskAddCollectionResult createTaskCollection(String jobId, BatchTaskGroup taskCollection) {
+    public BatchCreateTaskCollectionResult createTaskCollection(String jobId, BatchTaskGroup taskCollection) {
         // Generated convenience method for createTaskCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions).getValue()
-            .toObject(BatchTaskAddCollectionResult.class);
+            .toObject(BatchCreateTaskCollectionResult.class);
     }
 
     /**
