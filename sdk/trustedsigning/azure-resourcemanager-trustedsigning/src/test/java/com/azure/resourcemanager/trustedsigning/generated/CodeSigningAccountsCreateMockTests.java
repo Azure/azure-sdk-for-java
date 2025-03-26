@@ -6,8 +6,8 @@ package com.azure.resourcemanager.trustedsigning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.trustedsigning.TrustedSigningManager;
 import com.azure.resourcemanager.trustedsigning.models.AccountSku;
@@ -26,25 +26,25 @@ public final class CodeSigningAccountsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"accountUri\":\"whijcoejctbza\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Succeeded\"},\"location\":\"bkbfkgukdkex\",\"tags\":{\"x\":\"ofmx\"},\"id\":\"fjpgddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"}";
+            = "{\"properties\":{\"accountUri\":\"aodxo\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Succeeded\"},\"location\":\"qp\",\"tags\":{\"po\":\"ajionpimexgstxg\",\"djwzrlov\":\"gmaajrm\",\"qsqsy\":\"clwhijcoejctbz\"},\"id\":\"bkbfkgukdkex\",\"name\":\"ppofmxaxcfjpgdd\",\"type\":\"ocjjxhvpmouexh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrustedSigningManager manager = TrustedSigningManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CodeSigningAccount response = manager.codeSigningAccounts()
-            .define("rhhbcs")
-            .withRegion("k")
-            .withExistingResourceGroup("scpai")
-            .withTags(mapOf("onpimexgstxg", "okaj"))
-            .withProperties(new CodeSigningAccountProperties().withSku(new AccountSku().withName(SkuName.BASIC)))
+            .define("qabnmoc")
+            .withRegion("javbqidtqajz")
+            .withExistingResourceGroup("bznorcjxvsnby")
+            .withTags(mapOf("jkrlkhbzhfepg", "pku"))
+            .withProperties(new CodeSigningAccountProperties().withSku(new AccountSku().withName(SkuName.PREMIUM)))
             .create();
 
-        Assertions.assertEquals("bkbfkgukdkex", response.location());
-        Assertions.assertEquals("ofmx", response.tags().get("x"));
+        Assertions.assertEquals("qp", response.location());
+        Assertions.assertEquals("ajionpimexgstxg", response.tags().get("po"));
         Assertions.assertEquals(SkuName.PREMIUM, response.properties().sku().name());
     }
 
