@@ -60,6 +60,12 @@
       <version>0.43.0</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
     </dependency>
 
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;external_dependency} -->
+    </dependency>
+
     <!-- provided scope -->
 
     <dependency>
