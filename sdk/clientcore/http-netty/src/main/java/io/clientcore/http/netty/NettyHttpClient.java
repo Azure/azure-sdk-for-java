@@ -10,6 +10,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.http.netty.implementation.NettyHttpResponse;
+import io.clientcore.http.netty.implementation.WrappedHttpHeaders;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -35,7 +36,6 @@ import io.netty.handler.ssl.SslContextBuilder;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -127,17 +127,15 @@ class NettyHttpClient implements HttpClient {
 
         FullHttpRequest nettyRequest = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, content);
 
-        HttpHeaders headers = nettyRequest.headers();
-        request.getHeaders().stream().forEach(header -> {
-            List<String> values = header.getValues();
-            for (String value : values) {
-                headers.add(header.getName().toString(), value);
-            }
-        });
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(request.getHeaders());
 
-        headers.set(HttpHeaderNames.HOST, request.getUri().getHost());
+        // TODO (alzimmer): This will mutate the underlying ClientCore HttpHeaders. Will need to think about this design
+        //  more once it's closer to completion.
+        wrappedHttpHeaders.set(HttpHeaderNames.HOST, request.getUri().getHost());
         if (content.readableBytes() > 0) {
-            headers.set(HttpHeaderNames.CONTENT_LENGTH, content.readableBytes());
+            // TODO (alzimmer): Should we be setting Content-Length here again? Shouldn't this be handled externally
+            //  by the creator of the HttpRequest?
+            wrappedHttpHeaders.set(HttpHeaderNames.CONTENT_LENGTH, content.readableBytes());
         }
 
         return nettyRequest;

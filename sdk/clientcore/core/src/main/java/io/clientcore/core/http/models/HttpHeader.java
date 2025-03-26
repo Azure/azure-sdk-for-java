@@ -23,7 +23,6 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  */
 @Metadata(properties = MetadataProperties.FLUENT)
 public final class HttpHeader {
-    private static final String[] EMPTY_HEADER_ARRAY = new String[0];
 
     private final HttpHeaderName name;
 
@@ -112,21 +111,6 @@ public final class HttpHeader {
 
         checkCachedStringValue();
         return CACHED_STRING_VALUE_UPDATER.get(this);
-    }
-
-    /**
-     * Gets the comma separated value as an array. Changes made to this array will not be reflected in the headers.
-     *
-     * @return the values of this {@link HttpHeader} that are separated by a comma
-     */
-    String[] getValuesArray() {
-        if (value != null) {
-            return new String[] { value };
-        } else if (!isNullOrEmpty(values)) {
-            return values.toArray(new String[0]);
-        } else {
-            return EMPTY_HEADER_ARRAY;
-        }
     }
 
     /**
