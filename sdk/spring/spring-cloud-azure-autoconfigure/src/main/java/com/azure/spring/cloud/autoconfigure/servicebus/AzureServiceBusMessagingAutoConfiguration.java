@@ -122,14 +122,14 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "true", matchIfMissing = true)
-        ServiceBusMessageConverter defaultServiceBusMessageConverter() {
+        AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> defaultServiceBusMessageConverter() {
             return new ServiceBusMessageConverter(ObjectMapperHolder.OBJECT_MAPPER);
         }
 
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "false")
-        ServiceBusMessageConverter serviceBusMessageConverter(ObjectMapper objectMapper) {
+        AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> serviceBusMessageConverter(ObjectMapper objectMapper) {
             return new ServiceBusMessageConverter(objectMapper);
         }
 
