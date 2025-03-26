@@ -22,6 +22,7 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
+import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -1289,5 +1290,49 @@ public class ShareFileAsyncJavaDocCodeSamples {
             .subscribe(result -> System.out.printf("Link count is is %s.",
                 result.getValue().getPosixProperties().getLinkCount()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#createSymbolicLink(String)},
+     * {@link ShareFileAsyncClient#createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions)}
+     */
+    public void createSymbolicLink() {
+        ShareFileAsyncClient sourceClient = createAsyncClientWithSASToken();
+        ShareFileAsyncClient symbolicLinkClient = createAsyncClientWithSASToken();
+
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLink#String
+        symbolicLinkClient.createSymbolicLink(sourceClient.getFilePath())
+            .subscribe(response -> System.out.printf("Link count is %s.",
+                response.getPosixProperties().getLinkCount()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLink#String
+
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLinkWithResponse#ShareFileCreateSymbolicLinkOptions
+        ShareFileCreateSymbolicLinkOptions options = new ShareFileCreateSymbolicLinkOptions(sourceClient.getFilePath());
+        symbolicLinkClient.createSymbolicLinkWithResponse(options)
+            .subscribe(response -> System.out.printf("Link count is %s.",
+                response.getValue().getPosixProperties().getLinkCount()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLinkWithResponse#ShareFileCreateSymbolicLinkOptions
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#getSymbolicLink()},
+     * {@link ShareFileAsyncClient#getSymbolicLinkWithResponse()}
+     */
+    public void getSymbolicLink() {
+        ShareFileAsyncClient symbolicLinkClient = createAsyncClientWithSASToken();
+
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLink
+        symbolicLinkClient.getSymbolicLink()
+            .subscribe(response -> {
+                System.out.printf("Link text is %s.", response.getLinkText());
+            });
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLink
+
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLinkWithResponse
+        symbolicLinkClient.getSymbolicLinkWithResponse()
+            .subscribe(response -> {
+                System.out.printf("Link text is %s.", response.getValue().getLinkText());
+            });
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLinkWithResponse
     }
 }
