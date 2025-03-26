@@ -159,7 +159,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       $artifactId = $xmlPomFile.project.artifactId
       $version = $xmlPomFile.project.version
       $pomFileDir = Split-Path -Path $pomFile -Parent
-      $pkgProp = [PackageProps]::new($artifactId, $version.ToString(), $pomFileDir, $serviceDirFromYml, $groupId)
+      $pkgProp = [PackageProps]::new($artifactId, $version.ToString(), $pomFileDir, $serviceDirFromYml, $groupId, $artifactId)
       if ($artifactId -match "mgmt" -or $artifactId -match "resourcemanager")
       {
         $pkgProp.SdkType = "mgmt"
@@ -367,7 +367,7 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
     if ($packageInfo.DevVersion) {
       $version = $packageInfo.DevVersion
     }
-    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version
+    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.ArtifactName $packageInfo.Group $version
     # If there are namespaces found from the javadoc.jar then add them to the packageInfo which
     # will later update the metadata json file in the docs repository. If there aren't any namespaces
     # then don't add the namespaces member with an empty list. The reason being is that the

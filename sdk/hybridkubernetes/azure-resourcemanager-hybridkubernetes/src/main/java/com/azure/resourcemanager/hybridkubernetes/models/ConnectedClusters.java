@@ -106,7 +106,7 @@ public interface ConnectedClusters {
         ListClusterUserCredentialProperties properties);
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given ResourceGroup
      * 
      * API to enumerate registered connected K8s clusters under a Resource Group.
      * 
@@ -119,7 +119,7 @@ public interface ConnectedClusters {
     PagedIterable<ConnectedCluster> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given ResourceGroup
      * 
      * API to enumerate registered connected K8s clusters under a Resource Group.
      * 
@@ -133,7 +133,7 @@ public interface ConnectedClusters {
     PagedIterable<ConnectedCluster> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given Subscription
      * 
      * API to enumerate registered connected K8s clusters under a Subscription.
      * 
@@ -144,7 +144,7 @@ public interface ConnectedClusters {
     PagedIterable<ConnectedCluster> list();
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given Subscription
      * 
      * API to enumerate registered connected K8s clusters under a Subscription.
      * 

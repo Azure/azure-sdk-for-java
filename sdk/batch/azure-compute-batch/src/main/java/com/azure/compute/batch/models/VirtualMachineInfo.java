@@ -23,6 +23,13 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
     @Generated
     private ImageReference imageReference;
 
+    /*
+     * The resource ID of the Compute Node's current Virtual Machine Scale Set VM. Only defined if the Batch Account was
+     * created with its poolAllocationMode property set to 'UserSubscription'.
+     */
+    @Generated
+    private String scaleSetVmResourceId;
+
     /**
      * Creates an instance of VirtualMachineInfo class.
      */
@@ -39,13 +46,6 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
     public ImageReference getImageReference() {
         return this.imageReference;
     }
-
-    /*
-     * The resource ID of the Compute Node's current Virtual Machine Scale Set VM. Only defined if the Batch Account was
-     * created with its poolAllocationMode property set to 'UserSubscription'.
-     */
-    @Generated
-    private String scaleSetVmResourceId;
 
     /**
      * Get the scaleSetVmResourceId property: The resource ID of the Compute Node's current Virtual Machine Scale Set

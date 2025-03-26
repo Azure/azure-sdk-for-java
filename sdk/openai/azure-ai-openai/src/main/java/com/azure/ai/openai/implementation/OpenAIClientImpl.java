@@ -1123,7 +1123,7 @@ public final class OpenAIClientImpl {
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *         }
      *     ]
-     *     usage (Required): {
+     *     usage (Optional): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
@@ -1303,7 +1303,7 @@ public final class OpenAIClientImpl {
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *         }
      *     ]
-     *     usage (Required): {
+     *     usage (Optional): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
@@ -1617,7 +1617,7 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      *     system_fingerprint: String (Optional)
-     *     usage (Required): {
+     *     usage (Optional): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
@@ -1931,7 +1931,7 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      *     system_fingerprint: String (Optional)
-     *     usage (Required): {
+     *     usage (Optional): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
