@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
-@DisabledOnOs({OS.WINDOWS, OS.MAC})
+@Disabled
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AzureRedisAutoConfigurationTestContainerTest {
 
