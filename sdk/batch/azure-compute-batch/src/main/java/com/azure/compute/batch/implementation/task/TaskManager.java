@@ -13,7 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.azure.compute.batch.BatchClient;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
-import com.azure.compute.batch.models.BatchTaskAddResult;
+import com.azure.compute.batch.models.BatchTaskCreateResult;
 import com.azure.compute.batch.models.BatchTaskAddStatus;
 import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.BatchTaskGroup;
@@ -40,12 +40,12 @@ public class TaskManager {
         private final TaskSubmitter taskSubmitter;
         private final String jobId;
         private final Queue<BatchTaskCreateContent> pendingList;
-        private final List<BatchTaskAddResult> failures;
+        private final List<BatchTaskCreateResult> failures;
         private volatile Exception exception;
         private final Object lock;
 
         public WorkingThread(TaskSubmitter taskSubmitter, String jobId, Queue<BatchTaskCreateContent> pendingList,
-            List<BatchTaskAddResult> failures, Object lock) {
+            List<BatchTaskCreateResult> failures, Object lock) {
             this.taskSubmitter = taskSubmitter;
             this.jobId = jobId;
             this.pendingList = pendingList;
@@ -82,7 +82,7 @@ public class TaskManager {
                     }
                 }).subscribe(response -> {
                     if (response != null && response.getValue() != null) {
-                        for (BatchTaskAddResult result : response.getValue()) {
+                        for (BatchTaskCreateResult result : response.getValue()) {
                             if (result.getError() != null) {
                                 if (result.getStatus() == BatchTaskAddStatus.SERVER_ERROR) {
                                     // Server error will be retried
@@ -184,7 +184,7 @@ public class TaskManager {
             }
             final Object lock = new Object();
             ConcurrentLinkedQueue<BatchTaskCreateContent> pendingList = new ConcurrentLinkedQueue<>(taskList);
-            CopyOnWriteArrayList<BatchTaskAddResult> failures = new CopyOnWriteArrayList<>();
+            CopyOnWriteArrayList<BatchTaskCreateResult> failures = new CopyOnWriteArrayList<>();
             Map<Thread, WorkingThread> threads = new HashMap<>();
             Exception innerException = null;
 
