@@ -880,6 +880,30 @@
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
           "justification": "Removing Jackson annotations from Tables in transition to stream-style."
+        },
+        {
+          "code" : "java.annotation.removed",
+          "old" : "method com.azure.storage.blob.models.*",
+          "new" : "method com.azure.storage.blob.models.*",
+          "justification" : "removed annotation",
+        },
+        {
+          "code" : "java.annotation.removed",
+          "old" : "method java.lang.String com.azure.storage.blob.models.*",
+          "new" : "method java.lang.String com.azure.storage.blob.models.*",
+          "justification" : "removed annotation"
+        },
+        {
+          "code" : "java.annotation.removed",
+          "old" : "class com.azure.storage.blob.models.*",
+          "new" : "class com.azure.storage.blob.models.*",
+          "justification" : "removed annotation"
+        },
+        {
+          "code" : "java.annotation.removed",
+          "old" : "method java.lang.String com.azure.storage.blob.models.BlobImmutabilityPolicyMode::toString()",
+          "new" : "method java.lang.String com.azure.storage.blob.models.BlobImmutabilityPolicyMode::toString()",
+          "justification" : "removed annotation"
         }
       ]
     }
