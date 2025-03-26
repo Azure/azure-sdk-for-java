@@ -3,6 +3,10 @@
 
 package com.azure.v2.security.keyvault.keys;
 
+import com.azure.v2.core.http.polling.LongRunningOperationStatus;
+import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
+import com.azure.v2.core.http.polling.PollingContext;
 import com.azure.v2.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.v2.security.keyvault.keys.implementation.models.BackupKeyResult;
 import com.azure.v2.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
@@ -40,6 +44,7 @@ import io.clientcore.core.http.paging.PagingOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.Context;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -124,7 +129,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 public final class KeyClient {
     private static final ClientLogger LOGGER = new ClientLogger(KeyClient.class);
 
-    private final KeyClientImpl implClient;
+    private final KeyClientImpl clientImpl;
     private final String endpoint;
 
     /**
@@ -143,7 +148,7 @@ public final class KeyClient {
      * @param endpoint The vault endpoint.
      */
     KeyClient(KeyClientImpl clientImpl, String endpoint) {
-        this.implClient = clientImpl;
+        this.clientImpl = clientImpl;
         this.endpoint = endpoint;
     }
 
@@ -195,7 +200,7 @@ public final class KeyClient {
      * and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Creates a new EC key and prints out its details.</p>
+     * <p>Creates a new key in the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
      *
@@ -230,8 +235,8 @@ public final class KeyClient {
      * and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the newly
-     * created key returned in the response.</p>
+     * <p>Creates a new key which activates in one day and expires in one year. Prints out the details of the newly
+     * created key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createKey#CreateKeyOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createKey#CreateKeyOptions -->
      *
@@ -260,7 +265,7 @@ public final class KeyClient {
                 .setTags(createKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(implClient.createKey(createKeyOptions.getName(), keyCreateParameters));
+            return createKeyVaultKey(clientImpl.createKey(createKeyOptions.getName(), keyCreateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -281,8 +286,8 @@ public final class KeyClient {
      * and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the newly
-     * created key returned in the response.</p>
+     * <p>Creates a new key which activates in one day and expires in one year. Prints out details of the response
+     * returned by the service and the newly created key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createKeyWithResponse#CreateKeyOptions-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createKeyWithResponse#CreateKeyOptions-RequestOptions -->
      *
@@ -315,7 +320,7 @@ public final class KeyClient {
                 .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
 
             return mapResponse(
-                implClient.createKeyWithResponse(createKeyOptions.getName(), keyCreateParameters, requestOptions),
+                clientImpl.createKeyWithResponse(createKeyOptions.getName(), keyCreateParameters, requestOptions),
                 KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -338,7 +343,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the newly
-     * created RSA key returned in the response.</p>
+     * created RSA key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createRsaKey#CreateRsaKeyOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createRsaKey#CreateRsaKeyOptions -->
      *
@@ -367,7 +372,7 @@ public final class KeyClient {
                 .setTags(createRsaKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(implClient.createKey(createRsaKeyOptions.getName(), keyCreateParameters));
+            return createKeyVaultKey(clientImpl.createKey(createRsaKeyOptions.getName(), keyCreateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -388,8 +393,8 @@ public final class KeyClient {
      * {@link KeyType#RSA_HSM RSA-HSM}</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the newly
-     * created RSA key returned in the response.</p>
+     * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out details of the response
+     * returned by the service and the newly created RSA key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createRsaKeyWithResponse#CreateRsaKeyOptions-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createRsaKeyWithResponse#CreateRsaKeyOptions-RequestOptions -->
      *
@@ -424,7 +429,7 @@ public final class KeyClient {
                 .setReleasePolicy(mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()));
 
             return mapResponse(
-                implClient.createKeyWithResponse(createRsaKeyOptions.getName(), keyCreateParameters, requestOptions),
+                clientImpl.createKeyWithResponse(createRsaKeyOptions.getName(), keyCreateParameters, requestOptions),
                 KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -447,7 +452,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Creates a new EC key with a {@link KeyCurveName#P_384 P-384} web key curve which activates in one day and
-     * expires in one year. Prints out the details of the newly created EC key returned in the response.</p>
+     * expires in one year. Prints out the details of the newly created EC key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createEcKey#CreateOctKeyOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createEcKey#CreateOctKeyOptions -->
      *
@@ -475,7 +480,7 @@ public final class KeyClient {
                 .setCurve(createEcKeyOptions.getCurveName())
                 .setReleasePolicy(mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(implClient.createKey(createEcKeyOptions.getName(), keyCreateParameters));
+            return createKeyVaultKey(clientImpl.createKey(createEcKeyOptions.getName(), keyCreateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -497,7 +502,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Creates a new EC key with a {@link KeyCurveName#P_384 P-384} web key curve which activates in one day and
-     * expires in one year. Prints out the details of the newly created EC key returned in the response.</p>
+     * expires in one year. Prints out details of the response returned by the service and the newly created EC key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createEcKeyWithResponse#CreateEcKeyOptions-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createEcKeyWithResponse#CreateEcKeyOptions-RequestOptions -->
      *
@@ -530,7 +535,7 @@ public final class KeyClient {
                 .setReleasePolicy(mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()));
 
             return mapResponse(
-                implClient.createKeyWithResponse(createEcKeyOptions.getName(), keyCreateParameters, requestOptions),
+                clientImpl.createKeyWithResponse(createEcKeyOptions.getName(), keyCreateParameters, requestOptions),
                 KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -551,7 +556,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Creates a new symmetric key with a which activates in one day and expires in one year. Prints out the details
-     * of the newly created symmetric key returned in the response.</p>
+     * of the newly created symmetric key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions -->
      *
@@ -579,7 +584,7 @@ public final class KeyClient {
                 .setTags(createOctKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(implClient.createKey(createOctKeyOptions.getName(), keyCreateParameters));
+            return createKeyVaultKey(clientImpl.createKey(createOctKeyOptions.getName(), keyCreateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -598,8 +603,8 @@ public final class KeyClient {
      * {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Creates a new symmetric key with a which activates in one day and expires in one year. Prints out the details
-     * of the newly created symmetric key returned in the response.</p>
+     * <p>Creates a new symmetric key with a which activates in one day and expires in one year. Prints out details of
+     * the response returned by the service and the newly created symmetric key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-RequestOptions -->
      *
@@ -631,7 +636,7 @@ public final class KeyClient {
                 .setReleasePolicy(mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()));
 
             return mapResponse(
-                implClient.createKeyWithResponse(createOctKeyOptions.getName(), keyCreateParameters, requestOptions),
+                clientImpl.createKeyWithResponse(createOctKeyOptions.getName(), keyCreateParameters, requestOptions),
                 KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -644,7 +649,7 @@ public final class KeyClient {
      * a new version of the key is created. This operation requires the {@code keys/import} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Imports a key into the key vault and prints out the details of the imported key returned in the response.</p>
+     * <p>Imports a key into the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.importKey#String-JsonWebKey -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.importKey#String-JsonWebKey -->
      *
@@ -664,7 +669,7 @@ public final class KeyClient {
 
             Objects.requireNonNull(keyMaterial, "'keyMaterial' cannot be null.");
 
-            return createKeyVaultKey(implClient.importKey(name, new KeyImportParameters(mapJsonWebKey(keyMaterial))));
+            return createKeyVaultKey(clientImpl.importKey(name, new KeyImportParameters(mapJsonWebKey(keyMaterial))));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -683,7 +688,7 @@ public final class KeyClient {
      * if not specified.</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Imports a key into the key vault and prints out the details of the imported key returned in the response.</p>
+     * <p>Imports a key into the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.importKey#ImportKeyOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.importKey#ImportKeyOptions -->
      *
@@ -712,7 +717,7 @@ public final class KeyClient {
                 .setTags(importKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
 
-            return createKeyVaultKey(implClient.importKey(importKeyOptions.getName(), keyImportParameters));
+            return createKeyVaultKey(clientImpl.importKey(importKeyOptions.getName(), keyImportParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -731,7 +736,8 @@ public final class KeyClient {
      * if not specified.</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Imports a key into the key vault and prints out the details of the imported key returned in the response.</p>
+     * <p>Imports a key into the key vault. Prints out details of the response returned by the service and the imported
+     * key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.importKeyWithResponse#ImportKeyOptions-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.importKeyWithResponse#ImportKeyOptions-RequestOptions -->
      *
@@ -765,7 +771,7 @@ public final class KeyClient {
                 .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
 
             return mapResponse(
-                implClient.importKeyWithResponse(importKeyOptions.getName(), keyImportParameters, requestOptions),
+                clientImpl.importKeyWithResponse(importKeyOptions.getName(), keyImportParameters, requestOptions),
                 KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -777,7 +783,7 @@ public final class KeyClient {
      * key types in Azure Key Vault or Managed HSM and requires the {@code keys/get} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the details of the retrieved key.</p>
+     * <p>Gets the latest version of a key in the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getKey#String -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.getKey#String -->
      *
@@ -797,7 +803,7 @@ public final class KeyClient {
      * is applicable to all key types in Azure Key Vault or Managed HSM and requires the {@code keys/get} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the details of the retrieved key.</p>
+     * <p>Gets a specific version of a key in the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getKey#String-String -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.getKey#String-String -->
      *
@@ -817,7 +823,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return createKeyVaultKey(implClient.getKey(name, version));
+            return createKeyVaultKey(clientImpl.getKey(name, version));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -828,7 +834,8 @@ public final class KeyClient {
      * is applicable to all key types in Azure Key Vault or Managed HSM and requires the {@code keys/get} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the details of the retrieved key.</p>
+     * <p>Gets a specific version of a key in the key vault. Prints out details of the response returned by the service
+     * and the requested key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getKeyWithResponse#String-String-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.getKeyWithResponse#String-String-RequestOptions -->
      *
@@ -849,7 +856,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return mapResponse(implClient.getKeyWithResponse(name, version, requestOptions),
+            return mapResponse(clientImpl.getKeyWithResponse(name, version, requestOptions),
                 KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -862,8 +869,8 @@ public final class KeyClient {
      * operation requires the {@code keys/set} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets the latest version of a key, changes its expiry time and operations and updates the key in the key vault.
-     * </p>
+     * <p>Gets the latest version of a key and updates its expiry time and operations in the key vault, then prints out
+     * the updated key's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.updateKeyProperties#KeyProperties-KeyOperation -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.updateKeyProperties#KeyProperties-KeyOperation -->
      *
@@ -889,7 +896,7 @@ public final class KeyClient {
                 .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
             return createKeyVaultKey(
-                implClient.updateKey(keyProperties.getName(), keyProperties.getVersion(), keyUpdateParameters));
+                clientImpl.updateKey(keyProperties.getName(), keyProperties.getVersion(), keyUpdateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -901,7 +908,8 @@ public final class KeyClient {
      * operation requires the {@code keys/set} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets the latest version of a key, changes its expiry time and operations and updates the key in the key vault.
+     * <p>Gets the latest version of a key and updates its expiry time and operations, then prints out details of the
+     * response returned by the service and the updated key.
      * </p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.updateKeyPropertiesWithResponse#KeyProperties-RequestOptions-KeyOperation -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.updateKeyPropertiesWithResponse#KeyProperties-RequestOptions-KeyOperation -->
@@ -930,7 +938,7 @@ public final class KeyClient {
                 .setTags(keyProperties.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
-            return mapResponse(implClient.updateKeyWithResponse(keyProperties.getName(), keyProperties.getVersion(),
+            return mapResponse(clientImpl.updateKeyWithResponse(keyProperties.getName(), keyProperties.getVersion(),
                 keyUpdateParameters, requestOptions), KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -946,7 +954,7 @@ public final class KeyClient {
      * {@code keys/delete} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Deletes the key from the key vault. Prints out the recovery id of the deleted key.</p>
+     * <p>Deletes a key from the key vault and prints out its recovery id.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.deleteKey#String -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.deleteKey#String -->
      *
@@ -968,14 +976,14 @@ public final class KeyClient {
 
     private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> deleteActivationOperation(String name) {
         return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createDeletedKey(
-            implClient.deleteKeyWithResponse(name, EMPTY_OPTIONS).getValue().toObject(DeletedKeyBundle.class)));
+            implClient.deleteKeyWithResponse(name, RequestOptions.none()).getValue().toObject(DeletedKeyBundle.class)));
     }
 
     private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> deletePollOperation(String name) {
         return pollingContext -> {
             try {
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createDeletedKey(
-                    implClient.getDeletedKeyWithResponse(name, EMPTY_OPTIONS)
+                    implClient.getDeletedKeyWithResponse(name, RequestOptions.none())
                         .getValue()
                         .toObject(DeletedKeyBundle.class)));
             } catch (HttpResponseException e) {
@@ -1004,8 +1012,7 @@ public final class KeyClient {
      * vaults. This operation requires the {@code keys/get} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets the deleted key from the key vault enabled for soft-delete and prints out the details of the deleted key.
-     * </p>
+     * <p>Gets a deleted key from the key vault enabled for soft-delete and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getDeletedKey#String -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.getDeletedKey#String -->
      *
@@ -1022,7 +1029,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return createDeletedKey(implClient.getDeletedKey(name));
+            return createDeletedKey(clientImpl.getDeletedKey(name));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1033,8 +1040,8 @@ public final class KeyClient {
      * vaults. This operation requires the {@code keys/get} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets the deleted key from the key vault enabled for soft-delete and prints out the details of the deleted key.
-     * </p>
+     * <p>Gets a deleted key from the key vault enabled for soft-delete. Prints details of the response returned by the
+     * service and the deleted key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getDeletedKey#String-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.getDeletedKey#String-RequestOptions -->
      *
@@ -1052,7 +1059,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return mapResponse(implClient.getDeletedKeyWithResponse(name, requestOptions),
+            return mapResponse(clientImpl.getDeletedKeyWithResponse(name, requestOptions),
                 KeyVaultKeysModelsUtils::createDeletedKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1064,7 +1071,7 @@ public final class KeyClient {
      * only applicable for soft-delete enabled vaults. This operation requires the {@code keys/purge} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Purges the deleted key from the soft-delete enabled key vault.</p>
+     * <p>Purges a deleted key from a key vault enabled for soft-delete.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.purgeDeletedKey#String -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.purgeDeletedKey#String -->
      *
@@ -1080,7 +1087,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            implClient.purgeDeletedKey(name);
+            clientImpl.purgeDeletedKey(name);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1091,7 +1098,8 @@ public final class KeyClient {
      * only applicable for soft-delete enabled vaults. This operation requires the {@code keys/purge} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Purges the deleted key from the soft-delete enabled key vault.</p>
+     * <p>Purges a deleted key from a key vault enabled for soft-delete and prints out details of the response returned
+     * by the service.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.purgeDeletedKeyWithResponse#String-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.purgeDeletedKeyWithResponse#String-RequestOptions -->
      *
@@ -1109,7 +1117,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return implClient.purgeDeletedKeyWithResponse(name, requestOptions);
+            return clientImpl.purgeDeletedKeyWithResponse(name, requestOptions);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1122,7 +1130,7 @@ public final class KeyClient {
      * {@code keys/recover} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recovers a deleted key from a soft-delete enabled key vault.</p>
+     * <p>Recovers a deleted key from key vault enabled for soft-delete and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.recoverDeletedKey#String -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.recoverDeletedKey#String -->
      *
@@ -1132,26 +1140,30 @@ public final class KeyClient {
      * @throws HttpResponseException If a key with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         try {
-            return Poller.createPoller(Duration.ofSeconds(1), recoverActivationOperation(name),
-                recoverPollOperation(name), (pollingContext, firstResponse) -> null, pollingContext -> null);
-        } catch (RuntimeException e) {
+            return Poller.createPoller(
+                Duration.ofSeconds(1),
+                recoverActivationOperation(name),
+                recoverPollOperation(name),
+                (pollingContext, firstResponse) -> null,
+                pollingContext -> null);
+        } catch (HttpResponseException e) {
             throw LOGGER.logThrowableAsError(e);
         }
     }
 
     private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> recoverActivationOperation(String name) {
-        return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createKeyVaultKey(
-            implClient.recoverDeletedKeyWithResponse(name, EMPTY_OPTIONS).getValue().toObject(KeyBundle.class)));
+        return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+            createKeyVaultKey(clientImpl.recoverDeletedKey(name)));
     }
 
     private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> recoverPollOperation(String keyName) {
         return pollingContext -> {
             try {
-                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createKeyVaultKey(
-                    implClient.getKeyWithResponse(keyName, null, EMPTY_OPTIONS).getValue().toObject(KeyBundle.class)));
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    createKeyVaultKey(clientImpl.getKey(keyName, ""));
             } catch (HttpResponseException e) {
                 if (e.getResponse().getStatusCode() == 404) {
                     return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -1169,7 +1181,7 @@ public final class KeyClient {
                     pollingContext.getLatestResponse().getValue());
             }
         };
-    }*/
+    }
 
     /**
      * Requests a backup of the specified key be downloaded to the client. The key backup operation exports a key from
@@ -1184,7 +1196,7 @@ public final class KeyClient {
      * requires the {@code key/backup} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Backs up a key from the key vault.</p>
+     * <p>Backs up a key from the key vault and prints out the length of the key's backup blob.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.backupKey#String -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.backupKey#String -->
      *
@@ -1201,7 +1213,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return implClient.backupKey(name).getValue();
+            return clientImpl.backupKey(name).getValue();
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1220,8 +1232,8 @@ public final class KeyClient {
      * requires the {@code key/backup} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Backs up a key from the key vault and prints out the length of the key's backup byte array returned response.
-     * </p>
+     * <p>Backs up a key from the key vault. Prints out details of the response returned by the service and the length
+     * of the key's backup blob.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.backupKeyWithResponse#String-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.backupKeyWithResponse#String-RequestOptions -->
      *
@@ -1239,7 +1251,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return mapResponse(implClient.backupKeyWithResponse(name, requestOptions), BackupKeyResult::getValue);
+            return mapResponse(clientImpl.backupKeyWithResponse(name, requestOptions), BackupKeyResult::getValue);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1257,7 +1269,7 @@ public final class KeyClient {
      * {@code keys/restore} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Restores the key in the key vault from its backup.</p>
+     * <p>Restores a key in the key vault from its backup and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.restoreKeyBackup#byte -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.restoreKeyBackup#byte -->
      *
@@ -1272,7 +1284,7 @@ public final class KeyClient {
         try {
             Objects.requireNonNull(backup, "'backup' cannot be null.");
 
-            return createKeyVaultKey(implClient.restoreKey(new KeyRestoreParameters(backup)));
+            return createKeyVaultKey(clientImpl.restoreKey(new KeyRestoreParameters(backup)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1290,8 +1302,8 @@ public final class KeyClient {
      * {@code keys/restore} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Restores the key in the key vault from its backup. Prints out the details of the restored key returned in the
-     * response.</p>
+     * <p>Restores a key in the key vault from its backup. Prints out details of the response returned by the service
+     * and the restored key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.restoreKeyBackupWithResponse#byte-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.restoreKeyBackupWithResponse#byte-RequestOptions -->
      *
@@ -1307,7 +1319,7 @@ public final class KeyClient {
         try {
             Objects.requireNonNull(backup, "'backup' cannot be null.");
 
-            return mapResponse(implClient.restoreKeyWithResponse(new KeyRestoreParameters(backup), requestOptions),
+            return mapResponse(clientImpl.restoreKeyWithResponse(new KeyRestoreParameters(backup), requestOptions),
                 KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1321,13 +1333,13 @@ public final class KeyClient {
      *
      * <p><strong>Iterate through keys</strong></p>
      * <p>Lists the keys in the key vault and gets the key material for each one's latest version by looping though the
-     * properties objects and calling {@link KeyClient#getKey(String, String)}.</p>
+     * properties objects and calling {@link KeyClient#getKey(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys -->
      *
      * <p><strong>Iterate through keys by page</strong></p>
      * <p>Iterates through the keys in the key vault by page and gets the key material for each one's latest version by
-     * looping though the properties objects and calling {@link KeyClient#getKey(String, String)}.</p>
+     * looping though the properties objects and calling {@link KeyClient#getKey(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage -->
      *
@@ -1344,17 +1356,11 @@ public final class KeyClient {
      * represented by a properties object containing the key identifier, attributes, and tags. The key material and
      * individual key versions are not listed in the response. This operation requires the {@code keys/list} permission.
      *
-     * <p><strong>Iterate through keys</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Lists the keys in the key vault and gets the key material for each one's latest version by looping though the
-     * properties objects and calling {@link KeyClient#getKey(String, String)}.</p>
+     * properties objects and calling {@link KeyClient#getKey(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys#RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys#RequestOptions -->
-     *
-     * <p><strong>Iterate through keys by page</strong></p>
-     * <p>Iterates through the the keys in the key vault by page and gets the key material for each one's latest version
-     * by looping though the properties objects and calling {@link KeyClient#getKey(String, String)}.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage -->
-     * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage -->
      *
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} of properties objects of all the keys in the vault. A properties object contains
@@ -1369,8 +1375,8 @@ public final class KeyClient {
                 ? requestOptions.getContext()
                 : Context.none());
 
-            return mapPages(pagingOptions -> implClient.getKeysSinglePage(null, requestOptions),
-                (pagingOptions, nextLink) -> implClient.getKeysNextSinglePage(nextLink, requestOptionsForNextPage),
+            return mapPages(pagingOptions -> clientImpl.getKeysSinglePage(null, requestOptions),
+                (pagingOptions, nextLink) -> clientImpl.getKeysNextSinglePage(nextLink, requestOptionsForNextPage),
                 KeyVaultKeysModelsUtils::createKeyProperties);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1382,12 +1388,12 @@ public final class KeyClient {
      * soft-delete. This operation requires the {@code keys/list} permission.
      *
      * <p><strong>Iterate through deleted keys</strong></p>
-     * <p>Lists the deleted keys in the key vault and prints out each one's recovery id.</p>
+     * <p>Lists the deleted keys in a key vault enabled for soft-delete and prints out each one's recovery id.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys -->
      *
      * <p><strong>Iterate through deleted keys by page</strong></p>
-     * <p>Iterates over the deleted keys in the key vault by page and prints out each one's recovery id.</p>
+     * <p>Iterates through the deleted keys in the key vault by page and prints out each one's recovery id.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage -->
      *
@@ -1402,15 +1408,10 @@ public final class KeyClient {
      * Lists deleted keys in the key vault. The list deleted keys operation is applicable for key vaults enabled for
      * soft-delete. This operation requires the {@code keys/list} permission.
      *
-     * <p><strong>Iterate through deleted keys</strong></p>
-     * <p>Lists the deleted keys in the key vault and prints out each one's recovery id.</p>
+     * <p><strong>Code Sample</strong></p>
+     * <p>Lists the deleted keys in a key vault enabled for soft-delete and prints out each one's recovery id.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys#RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys#RequestOptions -->
-     *
-     * <p><strong>Iterate through deleted keys by page</strong></p>
-     * <p>Iterates over the deleted keys in the key vault by page and prints out each one's recovery id.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage -->
-     * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage -->
      *
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} of the deleted keys in the vault.
@@ -1424,8 +1425,8 @@ public final class KeyClient {
                 ? requestOptions.getContext()
                 : Context.none());
 
-            return mapPages(pagingOptions -> implClient.getDeletedKeysSinglePage(null, requestOptions),
-                (pagingOptions, nextLink) -> implClient.getDeletedKeysNextSinglePage(nextLink,
+            return mapPages(pagingOptions -> clientImpl.getDeletedKeysSinglePage(null, requestOptions),
+                (pagingOptions, nextLink) -> clientImpl.getDeletedKeysNextSinglePage(nextLink,
                     requestOptionsForNextPage),
                 KeyVaultKeysModelsUtils::createDeletedKey);
         } catch (RuntimeException e) {
@@ -1439,14 +1440,14 @@ public final class KeyClient {
      * {@code keys/list} permission.
      *
      * <p><strong>Iterate through keys versions</strong></p>
-     * <p>Lists the key versions in the key vault and gets each one's key material by looping though the properties
+     * <p>Lists the versions of a key in the key vault and gets each one's key material by looping though the properties
      * objects and calling {@link KeyClient#getKey(String, String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String -->
      *
      * <p><strong>Iterate through keys versions by page</strong></p>
-     * <p>Iterate through the key versions in the key vault by page and gets each one's key material by looping though
-     * the properties objects and calling {@link KeyClient#getKey(String, String)}.</p>
+     * <p>Iterates through the versions of a key in the key vault by page and gets each one's key material by looping
+     * through the properties objects and calling {@link KeyClient#getKey(String, String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage -->
      *
@@ -1466,17 +1467,11 @@ public final class KeyClient {
      * the key identifier, attributes, and tags. The key material is not included. This operation requires the
      * {@code keys/list} permission.
      *
-     * <p><strong>Iterate through keys versions</strong></p>
-     * <p>Lists the key versions in the key vault and gets each one's key material by looping though the properties
+     * <p><strong>Code Sample</strong></p>
+     * <p>Lists the versions of a key in the key vault and gets each one's key material by looping though the properties
      * objects and calling {@link KeyClient#getKey(String, String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String-RequestOptions -->
-     *
-     * <p><strong>Iterate through keys versions by page</strong></p>
-     * <p>Iterate through the key versions in the key vault by page and gets each one's key material by looping though
-     * the properties objects and calling {@link KeyClient#getKey(String, String)}.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage -->
-     * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage -->
      *
      * @param name The name of the key.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
@@ -1498,8 +1493,8 @@ public final class KeyClient {
                 ? requestOptions.getContext()
                 : Context.none());
 
-            return mapPages(pagingOptions -> implClient.getKeyVersionsSinglePage(name, null, requestOptions),
-                (pagingOptions, nextLink) -> implClient.getKeyVersionsNextSinglePage(nextLink,
+            return mapPages(pagingOptions -> clientImpl.getKeyVersionsSinglePage(name, null, requestOptions),
+                (pagingOptions, nextLink) -> clientImpl.getKeyVersionsNextSinglePage(nextLink,
                     requestOptionsForNextPage),
                 KeyVaultKeysModelsUtils::createKeyProperties);
         } catch (RuntimeException e) {
@@ -1522,7 +1517,7 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] getRandomBytes(int count) {
         try {
-            return implClient.getRandomBytesWithResponse(new GetRandomBytesRequest(count), RequestOptions.none())
+            return clientImpl.getRandomBytesWithResponse(new GetRandomBytesRequest(count), RequestOptions.none())
                 .getValue().getValue();
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1533,8 +1528,8 @@ public final class KeyClient {
      * Get the requested number of bytes containing random values from a managed HSM.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Gets a number of bytes containing random values from a managed HSM. Prints out the retrieved bytes as a
-     * base64URL-encoded string.</p>
+     * <p>Gets a number of bytes containing random values from a managed HSM. Prints out details of the response 
+     * returned by the service and the retrieved bytes as a base64URL-encoded string.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-RequestOptions -->
      *
@@ -1546,7 +1541,7 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> getRandomBytesWithResponse(int count, RequestOptions requestOptions) {
         try {
-            return mapResponse(implClient.getRandomBytesWithResponse(new GetRandomBytesRequest(count), requestOptions),
+            return mapResponse(clientImpl.getRandomBytesWithResponse(new GetRandomBytesRequest(count), requestOptions),
                 RandomBytes::getValue);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1577,7 +1572,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return implClient.release(name, "", new KeyReleaseParameters(targetAttestationToken));
+            return clientImpl.release(name, "", new KeyReleaseParameters(targetAttestationToken));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1588,7 +1583,7 @@ public final class KeyClient {
      * {@code keys/release} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Releases a key and prints out the signed object that contains the released key.</p>
+     * <p>Releases a key and prints the signed object that contains the released key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.releaseKey#String-String-String -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.releaseKey#String-String-String -->
      *
@@ -1609,7 +1604,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return implClient.release(name, version, new KeyReleaseParameters(targetAttestationToken));
+            return clientImpl.release(name, version, new KeyReleaseParameters(targetAttestationToken));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1620,7 +1615,8 @@ public final class KeyClient {
      * {@code keys/release} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Releases a key and prints out response details and the signed object that contains the released key.</p>
+     * <p>Releases a key and prints out details of the response returned by the service, as well as the signed object
+     * that contains the released key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.releaseKeyWithResponse#String-String-String-ReleaseKeyOptions-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.releaseKeyWithResponse#String-String-String-ReleaseKeyOptions-RequestOptions -->
      *
@@ -1648,7 +1644,7 @@ public final class KeyClient {
                 .setEnc(releaseKeyOptions == null ? null : releaseKeyOptions.getAlgorithm())
                 .setNonce(releaseKeyOptions == null ? null : releaseKeyOptions.getNonce());
 
-            return implClient.releaseWithResponse(name, version, keyReleaseParameters, requestOptions);
+            return clientImpl.releaseWithResponse(name, version, keyReleaseParameters, requestOptions);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1659,7 +1655,7 @@ public final class KeyClient {
      * the {@code keys/rotate} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Rotates a key and prints out rotated key's details.</p>
+     * <p>Rotates a key and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.rotateKeyWithResponse#String -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.rotateKeyWithResponse#String -->
      *
@@ -1676,7 +1672,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return createKeyVaultKey(implClient.rotateKey(name));
+            return createKeyVaultKey(clientImpl.rotateKey(name));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1687,7 +1683,7 @@ public final class KeyClient {
      * the {@code keys/rotate} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Rotates a key and prints out rotated key's details.</p>
+     * <p>Rotates a key. Prints out the details of the response returned by the service and the rotated key's.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.rotateKeyWithResponse#String-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.rotateKeyWithResponse#String-RequestOptions -->
      *
@@ -1705,7 +1701,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return mapResponse(implClient.rotateKeyWithResponse(name, requestOptions),
+            return mapResponse(clientImpl.rotateKeyWithResponse(name, requestOptions),
                 KeyVaultKeysModelsUtils::createKeyVaultKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1733,7 +1729,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'keyName' cannot be null or empty.");
             }
 
-            return mapKeyRotationPolicyImpl(implClient.getKeyRotationPolicy(keyName));
+            return mapKeyRotationPolicyImpl(clientImpl.getKeyRotationPolicy(keyName));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1743,7 +1739,8 @@ public final class KeyClient {
      * Gets the rotation policy for the specified key. This operation requires the {@code keys/get} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Retrieves the rotation policy of a given key and prints out the policy's details.</p>
+     * <p>Retrieves the rotation policy of a given key. Prints out details of the response returned by the service and
+     * the policy.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.getKeyRotationPolicyWithResponse#String-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.getKeyRotationPolicyWithResponse#String-RequestOptions -->
      *
@@ -1761,7 +1758,7 @@ public final class KeyClient {
                 throw new IllegalArgumentException("'keyName' cannot be null or empty.");
             }
 
-            return mapResponse(implClient.getKeyRotationPolicyWithResponse(keyName, requestOptions),
+            return mapResponse(clientImpl.getKeyRotationPolicyWithResponse(keyName, requestOptions),
                 KeyVaultKeysModelsUtils::mapKeyRotationPolicyImpl);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1791,7 +1788,7 @@ public final class KeyClient {
             }
 
             return mapKeyRotationPolicyImpl(
-                implClient.updateKeyRotationPolicy(keyName, mapKeyRotationPolicy(keyRotationPolicy)));
+                clientImpl.updateKeyRotationPolicy(keyName, mapKeyRotationPolicy(keyRotationPolicy)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1801,7 +1798,8 @@ public final class KeyClient {
      * Updates the rotation policy for the specified key. This operation requires the {@code keys/update} permission.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Updates the rotation policy of a given key and prints out the response and policy's details.</p>
+     * <p>Updates the rotation policy of a given key. Prints out details of the response returned by the service and the
+     * updated policy.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicy-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicy-RequestOptions -->
      *
@@ -1823,7 +1821,7 @@ public final class KeyClient {
             }
 
             return mapResponse(
-                implClient.updateKeyRotationPolicyWithResponse(keyName, mapKeyRotationPolicy(keyRotationPolicy),
+                clientImpl.updateKeyRotationPolicyWithResponse(keyName, mapKeyRotationPolicy(keyRotationPolicy),
                     requestOptions), KeyVaultKeysModelsUtils::mapKeyRotationPolicyImpl);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
