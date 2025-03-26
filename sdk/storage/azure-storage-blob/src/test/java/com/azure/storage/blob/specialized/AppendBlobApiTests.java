@@ -910,7 +910,8 @@ public class AppendBlobApiTests extends BlobTestBase {
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
         containerClient.create();
 
-        ShareServiceClient shareServiceClient = getOAuthShareServiceClient();
+        ShareServiceClient shareServiceClient
+            = getOAuthShareServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String shareName = generateShareName();
         ShareClient shareClient = shareServiceClient.getShareClient(shareName);
         shareClient.create();

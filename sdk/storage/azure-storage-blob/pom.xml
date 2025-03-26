@@ -40,6 +40,7 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
+      --add-opens com.azure.storage.common/com.azure.storage.common.implementation.credentials=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.sas=ALL-UNNAMED
       --add-opens com.azure.storage.blob/com.azure.storage.blob=ALL-UNNAMED
       --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
@@ -141,24 +142,11 @@
       <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-storage-file-share</artifactId>-->
-<!--      <version>12.16.0-beta.1</version>-->
-<!--      <classifier>tests</classifier>-->
-<!--      <type>test-jar</type>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-storage-file-share</artifactId>-->
-<!--      <version>12.16.0-beta.1</version>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
       <version>12.26.0-beta.1</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

@@ -443,9 +443,9 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void stageBlockFromUrlSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
+    
         String blockID = getBlockID();
-
+    
         StepVerifier.create(destBlob.stageBlockFromUrl(blockID, blockBlobAsyncClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -2402,7 +2402,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void uploadFromUrlSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
+    
         StepVerifier.create(destBlob.uploadFromUrl(blockBlobAsyncClient.getBlobUrl()))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -2706,7 +2706,8 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void stageBlockFromUriSourceBearerTokenFilesSource() {
         BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
-        BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+        BlobContainerAsyncClient containerAsyncClient
+            = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
         ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient();
         String shareName = generateShareName();
@@ -2718,25 +2719,26 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         ShareDirectoryAsyncClient directoryAsyncClient = shareAsyncClient.getDirectoryClient(generateBlobName());
         ShareFileAsyncClient fileAsyncClient = directoryAsyncClient.getFileClient(generateBlobName());
 
-        BlockBlobAsyncClient destBlob = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient destBlob
+            = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
         String sourceBearerToken = getAuthToken();
         HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
         String blockId = getBlockID();
 
-        StepVerifier.create(
-                containerAsyncClient.create()
-                    .then(shareAsyncClient.create())
-                    .then(directoryAsyncClient.create())
-                    .then(fileAsyncClient.create(Constants.KB))
-                    .then(fileAsyncClient.upload(dataFlux, Constants.KB))
-                    .then(destBlob.stageBlockFromUrlWithResponse(
-                        new BlockBlobStageBlockFromUrlOptions(blockId, fileAsyncClient.getFileUrl())
-                            .setSourceAuthorization(sourceAuth)
-                            .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP), null))
-                    .then(destBlob.commitBlockList(Collections.singletonList(blockId)))
-                    .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download()))
-            )
+        StepVerifier
+            .create(containerAsyncClient.create()
+                .then(shareAsyncClient.create())
+                .then(directoryAsyncClient.create())
+                .then(fileAsyncClient.create(Constants.KB))
+                .then(fileAsyncClient.upload(dataFlux, Constants.KB))
+                .then(destBlob.stageBlockFromUrlWithResponse(
+                    new BlockBlobStageBlockFromUrlOptions(blockId, fileAsyncClient.getFileUrl())
+                        .setSourceAuthorization(sourceAuth)
+                        .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP),
+                    null))
+                .then(destBlob.commitBlockList(Collections.singletonList(blockId)))
+                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download())))
             .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
             .verifyComplete();
 
@@ -2749,7 +2751,8 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void uploadFromUriAsyncSourceBearerTokenFilesSource() {
         BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
-        BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+        BlobContainerAsyncClient containerAsyncClient
+            = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
         ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient();
         String shareName = generateShareName();
@@ -2761,24 +2764,24 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         ShareDirectoryAsyncClient directoryAsyncClient = shareAsyncClient.getDirectoryClient(generateBlobName());
         ShareFileAsyncClient fileAsyncClient = directoryAsyncClient.getFileClient(generateBlobName());
 
-        BlockBlobAsyncClient destBlob = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient destBlob
+            = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
         String sourceBearerToken = getAuthToken();
         HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
 
-        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(fileAsyncClient.getFileUrl())
-            .setSourceAuthorization(sourceAuth)
-            .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        BlobUploadFromUrlOptions options
+            = new BlobUploadFromUrlOptions(fileAsyncClient.getFileUrl()).setSourceAuthorization(sourceAuth)
+                .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
 
-        StepVerifier.create(
-                containerAsyncClient.create()
-                    .then(shareAsyncClient.create())
-                    .then(directoryAsyncClient.create())
-                    .then(fileAsyncClient.create(Constants.KB))
-                    .then(fileAsyncClient.upload(dataFlux, Constants.KB))
-                    .then(destBlob.uploadFromUrlWithResponse(options, null))
-                    .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download()))
-            )
+        StepVerifier
+            .create(containerAsyncClient.create()
+                .then(shareAsyncClient.create())
+                .then(directoryAsyncClient.create())
+                .then(fileAsyncClient.create(Constants.KB))
+                .then(fileAsyncClient.upload(dataFlux, Constants.KB))
+                .then(destBlob.uploadFromUrlWithResponse(options, null))
+                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download())))
             .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
             .verifyComplete();
 

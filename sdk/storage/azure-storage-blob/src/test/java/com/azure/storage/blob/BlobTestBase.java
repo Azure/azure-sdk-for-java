@@ -849,14 +849,15 @@ public class BlobTestBase extends TestProxyTestBase {
         return setPolicyMono;
     }
 
-    protected ShareServiceClient getOAuthShareServiceClient() {
-        ShareServiceClientBuilder builder
-            = new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint())
-                .credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
+    protected ShareServiceClient getOAuthShareServiceClient(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
 
         instrument(builder);
 
-        return builder.buildClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
     protected ShareServiceAsyncClient getOAuthShareServiceAsyncClient() {

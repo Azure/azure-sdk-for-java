@@ -49,6 +49,8 @@ import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceClient;
+import com.azure.storage.file.share.ShareServiceClientBuilder;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -1735,7 +1737,8 @@ public class PageBlobApiTests extends BlobTestBase {
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
         containerClient.create();
 
-        ShareServiceClient shareServiceClient = getOAuthShareServiceClient();
+        ShareServiceClient shareServiceClient
+            = getOAuthShareServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String shareName = generateShareName();
         ShareClient shareClient = shareServiceClient.getShareClient(shareName);
         shareClient.create();

@@ -543,7 +543,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void appendBlockFromURLSourceErrorAndStatusCodeNewTest() {
         AppendBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
-
+    
         StepVerifier.create(destBlob.createIfNotExists().then(destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES))))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -943,7 +943,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void appendBlockFromUrlSourceBearerTokenFileSource() {
         BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
-        BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+        BlobContainerAsyncClient containerAsyncClient
+            = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
         ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient();
         String shareName = generateShareName();
@@ -955,31 +956,31 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         ShareDirectoryAsyncClient directoryAsyncClient = shareAsyncClient.getDirectoryClient(generateBlobName());
         ShareFileAsyncClient fileAsyncClient = directoryAsyncClient.getFileClient(generateBlobName());
 
-        AppendBlobAsyncClient destBlob = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        AppendBlobAsyncClient destBlob
+            = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
 
         String sourceBearerToken = getAuthToken();
         HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
 
         String sourceUrl = fileAsyncClient.getFileUrl();
 
-        AppendBlobAppendBlockFromUrlOptions appendOptions = new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
-            .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP)
-            .setSourceRange(null)
-            .setSourceContentMd5(null)
-            .setDestinationRequestConditions(null)
-            .setSourceRequestConditions(null)
-            .setSourceAuthorization(sourceAuth);
+        AppendBlobAppendBlockFromUrlOptions appendOptions
+            = new AppendBlobAppendBlockFromUrlOptions(sourceUrl).setSourceShareTokenIntent(FileShareTokenIntent.BACKUP)
+                .setSourceRange(null)
+                .setSourceContentMd5(null)
+                .setDestinationRequestConditions(null)
+                .setSourceRequestConditions(null)
+                .setSourceAuthorization(sourceAuth);
 
-        StepVerifier.create(
-                containerAsyncClient.create()
-                    .then(shareAsyncClient.create())
-                    .then(directoryAsyncClient.create())
-                    .then(fileAsyncClient.create(Constants.KB))
-                    .then(fileAsyncClient.upload(dataFlux, Constants.KB))
-                    .then(destBlob.createIfNotExists())
-                    .then(destBlob.appendBlockFromUrlWithResponse(appendOptions, null))
-                    .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download()))
-            )
+        StepVerifier
+            .create(containerAsyncClient.create()
+                .then(shareAsyncClient.create())
+                .then(directoryAsyncClient.create())
+                .then(fileAsyncClient.create(Constants.KB))
+                .then(fileAsyncClient.upload(dataFlux, Constants.KB))
+                .then(destBlob.createIfNotExists())
+                .then(destBlob.appendBlockFromUrlWithResponse(appendOptions, null))
+                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download())))
             .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
             .verifyComplete();
 
