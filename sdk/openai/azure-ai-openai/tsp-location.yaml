@@ -1,0 +1,8 @@
+# needs to be removed or renamed
+directory: openai-in-typespec
+commit: foo
+repo: bar
+entrypointFile: entrypoints/full.openai.azure/main.tsp
+
+# List of manual customizations:
+# - remove all the *Client.java generated in the root package
