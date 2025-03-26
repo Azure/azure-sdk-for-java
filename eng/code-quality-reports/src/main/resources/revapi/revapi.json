@@ -898,12 +898,6 @@
           "old" : "class com.azure.storage.blob.models.*",
           "new" : "class com.azure.storage.blob.models.*",
           "justification" : "removed annotation"
-        },
-        {
-          "code" : "java.annotation.removed",
-          "old" : "method java.lang.String com.azure.storage.blob.models.BlobImmutabilityPolicyMode::toString()",
-          "new" : "method java.lang.String com.azure.storage.blob.models.BlobImmutabilityPolicyMode::toString()",
-          "justification" : "removed annotation"
         }
       ]
     }
