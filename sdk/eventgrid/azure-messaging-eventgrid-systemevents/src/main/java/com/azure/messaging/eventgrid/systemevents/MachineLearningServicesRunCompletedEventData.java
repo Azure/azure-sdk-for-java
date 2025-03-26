@@ -24,49 +24,53 @@ public final class MachineLearningServicesRunCompletedEventData
      * The ID of the experiment that the run belongs to.
      */
     @Generated
-    private String experimentId;
+    private final String experimentId;
 
     /*
      * The name of the experiment that the run belongs to.
      */
     @Generated
-    private String experimentName;
+    private final String experimentName;
 
     /*
      * The ID of the Run that was completed.
      */
     @Generated
-    private String runId;
+    private final String runId;
 
     /*
      * The Run Type of the completed Run.
      */
     @Generated
-    private String runType;
+    private final String runType;
 
     /*
      * The tags of the completed Run.
      */
     @Generated
-    private final Map<String, BinaryData> runTags;
+    private Map<String, BinaryData> runTags;
 
     /*
      * The properties of the completed Run.
      */
     @Generated
-    private final Map<String, BinaryData> runProperties;
+    private Map<String, BinaryData> runProperties;
 
     /**
      * Creates an instance of MachineLearningServicesRunCompletedEventData class.
      * 
-     * @param runTags the runTags value to set.
-     * @param runProperties the runProperties value to set.
+     * @param experimentId the experimentId value to set.
+     * @param experimentName the experimentName value to set.
+     * @param runId the runId value to set.
+     * @param runType the runType value to set.
      */
     @Generated
-    private MachineLearningServicesRunCompletedEventData(Map<String, BinaryData> runTags,
-        Map<String, BinaryData> runProperties) {
-        this.runTags = runTags;
-        this.runProperties = runProperties;
+    private MachineLearningServicesRunCompletedEventData(String experimentId, String experimentName, String runId,
+        String runType) {
+        this.experimentId = experimentId;
+        this.experimentName = experimentName;
+        this.runId = runId;
+        this.runType = runType;
     }
 
     /**
@@ -136,14 +140,14 @@ public final class MachineLearningServicesRunCompletedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("runTags", this.runTags,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("runProperties", this.runProperties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("experimentId", this.experimentId);
         jsonWriter.writeStringField("experimentName", this.experimentName);
         jsonWriter.writeStringField("runId", this.runId);
         jsonWriter.writeStringField("runType", this.runType);
+        jsonWriter.writeMapField("runTags", this.runTags,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("runProperties", this.runProperties,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         return jsonWriter.writeEndObject();
     }
 
@@ -159,23 +163,17 @@ public final class MachineLearningServicesRunCompletedEventData
     @Generated
     public static MachineLearningServicesRunCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, BinaryData> runTags = null;
-            Map<String, BinaryData> runProperties = null;
             String experimentId = null;
             String experimentName = null;
             String runId = null;
             String runType = null;
+            Map<String, BinaryData> runTags = null;
+            Map<String, BinaryData> runProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("runTags".equals(fieldName)) {
-                    runTags = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                } else if ("runProperties".equals(fieldName)) {
-                    runProperties = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                } else if ("experimentId".equals(fieldName)) {
+                if ("experimentId".equals(fieldName)) {
                     experimentId = reader.getString();
                 } else if ("experimentName".equals(fieldName)) {
                     experimentName = reader.getString();
@@ -183,16 +181,20 @@ public final class MachineLearningServicesRunCompletedEventData
                     runId = reader.getString();
                 } else if ("runType".equals(fieldName)) {
                     runType = reader.getString();
+                } else if ("runTags".equals(fieldName)) {
+                    runTags = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                } else if ("runProperties".equals(fieldName)) {
+                    runProperties = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else {
                     reader.skipChildren();
                 }
             }
             MachineLearningServicesRunCompletedEventData deserializedMachineLearningServicesRunCompletedEventData
-                = new MachineLearningServicesRunCompletedEventData(runTags, runProperties);
-            deserializedMachineLearningServicesRunCompletedEventData.experimentId = experimentId;
-            deserializedMachineLearningServicesRunCompletedEventData.experimentName = experimentName;
-            deserializedMachineLearningServicesRunCompletedEventData.runId = runId;
-            deserializedMachineLearningServicesRunCompletedEventData.runType = runType;
+                = new MachineLearningServicesRunCompletedEventData(experimentId, experimentName, runId, runType);
+            deserializedMachineLearningServicesRunCompletedEventData.runTags = runTags;
+            deserializedMachineLearningServicesRunCompletedEventData.runProperties = runProperties;
 
             return deserializedMachineLearningServicesRunCompletedEventData;
         });

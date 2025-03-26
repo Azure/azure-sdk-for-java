@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class InstanceUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Instance_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Instance_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Update.

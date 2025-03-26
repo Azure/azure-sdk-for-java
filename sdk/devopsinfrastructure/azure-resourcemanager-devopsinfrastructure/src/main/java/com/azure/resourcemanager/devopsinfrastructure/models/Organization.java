@@ -33,6 +33,11 @@ public final class Organization implements JsonSerializable<Organization> {
      */
     private Integer parallelism;
 
+    /*
+     * Determines if the pool should have open access to all projects in this organization.
+     */
+    private Boolean openAccess;
+
     /**
      * Creates an instance of Organization class.
      */
@@ -102,6 +107,26 @@ public final class Organization implements JsonSerializable<Organization> {
     }
 
     /**
+     * Get the openAccess property: Determines if the pool should have open access to all projects in this organization.
+     * 
+     * @return the openAccess value.
+     */
+    public Boolean openAccess() {
+        return this.openAccess;
+    }
+
+    /**
+     * Set the openAccess property: Determines if the pool should have open access to all projects in this organization.
+     * 
+     * @param openAccess the openAccess value to set.
+     * @return the Organization object itself.
+     */
+    public Organization withOpenAccess(Boolean openAccess) {
+        this.openAccess = openAccess;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -124,6 +149,7 @@ public final class Organization implements JsonSerializable<Organization> {
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeArrayField("projects", this.projects, (writer, element) -> writer.writeString(element));
         jsonWriter.writeNumberField("parallelism", this.parallelism);
+        jsonWriter.writeBooleanField("openAccess", this.openAccess);
         return jsonWriter.writeEndObject();
     }
 
@@ -150,6 +176,8 @@ public final class Organization implements JsonSerializable<Organization> {
                     deserializedOrganization.projects = projects;
                 } else if ("parallelism".equals(fieldName)) {
                     deserializedOrganization.parallelism = reader.getNullable(JsonReader::getInt);
+                } else if ("openAccess".equals(fieldName)) {
+                    deserializedOrganization.openAccess = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
