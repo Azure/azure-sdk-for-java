@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.specialized;
-
+import com.azure.storage.blob.*;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -10,6 +9,8 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
+import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;

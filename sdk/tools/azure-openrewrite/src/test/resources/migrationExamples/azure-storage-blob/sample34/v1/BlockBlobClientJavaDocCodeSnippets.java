@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.specialized;
-
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
@@ -17,6 +15,8 @@ import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
+import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

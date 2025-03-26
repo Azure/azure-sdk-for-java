@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.specialized;
-
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -17,6 +15,8 @@ import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
+import com.azure.storage.blob.specialized.PageBlobAsyncClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;

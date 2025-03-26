@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.queue.QueueAsyncClient;
+import com.azure.storage.queue.QueueClientBuilder;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;

@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -9,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.azure.core.util.Context;
+import com.azure.storage.queue.*;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;

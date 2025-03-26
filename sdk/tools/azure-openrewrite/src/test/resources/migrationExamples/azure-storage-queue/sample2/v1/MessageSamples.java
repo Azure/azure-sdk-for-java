@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue;
 
+import com.azure.storage.queue.QueueClient;
+import com.azure.storage.queue.QueueServiceClient;
+import com.azure.storage.queue.QueueServiceClientBuilder;
 import com.azure.storage.queue.models.QueueMessageItem;
 import java.time.Duration;
 

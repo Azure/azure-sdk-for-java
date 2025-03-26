@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.storage.queue;
 
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -8,6 +7,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.queue.*;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;

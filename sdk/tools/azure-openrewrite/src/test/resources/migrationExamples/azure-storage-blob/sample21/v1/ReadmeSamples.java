@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.storage.blob;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -9,6 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.*;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
