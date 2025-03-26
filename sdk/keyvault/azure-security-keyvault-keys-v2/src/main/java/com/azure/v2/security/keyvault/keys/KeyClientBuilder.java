@@ -21,33 +21,36 @@ import io.clientcore.core.http.pipeline.HttpRedirectOptions;
 import io.clientcore.core.http.pipeline.HttpRedirectPolicy;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.pipeline.UserAgentPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.traits.ConfigurationTrait;
 import io.clientcore.core.traits.EndpointTrait;
 import io.clientcore.core.traits.HttpTrait;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
  * {@link KeyClient key client}, by calling {@link KeyClientBuilder#buildClient() buildClient}. It constructs an
  * instance of the desired client.
  *
- * <p>The {@link KeyClient} provides methods to manage {@link KeyVaultKey keys} in Azure Key Vault. The client supports
- * creating, retrieving, updating, deleting, purging, backing up, restoring, and listing {@link KeyVaultKey keys}. The
- * client also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled
- * key vault.</p>
+ * <p>The {@link KeyClient} provides methods to manage {@link KeyVaultKey keys} in Azure Key Vault or Managed HSM. The
+ * client supports creating, retrieving, updating, deleting, purging, backing up, restoring, listing, releasing and
+ * rotating the {@link KeyVaultKey keys}. The client also supports listing {@link DeletedKey deleted keys} for a
+ * soft-delete enabled key vault or managed HSM.
  *
- * <p> The minimal configuration options required by {@link KeyClientBuilder} to build a {@link KeyClient} are an
- * {@link String endpoint} and {@link TokenCredential credential}. </p>
+ * <p>The minimal configuration options required by {@link KeyClientBuilder keyClientBuilder} to build a
+ * {@link KeyClient} are an {@link String endpoint} and {@link TokenCredential credential}.</p>
  *
- * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.instantiation -->
+ * <!-- src_embed com.v2.azure.security.keyvault.keys.KeyClient.instantiation -->
  * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.instantiation -->
  *
  * <p>The {@link HttpInstrumentationOptions.HttpLogLevel log level}, multiple custom {@link HttpPipelinePolicy policies}
@@ -62,53 +65,55 @@ import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
 public final class KeyClientBuilder
     implements ConfigurationTrait<KeyClientBuilder>, EndpointTrait<KeyClientBuilder>, HttpTrait<KeyClientBuilder>,
     TokenCredentialTrait<KeyClientBuilder> {
-    private static final ClientLogger LOGGER = new ClientLogger(KeyClientBuilder.class);
 
-    private static final String SDK_NAME = "azure-security-keyvault-keys-v2";
-    private static final String SDK_VERSION = "1.0.0-beta.1";
+    private static final ClientLogger LOGGER = new ClientLogger(KeyClientBuilder.class);
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-    //private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
-    private final List<HttpPipelinePolicy> policies;
+    // TODO (vcolin7): Figure out where to set when the tracing namespace.
+    // private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-keys.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
+
+    private final List<HttpPipelinePolicy> pipelinePolicies;
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private String endpoint;
     private HttpClient httpClient;
     private HttpInstrumentationOptions instrumentationOptions;
     private HttpRedirectOptions redirectOptions;
-    private HttpRetryPolicy retryPolicy;
     private HttpRetryOptions retryOptions;
     private Configuration configuration;
     private KeyServiceVersion version;
-    //private ClientOptions clientOptions;
     private boolean disableChallengeResourceVerification = false;
 
     /**
      * Creates a {@link KeyClientBuilder} that is used to configure and create {@link KeyClient} instances.
      */
     public KeyClientBuilder() {
-        instrumentationOptions = new HttpInstrumentationOptions();
-        policies = new ArrayList<>();
+        pipelinePolicies = new ArrayList<>();
     }
 
     /**
      * Creates a {@link KeyClient} based on options set in the builder. Every time {@code buildClient()} is called, a
      * new instance of {@link KeyClient} is created.
      *
-     * <p>If {@link KeyClientBuilder#httpPipeline(HttpPipeline)} is set, then the {@code pipeline} and
-     * {@link KeyClientBuilder#endpoint(String) endpoint} are used to create the {@link KeyClientBuilder client}.
-     * All other builder settings are ignored. If {@code pipeline} is not set, then a
+     * <p>If {@link KeyClientBuilder#httpPipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link KeyClientBuilder#endpoint(String) endpoint} are used to create the {@link KeyClientBuilder client}. All
+     * other builder settings are ignored. If {@code pipeline} is not set, then a
      * {@link KeyClientBuilder#credential(TokenCredential) credential} and
      * {@link KeyClientBuilder#endpoint(String) endpoint} are required to build the {@link KeyClient client}.</p>
      *
-     * @return A {@link KeyClient} based on options set in this builder.
+     * @return A {@link KeyClient} based on the options set in this builder.
      *
      * @throws IllegalStateException If an {@link KeyClientBuilder#endpoint(String) endpoint} has not been set or if
      * either of a {@link KeyClientBuilder#credential(TokenCredential) credential} or
      * {@link KeyClientBuilder#httpPipeline(HttpPipeline) pipeline} were not provided.
-     * @throws IllegalStateException If both {@link #httpRetryOptions(HttpRetryOptions)} and
-     * {@link #httpRetryPolicy(HttpRetryPolicy)} have been set.
      */
     public KeyClient buildClient() {
         return new KeyClient(buildImplClient(), endpoint);
@@ -123,9 +128,8 @@ public final class KeyClientBuilder
 
         if (endpoint == null) {
             throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "An Azure Key Vault or Managed HSM endpoint is required. You can set one by using the"
-                    + " KeyClientBuilder.vaultUrl() method or by setting the environment variable"
-                    + " 'AZURE_KEYVAULT_ENDPOINT'."));
+                "An Azure Key Vault endpoint is required. You can set one by using the KeyClientBuilder.endpoint()"
+                    + "method or by setting the environment variable 'AZURE_KEYVAULT_ENDPOINT'."));
         }
 
         KeyServiceVersion version = this.version == null ? KeyServiceVersion.getLatest() : this.version;
@@ -142,29 +146,12 @@ public final class KeyClientBuilder
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        // TODO (vcolin7): Get applicationId from instrumentationOptions once
+        //  https://github.com/Azure/azure-sdk-for-java/pull/44764 is merged.
+        policies.add(new UserAgentPolicy(null, CLIENT_NAME, CLIENT_VERSION));
         policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
-
-        if (retryPolicy != null) {
-            policies.add(retryPolicy);
-        } else if (retryOptions != null) {
-            policies.add(new HttpRetryPolicy(retryOptions));
-        } else {
-            policies.add(new HttpRetryPolicy());
-        }
-
-        //ClientOptions clientOptions = this.clientOptions == null ? DEFAULT_CLIENT_OPTIONS : this.clientOptions;
-
-        /*policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, instrumentationOptions),
-            clientName, clientVersion, buildConfiguration));*/
-
-        //List<HttpHeader> httpHeaderList = new ArrayList<>();
-
-        /*clientOptions.getHeaders()
-            .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-
-        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));*/
-
-        policies.addAll(this.policies);
+        policies.add(retryOptions == null ? new HttpRetryPolicy() : new HttpRetryPolicy(retryOptions));
+        policies.addAll(pipelinePolicies);
         policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         HttpInstrumentationOptions instrumentationOptions = this.instrumentationOptions == null
@@ -178,34 +165,32 @@ public final class KeyClientBuilder
         // Add all policies to the pipeline.
         policies.forEach(httpPipelineBuilder::addPolicy);
 
-        HttpPipeline pipeline = httpPipelineBuilder.httpClient(httpClient)
-            //.clientOptions(clientOptions)
-            .build();
+        HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new KeyClientImpl(pipeline, this.endpoint, version);
+        return new KeyClientImpl(builtPipeline, endpoint, version);
     }
 
     /**
      * Sets the vault endpoint URL to send HTTP requests to. You should validate that this URL references a valid Key
-     * Vault or Managed HSM resource. Refer to the following
-     * <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
+     * Vault resource. Refer to the following <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
-     * @param endpoint The endpoint is used as destination on Azure to send requests to. If you have a secret
-     * identifier, create a new {@link KeyVaultKeyIdentifier} to parse it and obtain the {@code endpoint} and other
-     * information via {@link KeyVaultKeyIdentifier#getEndpoint()}.
+     * @param endpoint The endpoint is used as destination on Azure to send requests to. If you have a key identifier,
+     * create a new {@link KeyVaultKeyIdentifier} to parse it and obtain the {@code endpoint} and other information
+     * via {@link KeyVaultKeyIdentifier#getEndpoint()}.
      * @return The updated {@link KeyClientBuilder} object.
      *
-     * @throws IllegalArgumentException If {@code vaultUrl} cannot be parsed into a valid URL.
-     * @throws NullPointerException If {@code vaultUrl} is {@code null}.
+     * @throws IllegalArgumentException If {@code endpoint} isn't a valid URI.
+     * @throws NullPointerException If {@code endpoint} is {@code null}.
      */
+    @Override
     public KeyClientBuilder endpoint(String endpoint) {
         if (endpoint == null) {
             throw LOGGER.logThrowableAsError(new NullPointerException("'endpoint' cannot be null."));
         }
 
         try {
-            URI url = new URI(endpoint);
-            this.endpoint = url.toString();
+            URI uri = new URI(endpoint);
+            this.endpoint = uri.toString();
         } catch (URISyntaxException e) {
             throw LOGGER.logThrowableAsError(
                 new IllegalArgumentException("The Azure Key Vault endpoint is malformed.", e));
@@ -283,7 +268,7 @@ public final class KeyClientBuilder
      * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @return The updated {@link KeyClientBuilder} object.
      *
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     @Override
     public KeyClientBuilder addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
@@ -291,7 +276,7 @@ public final class KeyClientBuilder
             throw LOGGER.logThrowableAsError(new NullPointerException("'pipelinePolicy' cannot be null."));
         }
 
-        policies.add(pipelinePolicy);
+        pipelinePolicies.add(pipelinePolicy);
 
         return this;
     }
@@ -352,31 +337,16 @@ public final class KeyClientBuilder
 
     /**
      * Sets the {@link KeyServiceVersion service version} that is used when making API requests.
-     * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
+     *
+     * <p>If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * newer version the client library will have the result of potentially moving to a newer service version.</p>
      *
      * @param version {@link KeyServiceVersion} of the service API used when making requests.
      * @return The updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder serviceVersion(KeyServiceVersion version) {
         this.version = version;
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link HttpRetryPolicy} that is used when each request is sent. Setting this is mutually exclusive with
-     * using {@link #httpRetryOptions(HttpRetryOptions)}.
-     * <p>
-     * The default retry policy will be used in the pipeline, if not provided.
-     *
-     * @param retryPolicy user's retry policy applied to each request.
-     * @return The updated {@link KeyClientBuilder} object.
-     */
-    public KeyClientBuilder httpRetryPolicy(HttpRetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
 
         return this;
     }
@@ -422,32 +392,8 @@ public final class KeyClientBuilder
     }
 
     /**
-     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
-     * recommended that this method be called with an instance of the {@link HttpClientOptions}
-     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
-     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
-     * interface.
-     * <p>
-     * <strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.
-     *
-     * @param clientOptions A configured instance of {@link HttpClientOptions}.
-     * @return The updated {@link KeyClientBuilder} object.
-     */
-    /*@Override
-    public KeyClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
-
-        return this;
-    }*/
-
-    /**
-     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
-     * verification is performed by default.
+     * Disables verifying if the authentication challenge resource matches the Key Vault domain. This verification is
+     * performed by default.
      *
      * @return The updated {@link KeyClientBuilder} object.
      */

@@ -12,7 +12,6 @@ import com.azure.v2.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.v2.security.keyvault.secrets.models.KeyVaultSecretIdentifier;
 import io.clientcore.core.annotations.ServiceClientBuilder;
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -27,8 +26,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.traits.ConfigurationTrait;
 import io.clientcore.core.traits.EndpointTrait;
 import io.clientcore.core.traits.HttpTrait;
-import io.clientcore.core.traits.ProxyTrait;
-import io.clientcore.core.utils.ClientOptions;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 
@@ -50,8 +47,8 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * {@link KeyVaultSecret secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a
  * soft-delete enabled key vault.</p>
  *
- * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build a
- * {@link SecretClient} are an {@link String endpoint} and {@link TokenCredential credential}. </p>
+ * <p>The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build a
+ * {@link SecretClient} are an {@link String endpoint} and {@link TokenCredential credential}.</p>
  *
  * <!-- src_embed com.v2.azure.security.keyvault.SecretClient.instantiation -->
  * <!-- end com.azure.v2.security.keyvault.SecretClient.instantiation -->
@@ -67,17 +64,22 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 @ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder
     implements ConfigurationTrait<SecretClientBuilder>, EndpointTrait<SecretClientBuilder>,
-    HttpTrait<SecretClientBuilder>, ProxyTrait<SecretClientBuilder>, TokenCredentialTrait<SecretClientBuilder> {
+    HttpTrait<SecretClientBuilder>, TokenCredentialTrait<SecretClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(SecretClientBuilder.class);
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-v2-security-keyvault-secrets.properties");
-    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+    // TODO (vcolin7): Figure out where to set when the tracing namespace.
+    // private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-secrets.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
+
     private final List<HttpPipelinePolicy> pipelinePolicies;
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -88,8 +90,6 @@ public final class SecretClientBuilder
     private HttpRetryOptions retryOptions;
     private Configuration configuration;
     private SecretServiceVersion version;
-    private ClientOptions clientOptions;
-    private ProxyOptions proxyOptions;
     private boolean disableChallengeResourceVerification = false;
 
     /**
@@ -145,11 +145,10 @@ public final class SecretClientBuilder
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        ClientOptions clientOptions = this.clientOptions == null ? DEFAULT_CLIENT_OPTIONS : this.clientOptions;
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
-        policies.add(new UserAgentPolicy(clientOptions.getApplicationId(), clientName, clientVersion));
+        // TODO (vcolin7): Get applicationId from instrumentationOptions once
+        //  https://github.com/Azure/azure-sdk-for-java/pull/44764 is merged.
+        policies.add(new UserAgentPolicy(null, CLIENT_NAME, CLIENT_VERSION));
         policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
         policies.add(retryOptions == null ? new HttpRetryPolicy() : new HttpRetryPolicy(retryOptions));
         policies.addAll(pipelinePolicies);
@@ -166,7 +165,6 @@ public final class SecretClientBuilder
         // Add all policies to the pipeline.
         policies.forEach(httpPipelineBuilder::addPolicy);
 
-        // TODO (vcolin7): Add ProxyOptions to the pipeline when the API is made available.
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
         return new SecretClientImpl(builtPipeline, endpoint, version);
@@ -177,8 +175,8 @@ public final class SecretClientBuilder
      * Vault resource. Refer to the following <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * @param endpoint The endpoint is used as destination on Azure to send requests to. If you have a secret
-     * identifier, create a new {@link KeyVaultSecretIdentifier} to parse it and obtain the {@code endpoint} and
-     * other information via {@link KeyVaultSecretIdentifier#getEndpoint()}.
+     * identifier, create a new {@link KeyVaultSecretIdentifier} to parse it and obtain the {@code endpoint} and other
+     * information via {@link KeyVaultSecretIdentifier#getEndpoint()}.
      * @return The updated {@link SecretClientBuilder} object.
      *
      * @throws IllegalArgumentException If {@code endpoint} isn't a valid URI.
@@ -389,41 +387,6 @@ public final class SecretClientBuilder
     @Override
     public SecretClientBuilder httpRedirectOptions(HttpRedirectOptions redirectOptions) {
         this.redirectOptions = redirectOptions;
-
-        return this;
-    }
-
-    /**
-     * Allows for setting common properties such as application ID, instrumentation options, etc.
-     * <p>
-     * <strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.
-     *
-     * @param clientOptions A configured instance of {@link ClientOptions}.
-     * @return The updated {@link SecretClientBuilder} object.
-     */
-    /*public SecretClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
-
-        return this;
-    }*/
-
-    /**
-     * Sets the {@link ProxyOptions} to use with an {@link HttpClient} when sending and receiving requests to and from
-     * the service.
-     *
-     * @param proxyOptions The {@link ProxyOptions} to use with an {@link HttpClient} when sending and receiving
-     * requests to and from the service.
-     *
-     * @return The updated {@link SecretClientBuilder} object.
-     */
-    @Override
-    public SecretClientBuilder proxyOptions(ProxyOptions proxyOptions) {
-        this.proxyOptions = proxyOptions;
 
         return this;
     }
