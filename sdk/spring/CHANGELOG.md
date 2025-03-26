@@ -2,13 +2,11 @@
 
 ## 4.20.0-beta.1 (Unreleased)
 
-### Features Added
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+#### Bugs Fixed
+- Custom `ObjectMapper` bean does not work for received messages. [#37796](https://github.com/Azure/azure-sdk-for-java/issues/37796).
 
 ## 4.19.0 (2024-06-03)
 - This release is compatible with Spring Boot 2.5.0-2.5.15, 2.6.0-2.6.15, 2.7.0-2.7.18. (Note: 2.5.x (x>15), 2.6.y (y>15) and 2.7.z (z>18) should be supported, but they aren't tested with this release.)
