@@ -46,9 +46,11 @@
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
-      -add-opens annotation.processor.test/io.clientcore.anntation.processor.test.shared=ALL-UNNAMED
-      --add-exports annotation.processor.test/io.clientcore.anntation.processor.test.shared=ALL-UNNAMED
-    </javaModulesSurefireArgLine>
+      --add-opens annotation.processor.test/io.clientcore.annotation.processor.test.shared=ALL-UNNAMED
+      --add-exports annotation.processor.test/io.clientcore.annotation.processor.test.shared=ALL-UNNAMED
+      --add-exports annotation.processor.test/io.clientcore.annotation.processor.test.shared=io.clientcore.core
+      --add-opens annotation.processor.test/io.clientcore.annotation.processor.test.shared=io.clientcore.core
+  </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -166,10 +168,11 @@
               <compilerArgs>
                 <arg>-Xlint:-options</arg>
               </compilerArgs>
+              <!-- Exclude module-info.java as this is not supported in Java 8 and is not needed by annotation processor -->
+              <useModulePath>false</useModulePath>
             </configuration>
           </execution>
         </executions>
-
         <dependencies>
           <dependency>
             <groupId>io.clientcore</groupId>
