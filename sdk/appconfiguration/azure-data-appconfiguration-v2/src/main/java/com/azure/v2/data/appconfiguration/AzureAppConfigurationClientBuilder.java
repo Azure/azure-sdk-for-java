@@ -57,7 +57,7 @@ public final class AzureAppConfigurationClientBuilder
 
     @Metadata(properties = { MetadataProperties.GENERATED })
     private static final Map<String, String> PROPERTIES
-        = CoreUtils.getProperties("azure-v2-data-appconfiguration.properties");
+        = CoreUtils.getProperties("azure-data-appconfiguration.properties");
 
     @Metadata(properties = { MetadataProperties.GENERATED })
     private final List<HttpPipelinePolicy> pipelinePolicies;
