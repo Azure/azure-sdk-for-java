@@ -6,10 +6,11 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
+import com.azure.resourcemanager.servicenetworking.models.IpAccessRuleAction;
 import com.azure.resourcemanager.servicenetworking.models.SecurityPolicy;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -21,21 +22,27 @@ public final class SecurityPoliciesInterfacesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyType\":\"waf\",\"wafPolicy\":{\"id\":\"eojnabc\"},\"provisioningState\":\"Canceled\"},\"location\":\"txp\",\"tags\":{\"rdqmhjjdhtldwkyz\":\"btfhvpesaps\",\"cwsvlxotog\":\"uutkncw\",\"o\":\"wrupqsxvnmicykvc\"},\"id\":\"eil\",\"name\":\"vnotyfjfcnj\",\"type\":\"k\"}";
+            = "{\"properties\":{\"policyType\":\"ipAccessRules\",\"wafPolicy\":{\"id\":\"h\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"nbmpowuwprzq\",\"priority\":1300670095,\"sourceAddressPrefixes\":[\"ualupjmkh\",\"xobbcswsrt\",\"riplrbpbewtg\"],\"action\":\"allow\"},{\"name\":\"gblcgwxzvlvq\",\"priority\":2103137599,\"sourceAddressPrefixes\":[\"begibtnmxiebwwa\",\"oayqc\"],\"action\":\"allow\"},{\"name\":\"rtzju\",\"priority\":1115460475,\"sourceAddressPrefixes\":[\"yzm\",\"txon\",\"mtsavjcbpwxqp\"],\"action\":\"deny\"},{\"name\":\"knftguvriuh\",\"priority\":773993487,\"sourceAddressPrefixes\":[\"mdyvxqtayriw\",\"ro\",\"qbex\"],\"action\":\"deny\"}]},\"provisioningState\":\"Canceled\"},\"location\":\"bycnojvkn\",\"tags\":{\"zhpvgqzcjrvxd\":\"qsgzvahapj\",\"vawjvzunlu\":\"zlmwlxkvugfhz\",\"xipeilpjzuaejx\":\"hnnpr\"},\"id\":\"ultskzbbtdz\",\"name\":\"mv\",\"type\":\"ekg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrafficControllerManager manager = TrafficControllerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecurityPolicy response = manager.securityPoliciesInterfaces()
-            .getWithResponse("xnkjzkdesl", "vlopwiyighx", "kdwzbaiuebbaumny", com.azure.core.util.Context.NONE)
+            .getWithResponse("hniskxfbkpyc", "klwndnhjdauwhv", "l", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("txp", response.location());
-        Assertions.assertEquals("btfhvpesaps", response.tags().get("rdqmhjjdhtldwkyz"));
-        Assertions.assertEquals("eojnabc", response.properties().wafPolicy().id());
+        Assertions.assertEquals("bycnojvkn", response.location());
+        Assertions.assertEquals("qsgzvahapj", response.tags().get("zhpvgqzcjrvxd"));
+        Assertions.assertEquals("h", response.properties().wafPolicy().id());
+        Assertions.assertEquals("nbmpowuwprzq", response.properties().ipAccessRulesPolicy().rules().get(0).name());
+        Assertions.assertEquals(1300670095, response.properties().ipAccessRulesPolicy().rules().get(0).priority());
+        Assertions.assertEquals("ualupjmkh",
+            response.properties().ipAccessRulesPolicy().rules().get(0).sourceAddressPrefixes().get(0));
+        Assertions.assertEquals(IpAccessRuleAction.ALLOW,
+            response.properties().ipAccessRulesPolicy().rules().get(0).action());
     }
 }

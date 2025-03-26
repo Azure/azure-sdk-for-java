@@ -3,6 +3,8 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 
 /**
@@ -14,6 +16,7 @@ import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
  * it creates and, if it sets up {@link HttpInstrumentationPolicy}, it should pass
  * {@link InstrumentationOptions} to the policy.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class InstrumentationOptions {
     private boolean isTracingEnabled = true;
     private boolean isMetricsEnabled = true;

@@ -10,7 +10,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.configuration.Configuration;
-import io.clientcore.core.utils.configuration.ConfigurationBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -87,29 +86,10 @@ public class JdkHttpClientBuilderIT {
 
     @Test
     public void buildWithHttpProxyFromEnvConfiguration() throws IOException {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource()
-                .put(Configuration.HTTP_PROXY,
-                    "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
-                .put("java.net.useSystemProxies", "true")).build();
-
-        HttpClient httpClient = new JdkHttpClientBuilder().configuration(configuration).build();
-
-        final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
-
-        try (Response<?> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceUri))) {
-            assertEquals(200, response.getStatusCode());
-        }
-    }
-
-    @Test
-    public void buildWithHttpProxyFromExplicitConfiguration() throws IOException {
-        Configuration configuration
-            = new ConfigurationBuilder().putProperty("http.proxy.hostname", proxyEndpoint.getHost())
-                .putProperty("http.proxy.port", String.valueOf(proxyEndpoint.getPort()))
-                .putProperty("http.proxy.username", PROXY_USERNAME)
-                .putProperty("http.proxy.password", PROXY_PASSWORD)
-                .build();
+        Configuration configuration = Configuration.from(new TestConfigurationSource()
+            .put(Configuration.HTTP_PROXY,
+                "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
+            .put("java.net.useSystemProxies", "true"));
 
         HttpClient httpClient = new JdkHttpClientBuilder().configuration(configuration).build();
 

@@ -13,7 +13,8 @@ $PackageRepositoryUri = "https://repo1.maven.org/maven2"
 # When getting all of the package properties, if Get-AllPackageInfoFromRepo exists
 # then it's called instead of Get-PkgPropsForEntireService.
 function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
-  $SdkType = $Env:SdkType
+
+  $SdkType = $Env:SDKTYPE
   if ($SdkType) {
     Write-Verbose "SdkType env var was set to '$SdkType'"
   } else {
@@ -158,7 +159,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       $artifactId = $xmlPomFile.project.artifactId
       $version = $xmlPomFile.project.version
       $pomFileDir = Split-Path -Path $pomFile -Parent
-      $pkgProp = [PackageProps]::new($artifactId, $version.ToString(), $pomFileDir, $serviceDirFromYml, $groupId)
+      $pkgProp = [PackageProps]::new($artifactId, $version.ToString(), $pomFileDir, $serviceDirFromYml, $groupId, $artifactId)
       if ($artifactId -match "mgmt" -or $artifactId -match "resourcemanager")
       {
         $pkgProp.SdkType = "mgmt"
@@ -366,7 +367,7 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
     if ($packageInfo.DevVersion) {
       $version = $packageInfo.DevVersion
     }
-    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version
+    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.ArtifactName $packageInfo.Group $version
     # If there are namespaces found from the javadoc.jar then add them to the packageInfo which
     # will later update the metadata json file in the docs repository. If there aren't any namespaces
     # then don't add the namespaces member with an empty list. The reason being is that the
@@ -462,8 +463,8 @@ function Get-java-GithubIoDocIndex()
   # Fetch out all package metadata from csv file.
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   # Leave the track 2 packages if multiple packages fetched out.
-  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' }
-  $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
+  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' -or $_.GroupId -eq 'com.azure.v2' }
+  $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and $_.GroupId -ne 'com.azure.v2' -and !$clientPackages.Package.Contains($_.Package) }
   $uniquePackages = $clientPackages + $nonClientPackages
   # Get the artifacts name from blob storage
   $artifacts =  Get-BlobStorage-Artifacts `

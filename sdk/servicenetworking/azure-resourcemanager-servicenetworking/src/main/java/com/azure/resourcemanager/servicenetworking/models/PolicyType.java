@@ -17,6 +17,11 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
     public static final PolicyType WAF = fromString("waf");
 
     /**
+     * Policy of Type IpAccessRules.
+     */
+    public static final PolicyType IP_ACCESS_RULES = fromString("ipAccessRules");
+
+    /**
      * Creates a new instance of PolicyType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -9,13 +9,20 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
 import com.azure.resourcemanager.compute.models.AvailabilitySetUpdate;
+import com.azure.resourcemanager.compute.models.ConvertToVirtualMachineScaleSetInput;
+import com.azure.resourcemanager.compute.models.MigrateToVirtualMachineScaleSetInput;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -385,4 +392,328 @@ public interface AvailabilitySetsClient extends InnerSupportsGet<AvailabilitySet
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String availabilitySetName,
         Context context);
+
+    /**
+     * Start migration operation on an Availability Set to move its Virtual Machines to a Virtual Machine Scale Set.
+     * This should be followed by a migrate operation on each Virtual Machine that triggers a downtime on the Virtual
+     * Machine.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> startMigrationToVirtualMachineScaleSetWithResponseAsync(String resourceGroupName,
+        String availabilitySetName, MigrateToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Start migration operation on an Availability Set to move its Virtual Machines to a Virtual Machine Scale Set.
+     * This should be followed by a migrate operation on each Virtual Machine that triggers a downtime on the Virtual
+     * Machine.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> startMigrationToVirtualMachineScaleSetAsync(String resourceGroupName, String availabilitySetName,
+        MigrateToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Start migration operation on an Availability Set to move its Virtual Machines to a Virtual Machine Scale Set.
+     * This should be followed by a migrate operation on each Virtual Machine that triggers a downtime on the Virtual
+     * Machine.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> startMigrationToVirtualMachineScaleSetWithResponse(String resourceGroupName,
+        String availabilitySetName, MigrateToVirtualMachineScaleSetInput parameters, Context context);
+
+    /**
+     * Start migration operation on an Availability Set to move its Virtual Machines to a Virtual Machine Scale Set.
+     * This should be followed by a migrate operation on each Virtual Machine that triggers a downtime on the Virtual
+     * Machine.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void startMigrationToVirtualMachineScaleSet(String resourceGroupName, String availabilitySetName,
+        MigrateToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Cancel the migration operation on an Availability Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> cancelMigrationToVirtualMachineScaleSetWithResponseAsync(String resourceGroupName,
+        String availabilitySetName);
+
+    /**
+     * Cancel the migration operation on an Availability Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> cancelMigrationToVirtualMachineScaleSetAsync(String resourceGroupName, String availabilitySetName);
+
+    /**
+     * Cancel the migration operation on an Availability Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> cancelMigrationToVirtualMachineScaleSetWithResponse(String resourceGroupName,
+        String availabilitySetName, Context context);
+
+    /**
+     * Cancel the migration operation on an Availability Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancelMigrationToVirtualMachineScaleSet(String resourceGroupName, String availabilitySetName);
+
+    /**
+     * Validates that the Virtual Machines in the Availability Set can be migrated to the provided Virtual Machine Scale
+     * Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> validateMigrationToVirtualMachineScaleSetWithResponseAsync(String resourceGroupName,
+        String availabilitySetName, MigrateToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Validates that the Virtual Machines in the Availability Set can be migrated to the provided Virtual Machine Scale
+     * Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> validateMigrationToVirtualMachineScaleSetAsync(String resourceGroupName, String availabilitySetName,
+        MigrateToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Validates that the Virtual Machines in the Availability Set can be migrated to the provided Virtual Machine Scale
+     * Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> validateMigrationToVirtualMachineScaleSetWithResponse(String resourceGroupName,
+        String availabilitySetName, MigrateToVirtualMachineScaleSetInput parameters, Context context);
+
+    /**
+     * Validates that the Virtual Machines in the Availability Set can be migrated to the provided Virtual Machine Scale
+     * Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void validateMigrationToVirtualMachineScaleSet(String resourceGroupName, String availabilitySetName,
+        MigrateToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
+     * This does not trigger a downtime on the Virtual Machines.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> convertToVirtualMachineScaleSetWithResponseAsync(String resourceGroupName,
+        String availabilitySetName, ConvertToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
+     * This does not trigger a downtime on the Virtual Machines.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginConvertToVirtualMachineScaleSetAsync(String resourceGroupName,
+        String availabilitySetName, ConvertToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
+     * This does not trigger a downtime on the Virtual Machines.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginConvertToVirtualMachineScaleSetAsync(String resourceGroupName,
+        String availabilitySetName);
+
+    /**
+     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
+     * This does not trigger a downtime on the Virtual Machines.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginConvertToVirtualMachineScaleSet(String resourceGroupName,
+        String availabilitySetName);
+
+    /**
+     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
+     * This does not trigger a downtime on the Virtual Machines.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginConvertToVirtualMachineScaleSet(String resourceGroupName,
+        String availabilitySetName, ConvertToVirtualMachineScaleSetInput parameters, Context context);
+
+    /**
+     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
+     * This does not trigger a downtime on the Virtual Machines.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> convertToVirtualMachineScaleSetAsync(String resourceGroupName, String availabilitySetName,
+        ConvertToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
+     * This does not trigger a downtime on the Virtual Machines.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> convertToVirtualMachineScaleSetAsync(String resourceGroupName, String availabilitySetName);
+
+    /**
+     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
+     * This does not trigger a downtime on the Virtual Machines.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void convertToVirtualMachineScaleSet(String resourceGroupName, String availabilitySetName);
+
+    /**
+     * Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines in the Availability Set.
+     * This does not trigger a downtime on the Virtual Machines.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the migrate operation on the availability set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void convertToVirtualMachineScaleSet(String resourceGroupName, String availabilitySetName,
+        ConvertToVirtualMachineScaleSetInput parameters, Context context);
 }

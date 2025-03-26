@@ -3,6 +3,8 @@
 
 package io.clientcore.core.serialization.json.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -16,6 +18,7 @@ import java.util.Objects;
 /**
  * Class representing the JSON object type.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class JsonObject extends JsonElement {
     private final Map<String, JsonElement> properties;
 

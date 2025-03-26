@@ -3,6 +3,8 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 
 import java.util.Objects;
@@ -23,11 +25,13 @@ import java.util.Objects;
  * The {@link LibraryInstrumentationOptions} are usually static and shared across all instances of the client.
  * Application developers are not expected to change them.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class LibraryInstrumentationOptions {
     private final String libraryName;
     private String libraryVersion;
-    private String schemaUri;
+    private String schemaUrl;
     private boolean disableSpanSuppression;
+    private String serviceEndpoint;
 
     static {
         LibraryInstrumentationOptionsAccessHelper
@@ -68,11 +72,22 @@ public final class LibraryInstrumentationOptions {
      * Sets the schema URL describing specific schema and version of the telemetry
      * the library emits.
      *
-     * @param schemaUri The schema URL.
+     * @param schemaUrl The schema URL.
      * @return The updated {@link LibraryInstrumentationOptions} object.
      */
-    public LibraryInstrumentationOptions setSchemaUri(String schemaUri) {
-        this.schemaUri = schemaUri;
+    public LibraryInstrumentationOptions setSchemaUrl(String schemaUrl) {
+        this.schemaUrl = schemaUrl;
+        return this;
+    }
+
+    /**
+     * Sets the service endpoint.
+     *
+     * @param endpoint The service endpoint.
+     * @return The updated {@link LibraryInstrumentationOptions} object.
+     */
+    public LibraryInstrumentationOptions setEndpoint(String endpoint) {
+        this.serviceEndpoint = endpoint;
         return this;
     }
 
@@ -100,8 +115,17 @@ public final class LibraryInstrumentationOptions {
      *
      * @return The schema URL.
      */
-    public String getSchemaUri() {
-        return schemaUri;
+    public String getSchemaUrl() {
+        return schemaUrl;
+    }
+
+    /**
+     * Gets the service endpoint.
+     *
+     * @return The service endpoint.
+     */
+    public String getEndpoint() {
+        return serviceEndpoint;
     }
 
     LibraryInstrumentationOptions disableSpanSuppression(boolean disableSpanSuppression) {

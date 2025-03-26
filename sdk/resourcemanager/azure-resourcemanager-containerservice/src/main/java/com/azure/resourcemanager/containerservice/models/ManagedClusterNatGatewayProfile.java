@@ -72,17 +72,6 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
     }
 
     /**
-     * Set the effectiveOutboundIPs property: The effective outbound IP resources of the cluster NAT gateway.
-     * 
-     * @param effectiveOutboundIPs the effectiveOutboundIPs value to set.
-     * @return the ManagedClusterNatGatewayProfile object itself.
-     */
-    public ManagedClusterNatGatewayProfile withEffectiveOutboundIPs(List<ResourceReference> effectiveOutboundIPs) {
-        this.effectiveOutboundIPs = effectiveOutboundIPs;
-        return this;
-    }
-
-    /**
      * Get the idleTimeoutInMinutes property: Desired outbound flow idle timeout in minutes. Allowed values are in the
      * range of 4 to 120 (inclusive). The default value is 4 minutes.
      * 
@@ -125,8 +114,6 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("managedOutboundIPProfile", this.managedOutboundIpProfile);
-        jsonWriter.writeArrayField("effectiveOutboundIPs", this.effectiveOutboundIPs,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
         return jsonWriter.writeEndObject();
     }

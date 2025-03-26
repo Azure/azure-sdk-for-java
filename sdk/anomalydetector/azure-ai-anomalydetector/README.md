@@ -23,7 +23,7 @@ For more information about creating the resource or how to get the location and 
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-anomalydetector</artifactId>
-  <version>3.0.0-beta.5</version>
+  <version>3.0.0-beta.6</version>
 </dependency>
 ```
 
@@ -61,7 +61,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 

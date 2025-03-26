@@ -62,7 +62,8 @@ public final class VirtualMachineScaleSetVMInstanceViewInner
     private List<VirtualMachineExtensionInstanceView> extensions;
 
     /*
-     * The health status for the VM.
+     * The application health status for the VM, provided through Application Health Extension or Load Balancer Health
+     * Probes.
      */
     private VirtualMachineHealthStatus vmHealth;
 
@@ -263,7 +264,8 @@ public final class VirtualMachineScaleSetVMInstanceViewInner
     }
 
     /**
-     * Get the vmHealth property: The health status for the VM.
+     * Get the vmHealth property: The application health status for the VM, provided through Application Health
+     * Extension or Load Balancer Health Probes.
      * 
      * @return the vmHealth value.
      */
