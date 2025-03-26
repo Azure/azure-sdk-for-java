@@ -11,4 +11,3 @@ description: This recipe migrates the Azure SDKs to the next-generation library 
 recipeList:
   - com.azure.openrewrite.recipes.AzureCore
 
-

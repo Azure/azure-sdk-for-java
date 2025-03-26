@@ -1,5 +1,6 @@
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 public class RequestOptionsUse {
     public static void main(String... args) {

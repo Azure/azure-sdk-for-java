@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue;
 
 /*
  *  This example mimics some arbitrary number of clients continuously sending messages up to a queue in a parallel and
