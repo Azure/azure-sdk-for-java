@@ -33,12 +33,12 @@ import java.util.function.Consumer;
  * definition.</a></p>
  *
  * <p><strong>Creating an instance of RequestOptions</strong></p>
- * <!-- src_embed io.clientcore.core.http.rest.requestcontext.instantiation -->
+ * <!-- src_embed io.clientcore.core.http.rest.requestoptions.instantiation -->
  * <pre>
  * RequestOptions options = new RequestOptions&#40;&#41;
  *     .addRequestCallback&#40;r -&gt; r.getHeaders&#40;&#41;.add&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;;
  * </pre>
- * <!-- end io.clientcore.core.http.rest.requestcontext.instantiation -->
+ * <!-- end io.clientcore.core.http.rest.requestoptions.instantiation -->
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
  *
@@ -72,7 +72,7 @@ import java.util.function.Consumer;
  * To create a concrete request, Json builder provided in javax package is used here for demonstration. However, any
  * other JSON building library can be used to achieve similar results.
  *
- * <!-- src_embed io.clientcore.core.http.rest.requestcontext.createjsonrequest -->
+ * <!-- src_embed io.clientcore.core.http.rest.requestoptions.createjsonrequest -->
  * <pre>
  * JsonArray photoUris = new JsonArray&#40;&#41;
  *     .addElement&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
@@ -96,11 +96,11 @@ import java.util.function.Consumer;
  *
  * BinaryData requestBodyData = BinaryData.fromObject&#40;requestBody&#41;;
  * </pre>
- * <!-- end io.clientcore.core.http.rest.requestcontext.createjsonrequest -->
+ * <!-- end io.clientcore.core.http.rest.requestoptions.createjsonrequest -->
  *
  * Now, this string representation of the JSON request can be set as body of {@link RequestOptions}.
  *
- * <!-- src_embed io.clientcore.core.http.rest.requestcontext.postrequest -->
+ * <!-- src_embed io.clientcore.core.http.rest.requestoptions.postrequest -->
  * <pre>
  * RequestOptions options = new RequestOptions&#40;&#41;
  *     .addRequestCallback&#40;request -&gt; request
@@ -110,7 +110,7 @@ import java.util.function.Consumer;
  *         .setBody&#40;requestBodyData&#41;
  *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
  * </pre>
- * <!-- end io.clientcore.core.http.rest.requestcontext.postrequest -->
+ * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
 @Metadata(properties = MetadataProperties.FLUENT)
 public class RequestOptions {

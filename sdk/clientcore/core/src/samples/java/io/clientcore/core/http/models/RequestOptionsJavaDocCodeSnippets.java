@@ -18,10 +18,10 @@ public class RequestOptionsJavaDocCodeSnippets {
      * @return An instance of {@link RequestOptions}.
      */
     public RequestOptions createInstance() {
-        // BEGIN: io.clientcore.core.http.rest.requestcontext.instantiation
+        // BEGIN: io.clientcore.core.http.rest.requestoptions.instantiation
         RequestOptions options = new RequestOptions()
             .addRequestCallback(r -> r.getHeaders().add(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"));
-        // END: io.clientcore.core.http.rest.requestcontext.instantiation
+        // END: io.clientcore.core.http.rest.requestoptions.instantiation
         return options;
     }
 
@@ -30,7 +30,7 @@ public class RequestOptionsJavaDocCodeSnippets {
      * @return An instance of {@link RequestOptions}.
      */
     public RequestOptions setJsonRequestBodyInRequestContext() {
-        // BEGIN: io.clientcore.core.http.rest.requestcontext.createjsonrequest
+        // BEGIN: io.clientcore.core.http.rest.requestoptions.createjsonrequest
         JsonArray photoUris = new JsonArray()
             .addElement("https://imgur.com/pet1")
             .addElement("https://imgur.com/pet2");
@@ -52,9 +52,9 @@ public class RequestOptionsJavaDocCodeSnippets {
             .setProperty("tags", tags);
 
         BinaryData requestBodyData = BinaryData.fromObject(requestBody);
-        // END: io.clientcore.core.http.rest.requestcontext.createjsonrequest
+        // END: io.clientcore.core.http.rest.requestoptions.createjsonrequest
 
-        // BEGIN: io.clientcore.core.http.rest.requestcontext.postrequest
+        // BEGIN: io.clientcore.core.http.rest.requestoptions.postrequest
         RequestOptions options = new RequestOptions()
             .addRequestCallback(request -> request
                 // may already be set if request is created from a client
@@ -62,7 +62,7 @@ public class RequestOptionsJavaDocCodeSnippets {
                 .setMethod(HttpMethod.POST)
                 .setBody(requestBodyData)
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
-        // END: io.clientcore.core.http.rest.requestcontext.postrequest
+        // END: io.clientcore.core.http.rest.requestoptions.postrequest
         return options;
     }
 
@@ -71,15 +71,15 @@ public class RequestOptionsJavaDocCodeSnippets {
      * Code snippet for {@link RequestOptions#putData(String, Object)}
      */
     public void putDataContext() {
-        // BEGIN: io.clientcore.core.http.rest.requestcontext.putData
+        // BEGIN: io.clientcore.core.http.rest.requestoptions.putData
 
         RequestOptions options = new RequestOptions()
             .putData("stringKey", "value")
             .putData("complexObject", ProgressReporter.withProgressListener(value -> System.out.printf("Got %s bytes", value)));
 
-        // END: io.clientcore.core.http.rest.requestcontext.putData
+        // END: io.clientcore.core.http.rest.requestoptions.putData
 
-        // BEGIN: io.clientcore.core.http.rest.requestcontext.getData
+        // BEGIN: io.clientcore.core.http.rest.requestoptions.getData
 
         // Get the string value
         Object stringKeyValue = options.getData("stringKey");
@@ -96,6 +96,6 @@ public class RequestOptionsJavaDocCodeSnippets {
             progressReporter.reportProgress(42);
         }
 
-        // END: io.clientcore.core.http.rest.requestcontext.getData
+        // END: io.clientcore.core.http.rest.requestoptions.getData
     }
 }
