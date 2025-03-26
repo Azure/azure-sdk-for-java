@@ -18,10 +18,10 @@ public class CreateTasksErrorException extends AzureException {
      * Initializes a new instance of the CreateTasksErrorException class.
      *
      * @param message The exception message.
-     * @param failureTaskList The list of {@link BatchTaskAddResult} instances containing failure details for tasks that were not successfully created.
+     * @param failureTaskList The list of {@link BatchTaskCreateResult} instances containing failure details for tasks that were not successfully created.
      * @param pendingTaskList The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
      */
-    public CreateTasksErrorException(final String message, List<BatchTaskAddResult> failureTaskList,
+    public CreateTasksErrorException(final String message, List<BatchTaskCreateResult> failureTaskList,
         List<BatchTaskCreateContent> pendingTaskList) {
         super(message, null);
         this.failureTaskList = unmodifiableList(failureTaskList);
@@ -29,9 +29,9 @@ public class CreateTasksErrorException extends AzureException {
     }
 
     /**
-     * The list of {@link BatchTaskAddResult} instances containing failure details for tasks that were not successfully created.
+     * The list of {@link BatchTaskCreateResult} instances containing failure details for tasks that were not successfully created.
      */
-    private final List<BatchTaskAddResult> failureTaskList;
+    private final List<BatchTaskCreateResult> failureTaskList;
 
     /**
      * The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
@@ -39,11 +39,11 @@ public class CreateTasksErrorException extends AzureException {
     private final List<BatchTaskCreateContent> pendingTaskList;
 
     /**
-     * Gets the list of {@link BatchTaskAddResult} instances containing failure details for tasks that were not successfully created.
+     * Gets the list of {@link BatchTaskCreateResult} instances containing failure details for tasks that were not successfully created.
      *
-     * @return The list of {@link BatchTaskAddResult} instances containing failure details for tasks that were not successfully created.
+     * @return The list of {@link BatchTaskCreateResult} instances containing failure details for tasks that were not successfully created.
      */
-    public List<BatchTaskAddResult> failureTaskList() {
+    public List<BatchTaskCreateResult> failureTaskList() {
         return failureTaskList;
     }
 
