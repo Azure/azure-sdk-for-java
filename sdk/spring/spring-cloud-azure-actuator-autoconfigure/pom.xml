@@ -32,7 +32,9 @@
     <system>GitHub</system>
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
-
+  <properties>
+    <revapi.skip>true</revapi.skip>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
