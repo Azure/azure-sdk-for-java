@@ -450,18 +450,16 @@ public final class CoreUtils {
                 continue;
             }
 
-            String valueString;
             if (value instanceof List<?>) {
                 List<?> valueList = (List<?>) value;
-                valueString = valueList.stream().map(Object::toString).collect(Collectors.joining(String.valueOf(',')));  // Join with delimiter
+                for (Object item : valueList) {
+                    urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(item.toString());
+                    hasExistingQuery = true; // Ensure subsequent parameters use '&'
+                }
             } else {
-                valueString = value.toString();
+                urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(value.toString());
+                hasExistingQuery = true; // Ensure subsequent parameters use '&'
             }
-
-            // Append '&' or '?' depending on whether a query string already exists
-            urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(valueString);
-
-            hasExistingQuery = true; // Ensure subsequent parameters use '&'
         }
 
         return urlBuilder.toString();
