@@ -490,6 +490,7 @@ unreleased_com.azure:azure-core-test;1.26.0-beta.1
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 
+
 # SDK versions for Spring Boot 2:
 spring_com.azure:azure-cosmos;4.67.0;4.67.0
 spring_com.azure:azure-core;1.55.2;1.55.2

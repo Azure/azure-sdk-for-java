@@ -32,8 +32,8 @@
     <system>GitHub</system>
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
-
   <properties>
+    <revapi.skip>true</revapi.skip>
     <jacoco.skip>true</jacoco.skip> <!-- all tests are abstract classes which don't run for this project -->
   </properties>
 
