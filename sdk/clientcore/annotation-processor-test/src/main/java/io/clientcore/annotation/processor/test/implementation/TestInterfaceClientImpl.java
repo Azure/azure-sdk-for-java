@@ -127,5 +127,12 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything/{path}", expectedStatusCodes = { 200 })
         HttpBinJSON getAnythingWithEncodedPathParam(@HostParam("uri") String uri,
             @PathParam(value = "path", encoded = true) String pathParam);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
+        HttpBinJSON getAnything(@HostParam("uri") String uri, @QueryParam("a") String a, @QueryParam("b") int b);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
+        HttpBinJSON getAnythingWithEncoded(@HostParam("uri") String uri,
+            @QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
     }
 }

@@ -42,6 +42,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -355,13 +356,24 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             Statement newUrlDeclaration = StaticJavaParser.parseStatement("String newUrl;");
             newUrlDeclaration.setComment(new LineComment("\n Append non-null query parameters"));
             body.addStatement(newUrlDeclaration);
-            body.tryAddImportToParentCompilationUnit(HashMap.class);
-            body.addStatement("HashMap<String, Object> queryParamMap = new HashMap<>();");
+            body.tryAddImportToParentCompilationUnit(LinkedHashMap.class);
+            body.addStatement("LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();");
 
-            method.getQueryParams().forEach((key, value) -> {
-                if (value.isEncoded()) {
-                    String encodedValue = UriEscapers.QUERY_ESCAPER.escape(value.getValue());
-                    body.addStatement("queryParamMap.put(\"" + key + "\", \"" + encodedValue + "\");");
+            method.getQueryParams().entrySet().forEach(entry -> {
+                String key = entry.getKey();
+                HttpRequestContext.QueryParameter value = entry.getValue();
+                boolean isValueTypeString = method.getParameters()
+                    .stream()
+                    .anyMatch(parameter -> parameter.getName().equals(value.getValue())
+                        && "String".equals(parameter.getShortTypeName()));
+                if (value.shouldEncode()) {
+                    if (isValueTypeString) {
+                        String encodedKey = "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")";
+                        String encodedValue = "UriEscapers.QUERY_ESCAPER.escape(" + value.getValue() + ")";
+                        body.addStatement("queryParamMap.put(" + encodedKey + ", " + encodedValue + ");");
+                    } else {
+                        body.addStatement("queryParamMap.put(\"" + key + "\", " + value.getValue() + ");");
+                    }
                 } else {
                     body.addStatement("queryParamMap.put(\"" + key + "\", " + value.getValue() + ");");
                 }

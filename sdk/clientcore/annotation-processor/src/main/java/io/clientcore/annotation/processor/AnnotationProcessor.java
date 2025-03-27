@@ -150,7 +150,6 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
 
         method.setMethodReturnType(requestMethod.getReturnType());
-        boolean isEncoded = false;
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
             // Cache annotations for each parameter
@@ -175,7 +174,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                 method.addHeader(headerParam.value(), param.getSimpleName().toString());
             } else if (queryParam != null) {
                 method.addQueryParam(queryParam.value(), param.getSimpleName().toString(),
-                    queryParam.multipleQueryParams(), queryParam.encoded());
+                    queryParam.multipleQueryParams(), !queryParam.encoded());
             } else if (bodyParam != null) {
                 method.setBody(new HttpRequestContext.Body(bodyParam.value(), param.asType().toString(),
                     param.getSimpleName().toString()));

@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,7 +47,7 @@ public final class HttpRequestContext {
     public HttpRequestContext() {
         this.parameters = new ArrayList<>();
         this.headers = new HashMap<>();
-        this.queryParams = new HashMap<>();
+        this.queryParams = new LinkedHashMap<>();
         this.substitutions = new HashMap<>();
     }
 
@@ -195,15 +196,15 @@ public final class HttpRequestContext {
      * @param value the query parameter value.
      * @param isMultiple boolean indicating whether this query parameter list values should be sent as individual query
      * params or as a single Json
-     * @param isEncoded boolean indicating whether the query parameter value is URL encoded.
+     * @param shouldEncode boolean indicating whether the query parameter value is URL encoded.
      *
      * @throws IllegalArgumentException if a duplicate query parameter is added.
      */
-    public void addQueryParam(String key, String value, boolean isMultiple, boolean isEncoded) {
+    public void addQueryParam(String key, String value, boolean isMultiple, boolean shouldEncode) {
         if (queryParams.containsKey(key)) {
             throw new IllegalArgumentException("Cannot add duplicate query parameter '" + key + "'");
         }
-        queryParams.put(key, new QueryParameter(value, isMultiple, isEncoded));
+        queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode));
     }
 
     /**
@@ -399,19 +400,19 @@ public final class HttpRequestContext {
     public static class QueryParameter {
         private final String value;
         private final boolean isMultiple;
-        private final boolean isEncoded;
+        private final boolean shouldEncode;
 
         /**
          * Constructs a new QueryParameter.
          *
          * @param value the value of the query parameter.
          * @param isMultiple whether the parameter can accept multiple values.
-         * @param isEncoded whether the parameter and value is encoded
+         * @param shouldEncode whether the parameter and value is encoded
          */
-        public QueryParameter(String value, boolean isMultiple, boolean isEncoded) {
+        public QueryParameter(String value, boolean isMultiple, boolean shouldEncode) {
             this.value = value;
             this.isMultiple = isMultiple;
-            this.isEncoded = isEncoded;
+            this.shouldEncode = shouldEncode;
         }
 
         /**
@@ -437,8 +438,8 @@ public final class HttpRequestContext {
          *
          * @return true if the parameter value is encoded, otherwise false.
          */
-        public boolean isEncoded() {
-            return isEncoded;
+        public boolean shouldEncode() {
+            return shouldEncode;
         }
     }
 }
