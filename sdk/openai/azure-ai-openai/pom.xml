@@ -60,14 +60,12 @@
       <version>0.43.0</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
     </dependency>
 
-    <dependency>
-      <groupId>io.clientcore</groupId>
-      <artifactId>core</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;external_dependency} -->
-    </dependency>
-
     <!-- provided scope -->
-
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.55.3</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
