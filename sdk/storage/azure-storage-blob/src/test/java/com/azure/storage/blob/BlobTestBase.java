@@ -42,6 +42,9 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.azure.storage.file.share.ShareServiceAsyncClient;
+import com.azure.storage.file.share.ShareServiceClient;
+import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -844,5 +847,30 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         return setPolicyMono;
+    }
+
+    protected ShareServiceClient getOAuthShareServiceClient(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
+    }
+
+    protected ShareServiceAsyncClient getOAuthShareServiceAsyncClient() {
+        ShareServiceClientBuilder builder
+            = new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint())
+                .credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
+
+        instrument(builder);
+
+        return builder.buildAsyncClient();
+    }
+
+    protected String generateShareName() {
+        return generateResourceName(entityNo++);
     }
 }
