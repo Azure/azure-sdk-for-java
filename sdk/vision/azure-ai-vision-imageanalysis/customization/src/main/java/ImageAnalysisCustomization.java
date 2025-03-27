@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This class contains the customization code to customize the AutoRest generated code for Azure AI Inference.
+ * This class contains the customization code to customize the TypeSpec generated code for Azure AI Image Analysis.
  */
 public class ImageAnalysisCustomization extends Customization {
 
