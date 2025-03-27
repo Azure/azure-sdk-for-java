@@ -207,4 +207,8 @@ public final class MultipartFormDataHelper {
     private static String escapeName(String name) {
         return name.replace("\n", "%0A").replace("\r", "%0D").replace("\"", "%22");
     }
+
+    public String getBoundary() {
+        return boundary;
+    }
 }
