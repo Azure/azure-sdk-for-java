@@ -4,6 +4,7 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -66,6 +67,11 @@ public final class AzureFileSystem extends FileSystem {
      * Expected type: String
      */
     public static final String AZURE_STORAGE_SAS_TOKEN_CREDENTIAL = "AzureStorageSasTokenCredential";
+
+    /**
+     * Expected type: String
+     */
+    public static final String AZURE_STORAGE_TOKEN_CREDENTIAL = "AzureStorageTokenCredential";
 
     /**
      * Expected type: com.azure.core.http.policy.HttpLogLevelDetail
@@ -399,12 +405,15 @@ public final class AzureFileSystem extends FileSystem {
             builder.credential((StorageSharedKeyCredential) config.get(AZURE_STORAGE_SHARED_KEY_CREDENTIAL));
         } else if (config.containsKey(AZURE_STORAGE_SAS_TOKEN_CREDENTIAL)) {
             builder.credential((AzureSasCredential) config.get(AZURE_STORAGE_SAS_TOKEN_CREDENTIAL));
+        } else if (config.containsKey(AZURE_STORAGE_TOKEN_CREDENTIAL)) {
+            builder.credential((TokenCredential) config.get(AZURE_STORAGE_TOKEN_CREDENTIAL));
         } else {
             throw LoggingUtility
                 .logError(LOGGER,
                     new IllegalArgumentException(String.format("No credentials were "
                         + "provided. Please specify one of the following when constructing an AzureFileSystem: %s, %s.",
-                        AZURE_STORAGE_SHARED_KEY_CREDENTIAL, AZURE_STORAGE_SAS_TOKEN_CREDENTIAL)));
+                        AZURE_STORAGE_SHARED_KEY_CREDENTIAL, AZURE_STORAGE_SAS_TOKEN_CREDENTIAL,
+                        AZURE_STORAGE_TOKEN_CREDENTIAL)));
         }
 
         // Configure options and client.
