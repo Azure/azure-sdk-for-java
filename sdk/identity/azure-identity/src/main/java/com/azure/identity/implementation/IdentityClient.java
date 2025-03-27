@@ -172,10 +172,6 @@ public class IdentityClient extends IdentityClientBase {
                     throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
                 }
 
-                if (options.getManagedIdentityType() == null) {
-                    throw LOGGER.logExceptionAsError(new CredentialUnavailableException(
-                        "Managed Identity type not configured, authentication not available."));
-                }
                 applicationBuilder.appTokenProvider(appTokenProviderParameters -> {
                     TokenRequestContext trc
                         = new TokenRequestContext().setScopes(new ArrayList<>(appTokenProviderParameters.scopes))
