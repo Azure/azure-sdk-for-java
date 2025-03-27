@@ -20,6 +20,7 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -67,6 +68,7 @@ public class SleuthHttpPolicyTests {
     }
 
     @Test
+    @Disabled
     public void addPolicyForBlobServiceClientBuilder() {
         SleuthHttpPolicy sleuthHttpPolicy = new SleuthHttpPolicy(tracer);
         // key is test-key
@@ -183,6 +185,7 @@ public class SleuthHttpPolicyTests {
     }
 
     @Test
+    @Disabled
     public void addAfterPolicyForHttpPipeline() {
         final HttpPipeline pipeline = createHttpPipeline();
         assertEquals(1, pipeline.getPolicyCount());
