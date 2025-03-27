@@ -7,6 +7,8 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * A policy within the {@link HttpPipeline}.
  *
@@ -22,6 +24,18 @@ public interface HttpPipelinePolicy {
      * @return The {@link Response} from the next policy or the HTTP client if there are no more policies.
      */
     Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
+
+    /**
+     * Processes the provided HTTP request and invokes the next policy asynchronously.
+     *
+     * @param httpRequest The HTTP request.
+     * @param next The next policy to invoke.
+     * @return A CompletableFuture that will complete with the response from the next policy or the HTTP client if there
+     * are no more policies.
+     */
+    default CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        return CompletableFuture.completedFuture(process(httpRequest, next));
+    }
 
     /**
      * Gets the position in the {@link HttpPipelineBuilder} the policy will be placed when added.
