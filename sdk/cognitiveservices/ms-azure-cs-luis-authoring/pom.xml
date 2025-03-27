@@ -16,7 +16,11 @@
     <version>1.0.5-beta</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-authoring;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Language Understanding (LUIS)</name>
-    <description>This package contains Microsoft Cognitive Service Language Understanding (LUIS).</description>
+    <description>
+        This package has been deprecated and will receive no further updates. The LUIS service will also be retired on October 1st, 2025.
+        You can migrate from the LUIS service to the new Azure AI Language service by following this guide:
+        https://learn.microsoft.com/azure/ai-services/language-service/conversational-language-understanding/how-to/migrate-from-luis
+    </description>
     <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/language/luis/authoring</url>
     <licenses>
         <license>
@@ -28,6 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+        <spotbugs.excludeFilterFile>../spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     </properties>
     <developers>
         <developer>

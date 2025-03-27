@@ -97,6 +97,80 @@ pr:
       - sdk/cognitiveservices/ms-azure-cs-visualsearch/pom.xml
       - sdk/cognitiveservices/ms-azure-cs-websearch/pom.xml
 
+parameters:
+  - name: release_azurecognitiveservicesautosuggest
+    displayName: 'azure-cognitiveservices-autosuggest'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicescomputervision
+    displayName: 'azure-cognitiveservices-computervision'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicescontentmoderator
+    displayName: 'azure-cognitiveservices-contentmoderator'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicescustomimagesearch
+    displayName: 'azure-cognitiveservices-customimagesearch'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicescustomsearch
+    displayName: 'azure-cognitiveservices-customsearch'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicescustomvisionprediction
+    displayName: 'azure-cognitiveservices-customvision-prediction'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicescustomvisiontraining
+    displayName: 'azure-cognitiveservices-customvision-training'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicesentitysearch
+    displayName: 'azure-cognitiveservices-entitysearch'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicesfaceapi
+    displayName: 'azure-cognitiveservices-faceapi'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicesimagesearch
+    displayName: 'azure-cognitiveservices-imagesearch'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicesluisauthoring
+    displayName: 'azure-cognitiveservices-luis-authoring'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicesluisruntime
+    displayName: 'azure-cognitiveservices-luis-runtime'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicesnewssearch
+    displayName: 'azure-cognitiveservices-newssearch'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicesspellcheck
+    displayName: 'azure-cognitiveservices-spellcheck'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicesvideosearch
+    displayName: 'azure-cognitiveservices-videosearch'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicesvisualsearch
+    displayName: 'azure-cognitiveservices-visualsearch'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveserviceswebsearch
+    displayName: 'azure-cognitiveservices-websearch'
+    type: boolean
+    default: true
+  - name: release_azurecognitiveservicesqnamaker
+    displayName: 'azure-cognitiveservices-qnamaker'
+    type: boolean
+    default: true
+
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -106,55 +180,73 @@ extends:
       - name: azure-cognitiveservices-autosuggest
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesautosuggest
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesautosuggest }}
       - name: azure-cognitiveservices-computervision
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicescomputervision
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicescomputervision }}
       - name: azure-cognitiveservices-contentmoderator
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicescontentmoderator
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicescontentmoderator }}
       - name: azure-cognitiveservices-customimagesearch
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicescustomimagesearch
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicescustomimagesearch }}
       - name: azure-cognitiveservices-customsearch
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicescustomsearch
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicescustomsearch }}
       - name: azure-cognitiveservices-customvision-prediction
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicescustomvisionprediction
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicescustomvisionprediction }}
       - name: azure-cognitiveservices-customvision-training
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicescustomvisiontraining
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicescustomvisiontraining }}
       - name: azure-cognitiveservices-entitysearch
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesentitysearch
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesentitysearch }}
       - name: azure-cognitiveservices-faceapi
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesfaceapi
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesfaceapi }}
       - name: azure-cognitiveservices-imagesearch
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesimagesearch
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesimagesearch }}
       - name: azure-cognitiveservices-luis-authoring
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesluisauthoring
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesluisauthoring }}
       - name: azure-cognitiveservices-luis-runtime
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesluisruntime
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesluisruntime }}
       - name: azure-cognitiveservices-newssearch
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesnewssearch
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesnewssearch }}
       - name: azure-cognitiveservices-spellcheck
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesspellcheck
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesspellcheck }}
       - name: azure-cognitiveservices-videosearch
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesvideosearch
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesvideosearch }}
       - name: azure-cognitiveservices-visualsearch
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesvisualsearch
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesvisualsearch }}
       - name: azure-cognitiveservices-websearch
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveserviceswebsearch
+        releaseInBatch: ${{ parameters.release_azurecognitiveserviceswebsearch }}
       - name: azure-cognitiveservices-qnamaker
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesqnamaker
+        releaseInBatch: ${{ parameters.release_azurecognitiveservicesqnamaker }}
 

@@ -16,7 +16,11 @@
     <version>1.1.0-beta</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-faceapi;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Face API</name>
-    <description>This package contains Microsoft Cognitive Service Face API SDK.</description>
+    <description>
+        This package has been deprecated and will receive no further updates.
+        To continue using the Azure AI Face service on Java, updating to the following library is recommended:
+        https://search.maven.org/artifact/com.azure/azure-ai-vision-face
+    </description>
     <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/vision/faceapi</url>
     <licenses>
         <license>
@@ -28,6 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+        <spotbugs.excludeFilterFile>../spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     </properties>
     <developers>
         <developer>

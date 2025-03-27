@@ -19,7 +19,7 @@
 
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Custom Vision Prediction</name>
-    <description>This package contains Microsoft Cognitive Service Custom Vision Prediction SDK.</description>
+    <description>This package has been deprecated and will receive no further updates.</description>
     <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/vision/customvision/prediction</url>
     <licenses>
         <license>
@@ -31,6 +31,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+        <spotbugs.excludeFilterFile>../spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     </properties>
     <developers>
         <developer>

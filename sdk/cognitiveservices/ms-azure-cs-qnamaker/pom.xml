@@ -18,7 +18,11 @@
     <version>1.0.0-beta.3</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-qnamaker;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service QnA Maker</name>
-    <description>This package contains Microsoft Cognitive Service QnA Maker SDK.</description>
+    <description>
+        This package has been deprecated and will receive no further updates. The QnA Maker service will also be retired on March 31st, 2025.
+        You can migrate from the QnA Maker service to the new Azure AI Language service by following this guide:
+        https://learn.microsoft.com/azure/ai-services/language-service/question-answering/how-to/migrate-qnamaker-to-question-answering
+    </description>
     <url>https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cognitiveservices/ms-azure-cs-qnamaker</url>
     <licenses>
         <license>
@@ -30,6 +34,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+        <spotbugs.excludeFilterFile>../spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     </properties>
     <developers>
         <developer>

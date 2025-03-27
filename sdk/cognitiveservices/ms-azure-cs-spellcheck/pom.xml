@@ -16,7 +16,11 @@
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Spell Check</name>
-    <description>This package contains Microsoft Cognitive Service Spell Check SDK.</description>
+    <description>
+        This package has been deprecated and will receive no further updates.
+        To continue using the Bing Spell Check service on Java, the following guide is recommended:
+        https://learn.microsoft.com/bing/search-apis/bing-spell-check/quickstarts/rest/java
+    </description>
     <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/language/bingspellcheck</url>
     <licenses>
         <license>
@@ -28,6 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+        <spotbugs.excludeFilterFile>../spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     </properties>
     <developers>
         <developer>
