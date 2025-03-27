@@ -4,10 +4,9 @@
 package com.azure.v2.security.keyvault.secrets;
 
 import com.azure.v2.core.credentials.TokenCredential;
-import com.azure.v2.core.http.polling.Poller;
-import com.azure.v2.core.http.polling.PollingContext;
-import com.azure.v2.core.http.polling.PollResponse;
 import com.azure.v2.core.http.polling.LongRunningOperationStatus;
+import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.PollingContext;
 import com.azure.v2.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.v2.security.keyvault.secrets.implementation.models.BackupSecretResult;
 import com.azure.v2.security.keyvault.secrets.implementation.models.SecretRestoreParameters;
@@ -29,7 +28,6 @@ import io.clientcore.core.http.paging.PagingOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.Context;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -449,25 +447,20 @@ public final class SecretClient {
      * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
+    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<DeletedSecret, Void> beginDeleteSecret(String name) {
         try {
             return Poller.createPoller(Duration.ofSeconds(1),
-                deleteActivationOperation(name),
+                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                    createDeletedSecret(clientImpl.deleteSecret(name))),
                 deletePollOperation(name),
-                (context, response) -> null,
-                context -> null);
+                (pollingContext, response) -> null,
+                pollingContext -> null);
         } catch (HttpResponseException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }
-
-    private Function<PollingContext<DeletedSecret>, PollResponse<DeletedSecret>> deleteActivationOperation(
-        String name) {
-
-        return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-            createDeletedSecret(clientImpl.deleteSecret(name)));
-    }
+    }*/
 
     private Function<PollingContext<DeletedSecret>, PollResponse<DeletedSecret>> deletePollOperation(String name) {
         return pollingContext -> {
@@ -485,7 +478,7 @@ public final class SecretClient {
                     return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                         pollingContext.getLatestResponse().getValue());
                 }
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 // This means either vault has soft-delete disabled or permission is not granted for the get deleted
                 // key operation. In both cases deletion operation was successful when activation operation
                 // succeeded before reaching here.
@@ -626,25 +619,20 @@ public final class SecretClient {
      * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
+    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
         try {
             return Poller.createPoller(Duration.ofSeconds(1),
-                recoverActivationOperation(name),
+                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                    createKeyVaultSecret(clientImpl.recoverDeletedSecret(name))),
                 recoverPollOperation(name),
-                (context, response) -> null,
-                context -> null);
+                (pollingContext, response) -> null,
+                pollingContext -> null);
         } catch (HttpResponseException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }
-
-    private Function<PollingContext<KeyVaultSecret>, PollResponse<KeyVaultSecret>> recoverActivationOperation(
-        String name) {
-
-        return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-            createKeyVaultSecret(clientImpl.recoverDeletedSecret(name));
-    }
+    }*/
 
     private Function<PollingContext<KeyVaultSecret>, PollResponse<KeyVaultSecret>> recoverPollOperation(String name) {
         return pollingContext -> {
@@ -661,7 +649,7 @@ public final class SecretClient {
                     return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                         pollingContext.getLatestResponse().getValue());
                 }
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 // This means permission is not granted for the get deleted key operation. In both cases the
                 // deletion operation was successful when activation operation succeeded before reaching here.
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
