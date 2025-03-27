@@ -18,45 +18,47 @@ public final class PushInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PushInfo model = BinaryData.fromString(
-            "{\"maxDeliveryCount\":357492176,\"eventTimeToLive\":\"tdlmkkzevd\",\"deadLetterDestinationWithResourceIdentity\":{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"sdsttwvog\"},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"}},\"deliveryWithResourceIdentity\":{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"ngqqmoakuf\"},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}}")
+            "{\"maxDeliveryCount\":1225314706,\"eventTimeToLive\":\"eqdcv\",\"deadLetterDestinationWithResourceIdentity\":{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"dsotbobzd\"},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"}},\"deliveryWithResourceIdentity\":{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"hdldwmgxcxrsl\"},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}}")
             .toObject(PushInfo.class);
-        Assertions.assertEquals(357492176, model.maxDeliveryCount());
-        Assertions.assertEquals("tdlmkkzevd", model.eventTimeToLive());
+        Assertions.assertEquals(1225314706, model.maxDeliveryCount());
+        Assertions.assertEquals("eqdcv", model.eventTimeToLive());
         Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED,
             model.deadLetterDestinationWithResourceIdentity().identity().type());
-        Assertions.assertEquals("sdsttwvog",
+        Assertions.assertEquals("dsotbobzd",
             model.deadLetterDestinationWithResourceIdentity().identity().userAssignedIdentity());
         Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED,
             model.deliveryWithResourceIdentity().identity().type());
-        Assertions.assertEquals("ngqqmoakuf", model.deliveryWithResourceIdentity().identity().userAssignedIdentity());
+        Assertions.assertEquals("hdldwmgxcxrsl",
+            model.deliveryWithResourceIdentity().identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PushInfo model
-            = new PushInfo().withMaxDeliveryCount(357492176)
-                .withEventTimeToLive("tdlmkkzevd")
+            = new PushInfo().withMaxDeliveryCount(1225314706)
+                .withEventTimeToLive("eqdcv")
                 .withDeadLetterDestinationWithResourceIdentity(new DeadLetterWithResourceIdentity()
                     .withIdentity(
                         new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.SYSTEM_ASSIGNED)
-                            .withUserAssignedIdentity("sdsttwvog"))
+                            .withUserAssignedIdentity("dsotbobzd"))
                     .withDeadLetterDestination(new DeadLetterDestination()))
                 .withDeliveryWithResourceIdentity(
                     new DeliveryWithResourceIdentity()
                         .withIdentity(
                             new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
-                                .withUserAssignedIdentity("ngqqmoakuf"))
+                                .withUserAssignedIdentity("hdldwmgxcxrsl"))
                         .withDestination(new EventSubscriptionDestination()))
                 .withDestination(new EventSubscriptionDestination());
         model = BinaryData.fromObject(model).toObject(PushInfo.class);
-        Assertions.assertEquals(357492176, model.maxDeliveryCount());
-        Assertions.assertEquals("tdlmkkzevd", model.eventTimeToLive());
+        Assertions.assertEquals(1225314706, model.maxDeliveryCount());
+        Assertions.assertEquals("eqdcv", model.eventTimeToLive());
         Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED,
             model.deadLetterDestinationWithResourceIdentity().identity().type());
-        Assertions.assertEquals("sdsttwvog",
+        Assertions.assertEquals("dsotbobzd",
             model.deadLetterDestinationWithResourceIdentity().identity().userAssignedIdentity());
         Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED,
             model.deliveryWithResourceIdentity().identity().type());
-        Assertions.assertEquals("ngqqmoakuf", model.deliveryWithResourceIdentity().identity().userAssignedIdentity());
+        Assertions.assertEquals("hdldwmgxcxrsl",
+            model.deliveryWithResourceIdentity().identity().userAssignedIdentity());
     }
 }

@@ -65,6 +65,8 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
+    private String[] scopes = DEFAULT_SCOPES;
+
     /**
      * Create an instance of the ImageEmbeddingsClientBuilder.
      */
@@ -268,6 +270,17 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
     }
 
     /**
+     * Sets auth domain scopes for client authentication.
+     *
+     * @param scopes domain scope to authenticate against.
+     * @return the ImageEmbeddingsClientBuilder.
+     */
+    public ImageEmbeddingsClientBuilder scopes(String[] scopes) {
+        this.scopes = scopes;
+        return this;
+    }
+
+    /**
      * Builds an instance of ImageEmbeddingsClientImpl with the provided parameters.
      *
      * @return an instance of ImageEmbeddingsClientImpl.
@@ -317,7 +330,7 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
             policies.add(new KeyCredentialPolicy("Authorization", keyCredential));
         }
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, this.scopes));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)

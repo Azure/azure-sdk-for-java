@@ -34,7 +34,7 @@ public interface VerifiedPartner {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to Verified Partner resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
@@ -67,13 +67,6 @@ public interface VerifiedPartner {
      * @return the partnerTopicDetails value.
      */
     PartnerDetails partnerTopicDetails();
-
-    /**
-     * Gets the partnerDestinationDetails property: Details of the partner destination scenario.
-     * 
-     * @return the partnerDestinationDetails value.
-     */
-    PartnerDetails partnerDestinationDetails();
 
     /**
      * Gets the provisioningState property: Provisioning state of the verified partner.

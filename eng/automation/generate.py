@@ -111,11 +111,19 @@ def sdk_automation(input_file: str, output_file: str):
     with open(input_file, "r") as fin:
         config = json.load(fin)
 
-    # typespec
-    packages = sdk_automation_typespec(config)
-    # autorest
-    if not packages:
-        packages = sdk_automation_autorest(config)
+    packages = []
+    try:
+        # typespec
+        packages = sdk_automation_typespec(config)
+        # autorest
+        if not packages:
+            packages = sdk_automation_autorest(config)
+    except Exception:
+        logging.error("[GENERATE] Code generation failed. Unknown exception", exc_info=True)
+        if packages and len(packages) == 1:
+            packages[0]["result"] = "failed"
+        else:
+            sys.exit(1)
 
     with open(output_file, "w", encoding="utf-8") as fout:
         output = {
@@ -244,7 +252,6 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
 
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
 
-    # TODO(xiaofei) support changelog, etc
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     spec_root = os.path.abspath(config["specFolder"])
@@ -272,14 +279,27 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         # compile
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
+            logging.info("[Changelog] Start breaking change detection for SDK automation.")
             breaking, changelog, breaking_change_items = compare_with_maven_package(
                 sdk_root,
                 GROUP_ID,
                 service,
                 get_latest_ga_version(GROUP_ID, module, stable_version),
                 current_version,
-                module,
+                module
             )
+            logging.info("[Changelog] Complete breaking change detection for SDK automation.")
+            logging.info("[Changelog] Start generating changelog.")
+            compare_with_maven_package(
+                sdk_root,
+                GROUP_ID,
+                service,
+                get_latest_release_version(stable_version, current_version),
+                current_version,
+                module
+            )
+            update_changelog_version(sdk_root, output_folder, current_version)
+            logging.info("[Changelog] Complete generating changelog.")
 
     # output
     if sdk_folder and module and service:

@@ -21,6 +21,8 @@ public final class ChangeFeedProcessorOptions {
      */
     public static final Duration DEFAULT_RENEW_INTERVAL = Duration.ofMillis(0).plusSeconds(17);
 
+    public static final boolean DEFAULT_LEASE_VERIFICATION_ON_RESTART_ENABLED = false;
+
     /**
      * Default acquire interval.
      */
@@ -49,6 +51,8 @@ public final class ChangeFeedProcessorOptions {
     private int minScaleCount;
     private int maxScaleCount;
 
+    private boolean leaseVerificationOnRestartEnabled;
+
     private Scheduler scheduler;
     private ThroughputControlGroupConfig feedPollThroughputControlGroupConfig;
 
@@ -66,6 +70,7 @@ public final class ChangeFeedProcessorOptions {
 
         this.scheduler = Schedulers.boundedElastic();
         this.feedPollThroughputControlGroupConfig = null;
+        this.leaseVerificationOnRestartEnabled = DEFAULT_LEASE_VERIFICATION_ON_RESTART_ENABLED;
     }
 
     /**
@@ -403,5 +408,25 @@ public final class ChangeFeedProcessorOptions {
      */
     public ThroughputControlGroupConfig getFeedPollThroughputControlGroupConfig() {
         return this.feedPollThroughputControlGroupConfig;
+    }
+
+    /**
+     * Sets a flag to indicate whether on restart a check for missing leases should be executed. Usually this is not
+     * required - but it can help to ensure all leases are processed continuously if any other application or
+     * administrator etc. manually modifies lease documents. So, it is an additional safeguard to ensure correctness.
+     * @param enableLeaseVerificationOnRestart true to enable lease verification
+     * @return the {@link ChangeFeedProcessorOptions}.
+     */
+    public ChangeFeedProcessorOptions setLeaseVerificationEnabledOnRestart(boolean enableLeaseVerificationOnRestart) {
+        this.leaseVerificationOnRestartEnabled = enableLeaseVerificationOnRestart;
+        return this;
+    }
+
+    /**
+     * Gets a flag indicating whether a check for missing leases is done on every restart of the ChangeFeedProcessor.
+     * @return a flag indicating whether a check for missing leases is done on every restart of the ChangeFeedProcessor.
+     */
+    public boolean isLeaseVerificationEnabledOnRestart() {
+        return this.leaseVerificationOnRestartEnabled;
     }
 }

@@ -39,7 +39,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /*
      * Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
      */
-    private Object version;
+    private Object versionTypePropertiesVersion;
 
     /*
      * Azure Storage linked service to be used by the on-demand cluster for storing and processing data.
@@ -268,22 +268,24 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Get the version property: Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
+     * Get the versionTypePropertiesVersion property: Version of the HDInsight cluster.  Type: string (or Expression
+     * with resultType string).
      * 
-     * @return the version value.
+     * @return the versionTypePropertiesVersion value.
      */
-    public Object getVersion() {
-        return this.version;
+    public Object getVersionTypePropertiesVersion() {
+        return this.versionTypePropertiesVersion;
     }
 
     /**
-     * Set the version property: Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
+     * Set the versionTypePropertiesVersion property: Version of the HDInsight cluster.  Type: string (or Expression
+     * with resultType string).
      * 
-     * @param version the version value to set.
+     * @param versionTypePropertiesVersion the versionTypePropertiesVersion value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
-    public HDInsightOnDemandLinkedService setVersion(Object version) {
-        this.version = version;
+    public HDInsightOnDemandLinkedService setVersionTypePropertiesVersion(Object versionTypePropertiesVersion) {
+        this.versionTypePropertiesVersion = versionTypePropertiesVersion;
         return this;
     }
 
@@ -961,6 +963,15 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * {@inheritDoc}
      */
     @Override
+    public HDInsightOnDemandLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public HDInsightOnDemandLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
@@ -999,6 +1010,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -1006,7 +1018,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
         jsonWriter.writeStringField("type", this.type);
         if (clusterSize != null
             || timeToLive != null
-            || version != null
+            || versionTypePropertiesVersion != null
             || linkedServiceName != null
             || hostSubscriptionId != null
             || servicePrincipalId != null
@@ -1041,7 +1053,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("clusterSize", this.clusterSize);
             jsonWriter.writeUntypedField("timeToLive", this.timeToLive);
-            jsonWriter.writeUntypedField("version", this.version);
+            jsonWriter.writeUntypedField("version", this.versionTypePropertiesVersion);
             jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
             jsonWriter.writeUntypedField("hostSubscriptionId", this.hostSubscriptionId);
             jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
@@ -1103,7 +1115,9 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedHDInsightOnDemandLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
@@ -1127,7 +1141,8 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
                         } else if ("timeToLive".equals(fieldName)) {
                             deserializedHDInsightOnDemandLinkedService.timeToLive = reader.readUntyped();
                         } else if ("version".equals(fieldName)) {
-                            deserializedHDInsightOnDemandLinkedService.version = reader.readUntyped();
+                            deserializedHDInsightOnDemandLinkedService.versionTypePropertiesVersion
+                                = reader.readUntyped();
                         } else if ("linkedServiceName".equals(fieldName)) {
                             deserializedHDInsightOnDemandLinkedService.linkedServiceName
                                 = LinkedServiceReference.fromJson(reader);

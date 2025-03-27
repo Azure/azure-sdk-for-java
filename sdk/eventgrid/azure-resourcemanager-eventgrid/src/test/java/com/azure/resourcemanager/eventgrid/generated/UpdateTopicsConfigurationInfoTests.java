@@ -17,52 +17,57 @@ public final class UpdateTopicsConfigurationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateTopicsConfigurationInfo model = BinaryData.fromString(
-            "{\"customDomains\":[{\"fullyQualifiedDomainName\":\"oknssxmojmsvpkjp\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"ql\"},\"certificateUrl\":\"x\",\"expectedTxtRecordName\":\"czheyd\",\"expectedTxtRecordValue\":\"dshmkxmaehvbbx\"},{\"fullyQualifiedDomainName\":\"ripltf\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"gx\"},\"certificateUrl\":\"rc\",\"expectedTxtRecordName\":\"yklyhpluodpvruud\",\"expectedTxtRecordValue\":\"zibt\"},{\"fullyQualifiedDomainName\":\"ostgkts\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"zedqbcvhzlhplo\"},\"certificateUrl\":\"kdl\",\"expectedTxtRecordName\":\"qfbumlkxtrqjf\",\"expectedTxtRecordValue\":\"lmbtxhwgfwsrt\"}]}")
+            "{\"customDomains\":[{\"fullyQualifiedDomainName\":\"opgxedkowepb\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"wccsnjvcdwxlpqek\"},\"certificateUrl\":\"nkhtjsyingw\",\"expectedTxtRecordName\":\"atmtdhtmdvy\",\"expectedTxtRecordValue\":\"ikdgszywkbir\"},{\"fullyQualifiedDomainName\":\"yuzhlhkjoqrvq\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"rv\"},\"certificateUrl\":\"upmfiibfg\",\"expectedTxtRecordName\":\"ioolvrwxkvtkkgll\",\"expectedTxtRecordValue\":\"jygvjayvbl\"},{\"fullyQualifiedDomainName\":\"hvkzuh\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"s\"},\"certificateUrl\":\"byrqufeg\",\"expectedTxtRecordName\":\"vwz\",\"expectedTxtRecordValue\":\"nhlmctlpdng\"},{\"fullyQualifiedDomainName\":\"tvgbmhrixkwmy\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"rh\"},\"certificateUrl\":\"nai\",\"expectedTxtRecordName\":\"xccbdreaxhcex\",\"expectedTxtRecordValue\":\"rvqahqkghtpwi\"}]}")
             .toObject(UpdateTopicsConfigurationInfo.class);
-        Assertions.assertEquals("oknssxmojmsvpkjp", model.customDomains().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD,
-            model.customDomains().get(0).validationState());
+        Assertions.assertEquals("opgxedkowepb", model.customDomains().get(0).fullyQualifiedDomainName());
+        Assertions.assertEquals(CustomDomainValidationState.PENDING, model.customDomains().get(0).validationState());
         Assertions.assertEquals(CustomDomainIdentityType.SYSTEM_ASSIGNED,
             model.customDomains().get(0).identity().type());
-        Assertions.assertEquals("ql", model.customDomains().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("x", model.customDomains().get(0).certificateUrl());
-        Assertions.assertEquals("czheyd", model.customDomains().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("dshmkxmaehvbbx", model.customDomains().get(0).expectedTxtRecordValue());
+        Assertions.assertEquals("wccsnjvcdwxlpqek", model.customDomains().get(0).identity().userAssignedIdentity());
+        Assertions.assertEquals("nkhtjsyingw", model.customDomains().get(0).certificateUrl());
+        Assertions.assertEquals("atmtdhtmdvy", model.customDomains().get(0).expectedTxtRecordName());
+        Assertions.assertEquals("ikdgszywkbir", model.customDomains().get(0).expectedTxtRecordValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateTopicsConfigurationInfo model = new UpdateTopicsConfigurationInfo().withCustomDomains(Arrays.asList(
-            new CustomDomainConfiguration().withFullyQualifiedDomainName("oknssxmojmsvpkjp")
-                .withValidationState(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD)
-                .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentity("ql"))
-                .withCertificateUrl("x")
-                .withExpectedTxtRecordName("czheyd")
-                .withExpectedTxtRecordValue("dshmkxmaehvbbx"),
-            new CustomDomainConfiguration().withFullyQualifiedDomainName("ripltf")
+            new CustomDomainConfiguration().withFullyQualifiedDomainName("opgxedkowepb")
                 .withValidationState(CustomDomainValidationState.PENDING)
                 .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentity("gx"))
-                .withCertificateUrl("rc")
-                .withExpectedTxtRecordName("yklyhpluodpvruud")
-                .withExpectedTxtRecordValue("zibt"),
-            new CustomDomainConfiguration().withFullyQualifiedDomainName("ostgkts")
+                    .withUserAssignedIdentity("wccsnjvcdwxlpqek"))
+                .withCertificateUrl("nkhtjsyingw")
+                .withExpectedTxtRecordName("atmtdhtmdvy")
+                .withExpectedTxtRecordValue("ikdgszywkbir"),
+            new CustomDomainConfiguration().withFullyQualifiedDomainName("yuzhlhkjoqrvq")
                 .withValidationState(CustomDomainValidationState.APPROVED)
                 .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentity("zedqbcvhzlhplo"))
-                .withCertificateUrl("kdl")
-                .withExpectedTxtRecordName("qfbumlkxtrqjf")
-                .withExpectedTxtRecordValue("lmbtxhwgfwsrt")));
+                    .withUserAssignedIdentity("rv"))
+                .withCertificateUrl("upmfiibfg")
+                .withExpectedTxtRecordName("ioolvrwxkvtkkgll")
+                .withExpectedTxtRecordValue("jygvjayvbl"),
+            new CustomDomainConfiguration().withFullyQualifiedDomainName("hvkzuh")
+                .withValidationState(CustomDomainValidationState.APPROVED)
+                .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentity("s"))
+                .withCertificateUrl("byrqufeg")
+                .withExpectedTxtRecordName("vwz")
+                .withExpectedTxtRecordValue("nhlmctlpdng"),
+            new CustomDomainConfiguration().withFullyQualifiedDomainName("tvgbmhrixkwmy")
+                .withValidationState(CustomDomainValidationState.PENDING)
+                .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentity("rh"))
+                .withCertificateUrl("nai")
+                .withExpectedTxtRecordName("xccbdreaxhcex")
+                .withExpectedTxtRecordValue("rvqahqkghtpwi")));
         model = BinaryData.fromObject(model).toObject(UpdateTopicsConfigurationInfo.class);
-        Assertions.assertEquals("oknssxmojmsvpkjp", model.customDomains().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD,
-            model.customDomains().get(0).validationState());
+        Assertions.assertEquals("opgxedkowepb", model.customDomains().get(0).fullyQualifiedDomainName());
+        Assertions.assertEquals(CustomDomainValidationState.PENDING, model.customDomains().get(0).validationState());
         Assertions.assertEquals(CustomDomainIdentityType.SYSTEM_ASSIGNED,
             model.customDomains().get(0).identity().type());
-        Assertions.assertEquals("ql", model.customDomains().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("x", model.customDomains().get(0).certificateUrl());
-        Assertions.assertEquals("czheyd", model.customDomains().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("dshmkxmaehvbbx", model.customDomains().get(0).expectedTxtRecordValue());
+        Assertions.assertEquals("wccsnjvcdwxlpqek", model.customDomains().get(0).identity().userAssignedIdentity());
+        Assertions.assertEquals("nkhtjsyingw", model.customDomains().get(0).certificateUrl());
+        Assertions.assertEquals("atmtdhtmdvy", model.customDomains().get(0).expectedTxtRecordName());
+        Assertions.assertEquals("ikdgszywkbir", model.customDomains().get(0).expectedTxtRecordValue());
     }
 }

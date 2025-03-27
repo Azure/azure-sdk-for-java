@@ -39,7 +39,7 @@ public class DefaultCosmosItemSerializer extends CosmosItemSerializer {
 
         this.mapper = mapper;
         itemSerializerAccessor.setItemObjectMapper(this, mapper);
-        itemSerializerAccessor.setShouldWrapSerializationExceptions(this, true);
+        itemSerializerAccessor.setShouldWrapSerializationExceptions(this, false);
     }
 
     /**

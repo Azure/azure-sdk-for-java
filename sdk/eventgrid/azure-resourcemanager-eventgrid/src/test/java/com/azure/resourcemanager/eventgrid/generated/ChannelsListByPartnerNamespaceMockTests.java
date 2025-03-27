@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.Channel;
@@ -26,45 +26,29 @@ public final class ChannelsListByPartnerNamespaceMockTests {
     @Test
     public void testListByPartnerNamespace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"channelType\":\"PartnerTopic\",\"partnerTopicInfo\":{\"azureSubscriptionId\":\"sabvcip\",\"resourceGroupName\":\"zafczuumljci\",\"name\":\"pefyc\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"tjnsx\":{}}},\"source\":\"jlnsj\"},\"partnerDestinationInfo\":{\"endpointType\":\"PartnerDestinationInfo\",\"azureSubscriptionId\":\"uyx\",\"resourceGroupName\":\"xqvmvuay\",\"name\":\"adxkxeqbwpntghy\",\"endpointServiceContext\":\"a\",\"resourceMoveChangeHistory\":[{\"azureSubscriptionId\":\"nx\",\"resourceGroupName\":\"u\",\"changedTimeUtc\":\"2021-11-29T16:59:13Z\"},{\"azureSubscriptionId\":\"adltxkpbqhvfdq\",\"resourceGroupName\":\"w\",\"changedTimeUtc\":\"2021-03-31T05:50:35Z\"},{\"azureSubscriptionId\":\"zdanojis\",\"resourceGroupName\":\"lmvokat\",\"changedTimeUtc\":\"2021-02-08T13:35:15Z\"}]},\"messageForActivation\":\"ctibpvbka\",\"provisioningState\":\"Succeeded\",\"readinessState\":\"NeverActivated\",\"expirationTimeIfNotActivatedUtc\":\"2021-01-10T11:11:59Z\"},\"id\":\"dfwakwseivmak\",\"name\":\"hysowljuxlkbect\",\"type\":\"tfjmskdchmaiub\"}]}";
+            = "{\"value\":[{\"properties\":{\"channelType\":\"PartnerTopic\",\"partnerTopicInfo\":{\"azureSubscriptionId\":\"udqll\",\"resourceGroupName\":\"auzpjlx\",\"name\":\"huxiqhzlraymez\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"mxrfdsa\":{}}},\"source\":\"ednwyyshtu\"},\"messageForActivation\":\"mevuafpwzy\",\"provisioningState\":\"Succeeded\",\"readinessState\":\"Activated\",\"expirationTimeIfNotActivatedUtc\":\"2021-11-22T11:25Z\"},\"id\":\"xeqipx\",\"name\":\"zdyi\",\"type\":\"sfayorpravkjoges\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Channel> response = manager.channels()
-            .listByPartnerNamespace("mgb", "hlqtxnrflkn", "rndpgfjodhdaqotw", 842100543,
-                com.azure.core.util.Context.NONE);
+            .listByPartnerNamespace("meottawj", "osxw", "hnhjtfvpndpmi", 408225634, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ChannelType.PARTNER_TOPIC, response.iterator().next().channelType());
-        Assertions.assertEquals("sabvcip", response.iterator().next().partnerTopicInfo().azureSubscriptionId());
-        Assertions.assertEquals("zafczuumljci", response.iterator().next().partnerTopicInfo().resourceGroupName());
-        Assertions.assertEquals("pefyc", response.iterator().next().partnerTopicInfo().name());
+        Assertions.assertEquals("udqll", response.iterator().next().partnerTopicInfo().azureSubscriptionId());
+        Assertions.assertEquals("auzpjlx", response.iterator().next().partnerTopicInfo().resourceGroupName());
+        Assertions.assertEquals("huxiqhzlraymez", response.iterator().next().partnerTopicInfo().name());
         Assertions.assertEquals(EventDefinitionKind.INLINE,
             response.iterator().next().partnerTopicInfo().eventTypeInfo().kind());
-        Assertions.assertEquals("jlnsj", response.iterator().next().partnerTopicInfo().source());
-        Assertions.assertEquals("uyx", response.iterator().next().partnerDestinationInfo().azureSubscriptionId());
-        Assertions.assertEquals("xqvmvuay", response.iterator().next().partnerDestinationInfo().resourceGroupName());
-        Assertions.assertEquals("adxkxeqbwpntghy", response.iterator().next().partnerDestinationInfo().name());
-        Assertions.assertEquals("a", response.iterator().next().partnerDestinationInfo().endpointServiceContext());
-        Assertions.assertEquals("nx",
-            response.iterator()
-                .next()
-                .partnerDestinationInfo()
-                .resourceMoveChangeHistory()
-                .get(0)
-                .azureSubscriptionId());
-        Assertions.assertEquals("u",
-            response.iterator().next().partnerDestinationInfo().resourceMoveChangeHistory().get(0).resourceGroupName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-29T16:59:13Z"),
-            response.iterator().next().partnerDestinationInfo().resourceMoveChangeHistory().get(0).changedTimeUtc());
-        Assertions.assertEquals("ctibpvbka", response.iterator().next().messageForActivation());
+        Assertions.assertEquals("ednwyyshtu", response.iterator().next().partnerTopicInfo().source());
+        Assertions.assertEquals("mevuafpwzy", response.iterator().next().messageForActivation());
         Assertions.assertEquals(ChannelProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
-        Assertions.assertEquals(ReadinessState.NEVER_ACTIVATED, response.iterator().next().readinessState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-10T11:11:59Z"),
+        Assertions.assertEquals(ReadinessState.ACTIVATED, response.iterator().next().readinessState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T11:25Z"),
             response.iterator().next().expirationTimeIfNotActivatedUtc());
     }
 }

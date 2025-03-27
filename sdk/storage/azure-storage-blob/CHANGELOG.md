@@ -1,6 +1,6 @@
 # Release History
 
-## 12.30.0-beta.1 (Unreleased)
+## 12.31.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,33 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.30.0 (2025-03-11)
+
+### Features Added
+- Added support for service version 2025-05-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.28.1` to version `12.29.0`.
+- Upgraded `azure-storage-internal-avro` from `12.14.0` to version `12.15.0`.
+
+## 12.29.1 (2025-03-03)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.28.0` to version `12.29.0-beta.2`.
+- Upgraded `azure-storage-internal-avro` from `12.14.0` to version `12.15.0-beta.2`.
+- Upgraded `azure-xml` from `1.1.0` to version `1.2.0`.
+- Upgraded `azure-core` from `1.54.0` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.6` to version `1.15.10`.
+
+## 12.30.0-beta.1 (2025-02-11)
+
+### Features Added
+- Added support for service version 2025-05-05.
 
 ## 12.29.0 (2024-11-13)
 

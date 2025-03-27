@@ -27,6 +27,7 @@ public class RemoveFixedDelayRecipe extends Recipe {
     public String getDisplayName() {
         return "Removes imports and variable declarations for FixedDelayOptions";
     }
+
     /**
      * Method to return a description of RemoveFixedDelayRecipe
      * @return A short description of the recipe

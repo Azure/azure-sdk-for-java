@@ -26,7 +26,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-maps-weather</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -92,7 +92,7 @@ client.getQuarterDayForecast(new GeoPosition(-122.138874, 47.632346), null, 1, n
 Get Current Conditions
 ```java com.azure.maps.weather.sync.get_current_conditions
 client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268),
-    null, null, null, null);
+    null, true, null, null);
 ```
 
 Get Daily Forecast
@@ -134,7 +134,7 @@ Get Tropical Storm Search
 ActiveStormResult result = client.getTropicalStormActive();
 if (result.getActiveStorms().size() > 0) {
     ActiveStorm storm = result.getActiveStorms().get(0);
-    client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovId());
+    client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovernmentId());
 }
 ```
 
@@ -144,8 +144,8 @@ ActiveStormResult result = client.getTropicalStormActive();
 if (result.getActiveStorms().size() > 0) {
     ActiveStorm storm = result.getActiveStorms().get(0);
     TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions(storm.getYear(),
-        storm.getBasinId(), storm.getGovId())
-        .setIncludeWindowGeometry(true);
+            storm.getBasinId(), storm.getGovernmentId())
+            .setIncludeWindowGeometry(true);
     client.getTropicalStormForecast(forecastOptions);
 }
 ```
@@ -156,7 +156,7 @@ ActiveStormResult result = client.getTropicalStormActive();
 if (result.getActiveStorms().size() > 0) {
     ActiveStorm storm = result.getActiveStorms().get(0);
     TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions(storm.getYear(),
-        storm.getBasinId(), storm.getGovId());
+            storm.getBasinId(), storm.getGovernmentId());
     client.getTropicalStormLocations(locationOptions);
 }
 ```
@@ -164,19 +164,19 @@ if (result.getActiveStorms().size() > 0) {
 Get Current Air Quality
 ```java com.azure.maps.weather.sync.get_current_air_quality
 client.getCurrentAirQuality(
-    new GeoPosition(-122.138874, 47.632346), "es", false);
+        new GeoPosition(-122.138874, 47.632346), "es", false);
 ```
 
 Get Air Quality Daily Forecasts
 ```java com.azure.maps.weather.sync.get_air_quality_daily_forecasts
-client.getAirQualityDailyForecasts(
-    new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
+client.getDailyAirQualityForecast(
+        new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
 ```
 
 Get Air Quality Hourly Forecasts
 ```java com.azure.maps.weather.sync.get_air_quality_daily_forecasts
-client.getAirQualityDailyForecasts(
-    new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
+client.getDailyAirQualityForecast(
+        new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
 ```
 
 Get Daily Historical Actuals

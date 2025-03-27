@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.standbypool.models.PoolVirtualMachineState;
 import com.azure.resourcemanager.standbypool.models.VirtualMachineInstanceCountSummary;
 import org.junit.jupiter.api.Assertions;
 
@@ -12,10 +13,10 @@ public final class VirtualMachineInstanceCountSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstanceCountSummary model = BinaryData.fromString(
-            "{\"zone\":85796477749100882,\"instanceCountsByState\":[{\"state\":\"bvpyss\",\"count\":8719182936346256715},{\"state\":\"rujqg\",\"count\":6415098811593450314},{\"state\":\"uouq\",\"count\":7503430012540655419}]}")
+            "{\"zone\":6655543031987188756,\"instanceCountsByState\":[{\"state\":\"Deallocated\",\"count\":5217327379206362670},{\"state\":\"Creating\",\"count\":9057037144424682502}]}")
             .toObject(VirtualMachineInstanceCountSummary.class);
-        Assertions.assertEquals(85796477749100882L, model.zone());
-        Assertions.assertEquals("bvpyss", model.instanceCountsByState().get(0).state());
-        Assertions.assertEquals(8719182936346256715L, model.instanceCountsByState().get(0).count());
+        Assertions.assertEquals(6655543031987188756L, model.zone());
+        Assertions.assertEquals(PoolVirtualMachineState.DEALLOCATED, model.instanceCountsByState().get(0).state());
+        Assertions.assertEquals(5217327379206362670L, model.instanceCountsByState().get(0).count());
     }
 }

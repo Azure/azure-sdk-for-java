@@ -14,17 +14,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Microsoft Fabric LakeHouse Table.
+ * Microsoft Fabric Lakehouse Table.
  */
 @Fluent
 public class LakeHouseTableDataset extends Dataset {
     /*
      * Type of dataset.
      */
-    private String type = "LakeHouseTable";
+    private String type = "LakehouseTable";
 
     /*
-     * The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType string).
+     * The schema name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with resultType string).
+     */
+    private Object schemaTypePropertiesSchema;
+
+    /*
+     * The name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with resultType string).
      */
     private Object table;
 
@@ -45,7 +50,29 @@ public class LakeHouseTableDataset extends Dataset {
     }
 
     /**
-     * Get the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
+     * Get the schemaTypePropertiesSchema property: The schema name of Microsoft Fabric Lakehouse Table. Type: string
+     * (or Expression with resultType string).
+     * 
+     * @return the schemaTypePropertiesSchema value.
+     */
+    public Object getSchemaTypePropertiesSchema() {
+        return this.schemaTypePropertiesSchema;
+    }
+
+    /**
+     * Set the schemaTypePropertiesSchema property: The schema name of Microsoft Fabric Lakehouse Table. Type: string
+     * (or Expression with resultType string).
+     * 
+     * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
+     * @return the LakeHouseTableDataset object itself.
+     */
+    public LakeHouseTableDataset setSchemaTypePropertiesSchema(Object schemaTypePropertiesSchema) {
+        this.schemaTypePropertiesSchema = schemaTypePropertiesSchema;
+        return this;
+    }
+
+    /**
+     * Get the table property: The name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with resultType
      * string).
      * 
      * @return the table value.
@@ -55,7 +82,7 @@ public class LakeHouseTableDataset extends Dataset {
     }
 
     /**
-     * Set the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
+     * Set the table property: The name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with resultType
      * string).
      * 
      * @param table the table value to set.
@@ -143,8 +170,9 @@ public class LakeHouseTableDataset extends Dataset {
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
-        if (table != null) {
+        if (schemaTypePropertiesSchema != null || table != null) {
             jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("schema", this.schemaTypePropertiesSchema);
             jsonWriter.writeUntypedField("table", this.table);
             jsonWriter.writeEndObject();
         }
@@ -197,7 +225,9 @@ public class LakeHouseTableDataset extends Dataset {
                         fieldName = reader.getFieldName();
                         reader.nextToken();
 
-                        if ("table".equals(fieldName)) {
+                        if ("schema".equals(fieldName)) {
+                            deserializedLakeHouseTableDataset.schemaTypePropertiesSchema = reader.readUntyped();
+                        } else if ("table".equals(fieldName)) {
                             deserializedLakeHouseTableDataset.table = reader.readUntyped();
                         } else {
                             reader.skipChildren();

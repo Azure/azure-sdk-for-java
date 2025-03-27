@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.http.paging.PagedResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ public class PagedResponseTests {
 
     @Test
     public void testPagedResponseRequired() {
-        final HttpRequest mockHttpRequest = new HttpRequest(HttpMethod.GET, "https://endpoint");
+        final HttpRequest mockHttpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("https://endpoint");
         final int statusCode = 200;
         final HttpHeaders mockHttpHeaders = new HttpHeaders();
         final List<Object> mockValue = Collections.singletonList(new Object());
@@ -26,9 +26,9 @@ public class PagedResponseTests {
         final String firstLink = "https://first_link";
         final String lastLink = "https://last_link";
 
-        try (BinaryData mockData = BinaryData.fromString("{\"value\":[{}]}")) {
+        try {
             try (PagedResponse<Object> pagedResponse
-                = new PagedResponse<>(mockHttpRequest, statusCode, mockHttpHeaders, mockData, mockValue)) {
+                = new PagedResponse<>(mockHttpRequest, statusCode, mockHttpHeaders, mockValue)) {
                 Assertions.assertEquals(mockHttpRequest, pagedResponse.getRequest());
                 Assertions.assertEquals(statusCode, pagedResponse.getStatusCode());
                 Assertions.assertEquals(mockHttpHeaders, pagedResponse.getHeaders());
@@ -36,7 +36,7 @@ public class PagedResponseTests {
             }
 
             try (PagedResponse<Object> pagedResponse = new PagedResponse<>(mockHttpRequest, statusCode, mockHttpHeaders,
-                mockData, mockValue, continuationToken, nextLink, previousLink, firstLink, lastLink)) {
+                mockValue, continuationToken, nextLink, previousLink, firstLink, lastLink)) {
                 Assertions.assertEquals(mockHttpRequest, pagedResponse.getRequest());
                 Assertions.assertEquals(statusCode, pagedResponse.getStatusCode());
                 Assertions.assertEquals(mockHttpHeaders, pagedResponse.getHeaders());
