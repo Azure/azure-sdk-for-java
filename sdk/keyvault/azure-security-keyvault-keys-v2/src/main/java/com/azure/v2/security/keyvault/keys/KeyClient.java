@@ -44,7 +44,6 @@ import io.clientcore.core.http.paging.PagingOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.Context;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -964,30 +963,28 @@ public final class KeyClient {
      * @throws HttpResponseException If a key with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
+    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<DeletedKey, Void> beginDeleteKey(String name) {
         try {
-            return Poller.createPoller(Duration.ofSeconds(1), deleteActivationOperation(name),
-                deletePollOperation(name), (pollingContext, firstResponse) -> null, pollingContext -> null);
+            return Poller.createPoller(Duration.ofSeconds(1),
+                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                    createDeletedKey(clientImpl.deleteKey(name))),
+                deletePollOperation(name),
+                (pollingContext, firstResponse) -> null,
+                pollingContext -> null);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }
-
-    private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> deleteActivationOperation(String name) {
-        return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createDeletedKey(
-            implClient.deleteKeyWithResponse(name, RequestOptions.none()).getValue().toObject(DeletedKeyBundle.class)));
-    }
+    }*/
 
     private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> deletePollOperation(String name) {
         return pollingContext -> {
             try {
-                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createDeletedKey(
-                    implClient.getDeletedKeyWithResponse(name, RequestOptions.none())
-                        .getValue()
-                        .toObject(DeletedKeyBundle.class)));
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    createDeletedKey(clientImpl.getDeletedKey(name)));
             } catch (HttpResponseException e) {
-                if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                if (e.getResponse().getStatusCode() == 404) {
                     return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue());
                 } else {
@@ -1005,7 +1002,7 @@ public final class KeyClient {
                     pollingContext.getLatestResponse().getValue());
             }
         };
-    }*/
+    }
 
     /**
      * Gets the public part of a deleted key. The get deleted Key operation is only applicable for soft-delete enabled
@@ -1140,30 +1137,27 @@ public final class KeyClient {
      * @throws HttpResponseException If a key with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
+    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         try {
             return Poller.createPoller(
                 Duration.ofSeconds(1),
-                recoverActivationOperation(name),
+                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                    createKeyVaultKey(clientImpl.recoverDeletedKey(name))),
                 recoverPollOperation(name),
                 (pollingContext, firstResponse) -> null,
                 pollingContext -> null);
-        } catch (HttpResponseException e) {
+        } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }
-
-    private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> recoverActivationOperation(String name) {
-        return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-            createKeyVaultKey(clientImpl.recoverDeletedKey(name)));
-    }
+    }*/
 
     private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> recoverPollOperation(String keyName) {
         return pollingContext -> {
             try {
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    createKeyVaultKey(clientImpl.getKey(keyName, ""));
+                    createKeyVaultKey(clientImpl.getKey(keyName, "")));
             } catch (HttpResponseException e) {
                 if (e.getResponse().getStatusCode() == 404) {
                     return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
