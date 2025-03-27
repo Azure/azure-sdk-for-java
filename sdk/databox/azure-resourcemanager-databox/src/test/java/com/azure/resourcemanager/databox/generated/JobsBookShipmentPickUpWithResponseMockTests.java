@@ -6,8 +6,8 @@ package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databox.DataBoxManager;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpRequest;
@@ -20,20 +20,20 @@ import reactor.core.publisher.Mono;
 public final class JobsBookShipmentPickUpWithResponseMockTests {
     @Test
     public void testBookShipmentPickUpWithResponse() throws Exception {
-        String responseStr = "{\"confirmationNumber\":\"ejvegrhbpnaixex\",\"readyByTime\":\"2021-02-01T22:21:46Z\"}";
+        String responseStr = "{\"confirmationNumber\":\"s\",\"readyByTime\":\"2021-06-13T17:46:53Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataBoxManager manager = DataBoxManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ShipmentPickUpResponse response = manager.jobs()
-            .bookShipmentPickUpWithResponse("uvwzfbnh", "mctlpdngitv",
-                new ShipmentPickUpRequest().withStartTime(OffsetDateTime.parse("2021-02-05T15:31:44Z"))
-                    .withEndTime(OffsetDateTime.parse("2021-01-22T05:21:03Z"))
-                    .withShipmentLocation("hrixkwmy"),
+            .bookShipmentPickUpWithResponse("kkgll", "wjygvjayvblmhvk",
+                new ShipmentPickUpRequest().withStartTime(OffsetDateTime.parse("2021-11-27T02:03:43Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-12-10T06:42:49Z"))
+                    .withShipmentLocation("xvvy"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

@@ -1,14 +1,103 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2025-03-27)
+
+- Azure Resource Manager DataBox client library for Java. This package contains Microsoft Azure SDK for DataBox Management SDK.  Package tag package-2025-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.DeviceCapabilityDetails` was added
 
-### Bugs Fixed
+* `models.JobDelayDetails` was added
 
-### Other Changes
+* `models.DeviceCapabilityResponse` was added
+
+* `models.DeviceCapabilityRequest` was added
+
+* `models.PortalDelayErrorCode` was added
+
+* `models.DelayNotificationStatus` was added
+
+* `models.ModelName` was added
+
+#### `models.TransportAvailabilityRequest` was modified
+
+* `model()` was added
+* `withModel(models.ModelName)` was added
+
+#### `models.SkuAvailabilityValidationRequest` was modified
+
+* `model()` was added
+* `withModel(models.ModelName)` was added
+
+#### `models.DiskScheduleAvailabilityRequest` was modified
+
+* `withModel(models.ModelName)` was added
+
+#### `models.ScheduleAvailabilityRequest` was modified
+
+* `model()` was added
+* `withModel(models.ModelName)` was added
+
+#### `models.HeavyScheduleAvailabilityRequest` was modified
+
+* `withModel(models.ModelName)` was added
+
+#### `models.RegionConfigurationRequest` was modified
+
+* `withDeviceCapabilityRequest(models.DeviceCapabilityRequest)` was added
+* `deviceCapabilityRequest()` was added
+
+#### `models.SkuCapacity` was modified
+
+* `individualSkuUsable()` was added
+
+#### `models.JobStages` was modified
+
+* `delayInformation()` was added
+
+#### `models.DataTransferDetailsValidationRequest` was modified
+
+* `model()` was added
+* `withModel(models.ModelName)` was added
+
+#### `models.DataBoxScheduleAvailabilityRequest` was modified
+
+* `withModel(models.ModelName)` was added
+
+#### `models.RegionConfigurationResponse` was modified
+
+* `deviceCapabilityResponse()` was added
+
+#### `models.JobResource` was modified
+
+* `allDevicesLost()` was added
+* `delayedStage()` was added
+
+#### `models.ValidateAddress` was modified
+
+* `withModel(models.ModelName)` was added
+* `model()` was added
+
+#### `models.DatacenterAddressRequest` was modified
+
+* `withModel(models.ModelName)` was added
+* `model()` was added
+
+#### `models.CreateOrderLimitForSubscriptionValidationRequest` was modified
+
+* `withModel(models.ModelName)` was added
+* `model()` was added
+
+#### `models.Sku` was modified
+
+* `withModel(models.ModelName)` was added
+* `model()` was added
+
+#### `models.PreferencesValidationRequest` was modified
+
+* `model()` was added
+* `withModel(models.ModelName)` was added
 
 ## 1.0.0 (2024-12-24)
 
