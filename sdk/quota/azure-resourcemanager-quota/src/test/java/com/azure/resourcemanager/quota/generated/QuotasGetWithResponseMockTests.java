@@ -6,8 +6,8 @@ package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
 import com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase;
@@ -28,7 +28,7 @@ public final class QuotasGetWithResponseMockTests {
         QuotaManager manager = QuotaManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CurrentQuotaLimitBase response = manager.quotas()
             .getWithResponse("nayrhyrnxxmueedn", "rdvstkwqqtch", com.azure.core.util.Context.NONE)

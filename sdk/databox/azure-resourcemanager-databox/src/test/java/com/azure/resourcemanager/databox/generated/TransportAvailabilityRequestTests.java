@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.SkuName;
 import com.azure.resourcemanager.databox.models.TransportAvailabilityRequest;
 import org.junit.jupiter.api.Assertions;
@@ -13,14 +14,18 @@ public final class TransportAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransportAvailabilityRequest model
-            = BinaryData.fromString("{\"skuName\":\"DataBoxDisk\"}").toObject(TransportAvailabilityRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.skuName());
+            = BinaryData.fromString("{\"skuName\":\"DataBoxHeavy\",\"model\":\"AzureDataBox120\"}")
+                .toObject(TransportAvailabilityRequest.class);
+        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuName());
+        Assertions.assertEquals(ModelName.AZURE_DATA_BOX120, model.model());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransportAvailabilityRequest model = new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_DISK);
+        TransportAvailabilityRequest model = new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_HEAVY)
+            .withModel(ModelName.AZURE_DATA_BOX120);
         model = BinaryData.fromObject(model).toObject(TransportAvailabilityRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.skuName());
+        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuName());
+        Assertions.assertEquals(ModelName.AZURE_DATA_BOX120, model.model());
     }
 }

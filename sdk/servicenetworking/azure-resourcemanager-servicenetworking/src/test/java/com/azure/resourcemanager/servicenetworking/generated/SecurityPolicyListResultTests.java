@@ -6,17 +6,24 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.implementation.models.SecurityPolicyListResult;
+import com.azure.resourcemanager.servicenetworking.models.IpAccessRuleAction;
 import org.junit.jupiter.api.Assertions;
 
 public final class SecurityPolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityPolicyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"policyType\":\"waf\",\"wafPolicy\":{\"id\":\"wbxgjvt\"},\"provisioningState\":\"Provisioning\"},\"location\":\"sszdnru\",\"tags\":{\"uitnwuiz\":\"uhmuouqfprwzwbn\",\"x\":\"a\",\"hr\":\"fizuckyf\"},\"id\":\"idf\",\"name\":\"zwdzuh\",\"type\":\"ymwisdkft\"}],\"nextLink\":\"xmnteiwaop\"}")
+            "{\"value\":[{\"properties\":{\"policyType\":\"ipAccessRules\",\"wafPolicy\":{\"id\":\"yeicxmqciwqvhk\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"igdtopbob\",\"priority\":319956486,\"sourceAddressPrefixes\":[],\"action\":\"allow\"},{\"name\":\"hm\",\"priority\":20476621,\"sourceAddressPrefixes\":[],\"action\":\"allow\"},{\"name\":\"a\",\"priority\":248377661,\"sourceAddressPrefixes\":[],\"action\":\"deny\"},{\"name\":\"hrzayvvtpgvdf\",\"priority\":723087340,\"sourceAddressPrefixes\":[],\"action\":\"deny\"}]},\"provisioningState\":\"Failed\"},\"location\":\"tutqxlngxlefgug\",\"tags\":{\"i\":\"rxdq\"},\"id\":\"tthzrvqd\",\"name\":\"abhjybi\",\"type\":\"ehoqfbowskan\"},{\"properties\":{\"policyType\":\"ipAccessRules\",\"wafPolicy\":{\"id\":\"cuiywgqyw\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"vynhzgpphrcg\",\"priority\":485990541,\"sourceAddressPrefixes\":[],\"action\":\"deny\"},{\"name\":\"ocpecfvmmco\",\"priority\":1597553677,\"sourceAddressPrefixes\":[],\"action\":\"deny\"},{\"name\":\"xlzevgbmqjqabcy\",\"priority\":591177451,\"sourceAddressPrefixes\":[],\"action\":\"deny\"}]},\"provisioningState\":\"Provisioning\"},\"location\":\"lzu\",\"tags\":{\"cfionl\":\"fwnfnb\"},\"id\":\"bxetqgtzxdpn\",\"name\":\"bqqwxrj\",\"type\":\"eallnwsubisnj\"},{\"properties\":{\"policyType\":\"ipAccessRules\",\"wafPolicy\":{\"id\":\"gnzscxaqwo\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"bonqvpkvlrxnjeas\",\"priority\":1797788548,\"sourceAddressPrefixes\":[],\"action\":\"deny\"},{\"name\":\"heoflokeyyienjbd\",\"priority\":375227162,\"sourceAddressPrefixes\":[],\"action\":\"deny\"}]},\"provisioningState\":\"Failed\"},\"location\":\"pdjpjumasxazjp\",\"tags\":{\"b\":\"gual\"},\"id\":\"xhejjzzvdud\",\"name\":\"wdslfhotwmcy\",\"type\":\"pwlbjnpg\"}],\"nextLink\":\"ftadehxnltyfs\"}")
             .toObject(SecurityPolicyListResult.class);
-        Assertions.assertEquals("sszdnru", model.value().get(0).location());
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.value().get(0).tags().get("uitnwuiz"));
-        Assertions.assertEquals("wbxgjvt", model.value().get(0).properties().wafPolicy().id());
-        Assertions.assertEquals("xmnteiwaop", model.nextLink());
+        Assertions.assertEquals("tutqxlngxlefgug", model.value().get(0).location());
+        Assertions.assertEquals("rxdq", model.value().get(0).tags().get("i"));
+        Assertions.assertEquals("yeicxmqciwqvhk", model.value().get(0).properties().wafPolicy().id());
+        Assertions.assertEquals("igdtopbob",
+            model.value().get(0).properties().ipAccessRulesPolicy().rules().get(0).name());
+        Assertions.assertEquals(319956486,
+            model.value().get(0).properties().ipAccessRulesPolicy().rules().get(0).priority());
+        Assertions.assertEquals(IpAccessRuleAction.ALLOW,
+            model.value().get(0).properties().ipAccessRulesPolicy().rules().get(0).action());
+        Assertions.assertEquals("ftadehxnltyfs", model.nextLink());
     }
 }

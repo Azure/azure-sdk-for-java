@@ -22,13 +22,16 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.WorkloadsSapVirtualInstanceMgmtClient;
+import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.OperationsImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapApplicationServerInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapCentralServerInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapDatabaseInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapVirtualInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.WorkloadsSapVirtualInstanceMgmtClientBuilder;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.Operations;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapApplicationServerInstances;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapCentralServerInstances;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseInstances;
@@ -37,6 +40,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -45,6 +49,8 @@ import java.util.stream.Collectors;
  * Workloads client provides access to various workload operations.
  */
 public final class WorkloadsSapVirtualInstanceManager {
+    private Operations operations;
+
     private SapVirtualInstances sapVirtualInstances;
 
     private SapCentralServerInstances sapCentralServerInstances;
@@ -107,6 +113,9 @@ public final class WorkloadsSapVirtualInstanceManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-workloadssapvirtualinstance.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -214,12 +223,14 @@ public final class WorkloadsSapVirtualInstanceManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.workloadssapvirtualinstance")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -263,6 +274,18 @@ public final class WorkloadsSapVirtualInstanceManager {
                 .build();
             return new WorkloadsSapVirtualInstanceManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     * 
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
     }
 
     /**

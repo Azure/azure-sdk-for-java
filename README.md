@@ -40,6 +40,10 @@ The management libraries can be identified by namespaces that start with `azure-
 
 Note that the latest libraries from Microsoft are in the `com.azure` Maven group ID, and have the package naming pattern of beginning with `com.azure`. If you're using libraries that are in `com.microsoft.azure` Maven group ID, or have this as the package structure, please consider migrating to the latest libraries. You can find a mapping table from these historical releases to their equivalent [here](https://azure.github.io/azure-sdk/releases/deprecated/index.html#java).
 
+### Android Support
+
+The Azure SDKs for Java do not provide support for Android. While we attempt to allow the SDKs to be used on Android, we do not test or support this scenario.
+
 ## Need help?
 
 - For reference documentation visit the [Azure SDK for Java documentation](https://aka.ms/java-docs).

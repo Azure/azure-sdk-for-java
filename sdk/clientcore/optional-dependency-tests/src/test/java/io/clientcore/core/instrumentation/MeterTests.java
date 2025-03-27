@@ -65,7 +65,7 @@ public class MeterTests {
         InstrumentationOptions otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
         instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         emptyAttributes = instrumentation.createAttributes(null);
-        meter = instrumentation.createMeter();
+        meter = instrumentation.getMeter();
     }
 
     @AfterEach
@@ -133,7 +133,7 @@ public class MeterTests {
             = instrumentation.createAttributes(Collections.singletonMap("key1", "value"));
         Attributes otelAttributes = Attributes.builder().put("key1", "value").build();
 
-        Tracer tracer = instrumentation.createTracer();
+        Tracer tracer = instrumentation.getTracer();
         Span span = tracer.spanBuilder("test-span", SpanKind.CLIENT, null).startSpan();
         InstrumentationContext context = Instrumentation.createInstrumentationContext(span);
 

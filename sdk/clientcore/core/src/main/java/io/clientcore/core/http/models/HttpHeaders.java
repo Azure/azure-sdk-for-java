@@ -3,20 +3,22 @@
 
 package io.clientcore.core.http.models;
 
-import java.util.Collections;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * A collection of {@link HttpHeaders} on a request or response.
  */
-public class HttpHeaders implements Iterable<HttpHeader> {
+@Metadata(properties = MetadataProperties.FLUENT)
+public class HttpHeaders {
     /**
      * This map is a case-insensitive key (i.e. lower-cased), but the returned {@link HttpHeader} key will be as-provided to
      * us.
@@ -106,7 +108,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param values The values of the {@link HttpHeader}.
      * @return The updated {@link HttpHeaders} object.
      */
-    public HttpHeaders add(HttpHeaderName name, List<String> values) {
+    private HttpHeaders add(HttpHeaderName name, List<String> values) {
         if (name == null || isNullOrEmpty(values)) {
             return this;
         }
@@ -115,7 +117,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
             if (header == null) {
                 return new HttpHeader(name, values);
             } else {
-                header.addValues(values);
+                for (String value : values) {
+                    header.addValue(value);
+                }
                 return header;
             }
         });
@@ -126,9 +130,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     /**
      * Adds all the provided {@link HttpHeaders} into this {@link HttpHeaders} instance.
      *
-     * <p>This is the equivalent to calling
-     * {@code headers.forEach(header -> add(header.getName(), header.getValuesList())} and therefore the behavior is as
-     * specified in {@link #add(HttpHeaderName, List)}.</p>
+     * <p>This is the equivalent to calling {@code headers.forEach(header -> add(header)} and therefore the behavior is
+     * as specified in {@link #add(HttpHeader)}.</p>
      *
      * <p>If {@code headers} is {@code null} this is a no-op.</p>
      *
@@ -264,37 +267,6 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         final HttpHeader header = get(name);
 
         return header == null ? null : header.getValues();
-    }
-
-    /**
-     * Returns a copy of the {@link HttpHeaders} as an unmodifiable {@link Map} representation of the state of the
-     * {@link HttpHeaders} at the time of the {@code toMap} call. This map will not change as the underlying {@link HttpHeaders}
-     * change, and nor will modifying the key or values contained in the map have any effect on the state of the
-     * {@link HttpHeaders}.
-     *
-     * <p>Note that there may be performance implications of using {@link Map} APIs on the returned {@link Map}. It is
-     * highly recommended that users prefer to use alternate APIs present on the {@link HttpHeaders} class, over using APIs
-     * present on the returned {@link Map} class. For example, use the {@link #get(HttpHeaderName)} API, rather than
-     * {@code headers.toMap().get(name)}.</p>
-     *
-     * @return The {@link HttpHeaders} in a copied and unmodifiable form.
-     */
-    public Map<String, String> toMap() {
-        final Map<String, String> result = new HashMap<>();
-
-        for (final HttpHeader header : headers.values()) {
-            result.put(header.getName().getCaseInsensitiveName(), header.getValue());
-        }
-
-        return Collections.unmodifiableMap(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Iterator<HttpHeader> iterator() {
-        return headers.values().iterator();
     }
 
     /**

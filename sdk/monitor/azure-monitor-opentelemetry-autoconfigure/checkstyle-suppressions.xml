@@ -70,6 +70,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigureTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporterBuilder.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.LiveMetrics.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExportersEndToEndTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorLogRecordExporter.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorMetricExporter.java" checks="IllegalImportCheck" />
@@ -115,6 +116,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParser.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParserTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.LogDataMapperTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AttributeKeyTemplate.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.SamplingScoreGeneratorV2.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.HeartBeatPropertyPayload.java" checks="JavadocMethodCheck" />
@@ -271,6 +273,8 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedTime.java" checks="MissingJavadocTypeCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker.java" checks="MissingJavadocTypeCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.HostName.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParser.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.StatusCode.java" checks="MissingJavadocTypeCheck" />

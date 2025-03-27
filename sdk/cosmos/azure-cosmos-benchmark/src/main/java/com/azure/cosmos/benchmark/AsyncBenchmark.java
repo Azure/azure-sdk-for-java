@@ -228,6 +228,7 @@ abstract class AsyncBenchmark<T> {
                         if (cosmosException.getStatusCode() == 410 ||
                                 cosmosException.getStatusCode() == 408 ||
                                 cosmosException.getStatusCode() == 429 ||
+                                cosmosException.getStatusCode() == 500 ||
                                 cosmosException.getStatusCode() == 503) {
                             return true;
                         }

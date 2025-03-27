@@ -3,12 +3,15 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.credential.KeyCredential;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.credentials.KeyCredential;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.util.Objects;
 
@@ -18,6 +21,7 @@ import java.util.Objects;
  * <p>Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
  * an exception will be thrown to prevent leaking the key.</p>
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class KeyCredentialPolicy extends HttpCredentialPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyCredentialPolicy.class);
     private final HttpHeaderName name;
@@ -71,7 +75,7 @@ public class KeyCredentialPolicy extends HttpCredentialPolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         setCredential(httpRequest.getHeaders());
         return next.process();
     }

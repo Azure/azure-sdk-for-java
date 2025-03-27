@@ -16,6 +16,7 @@ import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
+import com.azure.resourcemanager.compute.models.ResilientVMDeletionStatus;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
@@ -48,6 +49,11 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      * Specifies the hardware settings for the virtual machine.
      */
     private HardwareProfile hardwareProfile;
+
+    /*
+     * Specifies the resilient VM deletion status for the virtual machine.
+     */
+    private ResilientVMDeletionStatus resilientVMDeletionStatus;
 
     /*
      * Specifies the storage settings for the virtual machine disks.
@@ -186,6 +192,27 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      */
     public VirtualMachineScaleSetVMPropertiesInner withHardwareProfile(HardwareProfile hardwareProfile) {
         this.hardwareProfile = hardwareProfile;
+        return this;
+    }
+
+    /**
+     * Get the resilientVMDeletionStatus property: Specifies the resilient VM deletion status for the virtual machine.
+     * 
+     * @return the resilientVMDeletionStatus value.
+     */
+    public ResilientVMDeletionStatus resilientVMDeletionStatus() {
+        return this.resilientVMDeletionStatus;
+    }
+
+    /**
+     * Set the resilientVMDeletionStatus property: Specifies the resilient VM deletion status for the virtual machine.
+     * 
+     * @param resilientVMDeletionStatus the resilientVMDeletionStatus value to set.
+     * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
+     */
+    public VirtualMachineScaleSetVMPropertiesInner
+        withResilientVMDeletionStatus(ResilientVMDeletionStatus resilientVMDeletionStatus) {
+        this.resilientVMDeletionStatus = resilientVMDeletionStatus;
         return this;
     }
 
@@ -521,6 +548,8 @@ public final class VirtualMachineScaleSetVMPropertiesInner
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeStringField("resilientVMDeletionStatus",
+            this.resilientVMDeletionStatus == null ? null : this.resilientVMDeletionStatus.toString());
         jsonWriter.writeJsonField("storageProfile", this.storageProfile);
         jsonWriter.writeJsonField("additionalCapabilities", this.additionalCapabilities);
         jsonWriter.writeJsonField("osProfile", this.osProfile);
@@ -562,6 +591,9 @@ public final class VirtualMachineScaleSetVMPropertiesInner
                 } else if ("hardwareProfile".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMPropertiesInner.hardwareProfile
                         = HardwareProfile.fromJson(reader);
+                } else if ("resilientVMDeletionStatus".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.resilientVMDeletionStatus
+                        = ResilientVMDeletionStatus.fromString(reader.getString());
                 } else if ("storageProfile".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMPropertiesInner.storageProfile
                         = StorageProfile.fromJson(reader);

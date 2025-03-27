@@ -32,7 +32,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * ('Microsoft.Network/virtualNetworks') are supported. If the specified VNet has any associated Network Security
      * Groups (NSG), then a few reserved system ports must be enabled for inbound communication, including ports 29876
      * and 29877. Also enable outbound connections to Azure Storage on port 443. For more details see:
-     * https://docs.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration
+     * https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration
      */
     @Generated
     private String subnetId;
@@ -85,7 +85,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * ('Microsoft.Network/virtualNetworks') are supported. If the specified VNet has any associated Network Security
      * Groups (NSG), then a few reserved system ports must be enabled for inbound communication, including ports 29876
      * and 29877. Also enable outbound connections to Azure Storage on port 443. For more details see:
-     * https://docs.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
      *
      * @return the subnetId value.
      */
@@ -109,7 +109,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * ('Microsoft.Network/virtualNetworks') are supported. If the specified VNet has any associated Network Security
      * Groups (NSG), then a few reserved system ports must be enabled for inbound communication, including ports 29876
      * and 29877. Also enable outbound connections to Azure Storage on port 443. For more details see:
-     * https://docs.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
      *
      * @param subnetId the subnetId value to set.
      * @return the NetworkConfiguration object itself.

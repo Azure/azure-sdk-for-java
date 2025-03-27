@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.4 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,34 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.2 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.9` to version `1.3.10`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+
+## 1.2.1 (2025-03-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.8` to version `1.15.10`.
+- Upgraded `azure-core` from `1.55.0` to version `1.55.2`.
+
+
+## 1.2.0 (2025-02-11)
+
+### Other Changes
+
+- Release of Number Insight GA.
+- API version `2025-02-11` is the default.
 
 ## 1.1.19 (2024-12-04)
 

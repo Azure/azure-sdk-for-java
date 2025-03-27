@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.CapacityPool;
@@ -25,25 +25,24 @@ public final class PoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"ckknhxkizvy\",\"properties\":{\"poolId\":\"rzvul\",\"size\":149873479955101826,\"serviceLevel\":\"Premium\",\"provisioningState\":\"rano\",\"totalThroughputMibps\":72.54921,\"utilizedThroughputMibps\":92.12962,\"customThroughputMibps\":20.17358,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"laxxulc\",\"tags\":{\"r\":\"dosfjbjsvgjrw\",\"t\":\"vyc\",\"xgccknfnw\":\"c\",\"fedxihchrphkm\":\"btmvpdvjdhttza\"},\"id\":\"rjdqnsdfzp\",\"name\":\"gtgkylkdghr\",\"type\":\"euutlwxezwzh\"}]}";
+            = "{\"value\":[{\"etag\":\"zddrt\",\"properties\":{\"poolId\":\"doj\",\"size\":3326683287722087129,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"vrefdeesv\",\"totalThroughputMibps\":14.100099,\"utilizedThroughputMibps\":78.21149,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"prtujwsawdd\",\"tags\":{\"itvtzeexavo\":\"abxvi\",\"dmdqb\":\"tfgle\",\"cbslhhx\":\"pypqtgsfj\"},\"id\":\"db\",\"name\":\"vodhtn\",\"type\":\"irudh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CapacityPool> response
-            = manager.pools().list("dfgsftufqobrj", "nac", com.azure.core.util.Context.NONE);
+            = manager.pools().list("cxcktpi", "merteeammxqiek", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("laxxulc", response.iterator().next().location());
-        Assertions.assertEquals("dosfjbjsvgjrw", response.iterator().next().tags().get("r"));
-        Assertions.assertEquals(149873479955101826L, response.iterator().next().size());
-        Assertions.assertEquals(ServiceLevel.PREMIUM, response.iterator().next().serviceLevel());
-        Assertions.assertEquals(20.17358F, response.iterator().next().customThroughputMibps());
+        Assertions.assertEquals("prtujwsawdd", response.iterator().next().location());
+        Assertions.assertEquals("abxvi", response.iterator().next().tags().get("itvtzeexavo"));
+        Assertions.assertEquals(3326683287722087129L, response.iterator().next().size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, response.iterator().next().serviceLevel());
         Assertions.assertEquals(QosType.MANUAL, response.iterator().next().qosType());
         Assertions.assertEquals(false, response.iterator().next().coolAccess());
-        Assertions.assertEquals(EncryptionType.SINGLE, response.iterator().next().encryptionType());
+        Assertions.assertEquals(EncryptionType.DOUBLE, response.iterator().next().encryptionType());
     }
 }
