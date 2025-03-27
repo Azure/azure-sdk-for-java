@@ -969,8 +969,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion)
-        throws IOException {
+    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
         importPemCertificateRunner((importCertificateOptions) -> {

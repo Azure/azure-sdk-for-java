@@ -907,7 +907,7 @@ public final class KeyAsyncClient {
      * and prints out the {@link KeyVaultKey retrieved key} details when a response has been received.</p>
      * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String-String -->
      * <pre>
-     * String keyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * String keyVersion = &quot;&lt;key-version&gt;&quot;;
      *
      * keyAsyncClient.getKey&#40;&quot;keyName&quot;, keyVersion&#41;
      *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
@@ -942,7 +942,7 @@ public final class KeyAsyncClient {
      * and prints out the {@link KeyVaultKey retrieved key} details when a response has been received.</p>
      * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKeyWithResponse#String-String -->
      * <pre>
-     * String keyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * String keyVersion = &quot;&lt;key-version&gt;&quot;;
      *
      * keyAsyncClient.getKeyWithResponse&#40;&quot;keyName&quot;, keyVersion&#41;
      *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
@@ -1782,7 +1782,7 @@ public final class KeyAsyncClient {
      * that contains the {@link KeyVaultKey released key} when a response has been received.</p>
      * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.releaseKey#String-String-String -->
      * <pre>
-     * String myKeyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * String myKeyVersion = &quot;&lt;key-version&gt;&quot;;
      * String myTargetAttestationToken = &quot;someAttestationToken&quot;;
      *
      * keyAsyncClient.releaseKey&#40;&quot;keyName&quot;, myKeyVersion, myTargetAttestationToken&#41;
@@ -1818,7 +1818,7 @@ public final class KeyAsyncClient {
      * when a response has been received.</p>
      * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.releaseKeyWithResponse#String-String-String-ReleaseKeyOptions -->
      * <pre>
-     * String releaseKeyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * String releaseKeyVersion = &quot;&lt;key-version&gt;&quot;;
      * String someTargetAttestationToken = &quot;someAttestationToken&quot;;
      * ReleaseKeyOptions releaseKeyOptions = new ReleaseKeyOptions&#40;&#41;
      *     .setAlgorithm&#40;KeyExportEncryptionAlgorithm.RSA_AES_KEY_WRAP_256&#41;
@@ -2093,6 +2093,111 @@ public final class KeyAsyncClient {
                     BinaryData.fromObject(mapKeyRotationPolicy(keyRotationPolicy)), EMPTY_OPTIONS)
                 .map(response -> new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue()
                     .toObject(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy.class))));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    /**
+     * Gets the public part of the latest version of the specified {@link KeyVaultKey key}, including its attestation
+     * information. The get key operation is applicable to all {@link KeyType key types} and it requires the
+     * {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the latest version of the {@link KeyVaultKey key} in the key vault, including its attestation
+     * information. Subscribes to the call asynchronously and prints out the {@link KeyVaultKey retrieved key} details
+     * when a response has been received.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestation#String -->
+     * <pre>
+     * keyAsyncClient.getKeyAttestation&#40;&quot;keyName&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;key -&gt; &#123;
+     *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, key.getName&#40;&#41;, key.getId&#40;&#41;&#41;;
+     *
+     *         KeyAttestation keyAttestationInfo = key.getProperties&#40;&#41;.getKeyAttestation&#40;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Attestation information details: %n&quot;
+     *                 + &quot;Certificate PEM file: %s%n&quot;
+     *                 + &quot;Private key attestation: %s%n&quot;
+     *                 + &quot;Public key attestation: %s%n&quot;
+     *                 + &quot;Version: %s&quot;,
+     *             Base64Url.encode&#40;keyAttestationInfo.getCertificatePemFile&#40;&#41;&#41;,
+     *             Base64Url.encode&#40;keyAttestationInfo.getPrivateKeyAttestation&#40;&#41;&#41;,
+     *             Base64Url.encode&#40;keyAttestationInfo.getPublicKeyAttestation&#40;&#41;&#41;,
+     *             keyAttestationInfo.getVersion&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestation#String -->
+     *
+     * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
+     *
+     * @return A {@link Mono} containing the requested {@link KeyVaultKey key}. The content of the key is {@code null}
+     * if {@code name} is {@code null} or empty.
+     *
+     * @throws HttpResponseException If a valid {@code name} and a non-null/empty {@code version} is specified.
+     * @throws ResourceNotFoundException When a {@link KeyVaultKey key} with the provided {@code name} doesn't exist in
+     * the key vault or an empty/{@code null} {@code name} and a non-null/empty {@code version} is provided.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> getKeyAttestation(String name) {
+        return getKeyAttestationWithResponse(name, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the public part of the specified {@link KeyVaultKey key} and key version, including its attestation
+     * information. The get key operation is applicable to all {@link KeyType key types} and it requires the
+     * {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the latest version of the {@link KeyVaultKey key} in the key vault, including its attestation
+     * information. Subscribes to the call asynchronously and prints out the {@link KeyVaultKey retrieved key} details
+     * when a response has been received.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestationWithResponse#String-String -->
+     * <pre>
+     * String keyVersion = &quot;&lt;key-version&gt;&quot;;
+     *
+     * keyAsyncClient.getKeyAttestationWithResponse&#40;&quot;keyName&quot;, keyVersion&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;getKeyResponse -&gt; &#123;
+     *         KeyVaultKey keyVaultKey = getKeyResponse.getValue&#40;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, getKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *             getKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     *
+     *         KeyAttestation keyAttestationInfo = keyVaultKey.getProperties&#40;&#41;.getKeyAttestation&#40;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Attestation information details: %n&quot;
+     *                 + &quot;Certificate PEM file: %s%n&quot;
+     *                 + &quot;Private key attestation: %s%n&quot;
+     *                 + &quot;Public key attestation: %s%n&quot;
+     *                 + &quot;Version: %s&quot;,
+     *             Base64Url.encode&#40;keyAttestationInfo.getCertificatePemFile&#40;&#41;&#41;,
+     *             Base64Url.encode&#40;keyAttestationInfo.getPrivateKeyAttestation&#40;&#41;&#41;,
+     *             Base64Url.encode&#40;keyAttestationInfo.getPublicKeyAttestation&#40;&#41;&#41;,
+     *             keyAttestationInfo.getVersion&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestationWithResponse#String-String -->
+     *
+     * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
+     * @param version The version of the key to retrieve. If this is an empty String or null, this call is
+     * equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
+     *
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * requested {@link KeyVaultKey key}. The content of the key is {@code null} if both {@code name} and
+     * {@code version} are {@code null} or empty.
+     *
+     * @throws HttpResponseException If a valid {@code name} and a non-null/empty {@code version} is specified.
+     * @throws ResourceNotFoundException When a {@link KeyVaultKey key} with the provided {@code name} doesn't exist in
+     * the key vault or an empty/{@code null} {@code name} and a non-null/empty {@code version} is provided.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultKey>> getKeyAttestationWithResponse(String name, String version) {
+        try {
+            return implClient.getKeyAttestationWithResponseAsync(name, version, EMPTY_OPTIONS)
+                .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapGetKeyException)
+                .map(response -> new SimpleResponse<>(response,
+                    createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }

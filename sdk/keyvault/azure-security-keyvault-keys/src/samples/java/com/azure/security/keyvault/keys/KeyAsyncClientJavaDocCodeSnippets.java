@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.util.Base64Url;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
@@ -13,6 +14,7 @@ import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyExportEncryptionAlgorithm;
 import com.azure.security.keyvault.keys.models.KeyOperation;
@@ -21,6 +23,7 @@ import com.azure.security.keyvault.keys.models.KeyRotationLifetimeAction;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.ReleaseKeyOptions;
 import reactor.util.context.Context;
 
@@ -259,7 +262,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public void getKeyWithResponse() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getKeyWithResponse#String-String
-        String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
+        String keyVersion = "<key-version>";
 
         keyAsyncClient.getKeyWithResponse("keyName", keyVersion)
             .contextWrite(Context.of("key1", "value1", "key2", "value2"))
@@ -283,7 +286,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String
 
         // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String-String
-        String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
+        String keyVersion = "<key-version>";
 
         keyAsyncClient.getKey("keyName", keyVersion)
             .contextWrite(Context.of("key1", "value1", "key2", "value2"))
@@ -523,7 +526,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.KeyAsyncClient.releaseKey#String-String
 
         // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.releaseKey#String-String-String
-        String myKeyVersion = "6A385B124DEF4096AF1361A85B16C204";
+        String myKeyVersion = "<key-version>";
         String myTargetAttestationToken = "someAttestationToken";
 
         keyAsyncClient.releaseKey("keyName", myKeyVersion, myTargetAttestationToken)
@@ -532,7 +535,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.KeyAsyncClient.releaseKey#String-String-String
 
         // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.releaseKeyWithResponse#String-String-String-ReleaseKeyOptions
-        String releaseKeyVersion = "6A385B124DEF4096AF1361A85B16C204";
+        String releaseKeyVersion = "<key-version>";
         String someTargetAttestationToken = "someAttestationToken";
         ReleaseKeyOptions releaseKeyOptions = new ReleaseKeyOptions()
             .setAlgorithm(KeyExportEncryptionAlgorithm.RSA_AES_KEY_WRAP_256)
@@ -636,5 +639,62 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                     + "with id: %s%n", myUpdatedPolicyResponse.getStatusCode(),
                     myUpdatedPolicyResponse.getValue().getId()));
         // END: com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicy
+    }
+
+    /**
+     * Generates a code sample for using {@link KeyAsyncClient#getKeyAttestation(String)}.
+     */
+    public void getKeyAttestation() {
+        KeyAsyncClient keyAsyncClient = createAsyncClient();
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestation#String
+        keyAsyncClient.getKeyAttestation("keyName")
+            .contextWrite(Context.of("key1", "value1", "key2", "value2"))
+            .subscribe(key -> {
+                System.out.printf("Created key with name: %s and: id %s%n", key.getName(), key.getId());
+
+                KeyAttestation keyAttestationInfo = key.getProperties().getKeyAttestation();
+
+                System.out.printf("Attestation information details: %n"
+                        + "Certificate PEM file: %s%n"
+                        + "Private key attestation: %s%n"
+                        + "Public key attestation: %s%n"
+                        + "Version: %s",
+                    Base64Url.encode(keyAttestationInfo.getCertificatePemFile()),
+                    Base64Url.encode(keyAttestationInfo.getPrivateKeyAttestation()),
+                    Base64Url.encode(keyAttestationInfo.getPublicKeyAttestation()),
+                    keyAttestationInfo.getVersion());
+            });
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestation#String
+    }
+
+    /**
+     * Generates a code sample for using {@link KeyAsyncClient#getKeyAttestationWithResponse(String, String)}.
+     */
+    public void getKeyAttestationWithResponse() {
+        KeyAsyncClient keyAsyncClient = createAsyncClient();
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestationWithResponse#String-String
+        String keyVersion = "<key-version>";
+
+        keyAsyncClient.getKeyAttestationWithResponse("keyName", keyVersion)
+            .contextWrite(Context.of("key1", "value1", "key2", "value2"))
+            .subscribe(getKeyResponse -> {
+                KeyVaultKey keyVaultKey = getKeyResponse.getValue();
+
+                System.out.printf("Created key with name: %s and: id %s%n", getKeyResponse.getValue().getName(),
+                    getKeyResponse.getValue().getId());
+
+                KeyAttestation keyAttestationInfo = keyVaultKey.getProperties().getKeyAttestation();
+
+                System.out.printf("Attestation information details: %n"
+                        + "Certificate PEM file: %s%n"
+                        + "Private key attestation: %s%n"
+                        + "Public key attestation: %s%n"
+                        + "Version: %s",
+                    Base64Url.encode(keyAttestationInfo.getCertificatePemFile()),
+                    Base64Url.encode(keyAttestationInfo.getPrivateKeyAttestation()),
+                    Base64Url.encode(keyAttestationInfo.getPublicKeyAttestation()),
+                    keyAttestationInfo.getVersion());
+            });
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestationWithResponse#String-String
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.keys.implementation;
 
+import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 
 import java.time.OffsetDateTime;
@@ -27,6 +28,8 @@ public final class KeyPropertiesHelper {
         void setRecoverableDays(KeyProperties keyProperties, Integer recoverableDays);
 
         void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform);
+
+        void setKeyAttestation(KeyProperties keyProperties, KeyAttestation keyAttestation);
     }
 
     public static void setCreatedOn(KeyProperties keyProperties, OffsetDateTime createdOn) {
@@ -63,6 +66,10 @@ public final class KeyPropertiesHelper {
 
     public static void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform) {
         accessor.setHsmPlatform(keyProperties, hsmPlatform);
+    }
+
+    public static void setKeyAttestation(KeyProperties keyProperties, KeyAttestation keyAttestation) {
+        accessor.setKeyAttestation(keyProperties, keyAttestation);
     }
 
     public static void setAccessor(KeyPropertiesAccessor accessor) {
