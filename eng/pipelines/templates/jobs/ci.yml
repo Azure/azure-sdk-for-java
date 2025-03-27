@@ -454,6 +454,7 @@ jobs:
         EnablePRGeneration: true
         # Trying sparse matrix for indirect packages
         PRMatrixSparseIndirect: true
+        PRMatrixKey: 'Name'
         SparseCheckoutPaths:
           - '**/*.xml'
           - '**/*.md'
