@@ -50,7 +50,7 @@ function Compare-CurrentToCodegeneration {
 
   foreach ($script in $swaggers) {
     Write-Host "Calling Invoke-Expression $($script.FullName)"
-    Invoke-Expression $script.FullName
+    (& $script.FullName) | Write-Host
   }
 
   Write-Host "
