@@ -650,8 +650,8 @@ public class VectorSearchTests extends SearchTestBase {
                 .setProfiles(
                     Collections.singletonList(new VectorSearchProfile("my-vector-profile", "my-vector-config")))
                 .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
-                .setCompressions(new BinaryQuantizationCompression(compressionName)
-                    .setTruncationDimension(100).setRescoringOptions(rescoringOptions)));
+                .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)
+                    .setRescoringOptions(rescoringOptions)));
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         searchIndexClient.createIndex(searchIndex);
@@ -687,8 +687,8 @@ public class VectorSearchTests extends SearchTestBase {
                 .setProfiles(
                     Collections.singletonList(new VectorSearchProfile("my-vector-profile", "my-vector-config")))
                 .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
-                .setCompressions(new BinaryQuantizationCompression(compressionName)
-                    .setTruncationDimension(100).setRescoringOptions(rescoringOptions)));
+                .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)
+                    .setRescoringOptions(rescoringOptions)));
 
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(true).buildAsyncClient();
         searchIndexClient.createIndex(searchIndex);

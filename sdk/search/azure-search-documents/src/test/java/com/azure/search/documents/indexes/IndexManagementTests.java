@@ -839,7 +839,7 @@ public class IndexManagementTests extends SearchTestBase {
         List<String> indexNames = new ArrayList<>();
 
         PagedIterable<IndexStatisticsSummary> statsSummary = client.getIndexStatsSummary();
-        assert(statsSummary.stream().count() == 0);
+        assert (statsSummary.stream().count() == 0);
 
         SearchIndex index = createTestIndex(null);
         indexNames.add(index.getName());
@@ -847,7 +847,7 @@ public class IndexManagementTests extends SearchTestBase {
         indexesToDelete.add(index.getName());
 
         statsSummary = client.getIndexStatsSummary();
-        assert(statsSummary.stream().count() == 1);
+        assert (statsSummary.stream().count() == 1);
 
         for (int i = 0; i < 4; i++) {
             index = createTestIndex(null);
@@ -857,12 +857,11 @@ public class IndexManagementTests extends SearchTestBase {
         }
 
         statsSummary = client.getIndexStatsSummary();
-        assert(statsSummary.stream().count() == 5);
-        List<String> returnedNames = statsSummary.stream()
-            .map(IndexStatisticsSummary::getName)
-            .toList();
+        assert (statsSummary.stream().count() == 5);
+        List<String> returnedNames
+            = statsSummary.stream().map(IndexStatisticsSummary::getName).collect(Collectors.toList());
         for (String name : indexNames) {
-            assert(returnedNames.contains(name));
+            assert (returnedNames.contains(name));
         }
     }
 
@@ -872,18 +871,14 @@ public class IndexManagementTests extends SearchTestBase {
 
         List<String> indexNames = new ArrayList<>();
 
-        StepVerifier.create(asyncClient.getIndexStatsSummary())
-            .expectNextCount(0)
-            .verifyComplete();
+        StepVerifier.create(asyncClient.getIndexStatsSummary()).expectNextCount(0).verifyComplete();
 
         SearchIndex index = createTestIndex(null);
         indexNames.add(index.getName());
         asyncClient.createOrUpdateIndex(index).block();
         indexesToDelete.add(index.getName());
 
-        StepVerifier.create(asyncClient.getIndexStatsSummary())
-            .expectNextCount(1)
-            .verifyComplete();
+        StepVerifier.create(asyncClient.getIndexStatsSummary()).expectNextCount(1).verifyComplete();
 
         for (int i = 0; i < 4; i++) {
             index = createTestIndex(null);
@@ -901,7 +896,7 @@ public class IndexManagementTests extends SearchTestBase {
             .verifyComplete();
 
         for (String name : indexNames) {
-            assert(returnedNames.contains(name));
+            assert (returnedNames.contains(name));
         }
     }
 
