@@ -28,28 +28,6 @@ import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous ImageAnalysisClient type.
- * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client-api-key-auth -->
- * <pre>
- * &#47;&#47;
- * &#47;&#47; Create a synchronous Image Analysis client with API key authentication.
- * &#47;&#47;
- * ImageAnalysisClient client = new ImageAnalysisClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.sync-client-api-key-auth -->
- * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client-entra-id-auth -->
- * <pre>
- * &#47;&#47;
- * &#47;&#47; Create a synchronous Image Analysis client with Entra ID authentication.
- * &#47;&#47;
- * ImageAnalysisClient client = new ImageAnalysisClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.sync-client-entra-id-auth -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class)
 public final class ImageAnalysisClient {
@@ -98,15 +76,18 @@ public final class ImageAnalysisClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     url: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     captionResult (Optional): {
      *         confidence: double (Required)
@@ -192,7 +173,8 @@ public final class ImageAnalysisClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
@@ -207,7 +189,7 @@ public final class ImageAnalysisClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> analyzeFromUrlWithResponse(List<String> visualFeatures, BinaryData imageUrl,
+    Response<BinaryData> analyzeFromUrlWithResponse(List<BinaryData> visualFeatures, BinaryData imageUrl,
         RequestOptions requestOptions) {
         return this.serviceClient.analyzeFromUrlWithResponse(visualFeatures, imageUrl, requestOptions);
     }
@@ -247,7 +229,7 @@ public final class ImageAnalysisClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageAnalysisResult analyzeFromUrl(List<VisualFeatures> visualFeatures, ImageUrl imageUrl, String language,
+    ImageAnalysisResult analyzeFromUrl(List<BinaryData> visualFeatures, ImageUrl imageUrl, String language,
         Boolean genderNeutralCaption, List<Double> smartCropsAspectRatios, String modelVersion) {
         // Generated convenience method for analyzeFromUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -264,10 +246,8 @@ public final class ImageAnalysisClient {
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);
         }
-        return analyzeFromUrlWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).getValue()
-                .toObject(ImageAnalysisResult.class);
+        return analyzeFromUrlWithResponse(visualFeatures, BinaryData.fromObject(imageUrl), requestOptions).getValue()
+            .toObject(ImageAnalysisResult.class);
     }
 
     /**
@@ -287,13 +267,11 @@ public final class ImageAnalysisClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageAnalysisResult analyzeFromUrl(List<VisualFeatures> visualFeatures, ImageUrl imageUrl) {
+    ImageAnalysisResult analyzeFromUrl(List<BinaryData> visualFeatures, ImageUrl imageUrl) {
         // Generated convenience method for analyzeFromUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeFromUrlWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).getValue()
-                .toObject(ImageAnalysisResult.class);
+        return analyzeFromUrlWithResponse(visualFeatures, BinaryData.fromObject(imageUrl), requestOptions).getValue()
+            .toObject(ImageAnalysisResult.class);
     }
 
     /**
@@ -327,13 +305,16 @@ public final class ImageAnalysisClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     captionResult (Optional): {
      *         confidence: double (Required)
@@ -419,7 +400,8 @@ public final class ImageAnalysisClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
@@ -434,7 +416,7 @@ public final class ImageAnalysisClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> analyzeFromImageDataWithResponse(List<String> visualFeatures, BinaryData imageData,
+    Response<BinaryData> analyzeFromImageDataWithResponse(List<BinaryData> visualFeatures, BinaryData imageData,
         RequestOptions requestOptions) {
         return this.serviceClient.analyzeFromImageDataWithResponse(visualFeatures, imageData, requestOptions);
     }
@@ -474,7 +456,7 @@ public final class ImageAnalysisClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageAnalysisResult analyzeFromImageData(List<VisualFeatures> visualFeatures, BinaryData imageData, String language,
+    ImageAnalysisResult analyzeFromImageData(List<BinaryData> visualFeatures, BinaryData imageData, String language,
         Boolean genderNeutralCaption, List<Double> smartCropsAspectRatios, String modelVersion) {
         // Generated convenience method for analyzeFromImageDataWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -491,9 +473,8 @@ public final class ImageAnalysisClient {
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);
         }
-        return analyzeFromImageDataWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.toList()), imageData, requestOptions).getValue().toObject(ImageAnalysisResult.class);
+        return analyzeFromImageDataWithResponse(visualFeatures, imageData, requestOptions).getValue()
+            .toObject(ImageAnalysisResult.class);
     }
 
     /**
@@ -513,12 +494,11 @@ public final class ImageAnalysisClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageAnalysisResult analyzeFromImageData(List<VisualFeatures> visualFeatures, BinaryData imageData) {
+    ImageAnalysisResult analyzeFromImageData(List<BinaryData> visualFeatures, BinaryData imageData) {
         // Generated convenience method for analyzeFromImageDataWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeFromImageDataWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.toList()), imageData, requestOptions).getValue().toObject(ImageAnalysisResult.class);
+        return analyzeFromImageDataWithResponse(visualFeatures, imageData, requestOptions).getValue()
+            .toObject(ImageAnalysisResult.class);
     }
 
     /**
@@ -693,10 +673,11 @@ public final class ImageAnalysisClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageAnalysisResult> analyzeFromUrlWithResponse(String imageUrl,
         List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
-        List<String> visualFeaturesAsStrings = visualFeatures.stream()
+        List<BinaryData> visualFeaturesAsBinaryData = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .map(value -> BinaryData.fromObject(value))
             .collect(Collectors.toList());
-        Response<BinaryData> response = analyzeFromUrlWithResponse(visualFeaturesAsStrings,
+        Response<BinaryData> response = analyzeFromUrlWithResponse(visualFeaturesAsBinaryData,
             BinaryData.fromObject(new ImageUrl(imageUrl)), updateRequestOptions(requestOptions, imageAnalysisOptions));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             response.getValue().toObject(ImageAnalysisResult.class));
@@ -726,10 +707,11 @@ public final class ImageAnalysisClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageAnalysisResult> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
-        List<String> visualFeaturesAsStrings = visualFeatures.stream()
+        List<BinaryData> visualFeaturesAsBinaryData = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .map(value -> BinaryData.fromObject(value))
             .collect(Collectors.toList());
-        Response<BinaryData> response = analyzeFromImageDataWithResponse(visualFeaturesAsStrings, imageData,
+        Response<BinaryData> response = analyzeFromImageDataWithResponse(visualFeaturesAsBinaryData, imageData,
             updateRequestOptions(requestOptions, imageAnalysisOptions));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             response.getValue().toObject(ImageAnalysisResult.class));

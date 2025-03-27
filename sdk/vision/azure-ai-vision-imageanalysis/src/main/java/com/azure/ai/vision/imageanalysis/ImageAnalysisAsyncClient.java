@@ -5,6 +5,7 @@ package com.azure.ai.vision.imageanalysis;
 
 import com.azure.ai.vision.imageanalysis.implementation.ImageAnalysisClientImpl;
 import com.azure.ai.vision.imageanalysis.implementation.models.ImageUrl;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.annotation.Generated;
@@ -26,11 +27,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
-import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 
 /**
  * Initializes a new instance of the asynchronous ImageAnalysisClient type.
- * 
  * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client-api-key-auth -->
  * <pre>
  * &#47;&#47;
@@ -101,15 +100,18 @@ public final class ImageAnalysisAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     url: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     captionResult (Optional): {
      *         confidence: double (Required)
@@ -195,7 +197,8 @@ public final class ImageAnalysisAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
@@ -211,7 +214,7 @@ public final class ImageAnalysisAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> analyzeFromUrlWithResponse(List<String> visualFeatures, BinaryData imageUrl,
+    Mono<Response<BinaryData>> analyzeFromUrlWithResponse(List<BinaryData> visualFeatures, BinaryData imageUrl,
         RequestOptions requestOptions) {
         return this.serviceClient.analyzeFromUrlWithResponseAsync(visualFeatures, imageUrl, requestOptions);
     }
@@ -251,7 +254,7 @@ public final class ImageAnalysisAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImageAnalysisResult> analyzeFromUrl(List<VisualFeatures> visualFeatures, ImageUrl imageUrl, String language,
+    Mono<ImageAnalysisResult> analyzeFromUrl(List<BinaryData> visualFeatures, ImageUrl imageUrl, String language,
         Boolean genderNeutralCaption, List<Double> smartCropsAspectRatios, String modelVersion) {
         // Generated convenience method for analyzeFromUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -268,10 +271,9 @@ public final class ImageAnalysisAsyncClient {
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);
         }
-        return analyzeFromUrlWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+        return analyzeFromUrlWithResponse(visualFeatures, BinaryData.fromObject(imageUrl), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -291,13 +293,12 @@ public final class ImageAnalysisAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImageAnalysisResult> analyzeFromUrl(List<VisualFeatures> visualFeatures, ImageUrl imageUrl) {
+    Mono<ImageAnalysisResult> analyzeFromUrl(List<BinaryData> visualFeatures, ImageUrl imageUrl) {
         // Generated convenience method for analyzeFromUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeFromUrlWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+        return analyzeFromUrlWithResponse(visualFeatures, BinaryData.fromObject(imageUrl), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -331,13 +332,16 @@ public final class ImageAnalysisAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     captionResult (Optional): {
      *         confidence: double (Required)
@@ -423,7 +427,8 @@ public final class ImageAnalysisAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
@@ -439,7 +444,7 @@ public final class ImageAnalysisAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> analyzeFromImageDataWithResponse(List<String> visualFeatures, BinaryData imageData,
+    Mono<Response<BinaryData>> analyzeFromImageDataWithResponse(List<BinaryData> visualFeatures, BinaryData imageData,
         RequestOptions requestOptions) {
         return this.serviceClient.analyzeFromImageDataWithResponseAsync(visualFeatures, imageData, requestOptions);
     }
@@ -479,7 +484,7 @@ public final class ImageAnalysisAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImageAnalysisResult> analyzeFromImageData(List<VisualFeatures> visualFeatures, BinaryData imageData,
+    Mono<ImageAnalysisResult> analyzeFromImageData(List<BinaryData> visualFeatures, BinaryData imageData,
         String language, Boolean genderNeutralCaption, List<Double> smartCropsAspectRatios, String modelVersion) {
         // Generated convenience method for analyzeFromImageDataWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -496,10 +501,8 @@ public final class ImageAnalysisAsyncClient {
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);
         }
-        return analyzeFromImageDataWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.toList()), imageData, requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+        return analyzeFromImageDataWithResponse(visualFeatures, imageData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -519,13 +522,11 @@ public final class ImageAnalysisAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImageAnalysisResult> analyzeFromImageData(List<VisualFeatures> visualFeatures, BinaryData imageData) {
+    Mono<ImageAnalysisResult> analyzeFromImageData(List<BinaryData> visualFeatures, BinaryData imageData) {
         // Generated convenience method for analyzeFromImageDataWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeFromImageDataWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.toList()), imageData, requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+        return analyzeFromImageDataWithResponse(visualFeatures, imageData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -659,11 +660,12 @@ public final class ImageAnalysisAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImageAnalysisResult>> analyzeFromUrlWithResponse(String imageUrl,
         List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
-        List<String> visualFeaturesAsStrings = visualFeatures.stream()
+        List<BinaryData> visualFeaturesAsBinaryData = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .map(value -> BinaryData.fromObject(value))
             .collect(Collectors.toList());
         Mono<Response<BinaryData>> monoResponse
-            = analyzeFromUrlWithResponse(visualFeaturesAsStrings, BinaryData.fromObject(new ImageUrl(imageUrl)),
+            = analyzeFromUrlWithResponse(visualFeaturesAsBinaryData, BinaryData.fromObject(new ImageUrl(imageUrl)),
                 ImageAnalysisClient.updateRequestOptions(requestOptions, imageAnalysisOptions));
         return monoResponse.map(response -> {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -696,11 +698,12 @@ public final class ImageAnalysisAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImageAnalysisResult>> analyzeWithResponse(BinaryData imageData,
         List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
-        List<String> visualFeaturesAsStrings = visualFeatures.stream()
+        List<BinaryData> visualFeaturesAsBinaryData = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .map(value -> BinaryData.fromObject(value))
             .collect(Collectors.toList());
-        Mono<Response<BinaryData>> monoResponse = analyzeFromImageDataWithResponse(visualFeaturesAsStrings, imageData,
-            ImageAnalysisClient.updateRequestOptions(requestOptions, imageAnalysisOptions));
+        Mono<Response<BinaryData>> monoResponse = analyzeFromImageDataWithResponse(visualFeaturesAsBinaryData,
+            imageData, ImageAnalysisClient.updateRequestOptions(requestOptions, imageAnalysisOptions));
         return monoResponse.map(response -> {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 response.getValue().toObject(ImageAnalysisResult.class));
