@@ -30,10 +30,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
@@ -343,12 +344,13 @@ public final class ImageAnalysisClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> analyzeFromImageDataWithResponseAsync(List<BinaryData> visualFeatures,
+    public Mono<Response<BinaryData>> analyzeFromImageDataWithResponseAsync(List<String> visualFeatures,
         BinaryData imageData, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        String visualFeaturesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(visualFeatures, CollectionFormat.CSV);
+        String visualFeaturesConverted = visualFeatures.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining(","));
         return FluxUtil.withContext(
             context -> service.analyzeFromImageData(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, visualFeaturesConverted, accept, imageData, requestOptions, context));
@@ -495,12 +497,13 @@ public final class ImageAnalysisClientImpl {
      * @return represents the outcome of an Image Analysis operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> analyzeFromImageDataWithResponse(List<BinaryData> visualFeatures, BinaryData imageData,
+    public Response<BinaryData> analyzeFromImageDataWithResponse(List<String> visualFeatures, BinaryData imageData,
         RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        String visualFeaturesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(visualFeatures, CollectionFormat.CSV);
+        String visualFeaturesConverted = visualFeatures.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining(","));
         return service.analyzeFromImageDataSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
             visualFeaturesConverted, accept, imageData, requestOptions, Context.NONE);
     }
@@ -649,12 +652,13 @@ public final class ImageAnalysisClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> analyzeFromUrlWithResponseAsync(List<BinaryData> visualFeatures,
-        BinaryData imageUrl, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> analyzeFromUrlWithResponseAsync(List<String> visualFeatures, BinaryData imageUrl,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        String visualFeaturesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(visualFeatures, CollectionFormat.CSV);
+        String visualFeaturesConverted = visualFeatures.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeFromUrl(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, visualFeaturesConverted, accept, imageUrl, requestOptions, context));
@@ -803,12 +807,13 @@ public final class ImageAnalysisClientImpl {
      * @return represents the outcome of an Image Analysis operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> analyzeFromUrlWithResponse(List<BinaryData> visualFeatures, BinaryData imageUrl,
+    public Response<BinaryData> analyzeFromUrlWithResponse(List<String> visualFeatures, BinaryData imageUrl,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        String visualFeaturesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(visualFeatures, CollectionFormat.CSV);
+        String visualFeaturesConverted = visualFeatures.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining(","));
         return service.analyzeFromUrlSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
             visualFeaturesConverted, accept, imageUrl, requestOptions, Context.NONE);
     }

@@ -31,6 +31,7 @@
     "com.azure.ai.vision.imageanalysis.models.PeopleResult": "ImageAnalysis.PeopleResult",
     "com.azure.ai.vision.imageanalysis.models.ReadResult": "ImageAnalysis.ReadResult",
     "com.azure.ai.vision.imageanalysis.models.SmartCropsResult": "ImageAnalysis.SmartCropsResult",
-    "com.azure.ai.vision.imageanalysis.models.TagsResult": "ImageAnalysis.TagsResult"
+    "com.azure.ai.vision.imageanalysis.models.TagsResult": "ImageAnalysis.TagsResult",
+    "com.azure.ai.vision.imageanalysis.models.VisualFeatures": "ImageAnalysis.VisualFeatures"
   }
 }
