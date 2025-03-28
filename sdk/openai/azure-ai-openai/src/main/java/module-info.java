@@ -5,6 +5,7 @@
 module com.azure.ai.openai {
     requires transitive com.azure.core;
     requires openai.java.core;
+    requires annotations;
 
     exports com.azure.ai.openai;
     exports com.azure.ai.openai.models;
