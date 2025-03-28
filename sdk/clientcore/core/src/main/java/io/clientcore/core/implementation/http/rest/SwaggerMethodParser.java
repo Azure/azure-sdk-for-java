@@ -12,12 +12,11 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
@@ -461,11 +460,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link SdkRequestContext} passed into the proxy method.
+     * Get the {@link RequestOptions} passed into the proxy method.
      *
      * @param swaggerMethodArguments The arguments passed to the proxy method.
      *
-     * @return The request context.
+     * @return The request options.
      */
     public RequestOptions setRequestOptions(Object[] swaggerMethodArguments) {
         return requestOptionsPosition < 0 ? null : (RequestOptions) swaggerMethodArguments[requestOptionsPosition];

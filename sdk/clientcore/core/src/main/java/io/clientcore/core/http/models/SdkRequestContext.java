@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * <p>
  * This class does not allow any modifications to the request metadata provided by the user.
  */
-@Metadata(properties = { MetadataProperties.FLUENT })
+@Metadata(properties = { MetadataProperties.FLUENT, MetadataProperties.IMMUTABLE })
 public final class SdkRequestContext {
     // TODO (limolkova) do we need to make it public and probably move to another class?
     private static final String PROGRESS_REPORTER_KEY = "progressReporter";
@@ -146,5 +146,15 @@ public final class SdkRequestContext {
      */
     public ClientLogger getLogger() {
         return requestOptions.getLogger();
+    }
+
+    /**
+     * Gets the metadata associated with this request context.
+     *
+     * @param key The key of the metadata to retrieve.
+     * @return The value of the metadata associated with the given key, or null if not found.
+     */
+    public Object getMetadata(String key) {
+        return requestOptions.getMetadata(key);
     }
 }
