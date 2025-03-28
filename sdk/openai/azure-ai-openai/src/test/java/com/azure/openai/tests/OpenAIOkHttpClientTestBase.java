@@ -119,10 +119,14 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     ChatCompletionCreateParams createChatCompletionParams(String testModel, String userMessage) {
+        return createChatCompletionParamsBuilder(testModel, userMessage)
+            .build();
+    }
+
+    ChatCompletionCreateParams.Builder createChatCompletionParamsBuilder(String testModel, String userMessage) {
         return ChatCompletionCreateParams.builder()
             .messages(asList(createSystemMessageParam(), createUserMessageParam(userMessage)))
-            .model(testModel)
-            .build();
+            .model(testModel);
     }
 
     ChatCompletionCreateParams createChatCompletionParamsWithFunction(String testModel,
