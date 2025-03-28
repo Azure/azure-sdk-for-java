@@ -5,6 +5,7 @@ package io.clientcore.annotation.processor.test;
 
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
+import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestInterfaceGenerationTests {
     private static LocalTestServer server;
@@ -44,7 +46,7 @@ public class TestInterfaceGenerationTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         assertNotNull(testInterface);
     }
 
@@ -58,7 +60,7 @@ public class TestInterfaceGenerationTests {
             new MockHttpResponse(request, 200, BinaryData.fromString(wireValue))).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         assertNotNull(testInterface);
 
         // test getFoo method
@@ -80,7 +82,7 @@ public class TestInterfaceGenerationTests {
     public void requestWithByteArrayReturnType() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         final byte[] result = testInterface.getByteArray(getServerUri(false));
 
         assertNotNull(result);
@@ -96,7 +98,7 @@ public class TestInterfaceGenerationTests {
         //https://github.com/Azure/azure-sdk-for-java/issues/44298
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         final byte[] result
             = testInterface.getByteArray("http", "localhost:" + server.getHttpPort(), 100);
 
@@ -111,8 +113,150 @@ public class TestInterfaceGenerationTests {
     public void getRequestWithNoReturn() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline, null);
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         assertDoesNotThrow(() -> testInterface.getNothing(getServerUri(false)));
+    }
+
+    @Test
+    public void getRequestWithAnything() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json = testInterface.getAnything(getServerUri(false));
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri());
+    }
+
+    @Test
+    public void getRequestWithAnythingWithPlus() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json = testInterface.getAnythingWithPlus(getServerUri(false));
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything/with+plus", json.uri());
+    }
+
+    @Test
+    public void getRequestWithAnythingWithPathParam() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json
+            = testInterface.getAnythingWithPathParam(getServerUri(false), "withpathparam");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything/withpathparam", json.uri());
+    }
+
+    @Test
+    public void getRequestWithAnythingWithPathParamWithSpace() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json
+            = testInterface.getAnythingWithPathParam(getServerUri(false), "with path param");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything/with path param", json.uri());
+    }
+
+    @Test
+    public void getRequestWithAnythingWithPathParamWithPlus() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json
+            = testInterface.getAnythingWithPathParam(getServerUri(false), "with+path+param");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.uri());
+    }
+
+    @Test
+    public void getRequestWithAnythingWithEncodedPathParam() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json
+            = testInterface.getAnythingWithEncodedPathParam(getServerUri(false), "withpathparam");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything/withpathparam", json.uri());
+    }
+
+    @Test
+    public void getRequestWithAnythingWithEncodedPathParamWithPercent20() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json
+            = testInterface.getAnythingWithEncodedPathParam(getServerUri(false), "with%20path%20param");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything/with path param", json.uri());
+    }
+
+    @Test
+    public void getRequestWithAnythingWithEncodedPathParamWithPlus() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json
+            = testInterface.getAnythingWithEncodedPathParam(getServerUri(false), "with+path+param");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.uri());
+    }
+
+    @Test
+    public void getRequestWithQueryParametersAndAnything() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json
+            = testInterface.getAnything(getServerUri(false), "A", 15);
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything?a=A&b=15", json.uri());
+    }
+
+    @Test
+    public void getRequestWithQueryParametersAndAnythingWithPercent20() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json
+            = testInterface.getAnything(getServerUri(false), "A%20Z", 15);
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything?a=A%2520Z&b=15", json.uri());
+    }
+
+    @Test
+    public void getRequestWithQueryParametersAndAnythingWithEncodedWithPercent20() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json
+            = testInterface.getAnythingWithEncoded(getServerUri(false), "x%20y", 15);
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything?a=x y&b=15", json.uri());
+    }
+
+    @Test
+    public void getRequestWithNullQueryParameter() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json
+            = testInterface.getAnything(getServerUri(false), null, 15);
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything?b=15", json.uri());
     }
 
     private HttpClient getHttpClient() {
@@ -121,6 +265,22 @@ public class TestInterfaceGenerationTests {
 
     private String getServerUri(boolean secure) {
         return secure ? server.getHttpsUri() : server.getHttpUri();
+    }
+
+    private static void assertMatchWithHttpOrHttps(String uri1, String uri2) {
+        final String s1 = "http://" + uri1;
+
+        if (s1.equalsIgnoreCase(uri2)) {
+            return;
+        }
+
+        final String s2 = "https://" + uri1;
+
+        if (s2.equalsIgnoreCase(uri2)) {
+            return;
+        }
+
+        fail("'" + uri2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
     }
 
 }

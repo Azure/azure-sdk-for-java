@@ -54,7 +54,10 @@ io.netty:netty-codec-http;4.1.118.Final
 io.netty:netty-codec-http2;4.1.118.Final
 io.netty:netty-handler;4.1.118.Final
 io.netty:netty-handler-proxy;4.1.118.Final
+io.netty:netty-resolver;4.1.118.Final
+io.netty:netty-resolver-dns;4.1.118.Final
 io.netty:netty-tcnative-boringssl-static;2.0.70.Final
+io.netty:netty-transport;4.1.118.Final
 io.netty:netty-transport-native-epoll;4.1.118.Final
 io.netty:netty-transport-native-unix-common;4.1.118.Final
 io.netty:netty-transport-native-kqueue;4.1.118.Final
@@ -116,20 +119,20 @@ com.microsoft.azure:azure-storage;8.0.0
 com.microsoft.azure:msal4j;1.19.1
 com.microsoft.azure:msal4j-brokers;1.0.0
 com.microsoft.azure:msal4j-persistence-extension;1.3.0
-io.opentelemetry:opentelemetry-api;1.46.0
-io.opentelemetry:opentelemetry-sdk;1.46.0
-io.opentelemetry:opentelemetry-sdk-metrics;1.46.0
-io.opentelemetry:opentelemetry-sdk-logs;1.46.0
-io.opentelemetry:opentelemetry-exporter-logging;1.46.0
-io.opentelemetry:opentelemetry-exporter-otlp;1.46.0
-io.opentelemetry:opentelemetry-sdk-testing;1.46.0
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.46.0
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.46.0
-io.opentelemetry:opentelemetry-bom;1.46.0
-io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.12.0-alpha
-io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.12.0
-io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.12.0-alpha
-io.opentelemetry.semconv:opentelemetry-semconv-incubating;1.26.0-alpha
+io.opentelemetry:opentelemetry-api;1.48.0
+io.opentelemetry:opentelemetry-sdk;1.48.0
+io.opentelemetry:opentelemetry-sdk-metrics;1.48.0
+io.opentelemetry:opentelemetry-sdk-logs;1.48.0
+io.opentelemetry:opentelemetry-exporter-logging;1.48.0
+io.opentelemetry:opentelemetry-exporter-otlp;1.48.0
+io.opentelemetry:opentelemetry-sdk-testing;1.48.0
+io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.48.0
+io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.48.0
+io.opentelemetry:opentelemetry-bom;1.48.0
+io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.14.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.14.0
+io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.14.0-alpha
+io.opentelemetry:opentelemetry-semconv;0.14.1
 io.projectreactor:reactor-test;3.4.41
 io.github.hakky54:logcaptor;2.9.3
 com.squareup.okio:okio;3.9.1
@@ -210,11 +213,11 @@ org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.owasp:dependency-check-maven;11.1.1
 org.ow2.asm:asm;9.7.1
-org.revapi:revapi;0.14.4
-org.revapi:revapi-java;0.26.1
-org.revapi:revapi-java-spi;0.23.6
+org.revapi:revapi;0.15.0
+org.revapi:revapi-java;0.28.1
+org.revapi:revapi-java-spi;0.25.0
 org.revapi:revapi-reporter-json;0.5.0
-org.revapi:revapi-maven-plugin;0.14.6
+org.revapi:revapi-maven-plugin;0.15.0
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
@@ -254,13 +257,9 @@ cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.2
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-1_2-12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
-cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;3.1.1
-cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;3.4.0
 cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;3.5.0
-cosmos-spark_3-1_org.apache.spark:spark-hive_2.12;3.1.1
-cosmos-spark_3-2_org.apache.spark:spark-hive_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;3.4.0
 cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;3.5.0

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.TopicSpace;
@@ -22,23 +22,23 @@ public final class TopicSpacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"d\",\"topicTemplates\":[\"bqaolgzubakdlkv\"],\"provisioningState\":\"Succeeded\"},\"id\":\"fnsffetpkmixwew\",\"name\":\"lscgsmepnq\",\"type\":\"xgvohdbthhxmoe\"}";
+            = "{\"properties\":{\"description\":\"ih\",\"topicTemplates\":[\"kzsrz\",\"ffjilzfbpnt\",\"gkensckhbmcarmo\"],\"provisioningState\":\"Succeeded\"},\"id\":\"kwykuqdndxl\",\"name\":\"kh\",\"type\":\"gga\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TopicSpace response = manager.topicSpaces()
-            .define("bqk")
-            .withExistingNamespace("xqlyoazyfbkmvl", "zmxojzsvmai")
-            .withDescription("ejthgeecbpergwlc")
-            .withTopicTemplates(Arrays.asList("bamyqsokkn", "ug", "jwdizcrjixiujz"))
+            .define("bdxmd")
+            .withExistingNamespace("oewyhxessmvrkd", "sqeq")
+            .withDescription("br")
+            .withTopicTemplates(Arrays.asList("jppp", "tlpd", "bfm"))
             .create();
 
-        Assertions.assertEquals("d", response.description());
-        Assertions.assertEquals("bqaolgzubakdlkv", response.topicTemplates().get(0));
+        Assertions.assertEquals("ih", response.description());
+        Assertions.assertEquals("kzsrz", response.topicTemplates().get(0));
     }
 }

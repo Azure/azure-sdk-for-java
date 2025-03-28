@@ -42,6 +42,20 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
     private final OffsetDateTime lastUpdateTime;
 
     /*
+     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in all Jobs
+     * created under the schedule.
+     */
+    @Generated
+    private final Duration userCpuTime;
+
+    /*
+     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in all Jobs
+     * created under the schedule.
+     */
+    @Generated
+    private final Duration kernelCpuTime;
+
+    /*
      * The total wall clock time of all the Tasks in all the Jobs created under the schedule. The wall clock time is the
      * elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the
      * statistics were updated, if the Task had not finished by then). If a Task was retried, this includes the wall
@@ -104,6 +118,45 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
     private final Duration waitTime;
 
     /**
+     * Creates an instance of BatchJobScheduleStatistics class.
+     *
+     * @param url the url value to set.
+     * @param startTime the startTime value to set.
+     * @param lastUpdateTime the lastUpdateTime value to set.
+     * @param userCpuTime the userCpuTime value to set.
+     * @param kernelCpuTime the kernelCpuTime value to set.
+     * @param wallClockTime the wallClockTime value to set.
+     * @param readIOps the readIOps value to set.
+     * @param writeIOps the writeIOps value to set.
+     * @param readIOGiB the readIOGiB value to set.
+     * @param writeIOGiB the writeIOGiB value to set.
+     * @param numSucceededTasks the numSucceededTasks value to set.
+     * @param numFailedTasks the numFailedTasks value to set.
+     * @param numTaskRetries the numTaskRetries value to set.
+     * @param waitTime the waitTime value to set.
+     */
+    @Generated
+    private BatchJobScheduleStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
+        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIOps, long writeIOps,
+        double readIOGiB, double writeIOGiB, long numSucceededTasks, long numFailedTasks, long numTaskRetries,
+        Duration waitTime) {
+        this.url = url;
+        this.startTime = startTime;
+        this.lastUpdateTime = lastUpdateTime;
+        this.userCpuTime = userCpuTime;
+        this.kernelCpuTime = kernelCpuTime;
+        this.wallClockTime = wallClockTime;
+        this.readIOps = readIOps;
+        this.writeIOps = writeIOps;
+        this.readIOGiB = readIOGiB;
+        this.writeIOGiB = writeIOGiB;
+        this.numSucceededTasks = numSucceededTasks;
+        this.numFailedTasks = numFailedTasks;
+        this.numTaskRetries = numTaskRetries;
+        this.waitTime = waitTime;
+    }
+
+    /**
      * Get the url property: The URL of the statistics.
      *
      * @return the url value.
@@ -132,6 +185,28 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
     @Generated
     public OffsetDateTime getLastUpdateTime() {
         return this.lastUpdateTime;
+    }
+
+    /**
+     * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by all Tasks in all Jobs created under the schedule.
+     *
+     * @return the userCpuTime value.
+     */
+    @Generated
+    public Duration getUserCpuTime() {
+        return this.userCpuTime;
+    }
+
+    /**
+     * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by all Tasks in all Jobs created under the schedule.
+     *
+     * @return the kernelCpuTime value.
+     */
+    @Generated
+    public Duration getKernelCpuTime() {
+        return this.kernelCpuTime;
     }
 
     /**
@@ -235,81 +310,6 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
     @Generated
     public Duration getWaitTime() {
         return this.waitTime;
-    }
-
-    /*
-     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in all Jobs
-     * created under the schedule.
-     */
-    @Generated
-    private final Duration kernelCpuTime;
-
-    /**
-     * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by all Tasks in all Jobs created under the schedule.
-     *
-     * @return the kernelCpuTime value.
-     */
-    @Generated
-    public Duration getKernelCpuTime() {
-        return this.kernelCpuTime;
-    }
-
-    /*
-     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in all Jobs
-     * created under the schedule.
-     */
-    @Generated
-    private final Duration userCpuTime;
-
-    /**
-     * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by all Tasks in all Jobs created under the schedule.
-     *
-     * @return the userCpuTime value.
-     */
-    @Generated
-    public Duration getUserCpuTime() {
-        return this.userCpuTime;
-    }
-
-    /**
-     * Creates an instance of BatchJobScheduleStatistics class.
-     *
-     * @param url the url value to set.
-     * @param startTime the startTime value to set.
-     * @param lastUpdateTime the lastUpdateTime value to set.
-     * @param userCpuTime the userCpuTime value to set.
-     * @param kernelCpuTime the kernelCpuTime value to set.
-     * @param wallClockTime the wallClockTime value to set.
-     * @param readIOps the readIOps value to set.
-     * @param writeIOps the writeIOps value to set.
-     * @param readIOGiB the readIOGiB value to set.
-     * @param writeIOGiB the writeIOGiB value to set.
-     * @param numSucceededTasks the numSucceededTasks value to set.
-     * @param numFailedTasks the numFailedTasks value to set.
-     * @param numTaskRetries the numTaskRetries value to set.
-     * @param waitTime the waitTime value to set.
-     */
-    @Generated
-    private BatchJobScheduleStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
-        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIOps, long writeIOps,
-        double readIOGiB, double writeIOGiB, long numSucceededTasks, long numFailedTasks, long numTaskRetries,
-        Duration waitTime) {
-        this.url = url;
-        this.startTime = startTime;
-        this.lastUpdateTime = lastUpdateTime;
-        this.userCpuTime = userCpuTime;
-        this.kernelCpuTime = kernelCpuTime;
-        this.wallClockTime = wallClockTime;
-        this.readIOps = readIOps;
-        this.writeIOps = writeIOps;
-        this.readIOGiB = readIOGiB;
-        this.writeIOGiB = writeIOGiB;
-        this.numSucceededTasks = numSucceededTasks;
-        this.numFailedTasks = numFailedTasks;
-        this.numTaskRetries = numTaskRetries;
-        this.waitTime = waitTime;
     }
 
     /**
