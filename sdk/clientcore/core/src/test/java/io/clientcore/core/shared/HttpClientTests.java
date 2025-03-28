@@ -9,7 +9,6 @@ import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
-import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.client.HttpClient;
@@ -138,10 +137,6 @@ public abstract class HttpClientTests {
         return getServerUri(isSecure());
     }
 
-    private String formatRequestEndpoint(String path) {
-        return UriBuilder.parse(getRequestUri()).setPath(path).toString();
-    }
-
     private String getRequestScheme() {
         return isSecure() ? "https" : "http";
     }
@@ -257,9 +252,8 @@ public abstract class HttpClientTests {
     @Test
     public void canAccessResponseBody() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.PUT)
-            .setUri(getRequestUri(ECHO_RESPONSE))
-            .setBody(requestBody);
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
 
         try (Response<BinaryData> response = getHttpClient().send(request)) {
             assertEquals(requestBody.toString(), response.getValue().toString());
@@ -273,9 +267,8 @@ public abstract class HttpClientTests {
     @Test
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.PUT)
-            .setUri(getRequestUri(ECHO_RESPONSE))
-            .setBody(requestBody);
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
 
         try (Response<BinaryData> response = getHttpClient().send(request)) {
             // Read response twice using all accessors.
@@ -296,9 +289,8 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) throws IOException {
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.PUT)
-            .setUri(getRequestUri(ECHO_RESPONSE))
-            .setBody(requestBody);
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
 
         try (Response<BinaryData> response = getHttpClient().send(request)) {
             assertArrayEquals(expectedResponseBody, response.getValue().toBytes());
@@ -319,20 +311,20 @@ public abstract class HttpClientTests {
             getProtocol(ECHO_RESPONSE),
             new Headers(),
             requestBody);
-
+    
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
             .setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
-
+    
         Response<?> response = createHttpClient()
             .send(request);
-
+    
         byte[] responseBytes = response
             .getBodyAsByteArray()
             .block();
-
+    
         assertArrayEquals(expectedResponseBody, responseBytes);
         assertEquals(expectedResponseBody.length, progress.intValue());
     }*/
@@ -381,8 +373,8 @@ public abstract class HttpClientTests {
     }
 
     private byte[] sendRequest(String requestPath) throws IOException {
-        try (Response<BinaryData> response = getHttpClient().send(
-            new HttpRequest().setMethod(HttpMethod.GET).setUri(getRequestUri(requestPath)))) {
+        try (Response<BinaryData> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(getRequestUri(requestPath)))) {
             return response.getValue().toBytes();
         }
     }
@@ -438,12 +430,10 @@ public abstract class HttpClientTests {
      */
     @Test
     public void requestWithByteArrayReturnType() throws IOException {
-        String uri = UriBuilder.parse(getRequestUri())
-            .setPath("bytes/100")
-            .toString();
+        String uri = UriBuilder.parse(getRequestUri()).setPath("bytes/100").toString();
 
-        try (Response<BinaryData> response = getHttpClient().send(
-            new HttpRequest().setMethod(HttpMethod.GET).setUri(uri))) {
+        try (Response<BinaryData> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri))) {
             assertNotNull(response);
             assertEquals(200, response.getStatusCode());
             assertEquals(100, response.getValue().toBytes().length);
@@ -461,8 +451,8 @@ public abstract class HttpClientTests {
             .setPath("bytes/" + 100)
             .toString();
 
-        try (Response<BinaryData> response = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(uri))) {
+        try (Response<BinaryData> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri))) {
             assertNotNull(response);
             assertEquals(200, response.getStatusCode());
             assertEquals(100, response.getValue().toBytes().length);
@@ -480,142 +470,92 @@ public abstract class HttpClientTests {
             .setPath("bytes/" + 0)
             .toString();
 
-        try (Response<BinaryData> response = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(uri))) {
+        try (Response<BinaryData> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri))) {
             assertNotNull(response);
             assertEquals(200, response.getStatusCode());
             assertEquals(0, response.getValue().toBytes().length);
         }
     }
 
-    @ServiceInterface(name = "Service5", host = "{uri}")
-    private interface Service5 {
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "anything/{path}", expectedStatusCodes = { 200 })
-        HttpBinJSON getAnythingWithEncodedPathParam(@HostParam("uri") String uri,
-            @PathParam(value = "path", encoded = true) String pathParam);
-    }
-
     @Test
     public void getRequestWithAnything() throws IOException {
-        String uri = UriBuilder.parse(getRequestUri())
-            .setPath("anything")
-            .toString();
+        String uri = UriBuilder.parse(getRequestUri()).setPath("anything").toString();
 
-        try (Response<BinaryData> response = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(uri))) {
+        try (Response<BinaryData> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri))) {
             assertNotNull(response);
             assertEquals(200, response.getStatusCode());
             assertNotNull(response.getValue());
 
             HttpBinJSON json = response.getValue().toObject(HttpBinJSON.class);
             assertNotNull(json);
-            assertEquals(0, response.getValue().toBytes().length);
             assertMatchWithHttpOrHttps("localhost/anything", json.uri());
         }
     }
 
     @Test
     public void getRequestWithAnythingWithPlus() throws IOException {
-        String uri = UriBuilder.parse(getRequestUri())
-            .setPath("anything/with+plus")
-            .toString();
+        String uri = UriBuilder.parse(getRequestUri()).setPath("anything/with+plus").toString();
 
-        try (Response<BinaryData> response = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(uri))) {
+        try (Response<BinaryData> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri))) {
             assertNotNull(response);
             assertEquals(200, response.getStatusCode());
             assertNotNull(response.getValue());
 
             HttpBinJSON json = response.getValue().toObject(HttpBinJSON.class);
             assertNotNull(json);
-            assertEquals(0, response.getValue().toBytes().length);
             assertMatchWithHttpOrHttps("localhost/anything/with+plus", json.uri());
         }
     }
 
     @Test
     public void getRequestWithAnythingWithPathParam() throws IOException {
-        String uri = UriBuilder.parse(getRequestUri())
-            .setPath("anything/withpathparam")
-            .toString();
+        String uri = UriBuilder.parse(getRequestUri()).setPath("anything/withpathparam").toString();
 
-        try (Response<BinaryData> response = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(uri))) {
+        try (Response<BinaryData> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri))) {
             assertNotNull(response);
             assertEquals(200, response.getStatusCode());
             assertNotNull(response.getValue());
 
             HttpBinJSON json = response.getValue().toObject(HttpBinJSON.class);
             assertNotNull(json);
-            assertEquals(0, response.getValue().toBytes().length);
-            assertMatchWithHttpOrHttps("localhost/withpathparam", json.uri());
+            assertMatchWithHttpOrHttps("localhost/anything/withpathparam", json.uri());
         }
     }
 
     @Test
     public void getRequestWithAnythingWithPathParamWithSpace() throws IOException {
-        String uri = UriBuilder.parse(getRequestUri())
-            .setPath("anything/with path param")
-            .toString();
+        String uri = UriBuilder.parse(getRequestUri()).setPath("anything/with%20path%20param").toString();
 
-        try (Response<BinaryData> response = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(uri))) {
+        try (Response<BinaryData> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri))) {
             assertNotNull(response);
             assertEquals(200, response.getStatusCode());
             assertNotNull(response.getValue());
 
             HttpBinJSON json = response.getValue().toObject(HttpBinJSON.class);
             assertNotNull(json);
-            assertEquals(0, response.getValue().toBytes().length);
-            assertMatchWithHttpOrHttps("localhost/with path param", json.uri());
+            assertMatchWithHttpOrHttps("localhost/anything/with path param", json.uri());
         }
     }
 
     @Test
     public void getRequestWithAnythingWithPathParamWithPlus() throws IOException {
-        String uri = UriBuilder.parse(getRequestUri())
-            .setPath("anything/with+path+param")
-            .toString();
+        String uri = UriBuilder.parse(getRequestUri()).setPath("anything/with+path+param").toString();
 
-        try (Response<BinaryData> response = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(uri))) {
+        try (Response<BinaryData> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri))) {
             assertNotNull(response);
             assertEquals(200, response.getStatusCode());
             assertNotNull(response.getValue());
 
             HttpBinJSON json = response.getValue().toObject(HttpBinJSON.class);
             assertNotNull(json);
-            assertEquals(0, response.getValue().toBytes().length);
-            assertMatchWithHttpOrHttps("localhost/with+path+param", json.uri());
+            assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.uri());
         }
-    }
-
-    @Test
-    public void getRequestWithAnythingWithEncodedPathParam() {
-        final HttpBinJSON json = createService(Service5.class).getAnythingWithEncodedPathParam(getRequestUri(),
-            "withpathparam");
-
-        assertNotNull(json);
-        assertMatchWithHttpOrHttps("localhost/anything/withpathparam", json.uri());
-    }
-
-    @Test
-    public void getRequestWithAnythingWithEncodedPathParamWithPercent20() {
-        final HttpBinJSON json = createService(Service5.class).getAnythingWithEncodedPathParam(getRequestUri(),
-            "with%20path%20param");
-
-        assertNotNull(json);
-        assertMatchWithHttpOrHttps("localhost/anything/with path param", json.uri());
-    }
-
-    @Test
-    public void getRequestWithAnythingWithEncodedPathParamWithPlus() {
-        final HttpBinJSON json = createService(Service5.class).getAnythingWithEncodedPathParam(getRequestUri(),
-            "with+path+param");
-
-        assertNotNull(json);
-        assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.uri());
     }
 
     @ServiceInterface(name = "Service6", host = "{uri}")
@@ -803,9 +743,8 @@ public abstract class HttpClientTests {
 
     @Test
     public void putRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
-        HttpResponseException e = assertThrows(HttpResponseException.class,
-            () -> createService(Service9.class).putWithUnexpectedResponseAndNoFallthroughExceptionType(getRequestUri(),
-                "I'm the body!"));
+        HttpResponseException e = assertThrows(HttpResponseException.class, () -> createService(Service9.class)
+            .putWithUnexpectedResponseAndNoFallthroughExceptionType(getRequestUri(), "I'm the body!"));
 
         assertNotNull(e.getValue());
         assertInstanceOf(LinkedHashMap.class, e.getValue());
@@ -1049,17 +988,23 @@ public abstract class HttpClientTests {
             @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/json; charset=utf-8" })
+            method = HttpMethod.PUT,
+            path = "put",
+            headers = { "Content-Type: application/json; charset=utf-8" })
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/octet-stream" })
+            method = HttpMethod.PUT,
+            path = "put",
+            headers = { "Content-Type: application/octet-stream" })
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/octet-stream" })
+            method = HttpMethod.PUT,
+            path = "put",
+            headers = { "Content-Type: application/octet-stream" })
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
@@ -1086,40 +1031,40 @@ public abstract class HttpClientTests {
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(),
-            null);
+        final HttpBinJSON result
+            = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(),
-            "");
+        final HttpBinJSON result
+            = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(), "");
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(),
-            "hello");
+        final HttpBinJSON result
+            = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(), "hello");
 
         assertEquals("hello", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(),
-            null);
+        final HttpBinJSON result
+            = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(),
-            new byte[0]);
+        final HttpBinJSON result
+            = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(), new byte[0]);
 
         assertEquals("", result.data());
     }
@@ -1134,250 +1079,242 @@ public abstract class HttpClientTests {
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithHeaderApplicationJsonContentTypeAndStringBody(
-            getRequestUri(), null);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationJsonContentTypeAndStringBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithHeaderApplicationJsonContentTypeAndStringBody(
-            getRequestUri(), "");
+        final HttpBinJSON result
+            = createService(Service19.class).putWithHeaderApplicationJsonContentTypeAndStringBody(getRequestUri(), "");
 
         assertEquals("\"\"", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithHeaderApplicationJsonContentTypeAndStringBody(
-            getRequestUri(), "soups and stuff");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationJsonContentTypeAndStringBody(getRequestUri(), "soups and stuff");
 
         assertEquals("\"soups and stuff\"", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), null);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), new byte[0]);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), new byte[0]);
 
         assertEquals("\"\"", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getRequestUri(),
-            new byte[] { 0, 1, 2, 3, 4 });
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), new byte[] { 0, 1, 2, 3, 4 });
 
         assertEquals("\"AAECAwQ=\"", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(), null);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(), "");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(), "");
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(),
-            "soups and stuff");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(), "soups and stuff");
 
         assertEquals("soups and stuff", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), null);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), "");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), "");
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), "penguins");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), "penguins");
 
         assertEquals("penguins", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(), null);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(),
-            new byte[0]);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(), new byte[0]);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(),
-            new byte[] { 0, 1, 2, 3, 4 });
+        final HttpBinJSON result
+            = createService(Service19.class).putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(
+                getRequestUri(), new byte[] { 0, 1, 2, 3, 4 });
 
         assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationJsonContentTypeAndStringBody(getRequestUri(), null);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationJsonContentTypeAndStringBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationJsonContentTypeAndStringBody(getRequestUri(), "");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationJsonContentTypeAndStringBody(getRequestUri(), "");
 
         assertEquals("\"\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationJsonContentTypeAndStringBody(getRequestUri(),
-            "soups and stuff");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationJsonContentTypeAndStringBody(getRequestUri(), "soups and stuff");
 
         assertEquals("\"soups and stuff\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(), null);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(), "");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(), "");
 
         assertEquals("\"\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(),
-            "soups and stuff");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getRequestUri(), "soups and stuff");
 
         assertEquals("\"soups and stuff\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), null);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), new byte[0]);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), new byte[0]);
 
         assertEquals("\"\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getRequestUri(),
-            new byte[] { 0, 1, 2, 3, 4 });
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), new byte[] { 0, 1, 2, 3, 4 });
 
         assertEquals("\"AAECAwQ=\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), null);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), "");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), "");
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getRequestUri(),
-            "penguins");
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getRequestUri(), "penguins");
 
         assertEquals("penguins", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(), null);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(),
-            new byte[0]);
+        final HttpBinJSON result = createService(Service19.class)
+            .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(), new byte[0]);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(
-            Service19.class).putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(),
-            new byte[] { 0, 1, 2, 3, 4 });
+        final HttpBinJSON result
+            = createService(Service19.class).putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(
+                getRequestUri(), new byte[] { 0, 1, 2, 3, 4 });
 
         assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
     }
@@ -1398,20 +1335,20 @@ public abstract class HttpClientTests {
             .putBodyAndHeaders(getRequestUri(), "body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-
+        
         assertEquals(Headers.class, response.getHeaders().getClass());
-
+        
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);
         assertMatchWithHttpOrHttps("localhost/put", body.uri());
         assertEquals("body string", body.data());
-
+        
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
         assertNotNull(headers.date());
         assertNotEquals(0, (Object) headers.xProcessedTime());
-
+        
          */
     }
 
@@ -1524,12 +1461,13 @@ public abstract class HttpClientTests {
 
         // Order in which policies applied will be the order in which they added to builder
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .addPolicy(new HttpInstrumentationPolicy(new HttpInstrumentationOptions().setHttpLogLevel(
-                HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS)))
+            .addPolicy(new HttpInstrumentationPolicy(new HttpInstrumentationOptions()
+                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS)))
             .build();
 
-        Response<HttpBinJSON> response = RestProxy.create(BinaryDataUploadService.class, httpPipeline,
-            new JsonSerializer()).put(getServerUri(isSecure()), data, Files.size(filePath));
+        Response<HttpBinJSON> response
+            = RestProxy.create(BinaryDataUploadService.class, httpPipeline, new JsonSerializer())
+                .put(getServerUri(isSecure()), data, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
     }
@@ -1591,13 +1529,13 @@ public abstract class HttpClientTests {
         HttpBinFormDataJSON postForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam("custemail") String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
-
+    
         @Post("post")
         HttpBinFormDataJSON postEncodedForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam(value = "custemail", encoded = true) String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
     }
-
+    
     @Test
     public void postUriForm() {
         Service26 service = createService(Service26.class);
@@ -1609,12 +1547,12 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo%40bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-
+    
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
     }
-
+    
     @Test
     public void postUriFormEncoded() {
         Service26 service = createService(Service26.class);
@@ -1626,7 +1564,7 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo@bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-
+    
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
@@ -1649,8 +1587,8 @@ public abstract class HttpClientTests {
     @Test
     public void requestOptionsChangesBody() {
         Service27 service = createService(Service27.class);
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().setBody(BinaryData.fromString("24")));
+        HttpBinJSON response
+            = service.put(getServerUri(isSecure()), 42, new RequestOptions().setBody(BinaryData.fromString("24")));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1782,8 +1720,8 @@ public abstract class HttpClientTests {
         ServerSentEventService service = createService(ServerSentEventService.class);
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
 
-        try (Response<BinaryData> response = service.post(getServerUri(isSecure()), requestBody,
-            sse -> assertEquals(expected, sse.getData()), null)) {
+        try (Response<BinaryData> response
+            = service.post(getServerUri(isSecure()), requestBody, sse -> assertEquals(expected, sse.getData()), null)) {
             assertNotNull(response.getValue());
             assertNotEquals(0, response.getValue().getLength());
             assertNotNull(response.getValue());
@@ -1940,11 +1878,17 @@ public abstract class HttpClientTests {
         HttpBinJSON get5(@HostParam("uri") String uri);
 
         @HttpRequestInformation(
-            method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 }, queryParams = { "" })
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "" })
         HttpBinJSON get6(@HostParam("uri") String uri);
 
         @HttpRequestInformation(
-            method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 }, queryParams = { "=value" })
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "=value" })
         HttpBinJSON get7(@HostParam("uri") String uri);
     }
 
@@ -1985,8 +1929,8 @@ public abstract class HttpClientTests {
 
     @Test
     public void queryParamsRequestWithMultipleValuesForSameNameAndValueArray() {
-        final HttpBinJSON json = createService(Service31.class).get3(getRequestUri(),
-            "variableValue1,variableValue2,variableValue3");
+        final HttpBinJSON json
+            = createService(Service31.class).get3(getRequestUri(), "variableValue1,variableValue2,variableValue3");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
