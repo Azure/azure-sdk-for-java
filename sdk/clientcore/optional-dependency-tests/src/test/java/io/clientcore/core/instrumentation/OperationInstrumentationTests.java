@@ -53,8 +53,8 @@ public class OperationInstrumentationTests {
     private TestClock testClock;
 
     private InstrumentationOptions otelOptions;
-    private LibraryInstrumentationOptions libraryInstrumentationOptions
-        = new LibraryInstrumentationOptions("test-lib").setLibraryVersion("1.0.0")
+    private SdkInstrumentationOptions sdkInstrumentationOptions
+        = new SdkInstrumentationOptions("test-lib").setLibraryVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
     @BeforeEach
@@ -79,7 +79,7 @@ public class OperationInstrumentationTests {
 
     @Test
     public void invalidArguments() {
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, libraryInstrumentationOptions);
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, sdkInstrumentationOptions);
         assertThrows(NullPointerException.class,
             () -> instrumentation.instrumentWithResponse(null, RequestContext.none(), o -> "done"));
         assertThrows(NullPointerException.class, () -> instrumentation.instrument("call", RequestContext.none(), null));
@@ -88,7 +88,7 @@ public class OperationInstrumentationTests {
     @Test
     public void basicCall() {
         Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
+            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
 
         AtomicReference<Span> current = new AtomicReference<>();
         instrumentation.instrument("call", RequestContext.none(), context -> {
@@ -110,7 +110,7 @@ public class OperationInstrumentationTests {
     @Test
     public void callWithError() {
         Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
+            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
         RuntimeException error = new RuntimeException("Test error");
         assertThrows(RuntimeException.class, () -> instrumentation.instrument("call", RequestContext.none(), o -> {
             throw error;
@@ -126,9 +126,8 @@ public class OperationInstrumentationTests {
 
     @Test
     public void noEndpoint() {
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, libraryInstrumentationOptions);
-        instrumentation.instrument("call", RequestContext.none(), __ -> {
-        });
+        Instrumentation instrumentation = Instrumentation.create(otelOptions, sdkInstrumentationOptions);
+        instrumentation.instrument("call", RequestContext.none(), __ -> { });
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -142,9 +141,8 @@ public class OperationInstrumentationTests {
     @ValueSource(strings = { "http://example.com", "https://example.com:8080", "http://example.com:9090" })
     public void testEndpoints(String endpoint) {
         Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(endpoint));
-        instrumentation.instrument("Call", RequestContext.none(), __ -> {
-        });
+            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(endpoint));
+        instrumentation.instrument("Call", RequestContext.none(), __ -> { });
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -161,7 +159,7 @@ public class OperationInstrumentationTests {
     public void tracingDisabled() {
         otelOptions.setTracingEnabled(false);
         Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
+            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
         instrumentation.instrument("call", RequestContext.none(), __ -> {
             assertFalse(Span.current().getSpanContext().isValid());
         });
@@ -176,7 +174,7 @@ public class OperationInstrumentationTests {
     public void metricsDisabled() {
         otelOptions.setMetricsEnabled(false);
         Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
+            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
         instrumentation.instrument("call", RequestContext.none(), __ -> {
         });
 
@@ -190,7 +188,7 @@ public class OperationInstrumentationTests {
         otelOptions.setTracingEnabled(false);
         otelOptions.setMetricsEnabled(false);
         Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
+            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
         instrumentation.instrument("call", RequestContext.none(), __ -> {
         });
         assertEquals(0, exporter.getFinishedSpanItems().size());
@@ -199,14 +197,12 @@ public class OperationInstrumentationTests {
 
     @Test
     public void testNestedOperations() {
-        LibraryInstrumentationOptions libOptions1
-            = new LibraryInstrumentationOptions("test-lib1").setLibraryVersion("1.0.0")
-                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
-        LibraryInstrumentationOptions libOptions2
-            = new LibraryInstrumentationOptions("test-lib2").setLibraryVersion("2.0.0")
-                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
-        Instrumentation instrumentation1 = Instrumentation.create(otelOptions, libOptions1);
-        Instrumentation instrumentation2 = Instrumentation.create(otelOptions, libOptions2);
+        SdkInstrumentationOptions sdkOptions1 = new SdkInstrumentationOptions("test-lib1").setLibraryVersion("1.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+        SdkInstrumentationOptions sdkOptions2 = new SdkInstrumentationOptions("test-lib2").setLibraryVersion("2.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+        Instrumentation instrumentation1 = Instrumentation.create(otelOptions, sdkOptions1);
+        Instrumentation instrumentation2 = Instrumentation.create(otelOptions, sdkOptions2);
 
         io.clientcore.core.instrumentation.tracing.Span span = instrumentation1.getTracer()
             .spanBuilder("call1", SpanKind.CONSUMER, null)
@@ -243,7 +239,7 @@ public class OperationInstrumentationTests {
     @Test
     public void testSiblingOperations() {
         Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint("https://localhost"));
+            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint("https://localhost"));
 
         AtomicReference<InstrumentationContext> parent = new AtomicReference<>();
 

@@ -17,8 +17,8 @@ class SampleClient {
     SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("contoso-sample").setEndpoint(endpoint);
-        this.instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
+        SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("contoso-sample").setEndpoint(endpoint);
+        this.instrumentation = Instrumentation.create(instrumentationOptions, sdkOptions);
     }
 
     public Response<?> downloadContent() {
