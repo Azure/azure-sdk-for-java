@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.ProgressReporter;
@@ -18,63 +20,51 @@ import java.util.function.Consumer;
  * <p>
  * This class does not allow any modifications to the request metadata provided by the user.
  */
-public final class SdkRequestContext extends RequestOptions {
+@Metadata(properties = { MetadataProperties.FLUENT })
+public final class SdkRequestContext {
     // TODO (limolkova) do we need to make it public and probably move to another class?
     private static final String PROGRESS_REPORTER_KEY = "progressReporter";
     static final SdkRequestContext NONE = new SdkRequestContext(null, null, null);
     private static final ClientLogger LOGGER = new ClientLogger(SdkRequestContext.class);
-    private final InstrumentationContext childInstrumentationContext;
     private final ProgressReporter childProgressReporter;
+    private final RequestOptions requestOptions;
 
-    private SdkRequestContext(RequestOptions options, InstrumentationContext instrumentationContext,
-        ProgressReporter progressReporter) {
-        super(options);
-
-        this.childInstrumentationContext = instrumentationContext;
-        this.childProgressReporter = progressReporter;
-    }
-
-    /**
-     * Creates a new instance of {@link SdkRequestContext} with the given options and instrumentation context.
-     *
-     * @param options The {@link RequestOptions} to be used.
-     * @param instrumentationContext The {@link InstrumentationContext} to be used.
-     * @return A new instance of {@link SdkRequestContext} or, when optimization is possible, the existing instance of {@link SdkRequestContext}
-     * provided in the {@code options} parameter.
-     */
-    public static SdkRequestContext create(RequestOptions options, InstrumentationContext instrumentationContext) {
-        if (options instanceof SdkRequestContext
-            && (instrumentationContext == null || !instrumentationContext.isValid())) {
-            return (SdkRequestContext) options;
+    private SdkRequestContext(RequestOptions options, ProgressReporter progressReporter,
+        InstrumentationContext instrumentationContext) {
+        this.requestOptions = new RequestOptions(options, this);
+        if (instrumentationContext != null) {
+            this.requestOptions.setInstrumentationContext(instrumentationContext);
         }
-
-        return new SdkRequestContext(options, instrumentationContext, null);
-    }
-
-    /**
-     * Creates a new instance of {@link SdkRequestContext} with the given options and progress reporter.
-     *
-     * @param options The {@link RequestOptions} to be used.
-     * @param progressReporter The {@link ProgressReporter} to be used.
-     * @return A new instance of {@link SdkRequestContext} or, when optimization is possible, the existing instance of {@link SdkRequestContext}
-     * provided in the {@code options} parameter.
-     */
-    public static SdkRequestContext create(RequestOptions options, ProgressReporter progressReporter) {
-        return new SdkRequestContext(options, null, progressReporter);
+        this.childProgressReporter = progressReporter;
     }
 
     /**
      * Creates a new instance of {@link SdkRequestContext} with the given options.
      * @param options The {@link RequestOptions} to be used.
-     * @return A new instance of {@link SdkRequestContext} or, when optimization is possible, the existing instance of {@link SdkRequestContext}
-     * provided in the {@code options} parameter.
      */
-    public static SdkRequestContext create(RequestOptions options) {
-        if (options instanceof SdkRequestContext) {
-            return (SdkRequestContext) options;
+    SdkRequestContext(RequestOptions options) {
+        this(options, null, null);
+    }
+
+    /**
+     * Creates a new instance of {@link SdkRequestContext} with the given options.
+     * @param options The {@link RequestOptions} to be used.
+     * @return The {@link SdkRequestContext} from the given options.
+     */
+    public static SdkRequestContext from(RequestOptions options) {
+        if (options != null && options.getRequestContext() != null) {
+            return options.getRequestContext();
         }
 
-        return new SdkRequestContext(options, null, null);
+        return new SdkRequestContext(options);
+    }
+
+    /**
+     * Get the {@link RequestOptions} corresponding to this request context.
+     * @return The {@link RequestOptions} corresponding to this request context.
+     */
+    public RequestOptions toRequestOptions() {
+        return requestOptions;
     }
 
     /**
@@ -87,13 +77,12 @@ public final class SdkRequestContext extends RequestOptions {
         return NONE;
     }
 
-    @Override
+    /**
+     * Get the {@link InstrumentationContext} from the request context.
+     * @return The {@link InstrumentationContext} if present, otherwise null.
+     */
     public InstrumentationContext getInstrumentationContext() {
-        if (childInstrumentationContext != null && childInstrumentationContext.isValid()) {
-            return childInstrumentationContext;
-        }
-
-        return super.getInstrumentationContext();
+        return requestOptions.getInstrumentationContext();
     }
 
     /**
@@ -106,7 +95,7 @@ public final class SdkRequestContext extends RequestOptions {
             return childProgressReporter;
         }
 
-        Object progressReporter = super.getMetadata(PROGRESS_REPORTER_KEY);
+        Object progressReporter = requestOptions.getMetadata(PROGRESS_REPORTER_KEY);
         if (progressReporter instanceof ProgressReporter) {
             return (ProgressReporter) progressReporter;
         }
@@ -121,37 +110,41 @@ public final class SdkRequestContext extends RequestOptions {
         return null;
     }
 
-    @Override
-    public RequestOptions putMetadata(String key, Object value) {
-        throw throwOnImmutable("Cannot put metadata");
+    /**
+     * Set the {@link ProgressReporter} to be used for this request context.
+     *
+     * @param progressReporter The {@link ProgressReporter} to be used.
+     * @return A new instance of {@link SdkRequestContext} with the given {@link ProgressReporter}.
+     */
+    public SdkRequestContext setProgressReporter(ProgressReporter progressReporter) {
+        return new SdkRequestContext(this.requestOptions, progressReporter, null);
     }
 
-    @Override
-    public RequestOptions setLogger(ClientLogger logger) {
-        throw throwOnImmutable("Cannot set logger");
+    /**
+     * Set the {@link InstrumentationContext} to be used for this request context.
+     *
+     * @param context The {@link InstrumentationContext} to be used.
+     * @return A new instance of {@link SdkRequestContext} with the given {@link InstrumentationContext}.
+     */
+    public SdkRequestContext setInstrumentationContext(InstrumentationContext context) {
+        return new SdkRequestContext(this.requestOptions, this.childProgressReporter, context);
     }
 
-    @Override
-    public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
-        throw throwOnImmutable("Cannot set instrumentation context");
+    /**
+     * Gets the request callback, applying all the configurations set on this instance of {@link RequestOptions}.
+     *
+     * @return The request callback.
+     */
+    public Consumer<HttpRequest> getRequestCallback() {
+        return requestOptions.getRequestCallback();
     }
 
-    @Override
-    public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
-        throw throwOnImmutable("Cannot add request callback");
-    }
-
-    @Override
-    public RequestOptions addQueryParam(String name, String value) {
-        throw throwOnImmutable("Cannot add query param");
-    }
-
-    @Override
-    public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
-        throw throwOnImmutable("Cannot add query param");
-    }
-
-    private IllegalStateException throwOnImmutable(String message) {
-        return LOGGER.logThrowableAsError(new IllegalStateException(message + ". This instance is immutable."));
+    /**
+     * Gets the {@link ClientLogger} used to log the request and response.
+     *
+     * @return The {@link ClientLogger} used to log the request and response.
+     */
+    public ClientLogger getLogger() {
+        return requestOptions.getLogger();
     }
 }

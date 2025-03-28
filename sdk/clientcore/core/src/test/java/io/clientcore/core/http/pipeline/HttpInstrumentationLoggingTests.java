@@ -71,9 +71,11 @@ public class HttpInstrumentationLoggingTests {
         throws IOException {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
 
+        RequestOptions options = new RequestOptions().setLogger(logger);
+
         HttpPipeline pipeline = createPipeline(new HttpInstrumentationOptions().setHttpLogLevel(detailLevel));
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI);
-        request.setRequestContext(SdkRequestContext.create(new RequestOptions().setLogger(logger)));
+        request.setRequestContext(SdkRequestContext.from(options));
 
         pipeline.send(request).close();
 
@@ -1008,7 +1010,7 @@ public class HttpInstrumentationLoggingTests {
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer {token}");
         request.setRequestContext(
-            SdkRequestContext.create(new RequestOptions().setLogger(logger).setInstrumentationContext(context)));
+            SdkRequestContext.from(new RequestOptions().setLogger(logger).setInstrumentationContext(context)));
 
         return request;
     }

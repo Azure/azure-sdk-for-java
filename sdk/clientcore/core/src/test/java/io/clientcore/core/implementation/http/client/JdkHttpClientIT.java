@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.http.ContentType;
@@ -222,7 +223,7 @@ public class JdkHttpClientIT {
     public void testBufferedResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<BinaryData> response = getResponse(client, "/short", SdkRequestContext.none())) {
+        try (Response<BinaryData> response = getResponse(client, "/short", RequestOptions.none())) {
             assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
@@ -231,7 +232,7 @@ public class JdkHttpClientIT {
     public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<BinaryData> response = getResponse(client, "/empty", SdkRequestContext.none())) {
+        try (Response<BinaryData> response = getResponse(client, "/empty", RequestOptions.none())) {
             assertEquals(0L, response.getValue().toBytes().length);
         }
     }
@@ -266,10 +267,11 @@ public class JdkHttpClientIT {
         }
     }
 
-    private static Response<BinaryData> getResponse(HttpClient client, String path, SdkRequestContext context)
+    private static Response<BinaryData> getResponse(HttpClient client, String path, RequestOptions options)
         throws IOException {
-        HttpRequest request
-            = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path)).setRequestContext(context);
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri(uri(server, path))
+            .setRequestContext(SdkRequestContext.from(options));
 
         return client.send(request);
     }

@@ -8,6 +8,7 @@ import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
@@ -246,11 +247,11 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         final long requestContentLength = getContentLength(logger, request.getBody(), request.getHeaders(), true);
 
         Map<String, Object> metricAttributes = isMetricsEnabled ? new HashMap<>(8) : null;
-        if (request.getRequestContext() == null) {
-            request.setRequestContext(SdkRequestContext.none());
-        }
 
-        InstrumentationContext parentContext = request.getRequestContext().getInstrumentationContext();
+        SdkRequestContext requestContext = request.getRequestContext() == null
+            ? SdkRequestContext.from(RequestOptions.none())
+            : request.getRequestContext();
+        InstrumentationContext parentContext = requestContext.getInstrumentationContext();
 
         SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, parentContext);
         setStartAttributes(request, redactedUrl, spanBuilder, metricAttributes);
@@ -260,7 +261,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parentContext;
 
         if (currentContext != null && currentContext.isValid()) {
-            request.setRequestContext(SdkRequestContext.create(request.getRequestContext(), currentContext));
+            request.setRequestContext(requestContext.setInstrumentationContext(currentContext));
             // even if tracing is disabled, we could have a valid context to propagate
             // if it was provided by the application explicitly.
             traceContextPropagator.inject(currentContext, request.getHeaders(), SETTER);

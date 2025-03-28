@@ -221,13 +221,13 @@ public class OTelInstrumentation implements Instrumentation {
 
     @Override
     public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<SdkRequestContext, TResponse> operation) {
+        Function<RequestOptions, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
         InstrumentationContext context = requestOptions == null ? null : requestOptions.getInstrumentationContext();
         if (!shouldInstrument(SpanKind.CLIENT, context)) {
-            return operation.apply(SdkRequestContext.create(requestOptions));
+            return operation.apply(requestOptions);
         }
 
         long startTimeNs = callDurationMetric.isEnabled() ? System.nanoTime() : 0;
@@ -238,10 +238,12 @@ public class OTelInstrumentation implements Instrumentation {
 
         TracingScope scope = span.makeCurrent();
         RuntimeException error = null;
-        SdkRequestContext requestContext = SdkRequestContext.create(requestOptions, span.getInstrumentationContext());
+
+        SdkRequestContext requestContext
+            = SdkRequestContext.from(requestOptions).setInstrumentationContext(span.getInstrumentationContext());
 
         try {
-            return operation.apply(requestContext);
+            return operation.apply(requestContext.toRequestOptions());
         } catch (RuntimeException t) {
             error = t;
             throw t;
