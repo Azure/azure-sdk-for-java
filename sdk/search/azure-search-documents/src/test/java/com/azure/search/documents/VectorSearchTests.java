@@ -11,7 +11,6 @@ import com.azure.search.documents.implementation.util.SearchPagedResponseAccessH
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.models.BinaryQuantizationCompression;
 import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
@@ -690,8 +689,8 @@ public class VectorSearchTests extends SearchTestBase {
                 .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)
                     .setRescoringOptions(rescoringOptions)));
 
-        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(true).buildAsyncClient();
-        searchIndexClient.createIndex(searchIndex);
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        searchIndexClient.createIndex(searchIndex).block();
 
         indexesToDelete.add(indexName);
 

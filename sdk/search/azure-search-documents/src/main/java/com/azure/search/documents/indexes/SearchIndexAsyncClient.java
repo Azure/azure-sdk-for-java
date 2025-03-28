@@ -1259,7 +1259,11 @@ public final class SearchIndexAsyncClient {
     }
 
     PagedFlux<IndexStatisticsSummary> getIndexStatsSummary(Context context) {
-        return (PagedFlux<IndexStatisticsSummary>) restClient.getIndexStatsSummaryAsync(null, context)
-            .onErrorMap(MappingUtils::exceptionMapper);
+        try {
+            return restClient.getIndexStatsSummaryAsync(null, context);
+        } catch (RuntimeException ex) {
+            RuntimeException mappedException = (RuntimeException) MappingUtils.exceptionMapper(ex);
+            return pagedFluxError(LOGGER, mappedException);
+        }
     }
 }

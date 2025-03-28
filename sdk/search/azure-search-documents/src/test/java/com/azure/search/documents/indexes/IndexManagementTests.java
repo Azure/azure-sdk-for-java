@@ -891,7 +891,10 @@ public class IndexManagementTests extends SearchTestBase {
         PagedFlux<IndexStatisticsSummary> statsSummary = asyncClient.getIndexStatsSummary();
 
         StepVerifier.create(statsSummary)
-            .expectNextCount(5)
+            .consumeNextWith(indexStatsSummary -> returnedNames.add(indexStatsSummary.getName()))
+            .consumeNextWith(indexStatsSummary -> returnedNames.add(indexStatsSummary.getName()))
+            .consumeNextWith(indexStatsSummary -> returnedNames.add(indexStatsSummary.getName()))
+            .consumeNextWith(indexStatsSummary -> returnedNames.add(indexStatsSummary.getName()))
             .consumeNextWith(indexStatsSummary -> returnedNames.add(indexStatsSummary.getName()))
             .verifyComplete();
 
