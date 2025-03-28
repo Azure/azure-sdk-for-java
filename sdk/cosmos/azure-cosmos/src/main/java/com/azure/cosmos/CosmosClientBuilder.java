@@ -904,7 +904,7 @@ public class CosmosClientBuilder implements
 
             if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
                 logger.info("As Per-Partition Automatic Failover is enabled, Per-Partition Circuit Breaker is enabled too by default!");
-                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "true");
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
             }
         }
     }
