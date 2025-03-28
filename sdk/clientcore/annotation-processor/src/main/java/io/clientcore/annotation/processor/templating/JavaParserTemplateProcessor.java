@@ -14,13 +14,10 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
-import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
-import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -30,6 +27,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -44,6 +42,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -301,7 +300,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                     new NodeList<>(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
             .addMarkerAnnotation(Override.class)
             .setType(TypeConverter.getAstType(method.getMethodReturnType()));
-
         method.getParameters()
             .forEach(param -> internalMethod
                 .addParameter(new Parameter(StaticJavaParser.parseType(param.getShortTypeName()), param.getName())));
@@ -318,19 +316,21 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
     // Helper methods
     private void addRequestOptionsToRequestIfPresent(BlockStmt body, HttpRequestContext method) {
-        // Check if any parameter in the method is of type RequestOptions
         boolean hasRequestOptions = method.getParameters()
             .stream()
-            .anyMatch(parameter -> "options".equals(parameter.getName())
+            .anyMatch(parameter -> "requestOptions".equals(parameter.getName())
                 && "RequestOptions".equals(parameter.getShortTypeName()));
 
         if (hasRequestOptions) {
             // Create a statement for setting request options
-            ExpressionStmt statement = new ExpressionStmt(new MethodCallExpr(new NameExpr("httpRequest"),
-                "setRequestOptions", NodeList.nodeList(new NameExpr("options"))));
+            Statement statement1 = StaticJavaParser
+                .parseStatement("if (requestOptions != null) httpRequest.setRequestOptions(requestOptions);");
+            statement1.setComment(new LineComment("\n Set the Request Options"));
+            Statement statement2 = StaticJavaParser.parseStatement(
+                "if (httpRequest.getRequestOptions() != null) httpRequest.getRequestOptions().getRequestCallback().accept(httpRequest);");
 
-            statement.setComment(new LineComment("\n Set the Request Options"));
-            body.addStatement(statement);
+            body.addStatement(statement1);
+            body.addStatement(statement2);
         }
     }
 
@@ -343,12 +343,12 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .stream()
             .anyMatch(parameter -> "uri".equals(parameter.getName()) && "String".equals(parameter.getShortTypeName()));
 
-        if (useProvidedUri) {
-            body.addStatement(
-                StaticJavaParser.parseStatement("String url = uri + \"/\" + \"" + method.getPath() + "\";"));
-        } else {
-            body.addStatement(StaticJavaParser.parseStatement("String url = " + method.getHost() + ";"));
-        }
+        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
+        String urlStatement = useProvidedUri
+            ? String.format("String url = uri + \"/\" + %s;", method.getHost())
+            : String.format("String url = %s;", method.getHost());
+
+        body.addStatement(StaticJavaParser.parseStatement(urlStatement));
 
         // Iterate through the query parameters and append them to the url string if they are not null
         if (!method.getQueryParams().isEmpty()) {
@@ -356,11 +356,27 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             Statement newUrlDeclaration = StaticJavaParser.parseStatement("String newUrl;");
             newUrlDeclaration.setComment(new LineComment("\n Append non-null query parameters"));
             body.addStatement(newUrlDeclaration);
-            body.tryAddImportToParentCompilationUnit(HashMap.class);
-            body.addStatement("HashMap<String, Object> queryParamMap = new HashMap<>();");
+            body.tryAddImportToParentCompilationUnit(LinkedHashMap.class);
+            body.addStatement("LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();");
 
-            method.getQueryParams().forEach((key, value) -> {
-                body.addStatement("queryParamMap.put(\"" + key + "\", " + value.getValue() + ");");
+            method.getQueryParams().entrySet().forEach(entry -> {
+                String key = entry.getKey();
+                HttpRequestContext.QueryParameter value = entry.getValue();
+                boolean isValueTypeString = method.getParameters()
+                    .stream()
+                    .anyMatch(parameter -> parameter.getName().equals(value.getValue())
+                        && "String".equals(parameter.getShortTypeName()));
+                if (value.shouldEncode()) {
+                    if (isValueTypeString) {
+                        String encodedKey = "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")";
+                        String encodedValue = "UriEscapers.QUERY_ESCAPER.escape(" + value.getValue() + ")";
+                        body.addStatement("queryParamMap.put(" + encodedKey + ", " + encodedValue + ");");
+                    } else {
+                        body.addStatement("queryParamMap.put(\"" + key + "\", " + value.getValue() + ");");
+                    }
+                } else {
+                    body.addStatement("queryParamMap.put(\"" + key + "\", " + value.getValue() + ");");
+                }
             });
             body.addStatement("newUrl = CoreUtils.appendQueryParams(url, queryParamMap);");
             body.addStatement("if (newUrl != null) { url = newUrl; }");
