@@ -3,8 +3,6 @@
 
 package io.clientcore.http.netty.mocking;
 
-import com.azure.core.util.FluxUtil;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -31,9 +29,16 @@ public class WriteCountTrackingChannel implements WritableByteChannel {
         writeCount++;
         int remaining = src.remaining();
 
-        outputStream.write(FluxUtil.byteBufferToArray(src));
+        outputStream.write(byteBufferToArray(src));
 
         return remaining;
+    }
+
+    private static byte[] byteBufferToArray(ByteBuffer byteBuffer) {
+        int length = byteBuffer.remaining();
+        byte[] byteArray = new byte[length];
+        byteBuffer.get(byteArray);
+        return byteArray;
     }
 
     @Override

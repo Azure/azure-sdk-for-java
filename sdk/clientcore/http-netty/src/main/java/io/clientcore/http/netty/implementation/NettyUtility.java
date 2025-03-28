@@ -73,8 +73,9 @@ public final class NettyUtility {
         try {
             validateNettyVersionsInternal();
         } catch (Exception ex) {
-            LOGGER.atInfo().log("Unable to load Netty version information. If Netty version validation is required, "
-                + "please review this exception. Otherwise, this log message can be ignored.", ex);
+            LOGGER.atInfo()
+                .log("Unable to load Netty version information. If Netty version validation is required, "
+                    + "please review this exception. Otherwise, this log message can be ignored.", ex);
         }
     }
 
@@ -87,8 +88,7 @@ public final class NettyUtility {
         }
     }
 
-    static NettyVersionLogInformation createNettyVersionLogInformation(String nettyVersion,
-        String nativeNettyVersion) {
+    static NettyVersionLogInformation createNettyVersionLogInformation(String nettyVersion, String nativeNettyVersion) {
         Map<String, String> classpathNettyVersions = new LinkedHashMap<>();
         Map<String, String> classPathNativeNettyVersions = new LinkedHashMap<>();
 
@@ -155,9 +155,8 @@ public final class NettyUtility {
         }
 
         boolean shouldLog() {
-            boolean hasNettyVersionMismatch = classpathNettyVersions.values()
-                .stream()
-                .anyMatch(version -> !Objects.equals(version, nettyVersion));
+            boolean hasNettyVersionMismatch
+                = classpathNettyVersions.values().stream().anyMatch(version -> !Objects.equals(version, nettyVersion));
             boolean hasNativeNettyVersionMismatch = classPathNativeNettyVersions.values()
                 .stream()
                 .anyMatch(version -> !Objects.equals(version, nativeNettyVersion));

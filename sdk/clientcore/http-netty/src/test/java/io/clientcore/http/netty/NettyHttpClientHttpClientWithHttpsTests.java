@@ -3,10 +3,10 @@
 
 package io.clientcore.http.netty;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.validation.http.HttpClientTests;
-import com.azure.core.validation.http.HttpClientTestsServer;
-import com.azure.core.validation.http.LocalTestServer;
+import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.shared.HttpClientTests;
+import io.clientcore.core.shared.HttpClientTestsServer;
+import io.clientcore.core.shared.LocalTestServer;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -22,7 +22,7 @@ import javax.net.ssl.SSLException;
  * Some request logic branches out if it's https like file uploads.
  */
 @Execution(ExecutionMode.SAME_THREAD)
-public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTests {
+public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
     private static LocalTestServer server;
 
     private static final HttpClient HTTP_CLIENT_INSTANCE;
@@ -32,10 +32,7 @@ public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTest
             SslContext sslContext
                 = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
 
-            reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
-                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
-
-            HTTP_CLIENT_INSTANCE = new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
+            HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder().sslContext(sslContext).build();
         } catch (SSLException e) {
             throw new RuntimeException(e);
         }
@@ -71,7 +68,7 @@ public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTest
     }
 
     @Override
-    protected HttpClient createHttpClient() {
+    protected HttpClient getHttpClient() {
         return HTTP_CLIENT_INSTANCE;
     }
 }

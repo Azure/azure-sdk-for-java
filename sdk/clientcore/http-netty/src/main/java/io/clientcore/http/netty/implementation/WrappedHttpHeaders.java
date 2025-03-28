@@ -130,7 +130,8 @@ public final class WrappedHttpHeaders extends HttpHeaders {
     @Override
     public List<Map.Entry<String, String>> entries() {
         return coreHeaders.stream()
-            .flatMap(header -> header.getValues().stream()
+            .flatMap(header -> header.getValues()
+                .stream()
                 .map(value -> new AbstractMap.SimpleImmutableEntry<>(header.getName().getCaseSensitiveName(), value)))
             .collect(Collectors.toList());
     }
@@ -145,6 +146,7 @@ public final class WrappedHttpHeaders extends HttpHeaders {
         return coreHeaders.get(fromPossibleAsciiString(name)) != null;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Iterator<Map.Entry<String, String>> iterator() {
         return new HeadersIterator<>(coreHeaders.stream().iterator(), AbstractMap.SimpleImmutableEntry::new);
@@ -237,9 +239,7 @@ public final class WrappedHttpHeaders extends HttpHeaders {
 
     @Override
     public Set<String> names() {
-        return coreHeaders.stream()
-            .map(header -> header.getName().getCaseSensitiveName())
-            .collect(Collectors.toSet());
+        return coreHeaders.stream().map(header -> header.getName().getCaseSensitiveName()).collect(Collectors.toSet());
     }
 
     @Override
@@ -375,8 +375,8 @@ public final class WrappedHttpHeaders extends HttpHeaders {
 
     @Override
     public HttpHeaders remove(CharSequence name) {
-       coreHeaders.remove(fromPossibleAsciiString(name));
-       return this;
+        coreHeaders.remove(fromPossibleAsciiString(name));
+        return this;
     }
 
     @Override

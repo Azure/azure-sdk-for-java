@@ -153,8 +153,8 @@ public class HttpResponseDrainsBufferTests {
         throws InterruptedException, ExecutionException {
         HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 
-        List<Future<Void>> futures = SharedExecutorService.getInstance().invokeAll(IntStream.range(0, 100)
-            .mapToObj(ignored -> (Callable<Void>) () -> {
+        List<Future<Void>> futures = SharedExecutorService.getInstance()
+            .invokeAll(IntStream.range(0, 100).mapToObj(ignored -> (Callable<Void>) () -> {
                 try {
                     responseConsumer.accept(httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URL)));
                 } catch (IOException ex) {

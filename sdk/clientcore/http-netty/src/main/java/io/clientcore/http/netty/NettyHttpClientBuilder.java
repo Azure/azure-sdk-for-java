@@ -5,11 +5,13 @@ package io.clientcore.http.netty;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
+import io.clientcore.core.utils.configuration.Configuration;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.ssl.SslContext;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 import java.time.Duration;
@@ -20,7 +22,9 @@ import java.time.Duration;
 public class NettyHttpClientBuilder {
     private EventLoopGroup eventLoopGroup;
     private Class<? extends Channel> channelClass;
+    private SslContext sslContext;
 
+    private Configuration configuration;
     private ProxyOptions proxyOptions;
     private Duration connectTimeout;
     private Duration readTimeout;
@@ -52,6 +56,33 @@ public class NettyHttpClientBuilder {
      */
     public NettyHttpClientBuilder channelClass(Class<? extends Channel> channelClass) {
         this.channelClass = channelClass;
+        return this;
+    }
+
+    /**
+     * Sets the {@link SslContext} that will be used to configure SSL/TLS when establishing secure connections.
+     * <p>
+     * If this is left unset a default {@link SslContext} will be used to establish secure connections.
+     *
+     * @param sslContext The {@link SslContext} for SSL/TLS.
+     * @return The updated builder.
+     */
+    public NettyHttpClientBuilder sslContext(SslContext sslContext) {
+        this.sslContext = sslContext;
+        return this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the HTTP client.
+     * <p>
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}.
+     *
+     * @param configuration The configuration store.
+     * @return The updated builder.
+     */
+    public NettyHttpClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
         return this;
     }
 
@@ -125,11 +156,17 @@ public class NettyHttpClientBuilder {
             bootstrap.option(io.netty.channel.ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeout.toMillis());
         }
 
-        return new NettyHttpClient(bootstrap, proxyOptions, getTimeoutMillis(readTimeout),
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+
+        ProxyOptions buildProxyOptions
+            = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
+
+        return new NettyHttpClient(bootstrap, sslContext, buildProxyOptions, getTimeoutMillis(readTimeout),
             getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
     }
 
-    private static long getTimeoutMillis(Duration duration) {
+    static long getTimeoutMillis(Duration duration) {
         if (duration == null) {
             return 60_000;
         }

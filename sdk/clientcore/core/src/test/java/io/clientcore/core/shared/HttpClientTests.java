@@ -49,6 +49,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -99,7 +100,6 @@ public abstract class HttpClientTests {
     private static final String UTF_32BE_BOM_RESPONSE = "utf32BeBomBytes";
     private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
-    private static final String SSE_RESPONSE = "serversentevent";
 
     protected static final String ECHO_RESPONSE = "echo";
 
@@ -312,20 +312,20 @@ public abstract class HttpClientTests {
             getProtocol(ECHO_RESPONSE),
             new Headers(),
             requestBody);
-    
+
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
             .setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
-    
+
         Response<?> response = createHttpClient()
             .send(request);
-    
+
         byte[] responseBytes = response
             .getBodyAsByteArray()
             .block();
-    
+
         assertArrayEquals(expectedResponseBody, responseBytes);
         assertEquals(expectedResponseBody.length, progress.intValue());
     }*/
@@ -459,7 +459,7 @@ public abstract class HttpClientTests {
             = createService(Service2.class).getByteArray(getRequestScheme(), "localhost:" + getPort(), 100);
 
         assertNotNull(result);
-        assertEquals(result.length, 100);
+        assertEquals(100, result.length);
     }
 
     /**
@@ -1350,20 +1350,20 @@ public abstract class HttpClientTests {
             .putBodyAndHeaders(getRequestUri(), "body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        
+
         assertEquals(Headers.class, response.getHeaders().getClass());
-        
+
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);
         assertMatchWithHttpOrHttps("localhost/put", body.uri());
         assertEquals("body string", body.data());
-        
+
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
         assertNotNull(headers.date());
         assertNotEquals(0, (Object) headers.xProcessedTime());
-        
+
          */
     }
 
@@ -1544,13 +1544,13 @@ public abstract class HttpClientTests {
         HttpBinFormDataJSON postForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam("custemail") String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
-    
+
         @Post("post")
         HttpBinFormDataJSON postEncodedForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam(value = "custemail", encoded = true) String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
     }
-    
+
     @Test
     public void postUriForm() {
         Service26 service = createService(Service26.class);
@@ -1562,12 +1562,12 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo%40bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-    
+
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
     }
-    
+
     @Test
     public void postUriFormEncoded() {
         Service26 service = createService(Service26.class);
@@ -1579,7 +1579,7 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo@bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-    
+
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
@@ -1673,7 +1673,13 @@ public abstract class HttpClientTests {
 
     private static Stream<BiConsumer<String, Service28>> voidDoesNotEagerlyReadResponseSupplier() {
         return Stream.of((uri, service28) -> service28.headvoid(uri), (uri, service28) -> service28.headVoid(uri),
-            (uri, service28) -> service28.headResponseVoid(uri));
+            (uri, service28) -> {
+                try {
+                    service28.headResponseVoid(uri).close();
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
+            });
     }
 
     @ServiceInterface(name = "Service29", host = "{uri}")
@@ -1770,22 +1776,19 @@ public abstract class HttpClientTests {
         ServerSentEventService service = createService(ServerSentEventService.class);
 
         final int[] i = { 0 };
-        service.get(getServerUri(isSecure()), new ServerSentEventListener() {
-            @Override
-            public void onEvent(ServerSentEvent sse) {
-                i[0]++;
-                if (i[0] == 1) {
-                    assertEquals("test stream", sse.getComment());
-                    assertEquals("first event", sse.getData().get(0));
-                    assertEquals("1", sse.getId());
-                } else if (i[0] == 2) {
-                    assertTimeout(Duration.ofMillis(100L), () -> assertEquals("2", sse.getId()));
-                    assertEquals("This is the second message, it", sse.getData().get(0));
-                    assertEquals("has two lines.", sse.getData().get(1));
-                }
-                if (i[0] >= 3) {
-                    fail("Should not have received more than two messages.");
-                }
+        service.get(getServerUri(isSecure()), sse -> {
+            i[0]++;
+            if (i[0] == 1) {
+                assertEquals("test stream", sse.getComment());
+                assertEquals("first event", sse.getData().get(0));
+                assertEquals("1", sse.getId());
+            } else if (i[0] == 2) {
+                assertTimeout(Duration.ofMillis(100L), () -> assertEquals("2", sse.getId()));
+                assertEquals("This is the second message, it", sse.getData().get(0));
+                assertEquals("has two lines.", sse.getData().get(1));
+            }
+            if (i[0] >= 3) {
+                fail("Should not have received more than two messages.");
             }
         }).close();
 
@@ -1805,7 +1808,13 @@ public abstract class HttpClientTests {
 
     private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {
         return Stream.of((uri, service29) -> service29.headvoid(uri), (uri, service29) -> service29.headVoid(uri),
-            (uri, service29) -> service29.headResponseVoid(uri));
+            (uri, service29) -> {
+                try {
+                    service29.headResponseVoid(uri).close();
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
+            });
     }
 
     @ServiceInterface(name = "Service30", host = "{uri}")

@@ -56,18 +56,16 @@ public final class CoreHandler extends ChannelDuplexHandler {
      * Constructs a channel that watches write, response, and reads and handles timing out the operation and tracking
      * write progress.
      *
-     * @param context Per-request context passed by the ClientCore SDK.
+     * @param progressReporter The {@link ProgressReporter} that will track writing content to the network.
      * @param writeTimeoutMillis The period of milliseconds before a channel's write is considered timed out.
      * @param responseTimeoutMillis The period of milliseconds before a channel's response is considered timed out.
      * @param readTimeoutMillis The period of milliseconds before a channel's read is considered timed out.
      */
-    public CoreHandler(ClientCoreNettyHttpClientContext context, long writeTimeoutMillis, long responseTimeoutMillis,
+    public CoreHandler(ProgressReporter progressReporter, long writeTimeoutMillis, long responseTimeoutMillis,
         long readTimeoutMillis) {
+        this.progressReporter = progressReporter;
         this.writeTimeoutMillis = writeTimeoutMillis;
-        this.progressReporter = (context != null) ? context.getProgressReporter() : null;
-        this.responseTimeoutMillis = (context != null && context.getResponseTimeoutOverride() != null)
-            ? context.getResponseTimeoutOverride()
-            : responseTimeoutMillis;
+        this.responseTimeoutMillis = responseTimeoutMillis;
         this.readTimeoutMillis = readTimeoutMillis;
     }
 
