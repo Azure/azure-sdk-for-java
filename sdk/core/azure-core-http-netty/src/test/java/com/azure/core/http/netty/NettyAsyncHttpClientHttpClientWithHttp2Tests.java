@@ -8,8 +8,12 @@ import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.validation.http.HttpClientTests;
 import com.azure.core.validation.http.HttpClientTestsServer;
 import com.azure.core.validation.http.LocalTestServer;
+import io.netty.handler.codec.http2.Http2SecurityUtil;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SupportedCipherSuiteFilter;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,26 +21,33 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.net.ssl.SSLException;
+import java.util.EnumSet;
 
 /**
- * Reactor Netty {@link HttpClientTests} with https.
- * Some request logic branches out if it's https like file uploads.
+ * Reactor Netty {@link HttpClientTests}.
  */
 @Execution(ExecutionMode.SAME_THREAD)
-public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTests {
+public class NettyAsyncHttpClientHttpClientWithHttp2Tests extends HttpClientTests {
     private static LocalTestServer server;
 
     private static final HttpClient HTTP_CLIENT_INSTANCE;
 
     static {
         try {
-            SslContext sslContext
-                = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+            SslContext sslContext = SslContextBuilder.forClient()
+                .ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
+                .applicationProtocolConfig(new ApplicationProtocolConfig(ApplicationProtocolConfig.Protocol.ALPN,
+                    ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE,
+                    ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT, ApplicationProtocolNames.HTTP_2))
+                .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                .build();
 
             reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
                 .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
 
-            HTTP_CLIENT_INSTANCE = new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
+            HTTP_CLIENT_INSTANCE = new NettyAsyncHttpClientBuilder(nettyHttpClient)
+                .setProtocolVersions(EnumSet.of(HttpProtocolVersion.HTTP_2, HttpProtocolVersion.HTTP_1_1))
+                .build();
         } catch (SSLException e) {
             throw new RuntimeException(e);
         }
@@ -44,7 +55,7 @@ public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTest
 
     @BeforeAll
     public static void startTestServer() {
-        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, true);
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_2, true);
         server.start();
     }
 
@@ -56,6 +67,16 @@ public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTest
     }
 
     @Override
+    protected boolean isSecure() {
+        return true;
+    }
+
+    @Override
+    protected boolean isHttp2() {
+        return true;
+    }
+
+    @Override
     @Deprecated
     protected int getPort() {
         return server.getPort();
@@ -64,11 +85,6 @@ public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTest
     @Override
     protected String getServerUri(boolean secure) {
         return server.getHttpsUri();
-    }
-
-    @Override
-    protected boolean isSecure() {
-        return true;
     }
 
     @Override
