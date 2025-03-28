@@ -857,7 +857,7 @@ public class IndexManagementTests extends SearchTestBase {
         }
 
         statsSummary = client.getIndexStatsSummary();
-        assert (statsSummary.stream().count() == 5);
+        assertEquals(statsSummary.stream().count(), 5);
         List<String> returnedNames
             = statsSummary.stream().map(IndexStatisticsSummary::getName).collect(Collectors.toList());
         for (String name : indexNames) {
