@@ -14,13 +14,10 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
-import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
-import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -332,8 +329,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             Statement statement1 = StaticJavaParser
                 .parseStatement("httpRequest.setRequestContext(SdkRequestContext.from(requestOptions));");
 
-            Statement statement2 = StaticJavaParser.parseStatement(
-                "httpRequest.getRequestContext().getRequestCallback().accept(httpRequest);");
+            Statement statement2 = StaticJavaParser
+                .parseStatement("httpRequest.getRequestContext().getRequestCallback().accept(httpRequest);");
 
             body.addStatement(statement1);
             body.addStatement(statement2);
