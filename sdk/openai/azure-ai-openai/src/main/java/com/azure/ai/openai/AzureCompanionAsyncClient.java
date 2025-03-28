@@ -4,8 +4,11 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.AzureCompanionClientImpl;
+import com.azure.ai.openai.implementation.mappers.AzureChatMapper;
 import com.azure.ai.openai.models.AzureCreateChatCompletionRequest;
+import com.azure.ai.openai.models.AzureCreateChatCompletionResponse;
 import com.azure.ai.openai.models.AzureOpenAIChatErrorResponse;
+import com.azure.ai.openai.models.ChatCompletionResponseMessage;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -18,6 +21,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.openai.client.OpenAIClientAsync;
+import com.openai.models.chat.completions.ChatCompletion;
 import reactor.core.publisher.Mono;
 
 /**
@@ -25,6 +30,8 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = AzureCompanionClientBuilder.class, isAsync = true)
 public final class AzureCompanionAsyncClient {
+
+    private final OpenAIClientAsync openAIClientAsync;
 
     @Generated
     private final AzureCompanionClientImpl serviceClient;
@@ -36,7 +43,13 @@ public final class AzureCompanionAsyncClient {
      */
     @Generated
     AzureCompanionAsyncClient(AzureCompanionClientImpl serviceClient) {
+        this.openAIClientAsync = null;
         this.serviceClient = serviceClient;
+    }
+
+    public AzureCompanionAsyncClient(OpenAIClientAsync openAIClientAsync) {
+        this.openAIClientAsync = openAIClientAsync;
+        this.serviceClient = null;
     }
 
     /**
@@ -219,14 +232,19 @@ public final class AzureCompanionAsyncClient {
      * @return a structured representation of an error on an Azure OpenAI request on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureOpenAIChatErrorResponse> createResponse(String deploymentId, String accept,
+    private Mono<AzureOpenAIChatErrorResponse> createResponse(String deploymentId, String accept,
         AzureCreateChatCompletionRequest request) {
         // Generated convenience method for createResponseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createResponseWithResponse(deploymentId, accept, BinaryData.fromObject(request), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AzureOpenAIChatErrorResponse.class));
+    }
+
+    // TODO: Map ChatCompletion to AzureCreateChatCompletionResponse
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ChatCompletion> createResponse(String deploymentId, AzureCreateChatCompletionRequest request) {
+        return Mono.fromFuture(openAIClientAsync.chat().completions().create(AzureChatMapper.from(request)));
     }
 }

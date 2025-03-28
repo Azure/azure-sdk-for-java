@@ -264,20 +264,20 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletionWithoutSensitiveContent(chatCompletion);
     }
 
-    // Azure-Only Test
-    //    @ParameterizedTest
-    //    @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
-    //    public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
-    //        client = createClient(apiType, apiVersion);
-    //        ChatCompletionCreateParams params = createParamsBuilder(testModel)
-    //                .messages(asList(
-    //                        createSystemMessageParam(),
-    //                        createUserMessageParam("What languages have libraries you know about for Azure OpenAI?")))
-    //                .additionalBodyProperties(createExtraBodyForByod())
-    //                .build();
-    //        ChatCompletion completion = client.chat().completions().create(params);
-    //        assertChatCompletionByod(completion);
-    //    }
+    @ParameterizedTest
+    @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
+    public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        ChatCompletionCreateParams params = createParamsBuilder("gpt-4o-mini")
+                .messages(asList(
+                        createSystemMessageParam(),
+                        createUserMessageParam("What do most contributions require you to do?")))
+                .additionalBodyProperties(createExtraBodyForByod())
+                .build();
+        ChatCompletion completion = client.chat().completions().create(params);
+        assertChatCompletionByod(completion);
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
