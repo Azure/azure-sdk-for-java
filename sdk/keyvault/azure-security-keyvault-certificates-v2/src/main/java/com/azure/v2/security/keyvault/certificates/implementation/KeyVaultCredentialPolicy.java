@@ -95,8 +95,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             .startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
     }
 
-    @Override
-    public void authorizeRequest(HttpRequest request) {
+    public Map<String, Object> authorizeRequestInternal(HttpRequest request) {
         Context context = request.getRequestOptions().getContext();
 
         // If this policy doesn't have challenge parameters cached try to get it from the static challenge cache.
@@ -112,7 +111,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
             setAuthorizationHeader(request, tokenRequestContext);
 
-            return;
+            return null;
         }
 
         // The body is removed from the initial request because Key Vault supports other authentication schemes which
@@ -121,26 +120,33 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         // don't want to send any unprotected data to vaults which require it.
 
         // Do not overwrite previous contents if retrying after initial request failed (e.g. timeout).
-        if (context.get(KEY_VAULT_STASHED_CONTENT_KEY) != null) {
+        if (context.get(KEY_VAULT_STASHED_CONTENT_KEY) == null) {
             if (request.getBody() != null) {
-                context.put(KEY_VAULT_STASHED_CONTENT_KEY, request.getBody());
-                context.put(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY, request.getHeaders().getValue(CONTENT_LENGTH));
+                Map<String, Object> bodyCache = new HashMap<>();
+
+                bodyCache.put(KEY_VAULT_STASHED_CONTENT_KEY, request.getBody());
+                bodyCache.put(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY, request.getHeaders().getValue(CONTENT_LENGTH));
                 request.getHeaders().set(CONTENT_LENGTH, "0");
                 request.setBody(null);
+
+                return bodyCache;
             }
         }
+
+        return null;
     }
 
-    @Override
-    public boolean authorizeRequestOnChallenge(HttpRequest request, Response<?> response) {
-        Context context = request.getRequestOptions().getContext();
+    public boolean authorizeRequestOnChallengeInternal(HttpRequest request, Response<?> response,
+        Map<String, Object> bodyCache) {
 
-        Object content = context.get(KEY_VAULT_STASHED_CONTENT_KEY);
-        Object contentLength = context.get(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY);
+        if (bodyCache != null) {
+            Object content = bodyCache.get(KEY_VAULT_STASHED_CONTENT_KEY);
+            Object contentLength = bodyCache.get(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY);
 
-        if (request.getBody() == null && content != null && contentLength != null) {
-            request.setBody((BinaryData) content);
-            request.getHeaders().set(CONTENT_LENGTH, (String) contentLength);
+            if (request.getBody() == null && content != null && contentLength != null) {
+                request.setBody((BinaryData) content);
+                request.getHeaders().set(CONTENT_LENGTH, (String) contentLength);
+            }
         }
 
         String authority = getRequestAuthority(request);
@@ -223,22 +229,22 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         HttpPipelineNextPolicy nextPolicy = next.copy();
 
-        authorizeRequest(request);
+        Map<String, Object> bodyCache = authorizeRequestInternal(request);
 
         Response<BinaryData> response = next.process();
         String authHeader = response.getHeaders().getValue(WWW_AUTHENTICATE);
 
         if (response.getStatusCode() == 401 && authHeader != null) {
-            return handleChallenge(request, response, nextPolicy);
+            return handleChallenge(request, response, nextPolicy, bodyCache);
         }
 
         return response;
     }
 
     private Response<BinaryData> handleChallenge(HttpRequest request, Response<BinaryData> response,
-        HttpPipelineNextPolicy next) {
+        HttpPipelineNextPolicy next, Map<String, Object> bodyCache) {
 
-        if (authorizeRequestOnChallenge(request, response)) {
+        if (authorizeRequestOnChallengeInternal(request, response, bodyCache)) {
             // The body needs to be closed or read to the end to release the connection.
             try {
                 response.close();
@@ -255,7 +261,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             if (newResponse.getStatusCode() == 401 && authHeader != null && isClaimsPresent(newResponse)
                 && !isClaimsPresent(response)) {
 
-                return handleChallenge(request, newResponse, nextPolicy);
+                return handleChallenge(request, newResponse, nextPolicy, bodyCache);
             }
 
             return newResponse;
