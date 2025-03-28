@@ -14,10 +14,13 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -26,6 +29,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -146,6 +150,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         classBuilder.addField(JsonSerializer.class, "jsonSerializer", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
         compilationUnit.addImport(XmlSerializer.class);
         classBuilder.addField(XmlSerializer.class, "xmlSerializer", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
+
+        compilationUnit.addImport(SdkRequestContext.class);
 
         classBuilder.addConstructor(Modifier.Keyword.PRIVATE)
             .addParameter(HttpPipeline.class, "httpPipeline")
@@ -325,7 +331,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             // Create a statement for setting request options
             Statement statement1 = StaticJavaParser
                 .parseStatement("httpRequest.setRequestContext(SdkRequestContext.from(requestOptions));");
-            statement1.setComment(new LineComment("\n Set the Request Context"));
+
             Statement statement2 = StaticJavaParser.parseStatement(
                 "httpRequest.getRequestContext().getRequestCallback().accept(httpRequest);");
 

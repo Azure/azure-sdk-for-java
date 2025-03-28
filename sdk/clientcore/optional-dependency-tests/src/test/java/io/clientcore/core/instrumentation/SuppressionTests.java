@@ -374,7 +374,8 @@ public class SuppressionTests {
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
-                    .setRequestContext(SdkRequestContext.create(options, span.getInstrumentationContext())));
+                    .setRequestContext(
+                        SdkRequestContext.from(options).setInstrumentationContext(span.getInstrumentationContext())));
                 try {
                     response.close();
                 } catch (IOException e) {
@@ -394,7 +395,9 @@ public class SuppressionTests {
                     .startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
-                protocolMethod(SdkRequestContext.create(options, span.getInstrumentationContext()));
+                SdkRequestContext context
+                    = SdkRequestContext.from(options).setInstrumentationContext(span.getInstrumentationContext());
+                protocolMethod(context.toRequestOptions());
             } finally {
                 span.end();
             }
@@ -413,16 +416,15 @@ public class SuppressionTests {
 
         @SuppressWarnings("try")
         public Response<?> protocolMethod(RequestOptions options) {
-            return instrumentation.instrumentWithResponse("protocol", SdkRequestContext.create(options),
+            return instrumentation.instrumentWithResponse("protocol", options,
                 updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
-                    .setRequestContext(updatedOptions)));
+                    .setRequestContext(SdkRequestContext.from(updatedOptions))));
         }
 
         @SuppressWarnings("try")
         public Response<?> convenienceMethod(RequestOptions options) throws IOException {
-            return instrumentation.instrumentWithResponse("convenience", SdkRequestContext.create(options),
-                this::protocolMethod);
+            return instrumentation.instrumentWithResponse("convenience", options, this::protocolMethod);
         }
     }
 }

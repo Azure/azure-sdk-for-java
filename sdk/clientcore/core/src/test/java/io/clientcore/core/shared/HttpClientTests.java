@@ -823,12 +823,210 @@ public abstract class HttpClientTests {
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM);
         String uri = UriBuilder.parse(getRequestUri()).setPath("serversentevent").toString();
 
+<<<<<<< HEAD
         assertThrows(RuntimeException.class,
             () -> getHttpClient().send(new HttpRequest().setMethod(HttpMethod.PUT)
                 .setUri(uri)
                 .setBody(body)
                 .setHeaders(headers)
                 .setServerSentEventListener(null)).close());
+=======
+        assertThrows(RuntimeException.class, () -> service.put(getServerUri(isSecure()), requestBody, null).close());
+    }
+
+    private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {
+        return Stream.of((uri, service29) -> service29.headvoid(uri), (uri, service29) -> service29.headVoid(uri),
+            (uri, service29) -> service29.headResponseVoid(uri));
+    }
+
+    @ServiceInterface(name = "Service30", host = "{uri}")
+    interface Service30 {
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
+        HttpBinJSON put(@HostParam("uri") String uri, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
+            RequestOptions options);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
+        Response<HttpBinJSON> putResponse(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
+        HttpBinJSON postStream(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
+        Response<HttpBinJSON> postStreamResponse(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
+    }
+
+    @ServiceInterface(name = "Service30", host = "{uri}")
+    interface ServerSentEventService {
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "serversentevent", expectedStatusCodes = { 200 })
+        Response<BinaryData> put(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData putBody,
+            ServerSentEventListener serverSentEventListener);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "serversentevent", expectedStatusCodes = { 200 })
+        BinaryData get(@HostParam("uri") String uri, ServerSentEventListener serverSentEventListener);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "serversentevent", expectedStatusCodes = { 200 })
+        Response<BinaryData> post(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData postBody,
+            ServerSentEventListener serverSentEventListener, RequestOptions options);
+    }
+
+    @Test
+    public void bodyIsPresentWhenNoBodyHandlingOptionIsSet() throws IOException {
+        Service30 service = createService(Service30.class);
+        HttpBinJSON httpBinJSON = service.put(getServerUri(isSecure()), 42, null);
+
+        assertNotNull(httpBinJSON);
+
+        try (Response<HttpBinJSON> response = service.putResponse(getServerUri(isSecure()), 42, null)) {
+            assertNotNull(response.getValue());
+        }
+    }
+
+    @ServiceInterface(name = "Service31", host = "{uri}")
+    private interface Service31 {
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "constantParam1=constantValue1", "constantParam2=constantValue2" })
+        HttpBinJSON get1(@HostParam("uri") String uri, @QueryParam("variableParam") String queryParam);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "param=constantValue1", "param=constantValue2" })
+        HttpBinJSON get2(@HostParam("uri") String uri, @QueryParam("param") String queryParam);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "param=constantValue1,constantValue2", "param=constantValue3" })
+        HttpBinJSON get3(@HostParam("uri") String uri, @QueryParam("param") String queryParam);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "constantParam1=", "constantParam1" })
+        HttpBinJSON get4(@HostParam("uri") String uri);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "constantParam1=some=value" })
+        HttpBinJSON get5(@HostParam("uri") String uri);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "" })
+        HttpBinJSON get6(@HostParam("uri") String uri);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "=value" })
+        HttpBinJSON get7(@HostParam("uri") String uri);
+    }
+
+    @Test
+    public void queryParamsRequest() {
+        final HttpBinJSON json = createService(Service31.class).get1(getRequestUri(), "variableValue");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(3, queryParams.size());
+        assertEquals(1, queryParams.get("constantParam1").size());
+        assertEquals("constantValue1", queryParams.get("constantParam1").get(0));
+        assertEquals(1, queryParams.get("constantParam2").size());
+        assertEquals("constantValue2", queryParams.get("constantParam2").get(0));
+        assertEquals(1, queryParams.get("variableParam").size());
+        assertEquals("variableValue", queryParams.get("variableParam").get(0));
+    }
+
+    @Test
+    public void queryParamsRequestWithMultipleValuesForSameName() {
+        final HttpBinJSON json = createService(Service31.class).get2(getRequestUri(), "variableValue");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals("constantValue1", queryParams.get("param").get(0));
+        assertEquals("constantValue2", queryParams.get("param").get(1));
+        assertEquals("variableValue", queryParams.get("param").get(2));
+    }
+
+    @Test
+    public void queryParamsRequestWithMultipleValuesForSameNameAndValueArray() {
+        final HttpBinJSON json
+            = createService(Service31.class).get3(getRequestUri(), "variableValue1,variableValue2,variableValue3");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals(3, queryParams.get("param").size());
+        assertEquals("constantValue1%2CconstantValue2", queryParams.get("param").get(0));
+        assertEquals("constantValue3", queryParams.get("param").get(1));
+        assertEquals("variableValue1%2CvariableValue2%2CvariableValue3", queryParams.get("param").get(2));
+    }
+
+    @Test
+    public void queryParamsRequestWithEmptyValues() {
+        final HttpBinJSON json = createService(Service31.class).get4(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertTrue(queryParams.containsKey("constantParam1"));
+        assertNull(queryParams.get("constantParam1"));
+    }
+
+    @Test
+    public void queryParamsRequestWithMoreThanOneEqualsSign() {
+        final HttpBinJSON json = createService(Service31.class).get5(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals("some%3Dvalue", queryParams.get("constantParam1").get(0));
+    }
+
+    @Test
+    public void queryParamsRequestWithEmptyName() {
+        assertThrows(IllegalStateException.class, () -> createService(Service31.class).get6(getRequestUri()),
+            "Query parameters cannot be null or empty.");
+        assertThrows(IllegalStateException.class, () -> createService(Service31.class).get7(getRequestUri()),
+            "Names for query parameters cannot be empty.");
+>>>>>>> 9fbd78acd29 (remove inheritance)
     }
 
     // Helpers

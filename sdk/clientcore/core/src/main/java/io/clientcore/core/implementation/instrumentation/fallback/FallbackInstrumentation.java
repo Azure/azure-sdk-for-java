@@ -97,14 +97,14 @@ public class FallbackInstrumentation implements Instrumentation {
 
     @Override
     public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<SdkRequestContext, TResponse> operation) {
+        Function<RequestOptions, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
         InstrumentationContext context = requestOptions == null ? null : requestOptions.getInstrumentationContext();
 
         if (!shouldInstrument(SpanKind.CLIENT, context)) {
-            return operation.apply(SdkRequestContext.create(requestOptions));
+            return operation.apply(requestOptions);
         }
 
         SpanBuilder builder
@@ -116,11 +116,11 @@ public class FallbackInstrumentation implements Instrumentation {
 
         Span span = builder.startSpan();
 
-        SdkRequestContext requestContext = SdkRequestContext.create(requestOptions, span.getInstrumentationContext());
-
+        SdkRequestContext requestContext
+            = SdkRequestContext.from(requestOptions).setInstrumentationContext(span.getInstrumentationContext());
         TracingScope scope = span.makeCurrent();
         try {
-            TResponse response = operation.apply(requestContext);
+            TResponse response = operation.apply(requestContext.toRequestOptions());
             span.end();
             return response;
         } catch (RuntimeException t) {

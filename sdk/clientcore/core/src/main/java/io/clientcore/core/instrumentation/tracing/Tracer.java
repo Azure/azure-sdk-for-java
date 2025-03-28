@@ -22,22 +22,21 @@ public interface Tracer {
      *
      * if &#40;!tracer.isEnabled&#40;&#41;&#41; &#123;
      *     &#47;&#47; tracing is disabled, so we don't need to create a span
-     *     clientCall&#40;SdkRequestContext.create&#40;options&#41;&#41;.close&#40;&#41;;
+     *     clientCall&#40;options&#41;.close&#40;&#41;;
      *     return;
      * &#125;
      *
-     * InstrumentationContext instrumentationContext = options == null
-     *     ? null
-     *     : options.getInstrumentationContext&#40;&#41;;
+     * InstrumentationContext instrumentationContext = SdkRequestContext.from&#40;options&#41;.getInstrumentationContext&#40;&#41;;
      * Span span = tracer.spanBuilder&#40;&quot;&#123;operationName&#125;&quot;, SpanKind.CLIENT, instrumentationContext&#41;
      *     .startSpan&#40;&#41;;
      *
-     * SdkRequestContext requestContext = SdkRequestContext.create&#40;options, span.getInstrumentationContext&#40;&#41;&#41;;
+     * SdkRequestContext requestContext = SdkRequestContext.from&#40;options&#41;
+     *     .setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;;
      *
      * &#47;&#47; we'll propagate context implicitly using span.makeCurrent&#40;&#41; as shown later.
      * &#47;&#47; Libraries that write async code should propagate context explicitly in addition to implicit propagation.
      * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
-     *     clientCall&#40;requestContext&#41;.close&#40;&#41;;
+     *     clientCall&#40;requestContext.toRequestOptions&#40;&#41;&#41;.close&#40;&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     &#47;&#47; make sure to report any exceptions including unchecked ones.
      *     span.end&#40;getCause&#40;t&#41;&#41;;
@@ -62,12 +61,14 @@ public interface Tracer {
      *     .setAttribute&#40;&quot;messaging.operations.name&quot;, &quot;send&quot;&#41;
      *     .startSpan&#40;&#41;;
      *
+     * requestContext = requestContext.setInstrumentationContext&#40;sendSpan.getInstrumentationContext&#40;&#41;&#41;;
+     *
      * try &#40;TracingScope scope = sendSpan.makeCurrent&#40;&#41;&#41; &#123;
      *     if &#40;sendSpan.isRecording&#40;&#41;&#41; &#123;
      *         sendSpan.setAttribute&#40;&quot;messaging.message.id&quot;, &quot;&#123;message-id&#125;&quot;&#41;;
      *     &#125;
      *
-     *     Response&lt;?&gt; response = clientCall&#40;requestContext&#41;;
+     *     Response&lt;?&gt; response = clientCall&#40;requestContext.toRequestOptions&#40;&#41;&#41;;
      *     response.close&#40;&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     sendSpan.end&#40;t&#41;;

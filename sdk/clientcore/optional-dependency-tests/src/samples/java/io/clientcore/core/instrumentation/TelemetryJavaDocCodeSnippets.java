@@ -207,12 +207,12 @@ public class TelemetryJavaDocCodeSnippets {
             instrumentation.instrument("Sample.call", options, this::clientCallImpl);
         }
 
-        private Response<?> clientCallWithResponseImpl(SdkRequestContext context) {
-            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(context));
+        private Response<?> clientCallWithResponseImpl(RequestOptions options) {
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(SdkRequestContext.from(options)));
         }
 
-        private void clientCallImpl(SdkRequestContext context) {
-            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(context));
+        private void clientCallImpl(RequestOptions options) {
+            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(SdkRequestContext.from(options)));
         }
     }
 }

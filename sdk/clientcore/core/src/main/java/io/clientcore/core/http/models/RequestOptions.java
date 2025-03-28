@@ -114,12 +114,17 @@ import java.util.function.Consumer;
  */
 @Metadata(properties = MetadataProperties.FLUENT)
 public class RequestOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
+    private static final RequestOptions NONE = new RequestOptions().lock();
     private Consumer<HttpRequest> requestCallback = r -> {
         // No-op
     };
     private InternalContext context = InternalContext.empty();
     private ClientLogger logger;
     private InstrumentationContext instrumentationContext;
+    private boolean locked;
+
+    private final SdkRequestContext requestContext;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
@@ -127,6 +132,7 @@ public class RequestOptions {
     public RequestOptions() {
         this.logger = null;
         this.instrumentationContext = null;
+        this.requestContext = null;
     }
 
     /**
@@ -134,13 +140,21 @@ public class RequestOptions {
      *
      * @param options The {@link RequestOptions} to be copied.
      */
-    protected RequestOptions(RequestOptions options) {
+    RequestOptions(RequestOptions options, SdkRequestContext requestContext) {
+        SdkRequestContext localRequestContext = null;
         if (options != null) {
             this.requestCallback = options.requestCallback;
             this.context = options.context;
             this.logger = options.logger;
             this.instrumentationContext = options.instrumentationContext;
+            localRequestContext = options.requestContext;
         }
+
+        if (requestContext != null && requestContext != SdkRequestContext.none()) {
+            localRequestContext = requestContext;
+        }
+
+        this.requestContext = localRequestContext;
     }
 
     /**
@@ -178,6 +192,7 @@ public class RequestOptions {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(value, "'value' cannot be null.");
 
+        checkLocked("Cannot add header.");
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(name, value));
         return this;
     }
@@ -208,6 +223,7 @@ public class RequestOptions {
      */
     public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
         Objects.requireNonNull(parameterName, "'parameterName' cannot be null.");
+        checkLocked("Cannot add query parameter.");
 
         this.requestCallback = this.requestCallback.andThen(request -> {
             String uri = request.getUri().toString();
@@ -230,6 +246,7 @@ public class RequestOptions {
      */
     public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
+        checkLocked("Cannot add request callback.");
 
         this.requestCallback = this.requestCallback.andThen(requestCallback);
         return this;
@@ -243,6 +260,7 @@ public class RequestOptions {
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setLogger(ClientLogger logger) {
+        checkLocked("Cannot set logger.");
         this.logger = logger;
         return this;
     }
@@ -255,7 +273,7 @@ public class RequestOptions {
      * throw an {@link IllegalStateException}.
      */
     public static RequestOptions none() {
-        return SdkRequestContext.NONE;
+        return NONE;
     }
 
     /**
@@ -275,6 +293,7 @@ public class RequestOptions {
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
+        checkLocked("Cannot set instrumentation context.");
         this.instrumentationContext = instrumentationContext;
         return this;
     }
@@ -291,6 +310,7 @@ public class RequestOptions {
      */
     public RequestOptions putMetadata(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
+        checkLocked("Cannot put metadata.");
         this.context = this.context.put(key, value);
         return this;
     }
@@ -306,5 +326,22 @@ public class RequestOptions {
     public Object getMetadata(String key) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         return context.get(key);
+    }
+
+    private void checkLocked(String setterMessage) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("This instance of RequestOptions is immutable. " + setterMessage));
+        }
+    }
+
+    private RequestOptions lock() {
+        locked = true;
+
+        return this;
+    }
+
+    SdkRequestContext getRequestContext() {
+        return requestContext;
     }
 }

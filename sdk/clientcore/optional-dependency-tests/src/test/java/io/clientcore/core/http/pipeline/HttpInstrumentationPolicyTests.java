@@ -504,7 +504,7 @@ public class HttpInstrumentationPolicyTests {
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri("https://localhost:8080/path/to/resource?query=param")
-            .setRequestContext(SdkRequestContext.create(options))).close();
+            .setRequestContext(SdkRequestContext.from(options))).close();
         testSpan.end();
 
         assertNotNull(exporter.getFinishedSpanItems());
@@ -550,7 +550,7 @@ public class HttpInstrumentationPolicyTests {
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri("https://localhost:8080/path/to/resource?query=param")
-            .setRequestContext(SdkRequestContext.create(options))).close();
+            .setRequestContext(SdkRequestContext.from(options))).close();
 
         parent.end();
 
