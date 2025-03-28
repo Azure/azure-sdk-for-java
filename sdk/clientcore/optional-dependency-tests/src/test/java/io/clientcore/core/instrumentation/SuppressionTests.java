@@ -414,7 +414,6 @@ public class SuppressionTests {
             this.instrumentation = Instrumentation.create(options, libraryInstrumentationOptions);
         }
 
-        @SuppressWarnings("try")
         public Response<?> protocolMethod(RequestOptions options) {
             return instrumentation.instrumentWithResponse("protocol", options,
                 updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
@@ -422,8 +421,7 @@ public class SuppressionTests {
                     .setRequestContext(SdkRequestContext.from(updatedOptions))));
         }
 
-        @SuppressWarnings("try")
-        public Response<?> convenienceMethod(RequestOptions options) throws IOException {
+        public Response<?> convenienceMethod(RequestOptions options) {
             return instrumentation.instrumentWithResponse("convenience", options, this::protocolMethod);
         }
     }

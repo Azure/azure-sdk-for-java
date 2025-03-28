@@ -65,7 +65,7 @@ public class SwaggerMethodParserTests {
         void getMethod();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        void getMethodWithRequestContext(RequestOptions options);
+        void getMethodWithRequestContext(RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "test")
         void putMethod();

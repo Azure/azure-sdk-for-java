@@ -76,7 +76,7 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
         Response<List<Foo>> listFoo(@HostParam("uri") String uri, @QueryParam(value = "tags", multipleQueryParams =
             true) List<String> tags, @QueryParam(value = "tags2", multipleQueryParams = true) List<String> tags2,
-                                    RequestOptions options);
+                                    RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -85,8 +85,8 @@ public final class TestInterfaceClientImpl {
         // Need to add RequestOptions to specify ResponseBodyMode, which is otherwise provided by convenience methods
         @SuppressWarnings({ "unchecked", "cast" })
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
-        default HttpBinJSON putConvenience(String uri, int putBody, RequestOptions options) {
-            return putResponse(uri, putBody, options).getValue();
+        default HttpBinJSON putConvenience(String uri, int putBody, RequestOptions requestOptions) {
+            return putResponse(uri, putBody, requestOptions).getValue();
         }
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
