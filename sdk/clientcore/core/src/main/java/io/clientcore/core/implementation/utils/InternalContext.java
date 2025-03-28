@@ -60,7 +60,6 @@ public abstract class InternalContext {
      * @return The value for the given key, or null if the key is not found.
      */
     public final Object get(Object key) {
-        Objects.requireNonNull(key, "'key' cannot be null.");
         Object value = getInternal(key);
 
         return Objects.equals(SENTINEL, value) ? null : value;
