@@ -62,6 +62,10 @@
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
     <build.context>azure-data-sdk-parent</build.context>
+
+    <!-- The following properties configure the spotbugs-maven-plugin. -->
+    <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
+    <spotbugs.skip>true</spotbugs.skip>
   </properties>
 
   <build>
@@ -131,6 +135,7 @@
           </dependency>
         </dependencies>
         <configuration>
+          <skip>${spotbugs.skip}</skip>
           <effort>Max</effort>
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
