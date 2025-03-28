@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceId model = BinaryData.fromString("{\"id\":\"eojnxqbzvddn\"}").toObject(ResourceId.class);
-        Assertions.assertEquals("eojnxqbzvddn", model.id());
+        ResourceId model = BinaryData.fromString("{\"id\":\"rvkdvjsllrm\"}").toObject(ResourceId.class);
+        Assertions.assertEquals("rvkdvjsllrm", model.id());
     }
 }

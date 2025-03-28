@@ -23,20 +23,20 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData
      * The highest PATCH Kubernetes version for the highest MINOR version supported by ManagedCluster resource
      */
     @Generated
-    private String latestSupportedKubernetesVersion;
+    private final String latestSupportedKubernetesVersion;
 
     /*
      * The highest PATCH Kubernetes version for the MINOR version considered stable for the ManagedCluster resource
      */
     @Generated
-    private String latestStableKubernetesVersion;
+    private final String latestStableKubernetesVersion;
 
     /*
      * The highest PATCH Kubernetes version for the lowest applicable MINOR version available for the ManagedCluster
      * resource
      */
     @Generated
-    private String lowestMinorKubernetesVersion;
+    private final String lowestMinorKubernetesVersion;
 
     /*
      * The highest PATCH Kubernetes version considered preview for the ManagedCluster resource. There might not be any
@@ -47,9 +47,17 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData
 
     /**
      * Creates an instance of ContainerServiceNewKubernetesVersionAvailableEventData class.
+     * 
+     * @param latestSupportedKubernetesVersion the latestSupportedKubernetesVersion value to set.
+     * @param latestStableKubernetesVersion the latestStableKubernetesVersion value to set.
+     * @param lowestMinorKubernetesVersion the lowestMinorKubernetesVersion value to set.
      */
     @Generated
-    private ContainerServiceNewKubernetesVersionAvailableEventData() {
+    private ContainerServiceNewKubernetesVersionAvailableEventData(String latestSupportedKubernetesVersion,
+        String latestStableKubernetesVersion, String lowestMinorKubernetesVersion) {
+        this.latestSupportedKubernetesVersion = latestSupportedKubernetesVersion;
+        this.latestStableKubernetesVersion = latestStableKubernetesVersion;
+        this.lowestMinorKubernetesVersion = lowestMinorKubernetesVersion;
     }
 
     /**
@@ -116,34 +124,38 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of ContainerServiceNewKubernetesVersionAvailableEventData if the JsonReader was pointing to
      * an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerServiceNewKubernetesVersionAvailableEventData.
      */
     @Generated
     public static ContainerServiceNewKubernetesVersionAvailableEventData fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerServiceNewKubernetesVersionAvailableEventData deserializedContainerServiceNewKubernetesVersionAvailableEventData
-                = new ContainerServiceNewKubernetesVersionAvailableEventData();
+            String latestSupportedKubernetesVersion = null;
+            String latestStableKubernetesVersion = null;
+            String lowestMinorKubernetesVersion = null;
+            String latestPreviewKubernetesVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("latestSupportedKubernetesVersion".equals(fieldName)) {
-                    deserializedContainerServiceNewKubernetesVersionAvailableEventData.latestSupportedKubernetesVersion
-                        = reader.getString();
+                    latestSupportedKubernetesVersion = reader.getString();
                 } else if ("latestStableKubernetesVersion".equals(fieldName)) {
-                    deserializedContainerServiceNewKubernetesVersionAvailableEventData.latestStableKubernetesVersion
-                        = reader.getString();
+                    latestStableKubernetesVersion = reader.getString();
                 } else if ("lowestMinorKubernetesVersion".equals(fieldName)) {
-                    deserializedContainerServiceNewKubernetesVersionAvailableEventData.lowestMinorKubernetesVersion
-                        = reader.getString();
+                    lowestMinorKubernetesVersion = reader.getString();
                 } else if ("latestPreviewKubernetesVersion".equals(fieldName)) {
-                    deserializedContainerServiceNewKubernetesVersionAvailableEventData.latestPreviewKubernetesVersion
-                        = reader.getString();
+                    latestPreviewKubernetesVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            ContainerServiceNewKubernetesVersionAvailableEventData deserializedContainerServiceNewKubernetesVersionAvailableEventData
+                = new ContainerServiceNewKubernetesVersionAvailableEventData(latestSupportedKubernetesVersion,
+                    latestStableKubernetesVersion, lowestMinorKubernetesVersion);
+            deserializedContainerServiceNewKubernetesVersionAvailableEventData.latestPreviewKubernetesVersion
+                = latestPreviewKubernetesVersion;
 
             return deserializedContainerServiceNewKubernetesVersionAvailableEventData;
         });

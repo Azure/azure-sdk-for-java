@@ -121,9 +121,10 @@
             <goals>
               <goal>compile</goal>
             </goals>
-
             <configuration>
-              <release>11</release>
+              <source>1.8</source>
+              <target>1.8</target>
+              <release>8</release>
               <proc>only</proc>
               <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
               <annotationProcessorPaths>
@@ -136,10 +137,13 @@
               <annotationProcessors>
                 <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
               </annotationProcessors>
-
               <compilerArgs>
                 <arg>-Xlint:-options</arg>
               </compilerArgs>
+              <!-- Exclude module-info.java as this is not supported in Java 8 and is not needed by annotation processor -->
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>

@@ -12,24 +12,24 @@ public final class EventTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventTypeProperties model = BinaryData.fromString(
-            "{\"displayName\":\"p\",\"description\":\"xqcsehch\",\"schemaUrl\":\"ufmpqumqyjgy\",\"isInDefaultSet\":true}")
+            "{\"displayName\":\"s\",\"description\":\"udgzhxogjgg\",\"schemaUrl\":\"oujkxibdafh\",\"isInDefaultSet\":true}")
             .toObject(EventTypeProperties.class);
-        Assertions.assertEquals("p", model.displayName());
-        Assertions.assertEquals("xqcsehch", model.description());
-        Assertions.assertEquals("ufmpqumqyjgy", model.schemaUrl());
+        Assertions.assertEquals("s", model.displayName());
+        Assertions.assertEquals("udgzhxogjgg", model.description());
+        Assertions.assertEquals("oujkxibdafh", model.schemaUrl());
         Assertions.assertEquals(true, model.isInDefaultSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventTypeProperties model = new EventTypeProperties().withDisplayName("p")
-            .withDescription("xqcsehch")
-            .withSchemaUrl("ufmpqumqyjgy")
+        EventTypeProperties model = new EventTypeProperties().withDisplayName("s")
+            .withDescription("udgzhxogjgg")
+            .withSchemaUrl("oujkxibdafh")
             .withIsInDefaultSet(true);
         model = BinaryData.fromObject(model).toObject(EventTypeProperties.class);
-        Assertions.assertEquals("p", model.displayName());
-        Assertions.assertEquals("xqcsehch", model.description());
-        Assertions.assertEquals("ufmpqumqyjgy", model.schemaUrl());
+        Assertions.assertEquals("s", model.displayName());
+        Assertions.assertEquals("udgzhxogjgg", model.description());
+        Assertions.assertEquals("oujkxibdafh", model.schemaUrl());
         Assertions.assertEquals(true, model.isInDefaultSet());
     }
 }

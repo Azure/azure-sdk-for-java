@@ -120,6 +120,10 @@ def sdk_automation(input_file: str, output_file: str):
             packages = sdk_automation_autorest(config)
     except Exception:
         logging.error("[GENERATE] Code generation failed. Unknown exception", exc_info=True)
+        if packages and len(packages) == 1:
+            packages[0]["result"] = "failed"
+        else:
+            sys.exit(1)
 
     with open(output_file, "w", encoding="utf-8") as fout:
         output = {

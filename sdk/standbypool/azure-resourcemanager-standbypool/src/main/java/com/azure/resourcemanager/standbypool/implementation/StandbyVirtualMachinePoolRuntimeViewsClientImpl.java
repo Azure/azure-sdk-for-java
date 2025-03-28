@@ -44,25 +44,25 @@ public final class StandbyVirtualMachinePoolRuntimeViewsClientImpl
     /**
      * The service client containing this operation class.
      */
-    private final StandbyPoolClientImpl client;
+    private final StandbyPoolManagementClientImpl client;
 
     /**
      * Initializes an instance of StandbyVirtualMachinePoolRuntimeViewsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    StandbyVirtualMachinePoolRuntimeViewsClientImpl(StandbyPoolClientImpl client) {
+    StandbyVirtualMachinePoolRuntimeViewsClientImpl(StandbyPoolManagementClientImpl client) {
         this.service = RestProxy.create(StandbyVirtualMachinePoolRuntimeViewsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StandbyPoolClientStandbyVirtualMachinePoolRuntimeViews to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for StandbyPoolManagementClientStandbyVirtualMachinePoolRuntimeViews to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "StandbyPoolClientSta")
+    @ServiceInterface(name = "StandbyPoolManagemen")
     public interface StandbyVirtualMachinePoolRuntimeViewsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}/runtimeViews/{runtimeView}")

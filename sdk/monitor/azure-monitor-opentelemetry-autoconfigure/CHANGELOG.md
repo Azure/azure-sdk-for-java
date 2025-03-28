@@ -1,14 +1,22 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
-- Support for parsing AAD Audience from the connection string ([#44482](https://github.com/Azure/azure-sdk-for-java/pull/44482))
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2025-03-20)
+
+### Features Added
+- Support for parsing AAD Audience from the connection string ([#44482](https://github.com/Azure/azure-sdk-for-java/pull/44482))
+- Support for custom events ([#44262](https://github.com/Azure/azure-sdk-for-java/pull/44262))
+- Support for live metrics ([#44653](https://github.com/Azure/azure-sdk-for-java/pull/44653))
+- Update OpenTelemetry SDK to 1.48.0 ([#44675](https://github.com/Azure/azure-sdk-for-java/pull/44675))
 
 ## 1.0.0 (2025-03-07)
 

@@ -14,9 +14,9 @@ public final class SapAvailabilityZoneDetailsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapAvailabilityZoneDetailsRequest model = BinaryData
-            .fromString("{\"appLocation\":\"acffgdkzzewkfvhq\",\"sapProduct\":\"ECC\",\"databaseType\":\"HANA\"}")
+            .fromString("{\"appLocation\":\"weriofzpyqsem\",\"sapProduct\":\"ECC\",\"databaseType\":\"HANA\"}")
             .toObject(SapAvailabilityZoneDetailsRequest.class);
-        Assertions.assertEquals("acffgdkzzewkfvhq", model.appLocation());
+        Assertions.assertEquals("weriofzpyqsem", model.appLocation());
         Assertions.assertEquals(SapProductType.ECC, model.sapProduct());
         Assertions.assertEquals(SapDatabaseType.HANA, model.databaseType());
     }
@@ -24,11 +24,11 @@ public final class SapAvailabilityZoneDetailsRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SapAvailabilityZoneDetailsRequest model
-            = new SapAvailabilityZoneDetailsRequest().withAppLocation("acffgdkzzewkfvhq")
+            = new SapAvailabilityZoneDetailsRequest().withAppLocation("weriofzpyqsem")
                 .withSapProduct(SapProductType.ECC)
                 .withDatabaseType(SapDatabaseType.HANA);
         model = BinaryData.fromObject(model).toObject(SapAvailabilityZoneDetailsRequest.class);
-        Assertions.assertEquals("acffgdkzzewkfvhq", model.appLocation());
+        Assertions.assertEquals("weriofzpyqsem", model.appLocation());
         Assertions.assertEquals(SapProductType.ECC, model.sapProduct());
         Assertions.assertEquals(SapDatabaseType.HANA, model.databaseType());
     }

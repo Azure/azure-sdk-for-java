@@ -33,7 +33,7 @@ public interface DomainTopic {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to Domain Topic resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

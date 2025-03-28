@@ -68,7 +68,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      */
     protected void setAuthorizationHeader(HttpRequest request, OAuthTokenRequestContext tokenRequestContext) {
         AccessToken token = credential.getToken(tokenRequestContext);
-        request.getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
+        request.getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken());
     }
 
     @Override

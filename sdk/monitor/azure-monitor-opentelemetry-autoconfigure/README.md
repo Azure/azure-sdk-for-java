@@ -141,13 +141,18 @@ For more information on the OpenTelemetry project, please review the [OpenTeleme
 
 ### Enabling Logging
 
-You can leverage [Azure SDK logging](logging].
+You can leverage [Azure SDK logging][logging].
 
 Examples:
 * [Log4j][log4j]
 * [Logback][logback]
 
 Learn more about [OpenTelemetry SDK logging][logging_otel_sdk].
+
+### Disable live metrics
+
+You can disable the [live metrics][live_metrics] by setting the `APPLICATIONINSIGHTS_LIVE_METRICS_ENABLED` environment variable to false, the `applicationinsights.live.metrics.enabled` Java system property to false,
+or programmatically with a properties supplier: `sdkBuilder.addPropertiesSupplier(() -> Collections.singletonMap("applicationinsights.live.metrics.enabled", "false"))`.
 
 ## Next steps
 Learn more about [OpenTelemetry][opentelemetry_io]
@@ -182,6 +187,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [log4j]: https://github.com/Azure-Samples/ApplicationInsights-Java-Samples/blob/9a7344eeb44525dfc83df3a1bd59460b8a7d93c6/opentelemetry-api/exporter/TrackTrace/Log4j2/src/main/resources/log4j2.xml#L16
 [logback]: https://github.com/Azure-Samples/ApplicationInsights-Java-Samples/blob/9a7344eeb44525dfc83df3a1bd59460b8a7d93c6/opentelemetry-api/exporter/TrackTrace/Logback/src/main/resources/logback.xml#L22
 [logging_otel_sdk]: https://opentelemetry.io/docs/languages/java/sdk/#internal-logging
+[live_metrics]: https://learn.microsoft.com/azure/azure-monitor/app/live-stream
 [opentelemetry_specification]: https://github.com/open-telemetry/opentelemetry-specification
 [application_insights_resource]: https://learn.microsoft.com/azure/azure-monitor/app/create-new-resource
 [application_insights_intro]: https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview
