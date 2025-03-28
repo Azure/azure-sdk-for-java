@@ -28,11 +28,11 @@ import io.clientcore.core.utils.configuration.Configuration;
  * Once added to the pipeline, requests will have their "User-Agent" header set to "MyApp/1.0" by the
  * {@code UserAgentPolicy}.</p>
  *
- * <!-- src_embed io.clientcore.core.http.pipeline.SetUserAgentPolicy.constructor -->
+ * <!-- src_embed io.clientcore.core.http.pipeline.UserAgentPolicy.constructor -->
  * <pre>
  * UserAgentPolicy policy = new UserAgentPolicy&#40;&quot;MyApp&#47;1.0&quot;&#41;;
  * </pre>
- * <!-- end io.clientcore.core.http.pipeline.SetUserAgentPolicy.constructor -->
+ * <!-- end io.clientcore.core.http.pipeline.UserAgentPolicy.constructor -->
  *
  * @see io.clientcore.core.http.pipeline
  * @see HttpPipelinePolicy
@@ -86,9 +86,6 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         return HttpPipelinePosition.BEFORE_REDIRECT;
     }
 
-    private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH
-        = "'application.id' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'application.id' cannot contain spaces.";
 
     /**
@@ -101,8 +98,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      *
      * @param userAgentOptions Options allowing to customize the user agent string.
      *
-     * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
-     * length.
+     * @throws IllegalArgumentException If {@code applicationId} contains spaces.
      */
     private static String toUserAgentString(UserAgentOptions userAgentOptions) {
         StringBuilder userAgentBuilder = new StringBuilder();
@@ -110,9 +106,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         String applicationId = userAgentOptions.getApplicationId();
 
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
-            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH);
-            } else if (applicationId.contains(" ")) {
+            if (applicationId.contains(" ")) {
                 throw new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE);
             } else {
                 userAgentBuilder.append(applicationId).append(" ");

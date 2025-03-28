@@ -3,30 +3,51 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 /**
  * The {@code UserAgentOptions} class is used to configure the user agent string for HTTP requests.
  */
-public class UserAgentOptions {
-    private final String sdkName;
-    private final String sdkVersion;
+@Metadata(properties = MetadataProperties.FLUENT)
+public final class UserAgentOptions {
+    private String sdkName;
+    private String sdkVersion;
     private String applicationId;
 
     /**
      * Creates a {@link UserAgentOptions} with the specified SDK name and version.
-     *
-     * @param sdkName The name of the SDK.
-     * @param sdkVersion The version of the SDK.
      */
-    public UserAgentOptions(String sdkName, String sdkVersion) {
+    public UserAgentOptions() {
+    }
+
+    /**
+     * Sets the SDK name for the user agent.
+     *
+     * @param sdkName The SDK name to set.
+     * @return The updated {@link UserAgentOptions} instance.
+     */
+    public UserAgentOptions setSdkName(String sdkName) {
         this.sdkName = sdkName;
+        return this;
+    }
+
+    /**
+     * Sets the SDK version for the user agent.
+     *
+     * @param sdkVersion The SDK version to set.
+     * @return The updated {@link UserAgentOptions} instance.
+     */
+    public UserAgentOptions setSdkVersion(String sdkVersion) {
         this.sdkVersion = sdkVersion;
+        return this;
     }
 
     /**
      * Sets the application ID for the user agent.
      *
      * @param applicationId The application ID to set.
-     * @return The current {@link UserAgentOptions} instance.
+     * @return The updated {@link UserAgentOptions} instance.
      */
     public UserAgentOptions setApplicationId(String applicationId) {
         this.applicationId = applicationId;
@@ -34,9 +55,9 @@ public class UserAgentOptions {
     }
 
     /**
-     * Gets the application ID for the user agent.
+     * Gets the SDK name for the user agent.
      *
-     * @return The application ID.
+     * @return The SDK name.
      */
     public String getSdkName() {
         return sdkName;

@@ -5,7 +5,7 @@ package io.clientcore.core.implementation.instrumentation.fallback;
 
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.InstrumentationTestUtils;
 import io.clientcore.core.instrumentation.logging.LogLevel;
@@ -43,20 +43,20 @@ public class FallbackTracingBenchmarks {
 
     @Setup
     public void setupOtel() {
-        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("test");
+        SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("test");
         fallbackTracerDisabled
-            = Instrumentation.create(new InstrumentationOptions().setTracingEnabled(false), libraryOptions).getTracer();
+            = Instrumentation.create(new InstrumentationOptions().setTracingEnabled(false), sdkOptions).getTracer();
 
         ClientLogger loggerDisabled
             = InstrumentationTestUtils.setupLogLevelAndGetLogger(LogLevel.WARNING, new NoopStream());
         fallbackTracerEnabledNoLogs
-            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(loggerDisabled), libraryOptions)
+            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(loggerDisabled), sdkOptions)
                 .getTracer();
 
         ClientLogger loggerEnabled
             = InstrumentationTestUtils.setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, new NoopStream());
         fallbackTracerEnabledWithLogs
-            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(loggerEnabled), libraryOptions)
+            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(loggerEnabled), sdkOptions)
                 .getTracer();
     }
 

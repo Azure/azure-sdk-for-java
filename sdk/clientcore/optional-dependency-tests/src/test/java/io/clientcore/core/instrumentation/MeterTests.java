@@ -32,14 +32,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.assertThat;
 
 public class MeterTests {
-    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
-        = new LibraryInstrumentationOptions("test-library");
+    private static final SdkInstrumentationOptions DEFAULT_SDK_OPTIONS = new SdkInstrumentationOptions("test-library");
     private static final Resource RESOURCE
         = Resource.create(Attributes.of(stringKey("resource_key"), "resource_value"));
     private static final InstrumentationScopeInfo INSTRUMENTATION_SCOPE
-        = InstrumentationScopeInfo.builder(DEFAULT_LIB_OPTIONS.getLibraryName())
-            .setVersion(DEFAULT_LIB_OPTIONS.getLibraryVersion())
-            .setSchemaUrl(DEFAULT_LIB_OPTIONS.getSchemaUrl())
+        = InstrumentationScopeInfo.builder(DEFAULT_SDK_OPTIONS.getSdkName())
+            .setVersion(DEFAULT_SDK_OPTIONS.getSdkVersion())
+            .setSchemaUrl(DEFAULT_SDK_OPTIONS.getSchemaUrl())
             .build();
     private static final long SECOND_NANOS = 1_000_000_000;
 
@@ -63,7 +62,7 @@ public class MeterTests {
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build();
         InstrumentationOptions otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
-        instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
+        instrumentation = Instrumentation.create(otelOptions, DEFAULT_SDK_OPTIONS);
         emptyAttributes = instrumentation.createAttributes(null);
         meter = instrumentation.getMeter();
     }
