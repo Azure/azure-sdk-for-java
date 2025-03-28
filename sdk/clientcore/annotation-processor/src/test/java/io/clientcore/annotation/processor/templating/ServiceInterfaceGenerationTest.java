@@ -54,7 +54,7 @@ public class ServiceInterfaceGenerationTest {
 
     @Test
     public void testAddOrphanComments() {
-        processor.addOrphanComments();
+        processor.addCopyrightComments();
         assertEquals(2, processor.getCompilationUnit().getOrphanComments().size());
     }
 
