@@ -14,13 +14,10 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
-import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
-import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -318,19 +315,21 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
     // Helper methods
     private void addRequestOptionsToRequestIfPresent(BlockStmt body, HttpRequestContext method) {
-        // Check if any parameter in the method is of type RequestOptions
         boolean hasRequestOptions = method.getParameters()
             .stream()
-            .anyMatch(parameter -> "options".equals(parameter.getName())
+            .anyMatch(parameter -> "requestOptions".equals(parameter.getName())
                 && "RequestOptions".equals(parameter.getShortTypeName()));
 
         if (hasRequestOptions) {
             // Create a statement for setting request options
-            ExpressionStmt statement = new ExpressionStmt(new MethodCallExpr(new NameExpr("httpRequest"),
-                "setRequestOptions", NodeList.nodeList(new NameExpr("options"))));
+            Statement statement1 = StaticJavaParser
+                .parseStatement("if (requestOptions != null) httpRequest.setRequestOptions(requestOptions);");
+            statement1.setComment(new LineComment("\n Set the Request Options"));
+            Statement statement2 = StaticJavaParser.parseStatement(
+                "if (httpRequest.getRequestOptions() != null) httpRequest.getRequestOptions().getRequestCallback().accept(httpRequest);");
 
-            statement.setComment(new LineComment("\n Set the Request Options"));
-            body.addStatement(statement);
+            body.addStatement(statement1);
+            body.addStatement(statement2);
         }
     }
 
