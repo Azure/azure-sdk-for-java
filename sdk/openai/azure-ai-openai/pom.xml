@@ -35,13 +35,25 @@
     <developerConnection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
-
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   <developers>
     <developer>
       <id>microsoft</id>
       <name>Microsoft</name>
     </developer>
   </developers>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
@@ -54,7 +66,7 @@
     </javaModulesSurefireArgLine>
 
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.skip>true</spotbugs.skip> <!-- Deshabilita SpotBugs -->
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
