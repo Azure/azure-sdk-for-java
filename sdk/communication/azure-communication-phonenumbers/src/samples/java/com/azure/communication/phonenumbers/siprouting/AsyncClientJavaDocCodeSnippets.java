@@ -5,6 +5,7 @@ package com.azure.communication.phonenumbers.siprouting;
 
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
+import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
 
 import static java.util.Arrays.asList;
 
@@ -35,7 +36,7 @@ public class AsyncClientJavaDocCodeSnippets {
         SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.listTrunks
-        sipRoutingAsyncClient.listTrunks()
+        sipRoutingAsyncClient.listTrunks(ExpandEnum.TRUNKS_HEALTH)
             .subscribe(trunk ->
                 System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort()));
         // END: com.azure.communication.phonenumbers.siprouting.asyncclient.listTrunks
@@ -64,7 +65,7 @@ public class AsyncClientJavaDocCodeSnippets {
         SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.getTrunk
-        sipRoutingAsyncClient.getTrunk("<trunk fqdn>").subscribe(trunk ->
+        sipRoutingAsyncClient.getTrunk("<trunk fqdn>", ExpandEnum.TRUNKS_HEALTH).subscribe(trunk ->
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort()));
         // END: com.azure.communication.phonenumbers.siprouting.asyncclient.getTrunk
     }
@@ -76,7 +77,7 @@ public class AsyncClientJavaDocCodeSnippets {
         SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.getTrunkWithResponse
-        sipRoutingAsyncClient.getTrunkWithResponse("<trunk fqdn>")
+        sipRoutingAsyncClient.getTrunkWithResponse("<trunk fqdn>", ExpandEnum.TRUNKS_HEALTH)
             .subscribe(response -> {
                 SipTrunk trunk = response.getValue();
                 System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
