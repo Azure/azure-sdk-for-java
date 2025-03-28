@@ -197,12 +197,10 @@ public class TelemetryJavaDocCodeSnippets {
             return this.clientCallWithResponse(null);
         }
 
-        @SuppressWarnings("try")
         public Response<?> clientCallWithResponse(RequestOptions options) {
             return instrumentation.instrumentWithResponse("Sample.call", options, this::clientCallWithResponseImpl);
         }
 
-        @SuppressWarnings("try")
         public void clientCall(RequestOptions options) {
             instrumentation.instrument("Sample.call", options, this::clientCallImpl);
         }
