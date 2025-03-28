@@ -106,7 +106,7 @@ public final class SdkRequestContext extends RequestOptions {
             return childProgressReporter;
         }
 
-        Object progressReporter = super.getData(PROGRESS_REPORTER_KEY);
+        Object progressReporter = super.getMetadata(PROGRESS_REPORTER_KEY);
         if (progressReporter instanceof ProgressReporter) {
             return (ProgressReporter) progressReporter;
         }
@@ -122,8 +122,8 @@ public final class SdkRequestContext extends RequestOptions {
     }
 
     @Override
-    public RequestOptions putData(String key, Object value) {
-        throw throwOnImmutable("Cannot put data");
+    public RequestOptions putMetadata(String key, Object value) {
+        throw throwOnImmutable("Cannot put metadata");
     }
 
     @Override

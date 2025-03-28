@@ -39,7 +39,7 @@ public class SdkRequestContextTests {
             .setInstrumentationContext(startSpan().getInstrumentationContext())
             .addQueryParam("param1", "value1")
             .addQueryParam("param2", "value with space", true)
-            .putData("key", "value");
+            .putMetadata("key", "value");
 
         SdkRequestContext requestContext = SdkRequestContext.create(options);
 
@@ -47,8 +47,8 @@ public class SdkRequestContextTests {
         assertSame(options.getInstrumentationContext(), requestContext.getInstrumentationContext());
         assertSame(options.getLogger(), requestContext.getLogger());
         assertSame(options.getRequestCallback(), requestContext.getRequestCallback());
-        assertEquals("value", requestContext.getData("key"));
-        assertNull(requestContext.getData("missing key"));
+        assertEquals("value", requestContext.getMetadata("key"));
+        assertNull(requestContext.getMetadata("missing key"));
 
         assertNull(requestContext.getProgressReporter());
     }
@@ -62,7 +62,7 @@ public class SdkRequestContextTests {
     public void emptyRequestOptions(RequestOptions options) {
         SdkRequestContext requestContext = SdkRequestContext.create(options);
 
-        assertNull(requestContext.getData("key"));
+        assertNull(requestContext.getMetadata("key"));
         assertNotNull(requestContext.getRequestCallback());
         assertNull(requestContext.getLogger());
         assertNull(requestContext.getInstrumentationContext());
@@ -73,7 +73,7 @@ public class SdkRequestContextTests {
     public void requestContextIsLocked() {
         RequestOptions options = new RequestOptions();
         SdkRequestContext requestContext = SdkRequestContext.create(options);
-        assertThrows(IllegalStateException.class, () -> requestContext.putData("key", "value"));
+        assertThrows(IllegalStateException.class, () -> requestContext.putMetadata("key", "value"));
         assertThrows(IllegalStateException.class, () -> requestContext.addRequestCallback(request -> {
         }));
         assertThrows(IllegalStateException.class, () -> requestContext.addQueryParam("key", "value"));
@@ -85,7 +85,7 @@ public class SdkRequestContextTests {
     @Test
     public void invalidParams() {
         SdkRequestContext requestContext = SdkRequestContext.none();
-        assertThrows(NullPointerException.class, () -> requestContext.getData(null));
+        assertThrows(NullPointerException.class, () -> requestContext.getMetadata(null));
     }
 
     @Test
@@ -94,13 +94,13 @@ public class SdkRequestContextTests {
 
         ProgressReporter progressReporter = ProgressReporter.withProgressListener(value -> {
         });
-        options.putData("progressReporter", progressReporter);
+        options.putMetadata("progressReporter", progressReporter);
 
         SdkRequestContext requestContext = SdkRequestContext.create(options);
         assertSame(progressReporter, requestContext.getProgressReporter());
 
-        options.putData("progressReporter", null);
-        assertNull(options.getData("progressReporter"));
+        options.putMetadata("progressReporter", null);
+        assertNull(options.getMetadata("progressReporter"));
 
         assertSame(progressReporter, requestContext.getProgressReporter());
     }

@@ -68,26 +68,26 @@ public class RequestOptionsJavaDocCodeSnippets {
 
 
     /**
-     * Code snippet for {@link RequestOptions#putData(String, Object)}
+     * Code snippet for {@link RequestOptions#putMetadata(String, Object)}
      */
     public void putDataContext() {
         // BEGIN: io.clientcore.core.http.rest.requestoptions.putData
 
         RequestOptions options = new RequestOptions()
-            .putData("stringKey", "value")
-            .putData("complexObject", ProgressReporter.withProgressListener(value -> System.out.printf("Got %s bytes", value)));
+            .putMetadata("stringKey", "value")
+            .putMetadata("complexObject", ProgressReporter.withProgressListener(value -> System.out.printf("Got %s bytes", value)));
 
         // END: io.clientcore.core.http.rest.requestoptions.putData
 
         // BEGIN: io.clientcore.core.http.rest.requestoptions.getData
 
         // Get the string value
-        Object stringKeyValue = options.getData("stringKey");
+        Object stringKeyValue = options.getMetadata("stringKey");
         String stringValue = stringKeyValue instanceof String ? (String) stringKeyValue : null;
         System.out.printf("Key1 value: %s%n", stringValue);
 
         // Get the complex object
-        Object complexObjectValue = options.getData("complexObject");
+        Object complexObjectValue = options.getMetadata("complexObject");
         ProgressReporter progressReporter = complexObjectValue instanceof ProgressReporter
             ? (ProgressReporter) complexObjectValue
             : null;
