@@ -5,6 +5,7 @@ package io.clientcore.annotation.processor.test;
 
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
+import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -113,6 +114,441 @@ public class TestInterfaceGenerationTests {
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         assertDoesNotThrow(() -> testInterface.getNothing(getServerUri(false)));
+    }
+
+    @Test
+    @Disabled("pending fix")
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "");
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
+
+        assertEquals("\"\"", result.data());
+    }
+
+    @Test
+    @Disabled("confirm behavior, should throw underlying error")
+    public void service19PutWithNoContentTypeAndStringBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface.putWithNoContentTypeAndStringBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    @Disabled("pending fix")
+    public void service19PutWithNoContentTypeAndStringBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface.putWithNoContentTypeAndStringBody(getServerUri(false), "");
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    @Disabled("pending fix")
+    public void service19PutWithNoContentTypeAndStringBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface.putWithNoContentTypeAndStringBody(getServerUri(false), "hello");
+
+        assertEquals("hello", result.data());
+    }
+
+    @Test
+    public void service19PutWithNoContentTypeAndByteArrayBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface.putWithNoContentTypeAndByteArrayBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithNoContentTypeAndByteArrayBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface.putWithNoContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithNoContentTypeAndByteArrayBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface.putWithNoContentTypeAndByteArrayBody(getServerUri(false),
+            new byte[] { 0, 1, 2, 3, 4 });
+
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface.putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
+
+        assertEquals("\"\"", result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), "soups and stuff");
+
+        assertEquals("\"soups and stuff\"", result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
+
+        assertEquals("\"AAECAwQ=\"", result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    @Disabled("pending fix")
+    public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "");
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    @Disabled("pending fix")
+    public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "soups and stuff");
+
+        assertEquals("soups and stuff", result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    @Disabled("pending fix")
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "penguins");
+
+        assertEquals("penguins", result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface.putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(
+            getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
+
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
+
+        assertEquals("\"\"", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "soups and stuff");
+
+        assertEquals("\"soups and stuff\"", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "");
+
+        assertEquals("\"\"", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "soups and stuff");
+
+        // TODO: fromObject should be generated instead of fromString
+        assertEquals("\"soups and stuff\"", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
+
+        assertEquals("\"\"", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
+
+        assertEquals("\"AAECAwQ=\"", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    @Disabled("pending fix")
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "");
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    @Disabled("pending fix")
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "penguins");
+
+        assertEquals("penguins", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(getServerUri(false), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface
+            .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON result = testInterface.putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(
+            getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
+
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
     }
 
     private HttpClient getHttpClient() {

@@ -180,8 +180,12 @@ public class AnnotationProcessor extends AbstractProcessor {
                 method.addQueryParam(queryParam.value(), param.getSimpleName().toString(),
                     queryParam.multipleQueryParams());
             } else if (bodyParam != null) {
-                method.setBody(new HttpRequestContext.Body(bodyParam.value(), param.asType().toString(),
-                    param.getSimpleName().toString()));
+                if (bodyParam.value() == null) {
+                    throw new IllegalArgumentException(
+                        "Body parameter '" + param.getSimpleName().toString() + "' must not be null.");
+                }
+                method.setBody(
+                    new HttpRequestContext.Body(bodyParam.value(), param.asType(), param.getSimpleName().toString()));
             }
 
             // Add parameter details to method context
