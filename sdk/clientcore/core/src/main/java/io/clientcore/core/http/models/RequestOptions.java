@@ -162,6 +162,27 @@ public class RequestOptions {
     }
 
     /**
+     * Adds a header to the {@link HttpRequest}.
+     *
+     * <p>If a header with the given name exists, the {@code value} is added to the existing header (comma-separated),
+     * otherwise a new header will be created.</p>
+     *
+     * @param name The header name.
+     * @param value The header value.
+     *
+     * @return The updated {@link RequestOptions} object.
+     * @throws NullPointerException If {@code header} is null.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
+     */
+    public RequestOptions addHeader(HttpHeaderName name, String value) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(value, "'value' cannot be null.");
+
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(name, value));
+        return this;
+    }
+
+    /**
      * Adds a query parameter to the request URI. The parameter name and value will be URI encoded. To use an already
      * encoded parameter name and value, call {@code addQueryParam("name", "value", true)}.
      *
@@ -268,21 +289,21 @@ public class RequestOptions {
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      * @throws NullPointerException If {@code key} is null.
      */
-    public RequestOptions putData(String key, Object value) {
+    public RequestOptions putMetadata(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         this.context = this.context.put(key, value);
         return this;
     }
 
     /**
-     * Gets the value associated with the given key in the {@link RequestOptions} object. The value is cast to the
-     * given class type.
+     * Gets the value associated with the given key in the request metadata associated with
+     * {@link RequestOptions} object.
      *
      * @param key The key to be retrieved.
      * @return The value associated with the given key or {@code null}.
      * @throws NullPointerException If {@code key} is null.
      */
-    public Object getData(String key) {
+    public Object getMetadata(String key) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         return context.get(key);
     }

@@ -79,40 +79,40 @@ public class RequestOptionsTests {
     public void simpleContext() {
         Object complexObject = ProgressReporter.withProgressListener(value -> {
         });
-        RequestOptions options = new RequestOptions().putData("stringKey", "value")
-            .putData("longKey", 10L)
-            .putData("booleanKey", true)
-            .putData("doubleKey", 42.0)
-            .putData("complexObject", complexObject);
+        RequestOptions options = new RequestOptions().putMetadata("stringKey", "value")
+            .putMetadata("longKey", 10L)
+            .putMetadata("booleanKey", true)
+            .putMetadata("doubleKey", 42.0)
+            .putMetadata("complexObject", complexObject);
 
-        assertEquals("value", options.getData("stringKey"));
-        assertEquals("value", options.getData("stringKey"));
-        assertEquals(10L, options.getData("longKey"));
-        assertEquals(true, options.getData("booleanKey"));
-        assertEquals(42.0, options.getData("doubleKey"));
-        assertSame(complexObject, options.getData("complexObject"));
-        assertNull(options.getData("fakeKey"));
+        assertEquals("value", options.getMetadata("stringKey"));
+        assertEquals("value", options.getMetadata("stringKey"));
+        assertEquals(10L, options.getMetadata("longKey"));
+        assertEquals(true, options.getMetadata("booleanKey"));
+        assertEquals(42.0, options.getMetadata("doubleKey"));
+        assertSame(complexObject, options.getMetadata("complexObject"));
+        assertNull(options.getMetadata("fakeKey"));
     }
 
     @Test
     public void keysCannotBeNull() {
         RequestOptions options = new RequestOptions();
-        assertThrows(NullPointerException.class, () -> options.putData(null, null));
-        assertThrows(NullPointerException.class, () -> options.putData(null, "value"));
+        assertThrows(NullPointerException.class, () -> options.putMetadata(null, null));
+        assertThrows(NullPointerException.class, () -> options.putMetadata(null, "value"));
     }
 
     @ParameterizedTest
     @MethodSource("addDataSupplier")
     public void addContext(String key, String value, String expectedOriginalValue) {
-        RequestOptions options = new RequestOptions().putData("key", "value").putData(key, value);
+        RequestOptions options = new RequestOptions().putMetadata("key", "value").putMetadata(key, value);
 
-        assertEquals(value, options.getData(key));
-        assertEquals(expectedOriginalValue, options.getData("key"));
+        assertEquals(value, options.getMetadata(key));
+        assertEquals(expectedOriginalValue, options.getMetadata("key"));
     }
 
     @Test
     public void noneIsLocked() {
-        assertThrows(IllegalStateException.class, () -> RequestOptions.none().putData("key", "value"));
+        assertThrows(IllegalStateException.class, () -> RequestOptions.none().putMetadata("key", "value"));
         assertThrows(IllegalStateException.class, () -> RequestOptions.none().addRequestCallback(request -> {
         }));
         assertThrows(IllegalStateException.class, () -> RequestOptions.none().addQueryParam("key", "value"));
@@ -132,13 +132,13 @@ public class RequestOptionsTests {
 
     @Test
     public void putValueCanBeNull() {
-        RequestOptions options = new RequestOptions().putData("key", null);
+        RequestOptions options = new RequestOptions().putMetadata("key", null);
 
-        assertNull(options.getData("key"));
+        assertNull(options.getMetadata("key"));
     }
 
     @Test
     public void getValueKeyCannotBeNull() {
-        assertThrows(NullPointerException.class, () -> RequestOptions.none().getData(null));
+        assertThrows(NullPointerException.class, () -> RequestOptions.none().getMetadata(null));
     }
 }
