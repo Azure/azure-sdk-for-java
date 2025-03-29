@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Security profile for the container service cluster.
@@ -37,6 +38,13 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
      * Image Cleaner settings for the security profile.
      */
     private ManagedClusterSecurityProfileImageCleaner imageCleaner;
+
+    /*
+     * A list of up to 10 base64 encoded CAs that will be added to the trust store on all nodes in the cluster. For more
+     * information see [Custom CA Trust
+     * Certificates](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority).
+     */
+    private List<byte[]> customCATrustCertificates;
 
     /**
      * Creates an instance of ManagedClusterSecurityProfile class.
@@ -132,6 +140,30 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
     }
 
     /**
+     * Get the customCATrustCertificates property: A list of up to 10 base64 encoded CAs that will be added to the trust
+     * store on all nodes in the cluster. For more information see [Custom CA Trust
+     * Certificates](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority).
+     * 
+     * @return the customCATrustCertificates value.
+     */
+    public List<byte[]> customCATrustCertificates() {
+        return this.customCATrustCertificates;
+    }
+
+    /**
+     * Set the customCATrustCertificates property: A list of up to 10 base64 encoded CAs that will be added to the trust
+     * store on all nodes in the cluster. For more information see [Custom CA Trust
+     * Certificates](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority).
+     * 
+     * @param customCATrustCertificates the customCATrustCertificates value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile withCustomCATrustCertificates(List<byte[]> customCATrustCertificates) {
+        this.customCATrustCertificates = customCATrustCertificates;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -161,6 +193,8 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
         jsonWriter.writeJsonField("azureKeyVaultKms", this.azureKeyVaultKms);
         jsonWriter.writeJsonField("workloadIdentity", this.workloadIdentity);
         jsonWriter.writeJsonField("imageCleaner", this.imageCleaner);
+        jsonWriter.writeArrayField("customCATrustCertificates", this.customCATrustCertificates,
+            (writer, element) -> writer.writeBinary(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -191,6 +225,9 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
                 } else if ("imageCleaner".equals(fieldName)) {
                     deserializedManagedClusterSecurityProfile.imageCleaner
                         = ManagedClusterSecurityProfileImageCleaner.fromJson(reader);
+                } else if ("customCATrustCertificates".equals(fieldName)) {
+                    List<byte[]> customCATrustCertificates = reader.readArray(reader1 -> reader1.getBinary());
+                    deserializedManagedClusterSecurityProfile.customCATrustCertificates = customCATrustCertificates;
                 } else {
                     reader.skipChildren();
                 }

@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkInterfaceResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterfaceResourceNames model = BinaryData.fromString("{\"networkInterfaceName\":\"ufubl\"}")
+        NetworkInterfaceResourceNames model = BinaryData.fromString("{\"networkInterfaceName\":\"wbnguitnwui\"}")
             .toObject(NetworkInterfaceResourceNames.class);
-        Assertions.assertEquals("ufubl", model.networkInterfaceName());
+        Assertions.assertEquals("wbnguitnwui", model.networkInterfaceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfaceResourceNames model = new NetworkInterfaceResourceNames().withNetworkInterfaceName("ufubl");
+        NetworkInterfaceResourceNames model
+            = new NetworkInterfaceResourceNames().withNetworkInterfaceName("wbnguitnwui");
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceResourceNames.class);
-        Assertions.assertEquals("ufubl", model.networkInterfaceName());
+        Assertions.assertEquals("wbnguitnwui", model.networkInterfaceName());
     }
 }

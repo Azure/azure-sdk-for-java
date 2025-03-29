@@ -86,6 +86,7 @@
     <module>sdk/digitaltwins</module>
     <module>sdk/dnsresolver</module>
     <module>sdk/documentintelligence</module>
+    <module>sdk/durabletask</module>
     <module>sdk/dynatrace</module>
     <module>sdk/easm</module>
     <module>sdk/edgeorder</module>

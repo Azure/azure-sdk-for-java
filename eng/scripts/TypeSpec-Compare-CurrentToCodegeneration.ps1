@@ -64,6 +64,8 @@ foreach ($tspLocationPath in $tspYamls) {
   if ($LastExitCode -ne 0) {
     $failedSdk += $sdkPath
   }
+  Write-Host "Running mvn package"
+  mvn package
   Pop-Location
 }
 

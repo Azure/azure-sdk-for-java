@@ -193,7 +193,7 @@ class OkHttpHttpClient implements HttpClient {
                 break;
         }
 
-        return new Response<>(request, response.code(), headers, body);
+        return new Response<>(request, response.code(), headers, body == null ? BinaryData.empty() : body);
     }
 
     private BinaryData createBodyFromServerSentResult(ServerSentResult serverSentResult) {

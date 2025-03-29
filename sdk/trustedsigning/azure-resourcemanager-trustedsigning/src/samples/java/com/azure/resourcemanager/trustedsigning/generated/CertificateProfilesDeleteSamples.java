@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trustedsigning.generated;
  */
 public final class CertificateProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CertificateProfiles_Delete.json
+     * x-ms-original-file: 2024-09-30-preview/CertificateProfiles_Delete.json
      */
     /**
      * Sample code: Delete a certificate profile.

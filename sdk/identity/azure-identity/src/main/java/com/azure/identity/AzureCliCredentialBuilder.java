@@ -24,7 +24,7 @@ import java.util.Objects;
  * logged-in user or service principal in Azure CLI. It acts as the Azure CLI logged in user or service principal
  * and executes an Azure CLI command underneath to authenticate the application against Microsoft Entra ID.</p>
  *
- * <p><strong>Sample: Construct IntelliJCredential</strong></p>
+ * <p><strong>Sample: Construct AzureCliCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.AzureCliCredential},
  * using the {@link com.azure.identity.AzureCliCredentialBuilder} to configure it. Once this credential is

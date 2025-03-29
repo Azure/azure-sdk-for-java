@@ -467,11 +467,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          boolean isPerPartitionAutomaticFailoverEnabled) {
 
         assert(clientTelemetryConfig != null);
-        Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .isSendClientTelemetryToServiceEnabled(clientTelemetryConfig);
-        assert(clientTelemetryEnabled != null);
         activeClientsCnt.incrementAndGet();
         this.clientId = clientIdGenerator.incrementAndGet();
         this.clientCorrelationId = Strings.isNullOrWhiteSpace(clientCorrelationId) ?
@@ -737,7 +732,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     null,
                     this.configs,
                     this.clientTelemetryConfig,
-                    this,
                     this.connectionPolicy.getPreferredRegions());
             clientTelemetry.init().thenEmpty((publisher) -> {
                 logger.warn(

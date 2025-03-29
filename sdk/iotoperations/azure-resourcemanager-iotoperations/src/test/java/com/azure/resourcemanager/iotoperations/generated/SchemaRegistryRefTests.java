@@ -12,14 +12,14 @@ public final class SchemaRegistryRefTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryRef model
-            = BinaryData.fromString("{\"resourceId\":\"nmayhuybb\"}").toObject(SchemaRegistryRef.class);
-        Assertions.assertEquals("nmayhuybb", model.resourceId());
+            = BinaryData.fromString("{\"resourceId\":\"hqjbasvmsmj\"}").toObject(SchemaRegistryRef.class);
+        Assertions.assertEquals("hqjbasvmsmj", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaRegistryRef model = new SchemaRegistryRef().withResourceId("nmayhuybb");
+        SchemaRegistryRef model = new SchemaRegistryRef().withResourceId("hqjbasvmsmj");
         model = BinaryData.fromObject(model).toObject(SchemaRegistryRef.class);
-        Assertions.assertEquals("nmayhuybb", model.resourceId());
+        Assertions.assertEquals("hqjbasvmsmj", model.resourceId());
     }
 }

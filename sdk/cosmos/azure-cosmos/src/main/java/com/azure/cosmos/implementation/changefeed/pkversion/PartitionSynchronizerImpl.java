@@ -55,17 +55,19 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
-        // TODO: log the partition getKey ID found.
         return this.enumPartitionKeyRanges()
             .map(Resource::getId)
             .collectList()
             .flatMap( partitionKeyRangeIds -> {
+                logger.info(
+                    "Checking whether leases for any partition is missing - partitions - {}",
+                    String.join(", ", partitionKeyRangeIds));
                 Set<String> leaseTokens = new HashSet<>(partitionKeyRangeIds);
                 return this.createLeases(leaseTokens).then();
             })
             .onErrorResume( throwable -> {
-                // TODO: log the exception.
-                return Mono.empty();
+                logger.error("Failed to create missing leases.", throwable);
+                return Mono.error(throwable);
             });
     }
 
@@ -135,7 +137,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             .map(FeedResponse::getResults)
             .flatMap(Flux::fromIterable)
             .onErrorResume(throwable -> {
-                // TODO: Log the exception.
+                logger.error("Failed to retrieve physical partition information.", throwable);
                 return Flux.empty();
             });
     }
@@ -158,6 +160,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         return this.leaseContainer.getAllLeases()
             .map(lease -> {
                 if (lease != null) {
+                    logger.debug("Found an existing lease document for partition {}", lease.getLeaseToken());
                     // Get leases after getting ranges, to make sure that no other hosts checked in continuation for
                     //   split partition after we got leases.
                     addedLeaseTokens.remove(lease.getLeaseToken());
@@ -166,10 +169,13 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 return lease;
             })
             .thenMany(Flux.fromIterable(addedLeaseTokens)
-                .flatMap( addedRangeId ->
-                    this.leaseManager.createLeaseIfNotExist(addedRangeId, null), this.degreeOfParallelism)
+                .flatMap( addedRangeId -> {
+                    logger.debug("Adding a new lease document for partition {}", addedRangeId);
+
+                    return this.leaseManager.createLeaseIfNotExist(addedRangeId, null);
+                }, this.degreeOfParallelism)
                 .map( lease -> {
-                    // TODO: log the lease info that was added.
+                    logger.info("Added new lease document for partition {}", lease.getLeaseToken());
                     return lease;
                 })
             );

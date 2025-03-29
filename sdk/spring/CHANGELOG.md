@@ -1,6 +1,8 @@
 # Release History
 
-## 5.21.0-beta.1 (Unreleased)
+## 5.21.0 (2025-03-20)
+- This release is compatible with Spring Boot 3.4.0-3.4.2, 3.3.0-3.3.6, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>2), 3.3.y (y>6) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2024.0.0, 2023.0.0-2023.0.4, 2022.0.0-2022.0.5. (Note: 2024.0.x(x>0) and 2023.0.y (y>4) should be supported, but they aren't tested with this release.)
 
 #### Features Added
 - Add the `spring-cloud-azure-starter-keyvault-jca`. This starter supports SSL Bundle with Azure Key Vault certificates. [#35782](https://github.com/Azure/azure-sdk-for-java/issues/35782).
@@ -8,6 +10,7 @@
 ### Spring Cloud Azure Dependencies (BOM)
 
 #### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.32.
 - Add dependency `com.azure.spring:spring-cloud-azure-starter-keyvault-jca`.
 
 ### Spring Cloud Azure Autoconfigure
@@ -16,11 +19,31 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 - Custom `ObjectMapper` bean does not work for received messages. [#37796](https://github.com/Azure/azure-sdk-for-java/issues/37796).
 
+#### Features Added
+- Support new property `sessionIdleTimeout` for `ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder` [#44414](https://github.com/Azure/azure-sdk-for-java/issues/44414).
+- Enable annotation `@EnableAzureMessaging` automatically.
+
 ### Spring Cloud Azure Starter Key Vault
 This section includes changes in `spring-cloud-azure-starter-keyvault` module.
 
 #### Features Added
 - Support SSL Bundle with Azure Key Vault certificates [#44259](https://github.com/Azure/azure-sdk-for-java/pull/44259).
+
+### Spring Cloud Azure Starter Monitor
+This section includes changes in `spring-cloud-azure-starter-monitor` module.
+
+#### Dependency Updates
+- Update OpenTelemetry SDK to 1.48.0 and OpenTelemetry Java instrumentation to 2.14.0 ([#44675](https://github.com/Azure/azure-sdk-for-java/pull/44675))
+
+#### Other Changes
+- `spring-cloud-azure-starter-monitor` is GA and part of Spring Cloud Azure
+- Make the starter work with GraalVM native 22 and 23 ([#44734](https://github.com/Azure/azure-sdk-for-java/pull/44734))
+- Stater based on Spring Boot 3 ([#43722](https://github.com/Azure/azure-sdk-for-java/pull/43722))
+- Improve self-diagnostics ([#43151](https://github.com/Azure/azure-sdk-for-java/pull/43151)) ([#43219](https://github.com/Azure/azure-sdk-for-java/pull/43219))
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5210-2025-03-20) for more details.
 
 ## 5.20.1 (2025-03-03)
 - This release is compatible with Spring Boot 3.4.0-3.4.2, 3.3.0-3.3.6, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>2), 3.3.y (y>6) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)

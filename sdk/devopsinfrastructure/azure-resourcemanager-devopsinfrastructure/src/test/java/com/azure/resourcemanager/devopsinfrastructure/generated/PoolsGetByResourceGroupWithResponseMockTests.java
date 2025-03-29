@@ -6,8 +6,8 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager;
 import com.azure.resourcemanager.devopsinfrastructure.models.ManagedServiceIdentityType;
@@ -23,14 +23,14 @@ public final class PoolsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1896138936,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"ked\"},\"identity\":{\"principalId\":\"rwyhqmibzyhwitsm\",\"tenantId\":\"yynpcdpumnzgmwz\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"lwwrl\":{\"principalId\":\"knso\",\"clientId\":\"jhxbld\"},\"y\":{\"principalId\":\"m\",\"clientId\":\"cvokotllxdyhg\"},\"amqgxqquezikyw\":{\"principalId\":\"ogjltdtbnnhad\",\"clientId\":\"crkvcikhnv\"},\"cjzkzivgvvcna\":{\"principalId\":\"xkalla\",\"clientId\":\"elwuipi\"}}},\"location\":\"hyrnxxmu\",\"tags\":{\"tchealmf\":\"ndrdvstkwq\",\"iohgwxrtfud\":\"tdaaygdvwvg\",\"mnpkukghimdblxg\":\"epxgyqagvr\",\"mszkkfo\":\"imfnjhfjx\"},\"id\":\"rey\",\"name\":\"kzikfjawneaivxwc\",\"type\":\"elpcirelsfeaenwa\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1896138936,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"ked\"},\"identity\":{\"principalId\":\"rwyhqmibzyhwitsm\",\"tenantId\":\"yynpcdpumnzgmwz\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"lwwrl\":{\"clientId\":\"knso\",\"principalId\":\"jhxbld\"},\"y\":{\"clientId\":\"m\",\"principalId\":\"cvokotllxdyhg\"},\"amqgxqquezikyw\":{\"clientId\":\"ogjltdtbnnhad\",\"principalId\":\"crkvcikhnv\"},\"cjzkzivgvvcna\":{\"clientId\":\"xkalla\",\"principalId\":\"elwuipi\"}}},\"location\":\"hyrnxxmu\",\"tags\":{\"tchealmf\":\"ndrdvstkwq\",\"iohgwxrtfud\":\"tdaaygdvwvg\",\"mnpkukghimdblxg\":\"epxgyqagvr\",\"mszkkfo\":\"imfnjhfjx\"},\"id\":\"rey\",\"name\":\"kzikfjawneaivxwc\",\"type\":\"elpcirelsfeaenwa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DevOpsInfrastructureManager manager = DevOpsInfrastructureManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Pool response = manager.pools()
             .getByResourceGroupWithResponse("rpzbchckqqzqi", "xiy", com.azure.core.util.Context.NONE)

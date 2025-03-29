@@ -54,10 +54,10 @@ public class PagingOperationTests {
                 return new MockHttpResponse(request, 404);
             })
             .build();
-        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline);
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, RequestOptions.none());
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, null, RequestOptions.none());
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -103,7 +103,7 @@ public class PagingOperationTests {
             })
             .build();
 
-        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline);
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(

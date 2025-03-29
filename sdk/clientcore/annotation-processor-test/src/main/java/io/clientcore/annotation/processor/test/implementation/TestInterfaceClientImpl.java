@@ -20,8 +20,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.serialization.ObjectSerializer;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -33,15 +31,15 @@ public final class TestInterfaceClientImpl {
 
     @ServiceInterface(name = "myService")
     public interface TestInterfaceClientService {
-        static TestInterfaceClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer) {
+        static TestInterfaceClientService getNewInstance(HttpPipeline pipeline) {
             if (pipeline == null) {
                 throw new IllegalArgumentException("pipeline cannot be null");
             }
             try {
                 Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.implementation.TestInterfaceClientServiceImpl");
                 return (TestInterfaceClientService) clazz
-                    .getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class)
-                    .invoke(null, pipeline, serializer);
+                    .getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
                      | InvocationTargetException e) {
                 throw new RuntimeException(e);
@@ -62,28 +60,10 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
         Void testMethodReturnsVoid();
 
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "my/uri/path", expectedStatusCodes = { 200 })
-        void testHeadMethod();
-
-
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "my/uri/path", expectedStatusCodes = { 200, 207 })
-        boolean testBooleanHeadMethod();
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<Void> testMethodReturnsResponseVoid();
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<InputStream> testDownload();
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/kv/{key}", expectedStatusCodes = { 200 })
+        @HttpRequestInformation(method = HttpMethod.GET, path = "kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Foo> getFoo(@PathParam("key") String key, @QueryParam("label") String label,
                              @HeaderParam("Sync-Token") String syncToken);
-
-        @HttpRequestInformation(method = HttpMethod.DELETE, path = "/kv/{key}", expectedStatusCodes = { 204, 404 })
-        Response<Void> deleteFoo(@PathParam("key") String key, @QueryParam("label") String label,
-                                 @HeaderParam("Sync-Token") String syncToken);
-
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
         Response<FooListResult> listFooListResult(@HostParam("uri") String uri, RequestOptions requestOptions);
@@ -93,7 +73,9 @@ public final class TestInterfaceClientImpl {
                                                       RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
-        Response<List<Foo>> listFoo(@HostParam("uri") String uri, @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags, RequestOptions requestOptions);
+        Response<List<Foo>> listFoo(@HostParam("uri") String uri, @QueryParam(value = "tags", multipleQueryParams =
+            true) List<String> tags, @QueryParam(value = "tags2", multipleQueryParams = true) List<String> tags2,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -127,10 +109,30 @@ public final class TestInterfaceClientImpl {
         // Service 2
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/{numberOfBytes}", expectedStatusCodes = { 200 })
         byte[] getByteArray(@HostParam("scheme") String scheme, @HostParam("hostName") String hostName,
-                            @PathParam("numberOfBytes") int numberOfBytes);
+                            @PathParam(value = "numberOfBytes", encoded = true) int numberOfBytes);
 
         // Service 3
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = { 200 })
         void getNothing(@HostParam("uri") String uri);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
+        HttpBinJSON getAnything(@HostParam("uri") String uri);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything/with+plus", expectedStatusCodes = { 200 })
+        HttpBinJSON getAnythingWithPlus(@HostParam("uri") String uri);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything/{path}", expectedStatusCodes = { 200 })
+        HttpBinJSON getAnythingWithPathParam(@HostParam("uri") String uri, @PathParam("path") String pathParam);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything/{path}", expectedStatusCodes = { 200 })
+        HttpBinJSON getAnythingWithEncodedPathParam(@HostParam("uri") String uri,
+            @PathParam(value = "path", encoded = true) String pathParam);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
+        HttpBinJSON getAnything(@HostParam("uri") String uri, @QueryParam("a") String a, @QueryParam("b") int b);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
+        HttpBinJSON getAnythingWithEncoded(@HostParam("uri") String uri,
+            @QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
     }
 }
