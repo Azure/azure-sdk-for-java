@@ -16,7 +16,7 @@ import java.io.IOException;
  * required when using Confidential VMs.
  */
 @Fluent
-public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecurityProfile> {
+public final class VmDiskSecurityProfile implements JsonSerializable<VmDiskSecurityProfile> {
 
     /*
      * Specifies the EncryptionType of the managed disk. It is set to VMGuestStateOnly for encryption of just the
@@ -25,13 +25,6 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
      */
     @Generated
     private SecurityEncryptionTypes securityEncryptionType;
-
-    /**
-     * Creates an instance of VMDiskSecurityProfile class.
-     */
-    @Generated
-    public VMDiskSecurityProfile() {
-    }
 
     /**
      * Get the securityEncryptionType property: Specifies the EncryptionType of the managed disk. It is set to
@@ -53,10 +46,10 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
      * Confidential VMs.
      *
      * @param securityEncryptionType the securityEncryptionType value to set.
-     * @return the VMDiskSecurityProfile object itself.
+     * @return the VmDiskSecurityProfile object itself.
      */
     @Generated
-    public VMDiskSecurityProfile setSecurityEncryptionType(SecurityEncryptionTypes securityEncryptionType) {
+    public VmDiskSecurityProfile setSecurityEncryptionType(SecurityEncryptionTypes securityEncryptionType) {
         this.securityEncryptionType = securityEncryptionType;
         return this;
     }
@@ -74,28 +67,35 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
     }
 
     /**
-     * Reads an instance of VMDiskSecurityProfile from the JsonReader.
+     * Reads an instance of VmDiskSecurityProfile from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VMDiskSecurityProfile if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of VmDiskSecurityProfile if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the VMDiskSecurityProfile.
+     * @throws IOException If an error occurs while reading the VmDiskSecurityProfile.
      */
     @Generated
-    public static VMDiskSecurityProfile fromJson(JsonReader jsonReader) throws IOException {
+    public static VmDiskSecurityProfile fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VMDiskSecurityProfile deserializedVMDiskSecurityProfile = new VMDiskSecurityProfile();
+            VmDiskSecurityProfile deserializedVmDiskSecurityProfile = new VmDiskSecurityProfile();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("securityEncryptionType".equals(fieldName)) {
-                    deserializedVMDiskSecurityProfile.securityEncryptionType
+                    deserializedVmDiskSecurityProfile.securityEncryptionType
                         = SecurityEncryptionTypes.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedVMDiskSecurityProfile;
+            return deserializedVmDiskSecurityProfile;
         });
+    }
+
+    /**
+     * Creates an instance of VmDiskSecurityProfile class.
+     */
+    @Generated
+    public VmDiskSecurityProfile() {
     }
 }
