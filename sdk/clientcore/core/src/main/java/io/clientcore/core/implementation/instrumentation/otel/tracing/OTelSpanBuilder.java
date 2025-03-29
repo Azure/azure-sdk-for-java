@@ -4,14 +4,14 @@
 package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
+import io.clientcore.core.implementation.instrumentation.SdkInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
-import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.otel.OTelAttributes;
 import io.clientcore.core.implementation.instrumentation.otel.OTelContext;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
@@ -31,7 +31,7 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
  */
 public class OTelSpanBuilder implements SpanBuilder {
     static final OTelSpanBuilder NOOP
-        = new OTelSpanBuilder(null, SpanKind.INTERNAL, null, new LibraryInstrumentationOptions("noop"));
+        = new OTelSpanBuilder(null, SpanKind.INTERNAL, null, new SdkInstrumentationOptions("noop"));
 
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpanBuilder.class);
     private static final FallbackInvoker SET_PARENT_INVOKER;
@@ -102,10 +102,10 @@ public class OTelSpanBuilder implements SpanBuilder {
     }
 
     OTelSpanBuilder(Object otelSpanBuilder, SpanKind kind, InstrumentationContext parent,
-        LibraryInstrumentationOptions libraryOptions) {
+        SdkInstrumentationOptions sdkOptions) {
         this.otelSpanBuilder = otelSpanBuilder;
-        this.suppressNestedSpans = libraryOptions == null
-            || !LibraryInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
+        this.suppressNestedSpans
+            = sdkOptions == null || !SdkInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(sdkOptions);
         this.spanKind = kind;
         this.context = parent;
     }

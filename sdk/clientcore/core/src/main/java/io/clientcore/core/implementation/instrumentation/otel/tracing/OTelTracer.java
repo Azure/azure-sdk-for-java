@@ -7,7 +7,7 @@ import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
@@ -31,7 +31,7 @@ public final class OTelTracer implements Tracer {
     private static final FallbackInvoker GET_TRACER_BUILDER_INVOKER;
 
     private final Object otelTracer;
-    private final LibraryInstrumentationOptions libraryOptions;
+    private final SdkInstrumentationOptions sdkOptions;
 
     static {
         ReflectiveInvoker spanBuilderInvoker = null;
@@ -69,24 +69,24 @@ public final class OTelTracer implements Tracer {
 
     private OTelTracer() {
         this.otelTracer = null;
-        this.libraryOptions = null;
+        this.sdkOptions = null;
     }
 
     /**
      * Creates a new instance of {@link OTelTracer}.
      * @param otelTracerProvider the OpenTelemetry tracer provider
-     * @param libraryOptions the library options
+     * @param sdkOptions the sdk instrumentation options
      */
-    public OTelTracer(Object otelTracerProvider, LibraryInstrumentationOptions libraryOptions) {
-        Object tracerBuilder = GET_TRACER_BUILDER_INVOKER.invoke(otelTracerProvider, libraryOptions.getLibraryName());
+    public OTelTracer(Object otelTracerProvider, SdkInstrumentationOptions sdkOptions) {
+        Object tracerBuilder = GET_TRACER_BUILDER_INVOKER.invoke(otelTracerProvider, sdkOptions.getSdkName());
         if (tracerBuilder != null) {
-            SET_INSTRUMENTATION_VERSION_INVOKER.invoke(tracerBuilder, libraryOptions.getLibraryVersion());
-            SET_SCHEMA_URL_INVOKER.invoke(tracerBuilder, libraryOptions.getSchemaUrl());
+            SET_INSTRUMENTATION_VERSION_INVOKER.invoke(tracerBuilder, sdkOptions.getSdkVersion());
+            SET_SCHEMA_URL_INVOKER.invoke(tracerBuilder, sdkOptions.getSchemaUrl());
             this.otelTracer = BUILD_INVOKER.invoke(tracerBuilder);
         } else {
             this.otelTracer = null;
         }
-        this.libraryOptions = libraryOptions;
+        this.sdkOptions = sdkOptions;
     }
 
     /**
@@ -97,7 +97,7 @@ public final class OTelTracer implements Tracer {
         if (isEnabled()) {
             Object otelSpanBuilder = SPAN_BUILDER_INVOKER.invoke(otelTracer, spanName);
             if (otelSpanBuilder != null) {
-                return new OTelSpanBuilder(otelSpanBuilder, spanKind, parentContext, libraryOptions);
+                return new OTelSpanBuilder(otelSpanBuilder, spanKind, parentContext, sdkOptions);
             }
         }
 

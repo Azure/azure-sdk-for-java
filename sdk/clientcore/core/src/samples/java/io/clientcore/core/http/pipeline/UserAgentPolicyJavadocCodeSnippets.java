@@ -5,10 +5,10 @@ package io.clientcore.core.http.pipeline;
 /**
  * Code snippets for {@link UserAgentPolicy}.
  */
-public final class SetUserAgentPolicyJavadocCodeSnippets {
+public final class UserAgentPolicyJavadocCodeSnippets {
     public void createUserAgentPolicy() {
-        // BEGIN: io.clientcore.core.http.pipeline.SetUserAgentPolicy.constructor
+        // BEGIN: io.clientcore.core.http.pipeline.UserAgentPolicy.constructor
         UserAgentPolicy policy = new UserAgentPolicy("MyApp/1.0");
-        // END: io.clientcore.core.http.pipeline.SetUserAgentPolicy.constructor
+        // END: io.clientcore.core.http.pipeline.UserAgentPolicy.constructor
     }
 }

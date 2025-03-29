@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Contains tests for {@link UserAgentPolicy}.
  */
-public class SetUserAgentPolicyTests {
+public class UserAgentPolicyTests {
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
     public void validateUserAgentPolicyHandling(UserAgentPolicy userAgentPolicy, String expected) throws IOException {
@@ -99,11 +99,12 @@ public class SetUserAgentPolicyTests {
             Arguments.of(new UserAgentPolicy("AutoRest-Java"), "AutoRest-Java"),
 
             // Tests using SDK name and version with platform information and without application ID
-            Arguments.of(new UserAgentPolicy(null, sdkName, sdkVersion),
+            Arguments.of(new UserAgentPolicy(new UserAgentOptions().setSdkName(sdkName).setSdkVersion(sdkVersion)),
                 String.format("%s (%s)", baseUserAgent, platformInfo)),
 
             // Tests using SDK name and version with platform information and application ID
-            Arguments.of(new UserAgentPolicy(applicationId, sdkName, sdkVersion),
+            Arguments.of(new UserAgentPolicy(
+                new UserAgentOptions().setSdkName(sdkName).setSdkVersion(sdkVersion).setApplicationId(applicationId)),
                 String.format("%s %s (%s)", applicationId, baseUserAgent, platformInfo)));
     }
 
