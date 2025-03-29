@@ -6,6 +6,7 @@ package io.clientcore.core.http.models;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.models.JsonArray;
 import io.clientcore.core.serialization.json.models.JsonObject;
+import io.clientcore.core.utils.ProgressReporter;
 
 /**
  * JavaDoc code snippets for {@link RequestOptions}.
@@ -19,8 +20,7 @@ public class RequestOptionsJavaDocCodeSnippets {
     public RequestOptions createInstance() {
         // BEGIN: io.clientcore.core.http.rest.requestoptions.instantiation
         RequestOptions options = new RequestOptions()
-            .setBody(BinaryData.fromString("{\"name\":\"Fluffy\"}"))
-            .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"));
+            .addRequestCallback(r -> r.getHeaders().add(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01"));
         // END: io.clientcore.core.http.rest.requestoptions.instantiation
         return options;
     }
@@ -29,7 +29,7 @@ public class RequestOptionsJavaDocCodeSnippets {
      * Sample to demonstrate setting the JSON request body in a {@link RequestOptions}.
      * @return An instance of {@link RequestOptions}.
      */
-    public RequestOptions setJsonRequestBodyInRequestOptions() {
+    public RequestOptions setJsonRequestBodyInRequestContext() {
         // BEGIN: io.clientcore.core.http.rest.requestoptions.createjsonrequest
         JsonArray photoUris = new JsonArray()
             .addElement("https://imgur.com/pet1")
@@ -64,5 +64,38 @@ public class RequestOptionsJavaDocCodeSnippets {
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
         // END: io.clientcore.core.http.rest.requestoptions.postrequest
         return options;
+    }
+
+
+    /**
+     * Code snippet for {@link RequestOptions#putMetadata(String, Object)}
+     */
+    public void putDataContext() {
+        // BEGIN: io.clientcore.core.http.rest.requestoptions.putData
+
+        RequestOptions options = new RequestOptions()
+            .putMetadata("stringKey", "value")
+            .putMetadata("complexObject", ProgressReporter.withProgressListener(value -> System.out.printf("Got %s bytes", value)));
+
+        // END: io.clientcore.core.http.rest.requestoptions.putData
+
+        // BEGIN: io.clientcore.core.http.rest.requestoptions.getData
+
+        // Get the string value
+        Object stringKeyValue = options.getMetadata("stringKey");
+        String stringValue = stringKeyValue instanceof String ? (String) stringKeyValue : null;
+        System.out.printf("Key1 value: %s%n", stringValue);
+
+        // Get the complex object
+        Object complexObjectValue = options.getMetadata("complexObject");
+        ProgressReporter progressReporter = complexObjectValue instanceof ProgressReporter
+            ? (ProgressReporter) complexObjectValue
+            : null;
+        if (progressReporter != null) {
+            // Use the progress reporter
+            progressReporter.reportProgress(42);
+        }
+
+        // END: io.clientcore.core.http.rest.requestoptions.getData
     }
 }

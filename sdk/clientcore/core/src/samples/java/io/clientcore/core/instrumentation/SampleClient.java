@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 
 class SampleClient {
@@ -42,14 +43,14 @@ class SampleClient {
     }
 
     private Response<?> downloadImpl(RequestOptions options) {
-        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestOptions(options));
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestContext(SdkRequestContext.from(options)));
     }
 
     private Response<?> createWithResponseImpl(RequestOptions options) {
-        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestOptions(options));
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(SdkRequestContext.from(options)));
     }
 
     private void createImpl(RequestOptions options) {
-        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestOptions(options));
+        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(SdkRequestContext.from(options)));
     }
 }

@@ -7,26 +7,27 @@ import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.implementation.utils.InternalContext;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.utils.Context;
-import io.clientcore.core.utils.ProgressReporter;
 
 import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * This class contains the options to customize an {@link HttpRequest}. {@link RequestOptions} can be used to configure
- * the request headers, query params, the request body, or add a callback to modify all aspects of the
- * {@link HttpRequest}.
+ * This class contains the request metadata that flows along with the {@link HttpRequest} as it goes through HTTP pipeline,
+ * and it can be used to customize the pipeline behavior or modify the request itself.
  *
- * <p>An instance of fully configured {@link RequestOptions} can be passed to a service method that preconfigures known
+ * <p>A {@link RequestOptions} instance can be passed to a service method that preconfigures known
  * components of the request like URI, path params etc, further modifying both un-configured, or preconfigured
  * components.</p>
  *
- * <p>To demonstrate how this class can be used to construct a request, let's use a Pet Store service as an example.
+ * <p>A {@link RequestOptions} can be shared across multiple requests and must not be modified after initial setup.
+ * Client libraries are not expected to modify context instance provided by the caller and, when modification is necessary,
+ * must clone provided instance.</p>
+ *
+ * <p>To demonstrate how this class can be used to customize a request, let's use a Pet Store service as an example.
  * The
  * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger
  * definition.</a></p>
@@ -35,8 +36,7 @@ import java.util.function.Consumer;
  * <!-- src_embed io.clientcore.core.http.rest.requestoptions.instantiation -->
  * <pre>
  * RequestOptions options = new RequestOptions&#40;&#41;
- *     .setBody&#40;BinaryData.fromString&#40;&quot;&#123;&#92;&quot;name&#92;&quot;:&#92;&quot;Fluffy&#92;&quot;&#125;&quot;&#41;&#41;
- *     .addHeader&#40;new HttpHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;;
+ *     .addRequestCallback&#40;r -&gt; r.getHeaders&#40;&#41;.add&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.instantiation -->
  *
@@ -113,24 +113,48 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
 @Metadata(properties = MetadataProperties.FLUENT)
-public final class RequestOptions {
-    // RequestOptions is a highly used, short-lived class, use a static logger.
+public class RequestOptions {
     private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
     private static final RequestOptions NONE = new RequestOptions().lock();
-
-    private Consumer<HttpRequest> requestCallback = request -> {
+    private Consumer<HttpRequest> requestCallback = r -> {
+        // No-op
     };
-    private Context context;
-    private boolean locked;
+    private InternalContext context = InternalContext.empty();
     private ClientLogger logger;
     private InstrumentationContext instrumentationContext;
-    private ProgressReporter progressReporter;
+    private boolean locked;
+
+    private final SdkRequestContext requestContext;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
      */
     public RequestOptions() {
-        this.context = Context.none();
+        this.logger = null;
+        this.instrumentationContext = null;
+        this.requestContext = null;
+    }
+
+    /**
+     * Creates a new instance of {@link RequestOptions} as a copy of the given {@link RequestOptions}.
+     *
+     * @param options The {@link RequestOptions} to be copied.
+     */
+    RequestOptions(RequestOptions options, SdkRequestContext requestContext) {
+        SdkRequestContext localRequestContext = null;
+        if (options != null) {
+            this.requestCallback = options.requestCallback;
+            this.context = options.context;
+            this.logger = options.logger;
+            this.instrumentationContext = options.instrumentationContext;
+            localRequestContext = options.requestContext;
+        }
+
+        if (requestContext != null && requestContext != SdkRequestContext.none()) {
+            localRequestContext = requestContext;
+        }
+
+        this.requestContext = localRequestContext;
     }
 
     /**
@@ -140,15 +164,6 @@ public final class RequestOptions {
      */
     public Consumer<HttpRequest> getRequestCallback() {
         return this.requestCallback;
-    }
-
-    /**
-     * Gets the additional context on the request that is passed during the service call.
-     *
-     * @return The additional context that is passed during the service call.
-     */
-    public Context getContext() {
-        return context;
     }
 
     /**
@@ -166,33 +181,19 @@ public final class RequestOptions {
      * <p>If a header with the given name exists, the {@code value} is added to the existing header (comma-separated),
      * otherwise a new header will be created.</p>
      *
-     * @param header The header key.
+     * @param name The header name.
+     * @param value The header value.
+     *
      * @return The updated {@link RequestOptions} object.
      * @throws NullPointerException If {@code header} is null.
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
-    public RequestOptions addHeader(HttpHeader header) {
+    public RequestOptions addHeader(HttpHeaderName name, String value) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(value, "'value' cannot be null.");
+
         checkLocked("Cannot add header.");
-        Objects.requireNonNull(header, "'header' cannot be null.");
-        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
-
-        return this;
-    }
-
-    /**
-     * Sets a header on the {@link HttpRequest}.
-     *
-     * <p>If a header with the given name exists it is overridden by the new {@code value}.</p>
-     *
-     * @param header The header key.
-     * @param value The header value.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setHeader(HttpHeaderName header, String value) {
-        checkLocked("Cannot set header.");
-        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
-
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(name, value));
         return this;
     }
 
@@ -221,7 +222,9 @@ public final class RequestOptions {
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
-        checkLocked("Cannot add query param.");
+        Objects.requireNonNull(parameterName, "'parameterName' cannot be null.");
+        checkLocked("Cannot add query parameter.");
+
         this.requestCallback = this.requestCallback.andThen(request -> {
             String uri = request.getUri().toString();
             String encodedParameterName = encoded ? parameterName : UriEscapers.QUERY_ESCAPER.escape(parameterName);
@@ -229,7 +232,6 @@ public final class RequestOptions {
 
             request.setUri(uri + (uri.contains("?") ? "&" : "?") + encodedParameterName + "=" + encodedParameterValue);
         });
-
         return this;
     }
 
@@ -239,44 +241,14 @@ public final class RequestOptions {
      *
      * @param requestCallback The request callback.
      * @return The updated {@link RequestOptions} object.
-     * @throws NullPointerException If {@code requestCallback} is null.
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
+     * @throws NullPointerException If {@code requestCallback} is null.
      */
     public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
-        checkLocked("Cannot add request callback.");
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
+        checkLocked("Cannot add request callback.");
+
         this.requestCallback = this.requestCallback.andThen(requestCallback);
-
-        return this;
-    }
-
-    /**
-     * Sets the body to send as part of the {@link HttpRequest}.
-     *
-     * @param requestBody the request body data
-     * @return The updated {@link RequestOptions} object.
-     * @throws NullPointerException If {@code requestBody} is {@code null}.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setBody(BinaryData requestBody) {
-        checkLocked("Cannot set body.");
-        Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
-        this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
-
-        return this;
-    }
-
-    /**
-     * Sets the additional context on the request that is passed during the service call.
-     *
-     * @param context Additional context that is passed during the service call.
-     * @return The updated {@link RequestOptions} object.
-     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
-     */
-    public RequestOptions setContext(Context context) {
-        checkLocked("Cannot set context.");
-        this.context = context;
-
         return this;
     }
 
@@ -290,27 +262,15 @@ public final class RequestOptions {
     public RequestOptions setLogger(ClientLogger logger) {
         checkLocked("Cannot set logger.");
         this.logger = logger;
-
         return this;
     }
 
     /**
-     * Locks this {@link RequestOptions} to prevent further modifications.
+     * An empty {@link RequestOptions} used in situations where there is no request-specific
+     * configuration to pass into the request.
      *
-     * @return This {@link RequestOptions} instance.
-     */
-    private RequestOptions lock() {
-        locked = true;
-
-        return this;
-    }
-
-    /**
-     * An empty {@link RequestOptions} that is immutable, used in situations where there is no request-specific
-     * configuration to pass into the request. Modifications to the {@link RequestOptions} will result in an
-     * {@link IllegalStateException}.
-     *
-     * @return The singleton instance of an empty {@link RequestOptions}.
+     * @return The immutable instance of an empty {@link RequestOptions}. Attempts to modify this instance will
+     * throw an {@link IllegalStateException}.
      */
     public static RequestOptions none() {
         return NONE;
@@ -335,31 +295,37 @@ public final class RequestOptions {
     public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
         checkLocked("Cannot set instrumentation context.");
         this.instrumentationContext = instrumentationContext;
-
         return this;
     }
 
     /**
-     * Gets the {@link ProgressReporter} used to track progress of I/O operations of the request.
+     * Adds a key-value pair to the {@link RequestOptions} that can be used to pass additional data to the
+     * components of HTTP pipeline.
      *
-     * @return The {@link ProgressReporter} used to track progress of I/O operations of the request.
-     */
-    public ProgressReporter getProgressReporter() {
-        return progressReporter;
-    }
-
-    /**
-     * Sets the {@link ProgressReporter} used to track progress of I/O operations of the request.
-     *
-     * @param progressReporter The {@link ProgressReporter} used to track progress of I/O operations of the request.
+     * @param key The key to be added.
+     * @param value The value to be added.
      * @return The updated {@link RequestOptions} object.
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
+     * @throws NullPointerException If {@code key} is null.
      */
-    public RequestOptions setProgressReporter(ProgressReporter progressReporter) {
-        checkLocked("Cannot set progress reporter.");
-        this.progressReporter = progressReporter;
-
+    public RequestOptions putMetadata(String key, Object value) {
+        Objects.requireNonNull(key, "'key' cannot be null.");
+        checkLocked("Cannot put metadata.");
+        this.context = this.context.put(key, value);
         return this;
+    }
+
+    /**
+     * Gets the value associated with the given key in the request metadata associated with
+     * {@link RequestOptions} object.
+     *
+     * @param key The key to be retrieved.
+     * @return The value associated with the given key or {@code null}.
+     * @throws NullPointerException If {@code key} is null.
+     */
+    public Object getMetadata(String key) {
+        Objects.requireNonNull(key, "'key' cannot be null.");
+        return context.get(key);
     }
 
     private void checkLocked(String setterMessage) {
@@ -367,5 +333,15 @@ public final class RequestOptions {
             throw LOGGER.logThrowableAsError(
                 new IllegalStateException("This instance of RequestOptions is immutable. " + setterMessage));
         }
+    }
+
+    private RequestOptions lock() {
+        locked = true;
+
+        return this;
+    }
+
+    SdkRequestContext getRequestContext() {
+        return requestContext;
     }
 }

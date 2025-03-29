@@ -83,6 +83,7 @@
       <Class name="io.clientcore.core.http.pipeline.SetRequestIdPolicyJavadocCodeSnippets" />
       <Class name="io.clientcore.core.http.pipeline.SetUserAgentPolicyJavadocCodeSnippets" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
+      <Class name="io.clientcore.core.implementation.http.rest.RequestOptionsTests" />
       <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData" />
       <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.models.CloudEventJavaDocCodeSnippet" />
@@ -94,6 +95,10 @@
       <Class name="io.clientcore.core.utils.ProgressReporterTests" />
       <Class name="io.clientcore.core.utils.union.codesnippets.UnionJavaDocCodeSnippets" />
     </Or>
+  </Match>
+  <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED" />
+    <Class name="io.clientcore.core.implementation.http.rest.RequestOptionsTests" />
   </Match>
   <Match>
     <Bug pattern="DMI_RANDOM_USED_ONLY_ONCE" />
@@ -201,6 +206,7 @@
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.CharTypes" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.ContentReference" />
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
+      <Class name="io.clientcore.core.http.models.SdkRequestContext" />
     </Or>
   </Match>
   <Match>
@@ -248,6 +254,8 @@
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
       <Class name="io.clientcore.core.serialization.json.JsonWriterTests" />
       <Class name="io.clientcore.core.serialization.json.models.JsonPatchDocumentTests" />
+      <Class name="io.clientcore.core.implementation.http.rest.RequestOptionsTests" />
+      <Class name="io.clientcore.core.implementation.http.rest.SdkRequestContextTests" />
     </Or>
   </Match>
   <Match>

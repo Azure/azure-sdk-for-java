@@ -3,10 +3,11 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -196,22 +197,20 @@ public class TelemetryJavaDocCodeSnippets {
             return this.clientCallWithResponse(null);
         }
 
-        @SuppressWarnings("try")
         public Response<?> clientCallWithResponse(RequestOptions options) {
             return instrumentation.instrumentWithResponse("Sample.call", options, this::clientCallWithResponseImpl);
         }
 
-        @SuppressWarnings("try")
         public void clientCall(RequestOptions options) {
             instrumentation.instrument("Sample.call", options, this::clientCallImpl);
         }
 
         private Response<?> clientCallWithResponseImpl(RequestOptions options) {
-            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestOptions(options));
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(SdkRequestContext.from(options)));
         }
 
         private void clientCallImpl(RequestOptions options) {
-            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestOptions(options));
+            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(SdkRequestContext.from(options)));
         }
     }
 }

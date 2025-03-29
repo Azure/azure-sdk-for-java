@@ -125,7 +125,7 @@ public interface Instrumentation {
      *
      * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
      *                      or OpenAPI operationId.
-     * @param requestOptions the initial request options.
+     * @param requestOptions the request options.
      * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
      * @param <TResponse> the type of the response.
      * @return the response.
@@ -147,13 +147,13 @@ public interface Instrumentation {
      *
      * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
      *                      or OpenAPI operationId.
-     * @param requestOptions the initial request options.
+     * @param requestOptions the request options.
      * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
      * @throws RuntimeException if the call throws a runtime exception.
      */
     default void instrument(String operationName, RequestOptions requestOptions, Consumer<RequestOptions> operation) {
-        instrumentWithResponse(operationName, requestOptions, options -> {
-            operation.accept(options);
+        instrumentWithResponse(operationName, requestOptions, updatedOptions -> {
+            operation.accept(updatedOptions);
             return null;
         });
     }

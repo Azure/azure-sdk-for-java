@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.ReflectionSerializable;
 import io.clientcore.core.implementation.TypeUtil;
@@ -76,13 +77,14 @@ public class RestProxyImpl {
     @SuppressWarnings({ "try", "unused" })
     public final Object invoke(Object proxy, RequestOptions options, SwaggerMethodParser methodParser, Object[] args) {
         try {
-            HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestOptions(options)
-                .setServerSentEventListener(methodParser.setServerSentEventListener(args));
+            HttpRequest request
+                = createHttpRequest(methodParser, serializer, args).setRequestContext(SdkRequestContext.from(options))
+                    .setServerSentEventListener(methodParser.setServerSentEventListener(args));
 
             // If there is 'RequestOptions' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.
-            if (request.getRequestOptions() != null) {
-                request.getRequestOptions().getRequestCallback().accept(request);
+            if (request.getRequestContext() != null) {
+                request.getRequestContext().getRequestCallback().accept(request);
             }
 
             if (request.getBody() != null) {
