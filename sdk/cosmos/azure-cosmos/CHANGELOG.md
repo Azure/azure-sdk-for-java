@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added the `vectorIndexShardKeys` to the vectorIndexSpec for QuantizedFlat and DiskANN vector search. - [PR 44007](https://github.com/Azure/azure-sdk-for-java/pull/44007)
 
 ### 4.68.0 (2025-03-20)
 
