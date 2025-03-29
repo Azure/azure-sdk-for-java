@@ -28,7 +28,7 @@ public class ServiceInterfaceGenerationTest {
         processor = new JavaParserTemplateProcessor();
         JavaFileObject filerSourceFile = new MockJavaFileObject();
         Filer filer = new MockFiler(filerSourceFile);
-        processingEnv = new MockProcessingEnvironment(filer);
+        processingEnv = new MockProcessingEnvironment(filer, null, null);
     }
 
     @Test

@@ -18,7 +18,6 @@ import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -29,7 +28,6 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -49,8 +47,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
 
@@ -255,11 +251,28 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         BlockStmt body = internalMethod.getBody().get();
 
         initializeHttpRequest(body, method);
-        boolean serializationFormatSet = addRequestBody(body, method, processingEnv);
+        setContentType(body, method);
+        boolean serializationFormatSet = RequestBodyHandler.configureRequestBody(body, method.getBody(), processingEnv);
         addRequestOptionsToRequestIfPresent(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
 
         internalMethod.setBody(body);
+    }
+
+    private void setContentType(BlockStmt body, HttpRequestContext method) {
+        final HttpRequestContext.Body requestBody = method.getBody();
+        if (requestBody == null || requestBody.getParameterType() == null) {
+            return;
+        }
+
+        boolean isContentTypeSetInHeaders
+            = method.getParameters().stream().anyMatch(p -> p.getName().equals("contentType"));
+
+        // Header param to have precedence
+        if (!isContentTypeSetInHeaders) {
+            String contentType = requestBody.getContentType();
+            RequestBodyHandler.setContentTypeHeader(body, contentType);
+        }
     }
 
     private void writeFile(String packageName, String serviceInterfaceImplShortName,
@@ -425,85 +438,5 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(RuntimeException.class);
         body.addStatement(StaticJavaParser.parseStatement("if (!expectedResponse) {"
             + " throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
-    }
-
-    private boolean addRequestBody(BlockStmt body, HttpRequestContext method, ProcessingEnvironment processingEnv) {
-        HttpRequestContext.Body requestBody = method.getBody();
-        if (requestBody == null) {
-            RequestBodyHandler.setEmptyBody(body);
-            return false;
-        }
-
-        boolean isContentTypeSetInHeaders
-            = method.getParameters().stream().anyMatch(p -> p.getName().equals("contentType"));
-
-        return configureBodyWithContentType(body, requestBody, isContentTypeSetInHeaders, processingEnv);
-    }
-
-    /**
-     * Configures the request with the body content and content type.
-     * Determines the content type if not explicitly set, and adds the appropriate request body statements.
-     *
-     * @param body The BlockStmt to which the statements are added.
-     * @param requestBody The request body context containing parameter type and content type.
-     * @param isContentTypeSetInHeaders Indicates if the content type is already set in the headers.
-     * @param processingEnv The processing environment providing utility methods for operating on program elements and types.
-     * @return true if serialization format is set and used in the request body, false otherwise.
-     */
-    private boolean configureBodyWithContentType(BlockStmt body, HttpRequestContext.Body requestBody,
-        boolean isContentTypeSetInHeaders, ProcessingEnvironment processingEnv) {
-        TypeMirror parameterType = requestBody.getParameterType();
-        String contentType = requestBody.getContentType();
-
-        if (parameterType == null) {
-            RequestBodyHandler.setEmptyBody(body);
-            return false;
-        }
-        final Types typeUtils = processingEnv.getTypeUtils();
-        contentType = RequestBodyHandler.determineContentType(contentType, parameterType, typeUtils);
-        if (!isContentTypeSetInHeaders) {
-            RequestBodyHandler.setContentTypeHeader(body, contentType);
-        }
-        if (parameterType.getKind().isPrimitive()) {
-            boolean isJson = ContentType.APPLICATION_JSON.equalsIgnoreCase(contentType);
-            return addRequestBodyStatements(body, parameterType, requestBody.getParameterName(), isJson,
-                processingEnv.getElementUtils(), typeUtils);
-        } else {
-            boolean isJson = ContentType.APPLICATION_JSON.equalsIgnoreCase(contentType);
-            return addRequestBodyWithNullCheck(body, parameterType, requestBody.getParameterName(), isJson,
-                processingEnv.getElementUtils(), typeUtils);
-        }
-    }
-
-    private boolean addRequestBodyWithNullCheck(BlockStmt body, TypeMirror parameterType, String parameterName,
-        boolean isJson, Elements elementUtils, Types typeUtils) {
-        BlockStmt ifBlock = new BlockStmt();
-        IfStmt ifStatement = new IfStmt(StaticJavaParser.parseExpression(parameterName + " != null"), ifBlock, null);
-
-        boolean isSerializationFormatSet
-            = addRequestBodyStatements(ifBlock, parameterType, parameterName, isJson, elementUtils, typeUtils);
-        body.addStatement(ifStatement);
-
-        return isSerializationFormatSet;
-    }
-
-    private boolean addRequestBodyStatements(BlockStmt body, TypeMirror parameterType, String parameterName,
-        boolean isJson, Elements elementUtils, Types typeUtils) {
-        if (RequestBodyHandler.isBinaryDataType(parameterType, elementUtils, typeUtils)) {
-            RequestBodyHandler.addBinaryDataRequestBody(body, parameterName);
-        } else if (isJson) {
-            RequestBodyHandler.addJsonRequestBody(body, parameterName);
-        } else if (RequestBodyHandler.isByteArray(parameterType)) {
-            RequestBodyHandler.addByteArrayRequestBody(body, parameterName);
-        } else if (RequestBodyHandler.isStringType(parameterType, elementUtils, typeUtils)) {
-            RequestBodyHandler.addStringRequestBody(body, parameterName);
-        } else if (RequestBodyHandler.isByteBufferType(parameterType, elementUtils, typeUtils)) {
-            RequestBodyHandler.addByteBufferRequestBody(body, parameterName);
-        } else {
-            RequestBodyHandler.handleRequestBodySerialization(body, parameterName);
-            // return true as this is the only place where serialization statements are set
-            return true;
-        }
-        return false;
     }
 }
