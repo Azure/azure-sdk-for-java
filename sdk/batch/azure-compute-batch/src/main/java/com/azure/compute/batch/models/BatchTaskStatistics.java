@@ -62,18 +62,6 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     private final Duration wallClockTime;
 
     /*
-     * The total gibibytes read from disk by the Task.
-     */
-    @Generated
-    private final double readIOGiB;
-
-    /*
-     * The total gibibytes written to disk by the Task.
-     */
-    @Generated
-    private final double writeIOGiB;
-
-    /*
      * The total wait time of the Task. The wait time for a Task is defined as the elapsed time between the creation of
      * the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to
      * the most recent Task execution.).
@@ -92,14 +80,14 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
      * @param wallClockTime the wallClockTime value to set.
      * @param readIops the readIops value to set.
      * @param writeIops the writeIops value to set.
-     * @param readIOGiB the readIOGiB value to set.
-     * @param writeIOGiB the writeIOGiB value to set.
+     * @param readIoGiB the readIoGiB value to set.
+     * @param writeIoGiB the writeIoGiB value to set.
      * @param waitTime the waitTime value to set.
      */
     @Generated
     private BatchTaskStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
         Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIops, long writeIops,
-        double readIOGiB, double writeIOGiB, Duration waitTime) {
+        double readIoGiB, double writeIoGiB, Duration waitTime) {
         this.url = url;
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
@@ -108,8 +96,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
         this.wallClockTime = wallClockTime;
         this.readIops = readIops;
         this.writeIops = writeIops;
-        this.readIOGiB = readIOGiB;
-        this.writeIOGiB = writeIOGiB;
+        this.readIoGiB = readIoGiB;
+        this.writeIoGiB = writeIoGiB;
         this.waitTime = waitTime;
     }
 
@@ -180,26 +168,6 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     }
 
     /**
-     * Get the readIOGiB property: The total gibibytes read from disk by the Task.
-     *
-     * @return the readIOGiB value.
-     */
-    @Generated
-    public double getReadIOGiB() {
-        return this.readIOGiB;
-    }
-
-    /**
-     * Get the writeIOGiB property: The total gibibytes written to disk by the Task.
-     *
-     * @return the writeIOGiB value.
-     */
-    @Generated
-    public double getWriteIOGiB() {
-        return this.writeIOGiB;
-    }
-
-    /**
      * Get the waitTime property: The total wait time of the Task. The wait time for a Task is defined as the elapsed
      * time between the creation of the Task and the start of Task execution. (If the Task is retried due to failures,
      * the wait time is the time to the most recent Task execution.).
@@ -228,8 +196,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
         jsonWriter.writeStringField("wallClockTime", CoreUtils.durationToStringWithDays(this.wallClockTime));
         jsonWriter.writeStringField("readIOps", Objects.toString(this.readIops, null));
         jsonWriter.writeStringField("writeIOps", Objects.toString(this.writeIops, null));
-        jsonWriter.writeDoubleField("readIOGiB", this.readIOGiB);
-        jsonWriter.writeDoubleField("writeIOGiB", this.writeIOGiB);
+        jsonWriter.writeDoubleField("readIOGiB", this.readIoGiB);
+        jsonWriter.writeDoubleField("writeIOGiB", this.writeIoGiB);
         jsonWriter.writeStringField("waitTime", CoreUtils.durationToStringWithDays(this.waitTime));
         return jsonWriter.writeEndObject();
     }
@@ -254,8 +222,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
             Duration wallClockTime = null;
             long readIops = Long.parseLong("0");
             long writeIops = Long.parseLong("0");
-            double readIOGiB = 0.0;
-            double writeIOGiB = 0.0;
+            double readIoGiB = 0.0;
+            double writeIoGiB = 0.0;
             Duration waitTime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -279,9 +247,9 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
                 } else if ("writeIOps".equals(fieldName)) {
                     writeIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("readIOGiB".equals(fieldName)) {
-                    readIOGiB = reader.getDouble();
+                    readIoGiB = reader.getDouble();
                 } else if ("writeIOGiB".equals(fieldName)) {
-                    writeIOGiB = reader.getDouble();
+                    writeIoGiB = reader.getDouble();
                 } else if ("waitTime".equals(fieldName)) {
                     waitTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else {
@@ -289,7 +257,7 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
                 }
             }
             return new BatchTaskStatistics(url, startTime, lastUpdateTime, userCpuTime, kernelCpuTime, wallClockTime,
-                readIops, writeIops, readIOGiB, writeIOGiB, waitTime);
+                readIops, writeIops, readIoGiB, writeIoGiB, waitTime);
         });
     }
 
@@ -323,5 +291,37 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     @Generated
     public long getWriteIops() {
         return this.writeIops;
+    }
+
+    /*
+     * The total gibibytes read from disk by the Task.
+     */
+    @Generated
+    private final double readIoGiB;
+
+    /*
+     * The total gibibytes written to disk by the Task.
+     */
+    @Generated
+    private final double writeIoGiB;
+
+    /**
+     * Get the readIoGiB property: The total gibibytes read from disk by the Task.
+     *
+     * @return the readIoGiB value.
+     */
+    @Generated
+    public double getReadIoGiB() {
+        return this.readIoGiB;
+    }
+
+    /**
+     * Get the writeIoGiB property: The total gibibytes written to disk by the Task.
+     *
+     * @return the writeIoGiB value.
+     */
+    @Generated
+    public double getWriteIoGiB() {
+        return this.writeIoGiB;
     }
 }
