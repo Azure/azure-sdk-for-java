@@ -107,7 +107,8 @@ public class SampleGuidanceInferenceAsync {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint)
-                .credential(credential);
+                .credential(credential)
+                .serviceVersion(RadiologyInsightsServiceVersion.getLatest());
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
@@ -124,7 +125,6 @@ public class SampleGuidanceInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayGuidanceInference(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -132,6 +132,7 @@ public class SampleGuidanceInferenceAsync {
             });
 
         latch.await();
+        displayGuidanceInference(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;
@@ -158,14 +159,19 @@ public class SampleGuidanceInferenceAsync {
 					 GuidanceRankingType guidanceRanking = guidanceInference.getRanking();
 					 System.out.println("Ranking: "+ guidanceRanking.toString());
 					 // Extract presentGuidanceInformation
-					 List<PresentGuidanceInformation> presentGuidanceInformation = guidanceInference.getPresentGuidanceInformation();
-					 for (PresentGuidanceInformation presentGuidance : presentGuidanceInformation) {
-                         System.out.println("Present Guidance Information: " + presentGuidance.getPresentGuidanceItem());
+					 if (guidanceInference.getPresentGuidanceInformation() != null) {
+						 List<PresentGuidanceInformation> presentGuidanceInformation = guidanceInference.getPresentGuidanceInformation();
+						 for (PresentGuidanceInformation presentGuidance : presentGuidanceInformation) {
+	                         System.out.println("Present Guidance Information: " + presentGuidance.getPresentGuidanceItem());
+						 }
+					 } else {
+						 System.out.println("No Present Guidance Information");
+					 }
 					 // Extract missingGuidanceInformation
 					 List<String> missingGuidanceInformation = guidanceInference.getMissingGuidanceInformation();
-						for (String missingGuidance : missingGuidanceInformation) {
-							System.out.println("Missing Guidance Information: " + missingGuidance);
-						}
+					 for (String missingGuidance : missingGuidanceInformation) {
+						 System.out.println("Missing Guidance Information: " + missingGuidance);
+					 }
 					 // Extract recommendationProposal
 					 List<FollowupRecommendationInference> recommendationProposals = guidanceInference.getRecommendationProposals();
 					 displayFollowUpRecommendations(recommendationProposals);
@@ -174,10 +180,11 @@ public class SampleGuidanceInferenceAsync {
 					 displayFinding(finding);
 					 List<FhirR4Extension> extensions = guidanceInference.getExtension();
 					 System.out.println("   Evidence: " + extractEvidence(extensions));
-                }
-            }
-        }
-    }
+	                }
+	            }
+	        }
+	    }
+    
 
     private static void displayFollowUpRecommendations(List<FollowupRecommendationInference> recommendationProposals) {
 		for (FollowupRecommendationInference followupRecommendationInference : recommendationProposals) {
@@ -410,7 +417,7 @@ public class SampleGuidanceInferenceAsync {
                 RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY,
                 RadiologyInsightsInferenceType.CRITICAL_RESULT, RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION,
                 RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION,
-                RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE));
+                RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE, RadiologyInsightsInferenceType.GUIDANCE));
         configuration.setLocale("en-US");
         configuration.setVerbose(false);
         configuration.setIncludeEvidence(true);

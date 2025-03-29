@@ -741,14 +741,19 @@ Display information about the guidance
 			 GuidanceRankingType guidanceRanking = guidanceInference.getRanking();
 			 System.out.println("Ranking: "+ guidanceRanking.toString());
 			 // Extract presentGuidanceInformation
-			 List<PresentGuidanceInformation> presentGuidanceInformation = guidanceInference.getPresentGuidanceInformation();
-			 for (PresentGuidanceInformation presentGuidance : presentGuidanceInformation) {
-                       System.out.println("Present Guidance Information: " + presentGuidance.getPresentGuidanceItem());
+			 if (guidanceInference.getPresentGuidanceInformation() != null) {
+				 List<PresentGuidanceInformation> presentGuidanceInformation = guidanceInference.getPresentGuidanceInformation();
+				 for (PresentGuidanceInformation presentGuidance : presentGuidanceInformation) {
+                        System.out.println("Present Guidance Information: " + presentGuidance.getPresentGuidanceItem());
+				 }
+			 } else {
+				 System.out.println("No Present Guidance Information");
+			 }
 			 // Extract missingGuidanceInformation
 			 List<String> missingGuidanceInformation = guidanceInference.getMissingGuidanceInformation();
-				for (String missingGuidance : missingGuidanceInformation) {
-					System.out.println("Missing Guidance Information: " + missingGuidance);
-				}
+			 for (String missingGuidance : missingGuidanceInformation) {
+				 System.out.println("Missing Guidance Information: " + missingGuidance);
+			 }
 			 // Extract recommendationProposal
 			 List<FollowupRecommendationInference> recommendationProposals = guidanceInference.getRecommendationProposals();
 			 displayFollowUpRecommendations(recommendationProposals);
@@ -757,10 +762,11 @@ Display information about the guidance
 			 displayFinding(finding);
 			 List<FhirR4Extension> extensions = guidanceInference.getExtension();
 			 System.out.println("   Evidence: " + extractEvidence(extensions));
-              }
-          }
-      }
-  }
+               }
+           }
+       }
+   }
+  
 
   private static void displayFollowUpRecommendations(List<FollowupRecommendationInference> recommendationProposals) {
 for (FollowupRecommendationInference followupRecommendationInference : recommendationProposals) {
