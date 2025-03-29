@@ -216,8 +216,8 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertEquals(Duration.parse("PT1H30M"), stats.getWallClockTime());
             Assertions.assertEquals(1000, stats.getReadIops());
             Assertions.assertEquals(500, stats.getWriteIops());
-            Assertions.assertEquals(0.5, stats.getReadIOGiB());
-            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
+            Assertions.assertEquals(0.5, stats.getReadIoGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIoGiB());
             Assertions.assertEquals(10, stats.getNumSucceededTasks());
             Assertions.assertEquals(2, stats.getNumFailedTasks());
             Assertions.assertEquals(3, stats.getNumTaskRetries());
