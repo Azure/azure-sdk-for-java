@@ -17,15 +17,21 @@ import java.util.Map;
  */
 public class MockProcessingEnvironment implements ProcessingEnvironment {
     private final Filer filer;
+    private final Elements elementUtils;
+    private final Types typeUtils;
     private int getFilerCount = 0;
 
     /**
      * Creates a new instance of {@link MockProcessingEnvironment}.
      *
      * @param filer The {@link Filer} to return from {@link #getFiler()}.
+     * @param elementUtils
+     * @param typeUtils
      */
-    public MockProcessingEnvironment(Filer filer) {
+    public MockProcessingEnvironment(Filer filer, Elements elementUtils, Types typeUtils) {
         this.filer = filer;
+        this.elementUtils = elementUtils;
+        this.typeUtils = typeUtils;
     }
 
     @Override
@@ -55,12 +61,12 @@ public class MockProcessingEnvironment implements ProcessingEnvironment {
 
     @Override
     public Elements getElementUtils() {
-        return null;
+        return elementUtils;
     }
 
     @Override
     public Types getTypeUtils() {
-        return null;
+        return typeUtils;
     }
 
     @Override

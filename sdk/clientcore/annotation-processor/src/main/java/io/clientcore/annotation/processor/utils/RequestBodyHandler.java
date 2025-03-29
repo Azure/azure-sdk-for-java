@@ -5,13 +5,13 @@ package io.clientcore.annotation.processor.utils;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import io.clientcore.core.implementation.http.ContentType;
+import com.github.javaparser.ast.stmt.IfStmt;
+import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
 import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -21,18 +21,39 @@ import javax.lang.model.util.Types;
 /**
  * Utility class for handling request bodies in HTTP requests.
  */
-public class RequestBodyHandler {
-    private static final Map<String, String> TYPE_TO_CONTENT_TYPE;
-    static {
-        Map<String, String> map = new HashMap<>();
-        map.put("byte[]", ContentType.APPLICATION_OCTET_STREAM);
-        map.put("java.lang.String", ContentType.APPLICATION_JSON);
-        map.put("java.nio.ByteBuffer", ContentType.APPLICATION_OCTET_STREAM);
-        map.put("java.io.InputStream", ContentType.APPLICATION_OCTET_STREAM);
-        map.put("java.util.Map", ContentType.APPLICATION_JSON); // Common for JSON objects
-        map.put("java.util.List", ContentType.APPLICATION_JSON); // Array-like structures
-        map.put("java.util.Set", ContentType.APPLICATION_JSON);
-        TYPE_TO_CONTENT_TYPE = Collections.unmodifiableMap(map);
+public final class RequestBodyHandler {
+
+    /**
+     * Configures the request with the body content and content type.
+     * Determines the content type if not explicitly set, and adds the appropriate request body statements.
+     *
+     * @param body The BlockStmt to which the statements are added.
+     * @param requestBody The request body context containing parameter type and content type.
+     * @param processingEnv The processing environment providing utility methods for operating on program elements and types.
+     * @return true if serialization format is set and used in the request body, false otherwise.
+     */
+    public static boolean configureRequestBody(BlockStmt body, HttpRequestContext.Body requestBody,
+        ProcessingEnvironment processingEnv) {
+        if (requestBody == null) {
+            return false;
+        }
+        TypeMirror parameterType = requestBody.getParameterType();
+
+        if (parameterType == null) {
+            // set content-length = 0
+            RequestBodyHandler.setEmptyBody(body);
+            return false;
+        }
+
+        if (parameterType.getKind().isPrimitive()) {
+            return addRequestBodyStatements(body, parameterType, requestBody.getParameterName(),
+                processingEnv.getElementUtils(), processingEnv.getTypeUtils());
+        } else {
+            addRequestBodyWithNullCheck(body, parameterType, requestBody.getParameterName(),
+                processingEnv.getElementUtils(), processingEnv.getTypeUtils());
+            // serializationFormat could be set but not in scope to use for response body handling
+            return false;
+        }
     }
 
     /**
@@ -104,7 +125,20 @@ public class RequestBodyHandler {
      * @return true if the parameter type is a String, false otherwise.
      */
     public static boolean isStringType(TypeMirror parameterType, Elements elementUtils, Types typeUtils) {
-        return typeUtils.isSameType(parameterType, elementUtils.getTypeElement("java.lang.String").asType());
+        TypeElement stringElement = getTypeElement(elementUtils, "java.lang.String");
+        if (stringElement == null) {
+            return false;
+        }
+
+        return typeUtils.isSameType(parameterType, stringElement.asType());
+    }
+
+    private static TypeElement getTypeElement(Elements elementUtils, String name) {
+        TypeElement element = elementUtils.getTypeElement(name);
+        if (element == null) {
+            return null;
+        }
+        return element;
     }
 
     /**
@@ -127,7 +161,11 @@ public class RequestBodyHandler {
      * @return true if the parameter type is a ByteBuffer, false otherwise.
      */
     public static boolean isByteBufferType(TypeMirror parameterType, Elements elementUtils, Types typeUtils) {
-        return typeUtils.isSameType(parameterType, elementUtils.getTypeElement("java.nio.ByteBuffer").asType());
+        TypeElement byteBufferElement = getTypeElement(elementUtils, "java.nio.ByteBuffer");
+        if (byteBufferElement == null) {
+            return false;
+        }
+        return typeUtils.isSameType(parameterType, byteBufferElement.asType());
     }
 
     /**
@@ -164,39 +202,6 @@ public class RequestBodyHandler {
     }
 
     /**
-     * Determines the content type for the HTTP request based on the parameter type.
-     *
-     * @param explicitContentType The explicit content type provided.
-     * @param parameterType The type of the parameter.
-     * @param typeUtils Utility methods for operating on types.
-     * @return The determined content type.
-     */
-    public static String determineContentType(String explicitContentType, TypeMirror parameterType, Types typeUtils) {
-        if (explicitContentType != null && !explicitContentType.isEmpty()) {
-            return explicitContentType;
-        }
-
-        // Try mapping by known types
-        String typeName = parameterType.toString();
-        if (TYPE_TO_CONTENT_TYPE.containsKey(typeName)) {
-            return TYPE_TO_CONTENT_TYPE.get(typeName);
-        }
-
-        // Additional checks for Form Data (Common in APIs)
-        //if (typeName.contains("Multipart") || typeName.contains("FormData") || typeName.contains("FileUpload")) {
-        //    return ContentType.MULTIPART_FORM_DATA;
-        //}
-
-        // Default to JSON only if it looks like an object
-        if (typeUtils.asElement(parameterType) != null) {
-            return ContentType.APPLICATION_JSON;
-        }
-
-        // Otherwise, fall back to octet-stream
-        return ContentType.APPLICATION_OCTET_STREAM;
-    }
-
-    /**
      * Handles the serialization of the request body based on the content type.
      * It checks the serialization format from the HTTP request headers and sets the request body
      * using the appropriate serializer (XML or JSON).
@@ -213,5 +218,35 @@ public class RequestBodyHandler {
                 + "httpRequest.setBody(BinaryData.fromObject(%s, xmlSerializer));" + "} else {"
                 + "httpRequest.setBody(BinaryData.fromObject(%s, jsonSerializer));" + "}",
             parameterName, parameterName)));
+    }
+
+    private static void addRequestBodyWithNullCheck(BlockStmt body, TypeMirror parameterType, String parameterName,
+        Elements elementUtils, Types typeUtils) {
+        BlockStmt ifBlock = new BlockStmt();
+        IfStmt ifStatement = new IfStmt(StaticJavaParser.parseExpression(parameterName + " != null"), ifBlock, null);
+
+        addRequestBodyStatements(ifBlock, parameterType, parameterName, elementUtils, typeUtils);
+        body.addStatement(ifStatement);
+    }
+
+    private static boolean addRequestBodyStatements(BlockStmt body, TypeMirror parameterType, String parameterName,
+        Elements elementUtils, Types typeUtils) {
+        if (RequestBodyHandler.isBinaryDataType(parameterType, elementUtils, typeUtils)) {
+            RequestBodyHandler.addBinaryDataRequestBody(body, parameterName);
+        } else if (RequestBodyHandler.isByteArray(parameterType)) {
+            RequestBodyHandler.addByteArrayRequestBody(body, parameterName);
+        } else if (RequestBodyHandler.isStringType(parameterType, elementUtils, typeUtils)) {
+            RequestBodyHandler.addStringRequestBody(body, parameterName);
+        } else if (RequestBodyHandler.isByteBufferType(parameterType, elementUtils, typeUtils)) {
+            RequestBodyHandler.addByteBufferRequestBody(body, parameterName);
+        } else {
+            RequestBodyHandler.handleRequestBodySerialization(body, parameterName);
+            // return true as this is the only place where serialization statements are set
+            return true;
+        }
+        return false;
+    }
+
+    private RequestBodyHandler() {
     }
 }

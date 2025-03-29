@@ -49,7 +49,7 @@ public class HttpPipelineBuilderMethodTest {
     public void testProcess() {
         JavaFileObject filerSourceFile = new MockJavaFileObject();
         Filer filer = new MockFiler(filerSourceFile);
-        MockProcessingEnvironment processingEnv = new MockProcessingEnvironment(filer);
+        MockProcessingEnvironment processingEnv = new MockProcessingEnvironment(filer, null, null);
 
         processor.process(templateInput, processingEnv);
 
