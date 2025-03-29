@@ -303,8 +303,8 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertEquals(3.0, stats.getPeakMemoryGiB());
             Assertions.assertEquals(1.5, stats.getAvgDiskGiB());
             Assertions.assertEquals(2.0, stats.getPeakDiskGiB());
-            Assertions.assertEquals(1000, stats.getDiskReadIOps());
-            Assertions.assertEquals(500, stats.getDiskWriteIOps());
+            Assertions.assertEquals(1000, stats.getDiskReadIops());
+            Assertions.assertEquals(500, stats.getDiskWriteIops());
             Assertions.assertEquals(0.5, stats.getDiskReadGiB());
             Assertions.assertEquals(0.25, stats.getDiskWriteGiB());
             Assertions.assertEquals(1.0, stats.getNetworkReadGiB());
@@ -329,8 +329,8 @@ public class PoolTests extends BatchClientTestBase {
                 new UefiSettings().setSecureBootEnabled(true).setVTpmEnabled(true));
 
             // Set the VM disk security profile
-            VMDiskSecurityProfile diskSecurityProfile
-                = new VMDiskSecurityProfile().setSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
+            VmDiskSecurityProfile diskSecurityProfile
+                = new VmDiskSecurityProfile().setSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
 
             ManagedDisk managedDisk = new ManagedDisk().setSecurityProfile(diskSecurityProfile);
 

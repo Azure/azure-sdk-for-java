@@ -11,6 +11,7 @@ import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchApplication;
 import com.azure.compute.batch.models.BatchCertificate;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
+import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateContent;
 import com.azure.compute.batch.models.BatchJobDisableContent;
@@ -45,7 +46,6 @@ import com.azure.compute.batch.models.BatchPoolUsageMetrics;
 import com.azure.compute.batch.models.BatchSubtask;
 import com.azure.compute.batch.models.BatchSupportedImage;
 import com.azure.compute.batch.models.BatchTask;
-import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
 import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.BatchTaskGroup;
@@ -90,7 +90,6 @@ import com.azure.compute.batch.models.GetBatchPoolOptions;
 import com.azure.compute.batch.models.GetBatchTaskFileOptions;
 import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
 import com.azure.compute.batch.models.GetBatchTaskOptions;
-import com.azure.compute.batch.models.GetCertificateResponse;
 import com.azure.compute.batch.models.ListBatchApplicationsOptions;
 import com.azure.compute.batch.models.ListBatchCertificatesOptions;
 import com.azure.compute.batch.models.ListBatchJobPreparationAndReleaseTaskStatusOptions;
@@ -5790,6 +5789,9 @@ public final class BatchAsyncClient {
      *             }
      *         ]
      *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
      * }
      * }
      * </pre>
@@ -8991,8 +8993,8 @@ public final class BatchAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of adding a collection of Tasks to a Job along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return the result of creating a collection of Tasks to a Job along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -13699,7 +13701,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCertificateResponse> getCertificate(String thumbprintAlgorithm, String thumbprint,
+    public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint,
         GetBatchCertificateOptions options) {
         // Generated convenience method for getCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -13716,7 +13718,7 @@ public final class BatchAsyncClient {
                 false);
         }
         return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(GetCertificateResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class));
     }
 
     /**
@@ -13734,11 +13736,11 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCertificateResponse> getCertificate(String thumbprintAlgorithm, String thumbprint) {
+    public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint) {
         // Generated convenience method for getCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(GetCertificateResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class));
     }
 
     /**
@@ -14646,11 +14648,11 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of adding a collection of Tasks to a Job on successful completion of {@link Mono}.
+     * @return the result of creating a collection of Tasks to a Job on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchTaskAddCollectionResult> createTaskCollection(String jobId, BatchTaskGroup taskCollection,
+    public Mono<BatchCreateTaskCollectionResult> createTaskCollection(String jobId, BatchTaskGroup taskCollection,
         CreateBatchTaskCollectionOptions options) {
         // Generated convenience method for createTaskCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -14660,7 +14662,7 @@ public final class BatchAsyncClient {
         }
         return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(BatchTaskAddCollectionResult.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(BatchCreateTaskCollectionResult.class));
     }
 
     /**
@@ -14689,16 +14691,16 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of adding a collection of Tasks to a Job on successful completion of {@link Mono}.
+     * @return the result of creating a collection of Tasks to a Job on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchTaskAddCollectionResult> createTaskCollection(String jobId, BatchTaskGroup taskCollection) {
+    public Mono<BatchCreateTaskCollectionResult> createTaskCollection(String jobId, BatchTaskGroup taskCollection) {
         // Generated convenience method for createTaskCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(BatchTaskAddCollectionResult.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(BatchCreateTaskCollectionResult.class));
     }
 
     /**

@@ -15,7 +15,7 @@ import java.io.IOException;
  * An HTTP header name-value pair.
  */
 @Fluent
-public final class HttpHeader implements JsonSerializable<HttpHeader> {
+public final class OutputFileUploadHeader implements JsonSerializable<OutputFileUploadHeader> {
 
     /*
      * The case-insensitive name of the header to be used while uploading output files.
@@ -30,12 +30,12 @@ public final class HttpHeader implements JsonSerializable<HttpHeader> {
     private String value;
 
     /**
-     * Creates an instance of HttpHeader class.
+     * Creates an instance of OutputFileUploadHeader class.
      *
      * @param name the name value to set.
      */
     @Generated
-    public HttpHeader(String name) {
+    public OutputFileUploadHeader(String name) {
         this.name = name;
     }
 
@@ -63,10 +63,10 @@ public final class HttpHeader implements JsonSerializable<HttpHeader> {
      * Set the value property: The value of the header to be used while uploading output files.
      *
      * @param value the value value to set.
-     * @return the HttpHeader object itself.
+     * @return the OutputFileUploadHeader object itself.
      */
     @Generated
-    public HttpHeader setValue(String value) {
+    public OutputFileUploadHeader setValue(String value) {
         this.value = value;
         return this;
     }
@@ -84,16 +84,16 @@ public final class HttpHeader implements JsonSerializable<HttpHeader> {
     }
 
     /**
-     * Reads an instance of HttpHeader from the JsonReader.
+     * Reads an instance of OutputFileUploadHeader from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of HttpHeader if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     * @return An instance of OutputFileUploadHeader if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the HttpHeader.
+     * @throws IOException If an error occurs while reading the OutputFileUploadHeader.
      */
     @Generated
-    public static HttpHeader fromJson(JsonReader jsonReader) throws IOException {
+    public static OutputFileUploadHeader fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String value = null;
@@ -108,9 +108,9 @@ public final class HttpHeader implements JsonSerializable<HttpHeader> {
                     reader.skipChildren();
                 }
             }
-            HttpHeader deserializedHttpHeader = new HttpHeader(name);
-            deserializedHttpHeader.value = value;
-            return deserializedHttpHeader;
+            OutputFileUploadHeader deserializedOutputFileUploadHeader = new OutputFileUploadHeader(name);
+            deserializedOutputFileUploadHeader.value = value;
+            return deserializedOutputFileUploadHeader;
         });
     }
 }

@@ -15,10 +15,10 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Result for a single Task added as part of an add Task collection operation.
+ * Result for a single Task created as part of an add Task collection operation.
  */
 @Immutable
-public final class BatchTaskAddResult implements JsonSerializable<BatchTaskAddResult> {
+public final class BatchTaskCreateResult implements JsonSerializable<BatchTaskCreateResult> {
 
     /*
      * The status of the add Task request.
@@ -59,13 +59,13 @@ public final class BatchTaskAddResult implements JsonSerializable<BatchTaskAddRe
     private BatchError error;
 
     /**
-     * Creates an instance of BatchTaskAddResult class.
+     * Creates an instance of BatchTaskCreateResult class.
      *
      * @param status the status value to set.
      * @param taskId the taskId value to set.
      */
     @Generated
-    private BatchTaskAddResult(BatchTaskAddStatus status, String taskId) {
+    private BatchTaskCreateResult(BatchTaskAddStatus status, String taskId) {
         this.status = status;
         this.taskId = taskId;
     }
@@ -150,16 +150,16 @@ public final class BatchTaskAddResult implements JsonSerializable<BatchTaskAddRe
     }
 
     /**
-     * Reads an instance of BatchTaskAddResult from the JsonReader.
+     * Reads an instance of BatchTaskCreateResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchTaskAddResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of BatchTaskCreateResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchTaskAddResult.
+     * @throws IOException If an error occurs while reading the BatchTaskCreateResult.
      */
     @Generated
-    public static BatchTaskAddResult fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchTaskCreateResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchTaskAddStatus status = null;
             String taskId = null;
@@ -187,12 +187,12 @@ public final class BatchTaskAddResult implements JsonSerializable<BatchTaskAddRe
                     reader.skipChildren();
                 }
             }
-            BatchTaskAddResult deserializedBatchTaskAddResult = new BatchTaskAddResult(status, taskId);
-            deserializedBatchTaskAddResult.eTag = eTag;
-            deserializedBatchTaskAddResult.lastModified = lastModified;
-            deserializedBatchTaskAddResult.location = location;
-            deserializedBatchTaskAddResult.error = error;
-            return deserializedBatchTaskAddResult;
+            BatchTaskCreateResult deserializedBatchTaskCreateResult = new BatchTaskCreateResult(status, taskId);
+            deserializedBatchTaskCreateResult.eTag = eTag;
+            deserializedBatchTaskCreateResult.lastModified = lastModified;
+            deserializedBatchTaskCreateResult.location = location;
+            deserializedBatchTaskCreateResult.error = error;
+            return deserializedBatchTaskCreateResult;
         });
     }
 }

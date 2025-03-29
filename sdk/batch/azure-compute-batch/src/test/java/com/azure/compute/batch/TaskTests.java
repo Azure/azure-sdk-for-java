@@ -656,10 +656,10 @@ public class TaskTests extends BatchClientTestBase {
             Assertions.assertEquals(Duration.parse("PT1H"), stats.getUserCpuTime());
             Assertions.assertEquals(Duration.parse("PT2H"), stats.getKernelCpuTime());
             Assertions.assertEquals(Duration.parse("PT3H"), stats.getWallClockTime());
-            Assertions.assertEquals(1000, stats.getReadIOps());
-            Assertions.assertEquals(500, stats.getWriteIOps());
-            Assertions.assertEquals(0.5, stats.getReadIOGiB());
-            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
+            Assertions.assertEquals(1000, stats.getReadIops());
+            Assertions.assertEquals(500, stats.getWriteIops());
+            Assertions.assertEquals(0.5, stats.getReadIoGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIoGiB());
             Assertions.assertEquals(Duration.parse("PT30M"), stats.getWaitTime());
         } catch (IOException e) {
             throw new RuntimeException(e);
