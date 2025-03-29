@@ -471,8 +471,6 @@
     "com.azure.compute.batch.models.GetBatchTaskFileOptions": null,
     "com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions": null,
     "com.azure.compute.batch.models.GetBatchTaskOptions": null,
-    "com.azure.compute.batch.models.GetCertificateResponse": "Client.getCertificate.Response.anonymous",
-    "com.azure.compute.batch.models.HttpHeader": "Azure.Batch.HttpHeader",
     "com.azure.compute.batch.models.ImageReference": "Azure.Batch.ImageReference",
     "com.azure.compute.batch.models.ImageVerificationType": "Azure.Batch.ImageVerificationType",
     "com.azure.compute.batch.models.InboundEndpoint": "Azure.Batch.InboundEndpoint",
@@ -556,11 +554,11 @@
     "com.azure.compute.batch.models.UserAccount": "Azure.Batch.UserAccount",
     "com.azure.compute.batch.models.UserAssignedIdentity": "Azure.Batch.UserAssignedIdentity",
     "com.azure.compute.batch.models.UserIdentity": "Azure.Batch.UserIdentity",
-    "com.azure.compute.batch.models.VMDiskSecurityProfile": "Azure.Batch.VMDiskSecurityProfile",
     "com.azure.compute.batch.models.VMExtension": "Azure.Batch.VMExtension",
     "com.azure.compute.batch.models.VMExtensionInstanceView": "Azure.Batch.VMExtensionInstanceView",
     "com.azure.compute.batch.models.VirtualMachineConfiguration": "Azure.Batch.VirtualMachineConfiguration",
     "com.azure.compute.batch.models.VirtualMachineInfo": "Azure.Batch.VirtualMachineInfo",
+    "com.azure.compute.batch.models.VmDiskSecurityProfile": "Azure.Batch.VMDiskSecurityProfile",
     "com.azure.compute.batch.models.WindowsConfiguration": "Azure.Batch.WindowsConfiguration",
     "com.azure.compute.batch.models.WindowsUserConfiguration": "Azure.Batch.WindowsUserConfiguration"
   }
