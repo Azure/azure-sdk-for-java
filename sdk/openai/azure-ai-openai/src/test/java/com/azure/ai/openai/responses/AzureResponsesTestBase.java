@@ -14,6 +14,8 @@ import com.azure.ai.openai.responses.models.ResponsesItem;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
+import com.azure.ai.openai.responses.models.ResponsesAssistantMessage;
+import com.azure.ai.openai.responses.models.ResponsesOutputContentText;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -28,7 +30,11 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.function.Consumer;
 
 import static com.azure.ai.openai.responses.TestUtils.FAKE_API_KEY;
@@ -40,8 +46,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AzureResponsesTestBase extends TestProxyTestBase {
 
+    private static final String MS_LOGO_PNG = "ms_logo.png";
+
     private ResponsesClientBuilder getBuilderForTests(HttpClient httpClient,
-        AzureResponsesServiceVersion serviceVersion) {
+                                                      AzureResponsesServiceVersion serviceVersion) {
         ResponsesClientBuilder builder = new ResponsesClientBuilder()
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
         if (serviceVersion != null) {
@@ -103,7 +111,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
     }
 
     ResponsesAsyncClient getAzureResponseAsyncClient(HttpClient httpClient,
-        AzureResponsesServiceVersion serviceVersion) {
+                                                     AzureResponsesServiceVersion serviceVersion) {
         ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion).addPolicy(
             new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")));
 
@@ -179,7 +187,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
             = new ResponsesComputerTool(1024, 768, ResponsesComputerToolEnvironment.WINDOWS);
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.COMPUTER_USE_PREVIEW,
             Arrays.asList(new ResponsesDeveloperMessage(Arrays.asList(new ResponsesInputContentText(
-                "Call tools when the user asks to perform computer-related tasks like clicking interface elements."))),
+                    "Call tools when the user asks to perform computer-related tasks like clicking interface elements."))),
                 new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Click on the OK button")))));
         request.setTools(Arrays.asList(computerTool));
         request.setTruncation(ResponseTruncation.AUTO);
@@ -230,4 +238,19 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         assertNotNull(responseItem.getId());
         assertNotNull(responseItem.getType());
     }
+
+    public static void openImageFileBase64Runner(Consumer<String> testRunner) throws IOException {
+        byte[] imageBytes = Files.readAllBytes(Paths.get("src/test/resources/" + MS_LOGO_PNG));
+        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        testRunner.accept(base64Image);
+    }
+
+    static void assertImageResponseForAzure(ResponsesResponse response) {
+        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+        assertNotNull(assistantMessage);
+        assertNotNull(outputContent);
+        assertNotNull(outputContent.getText());
+    }
+
 }
