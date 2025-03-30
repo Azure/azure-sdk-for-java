@@ -168,28 +168,53 @@ public class SampleGuidanceInferenceAsync {
 						 System.out.println("No Present Guidance Information");
 					 }
 					 // Extract missingGuidanceInformation
-					 List<String> missingGuidanceInformation = guidanceInference.getMissingGuidanceInformation();
-					 for (String missingGuidance : missingGuidanceInformation) {
-						 System.out.println("Missing Guidance Information: " + missingGuidance);
-					 }
+					 if (guidanceInference.getMissingGuidanceInformation() != null) {
+						 List<String> missingGuidanceInformation = guidanceInference.getMissingGuidanceInformation();					 
+						 for (String missingGuidance : missingGuidanceInformation) {
+							System.out.println("Missing Guidance Information: " + missingGuidance);
+						 }
+				        } else {
+				        	System.out.println("No Missing Guidance Information");
+				        }
 					 // Extract recommendationProposal
 					 List<FollowupRecommendationInference> recommendationProposals = guidanceInference.getRecommendationProposals();
-					 displayFollowUpRecommendations(recommendationProposals);
+						if (recommendationProposals != null) {
+							displayFollowUpRecommendations(recommendationProposals);
+						} else {
+							System.out.println("No Recommendation Proposals");
+						}				 
 					 // Extract finding
 					 FindingInference finding = guidanceInference.getFinding();
-					 displayFinding(finding);
-					 List<FhirR4Extension> extensions = guidanceInference.getExtension();
+						if (finding != null) {
+							displayFinding(finding);
+						} else {
+							System.out.println("No Finding Inference");
+						}
+					if (guidanceInference.getFinding() != null) {
+                        FindingInference findingInference = guidanceInference.getFinding();
+                        displayFinding(findingInference);
+                    }
+                    if (guidanceInference.getRecommendationProposals() != null) {
+                        displayFollowUpRecommendations(guidanceInference.getRecommendationProposals());
+                    }
+                    List<FhirR4Extension> extensions = guidanceInference.getExtension();
+                    if (extensions != null) {
 					 System.out.println("   Evidence: " + extractEvidence(extensions));
 	                }
 	            }
 	        }
 	    }
+    }
     
 
     private static void displayFollowUpRecommendations(List<FollowupRecommendationInference> recommendationProposals) {
 		for (FollowupRecommendationInference followupRecommendationInference : recommendationProposals) {
 	        List<FhirR4Extension> extensions = followupRecommendationInference.getExtension();
-	        System.out.println("   Evidence: " + extractEvidence(extensions));
+			if (extensions != null) {
+				System.out.println("   Evidence: " + extractEvidence(extensions));
+			} else {
+				System.out.println("   No evidence found.");
+			}
 	        System.out.println("   Is conditional: " + followupRecommendationInference.isConditional());
 	        System.out.println("   Is guideline: " + followupRecommendationInference.isGuideline());
 	        System.out.println("   Is hedging: " + followupRecommendationInference.isHedging());
@@ -212,8 +237,7 @@ public class SampleGuidanceInferenceAsync {
 	                for (FhirR4CodeableConcept codeableConcept : procedureCodes) {
 	                    displayCodes(codeableConcept, 3);
 	                }
-	            }
-	
+	            }	
 	            System.out.println("      Imaging procedure: ");
 	            List<ImagingProcedure> imagingProcedures = imagingProcedureRecommendation.getImagingProcedures();
 	            for (ImagingProcedure imagingProcedure : imagingProcedures) {
@@ -272,6 +296,10 @@ public class SampleGuidanceInferenceAsync {
     
     private static String extractEvidence(List<FhirR4Extension> extensions) {
         String evidence = "";
+		if (extensions == null) {
+			evidence = "No evidence found.";
+			return evidence;
+		}
         for (FhirR4Extension extension : extensions) {
             List<FhirR4Extension> subExtensions = extension.getExtension();
             if (subExtensions != null) {
