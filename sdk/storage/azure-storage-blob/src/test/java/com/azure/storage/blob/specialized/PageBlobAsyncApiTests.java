@@ -570,9 +570,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void uploadPageFromURLSourceErrorAndStatusCode() {
         PageBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
-
+    
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
-
+    
         StepVerifier.create(destBlob.createIfNotExists(Constants.KB).then(destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null)))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -1820,7 +1820,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         BlobContainerAsyncClient containerAsyncClient
             = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
-        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(
+            new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String shareName = generateShareName();
         ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
 
@@ -1842,7 +1843,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                 .then(destBlob.create(Constants.KB))
                 .then(destBlob.uploadPagesFromUrlWithResponse(
                     new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1),
-                        fileAsyncClient.getFileUrl()).setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
+                        fileAsyncClient.getFileUrl())
+                            .setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
                             .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP),
                     null))
                 .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))

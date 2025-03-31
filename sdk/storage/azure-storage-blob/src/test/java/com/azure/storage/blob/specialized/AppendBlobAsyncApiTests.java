@@ -545,7 +545,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void appendBlockFromURLSourceErrorAndStatusCodeNewTest() {
         AppendBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
-
+    
         StepVerifier.create(destBlob.createIfNotExists().then(destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES))))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -947,7 +947,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         BlobContainerAsyncClient containerAsyncClient
             = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
-        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(
+            new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String shareName = generateShareName();
         ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
 
