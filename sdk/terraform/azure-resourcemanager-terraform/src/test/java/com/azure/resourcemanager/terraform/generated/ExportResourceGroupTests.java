@@ -13,27 +13,27 @@ public final class ExportResourceGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExportResourceGroup model = BinaryData.fromString(
-            "{\"type\":\"ExportResourceGroup\",\"resourceGroupName\":\"czbysc\",\"namePattern\":\"q\",\"targetProvider\":\"azurerm\",\"fullProperties\":false,\"maskSensitive\":true}")
+            "{\"type\":\"ExportResourceGroup\",\"resourceGroupName\":\"wby\",\"namePattern\":\"k\",\"targetProvider\":\"azapi\",\"fullProperties\":false,\"maskSensitive\":false}")
             .toObject(ExportResourceGroup.class);
-        Assertions.assertEquals(TargetProvider.AZURERM, model.targetProvider());
+        Assertions.assertEquals(TargetProvider.AZAPI, model.targetProvider());
         Assertions.assertEquals(false, model.fullProperties());
-        Assertions.assertEquals(true, model.maskSensitive());
-        Assertions.assertEquals("czbysc", model.resourceGroupName());
-        Assertions.assertEquals("q", model.namePattern());
+        Assertions.assertEquals(false, model.maskSensitive());
+        Assertions.assertEquals("wby", model.resourceGroupName());
+        Assertions.assertEquals("k", model.namePattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportResourceGroup model = new ExportResourceGroup().withTargetProvider(TargetProvider.AZURERM)
+        ExportResourceGroup model = new ExportResourceGroup().withTargetProvider(TargetProvider.AZAPI)
             .withFullProperties(false)
-            .withMaskSensitive(true)
-            .withResourceGroupName("czbysc")
-            .withNamePattern("q");
+            .withMaskSensitive(false)
+            .withResourceGroupName("wby")
+            .withNamePattern("k");
         model = BinaryData.fromObject(model).toObject(ExportResourceGroup.class);
-        Assertions.assertEquals(TargetProvider.AZURERM, model.targetProvider());
+        Assertions.assertEquals(TargetProvider.AZAPI, model.targetProvider());
         Assertions.assertEquals(false, model.fullProperties());
-        Assertions.assertEquals(true, model.maskSensitive());
-        Assertions.assertEquals("czbysc", model.resourceGroupName());
-        Assertions.assertEquals("q", model.namePattern());
+        Assertions.assertEquals(false, model.maskSensitive());
+        Assertions.assertEquals("wby", model.resourceGroupName());
+        Assertions.assertEquals("k", model.namePattern());
     }
 }

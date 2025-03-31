@@ -13,7 +13,8 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.FileBinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.utils.ProgressReporter;
-import io.clientcore.http.netty.implementation.CoreHandler;
+import io.clientcore.http.netty.implementation.CoreProgressAndTimeoutHandler;
+import io.clientcore.http.netty.implementation.CoreResponseHandler;
 import io.clientcore.http.netty.implementation.NettyResponse;
 import io.clientcore.http.netty.implementation.WrappedHttpHeaders;
 import io.netty.bootstrap.Bootstrap;
@@ -23,10 +24,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -36,7 +37,6 @@ import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpHeadersFactory;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.ssl.SslContext;
@@ -134,11 +134,12 @@ class NettyHttpClient implements HttpClient {
                     }), HttpClientCodec.DEFAULT_PARSE_HTTP_AFTER_CONNECT_REQUEST,
                         HttpClientCodec.DEFAULT_FAIL_ON_MISSING_RESPONSE));
 
-                pipeline.addLast(new HttpObjectAggregator(1048576));
+                pipeline.addLast(new CoreResponseHandler());
+
                 ProgressReporter progressReporter
                     = (request.getRequestOptions() == null) ? null : request.getRequestOptions().getProgressReporter();
-                pipeline.addLast(
-                    new CoreHandler(progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
+                pipeline.addLast(new CoreProgressAndTimeoutHandler(progressReporter, writeTimeoutMillis,
+                    responseTimeoutMillis, readTimeoutMillis));
             }
         });
 
@@ -148,23 +149,6 @@ class NettyHttpClient implements HttpClient {
 
         try {
             Channel channel = bootstrap.connect(host, port).sync().channel();
-
-            // TODO (alzimmer): This definitely isn't right as this will read the network response into a single
-            //  HttpResponse (FullHttpResponse) which won't work with large payloads or highly concurrent applications.
-            channel.pipeline().addLast(new SimpleChannelInboundHandler<FullHttpResponse>() {
-                @Override
-                protected void channelRead0(ChannelHandlerContext ctx, FullHttpResponse response) {
-                    responseReference.set(processResponse(request, response));
-                    latch.countDown();
-                }
-
-                @Override
-                public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-                    LOGGER.atLevel(LogLevel.ERROR).log("Error processing response", cause);
-                    ctx.fireExceptionCaught(cause);
-                    latch.countDown();
-                }
-            });
 
             sendRequest(request, channel).addListener((ChannelFutureListener) future -> {
                 if (!future.isSuccess()) {
@@ -240,49 +224,6 @@ class NettyHttpClient implements HttpClient {
 
         channel.write(initialLineAndHeaders);
         return channel.writeAndFlush(chunkedInput);
-    }
-
-    private Response<BinaryData> processResponse(HttpRequest request, FullHttpResponse response) {
-        HttpHeaders responseHeaders = response.headers();
-
-        BinaryData body = BinaryData.empty();
-        switch (getBodyHandling(request, responseHeaders)) {
-            case IGNORE:
-                if (response.content().isReadable()) {
-                    response.content().release();
-                }
-                break;
-
-            //            case STREAM:
-            //                body = BinaryData.fromStream(response.content().nioBuffer().asInputStream());
-            //                break;
-
-            case BUFFER:
-                body = BinaryData.fromBytes(response.content().nioBuffer().array());
-                break;
-
-            default:
-                body = BinaryData.fromBytes(response.content().nioBuffer().array());
-                break;
-        }
-
-        return new NettyResponse(body, response.status().code(), request, response);
-    }
-
-    private BodyHandling getBodyHandling(HttpRequest request, HttpHeaders responseHeaders) {
-        String contentType = responseHeaders.get(HttpHeaderNames.CONTENT_TYPE);
-
-        if (request.getHttpMethod() == HEAD) {
-            return BodyHandling.IGNORE;
-        } else if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            return BodyHandling.STREAM;
-        } else {
-            return BodyHandling.BUFFER;
-        }
-    }
-
-    private enum BodyHandling {
-        IGNORE, STREAM, BUFFER
     }
 
     public void close() {

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
  */
 public final class FrontendsInterfaceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-01-01/FrontendDelete.json
+     * x-ms-original-file: 2025-03-01-preview/FrontendDelete.json
      */
     /**
      * Sample code: Delete Frontend.

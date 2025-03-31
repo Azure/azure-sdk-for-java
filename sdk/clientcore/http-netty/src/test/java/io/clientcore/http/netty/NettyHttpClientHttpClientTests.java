@@ -63,7 +63,7 @@ public class NettyHttpClientHttpClientTests extends HttpClientTests {
     @Timeout(value = 5, unit = TimeUnit.MINUTES)
     @Test
     public void canSendBinaryDataDebugging() throws IOException {
-        byte[] expectedResponseBody = new byte[8192 * 16];
+        byte[] expectedResponseBody = new byte[4 * 1024 * 1024];
         ThreadLocalRandom.current().nextBytes(expectedResponseBody);
 
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.PUT)

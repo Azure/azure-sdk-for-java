@@ -119,7 +119,7 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     private void setAuthorizationHeaderHelper(HttpRequest httpRequest, TokenRequestContext tokenRequestContext,
         boolean checkToForceFetchToken) {
         AccessToken token = cache.getToken(tokenRequestContext, checkToForceFetchToken);
-        httpRequest.getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
+        httpRequest.getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken());
     }
 
     @Override

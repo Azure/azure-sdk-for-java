@@ -131,6 +131,13 @@ public interface JobResource {
     StageName status();
 
     /**
+     * Gets the delayedStage property: Name of the stage where delay might be present.
+     * 
+     * @return the delayedStage value.
+     */
+    StageName delayedStage();
+
+    /**
      * Gets the startTime property: Time at which the job was started in UTC ISO 8601 format.
      * 
      * @return the startTime value.
@@ -178,6 +185,13 @@ public interface JobResource {
      * @return the isCancellableWithoutFee value.
      */
     Boolean isCancellableWithoutFee();
+
+    /**
+     * Gets the allDevicesLost property: Flag to indicate if all devices associated with the job are lost.
+     * 
+     * @return the allDevicesLost value.
+     */
+    Boolean allDevicesLost();
 
     /**
      * Gets the region of the resource.
