@@ -10,6 +10,7 @@ import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -162,5 +163,13 @@ class OpenAIClientBuilderTest {
             = new OpenAIClientBuilder().configuration(configuration).endpoint("https://api.openai.com/");
 
         assertNotNull(builder.buildClient());
+    }
+    @Test
+    public void testClientOptionsSetterReturnsBuilderInstance() {
+        OpenAIClientBuilder builder = new OpenAIClientBuilder();
+        ClientOptions options = new ClientOptions(); // You can mock or use real instance
+        OpenAIClientBuilder returnedBuilder = builder.clientOptions(options);
+
+        assertSame(builder, returnedBuilder, "Method should return the same builder instance");
     }
 }
