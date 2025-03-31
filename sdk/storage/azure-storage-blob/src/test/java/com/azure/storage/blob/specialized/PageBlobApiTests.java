@@ -541,12 +541,12 @@ public class PageBlobApiTests extends BlobTestBase {
     @Test
     public void uploadPageFromURLSourceErrorAndStatusCode() {
         PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
-    
+
         destBlob.createIfNotExists(Constants.KB);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
-    
+
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null));
-    
+
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
@@ -1729,9 +1729,8 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
-    @LiveOnly
-    public void uploadPagesFromUriSourceBearerTokenFilesSource() throws IOException {
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    public void uploadPagesFromUriSourceBearerTokenFilesSource() {
         BlobServiceClient blobServiceClient = getOAuthServiceClient();
 
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
@@ -1743,34 +1742,29 @@ public class PageBlobApiTests extends BlobTestBase {
         ShareClient shareClient = shareServiceClient.getShareClient(shareName);
         shareClient.create();
 
-        try {
-            byte[] data = getRandomByteArray(Constants.KB);
-            ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
+        byte[] data = getRandomByteArray(Constants.KB);
+        ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
 
-            ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
-            directoryClient.create();
-            ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
-            fileClient.create(Constants.KB);
-            fileClient.upload(dataStream, data.length);
+        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
+        directoryClient.create();
+        ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
+        fileClient.create(Constants.KB);
+        fileClient.upload(dataStream, data.length, null);
 
-            PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
-            destBlob.create(Constants.KB);
+        PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        destBlob.create(Constants.KB);
 
-            String sourceBearerToken = getAuthToken();
-            HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
+        PageBlobUploadPagesFromUrlOptions options
+            = new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1),
+                fileClient.getFileUrl()).setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
+                    .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
 
-            PageBlobUploadPagesFromUrlOptions options
-                = new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1),
-                    fileClient.getFileUrl()).setSourceAuthorization(sourceAuth)
-                        .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        destBlob.uploadPagesFromUrlWithResponse(options, null, Context.NONE);
 
-            destBlob.uploadPagesFromUrlWithResponse(options, null, Context.NONE);
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
-            ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
-            destBlob.downloadStream(downloadedData);
-            TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
-        } finally {
-            shareClient.delete();
-        }
+        shareClient.delete();
     }
 }

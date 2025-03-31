@@ -30,7 +30,7 @@ public class BlobCopyFromUrlOptions {
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
     private BlobCopySourceTagsMode copySourceTags;
-    private FileShareTokenIntent fileShareTokenIntent;
+    private FileShareTokenIntent sourceShareTokenIntent;
 
     /**
      * Creates a new instance of {@link BlobCopyFromUrlOptions}.
@@ -246,19 +246,19 @@ public class BlobCopyFromUrlOptions {
      *
      * @return the {@link FileShareTokenIntent} for the file share.
      */
-    public FileShareTokenIntent getFileShareTokenIntent() {
-        return fileShareTokenIntent;
+    public FileShareTokenIntent getSourceShareTokenIntent() {
+        return sourceShareTokenIntent;
     }
 
     /**
      * Optional, only applicable (but required) when the source is Azure Storage Files and using token authentication.
      * Sets the intent of the request.
      *
-     * @param fileShareTokenIntent Used to indicate the intent of the request.
+     * @param sourceShareTokenIntent Used to indicate the intent of the request.
      * @return The updated options.
      */
-    public BlobCopyFromUrlOptions setFileShareTokenIntent(FileShareTokenIntent fileShareTokenIntent) {
-        this.fileShareTokenIntent = fileShareTokenIntent;
+    public BlobCopyFromUrlOptions setSourceShareTokenIntent(FileShareTokenIntent sourceShareTokenIntent) {
+        this.sourceShareTokenIntent = sourceShareTokenIntent;
         return this;
     }
 

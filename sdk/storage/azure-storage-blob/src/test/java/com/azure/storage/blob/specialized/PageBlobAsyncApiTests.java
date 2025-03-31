@@ -50,6 +50,8 @@ import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareDirectoryAsyncClient;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
+import com.azure.storage.file.share.ShareServiceClientBuilder;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -568,9 +570,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void uploadPageFromURLSourceErrorAndStatusCode() {
         PageBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
-    
+
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
-    
+
         StepVerifier.create(destBlob.createIfNotExists(Constants.KB).then(destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null)))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -1812,14 +1814,13 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
-    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void uploadPagesFromUriSourceBearerTokenFilesSource() {
         BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
         BlobContainerAsyncClient containerAsyncClient
             = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
-        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient();
+        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String shareName = generateShareName();
         ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
 
@@ -1832,22 +1833,19 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         PageBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
 
-        String sourceBearerToken = getAuthToken();
-        HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
-
         StepVerifier
             .create(containerAsyncClient.create()
                 .then(shareAsyncClient.create())
                 .then(directoryAsyncClient.create())
                 .then(fileAsyncClient.create(Constants.KB))
-                .then(fileAsyncClient.upload(dataFlux, Constants.KB))
+                .then(fileAsyncClient.upload(dataFlux, null))
                 .then(destBlob.create(Constants.KB))
                 .then(destBlob.uploadPagesFromUrlWithResponse(
                     new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1),
-                        fileAsyncClient.getFileUrl()).setSourceAuthorization(sourceAuth)
+                        fileAsyncClient.getFileUrl()).setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
                             .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP),
                     null))
-                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.download())))
+                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
             .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
             .verifyComplete();
 

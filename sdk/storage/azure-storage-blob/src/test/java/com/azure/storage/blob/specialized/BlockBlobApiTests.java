@@ -383,11 +383,11 @@ public class BlockBlobApiTests extends BlobTestBase {
     @Test
     public void stageBlockFromUrlSourceErrorAndStatusCode() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-    
+
         String blockID = getBlockID();
-    
+
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.stageBlockFromUrl(blockID, blockBlobClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
-    
+
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
@@ -1319,13 +1319,13 @@ public class BlockBlobApiTests extends BlobTestBase {
         def numBlocks = data.remaining() / BlockBlobURL.MAX_STAGE_BLOCK_BYTES
         long prevCount = 0
         def mockReceiver = Mock(IProgressReceiver)
-    
-    
+
+
         when:
         TransferManager.uploadFromNonReplayableFlowable(Flowable.just(data), bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, 10,
             new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
         data.position(0)
-    
+
         then:
         // We should receive exactly one notification of the completed progress.
         1 * mockReceiver.reportProgress(data.remaining()) */
@@ -1342,7 +1342,7 @@ public class BlockBlobApiTests extends BlobTestBase {
             prevCount = bytesTransferred
         }
     }
-    
+
     // We should receive no notifications that report more progress than the size of the file.
     0 * mockReceiver.reportProgress({ it > data.remaining() })
     notThrown(IllegalArgumentException)
@@ -1459,9 +1459,9 @@ public class BlockBlobApiTests extends BlobTestBase {
     @Test
     public void uploadFromUrlSourceErrorAndStatusCode() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-    
+
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.uploadFromUrl(blockBlobClient.getBlobUrl()));
-    
+
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
@@ -1741,10 +1741,9 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertTrue(aadBlob.exists());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
-    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
-    public void stageBlockFromUriSourceBearerTokenFilesSource() throws IOException {
+    public void stageBlockFromUriSourceBearerTokenFilesSource() {
         BlobServiceClient blobServiceClient = getOAuthServiceClient();
 
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
@@ -1756,55 +1755,50 @@ public class BlockBlobApiTests extends BlobTestBase {
         ShareClient shareClient = shareServiceClient.getShareClient(shareName);
         shareClient.create();
 
-        try {
-            byte[] data = getRandomByteArray(Constants.KB);
-            ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
+        byte[] data = getRandomByteArray(Constants.KB);
+        ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
 
-            // Create file share and upload data
-            ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
-            directoryClient.create();
-            ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
-            fileClient.create(Constants.KB);
-            fileClient.upload(dataStream, data.length);
+        // Create file share and upload data
+        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
+        directoryClient.create();
+        ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
+        fileClient.create(Constants.KB);
+        fileClient.upload(dataStream, data.length);
 
-            // Create destination block blob
-            BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        // Create destination block blob
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
-            String sourceBearerToken = getAuthToken();
-            HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
+        String sourceBearerToken = getAuthToken();
+        HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
+        String blockId = getBlockID();
 
-            // Set up source URL with bearer token
-            String sourceUrl = fileClient.getFileUrl();
+        // Set up source URL with bearer token
+        String sourceUrl = fileClient.getFileUrl();
 
-            BlockBlobStageBlockFromUrlOptions stageBlockFromUrlOptions
-                = new BlockBlobStageBlockFromUrlOptions(getBlockID(), sourceUrl);
-            stageBlockFromUrlOptions.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
-            stageBlockFromUrlOptions.setSourceRange(null);
-            stageBlockFromUrlOptions.setSourceContentMd5(null);
-            stageBlockFromUrlOptions.setSourceRequestConditions(null);
-            stageBlockFromUrlOptions.setSourceAuthorization(sourceAuth);
+        BlockBlobStageBlockFromUrlOptions stageBlockFromUrlOptions
+            = new BlockBlobStageBlockFromUrlOptions(blockId, sourceUrl);
+        stageBlockFromUrlOptions.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        stageBlockFromUrlOptions.setSourceAuthorization(sourceAuth);
 
-            // Stage block from URL with bearer token
-            destBlob.stageBlockFromUrlWithResponse(stageBlockFromUrlOptions, null, Context.NONE);
+        // Stage block from URL with bearer token
+        destBlob.stageBlockFromUrlWithResponse(stageBlockFromUrlOptions, null, Context.NONE);
 
-            // Commit the staged block
-            destBlob.commitBlockList(Collections.singletonList(getBlockID()));
+        // Commit the staged block
+        destBlob.commitBlockList(Collections.singletonList(blockId));
 
-            // Validate data was staged and committed correctly
-            ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
-            destBlob.downloadStream(downloadedData);
-            TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
+        // Validate data was staged and committed correctly
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
-        } finally {
-            // Clean up resources
-            shareClient.delete();
-        }
+        // Clean up resources
+        shareClient.delete();
+
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
-    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
-    public void uploadFromUriAsyncSourceBearerTokenFilesSource() throws IOException {
+    public void uploadFromUriAsyncSourceBearerTokenFilesSource() {
         BlobServiceClient blobServiceClient = getOAuthServiceClient();
 
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
@@ -1816,32 +1810,32 @@ public class BlockBlobApiTests extends BlobTestBase {
         ShareClient shareClient = shareServiceClient.getShareClient(shareName);
         shareClient.create();
 
-        try {
-            byte[] data = getRandomByteArray(Constants.KB);
-            ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
+        byte[] data = getRandomByteArray(Constants.KB);
+        ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
 
-            ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
-            directoryClient.create();
-            ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
-            fileClient.create(Constants.KB);
-            fileClient.upload(dataStream, data.length);
+        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
+        directoryClient.create();
+        ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
+        fileClient.create(Constants.KB);
+        fileClient.upload(dataStream, data.length);
 
-            BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
-            String sourceBearerToken = getAuthToken();
-            HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
+        String sourceBearerToken = getAuthToken();
+        HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
 
-            BlobUploadFromUrlOptions options
-                = new BlobUploadFromUrlOptions(fileClient.getFileUrl()).setSourceAuthorization(sourceAuth)
-                    .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        BlobUploadFromUrlOptions options
+            = new BlobUploadFromUrlOptions(fileClient.getFileUrl()).setSourceAuthorization(sourceAuth)
+                .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
 
-            destBlob.uploadFromUrlWithResponse(options, null, Context.NONE);
+        destBlob.uploadFromUrlWithResponse(options, null, Context.NONE);
 
-            ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
-            destBlob.downloadStream(downloadedData);
-            TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
-        } finally {
-            shareClient.delete();
-        }
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
+
+        //cleanup
+        shareClient.delete();
+
     }
 }

@@ -540,9 +540,9 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceErrorAndStatusCodeNewTest() {
         AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         destBlob.createIfNotExists();
-    
+
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
-    
+
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
@@ -900,10 +900,9 @@ public class AppendBlobApiTests extends BlobTestBase {
         assertEquals(MAX_APPEND_BLOCKS, bc.getMaxBlocks());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
-    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
-    public void appendBlockFromUrlSourceBearerTokenFileSource() throws IOException {
+    public void appendBlockFromUrlSourceBearerTokenFileSource() {
 
         BlobServiceClient blobServiceClient = getOAuthServiceClient();
 
@@ -916,47 +915,38 @@ public class AppendBlobApiTests extends BlobTestBase {
         ShareClient shareClient = shareServiceClient.getShareClient(shareName);
         shareClient.create();
 
-        try {
-            byte[] data = getRandomByteArray(Constants.KB);
-            ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
+        byte[] data = getRandomByteArray(Constants.KB);
+        ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
 
-            // Create file share and upload data
-            ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
-            directoryClient.create();
-            ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
-            fileClient.create(Constants.KB);
-            fileClient.upload(dataStream, data.length);
+        // Create file share and upload data
+        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
+        directoryClient.create();
+        ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
+        fileClient.create(Constants.KB);
+        fileClient.upload(dataStream, data.length, null);
 
-            // Create destination append blob
-            AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
-            destBlob.createIfNotExists();
+        // Create destination append blob
+        AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        destBlob.createIfNotExists();
 
-            String sourceBearerToken = getAuthToken();
+        // Set up source URL with bearer token
+        String sourceUrl = fileClient.getFileUrl();
 
-            HttpAuthorization sourceAuth = new HttpAuthorization("Bearer", sourceBearerToken);
+        AppendBlobAppendBlockFromUrlOptions appendBlobAppendBlockFromUrlOptions
+            = new AppendBlobAppendBlockFromUrlOptions(sourceUrl);
+        appendBlobAppendBlockFromUrlOptions.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        appendBlobAppendBlockFromUrlOptions.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
 
-            // Set up source URL with bearer token
-            String sourceUrl = fileClient.getFileUrl();
+        // Append block from URL with bearer token
+        destBlob.appendBlockFromUrlWithResponse(appendBlobAppendBlockFromUrlOptions, null, Context.NONE);
 
-            AppendBlobAppendBlockFromUrlOptions appendBlobAppendBlockFromUrlOptions
-                = new AppendBlobAppendBlockFromUrlOptions(sourceUrl);
-            appendBlobAppendBlockFromUrlOptions.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
-            appendBlobAppendBlockFromUrlOptions.setSourceRange(null);
-            appendBlobAppendBlockFromUrlOptions.setSourceContentMd5(null);
-            appendBlobAppendBlockFromUrlOptions.setDestinationRequestConditions(null);
-            appendBlobAppendBlockFromUrlOptions.setSourceRequestConditions(null);
-            appendBlobAppendBlockFromUrlOptions.setSourceAuthorization(sourceAuth);
+        // Validate data was appended correctly
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
-            // Append block from URL with bearer token
-            destBlob.appendBlockFromUrlWithResponse(appendBlobAppendBlockFromUrlOptions, null, Context.NONE);
+        // Clean up resources
+        shareClient.delete();
 
-            // Validate data was appended correctly
-            ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
-            destBlob.downloadStream(downloadedData);
-            TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
-        } finally {
-            // Clean up resources
-            shareClient.delete();
-        }
     }
 }
