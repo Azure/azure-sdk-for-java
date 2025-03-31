@@ -14,16 +14,19 @@ import java.util.stream.Collectors;
 
 public class AzureChatMapper {
 
-    public static ChatCompletionCreateParams from(AzureCreateChatCompletionRequest request) {
+    public static ChatCompletionCreateParams from(AzureCreateChatCompletionRequest request, String deploymentId) {
         if (request == null) {
             return null;
         }
 
         BinaryData requestJson = BinaryData.fromObject(request);
+        String json = "";
 
         JsonMapper jsonMapper = ObjectMappers.jsonMapper();
+
         try {
-            return jsonMapper.readValue(requestJson.toBytes(), ChatCompletionCreateParams.class);
+            ChatCompletionCreateParams params = jsonMapper.readValue(requestJson.toString(), ChatCompletionCreateParams.class);
+            return params.toBuilder().model(deploymentId).build();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
