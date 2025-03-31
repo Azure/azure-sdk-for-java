@@ -7,6 +7,7 @@ import io.clientcore.annotation.processor.test.implementation.TestInterfaceClien
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
@@ -265,10 +266,13 @@ public class TestInterfaceServiceClientGenerationTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON result = testInterface
+        Response<HttpBinJSON> response = testInterface
             .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "");
+        assertNotNull(response);
+        assertEquals("application/octet-stream",
+            response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
 
-        assertEquals("", result.data());
+        assertEquals("", response.getValue().data());
     }
 
     @Test
@@ -452,10 +456,12 @@ public class TestInterfaceServiceClientGenerationTests {
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
-        final HttpBinJSON result = testInterface
+        Response<HttpBinJSON> response = testInterface
             .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), null);
+        assertNotNull(response);
+        assertEquals("application/octet-stream", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
 
-        assertEquals("", result.data());
+        assertEquals("", response.getValue().data());
     }
 
     @Test
@@ -464,10 +470,12 @@ public class TestInterfaceServiceClientGenerationTests {
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
-        final HttpBinJSON result = testInterface
+        final Response<HttpBinJSON> response = testInterface
             .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "penguins");
+        assertNotNull(response);
+        assertEquals("application/octet-stream", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
 
-        assertEquals("penguins", result.data());
+        assertEquals("penguins", response.getValue().data());
     }
 
     @Test
@@ -512,10 +520,11 @@ public class TestInterfaceServiceClientGenerationTests {
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
-        final HttpBinJSON result = testInterface
+        final Response<HttpBinJSON> response = testInterface
             .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), null);
-
-        assertEquals("", result.data());
+        assertNotNull(response);
+        assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+        assertEquals("", response.getValue().data());
     }
 
     @Test
@@ -524,10 +533,11 @@ public class TestInterfaceServiceClientGenerationTests {
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
-        final HttpBinJSON result = testInterface
+        final Response<HttpBinJSON> response = testInterface
             .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
-
-        assertEquals("", result.data());
+        assertNotNull(response);
+        assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+        assertEquals("", response.getValue().data());
     }
 
     @Test
@@ -536,10 +546,11 @@ public class TestInterfaceServiceClientGenerationTests {
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
-        final HttpBinJSON result = testInterface
+        final Response<HttpBinJSON> response = testInterface
             .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "soups and stuff");
-
-        assertEquals("soups and stuff", result.data());
+        assertNotNull(response);
+        assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+        assertEquals("soups and stuff", response.getValue().data());
     }
 
     @Test

@@ -266,7 +266,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
 
         boolean isContentTypeSetInHeaders
-            = method.getParameters().stream().anyMatch(p -> p.getName().equals("contentType"));
+            = method.getParameters().stream().anyMatch(p -> "contentType".equals(p.getName()));
 
         // Header param to have precedence
         if (!isContentTypeSetInHeaders) {

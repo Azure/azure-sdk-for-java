@@ -41,7 +41,7 @@ public final class RequestBodyHandler {
 
         if (parameterType == null) {
             // set content-length = 0
-            RequestBodyHandler.setEmptyBody(body);
+            setEmptyBody(body);
             return false;
         }
 
@@ -185,7 +185,7 @@ public final class RequestBodyHandler {
      *
      * @param body The block statement to which the empty body is added.
      */
-    public static void setEmptyBody(BlockStmt body) {
+    private static void setEmptyBody(BlockStmt body) {
         body.addStatement(
             StaticJavaParser.parseStatement("httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, \"0\");"));
     }

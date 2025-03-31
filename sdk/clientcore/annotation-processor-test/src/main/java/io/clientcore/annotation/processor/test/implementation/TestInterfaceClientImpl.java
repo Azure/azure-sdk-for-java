@@ -162,8 +162,8 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(
             method = HttpMethod.PUT,
             path = "put",
-            headers = { "Content-Type: application/octet-stream" })
-        HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("uri") String uri,
+            headers = { "Content-Type: application/octet-stream" }, expectedStatusCodes = { 200 })
+        Response<HttpBinJSON> putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @HttpRequestInformation(
@@ -173,8 +173,8 @@ public final class TestInterfaceClientImpl {
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
-        HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndStringBody(@HostParam("uri") String uri,
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
+        Response<HttpBinJSON> putWithBodyParamApplicationJsonContentTypeAndStringBody(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_JSON) String body);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
@@ -191,5 +191,7 @@ public final class TestInterfaceClientImpl {
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("uri") String uri,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);    }
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+
+    }
 }
