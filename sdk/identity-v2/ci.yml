@@ -8,8 +8,8 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/identity/ci.v2.yml
-      - sdk/identity/azure-identity-v2/
+      - sdk/identity-v2/ci.yml
+      - sdk/identity-v2/azure-identity/
 
 pr:
   branches:
@@ -20,16 +20,16 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/identity/ci.v2.yml
-      - sdk/identity/azure-identity-v2/
+      - sdk/identity-v2/ci.yml
+      - sdk/identity-v2/azure-identity/
 
 parameters:
   - name: release_dependsonlivetests
     displayName: 'Release depends on live tests'
     type: boolean
     default: true
-  - name: release_azureidentityv2
-    displayName: 'azure-identity-v2'
+  - name: release_azureidentity
+    displayName: 'azure-identity'
     type: boolean
     default: true
 
@@ -40,10 +40,10 @@ extends:
     TimeoutInMinutes: 90
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
-      - name: azure-identity-v2
+      - name: azure-identity
         groupId: com.azure.v2
-        safeName: azureidentityv2
-        releaseInBatch: ${{ parameters.release_azureidentityv2 }}
+        safeName: azureidentity
+        releaseInBatch: ${{ parameters.release_azureidentity }}
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
@@ -71,7 +71,7 @@ extends:
               SubscriptionConfigurations:
                 - $(sub-config-identity-test-resources)
           Artifacts:
-            - name: azure-identity-v2
+            - name: azure-identity
               groupId: com.azure.v2
-              safeName: azureidentityv2
+              safeName: azureidentity
 
