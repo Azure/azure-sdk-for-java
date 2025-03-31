@@ -64,6 +64,8 @@ foreach ($tspLocationPath in $tspYamls) {
   if ($LastExitCode -ne 0) {
     $failedSdk += $sdkPath
   }
+  Write-Host "Running mvn package"
+  mvn package
   Pop-Location
 }
 
@@ -82,7 +84,8 @@ Verify no diff
 "
 
 # prevent warning related to EOL differences which triggers an exception for some reason
-git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**"
+git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":
+(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java"
 
 if ($LastExitCode -ne 0) {
   $status = git status -s | Out-String

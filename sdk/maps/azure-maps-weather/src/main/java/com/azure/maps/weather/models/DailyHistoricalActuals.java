@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -29,7 +30,9 @@ public final class DailyHistoricalActuals implements JsonSerializable<DailyHisto
     private WeatherValueMaxMinAvg temperature;
 
     /*
-     * Summary of heating or cooling degree day information. Degree days are measures of how cold or warm a location is. A degree day compares the mean (the average of the high and low) outdoor temperatures recorded for a location to a standard temperature of 65 degrees F/ 18 degree C.
+     * Summary of heating or cooling degree day information. Degree days are measures of how cold or warm a location is.
+     * A degree day compares the mean (the average of the high and low) outdoor temperatures recorded for a location to
+     * a standard temperature of 65 degrees F/ 18 degree C.
      */
     private DegreeDaySummary degreeDaySummary;
 
@@ -142,8 +145,8 @@ public final class DailyHistoricalActuals implements JsonSerializable<DailyHisto
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("date".equals(fieldName)) {
-                    deserializedDailyHistoricalActuals.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDailyHistoricalActuals.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("temperature".equals(fieldName)) {
                     deserializedDailyHistoricalActuals.temperature = WeatherValueMaxMinAvg.fromJson(reader);
                 } else if ("degreeDaySummary".equals(fieldName)) {

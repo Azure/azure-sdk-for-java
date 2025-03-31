@@ -19,11 +19,11 @@ public final class WeatherHazards implements JsonSerializable<WeatherHazards> {
 
     /*
      * A severity/hazard index.
-     *   * `0` - No hazard.
-     *   * `1` - Be informed, be aware.
-     *   * `2` - Pay attention, be prepared.
-     *   * `3` - Take action.
-     *   * `4` - Life threatening, emergency.
+     * * `0` - No hazard.
+     * * `1` - Be informed, be aware.
+     * * `2` - Pay attention, be prepared.
+     * * `3` - Take action.
+     * * `4` - Life threatening, emergency.
      */
     private HazardIndex maxHazardIndex;
 
@@ -67,7 +67,8 @@ public final class WeatherHazards implements JsonSerializable<WeatherHazards> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("maxHazardIndex", this.maxHazardIndex == null ? null : this.maxHazardIndex.toInt());
+        jsonWriter.writeNumberField("maxHazardIndex",
+            this.maxHazardIndex == null ? null : this.maxHazardIndex.getValue());
         jsonWriter.writeArrayField("hazardDetails", this.details, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -87,7 +88,7 @@ public final class WeatherHazards implements JsonSerializable<WeatherHazards> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("maxHazardIndex".equals(fieldName)) {
-                    deserializedWeatherHazards.maxHazardIndex = HazardIndex.fromInt(reader.getInt());
+                    deserializedWeatherHazards.maxHazardIndex = HazardIndex.fromValue(reader.getInt());
                 } else if ("hazardDetails".equals(fieldName)) {
                     List<HazardDetail> details = reader.readArray(reader1 -> HazardDetail.fromJson(reader1));
                     deserializedWeatherHazards.details = details;

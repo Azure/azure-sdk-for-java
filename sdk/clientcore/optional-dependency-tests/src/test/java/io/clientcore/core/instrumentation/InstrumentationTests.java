@@ -3,15 +3,20 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.implementation.instrumentation.otel.OTelAttributes;
+import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
+import io.clientcore.core.instrumentation.metrics.LongCounter;
+import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.TraceFlags;
 import io.opentelemetry.api.trace.TraceState;
-import io.opentelemetry.api.trace.TracerProvider;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
@@ -26,12 +31,18 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createInvalidInstrumentationContext;
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createRandomInstrumentationContext;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -66,8 +77,8 @@ public class InstrumentationTests {
     public void createTracerTracingDisabled() {
         OpenTelemetry otel = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
 
-        InstrumentationOptions<OpenTelemetry> options
-            = new InstrumentationOptions<OpenTelemetry>().setTracingEnabled(false).setProvider(otel);
+        InstrumentationOptions options
+            = new InstrumentationOptions().setTracingEnabled(false).setTelemetryProvider(otel);
 
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
         assertFalse(tracer.isEnabled());
@@ -82,7 +93,8 @@ public class InstrumentationTests {
         try (AutoCloseable otel
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
-            Tracer tracer = Instrumentation.create(null, DEFAULT_LIB_OPTIONS).getTracer();
+            Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+            Tracer tracer = instrumentation.getTracer();
             assertTrue(tracer.isEnabled());
 
             tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
@@ -109,7 +121,7 @@ public class InstrumentationTests {
             OpenTelemetry localOTel = OpenTelemetrySdk.builder().setTracerProvider(localTracerProvider).build();
 
             Tracer tracer = Instrumentation
-                .create(new InstrumentationOptions<OpenTelemetry>().setProvider(localOTel), DEFAULT_LIB_OPTIONS)
+                .create(new InstrumentationOptions().setTelemetryProvider(localOTel), DEFAULT_LIB_OPTIONS)
                 .getTracer();
             assertTrue(tracer.isEnabled());
 
@@ -123,8 +135,7 @@ public class InstrumentationTests {
 
     @Test
     public void createTracerBadArguments() {
-        InstrumentationOptions<TracerProvider> options
-            = new InstrumentationOptions<TracerProvider>().setProvider(tracerProvider);
+        InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(tracerProvider);
 
         assertThrows(IllegalArgumentException.class,
             () -> Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer());
@@ -175,7 +186,7 @@ public class InstrumentationTests {
         assertEquals(otelSpan.getSpanContext().getTraceFlags().asHex(), context.getTraceFlags());
 
         Tracer tracer
-            = Instrumentation.create(new InstrumentationOptions<OpenTelemetry>().setProvider(otel), DEFAULT_LIB_OPTIONS)
+            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(otel), DEFAULT_LIB_OPTIONS)
                 .getTracer();
         Span span = tracer.spanBuilder("test", INTERNAL, context).startSpan();
         assertEquals(otelSpan.getSpanContext().getTraceId(), span.getInstrumentationContext().getTraceId());
@@ -219,7 +230,7 @@ public class InstrumentationTests {
         assertEquals(otelSpanContext.getTraceFlags().asHex(), context.getTraceFlags());
 
         Tracer tracer
-            = Instrumentation.create(new InstrumentationOptions<OpenTelemetry>().setProvider(otel), DEFAULT_LIB_OPTIONS)
+            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(otel), DEFAULT_LIB_OPTIONS)
                 .getTracer();
         Span span = tracer.spanBuilder("test", INTERNAL, context).startSpan();
         assertEquals(otelSpanContext.getTraceId(), span.getInstrumentationContext().getTraceId());
@@ -256,4 +267,163 @@ public class InstrumentationTests {
         assertFalse(context.isValid());
         assertNotNull(context.getSpan());
     }
+
+    @Test
+    public void testCreateMeterAndInstruments() {
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Meter meter = instrumentation.getMeter();
+        assertTrue(meter.isEnabled());
+
+        InstrumentationAttributes attributes = instrumentation.createAttributes(Collections.emptyMap());
+        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", "By", null);
+        histogram.record(42.0, attributes, null);
+        assertTrue(histogram.isEnabled());
+
+        LongCounter counter = meter.createLongCounter("test", "description", "1");
+        counter.add(42, attributes, null);
+        assertTrue(counter.isEnabled());
+
+        LongCounter upDownCounter = meter.createLongUpDownCounter("test", "description", "1");
+        upDownCounter.add(42, attributes, null);
+        assertTrue(upDownCounter.isEnabled());
+    }
+
+    @Test
+    public void testInvalidParams() {
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Meter meter = instrumentation.getMeter();
+
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", null, "1", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter("test", null, "1"));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter("test", null, "1"));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram(null, "description", "1", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter(null, "description", "1"));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter(null, "description", "1"));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", "description", null, null));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter("test", "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter("test", "description", null));
+
+        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", "1", null);
+        assertThrows(NullPointerException.class, () -> histogram.record(42.0, null, null));
+
+        LongCounter counter = meter.createLongCounter("test", "description", "1");
+        assertThrows(NullPointerException.class, () -> counter.add(42, null, null));
+
+        LongCounter upDownCounter = meter.createLongUpDownCounter("test", "description", "1");
+        assertThrows(NullPointerException.class, () -> upDownCounter.add(42, null, null));
+    }
+
+    @Test
+    public void testCreateAttributes() {
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        InstrumentationAttributes attributes = instrumentation.createAttributes(Collections.emptyMap());
+        assertInstanceOf(OTelAttributes.class, attributes);
+
+        // does not throw
+        attributes.put("key", "value1");
+        attributes.put("key", "value2");
+        instrumentation.createAttributes(null);
+    }
+
+    @Test
+    public void testAttributesInvalidParams() {
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        assertThrows(NullPointerException.class,
+            () -> instrumentation.createAttributes(Collections.singletonMap(null, "value")));
+        assertThrows(NullPointerException.class,
+            () -> instrumentation.createAttributes(Collections.singletonMap("key", null)));
+        InstrumentationAttributes attributes = instrumentation.createAttributes(null);
+        assertThrows(NullPointerException.class, () -> attributes.put(null, "value"));
+        assertThrows(NullPointerException.class, () -> attributes.put("key", null));
+    }
+
+    @Test
+    public void testAttributes() {
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Map<String, Object> start = new HashMap<>();
+        start.put("string", "value");
+        start.put("int", 42);
+        start.put("double", 0.42);
+        start.put("float", 4.2f);
+        start.put("boolean", true);
+        start.put("long", 420L);
+
+        InstrumentationAttributes attributes = instrumentation.createAttributes(start);
+        OTelAttributes otelAttributes = (OTelAttributes) attributes;
+        Object otelAttrs = otelAttributes.getOTelAttributes();
+        assertInstanceOf(Attributes.class, otelAttrs);
+
+        Attributes attrs = (Attributes) otelAttrs;
+        assertEquals(6, attrs.size());
+        assertEquals("value", attrs.get(AttributeKey.stringKey("string")));
+        assertEquals(42L, attrs.get(AttributeKey.longKey("int")));
+        assertEquals(420L, attrs.get(AttributeKey.longKey("long")));
+        assertEquals(0.42, attrs.get(AttributeKey.doubleKey("double")));
+        assertEquals(4.2f, attrs.get(AttributeKey.doubleKey("float")), 0.1);
+        assertEquals(true, attrs.get(AttributeKey.booleanKey("boolean")));
+
+        InstrumentationAttributes attributes2 = attributes.put("string2", "value2");
+
+        assertNotSame(attributes, attributes2);
+        assertNull(attrs.get(AttributeKey.stringKey("string2")));
+        assertEquals(6, attrs.size());
+
+        attributes2 = attributes2.put("int2", 24)
+            .put("double2", 0.24)
+            .put("float2", 2.4f)
+            .put("boolean2", false)
+            .put("long2", 240L);
+
+        attrs = (Attributes) ((OTelAttributes) attributes2).getOTelAttributes();
+        assertEquals(12, attrs.size());
+        assertEquals("value2", attrs.get(AttributeKey.stringKey("string2")));
+        assertEquals(24L, attrs.get(AttributeKey.longKey("int2")));
+        assertEquals(240L, attrs.get(AttributeKey.longKey("long2")));
+        assertEquals(0.24, attrs.get(AttributeKey.doubleKey("double2")));
+        assertEquals(2.4f, attrs.get(AttributeKey.doubleKey("float2")), 0.1);
+        assertEquals(false, attrs.get(AttributeKey.booleanKey("boolean2")));
+    }
+
+    @Test
+    public void testDuplicates() {
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Map<String, Object> start = new HashMap<>();
+        start.put("string", "value1");
+        start.put("string", "value2");
+
+        InstrumentationAttributes attributes
+            = instrumentation.createAttributes(start).put("string", "value3").put("string", "value4");
+        Object otelAttrs = ((OTelAttributes) attributes).getOTelAttributes();
+
+        Attributes attrs = (Attributes) otelAttrs;
+        assertEquals(1, attrs.size());
+        assertEquals("value4", attrs.get(AttributeKey.stringKey("string")));
+    }
+
+    /*@Test
+    public void testSuppression() {
+        OpenTelemetry otel = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
+        InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(otel);
+        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null);
+        assertTrue(instrumentation.shouldInstrument(CLIENT, null));
+    
+        Tracer tracer = instrumentation.getTracer();
+        Span span = tracer.spanBuilder("test", CLIENT, null).startSpan();
+    
+        assertFalse(instrumentation.shouldInstrument(CLIENT, span.getInstrumentationContext()));
+        assertTrue(instrumentation.shouldInstrument(INTERNAL, span.getInstrumentationContext()));
+        assertTrue(instrumentation.shouldInstrument(CONSUMER, span.getInstrumentationContext()));
+        assertTrue(instrumentation.shouldInstrument(PRODUCER, span.getInstrumentationContext()));
+        assertTrue(instrumentation.shouldInstrument(SERVER, span.getInstrumentationContext()));
+    }
+    
+    @Test
+    public void testSuppressionTracingAndMetricsDisabled() {
+        OpenTelemetry otel = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
+    
+        InstrumentationOptions options
+            = new InstrumentationOptions().setTracingEnabled(false).setMetricsEnabled(false).setTelemetryProvider(otel);
+    
+        assertFalse(Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null).shouldInstrument(CLIENT, null));
+    }*/
 }

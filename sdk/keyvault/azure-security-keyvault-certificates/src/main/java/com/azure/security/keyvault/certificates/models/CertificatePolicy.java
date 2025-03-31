@@ -160,7 +160,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the key type value
      */
     public CertificateKeyType getKeyType() {
-        return impl.getKeyProperties() == null ? null : impl.getKeyProperties().getKty();
+        return impl.getKeyProperties() == null ? null : impl.getKeyProperties().getKeyType();
     }
 
     /**
@@ -174,7 +174,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
             impl.setKeyProperties(new KeyProperties());
         }
 
-        impl.getKeyProperties().setKty(keyType);
+        impl.getKeyProperties().setKeyType(keyType);
         return this;
     }
 
@@ -217,7 +217,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the curve value
      */
     public CertificateKeyCurveName getKeyCurveName() {
-        return impl.getKeyProperties() == null ? null : impl.getKeyProperties().getCrv();
+        return impl.getKeyProperties() == null ? null : impl.getKeyProperties().getCurve();
     }
 
     /**
@@ -355,7 +355,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
             impl.setKeyProperties(new KeyProperties());
         }
 
-        impl.getKeyProperties().setCrv(keyCurveName);
+        impl.getKeyProperties().setCurve(keyCurveName);
         return this;
     }
 

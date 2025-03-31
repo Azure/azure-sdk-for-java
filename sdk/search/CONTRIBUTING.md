@@ -65,7 +65,7 @@ you should consider persisting these variables.
 Our samples are structured as test source code in `/src/samples/` so we can easily verify they're up-to-date and 
 compile correctly.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fsearch%2FCONTRIBUTING.png)
+
 
 <!-- LINKS -->
 [core_tests]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-test

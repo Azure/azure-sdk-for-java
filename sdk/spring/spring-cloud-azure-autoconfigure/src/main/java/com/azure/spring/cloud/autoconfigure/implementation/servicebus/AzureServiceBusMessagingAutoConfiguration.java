@@ -5,6 +5,8 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
@@ -13,6 +15,7 @@ import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionSt
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.implementation.converter.ObjectMapperHolder;
 import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
@@ -123,24 +126,30 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "true", matchIfMissing = true)
-        ServiceBusMessageConverter defaultServiceBusMessageConverter() {
+        AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> defaultServiceBusMessageConverter() {
             return new ServiceBusMessageConverter(ObjectMapperHolder.OBJECT_MAPPER);
         }
 
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "false")
-        ServiceBusMessageConverter serviceBusMessageConverter(ObjectMapper objectMapper) {
+        AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> serviceBusMessageConverter(ObjectMapper objectMapper) {
             return new ServiceBusMessageConverter(objectMapper);
         }
 
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnBean(ServiceBusProducerFactory.class)
-        ServiceBusTemplate serviceBusTemplate(ServiceBusProducerFactory senderClientfactory,
-                                                     ServiceBusMessageConverter messageConverter) {
-            ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(senderClientfactory);
+        ServiceBusTemplate serviceBusTemplate(AzureServiceBusProperties properties,
+                                              ServiceBusProducerFactory senderClientFactory,
+                                              AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
+            ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(senderClientFactory);
             serviceBusTemplate.setMessageConverter(messageConverter);
+            if (properties.getProducer().getEntityType() != null) {
+                serviceBusTemplate.setDefaultEntityType(properties.getProducer().getEntityType());
+            } else {
+                serviceBusTemplate.setDefaultEntityType(properties.getEntityType());
+            }
             return serviceBusTemplate;
         }
     }

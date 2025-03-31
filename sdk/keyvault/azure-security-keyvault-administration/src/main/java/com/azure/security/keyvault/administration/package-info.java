@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 /**
+ * <!-- @formatter:off -->
  * <a href="https://learn.microsoft.com/azure/key-vault/managed-hsm/">Azure Key Vault Managed HSM</a> is a
  * fully-managed, highly-available, single-tenant, standards-compliant cloud service that enables you to safeguard
  * cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validated HSMs.

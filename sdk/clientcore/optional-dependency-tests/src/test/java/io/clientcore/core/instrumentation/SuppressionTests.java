@@ -3,7 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -14,10 +14,15 @@ import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.metrics.SdkMeterProvider;
+import io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions;
+import io.opentelemetry.sdk.testing.exporter.InMemoryMetricReader;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
+import io.opentelemetry.sdk.testing.time.TestClock;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
@@ -29,11 +34,13 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.stream.Stream;
 
 import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.PRODUCER;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,22 +50,31 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class SuppressionTests {
-
-    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
-        = new LibraryInstrumentationOptions("test-library");
+    private static final long SECOND_NANOS = 1_000_000_000;
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
-    private InstrumentationOptions<OpenTelemetry> otelOptions;
+    private SdkMeterProvider meterProvider;
+    private InMemoryMetricReader sdkMeterReader;
+    private TestClock testClock;
+
+    private InstrumentationOptions otelOptions;
     private Tracer tracer;
+    private final LibraryInstrumentationOptions libOptions = new LibraryInstrumentationOptions("test-library");
 
     @BeforeEach
     public void setUp() {
         exporter = InMemorySpanExporter.create();
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
-        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        testClock = TestClock.create();
+        sdkMeterReader = InMemoryMetricReader.create();
+
+        meterProvider = SdkMeterProvider.builder().setClock(testClock).registerMetricReader(sdkMeterReader).build();
+
+        OpenTelemetry openTelemetry
+            = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).setMeterProvider(meterProvider).build();
+        otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
+        tracer = Instrumentation.create(otelOptions, libOptions).getTracer();
     }
 
     @AfterEach
@@ -69,9 +85,10 @@ public class SuppressionTests {
 
     @Test
     public void testNoSuppressionForSimpleMethod() {
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(request -> new MockHttpResponse(request, 200)).build();
-        SampleClient client = new SampleClient(pipeline, otelOptions);
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
+        SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
         client.protocolMethod(new RequestOptions());
 
@@ -83,9 +100,10 @@ public class SuppressionTests {
 
     @Test
     public void testNestedInternalSpanSuppression() {
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(request -> new MockHttpResponse(request, 200)).build();
-        SampleClient client = new SampleClient(pipeline, otelOptions);
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
+        SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
         client.convenienceMethod(new RequestOptions());
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -94,11 +112,55 @@ public class SuppressionTests {
     }
 
     @Test
+    public void testNestedInternalScopeSuppression() throws IOException {
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
+
+        LibraryInstrumentationOptions libraryInstrumentationOptions
+            = new LibraryInstrumentationOptions("test-library").setEndpoint("https://localhost");
+
+        SampleClientCallInstrumentation client
+            = new SampleClientCallInstrumentation(pipeline, otelOptions, libraryInstrumentationOptions);
+
+        client.convenienceMethod(new RequestOptions());
+        assertEquals(1, exporter.getFinishedSpanItems().size());
+        SpanData span = exporter.getFinishedSpanItems().get(0);
+        assertEquals("convenience", span.getName());
+
+        testClock.advance(Duration.ofNanos(SECOND_NANOS));
+        assertThat(sdkMeterReader.collectAllMetrics())
+            .satisfiesExactly(metric -> OpenTelemetryAssertions.assertThat(metric)
+                .hasName("test.library.client.operation.duration")
+                .hasHistogramSatisfying(h -> h.isCumulative().hasPointsSatisfying(point -> point.hasCount(1))));
+    }
+
+    @Test
+    public void testNestedInternalScopeDisabledSuppression() throws IOException {
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
+            .build();
+        LibraryInstrumentationOptions libOptions
+            = new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true);
+        SampleClientCallInstrumentation client = new SampleClientCallInstrumentation(pipeline, otelOptions, libOptions);
+
+        client.convenienceMethod(new RequestOptions());
+        assertEquals(2, exporter.getFinishedSpanItems().size());
+        assertEquals("protocol", exporter.getFinishedSpanItems().get(0).getName());
+        assertEquals("convenience", exporter.getFinishedSpanItems().get(1).getName());
+
+        testClock.advance(Duration.ofNanos(SECOND_NANOS));
+        assertThat(sdkMeterReader.collectAllMetrics())
+            .satisfiesExactly(metric -> OpenTelemetryAssertions.assertThat(metric)
+                .hasName("test.library.client.operation.duration")
+                .hasHistogramSatisfying(
+                    h -> h.isCumulative().hasPointsSatisfying(point -> point.hasCount(1), point -> point.hasCount(1))));
+    }
+
+    @Test
     public void testDisabledSuppression() {
         Tracer outerTracer = tracer;
-        Tracer innerTracer = Instrumentation
-            .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true))
-            .getTracer();
+        Tracer innerTracer = Instrumentation.create(otelOptions, libOptions.disableSpanSuppression(true)).getTracer();
 
         RequestOptions options = new RequestOptions();
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
@@ -155,7 +217,7 @@ public class SuppressionTests {
 
     @Test
     public void multipleLayers() {
-        Tracer tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        Tracer tracer = Instrumentation.create(otelOptions, libOptions).getTracer();
 
         RequestOptions options = new RequestOptions();
 
@@ -296,20 +358,24 @@ public class SuppressionTests {
     }
 
     public static Stream<Arguments> suppressionTestCases() {
-        return Stream.of(Arguments.of(CLIENT, CLIENT, 1), Arguments.of(CLIENT, INTERNAL, 1),
-            Arguments.of(INTERNAL, CLIENT, 1), Arguments.of(INTERNAL, INTERNAL, 1),
+        return Stream.of(Arguments.of(CLIENT, CLIENT, 1), Arguments.of(CLIENT, INTERNAL, 2),
+            Arguments.of(INTERNAL, CLIENT, 2), Arguments.of(INTERNAL, INTERNAL, 1),
             Arguments.of(SpanKind.SERVER, CLIENT, 2), Arguments.of(SpanKind.SERVER, INTERNAL, 2),
             Arguments.of(PRODUCER, CLIENT, 2), Arguments.of(INTERNAL, PRODUCER, 2),
             Arguments.of(SpanKind.CONSUMER, CLIENT, 2), Arguments.of(SpanKind.CONSUMER, INTERNAL, 2));
     }
 
-    static class SampleClient {
+    static class SampleClientTracing {
+        private static final String LIBRARY_NAME = "test-library";
         private final HttpPipeline pipeline;
         private final Tracer tracer;
 
-        SampleClient(HttpPipeline pipeline, InstrumentationOptions<?> options) {
+        SampleClientTracing(HttpPipeline pipeline, InstrumentationOptions options) {
             this.pipeline = pipeline;
-            this.tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
+
+            LibraryInstrumentationOptions libraryInstrumentationOptions
+                = new LibraryInstrumentationOptions(LIBRARY_NAME).setEndpoint("https://localhost");
+            this.tracer = Instrumentation.create(options, libraryInstrumentationOptions).getTracer();
         }
 
         @SuppressWarnings("try")
@@ -319,7 +385,8 @@ public class SuppressionTests {
             options.setInstrumentationContext(span.getInstrumentationContext());
 
             try (TracingScope scope = span.makeCurrent()) {
-                Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost"));
+                Response<?> response
+                    = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"));
                 try {
                     response.close();
                 } catch (IOException e) {
@@ -342,6 +409,30 @@ public class SuppressionTests {
             } finally {
                 span.end();
             }
+        }
+    }
+
+    static class SampleClientCallInstrumentation {
+        private final HttpPipeline pipeline;
+        private final Instrumentation instrumentation;
+
+        SampleClientCallInstrumentation(HttpPipeline pipeline, InstrumentationOptions options,
+            LibraryInstrumentationOptions libraryInstrumentationOptions) {
+            this.pipeline = pipeline;
+            this.instrumentation = Instrumentation.create(options, libraryInstrumentationOptions);
+        }
+
+        @SuppressWarnings("try")
+        public Response<?> protocolMethod(RequestOptions options) {
+            return instrumentation.instrumentWithResponse("protocol", options,
+                updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+                    .setUri("https://localhost")
+                    .setRequestOptions(updatedOptions)));
+        }
+
+        @SuppressWarnings("try")
+        public Response<?> convenienceMethod(RequestOptions options) throws IOException {
+            return instrumentation.instrumentWithResponse("convenience", options, this::protocolMethod);
         }
     }
 }

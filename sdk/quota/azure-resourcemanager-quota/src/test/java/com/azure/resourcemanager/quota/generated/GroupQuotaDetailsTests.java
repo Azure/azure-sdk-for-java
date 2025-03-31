@@ -12,20 +12,21 @@ public final class GroupQuotaDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaDetails model = BinaryData.fromString(
-            "{\"region\":\"yxolniwp\",\"limit\":4659788042682990061,\"comment\":\"fkgiawxk\",\"name\":{\"value\":\"plwckbas\",\"localizedValue\":\"pnddhsgcbacphejk\"},\"unit\":\"ynqgoulzndlikwyq\",\"availableLimit\":3834014588009600234,\"allocatedToSubscriptions\":{\"value\":[{\"subscriptionId\":\"dgak\",\"quotaAllocated\":801620479699597544},{\"subscriptionId\":\"yb\",\"quotaAllocated\":7229748892246039848},{\"subscriptionId\":\"qytbciq\",\"quotaAllocated\":5348039389469426548},{\"subscriptionId\":\"mmnkzsmodmgl\",\"quotaAllocated\":800844315358769757}]}}")
+            "{\"resourceName\":\"ol\",\"limit\":728427044151085646,\"comment\":\"algbquxigjyjg\",\"unit\":\"aoyfhrtxilnerkuj\",\"name\":{\"value\":\"l\",\"localizedValue\":\"uvfqawrlyxwj\"},\"availableLimit\":4891061322345208982,\"allocatedToSubscriptions\":{\"value\":[{\"subscriptionId\":\"xgjvtbv\",\"quotaAllocated\":7661305214436261701},{\"subscriptionId\":\"dnrujqguhmuouqfp\",\"quotaAllocated\":1346703559786740146}]}}")
             .toObject(GroupQuotaDetails.class);
-        Assertions.assertEquals("yxolniwp", model.region());
-        Assertions.assertEquals(4659788042682990061L, model.limit());
-        Assertions.assertEquals("fkgiawxk", model.comment());
+        Assertions.assertEquals("ol", model.resourceName());
+        Assertions.assertEquals(728427044151085646L, model.limit());
+        Assertions.assertEquals("algbquxigjyjg", model.comment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotaDetails model
-            = new GroupQuotaDetails().withRegion("yxolniwp").withLimit(4659788042682990061L).withComment("fkgiawxk");
+        GroupQuotaDetails model = new GroupQuotaDetails().withResourceName("ol")
+            .withLimit(728427044151085646L)
+            .withComment("algbquxigjyjg");
         model = BinaryData.fromObject(model).toObject(GroupQuotaDetails.class);
-        Assertions.assertEquals("yxolniwp", model.region());
-        Assertions.assertEquals(4659788042682990061L, model.limit());
-        Assertions.assertEquals("fkgiawxk", model.comment());
+        Assertions.assertEquals("ol", model.resourceName());
+        Assertions.assertEquals(728427044151085646L, model.limit());
+        Assertions.assertEquals("algbquxigjyjg", model.comment());
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -39,12 +40,14 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
     private String shortDescription;
 
     /*
-     * Key that specifies the threshold value. Along with precipitationType, can be used to determine the simplifiedColor. If dbz is zero, not present in the response.
+     * Key that specifies the threshold value. Along with precipitationType, can be used to determine the
+     * simplifiedColor. If dbz is zero, not present in the response.
      */
     private String threshold;
 
     /*
-     * The full spectrum color that maps to the dBZ (decibel relative to Z). If dbz is zero, color is not present in the response.
+     * The full spectrum color that maps to the dBZ (decibel relative to Z). If dbz is zero, color is not present in the
+     * response.
      */
     private ColorValue color;
 
@@ -54,12 +57,14 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
     private ColorValue simplifiedColor;
 
     /*
-     * Specifies the type of precipitation ("Rain" "Snow" "Ice" or "Mix"). If dbz is zero, precipitationType is not present in the response.
+     * Specifies the type of precipitation ("Rain" "Snow" "Ice" or "Mix"). If dbz is zero, precipitationType is not
+     * present in the response.
      */
     private PrecipitationType precipitationType;
 
     /*
-     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
+     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
     private IconCode iconCode;
 
@@ -198,7 +203,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
         jsonWriter.writeJsonField("simplifiedColor", this.simplifiedColor);
         jsonWriter.writeStringField("precipitationType",
             this.precipitationType == null ? null : this.precipitationType.toString());
-        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
+        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.getValue());
         jsonWriter.writeNumberField("cloudCover", this.cloudCover);
         return jsonWriter.writeEndObject();
     }
@@ -218,8 +223,8 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("startTime".equals(fieldName)) {
-                    deserializedForecastInterval.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedForecastInterval.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("minute".equals(fieldName)) {
                     deserializedForecastInterval.minute = reader.getNullable(JsonReader::getInt);
                 } else if ("dbz".equals(fieldName)) {
@@ -235,7 +240,7 @@ public final class ForecastInterval implements JsonSerializable<ForecastInterval
                 } else if ("precipitationType".equals(fieldName)) {
                     deserializedForecastInterval.precipitationType = PrecipitationType.fromString(reader.getString());
                 } else if ("iconCode".equals(fieldName)) {
-                    deserializedForecastInterval.iconCode = IconCode.fromInt(reader.getInt());
+                    deserializedForecastInterval.iconCode = IconCode.fromValue(reader.getInt());
                 } else if ("cloudCover".equals(fieldName)) {
                     deserializedForecastInterval.cloudCover = reader.getNullable(JsonReader::getInt);
                 } else {

@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Details of the StandbyContainerGroupPool.
@@ -27,6 +28,11 @@ public final class StandbyContainerGroupPoolResourceProperties
      * Specifies container group properties of standby container group pools.
      */
     private ContainerGroupProperties containerGroupProperties;
+
+    /*
+     * Specifies zones of standby container group pools.
+     */
+    private List<String> zones;
 
     /*
      * The status of the last operation.
@@ -82,6 +88,26 @@ public final class StandbyContainerGroupPoolResourceProperties
     }
 
     /**
+     * Get the zones property: Specifies zones of standby container group pools.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: Specifies zones of standby container group pools.
+     * 
+     * @param zones the zones value to set.
+     * @return the StandbyContainerGroupPoolResourceProperties object itself.
+     */
+    public StandbyContainerGroupPoolResourceProperties withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The status of the last operation.
      * 
      * @return the provisioningState value.
@@ -122,6 +148,7 @@ public final class StandbyContainerGroupPoolResourceProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("elasticityProfile", this.elasticityProfile);
         jsonWriter.writeJsonField("containerGroupProperties", this.containerGroupProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -148,6 +175,9 @@ public final class StandbyContainerGroupPoolResourceProperties
                 } else if ("containerGroupProperties".equals(fieldName)) {
                     deserializedStandbyContainerGroupPoolResourceProperties.containerGroupProperties
                         = ContainerGroupProperties.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStandbyContainerGroupPoolResourceProperties.zones = zones;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStandbyContainerGroupPoolResourceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

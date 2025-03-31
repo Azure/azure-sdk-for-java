@@ -6,4 +6,4 @@ All the tools/utilities used in Microsoft Azure Java SDK's build config are defi
 
 - `pipelines` - Directory that contains yml files for our DevOps pipelines or supporting yml templates for them. 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Feng%2FREADME.png)
+

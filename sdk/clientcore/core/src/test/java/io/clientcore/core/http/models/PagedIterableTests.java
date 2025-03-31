@@ -3,7 +3,9 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.http.paging.PagedIterable;
+import io.clientcore.core.http.paging.PagedResponse;
+import io.clientcore.core.http.paging.PagingOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.opentest4j.AssertionFailedError;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -25,8 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PagedIterableTests {
 
     private final HttpHeaders httpHeaders = new HttpHeaders();
-    private final HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
-    private final BinaryData responseBody = BinaryData.empty();
+    private final HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost");
 
     // tests with mocked PagedResponse
     private List<PagedResponse<Integer>> pagedResponses;
@@ -77,12 +79,12 @@ public class PagedIterableTests {
     public void iterateResponseContainsEmptyArray() {
         pagedResponses = new ArrayList<>(3);
         // second page is empty but has nextLink
-        pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, List.of(0, 1, 2), null, "1",
-            null, null, null));
-        pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, Collections.emptyList(),
-            null, "2", null, null, null));
-        pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, List.of(3, 4), null, null,
-            null, null, null));
+        pagedResponses.add(
+            new PagedResponse<>(httpRequest, 200, httpHeaders, Arrays.asList(0, 1, 2), null, "1", null, null, null));
+        pagedResponses.add(
+            new PagedResponse<>(httpRequest, 200, httpHeaders, Collections.emptyList(), null, "2", null, null, null));
+        pagedResponses
+            .add(new PagedResponse<>(httpRequest, 200, httpHeaders, Arrays.asList(3, 4), null, null, null, null, null));
 
         PagedIterable<Integer> pagedIterable
             = new PagedIterable<>(pagingOptions -> pagedResponses.isEmpty() ? null : pagedResponses.get(0),
@@ -108,7 +110,7 @@ public class PagedIterableTests {
 
     private <T> PagedResponse<T> createPagedResponse(HttpRequest httpRequest, HttpHeaders headers, int numberOfPages,
         Function<Integer, List<T>> valueSupplier, int i) {
-        return new PagedResponse<>(httpRequest, 200, headers, responseBody, valueSupplier.apply(i), null,
+        return new PagedResponse<>(httpRequest, 200, headers, valueSupplier.apply(i), null,
             (i < numberOfPages - 1) ? String.valueOf(i + 1) : null, null, null, null);
     }
 
@@ -266,42 +268,40 @@ public class PagedIterableTests {
 
     private PagedResponse<TodoItem> listSinglePage(PagingOptions pagingOptions) {
         Response<TodoPage> res = listSync(pagingOptions);
-        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
-            res.getValue().getItems(), res.getValue().getContinuationToken(), res.getValue().getNextLink(), null, null,
-            null);
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
+            res.getValue().getContinuationToken(), res.getValue().getNextLink(), null, null, null);
     }
 
     private PagedResponse<TodoItem> listNextSinglePage(PagingOptions pagingOptions, String nextLink) {
         Response<TodoPage> res = (nextLink == null) ? listSync(pagingOptions) : listNextSync(nextLink);
-        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
-            res.getValue().getItems(), res.getValue().getContinuationToken(), res.getValue().getNextLink(), null, null,
-            null);
+        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
+            res.getValue().getContinuationToken(), res.getValue().getNextLink(), null, null, null);
     }
 
     private Response<TodoPage> listSync(PagingOptions pagingOptions) {
         ++pagingStatistics.numberOfPageRetrievals;
         // mock request on first page
         if (pagingStatistics.totalPages == 0) {
-            return new HttpResponse<>(httpRequest, 200, httpHeaders, new TodoPage(Collections.emptyList(), null, null));
+            return new Response<>(httpRequest, 200, httpHeaders, new TodoPage(Collections.emptyList(), null, null));
         } else {
             switch (nextPageMode) {
                 case NEXT_LINK: {
                     // first page
-                    return new HttpResponse<>(httpRequest, 200, httpHeaders,
+                    return new Response<>(httpRequest, 200, httpHeaders,
                         new TodoPage(createTodoItemList(0), null, "1"));
                 }
 
                 case CONTINUATION_TOKEN: {
                     if (pagingOptions.getContinuationToken() == null) {
                         // first page
-                        return new HttpResponse<>(httpRequest, 200, httpHeaders,
+                        return new Response<>(httpRequest, 200, httpHeaders,
                             new TodoPage(createTodoItemList(0), "1", null));
                     } else {
                         int pageIndex = Integer.parseInt(pagingOptions.getContinuationToken());
                         int nextPageIndex = pageIndex + 1;
                         String newContinuationToken
                             = nextPageIndex >= pagingStatistics.totalPages ? null : String.valueOf(nextPageIndex);
-                        return new HttpResponse<>(httpRequest, 200, httpHeaders,
+                        return new Response<>(httpRequest, 200, httpHeaders,
                             new TodoPage(createTodoItemList(pageIndex), newContinuationToken, null));
                     }
                 }
@@ -318,7 +318,7 @@ public class PagedIterableTests {
         int pageIndex = Integer.parseInt(nextLink);
         int nextPageIndex = pageIndex + 1;
         String newNextLink = nextPageIndex >= pagingStatistics.totalPages ? null : String.valueOf(nextPageIndex);
-        return new HttpResponse<>(httpRequest, 200, httpHeaders,
+        return new Response<>(httpRequest, 200, httpHeaders,
             new TodoPage(createTodoItemList(pageIndex), null, newNextLink));
     }
 

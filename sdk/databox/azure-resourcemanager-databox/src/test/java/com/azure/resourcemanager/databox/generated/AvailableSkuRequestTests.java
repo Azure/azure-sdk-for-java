@@ -15,25 +15,25 @@ public final class AvailableSkuRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableSkuRequest model = BinaryData.fromString(
-            "{\"transferType\":\"ImportToAzure\",\"country\":\"w\",\"location\":\"fsj\",\"skuNames\":[\"DataBoxHeavy\",\"DataBoxHeavy\",\"DataBoxCustomerDisk\"]}")
+            "{\"transferType\":\"ExportFromAzure\",\"country\":\"c\",\"location\":\"r\",\"skuNames\":[\"DataBoxDisk\",\"DataBox\",\"DataBoxCustomerDisk\",\"DataBoxCustomerDisk\"]}")
             .toObject(AvailableSkuRequest.class);
-        Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
-        Assertions.assertEquals("w", model.country());
-        Assertions.assertEquals("fsj", model.location());
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuNames().get(0));
+        Assertions.assertEquals(TransferType.EXPORT_FROM_AZURE, model.transferType());
+        Assertions.assertEquals("c", model.country());
+        Assertions.assertEquals("r", model.location());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.skuNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableSkuRequest model = new AvailableSkuRequest().withTransferType(TransferType.IMPORT_TO_AZURE)
-            .withCountry("w")
-            .withLocation("fsj")
-            .withSkuNames(
-                Arrays.asList(SkuName.DATA_BOX_HEAVY, SkuName.DATA_BOX_HEAVY, SkuName.DATA_BOX_CUSTOMER_DISK));
+        AvailableSkuRequest model = new AvailableSkuRequest().withTransferType(TransferType.EXPORT_FROM_AZURE)
+            .withCountry("c")
+            .withLocation("r")
+            .withSkuNames(Arrays.asList(SkuName.DATA_BOX_DISK, SkuName.DATA_BOX, SkuName.DATA_BOX_CUSTOMER_DISK,
+                SkuName.DATA_BOX_CUSTOMER_DISK));
         model = BinaryData.fromObject(model).toObject(AvailableSkuRequest.class);
-        Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
-        Assertions.assertEquals("w", model.country());
-        Assertions.assertEquals("fsj", model.location());
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuNames().get(0));
+        Assertions.assertEquals(TransferType.EXPORT_FROM_AZURE, model.transferType());
+        Assertions.assertEquals("c", model.country());
+        Assertions.assertEquals("r", model.location());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.skuNames().get(0));
     }
 }

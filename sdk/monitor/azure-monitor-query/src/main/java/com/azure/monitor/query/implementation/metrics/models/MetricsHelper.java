@@ -34,6 +34,7 @@ public final class MetricsHelper {
     private static MetricDefinitionAccessor metricDefinitionAccessor;
     private static MetricAvailabilityAccessor metricAvailabilityAccessor;
     private static MetricNamespaceAccessor metricNamespaceAccessor;
+    private static MetricsQueryResultResourceIdAccessor metricsQueryResultResourceIdAccessor;
 
     /**
      * Accessor interface
@@ -63,6 +64,13 @@ public final class MetricsHelper {
     }
 
     /**
+     * Accessor interface
+     */
+    public interface MetricsQueryResultResourceIdAccessor {
+        void setMetricsQueryResultResourceIdProperty(MetricsQueryResult metricsQueryResult, String resourceId);
+    }
+
+    /**
      * Sets the accessor instance.
      * @param metricDefinitionAccessor the accessor instance
      */
@@ -76,6 +84,15 @@ public final class MetricsHelper {
 
     public static void setMetricNamespaceAccessor(MetricNamespaceAccessor metricNamespaceAccessor) {
         MetricsHelper.metricNamespaceAccessor = metricNamespaceAccessor;
+    }
+
+    public static void setMetricsQueryResultAccessor(final MetricsQueryResultResourceIdAccessor accessor) {
+        MetricsHelper.metricsQueryResultResourceIdAccessor = accessor;
+    }
+
+    public static void setMetricsQueryResultResourceIdProperty(MetricsQueryResult metricsQueryResult,
+        String resourceId) {
+        metricsQueryResultResourceIdAccessor.setMetricsQueryResultResourceIdProperty(metricsQueryResult, resourceId);
     }
 
     public static void setMetricDefinitionProperties(MetricDefinition metricDefinition, Boolean dimensionRequired,
@@ -213,6 +230,7 @@ public final class MetricsHelper {
         MetricsQueryResult metricsQueryResult
             = new MetricsQueryResult(null, QueryTimeInterval.parse(item.getStarttime() + "/" + item.getEndtime()),
                 Duration.parse(item.getInterval()), item.getNamespace(), item.getResourceregion(), metrics);
+        setMetricsQueryResultResourceIdProperty(metricsQueryResult, item.getResourceid());
         return metricsQueryResult;
     }
 

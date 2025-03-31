@@ -15,16 +15,11 @@ import java.io.IOException;
  * Properties and filters for ShareQuota. The request parameter is optional, if there are no filters specified.
  */
 @Fluent
-public final class GroupQuotasEntityBasePatch implements JsonSerializable<GroupQuotasEntityBasePatch> {
+public class GroupQuotasEntityBasePatch implements JsonSerializable<GroupQuotasEntityBasePatch> {
     /*
      * Display name of the GroupQuota entity.
      */
     private String displayName;
-
-    /*
-     * Additional attributes to filter/restrict the subscriptions, which can be added to the subscriptionIds.
-     */
-    private AdditionalAttributesPatch additionalAttributes;
 
     /*
      * Provisioning state of the operation.
@@ -58,28 +53,6 @@ public final class GroupQuotasEntityBasePatch implements JsonSerializable<GroupQ
     }
 
     /**
-     * Get the additionalAttributes property: Additional attributes to filter/restrict the subscriptions, which can be
-     * added to the subscriptionIds.
-     * 
-     * @return the additionalAttributes value.
-     */
-    public AdditionalAttributesPatch additionalAttributes() {
-        return this.additionalAttributes;
-    }
-
-    /**
-     * Set the additionalAttributes property: Additional attributes to filter/restrict the subscriptions, which can be
-     * added to the subscriptionIds.
-     * 
-     * @param additionalAttributes the additionalAttributes value to set.
-     * @return the GroupQuotasEntityBasePatch object itself.
-     */
-    public GroupQuotasEntityBasePatch withAdditionalAttributes(AdditionalAttributesPatch additionalAttributes) {
-        this.additionalAttributes = additionalAttributes;
-        return this;
-    }
-
-    /**
      * Get the provisioningState property: Provisioning state of the operation.
      * 
      * @return the provisioningState value.
@@ -89,14 +62,22 @@ public final class GroupQuotasEntityBasePatch implements JsonSerializable<GroupQ
     }
 
     /**
+     * Set the provisioningState property: Provisioning state of the operation.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the GroupQuotasEntityBasePatch object itself.
+     */
+    GroupQuotasEntityBasePatch withProvisioningState(RequestState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (additionalAttributes() != null) {
-            additionalAttributes().validate();
-        }
     }
 
     /**
@@ -106,7 +87,6 @@ public final class GroupQuotasEntityBasePatch implements JsonSerializable<GroupQ
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeJsonField("additionalAttributes", this.additionalAttributes);
         return jsonWriter.writeEndObject();
     }
 
@@ -127,9 +107,6 @@ public final class GroupQuotasEntityBasePatch implements JsonSerializable<GroupQ
 
                 if ("displayName".equals(fieldName)) {
                     deserializedGroupQuotasEntityBasePatch.displayName = reader.getString();
-                } else if ("additionalAttributes".equals(fieldName)) {
-                    deserializedGroupQuotasEntityBasePatch.additionalAttributes
-                        = AdditionalAttributesPatch.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedGroupQuotasEntityBasePatch.provisioningState
                         = RequestState.fromString(reader.getString());

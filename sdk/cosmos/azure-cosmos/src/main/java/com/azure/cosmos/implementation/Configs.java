@@ -15,10 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Locale;
-import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
 import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
@@ -64,6 +62,14 @@ public class Configs {
     public static final int DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE = 1000;
     public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE = "COSMOS.DEFAULT_HTTP_CONNECTION_POOL_SIZE";
     public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_DEFAULT_HTTP_CONNECTION_POOL_SIZE";
+
+    public static final String HTTP_PENDING_ACQUIRE_MAX_COUNT = "COSMOS.HTTP_PENDING_ACQUIRE_MAX_COUNT";
+    public static final String HTTP_PENDING_ACQUIRE_MAX_COUNT_VARIABLE = "COSMOS_HTTP_PENDING_ACQUIRE_MAX_COUNT";
+
+    public static final String ITEM_SERIALIZATION_INCLUSION_MODE = "COSMOS.ITEM_SERIALIZATION_INCLUSION_MODE";
+    public static final String ITEM_SERIALIZATION_INCLUSION_MODE_VARIABLE = "COSMOS_ITEM_SERIALIZATION_INCLUSION_MODE";
+
+    public static final String DEFAULT_ITEM_SERIALIZATION_INCLUSION_MODE = "Always";
 
     public static final boolean DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT = false;
     public static final String DEFAULT_E2E_FOR_NON_POINT_DISABLED = "COSMOS.E2E_FOR_NON_POINT_DISABLED";
@@ -515,6 +521,51 @@ public class Configs {
         }
 
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
+    }
+
+    public static Integer getPendingAcquireMaxCount() {
+        String valueFromSystemProperty = System.getProperty(HTTP_PENDING_ACQUIRE_MAX_COUNT);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(HTTP_PENDING_ACQUIRE_MAX_COUNT_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return null;
+    }
+
+    private static String validateSerializationInclusionMode(String serializationInclusionMode) {
+        if (!Strings.isNullOrEmpty(serializationInclusionMode)) {
+            if ("Always".equalsIgnoreCase(serializationInclusionMode)
+                || "NonNull".equalsIgnoreCase(serializationInclusionMode)
+                || "NonEmpty".equalsIgnoreCase(serializationInclusionMode)
+                || "NonDefault".equalsIgnoreCase(serializationInclusionMode)) {
+
+                return serializationInclusionMode;
+            }
+        }
+
+        throw new IllegalArgumentException(
+            "Invalid serialization inclusion mode '"
+                + serializationInclusionMode != null ? serializationInclusionMode : "null"
+                + "'.");
+    }
+
+    public static String getItemSerializationInclusionMode() {
+        String valueFromSystemProperty = System.getProperty(ITEM_SERIALIZATION_INCLUSION_MODE);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return validateSerializationInclusionMode(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(ITEM_SERIALIZATION_INCLUSION_MODE_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return validateSerializationInclusionMode(valueFromEnvVariable);
+        }
+
+        return DEFAULT_ITEM_SERIALIZATION_INCLUSION_MODE;
     }
 
     public static boolean isDefaultE2ETimeoutDisabledForNonPointOperations() {

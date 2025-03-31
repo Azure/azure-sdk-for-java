@@ -18,7 +18,8 @@ import java.util.List;
 public final class DailyForecastResult implements JsonSerializable<DailyForecastResult> {
 
     /*
-     * Summary for the main conditions for the requested time period. Notice that summary can cover only part of the time period.
+     * Summary for the main conditions for the requested time period. Notice that summary can cover only part of the
+     * time period.
      */
     private DailyForecastSummary summary;
 

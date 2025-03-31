@@ -59,6 +59,8 @@ public final class ConnectionPolicy {
     private int aggressiveWarmupConcurrency;
     private boolean serverCertValidationDisabled = false;
 
+    private Integer pendingAcquireMaxCount;
+
     /**
      * Constructor.
      */
@@ -113,6 +115,8 @@ public final class ConnectionPolicy {
                     .DirectConnectionConfigHelper
                     .getDirectConnectionConfigAccessor()
                     .getMinConnectionPoolSizePerEndpoint(directConnectionConfig), Configs.getMinConnectionPoolSizePerEndpoint());
+
+        this.pendingAcquireMaxCount = Configs.getPendingAcquireMaxCount();
     }
 
     private ConnectionPolicy() {
@@ -127,6 +131,7 @@ public final class ConnectionPolicy {
         this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
+        this.pendingAcquireMaxCount = Configs.getPendingAcquireMaxCount();
     }
 
     /**
@@ -663,6 +668,7 @@ public final class ConnectionPolicy {
 
     @Override
     public String toString() {
+
         return "ConnectionPolicy{" +
             "httpNetworkRequestTimeout=" + httpNetworkRequestTimeout +
             ", tcpNetworkRequestTimeout=" + tcpNetworkRequestTimeout +
@@ -690,6 +696,7 @@ public final class ConnectionPolicy {
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             ", http2ConnectionConfig=" + this.http2ConnectionConfig.toDiagnosticsString() +
+            ", pendingAcquireMaxCount=" + this.pendingAcquireMaxCount != null ? String.valueOf(this.pendingAcquireMaxCount) : "DEFAULT" +
             '}';
     }
 }

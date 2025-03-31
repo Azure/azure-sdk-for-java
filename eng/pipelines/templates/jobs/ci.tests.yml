@@ -5,6 +5,9 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: ExcludePaths
+    type: object
+    default: []
   - name: TestPipeline
     type: boolean
     default: false
@@ -104,6 +107,8 @@ jobs:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           CheckoutRecordings: true
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+          ExcludePaths: ${{parameters.ExcludePaths}}
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:

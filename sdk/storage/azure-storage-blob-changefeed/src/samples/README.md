@@ -45,4 +45,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [storageblob_rest]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob-changefeed%2Fsrc%2Fsamples%2FREADME.png)
+

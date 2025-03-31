@@ -50,7 +50,7 @@ singletonHttpClientBuilder
             .evictInBackground(Duration.ofSeconds(120)) // Every two minutes, the connection pool is regularly checked for connections that are applicable for removal.
             .build());
 ```
-Reference: [Reactor Netty Connection Pool](https://projectreactor.io/docs/netty/release/reference/#_connection_pool_2)
+Reference: [Reactor Netty Connection Pool](https://projectreactor.io/docs/netty/release/reference/http-client.html#_connection_pool)
 
 ### Configure thread pool for the singleton HttpClient:
 By default the Reactor Netty HttpClient uses an "Event Loop Group", where the number of the worker threads equals the number of processors available to the runtime on initialization (but with a minimum value of 4). When you need a different configuration, you can use one of the LoopResource#create methods.
@@ -66,7 +66,7 @@ singletonHttpClientBuilder
         .onClient(false))
     .build();
 ```
-Reference: [Reactor Netty Event Loop Group](https://projectreactor.io/docs/netty/release/reference/#client-tcp-level-configurations-event-loop-group)
+Reference: [Reactor Netty Event Loop Group](https://projectreactor.io/docs/netty/release/reference/http-client.html#_event_loop_group)
 
 ### Configure Azure Identity client to use the singleton HttpClient (DefaultAzureCredential for example):
 By default, Azure Identity uses `ForkJoinPool.commonPool()` for token acquisition. The pool size equals the number of processors available to the runtime on initialization minus 1 (with a minimum of 1). 
@@ -116,5 +116,5 @@ Reference:
 * [DEFAULT_POOL_SIZE for Schedulers.parallel()](https://github.com/reactor/reactor-core/blob/3.4.x/reactor-core/src/main/java/reactor/core/scheduler/Schedulers.java#L72-L81)
 
 ## Other JVM thread configurations you might be interested:
-* [Compiler threads for JIT compiler](https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#advanced-jit-compiler-options-for-java)
-* [GC threads](https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#advanced-garbage-collection-options-for-java)
+* [Compiler threads for JIT compiler](https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html#advanced-jit-compiler-options-for-java)
+* [GC threads](https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html#advanced-garbage-collection-options-for-java)

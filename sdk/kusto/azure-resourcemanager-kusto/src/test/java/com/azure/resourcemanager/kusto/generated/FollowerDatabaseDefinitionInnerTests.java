@@ -12,18 +12,19 @@ public final class FollowerDatabaseDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FollowerDatabaseDefinitionInner model = BinaryData.fromString(
-            "{\"clusterResourceId\":\"xyqj\",\"attachedDatabaseConfigurationName\":\"k\",\"databaseName\":\"t\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"jcrcczsqpjhvmda\",\"v\",\"ysou\",\"q\"],\"tablesToExclude\":[\"noae\"],\"externalTablesToInclude\":[\"hy\",\"ltrpmopj\",\"cma\",\"u\"],\"externalTablesToExclude\":[\"hfuiuaodsfc\",\"kvxod\",\"uozmyzydagfua\",\"bezy\"],\"materializedViewsToInclude\":[\"kktwhrdxw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\"],\"materializedViewsToExclude\":[\"kiiuxhqyudxor\"],\"functionsToInclude\":[\"b\",\"oczvy\",\"fqrvkdvjsllrmvvd\",\"watkpnpulexxb\"],\"functionsToExclude\":[\"truwiqzb\",\"j\",\"sovmyokacspkwl\",\"zdobpxjmflbvvnch\"]},\"databaseShareOrigin\":\"Direct\"}")
+            "{\"clusterResourceId\":\"psiebtfhvpes\",\"attachedDatabaseConfigurationName\":\"pskrdqmh\",\"databaseName\":\"dhtldwkyz\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"kn\",\"ws\"],\"tablesToExclude\":[\"vlxotogtwrupqsx\",\"nmic\",\"kvceoveilovnotyf\",\"fcnj\"],\"externalTablesToInclude\":[\"nxdhbt\"],\"externalTablesToExclude\":[\"h\",\"wpn\"],\"materializedViewsToInclude\":[\"oqnermclfpl\"],\"materializedViewsToExclude\":[\"xus\",\"rpabg\",\"epsbjtazqu\",\"xywpmueefjzwfqkq\"],\"functionsToInclude\":[\"dsuyonobgla\"],\"functionsToExclude\":[\"xtccmg\",\"udxytlmoyrx\",\"wfudwpzntxhdzhl\"]},\"databaseShareOrigin\":\"DataShare\"}")
             .toObject(FollowerDatabaseDefinitionInner.class);
-        Assertions.assertEquals("xyqj", model.clusterResourceId());
-        Assertions.assertEquals("k", model.attachedDatabaseConfigurationName());
+        Assertions.assertEquals("psiebtfhvpes", model.clusterResourceId());
+        Assertions.assertEquals("pskrdqmh", model.attachedDatabaseConfigurationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FollowerDatabaseDefinitionInner model = new FollowerDatabaseDefinitionInner().withClusterResourceId("xyqj")
-            .withAttachedDatabaseConfigurationName("k");
+        FollowerDatabaseDefinitionInner model
+            = new FollowerDatabaseDefinitionInner().withClusterResourceId("psiebtfhvpes")
+                .withAttachedDatabaseConfigurationName("pskrdqmh");
         model = BinaryData.fromObject(model).toObject(FollowerDatabaseDefinitionInner.class);
-        Assertions.assertEquals("xyqj", model.clusterResourceId());
-        Assertions.assertEquals("k", model.attachedDatabaseConfigurationName());
+        Assertions.assertEquals("psiebtfhvpes", model.clusterResourceId());
+        Assertions.assertEquals("pskrdqmh", model.attachedDatabaseConfigurationName());
     }
 }

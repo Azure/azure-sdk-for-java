@@ -63,6 +63,10 @@ public class OTelAttributeKey {
                 return CREATE_LONG_KEY_INVOKER.invoke(key);
             } else if (value instanceof Double) {
                 return CREATE_DOUBLE_KEY_INVOKER.invoke(key);
+            } else if (value instanceof Float) {
+                return CREATE_DOUBLE_KEY_INVOKER.invoke(key);
+            } else if (value == null) {
+                return CREATE_STRING_KEY_INVOKER.invoke(key);
             } else {
                 LOGGER.atVerbose()
                     .addKeyValue("key", key)
@@ -84,6 +88,10 @@ public class OTelAttributeKey {
     public static Object castAttributeValue(Object value) {
         if (value instanceof Integer) {
             return ((Integer) value).longValue();
+        }
+
+        if (value instanceof Float) {
+            return ((Float) value).doubleValue();
         }
 
         return value;
