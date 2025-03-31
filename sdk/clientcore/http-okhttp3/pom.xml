@@ -38,7 +38,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-    <jacoco.min.linecoverage>0.78</jacoco.min.linecoverage>
+    <jacoco.min.linecoverage>0.80</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.65</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
@@ -85,8 +85,8 @@
     <!-- Test dependencies on core, because we want to run tests inherited from this module using OkHttp -->
     <dependency>
       <groupId>io.clientcore</groupId>
-      <artifactId>annotation-processor-test</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor-test;current} -->
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;io.clientcore:core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

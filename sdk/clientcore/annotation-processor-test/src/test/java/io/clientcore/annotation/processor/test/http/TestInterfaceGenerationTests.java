@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for testing the generation of TestInterface.
+ * Tests for testing the implementation details of TestInterface.
  */
 public class TestInterfaceGenerationTests {
     private static final String FIRST_PAGE_RESPONSE
@@ -51,6 +51,7 @@ public class TestInterfaceGenerationTests {
 
     @Test
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() throws IOException {
+        String uri = "https://somecloud.com";
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
@@ -58,7 +59,7 @@ public class TestInterfaceGenerationTests {
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
         byte[] bytes = "hello".getBytes();
         try (Response<Void> response
-            = testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
+            = testInterface.testMethod(uri, ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -81,20 +82,21 @@ public class TestInterfaceGenerationTests {
     }*/
 
     @ParameterizedTest
-    @MethodSource("knownLengthBinaryDataIsPassthroughArgumentProvider")
-    public void knownLengthBinaryDataIsPassthrough(BinaryData data, long contentLength) {
+    @MethodSource("knownLengthBinaryDataIsPassThroughArgumentProvider")
+    public void knownLengthBinaryDataIsPassThrough(BinaryData data, long contentLength) {
+        String uri = "https://somecloud.com";
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
+        Response<Void> response = testInterface.testMethod(uri, data, "application/json", contentLength);
 
         assertEquals(200, response.getStatusCode());
         assertSame(data, client.getLastHttpRequest().getBody());
     }
 
-    private static Stream<Arguments> knownLengthBinaryDataIsPassthroughArgumentProvider() throws Exception {
+    private static Stream<Arguments> knownLengthBinaryDataIsPassThroughArgumentProvider() throws Exception {
         String string = "hello";
         byte[] bytes = string.getBytes();
         Path file = Files.createTempFile("knownLengthBinaryDataIsPassthroughArgumentProvider", null);
@@ -112,13 +114,14 @@ public class TestInterfaceGenerationTests {
     @ParameterizedTest
     @MethodSource("doesNotChangeBinaryDataContentTypeDataProvider")
     public void doesNotChangeBinaryDataContentType(BinaryData data, long contentLength) {
+        String uri = "https://somecloud.com";
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         Class<? extends BinaryData> expectedContentClazz = data.getClass();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        Response<Void> response = testInterface.testMethod(data, ContentType.APPLICATION_JSON, contentLength);
+        Response<Void> response = testInterface.testMethod(uri, data, ContentType.APPLICATION_JSON, contentLength);
 
         assertEquals(200, response.getStatusCode());
 
@@ -129,13 +132,14 @@ public class TestInterfaceGenerationTests {
 
     @Test
     public void voidReturningApiClosesResponse() {
+        String uri = "https://somecloud.com";
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService testInterface =
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
-        testInterface.testMethodReturnsVoid();
+        testInterface.testMethodReturnsVoid(uri);
 
         assertTrue(client.closeCalledOnResponse);
     }

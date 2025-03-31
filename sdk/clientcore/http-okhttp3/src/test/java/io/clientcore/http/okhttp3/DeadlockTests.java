@@ -3,7 +3,7 @@
 
 package io.clientcore.http.okhttp3;
 
-import io.clientcore.annotation.processor.test.shared.LocalTestServer;
+import io.clientcore.core.shared.LocalTestServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

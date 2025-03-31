@@ -3,10 +3,10 @@
 
 package io.clientcore.http.okhttp3;
 
-import io.clientcore.annotation.processor.test.shared.HttpClientTests;
-import io.clientcore.annotation.processor.test.shared.HttpClientTestsServer;
-import io.clientcore.annotation.processor.test.shared.LocalTestServer;
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.shared.HttpClientTests;
+import io.clientcore.core.shared.HttpClientTestsServer;
+import io.clientcore.core.shared.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.parallel.Execution;

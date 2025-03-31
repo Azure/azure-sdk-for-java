@@ -1,14 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.annotation.processor.test.implementation.client;
+package io.clientcore.core.implementation.http.client;
 
-import io.clientcore.annotation.processor.test.shared.HttpClientTests;
-import io.clientcore.annotation.processor.test.shared.HttpClientTestsServer;
-import io.clientcore.annotation.processor.test.shared.LocalTestServer;
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.implementation.http.client.GlobalJdkHttpClient;
-import io.clientcore.core.implementation.http.client.JdkHttpClient;
+import io.clientcore.core.shared.HttpClientTests;
+import io.clientcore.core.shared.HttpClientTestsServer;
+import io.clientcore.core.shared.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.condition.DisabledForJreRange;

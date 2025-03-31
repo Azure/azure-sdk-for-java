@@ -5,6 +5,7 @@ package io.clientcore.annotation.processor.test.implementation;
 
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.FooListResult;
+import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
@@ -17,8 +18,8 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -46,18 +47,19 @@ public final class TestInterfaceClientImpl {
         }
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<Void> testMethod(@BodyParam("application/octet-stream") ByteBuffer request,
+        Response<Void> testMethod(@HostParam("uri") String uri,
+            @BodyParam("application/octet-stream") ByteBuffer request,
                                   @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
+        Response<Void> testMethod(@HostParam("uri") String uri, @BodyParam("application/octet-stream") BinaryData data,
                                   @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<Void> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Void testMethodReturnsVoid();
+        Void testMethodReturnsVoid(@HostParam("uri") String uri);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -79,7 +81,6 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
                                         RequestOptions requestOptions);
-<<<<<<< HEAD
         // HttpClientTests
         // Need to add RequestOptions to specify ResponseBodyMode, which is otherwise provided by convenience methods
         @SuppressWarnings({ "unchecked", "cast" })
@@ -134,7 +135,5 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
         HttpBinJSON getAnythingWithEncoded(@HostParam("uri") String uri,
             @QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
-=======
->>>>>>> ec401f7b20f (updates with disabled tests)
     }
 }

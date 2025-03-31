@@ -1,16 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.annotation.processor.test.http.client;
+package io.clientcore.core.http.client;
 
-import io.clientcore.annotation.processor.test.shared.LocalTestServer;
-import io.clientcore.annotation.processor.test.shared.TestConfigurationSource;
-import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.shared.LocalTestServer;
+import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

@@ -24,9 +24,9 @@
       <Class name="io.clientcore.core.implementation.GenericParameterizedType" />
       <Class name="io.clientcore.core.implementation.ReflectionUtilsMethodHandle" />
       <Class name="io.clientcore.core.implementation.http.HttpPipelineCallState" />
-      <Class name="io.clientcore.core.implementation.utils.PercentEscaper" />
       <Class name="io.clientcore.core.implementation.utils.AuthenticateChallengeParser" />
       <Class name="io.clientcore.core.implementation.utils.InternalContext" />
+      <Class name="io.clientcore.core.implementation.utils.PercentEscaper" />
       <Class name="io.clientcore.core.implementation.utils.Providers" />
       <Class name="io.clientcore.core.implementation.utils.SliceInputStream" />
       <Class name="io.clientcore.core.implementation.utils.StreamUtil" />
@@ -41,6 +41,7 @@
       <Class name="io.clientcore.core.serialization.json.JsonSerializer" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.serialization.xml.XmlSerializer" />
+      <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.utils.AuthenticateChallenge" />
       <Class name="io.clientcore.core.utils.DateTimeRfc1123" />
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
@@ -105,6 +106,8 @@
   <Match>
     <Bug pattern="DM_DEFAULT_ENCODING" />
     <Or>
+      <Class name="io.clientcore.core.http.client.SimpleBasicAuthHttpProxyServer" />
+      <Class name="io.clientcore.core.implementation.http.client.JdkHttpClientIT" />
       <Class name="io.clientcore.core.implementation.serializer.AdditionalPropertiesSerializerTests" />
       <Class name="io.clientcore.core.implementation.serializer.BinaryDataSerializationTests" />
       <Class name="io.clientcore.core.implementation.serializer.BinaryDataSerializationTests$ListProperty" />
@@ -119,6 +122,8 @@
       <Class name="io.clientcore.core.serialization.json.JsonReader" />
       <Class name="io.clientcore.core.serialization.json.JsonWriter" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
+      <Class name="io.clientcore.core.shared.HttpClientTests" />
+      <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
       <Class name="io.clientcore.core.utils.serializers.JsonSerializerTests" />
     </Or>
   </Match>
@@ -145,8 +150,16 @@
     <Class name="io.clientcore.core.serialization.json.models.JsonStringTests" />
   </Match>
   <Match>
+    <Bug pattern="HARD_CODE_PASSWORD" />
+    <Class name="io.clientcore.core.shared.LocalTestServer" />
+  </Match>
+  <Match>
     <Bug pattern="HE_HASHCODE_USE_OBJECT_EQUALS" />
     <Class name="io.clientcore.core.serialization.xml.implementation.aalto.out.OutputElement" />
+  </Match>
+  <Match>
+    <Bug pattern="HTTP_RESPONSE_SPLITTING" />
+    <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
   </Match>
   <Match>
     <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" />
@@ -263,6 +276,8 @@
     <Or>
       <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.RandomIdUtils" />
+      <Class name="io.clientcore.core.shared.HttpClientTests" />
+      <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
       <Class name="io.clientcore.core.utils.CoreUtils" />
     </Or>
   </Match>
@@ -300,6 +315,14 @@
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
     <Class name="io.clientcore.core.serialization.xml.XmlReaderCodesnippetsTests" />
+  </Match>
+  <Match>
+    <Bug pattern="SERVLET_QUERY_STRING" />
+    <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
+  </Match>
+  <Match>
+    <Bug pattern="SERVLET_SERVER_NAME" />
+    <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
   </Match>
   <Match>
     <Bug pattern="SE_BAD_FIELD" />
@@ -346,6 +369,8 @@
       <Class name="io.clientcore.core.http.pipeline.RetryPolicyTests" />
       <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
+      <Class name="io.clientcore.core.shared.HttpClientTests" />
+      <Class name="io.clientcore.core.shared.LocalTestServer" />
     </Or>
   </Match>
   <Match>
@@ -391,6 +416,14 @@
       <Class name="io.clientcore.core.models.binarydata.SerializableBinaryData" />
       <Class name="io.clientcore.core.models.binarydata.StringBinaryData" />
     </Or>
+  </Match>
+  <Match>
+    <Bug pattern="WEAK_MESSAGE_DIGEST_MD5" />
+    <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
+  </Match>
+  <Match>
+    <Bug pattern="WEAK_TRUST_MANAGER" />
+    <Class name="io.clientcore.core.shared.InsecureTrustManager" />
   </Match>
   <Match>
     <Bug pattern="WMI_WRONG_MAP_ITERATOR" />

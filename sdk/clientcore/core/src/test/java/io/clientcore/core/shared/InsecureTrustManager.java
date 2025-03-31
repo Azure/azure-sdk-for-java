@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package io.clientcore.annotation.processor.test.shared;
+package io.clientcore.core.shared;
 
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;

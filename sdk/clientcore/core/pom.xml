@@ -37,8 +37,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.66</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.62</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.63</jacoco.min.branchcoverage>
 
     <javaModulesSurefireArgLine>
       --add-opens io.clientcore.core/io.clientcore.core.annotations=ALL-UNNAMED
@@ -50,17 +50,19 @@
       --add-opens io.clientcore.core/io.clientcore.core.http.pipeline=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.implementation.http.rest=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.models=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.utils=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.utils.configuration=ALL-UNNAMED
 
       --add-reads io.clientcore.core=ALL-UNNAMED
 
+      --add-exports io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.instrumentation.fallback=ALL-UNNAMED
-      --add-exports io.clientcore.core/io.clientcore.core.implementation.http.client=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
@@ -80,6 +82,18 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
       <version>1.26.0</version> <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -110,7 +124,7 @@
 
   <build>
     <plugins>
-      <!-- InstrumentationTests is inherited by tests in optional-dependency-tests -->
+      <!-- HttpClientTests is inherited by tests in http-okhttp3 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

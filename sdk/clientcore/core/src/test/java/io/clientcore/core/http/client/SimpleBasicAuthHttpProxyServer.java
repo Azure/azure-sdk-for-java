@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.annotation.processor.test.http.client;
+package io.clientcore.core.http.client;
 
-import io.clientcore.annotation.processor.test.shared.LocalTestServer;
+import io.clientcore.core.shared.LocalTestServer;
 
 import javax.servlet.ServletException;
 import java.util.Base64;
