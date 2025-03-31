@@ -245,6 +245,6 @@ public final class AzureCompanionAsyncClient {
     // TODO: Map ChatCompletion to AzureCreateChatCompletionResponse
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatCompletion> createResponse(String deploymentId, AzureCreateChatCompletionRequest request) {
-        return Mono.fromFuture(openAIClientAsync.chat().completions().create(AzureChatMapper.from(request)));
+        return Mono.fromFuture(openAIClientAsync.chat().completions().create(AzureChatMapper.from(request, deploymentId)));
     }
 }

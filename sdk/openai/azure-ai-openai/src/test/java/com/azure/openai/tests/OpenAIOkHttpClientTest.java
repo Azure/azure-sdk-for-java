@@ -3,7 +3,6 @@
 
 package com.azure.openai.tests;
 
-import com.azure.ai.openai.models.AzureUserSecurityContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.openai.azure.credential.AzureApiKeyCredential;
