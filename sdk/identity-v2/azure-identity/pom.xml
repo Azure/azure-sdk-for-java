@@ -10,9 +10,9 @@
   </parent>
 
   <groupId>com.azure.v2</groupId>
-  <artifactId>azure-identity-v2</artifactId>
+  <artifactId>azure-identity</artifactId>
   <packaging>jar</packaging>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-identity-v2;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-identity;current} -->
 
   <name>Microsoft Azure Identity V2 Library</name>
   <description>This package contains core types for Azure Java V2 clients.</description>
