@@ -94,7 +94,8 @@ public final class CosmosRequestOptions {
     }
 
     /**
-     * Sets the exclude regions.
+     * Sets the exclude regions. If all the regions are excluded, the request will be sent to the primary region
+     * for the account.
      *
      * @param excludeRegions the ExcludeRegions.
      * @return current CosmosRequestOptions.

@@ -299,7 +299,8 @@ public final class CosmosBulkExecutionOptions {
 
     /**
      * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
-     * These regions will be excluded from the preferred regions list
+     * These regions will be excluded from the preferred regions list. If all the regions are excluded,
+     * the request will be sent to the primary region for the account.
      *
      * @param excludeRegions list of regions
      * @return the {@link CosmosBulkExecutionOptions}
