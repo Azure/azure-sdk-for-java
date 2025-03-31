@@ -64,8 +64,9 @@ foreach ($tspLocationPath in $tspYamls) {
   if ($LastExitCode -ne 0) {
     $failedSdk += $sdkPath
   }
-  Write-Host "Running mvn package"
-  mvn package
+  # Update code snippets before comparing the diff
+  Write-Host "Update code snippets"
+  mvn --no-transfer-progress codesnippet:update-codesnippet
   Pop-Location
 }
 
