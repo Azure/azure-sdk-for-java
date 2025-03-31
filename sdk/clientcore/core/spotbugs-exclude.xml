@@ -296,7 +296,6 @@
       <Class name="io.clientcore.core.serialization.json.JsonReader" />
       <Class name="io.clientcore.core.serialization.json.JsonSerializer" />
       <Class name="io.clientcore.core.serialization.xml.XmlSerializer" />
-      <Class name="io.clientcore.core.utils.Base64Uri" />
       <Class name="io.clientcore.core.utils.CoreUtils" />
       <Class name="io.clientcore.core.utils.serializers.MockSerializer" />
     </Or>
