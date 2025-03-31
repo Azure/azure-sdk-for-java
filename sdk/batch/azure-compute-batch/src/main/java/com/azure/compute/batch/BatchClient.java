@@ -626,8 +626,8 @@ public final class BatchClient {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -1000,8 +1000,8 @@ public final class BatchClient {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -1515,8 +1515,8 @@ public final class BatchClient {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -1852,8 +1852,8 @@ public final class BatchClient {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -2929,8 +2929,8 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -3317,8 +3317,8 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -3766,8 +3766,8 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -4415,8 +4415,8 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -4848,8 +4848,8 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -5313,8 +5313,8 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -5585,7 +5585,7 @@ public final class BatchClient {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
@@ -5648,7 +5648,7 @@ public final class BatchClient {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
@@ -5779,7 +5779,7 @@ public final class BatchClient {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
@@ -6319,8 +6319,8 @@ public final class BatchClient {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -6796,8 +6796,8 @@ public final class BatchClient {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -7261,8 +7261,8 @@ public final class BatchClient {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -7862,8 +7862,8 @@ public final class BatchClient {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -8307,8 +8307,8 @@ public final class BatchClient {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
