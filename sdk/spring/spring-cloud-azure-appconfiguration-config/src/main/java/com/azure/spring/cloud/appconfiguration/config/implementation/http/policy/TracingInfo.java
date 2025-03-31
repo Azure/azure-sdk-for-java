@@ -18,7 +18,7 @@ public class TracingInfo {
 
     private int replicaCount;
 
-    private final FeatureFlagTracing featureFlagTracing;
+    private FeatureFlagTracing featureFlagTracing;
 
     private final Configuration configuration;
 
@@ -29,7 +29,10 @@ public class TracingInfo {
         this.configuration = configuration;
     }
 
-    String getValue(boolean watchRequests, boolean pushRefresh) {
+    String getValue(boolean watchRequests, boolean pushRefresh, FeatureFlagTracing featureFlagTracing) {
+        if (featureFlagTracing != null) {
+            this.featureFlagTracing = featureFlagTracing;
+        }
         String track = configuration.get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
         if (track != null && Boolean.valueOf(track)) {
             return "";
@@ -40,8 +43,8 @@ public class TracingInfo {
 
         sb.append(RequestTracingConstants.REQUEST_TYPE_KEY).append("=" + requestTypeValue);
 
-        if (featureFlagTracing != null && featureFlagTracing.usesAnyFilter()) {
-            sb.append(",Filter=").append(featureFlagTracing.toString());
+        if (this.featureFlagTracing.usesAnyFilter()) {
+            sb.append(",Filter=").append(this.featureFlagTracing.toString());
         }
 
         String hostType = getHostType();
@@ -95,13 +98,6 @@ public class TracingInfo {
             sb.append(",FMSpVer=").append(ff.getImplementationVersion());
         }
         return sb;
-    }
-
-    /**
-     * @return the featureFlagTracing
-     */
-    public FeatureFlagTracing getFeatureFlagTracing() {
-        return featureFlagTracing;
     }
 
 }
