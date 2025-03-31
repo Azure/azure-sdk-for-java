@@ -1,8 +1,6 @@
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
 
 public class ResponseApis {
     public static void main(String... args) {

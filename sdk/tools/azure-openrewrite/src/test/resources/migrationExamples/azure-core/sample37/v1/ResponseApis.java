@@ -1,7 +1,5 @@
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 
 public class ResponseApis {
