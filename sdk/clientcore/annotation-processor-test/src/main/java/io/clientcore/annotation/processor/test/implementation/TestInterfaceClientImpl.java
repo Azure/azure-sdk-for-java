@@ -47,18 +47,19 @@ public final class TestInterfaceClientImpl {
         }
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<Void> testMethod(@BodyParam("application/octet-stream") ByteBuffer request,
+        Response<Void> testMethod(@HostParam("uri") String uri,
+            @BodyParam("application/octet-stream") ByteBuffer request,
                                   @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
+        Response<Void> testMethod(@HostParam("uri") String uri, @BodyParam("application/octet-stream") BinaryData data,
                                   @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<Void> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Void testMethodReturnsVoid();
+        Void testMethodReturnsVoid(@HostParam("uri") String uri);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)

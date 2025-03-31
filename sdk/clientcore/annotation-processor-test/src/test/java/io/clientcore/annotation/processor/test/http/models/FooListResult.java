@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http;
+package io.clientcore.annotation.processor.test.http.models;
 
-import io.clientcore.core.implementation.serializer.Foo;
+import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
