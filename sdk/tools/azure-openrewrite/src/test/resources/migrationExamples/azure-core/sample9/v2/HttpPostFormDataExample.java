@@ -3,7 +3,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
 public class HttpPostFormDataExample {
@@ -17,8 +16,5 @@ public class HttpPostFormDataExample {
             .setHeaders(headers)
             .setBody(BinaryData.fromString(formData));
 
-        Response response = client.send(request);
-        System.out.println("Status code: " + response.getStatusCode());
-        System.out.println("Headers: " + response.getHeaders());
     }
 }

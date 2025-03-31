@@ -1,7 +1,6 @@
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.Response;
 
 public class HttpCustomQueryParamsExample {
     public static void main(String... args) {
@@ -11,8 +10,5 @@ public class HttpCustomQueryParamsExample {
             .setMethod(HttpMethod.GET)
             .setUri(url);
 
-        Response response = client.send(request);
-        System.out.println("Status code: " + response.getStatusCode());
-        System.out.println("Headers: " + response.getHeaders());
     }
 }
