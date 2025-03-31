@@ -151,7 +151,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * A locality hint that can be used by the Batch service to select a Compute Node on which to start the new Task.
      */
     @Generated
-    private AffinityInfo affinityInfo;
+    private BatchAffinityInfo affinityInfo;
 
     /*
      * The execution constraints that apply to this Task.
@@ -429,7 +429,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @return the affinityInfo value.
      */
     @Generated
-    public AffinityInfo getAffinityInfo() {
+    public BatchAffinityInfo getAffinityInfo() {
         return this.affinityInfo;
     }
 
@@ -627,7 +627,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                         = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
                     deserializedBatchTask.environmentSettings = environmentSettings;
                 } else if ("affinityInfo".equals(fieldName)) {
-                    deserializedBatchTask.affinityInfo = AffinityInfo.fromJson(reader);
+                    deserializedBatchTask.affinityInfo = BatchAffinityInfo.fromJson(reader);
                 } else if ("constraints".equals(fieldName)) {
                     deserializedBatchTask.constraints = BatchTaskConstraints.fromJson(reader);
                 } else if ("requiredSlots".equals(fieldName)) {
