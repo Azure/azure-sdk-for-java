@@ -82,7 +82,7 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
      * The base64-encoded contents of the Certificate. The maximum size is 10KB.
      */
     @Generated
-    private final String data;
+    private final byte[] data;
 
     /*
      * The format of the Certificate data.
@@ -95,20 +95,6 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
      */
     @Generated
     private String password;
-
-    /**
-     * Creates an instance of BatchCertificate class.
-     *
-     * @param thumbprint the thumbprint value to set.
-     * @param thumbprintAlgorithm the thumbprintAlgorithm value to set.
-     * @param data the data value to set.
-     */
-    @Generated
-    public BatchCertificate(String thumbprint, String thumbprintAlgorithm, String data) {
-        this.thumbprint = thumbprint;
-        this.thumbprintAlgorithm = thumbprintAlgorithm;
-        this.data = data;
-    }
 
     /**
      * Get the thumbprint property: The X.509 thumbprint of the Certificate. This is a sequence of up to 40 hex digits
@@ -210,8 +196,8 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
      * @return the data value.
      */
     @Generated
-    public String getData() {
-        return this.data;
+    public byte[] getData() {
+        return CoreUtils.clone(this.data);
     }
 
     /**
@@ -269,7 +255,7 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("thumbprint", this.thumbprint);
         jsonWriter.writeStringField("thumbprintAlgorithm", this.thumbprintAlgorithm);
-        jsonWriter.writeStringField("data", this.data);
+        jsonWriter.writeBinaryField("data", this.data);
         jsonWriter.writeStringField("certificateFormat",
             this.certificateFormat == null ? null : this.certificateFormat.toString());
         jsonWriter.writeStringField("password", this.password);
@@ -290,7 +276,7 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
         return jsonReader.readObject(reader -> {
             String thumbprint = null;
             String thumbprintAlgorithm = null;
-            String data = null;
+            byte[] data = null;
             String url = null;
             BatchCertificateState state = null;
             OffsetDateTime stateTransitionTime = null;
@@ -308,7 +294,7 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
                 } else if ("thumbprintAlgorithm".equals(fieldName)) {
                     thumbprintAlgorithm = reader.getString();
                 } else if ("data".equals(fieldName)) {
-                    data = reader.getString();
+                    data = reader.getBinary();
                 } else if ("url".equals(fieldName)) {
                     url = reader.getString();
                 } else if ("state".equals(fieldName)) {
@@ -345,5 +331,19 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
             deserializedBatchCertificate.password = password;
             return deserializedBatchCertificate;
         });
+    }
+
+    /**
+     * Creates an instance of BatchCertificate class.
+     *
+     * @param thumbprint the thumbprint value to set.
+     * @param thumbprintAlgorithm the thumbprintAlgorithm value to set.
+     * @param data the data value to set.
+     */
+    @Generated
+    public BatchCertificate(String thumbprint, String thumbprintAlgorithm, byte[] data) {
+        this.thumbprint = thumbprint;
+        this.thumbprintAlgorithm = thumbprintAlgorithm;
+        this.data = data;
     }
 }
