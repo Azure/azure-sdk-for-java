@@ -138,7 +138,7 @@
     "sdk/cosmos/azure-cosmos/**",
     "sdk/cosmos/azure-cosmos-test/**",
     "sdk/identity/azure-identity/**",
-    "sdk/identity/azure-identity-v2/**",
+    "sdk/identity-v2/azure-identity/**",
     "sdk/keyvault/azure-security-keyvault-administration/**",
     "sdk/keyvault/azure-security-keyvault-certificates/**",
     "sdk/keyvault/azure-security-keyvault-jca/**",
