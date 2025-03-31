@@ -1,14 +1,20 @@
 # Release History
 
-## 2.49.0-beta.1 (Unreleased)
+## 2.50.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
-- `managementGroupId` is moved to the 1st parameter in APIs in `PolicyDefinitionsClient`.
-
 ### Bugs Fixed
+
+### Other Changes
+
+## 2.49.0 (2025-03-28)
+
+### Breaking Changes
+
+- `managementGroupId` is moved to the 1st parameter in APIs in `PolicyDefinitionsClient`.
 
 ### Other Changes
 

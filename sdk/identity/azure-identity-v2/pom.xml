@@ -9,10 +9,10 @@
     <relativePath>../../parents/azure-client-sdk-parent-v2</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.v2</groupId>
   <artifactId>azure-identity-v2</artifactId>
   <packaging>jar</packaging>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-v2;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-identity-v2;current} -->
 
   <name>Microsoft Azure Identity V2 Library</name>
   <description>This package contains core types for Azure Java V2 clients.</description>
@@ -44,6 +44,7 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage> <!-- Temporary until full breadth of test coverage is added -->
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage> <!-- Temporary until full breadth of test coverage is added -->
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
   </properties>
 
   <developers>
@@ -112,7 +113,6 @@
       <version>1.14.10</version><!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>

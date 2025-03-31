@@ -72,6 +72,8 @@ function TypeSpec-Compare-CurrentToCodegeneration {
     if ($LastExitCode -ne 0) {
       $failedSdk += $sdkPath
     }
+    Write-Host "Running mvn package"
+    mvn package
     Pop-Location
   }
 

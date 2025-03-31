@@ -22,6 +22,7 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/automanage</module>
@@ -234,6 +235,7 @@
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
+    <module>sdk/weightsandbiases</module>
     <module>sdk/workloads</module>
     <module>sdk/workloadssapvirtualinstance</module>
   </modules>

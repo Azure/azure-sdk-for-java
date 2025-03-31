@@ -24,37 +24,36 @@ public final class MachineLearningServicesModelRegisteredEventData
      * The name of the model that was registered.
      */
     @Generated
-    private String modelName;
+    private final String modelName;
 
     /*
      * The version of the model that was registered.
      */
     @Generated
-    private String modelVersion;
+    private final String modelVersion;
 
     /*
      * The tags of the model that was registered.
      */
     @Generated
-    private final Map<String, BinaryData> modelTags;
+    private Map<String, BinaryData> modelTags;
 
     /*
      * The properties of the model that was registered.
      */
     @Generated
-    private final Map<String, BinaryData> modelProperties;
+    private Map<String, BinaryData> modelProperties;
 
     /**
      * Creates an instance of MachineLearningServicesModelRegisteredEventData class.
      * 
-     * @param modelTags the modelTags value to set.
-     * @param modelProperties the modelProperties value to set.
+     * @param modelName the modelName value to set.
+     * @param modelVersion the modelVersion value to set.
      */
     @Generated
-    private MachineLearningServicesModelRegisteredEventData(Map<String, BinaryData> modelTags,
-        Map<String, BinaryData> modelProperties) {
-        this.modelTags = modelTags;
-        this.modelProperties = modelProperties;
+    private MachineLearningServicesModelRegisteredEventData(String modelName, String modelVersion) {
+        this.modelName = modelName;
+        this.modelVersion = modelVersion;
     }
 
     /**
@@ -104,12 +103,12 @@ public final class MachineLearningServicesModelRegisteredEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modelName", this.modelName);
+        jsonWriter.writeStringField("modelVersion", this.modelVersion);
         jsonWriter.writeMapField("modelTags", this.modelTags,
             (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeMapField("modelProperties", this.modelProperties,
             (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeStringField("modelName", this.modelName);
-        jsonWriter.writeStringField("modelVersion", this.modelVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -125,32 +124,32 @@ public final class MachineLearningServicesModelRegisteredEventData
     @Generated
     public static MachineLearningServicesModelRegisteredEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, BinaryData> modelTags = null;
-            Map<String, BinaryData> modelProperties = null;
             String modelName = null;
             String modelVersion = null;
+            Map<String, BinaryData> modelTags = null;
+            Map<String, BinaryData> modelProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("modelTags".equals(fieldName)) {
+                if ("modelName".equals(fieldName)) {
+                    modelName = reader.getString();
+                } else if ("modelVersion".equals(fieldName)) {
+                    modelVersion = reader.getString();
+                } else if ("modelTags".equals(fieldName)) {
                     modelTags = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("modelProperties".equals(fieldName)) {
                     modelProperties = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                } else if ("modelName".equals(fieldName)) {
-                    modelName = reader.getString();
-                } else if ("modelVersion".equals(fieldName)) {
-                    modelVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             MachineLearningServicesModelRegisteredEventData deserializedMachineLearningServicesModelRegisteredEventData
-                = new MachineLearningServicesModelRegisteredEventData(modelTags, modelProperties);
-            deserializedMachineLearningServicesModelRegisteredEventData.modelName = modelName;
-            deserializedMachineLearningServicesModelRegisteredEventData.modelVersion = modelVersion;
+                = new MachineLearningServicesModelRegisteredEventData(modelName, modelVersion);
+            deserializedMachineLearningServicesModelRegisteredEventData.modelTags = modelTags;
+            deserializedMachineLearningServicesModelRegisteredEventData.modelProperties = modelProperties;
 
             return deserializedMachineLearningServicesModelRegisteredEventData;
         });

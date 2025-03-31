@@ -12,10 +12,10 @@ public final class FirewallRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"kdosvqw\",\"endIpAddress\":\"bmdg\"},\"id\":\"jfddgmbmbe\",\"name\":\"ppbhtqqrolfp\",\"type\":\"psalgbqux\"},{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"jgzjaoyfhrtx\",\"endIpAddress\":\"lnerkujysvleju\"},\"id\":\"qawrlyxwj\",\"name\":\"cpr\",\"type\":\"nwbxgjvtbvpyssz\"},{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"jq\",\"endIpAddress\":\"uhmuouqfprwzwbn\"},\"id\":\"itnwuizgazxufi\",\"name\":\"uckyf\",\"type\":\"hr\"}],\"nextLink\":\"dfvzwdzuhty\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"startIpAddress\":\"gbquxigj\",\"endIpAddress\":\"jgzjaoyfhrtx\"},\"id\":\"n\",\"name\":\"rkujy\",\"type\":\"vlejuvfqa\"},{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"xwjkcprbnwbxg\",\"endIpAddress\":\"vtb\"},\"id\":\"ysszdnrujqguh\",\"name\":\"uouq\",\"type\":\"prwzwbnguitnwui\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"startIpAddress\":\"x\",\"endIpAddress\":\"fizuckyf\"},\"id\":\"rfidfvzwdz\",\"name\":\"htymw\",\"type\":\"sdkf\"}],\"nextLink\":\"wxmnteiwao\"}")
             .toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("kdosvqw", model.value().get(0).properties().startIpAddress());
-        Assertions.assertEquals("bmdg", model.value().get(0).properties().endIpAddress());
-        Assertions.assertEquals("dfvzwdzuhty", model.nextLink());
+        Assertions.assertEquals("gbquxigj", model.value().get(0).properties().startIpAddress());
+        Assertions.assertEquals("jgzjaoyfhrtx", model.value().get(0).properties().endIpAddress());
+        Assertions.assertEquals("wxmnteiwao", model.nextLink());
     }
 }

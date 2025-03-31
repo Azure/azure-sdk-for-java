@@ -22,31 +22,40 @@ public final class AppConfigurationKeyValueDeletedEventData
      * The key used to identify the key-value that was deleted.
      */
     @Generated
-    private String key;
+    private final String key;
 
     /*
      * The label, if any, used to identify the key-value that was deleted.
      */
     @Generated
-    private String label;
+    private final String label;
 
     /*
      * The etag representing the key-value that was deleted.
      */
     @Generated
-    private String etag;
+    private final String etag;
 
     /*
      * The sync token representing the server state after the event.
      */
     @Generated
-    private String syncToken;
+    private final String syncToken;
 
     /**
      * Creates an instance of AppConfigurationKeyValueDeletedEventData class.
+     * 
+     * @param key the key value to set.
+     * @param label the label value to set.
+     * @param etag the etag value to set.
+     * @param syncToken the syncToken value to set.
      */
     @Generated
-    private AppConfigurationKeyValueDeletedEventData() {
+    private AppConfigurationKeyValueDeletedEventData(String key, String label, String etag, String syncToken) {
+        this.key = key;
+        this.label = label;
+        this.etag = etag;
+        this.syncToken = syncToken;
     }
 
     /**
@@ -109,31 +118,33 @@ public final class AppConfigurationKeyValueDeletedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of AppConfigurationKeyValueDeletedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AppConfigurationKeyValueDeletedEventData.
      */
     @Generated
     public static AppConfigurationKeyValueDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppConfigurationKeyValueDeletedEventData deserializedAppConfigurationKeyValueDeletedEventData
-                = new AppConfigurationKeyValueDeletedEventData();
+            String key = null;
+            String label = null;
+            String etag = null;
+            String syncToken = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("key".equals(fieldName)) {
-                    deserializedAppConfigurationKeyValueDeletedEventData.key = reader.getString();
+                    key = reader.getString();
                 } else if ("label".equals(fieldName)) {
-                    deserializedAppConfigurationKeyValueDeletedEventData.label = reader.getString();
+                    label = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedAppConfigurationKeyValueDeletedEventData.etag = reader.getString();
+                    etag = reader.getString();
                 } else if ("syncToken".equals(fieldName)) {
-                    deserializedAppConfigurationKeyValueDeletedEventData.syncToken = reader.getString();
+                    syncToken = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedAppConfigurationKeyValueDeletedEventData;
+            return new AppConfigurationKeyValueDeletedEventData(key, label, etag, syncToken);
         });
     }
 }

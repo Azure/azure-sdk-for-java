@@ -124,14 +124,14 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-translation-text</artifactId>
-            <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-ai-translation-text;dependency} -->
+            <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-ai-translation-text;dependency} -->
             <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob</artifactId>
-          <version>12.29.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+          <version>12.30.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
           <scope>test</scope>
         </dependency>
     </dependencies>

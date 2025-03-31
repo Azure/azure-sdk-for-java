@@ -11,7 +11,7 @@ public final class SkuCostTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuCost model = BinaryData
-            .fromString("{\"meterId\":\"wozuhkf\",\"meterType\":\"sjyofdx\",\"multiplier\":7.019162359413455}")
+            .fromString("{\"meterId\":\"owzxcu\",\"meterType\":\"cjooxdjebwpucwwf\",\"multiplier\":33.68336197524414}")
             .toObject(SkuCost.class);
     }
 
