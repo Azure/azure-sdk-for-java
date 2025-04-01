@@ -11,7 +11,7 @@ import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
 import com.azure.compute.batch.models.BatchJobSpecification;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolInfo;
-import com.azure.compute.batch.models.ListBatchJobSchedulesOptions;
+import com.azure.compute.batch.models.BatchJobSchedulesListOptions;
 import com.azure.compute.batch.models.MetadataItem;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
@@ -79,7 +79,7 @@ public class JobScheduleTests extends BatchClientTestBase {
             }
 
             // LIST
-            ListBatchJobSchedulesOptions listOptions = new ListBatchJobSchedulesOptions();
+            BatchJobSchedulesListOptions listOptions = new BatchJobSchedulesListOptions();
             listOptions.setFilter(String.format("id eq '%s'", jobScheduleId));
             PagedIterable<BatchJobSchedule> jobSchedules = batchClient.listJobSchedules(listOptions);
             Assertions.assertNotNull(jobSchedules);
