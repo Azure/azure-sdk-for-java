@@ -29,20 +29,21 @@ parameters:
     type: boolean
     default: true
   - name: release_azureidentity
-    displayName: 'azure-identity'
+    displayName: 'com.azure.v2:azure-identity'
     type: boolean
     default: true
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: identity
+    ServiceDirectory: identity-v2
     TimeoutInMinutes: 90
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
       - name: azure-identity
         groupId: com.azure.v2
-        safeName: azureidentity
+        safeName: azureidentityv2
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azureidentity }}
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
@@ -73,5 +74,6 @@ extends:
           Artifacts:
             - name: azure-identity
               groupId: com.azure.v2
-              safeName: azureidentity
+              safeName: azureidentityv2
+              skipPublishDocMs: true
 
