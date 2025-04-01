@@ -144,10 +144,10 @@ public class Configuration {
     private String isRegionScopedSessionContainerEnabled = String.valueOf(false);
 
     @Parameter(names = "isPartitionLevelCircuitBreakerEnabled", description = "A flag to denote whether partition level circuit breaker is enabled.")
-    private String isPartitionLevelCircuitBreakerEnabled = String.valueOf(false);
+    private String isPartitionLevelCircuitBreakerEnabled = String.valueOf(true);
 
     @Parameter(names = "-isPerPartitionAutomaticFailoverEnabled", description = "A flag to denote whether per partition automatic failover is enabled.")
-    private String isPerPartitionAutomaticFailoverEnabled = String.valueOf(false);
+    private String isPerPartitionAutomaticFailoverEnabled = String.valueOf(true);
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
