@@ -60,6 +60,7 @@ import com.azure.compute.batch.models.BatchNodeExtensionsListOptions;
 import com.azure.compute.batch.models.BatchNodeFile;
 import com.azure.compute.batch.models.BatchNodeFileDeleteOptions;
 import com.azure.compute.batch.models.BatchNodeFileGetOptions;
+import com.azure.compute.batch.models.BatchNodeFilePropertiesGetOptions;
 import com.azure.compute.batch.models.BatchNodeFilesListOptions;
 import com.azure.compute.batch.models.BatchNodeGetOptions;
 import com.azure.compute.batch.models.BatchNodeLogsUploadOptions;
@@ -115,6 +116,7 @@ import com.azure.compute.batch.models.BatchTaskCreateOptions;
 import com.azure.compute.batch.models.BatchTaskDeleteOptions;
 import com.azure.compute.batch.models.BatchTaskFileDeleteOptions;
 import com.azure.compute.batch.models.BatchTaskFileGetOptions;
+import com.azure.compute.batch.models.BatchTaskFilePropertiesGetOptions;
 import com.azure.compute.batch.models.BatchTaskFilesListOptions;
 import com.azure.compute.batch.models.BatchTaskGetOptions;
 import com.azure.compute.batch.models.BatchTaskGroup;
@@ -122,8 +124,6 @@ import com.azure.compute.batch.models.BatchTaskReactivateOptions;
 import com.azure.compute.batch.models.BatchTaskReplaceOptions;
 import com.azure.compute.batch.models.BatchTaskTerminateOptions;
 import com.azure.compute.batch.models.BatchTasksListOptions;
-import com.azure.compute.batch.models.GetBatchNodeFilePropertiesOptions;
-import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
 import com.azure.compute.batch.models.SupportedBatchImagesListOptions;
 import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
 import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
@@ -12452,7 +12452,7 @@ public final class BatchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchFileProperties> getTaskFileProperties(String jobId, String taskId, String filePath,
-        GetBatchTaskFilePropertiesOptions options) {
+        BatchTaskFilePropertiesGetOptions options) {
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
@@ -12983,7 +12983,7 @@ public final class BatchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchFileProperties> getNodeFileProperties(String poolId, String nodeId, String filePath,
-        GetBatchNodeFilePropertiesOptions options) {
+        BatchNodeFilePropertiesGetOptions options) {
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
