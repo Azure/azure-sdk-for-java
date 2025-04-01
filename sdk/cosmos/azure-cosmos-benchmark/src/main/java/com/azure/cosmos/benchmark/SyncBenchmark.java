@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -77,6 +78,16 @@ abstract class SyncBenchmark<T> {
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
     Timer latency;
+
+    private static final List<String> CONFIGURED_HA_SPECIFIC_SYS_PROPERTIES = Arrays.asList(
+        "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED",
+        "COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED",
+        "COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF",
+        "COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF",
+        "COSMOS.STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS",
+        "COSMOS.ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS",
+        "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG" // Implicitly set when COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED is set to true
+    );
 
     static abstract class ResultHandler<T, Throwable> implements BiFunction<T, Throwable, T> {
         ResultHandler() {
@@ -293,6 +304,10 @@ abstract class SyncBenchmark<T> {
         } else if (this.collectionCreated) {
             cosmosContainer.delete();
             logger.info("Deleted temporary collection {} created for this test", this.configuration.getCollectionId());
+        }
+
+        for (String haSpecificSysProperty : CONFIGURED_HA_SPECIFIC_SYS_PROPERTIES) {
+            System.clearProperty(haSpecificSysProperty);
         }
 
         cosmosClient.close();

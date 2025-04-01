@@ -144,7 +144,10 @@ public class Configuration {
     private String isRegionScopedSessionContainerEnabled = String.valueOf(false);
 
     @Parameter(names = "isPartitionLevelCircuitBreakerEnabled", description = "A flag to denote whether partition level circuit breaker is enabled.")
-    private String isPartitionLevelCircuitBreakerEnabled = String.valueOf(true);
+    private String isPartitionLevelCircuitBreakerEnabled = String.valueOf(false);
+
+    @Parameter(names = "-isPerPartitionAutomaticFailoverEnabled", description = "A flag to denote whether per partition automatic failover is enabled.")
+    private String isPerPartitionAutomaticFailoverEnabled = String.valueOf(false);
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
@@ -178,6 +181,10 @@ public class Configuration {
 
     @Parameter(names = "-numberOfOperations", description = "Total NUMBER Of Documents To Insert")
     private int numberOfOperations = 100000;
+
+    public boolean isPerPartitionAutomaticFailoverEnabled() {
+        return Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabled);
+    }
 
     static class DurationConverter implements IStringConverter<Duration> {
         @Override
