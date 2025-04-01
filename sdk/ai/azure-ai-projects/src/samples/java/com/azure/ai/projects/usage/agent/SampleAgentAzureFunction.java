@@ -27,9 +27,10 @@ public class SampleAgentAzureFunction {
             .buildAgentsClient();
 
         var storageQueueUri = Configuration.getGlobalConfiguration().get("STORAGE_QUEUE_URI", "");
+        String azureFunctionName = Configuration.getGlobalConfiguration().get("AZURE_FUNCTION_NAME", "");
 
         FunctionDefinition fnDef = new FunctionDefinition(
-            "jayantagentazfn",
+            azureFunctionName,
             BinaryData.fromObject(
                 Map.of(
                     "type", "object",

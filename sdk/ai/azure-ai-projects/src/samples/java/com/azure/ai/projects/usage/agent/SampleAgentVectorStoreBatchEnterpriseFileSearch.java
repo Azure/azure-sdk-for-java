@@ -21,7 +21,7 @@ public class SampleAgentVectorStoreBatchEnterpriseFileSearch {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAgentsClient();
 
-        var dataUri = "azureml://subscriptions/696debc0-8b66-4d84-87b1-39f43917d76c/resourcegroups/rg-jayant/workspaces/jayant-project-2aqa/datastores/workspaceblobstore/paths/product_info_1.md";
+        String dataUri = Configuration.getGlobalConfiguration().get("DATA_URI", "");
         VectorStoreDataSource vectorStoreDataSource = new VectorStoreDataSource(
             dataUri, VectorStoreDataSourceAssetType.URI_ASSET);
 
