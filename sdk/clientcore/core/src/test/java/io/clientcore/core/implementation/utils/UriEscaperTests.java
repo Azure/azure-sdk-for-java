@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.http.rest;
+package io.clientcore.core.implementation.utils;
 
-import io.clientcore.core.implementation.utils.PercentEscaper;
-import io.clientcore.core.implementation.utils.UriEscapers;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

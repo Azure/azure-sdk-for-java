@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class TestInterfaceGenerationTests {
+public class TestInterfaceServiceClientGenerationTests {
     private static LocalTestServer server;
     @BeforeAll
     public static void startTestServer() {
