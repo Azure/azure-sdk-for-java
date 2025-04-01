@@ -50,7 +50,7 @@ public class AzureChatDataSource implements JsonSerializable<AzureChatDataSource
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+//        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

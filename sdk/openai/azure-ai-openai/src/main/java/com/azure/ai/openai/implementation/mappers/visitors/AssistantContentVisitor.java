@@ -1,4 +1,4 @@
-package com.azure.ai.openai.implementation.mappers;
+package com.azure.ai.openai.implementation.mappers.visitors;
 
 import com.azure.ai.openai.models.ChatCompletionRequestMessageContentPartRefusal;
 import com.azure.ai.openai.models.ChatCompletionRequestMessageContentPartText;
