@@ -60,7 +60,7 @@ function TypeSpec-Compare-CurrentToCodegeneration {
     Write-Host "Generate SDK for $sdkPath"
     Push-Location
     Set-Location -Path $sdkPath
-    tsp-client update
+    tsp-client update | Out-Null
     if ($LastExitCode -ne 0) {
       $failedSdk += $sdkPath
     }
