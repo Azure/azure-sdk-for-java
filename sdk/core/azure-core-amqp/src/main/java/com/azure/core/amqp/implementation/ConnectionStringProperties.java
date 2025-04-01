@@ -4,7 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -109,7 +109,7 @@ public class ConnectionStringProperties {
             || (includesSharedKey && includesSharedAccessSignature) // includes both SAS and key or
                                                                                         // value
             || (!hasSharedKeyAndValue && !includesSharedAccessSignature)) { // invalid key, value and SAS
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(ERROR_MESSAGE_FORMAT));
+            throw LOGGER.atError().log(new IllegalArgumentException(ERROR_MESSAGE_FORMAT));
         }
 
         this.endpoint = endpoint;
@@ -178,7 +178,7 @@ public class ConnectionStringProperties {
     private String validateAndUpdateDefaultScheme(final String endpoint) {
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("'Endpoint' must be provided in 'connectionString'."));
         }
 

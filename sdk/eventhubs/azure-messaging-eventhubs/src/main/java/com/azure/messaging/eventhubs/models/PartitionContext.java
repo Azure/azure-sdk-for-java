@@ -3,13 +3,15 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Immutable;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.util.Objects;
 
 /**
  * A model class to contain partition information of an Event Hub.
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class PartitionContext {
 
     private final String fullyQualifiedNamespace;

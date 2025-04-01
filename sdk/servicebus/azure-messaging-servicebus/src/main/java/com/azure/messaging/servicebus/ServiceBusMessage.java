@@ -11,10 +11,12 @@ import com.azure.core.amqp.models.AmqpMessageBodyType;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ContextAccessor;
+import com.azure.messaging.servicebus.implementation.instrumentation.InstrumentationContextAccessor;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -56,9 +58,14 @@ public class ServiceBusMessage {
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
 
     private Context context;
+    private InstrumentationContext instrumentationContext;
 
     static {
         ContextAccessor.setSendMessageContextAccessor(message -> message.getContext());
+    }
+
+    static {
+        InstrumentationContextAccessor.setSendMessageContextAccessor(ServiceBusMessage::getInstrumentationContext);
     }
 
     /**
@@ -665,6 +672,10 @@ public class ServiceBusMessage {
      */
     Context getContext() {
         return context;
+    }
+
+    InstrumentationContext getInstrumentationContext() {
+        return instrumentationContext;
     }
 
     /**

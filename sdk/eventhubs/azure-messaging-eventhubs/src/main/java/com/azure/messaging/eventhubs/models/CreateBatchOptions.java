@@ -3,10 +3,11 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 /**
  * The set of options that can be specified when creating an {@link EventDataBatch}.
@@ -14,7 +15,7 @@ import com.azure.messaging.eventhubs.EventHubProducerClient;
  * @see EventHubProducerClient#createBatch(CreateBatchOptions)
  * @see EventHubProducerAsyncClient#createBatch(CreateBatchOptions)
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public class CreateBatchOptions {
     private int maximumSizeInBytes;
     private String partitionKey;

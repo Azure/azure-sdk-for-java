@@ -9,7 +9,7 @@ import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -62,7 +62,7 @@ public final class MessageUtils {
             case VALUE:
             case SEQUENCE:
             default:
-                throw LOGGER.logExceptionAsError(
+                throw LOGGER.atError().log(
                     new UnsupportedOperationException("bodyType [" + body.getBodyType() + "] is not supported yet."));
         }
 
@@ -205,17 +205,17 @@ public final class MessageUtils {
                 final Binary messageData = ((Data) body).getValue();
 
                 if (messageData == null) {
-                    LOGGER.verbose("Binary data message is null.");
+                    LOGGER.atVerbose().log("Binary data message is null.");
                     bytes = EMPTY_BYTE_ARRAY;
                 } else {
                     bytes = messageData.getArray();
                 }
             } else {
-                LOGGER.warning("Message not of type Data. Actual: {}", body.getType());
+                LOGGER.atWarning().log("Message not of type Data. Actual:" + body.getType());
                 bytes = EMPTY_BYTE_ARRAY;
             }
         } else {
-            LOGGER.warning("Message does not have a body.");
+            LOGGER.atWarning().log("Message does not have a body.");
             bytes = EMPTY_BYTE_ARRAY;
         }
 
@@ -366,7 +366,7 @@ public final class MessageUtils {
             return (Instant) enqueuedTimeObject;
         }
 
-        throw LOGGER.logExceptionAsError(new IllegalStateException(
+        throw LOGGER.atError().log(new IllegalStateException(
             new IllegalStateException(String.format(Locale.US, "enqueuedTime is not a known type. Value: %s. Type: %s",
                 enqueuedTimeObject, enqueuedTimeObject.getClass()))));
     }

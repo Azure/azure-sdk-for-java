@@ -6,7 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.ProtonSession.ProtonChannel;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
@@ -133,7 +133,7 @@ public final class ProtonSessionWrapper {
 
     void openUnsafe(ClientLogger logger) {
         if (isV2ClientOnSessionCache()) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
+            throw logger.atError().log(new UnsupportedOperationException(
                 "Requires v2 client without " + SESSION_CHANNEL_CACHE_KEY + " or v1 client."));
         }
         sessionUnsafe.open();

@@ -3,7 +3,8 @@
 
 package com.azure.core.amqp.models;
 
-import com.azure.core.annotation.Fluent;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.time.Duration;
 
@@ -14,7 +15,7 @@ import java.time.Duration;
  * target="_blank">
  * Amqp Message Format.</a>
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public class AmqpMessageHeader {
 
     private Long deliveryCount;

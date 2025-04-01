@@ -11,7 +11,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.RetryUtil;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
@@ -43,7 +43,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.CALL_SITE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_STATE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 
 /**
  * Manages the received deliveries which are not settled on the broker. The client can later request settlement of each
@@ -302,9 +302,11 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
 
         final Mono<Void> workMonoListMerged;
         if (!workMonoList.isEmpty()) {
-            logger.info("Waiting for pending updates to complete. Locks: {}", deliveryTags.toString());
+            logger.atInfo()
+                    .addKeyValue("locks", deliveryTags.toString())
+                    .log("Waiting for pending updates to complete.");
             workMonoListMerged = Mono.whenDelayError(workMonoList).onErrorResume(error -> {
-                logger.info("There was exception(s) while disposing of all disposition work.", error);
+                logger.atInfo().log("There was exception(s) while disposing of all disposition work.", error);
                 return Mono.empty();
             });
         } else {
@@ -337,10 +339,10 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
                 try {
                     dispatcher.invoke(localSettlement);
                 } catch (IOException e) {
-                    logger.info("IO sink was closed when scheduling local settlement. Manually settling.", e);
+                    logger.atInfo().log("IO sink was closed when scheduling local settlement. Manually settling.", e);
                     localSettlement.run();
                 } catch (RejectedExecutionException e) {
-                    logger.info("RejectedExecutionException when scheduling local settlement. Manually settling.", e);
+                    logger.atInfo().log("RejectedExecutionException when scheduling local settlement. Manually settling.", e);
                     localSettlement.run();
                 }
             }
@@ -502,7 +504,8 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
             logger.atInfo()
                 .addKeyValue(CALL_SITE_KEY, callSite)
                 .addKeyValue("locks", deliveryTags.toString())
-                .log("Completed {} timed-out disposition works.", completionCount[0]);
+                .addKeyValue("completionCount", completionCount[0])
+                .log("Completed timed-out disposition works.");
         }
     }
 
@@ -530,7 +533,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
             }
 
             if (completionCount[0] == 0) {
-                logger.info("Starting completion of disposition works as part of receive link closure.");
+                logger.atInfo().log("Starting completion of disposition works as part of receive link closure.");
             }
 
             deliveryTags.add(work.getDeliveryTag());
@@ -540,8 +543,10 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
 
         if (completionCount[0] > 0) {
             // The log help debug if the user code chained to the work-mono (DispositionWork::getMono()) never returns.
-            logger.info("Completed {} disposition works as part of receive link closure. Locks {}", completionCount[0],
-                deliveryTags.toString());
+            logger.atInfo()
+                    .addKeyValue("completionCount", completionCount[0])
+                    .addKeyValue("locks", deliveryTags.toString())
+                    .log("Completed disposition works as part of receive link closure.");
         }
     }
 
@@ -570,7 +575,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
 
         if (completionError != null) {
             final Throwable loggedError = completionError instanceof RuntimeException
-                ? logger.logExceptionAsError((RuntimeException) completionError)
+                ? logger.atError().log((RuntimeException) completionError)
                 : completionError;
             work.onComplete(loggedError);
         } else {
@@ -597,7 +602,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         pendingDispositions.remove(work.getDeliveryTag());
 
         final Throwable loggedError = completionError instanceof RuntimeException
-            ? logger.logExceptionAsError((RuntimeException) completionError)
+            ? logger.atError().log((RuntimeException) completionError)
             : completionError;
         work.onComplete(loggedError);
     }

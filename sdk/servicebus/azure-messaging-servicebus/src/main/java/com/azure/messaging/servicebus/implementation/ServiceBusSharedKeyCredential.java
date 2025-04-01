@@ -3,12 +3,13 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -43,7 +44,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see <a href="https://learn.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature">Authorize
  *     access with shared access signature.</a>
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class ServiceBusSharedKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";

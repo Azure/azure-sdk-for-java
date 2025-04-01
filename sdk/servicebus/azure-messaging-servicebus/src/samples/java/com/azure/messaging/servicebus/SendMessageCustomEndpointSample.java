@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 /**
  * Sample demonstrates how to use an intermediary service to connect to Azure Service Bus queue. In this demo, an application

@@ -3,14 +3,16 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.util.Objects;
 
 /**
  * This class contains information about a partition for which this {@link EventProcessorClient} stopped processing.
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class CloseContext {
 
     private final PartitionContext partitionContext;

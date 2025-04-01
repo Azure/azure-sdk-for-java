@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
@@ -130,7 +130,7 @@ class EventHubAsyncClient implements Closeable {
 
         if (consumerGroup.isEmpty()) {
             throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
+                .atError().log(new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
         }
 
         EventHubsConsumerInstrumentation instrumentation

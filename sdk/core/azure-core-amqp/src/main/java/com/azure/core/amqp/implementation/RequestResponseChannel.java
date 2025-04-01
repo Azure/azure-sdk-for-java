@@ -14,8 +14,8 @@ import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.ProtonSessionWrapper.ProtonChannelWrapper;
-import com.azure.core.util.AsyncCloseable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.amqp.util.AsyncCloseable;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -57,7 +57,7 @@ import java.util.function.Function;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -224,7 +224,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         // To ensure graceful closure of request-response-channel instance that won the race between
         // its creation and its parent connection close.
         final Disposable shutdownDisposable = amqpConnection.getShutdownSignals().next().flatMap(signal -> {
-            logger.verbose("Shutdown signal received.");
+            logger.atVerbose().log("Shutdown signal received.");
             return closeAsync();
         }).subscribe();
         this.subscriptions.add(shutdownDisposable);
@@ -238,7 +238,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                 this.receiveLink.open();
             });
         } catch (IOException | RejectedExecutionException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException("Unable to open send and receive link.", e));
+            throw logger.atWarning().log(new RuntimeException("Unable to open send and receive link.", e));
         }
     }
 
@@ -256,7 +256,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         final Mono<Void> closeOperationWithTimeout
             = closeMono.asMono().timeout(retryOptions.getTryTimeout()).onErrorResume(TimeoutException.class, error -> {
                 return Mono.fromRunnable(() -> {
-                    logger.info("Timed out waiting for RequestResponseChannel to complete closing. Manually closing.");
+                    logger.atInfo().log("Timed out waiting for RequestResponseChannel to complete closing. Manually closing.");
 
                     onTerminalState("SendLinkHandler");
                     onTerminalState("ReceiveLinkHandler");
@@ -264,23 +264,23 @@ public class RequestResponseChannel implements AsyncCloseable {
             }).subscribeOn(Schedulers.boundedElastic());
 
         if (isDisposed.getAndSet(true)) {
-            logger.verbose("Channel already closed.");
+            logger.atVerbose().log("Channel already closed.");
             return closeOperationWithTimeout;
         }
 
-        logger.verbose("Closing request/response channel.");
+        logger.atVerbose().log("Closing request/response channel.");
 
         return Mono.fromRunnable(() -> {
             try {
                 // Schedule API calls on proton-j entities on the ReactorThread associated with the connection.
                 provider.getReactorDispatcher().invoke(() -> {
-                    logger.verbose("Closing send link and receive link.");
+                    logger.atVerbose().log("Closing send link and receive link.");
 
                     sendLink.close();
                     receiveLink.close();
                 });
             } catch (IOException | RejectedExecutionException e) {
-                logger.info("Unable to schedule close work. Closing manually.");
+                logger.atInfo().log("Unable to schedule close work. Closing manually.");
 
                 sendLink.close();
                 receiveLink.close();
@@ -435,7 +435,9 @@ public class RequestResponseChannel implements AsyncCloseable {
             return;
         }
 
-        logger.atWarning().log("{} Disposing unconfirmed sends.", message, error);
+        logger.atWarning()
+                .addKeyValue("message", message)
+                .log("Disposing unconfirmed sends.", error);
 
         endpointStates.emitError(error, (signalType, emitResult) -> {
             addSignalTypeAndResult(logger.atWarning(), signalType, emitResult).log("Could not emit error to sink.");
@@ -456,7 +458,10 @@ public class RequestResponseChannel implements AsyncCloseable {
         }
 
         final int remaining = pendingLinkTerminations.decrementAndGet();
-        logger.verbose("{} disposed. Remaining: {}", handlerName, remaining);
+        logger.atVerbose()
+                .addKeyValue("handlerName", handlerName)
+                .addKeyValue("remaining", remaining)
+                .log("Handler disposed.");
 
         if (remaining == 0) {
             subscriptions.dispose();
@@ -499,7 +504,10 @@ public class RequestResponseChannel implements AsyncCloseable {
 
     // Terminate the unconfirmed MonoSinks by notifying the given error.
     private void terminateUnconfirmedSends(Throwable error) {
-        logger.verbose("Terminating {} unconfirmed sends (reason: {}).", unconfirmedSends.size(), error.getMessage());
+        logger.atVerbose()
+                .addKeyValue("unconfirmedSends", unconfirmedSends.size())
+                .addKeyValue("reason", error.getMessage())
+                .log("Terminating unconfirmed sends");
         Map.Entry<UnsignedLong, MonoSink<Message>> next;
         int count = 0;
         while ((next = unconfirmedSends.pollFirstEntry()) != null) {
@@ -512,7 +520,9 @@ public class RequestResponseChannel implements AsyncCloseable {
 
         // The below log can also help debug if the external code that error() calls into never return.
         logger.atVerbose()
-            .log("completed the termination of {} unconfirmed sends (reason: {}).", count, error.getMessage());
+                .addKeyValue("unconfirmedSends", count)
+                .addKeyValue("reason", error.getMessage())
+            .log("completed the termination of unconfirmed sends");
     }
 
     /**

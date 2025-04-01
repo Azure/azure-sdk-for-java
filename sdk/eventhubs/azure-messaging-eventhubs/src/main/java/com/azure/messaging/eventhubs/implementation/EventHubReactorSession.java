@@ -19,7 +19,7 @@ import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -145,7 +145,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             try {
                 ms = Long.toString(eventPosition.getEnqueuedDateTime().toEpochMilli());
             } catch (ArithmeticException ex) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                throw LOGGER.atError().log(new IllegalArgumentException(
                     String.format(Locale.ROOT, "Event position for enqueued DateTime could not be parsed. Value: '%s'",
                         eventPosition.getEnqueuedDateTime()),
                     ex));
@@ -155,6 +155,6 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
                 isInclusiveFlag, ms);
         }
 
-        throw LOGGER.logExceptionAsError(new IllegalArgumentException("No starting position was set."));
+        throw LOGGER.atError().log(new IllegalArgumentException("No starting position was set."));
     }
 }

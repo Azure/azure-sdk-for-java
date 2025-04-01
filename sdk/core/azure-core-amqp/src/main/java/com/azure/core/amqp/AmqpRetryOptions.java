@@ -3,8 +3,9 @@
 
 package com.azure.core.amqp;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Objects;
 /**
  * A set of options that can be specified to influence how retry attempts are made.
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public class AmqpRetryOptions {
     private static final ClientLogger LOGGER = new ClientLogger(AmqpRetryOptions.class);
 
@@ -69,7 +70,7 @@ public class AmqpRetryOptions {
      */
     public AmqpRetryOptions setMaxRetries(int numberOfRetries) {
         if (numberOfRetries < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'numberOfRetries' cannot be negative."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'numberOfRetries' cannot be negative."));
         }
 
         this.maxRetries = numberOfRetries;
@@ -88,7 +89,7 @@ public class AmqpRetryOptions {
     public AmqpRetryOptions setDelay(Duration delay) {
         Objects.requireNonNull(delay, "'delay' cannot be null.");
         if (delay.isNegative() || delay.isZero()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'delay' must be positive."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'delay' must be positive."));
         }
 
         this.delay = delay;
@@ -107,7 +108,7 @@ public class AmqpRetryOptions {
     public AmqpRetryOptions setMaxDelay(Duration maximumDelay) {
         Objects.requireNonNull(maximumDelay, "'maximumDelay' cannot be null.");
         if (maximumDelay.isNegative() || maximumDelay.isZero()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maximumDelay' must be positive."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'maximumDelay' must be positive."));
         }
 
         this.maxDelay = maximumDelay;
@@ -126,7 +127,7 @@ public class AmqpRetryOptions {
     public AmqpRetryOptions setTryTimeout(Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null");
         if (tryTimeout.isNegative() || tryTimeout.isZero()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tryTimeout' must be positive."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'tryTimeout' must be positive."));
         }
 
         this.tryTimeout = tryTimeout;

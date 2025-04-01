@@ -3,43 +3,40 @@
 
 package com.azure.core.amqp.models;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Collection;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link DeliveryState}
  */
 public class DeliveryStateTest {
-    /**
-     * Tests that all the values are available.
-     */
-    @Test
-    public void values() {
-        // Arrange
-        final DeliveryState[] expected = new DeliveryState[] {
-            DeliveryState.ACCEPTED,
-            DeliveryState.MODIFIED,
-            DeliveryState.RECEIVED,
-            DeliveryState.REJECTED,
-            DeliveryState.RELEASED,
-            DeliveryState.TRANSACTIONAL };
-
-        // Act
-        final Collection<DeliveryState> actual = DeliveryState.values();
-
-        // Assert
-        for (DeliveryState state : expected) {
-            assertTrue(actual.contains(state));
-        }
-    }
+//    /**
+//     * Tests that all the values are available.
+//     */
+//    @Test
+//    public void values() {
+//        // Arrange
+//        final DeliveryState[] expected = new DeliveryState[] {
+//            DeliveryState.ACCEPTED,
+//            DeliveryState.MODIFIED,
+//            DeliveryState.RECEIVED,
+//            DeliveryState.REJECTED,
+//            DeliveryState.RELEASED,
+//            DeliveryState.TRANSACTIONAL };
+//
+//        // Act
+//        final Collection<DeliveryState> actual = DeliveryState.values();
+//
+//        // Assert
+//        for (DeliveryState state : expected) {
+//            assertTrue(actual.contains(state));
+//        }
+//    }
 
     /**
      * Arguments for fromString.

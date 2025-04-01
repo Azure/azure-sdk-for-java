@@ -3,10 +3,11 @@
 
 package com.azure.messaging.servicebus.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 /**
  * The set of options that can be specified when creating an batch of messages. This wrapper will help to limit
@@ -16,7 +17,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
  * @see ServiceBusSenderAsyncClient#createMessageBatch(CreateMessageBatchOptions)
  * @see ServiceBusSenderClient#createMessageBatch(CreateMessageBatchOptions)
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class CreateMessageBatchOptions {
     private int maximumSizeInBytes;
 

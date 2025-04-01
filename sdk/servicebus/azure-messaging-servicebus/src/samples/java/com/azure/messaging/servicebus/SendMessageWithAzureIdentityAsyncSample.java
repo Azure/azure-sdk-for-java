@@ -4,7 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.concurrent.TimeUnit;

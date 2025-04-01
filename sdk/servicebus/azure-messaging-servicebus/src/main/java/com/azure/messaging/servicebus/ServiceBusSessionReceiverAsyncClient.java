@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 
 /**

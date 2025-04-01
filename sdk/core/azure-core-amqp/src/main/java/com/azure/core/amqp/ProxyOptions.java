@@ -3,12 +3,13 @@
 
 package com.azure.core.amqp;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
@@ -20,7 +21,7 @@ import java.util.regex.Pattern;
 /**
  * Properties for configuring proxies with Event Hubs.
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class ProxyOptions implements AutoCloseable {
     /**
      * The configuration key for containing the username who authenticates with the proxy.
@@ -114,7 +115,7 @@ public class ProxyOptions implements AutoCloseable {
         if (username != null && password != null) {
             this.credentials = new PasswordAuthentication(username, password.toCharArray());
         } else {
-            LOGGER.info("Username or password is null. Using system-wide authentication.");
+            LOGGER.atInfo().log("Username or password is null. Using system-wide authentication.");
             this.credentials = null;
         }
     }
@@ -241,7 +242,7 @@ public class ProxyOptions implements AutoCloseable {
                     httpProxyOptions.getUsername(), httpProxyOptions.getPassword());
             }
         }
-        LOGGER.verbose(
+        LOGGER.atVerbose().log(
             "'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't " + "set or was false.");
         return ProxyOptions.SYSTEM_DEFAULTS;
     }

@@ -22,7 +22,7 @@ import com.azure.core.amqp.implementation.RequestResponseChannelCache;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -100,7 +100,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     @Override
     public Mono<EventHubManagementNode> getManagementNode() {
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String
+            return Mono.error(logger.atError().log(new IllegalStateException(String
                 .format("connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
         }
 

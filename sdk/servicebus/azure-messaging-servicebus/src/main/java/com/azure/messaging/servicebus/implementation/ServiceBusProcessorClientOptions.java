@@ -3,13 +3,14 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 /**
  * Additional options to configure {@link ServiceBusProcessorClient}.
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class ServiceBusProcessorClientOptions {
 
     private int maxConcurrentCalls = 1;

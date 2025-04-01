@@ -3,13 +3,15 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Fluent;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.util.Objects;
 
 /**
  * A model class to hold partition ownership information.
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public class PartitionOwnership {
 
     private String fullyQualifiedNamespace;

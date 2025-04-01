@@ -3,8 +3,9 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.messaging.eventhubs.EventData;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 /**
  * The set of options that can be specified when sending a set of events to influence the way in which events are sent
@@ -13,7 +14,7 @@ import com.azure.messaging.eventhubs.EventData;
  * @see com.azure.messaging.eventhubs.EventHubProducerClient#send(Iterable, SendOptions)
  * @see com.azure.messaging.eventhubs.EventHubProducerAsyncClient#send(Iterable, SendOptions)
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public class SendOptions {
     private String partitionKey;
     private String partitionId;

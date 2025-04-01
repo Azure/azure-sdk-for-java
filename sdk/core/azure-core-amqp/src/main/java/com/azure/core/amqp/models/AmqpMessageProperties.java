@@ -3,7 +3,8 @@
 
 package com.azure.core.amqp.models;
 
-import com.azure.core.annotation.Fluent;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -15,7 +16,7 @@ import java.util.Arrays;
  * target="_blank">
  * Amqp Message Format.</a>
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public class AmqpMessageProperties {
 
     private OffsetDateTime absoluteExpiryTime;

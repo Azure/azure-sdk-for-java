@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
@@ -237,10 +237,10 @@ public class EventProcessorClient {
      */
     public synchronized void start() {
         if (!isRunning.compareAndSet(false, true)) {
-            logger.info("Event processor is already running");
+            logger.atInfo().log("Event processor is already running");
             return;
         }
-        logger.info("Starting a new event processor instance.");
+        logger.atInfo().log("Starting a new event processor instance.");
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         scheduler.set(executor);
@@ -303,7 +303,7 @@ public class EventProcessorClient {
         try {
             stop(DEFAULT_STOP_TIMEOUT);
         } catch (RuntimeException e) {
-            logger.info("Error while stopping the event processor", e);
+            logger.atInfo().log("Error while stopping the event processor", e);
         }
     }
 
@@ -321,7 +321,7 @@ public class EventProcessorClient {
      */
     public synchronized void stop(Duration timeout) {
         if (!isRunning.compareAndSet(true, false)) {
-            logger.info("Event processor has already stopped");
+            logger.atInfo().log("Event processor has already stopped");
             return;
         }
         runner.get().cancel(true);

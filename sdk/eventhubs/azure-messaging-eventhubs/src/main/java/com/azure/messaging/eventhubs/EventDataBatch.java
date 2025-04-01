@@ -8,7 +8,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.MessageUtils;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -99,7 +99,7 @@ public final class EventDataBatch {
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
-            throw LOGGER.logExceptionAsWarning(new NullPointerException("eventData cannot be null"));
+            throw LOGGER.atWarning().log(new NullPointerException("eventData cannot be null"));
         }
 
         tracer.reportMessageSpan(eventData, eventData.getContext());
@@ -178,7 +178,7 @@ public final class EventDataBatch {
             // The maxMessageSize is the Event Hubs service enforced upper limit for the message size or the application
             // configured limit (lower than the service limit) when obtaining the batch object.
             // https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-faq#what-is-the-message-event-size-for-event-hubs-
-            throw LOGGER.logExceptionAsWarning(new AmqpException(
+            throw LOGGER.atWarning().log(new AmqpException(
                 false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, String.format(Locale.US,
                     "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
                 contextProvider.getErrorContext()));

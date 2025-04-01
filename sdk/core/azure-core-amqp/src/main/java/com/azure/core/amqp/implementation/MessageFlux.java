@@ -8,9 +8,9 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.implementation.handler.DeliveryNotOnLinkException;
-import com.azure.core.util.AsyncCloseable;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import com.azure.core.amqp.util.AsyncCloseable;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
@@ -42,7 +42,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_STATE_
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_TAG_KEY;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 
 /**
  * The Flux operator to stream messages reliably from a messaging entity (e.g., Event Hub partition,
@@ -569,7 +569,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             Message messageDropped) {
             if (d) {
                 // true for 'd' means the operator termination was signaled.
-                final LoggingEventBuilder logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
+                final LoggingEvent logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
                 Throwable e = error;
                 if (e != null && e != Exceptions.TERMINATED) {
                     // A non-null 'e' indicates either
@@ -631,13 +631,13 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          */
         private void setTerminationSignalOrScheduleNextMediatorRequest(Throwable error,
             CoreSubscriber<? super Message> downstream, MediatorHolder mediatorHolder) {
-            final LoggingEventBuilder logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
+            final LoggingEvent logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
             if (cancelled || done) {
                 // To terminate the operator, the downstream signaled cancellation Or upstream signaled error
                 // or completion. The next drain-loop iteration as a result of that signalling will terminate
                 // the operator through one of the 'terminateIf*' methods followed by placing tombstone on
                 // the drain-loop.
-                logBuilder.log("MessageFlux reached terminal-state [done:{}, cancelled:{}].", done, cancelled);
+                logBuilder.log("MessageFlux reached terminal-state [done:" + done + ", cancelled:" + cancelled+ "].");
                 return;
             }
 
@@ -701,10 +701,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          */
         private void scheduleNextMediatorRequest(Duration delay, MediatorHolder mediatorHolder) {
             final Runnable task = () -> {
-                final LoggingEventBuilder logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
+                final LoggingEvent logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
                 if (cancelled || done) {
-                    logBuilder.log("During the backoff, MessageFlux reached terminal-state [done:{}, cancelled:{}].",
-                        done, cancelled);
+                    logBuilder
+                            .log("During the backoff, MessageFlux reached terminal-state [done:" + done + ", cancelled:" + cancelled + "].");
                     return;
                 }
                 logBuilder.log("Requesting a new mediator.");
@@ -1005,7 +1005,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             return receiver.updateDisposition(deliveryTag, deliveryState);
         }
 
-        private LoggingEventBuilder updateLogWithReceiverId(LoggingEventBuilder builder) {
+        private LoggingEvent updateLogWithReceiverId(LoggingEvent builder) {
             return builder.addKeyValue(CONNECTION_ID_KEY, receiver.getConnectionId())
                 .addKeyValue(LINK_NAME_KEY, receiver.getLinkName())
                 .addKeyValue(ENTITY_PATH_KEY, receiver.getEntityPath());
@@ -1076,7 +1076,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * @param builder the log builder to annotate.
          * @return the log builder annotated with receiver info.
          */
-        LoggingEventBuilder withReceiverInfo(LoggingEventBuilder builder) {
+        LoggingEvent withReceiverInfo(LoggingEvent builder) {
             final ReactorReceiverMediator m = mediator;
             if (m != null) {
                 return builder.addKeyValue(CONNECTION_ID_KEY, m.receiver.getConnectionId())

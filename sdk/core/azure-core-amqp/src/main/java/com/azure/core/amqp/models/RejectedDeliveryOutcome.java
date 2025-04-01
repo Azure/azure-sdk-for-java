@@ -4,7 +4,8 @@
 package com.azure.core.amqp.models;
 
 import com.azure.core.amqp.exception.AmqpErrorCondition;
-import com.azure.core.annotation.Fluent;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.util.Map;
 import java.util.Objects;
@@ -25,7 +26,7 @@ import java.util.Objects;
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-rejected">Rejected
  * outcome</a>
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class RejectedDeliveryOutcome extends DeliveryOutcome {
     private final AmqpErrorCondition errorCondition;
     private Map<String, Object> errorInfo;

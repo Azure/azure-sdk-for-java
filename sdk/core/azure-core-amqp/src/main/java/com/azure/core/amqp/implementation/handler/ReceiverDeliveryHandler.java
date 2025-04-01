@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -115,7 +115,7 @@ final class ReceiverDeliveryHandler {
 
             default:
                 throw logger
-                    .logExceptionAsError(new RuntimeException("settlingMode is not supported: " + settlingMode));
+                    .atError().log(new RuntimeException("settlingMode is not supported: " + settlingMode));
         }
     }
 
@@ -412,7 +412,7 @@ final class ReceiverDeliveryHandler {
         }
 
         final ErrorCondition condition = link.getRemoteCondition();
-        final LoggingEventBuilder loggingEvent
+        final LoggingEvent loggingEvent
             = addErrorCondition(logger.atVerbose(), condition).addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, receiveLinkName);
         if (deliveryTag != null) {

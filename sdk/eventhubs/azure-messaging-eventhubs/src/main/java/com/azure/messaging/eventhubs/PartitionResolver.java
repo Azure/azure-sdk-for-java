@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -32,14 +32,14 @@ class PartitionResolver {
         Objects.requireNonNull(partitions, "'partitions' cannot be null.");
 
         if (partitions.length == 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitions' cannot be empty."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'partitions' cannot be empty."));
         }
 
         final int currentIndex = partitionAssignmentIndex.accumulateAndGet(1, (current, added) -> {
             try {
                 return Math.addExact(current, added);
             } catch (ArithmeticException e) {
-                LOGGER.info("Overflowed incrementing index. Rolling over.", e);
+                LOGGER.atInfo().log("Overflowed incrementing index. Rolling over.", e);
 
                 return STARTING_INDEX + added;
             }

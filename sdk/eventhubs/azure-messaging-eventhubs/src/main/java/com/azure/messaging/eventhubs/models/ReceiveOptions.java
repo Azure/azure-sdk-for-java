@@ -3,16 +3,17 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 /**
  * Set of options that can be specified when receiving events from an {@link EventHubConsumerAsyncClient} or
  * {@link EventHubConsumerClient}.
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public class ReceiveOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ReceiveOptions.class);
     private Long ownerLevel;
@@ -55,7 +56,7 @@ public class ReceiveOptions {
      */
     public ReceiveOptions setOwnerLevel(Long priority) {
         if (priority != null && priority < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.atError().log(new IllegalArgumentException(
                 "'priority' cannot be a negative value. Please specify a zero or positive long value."));
         }
 

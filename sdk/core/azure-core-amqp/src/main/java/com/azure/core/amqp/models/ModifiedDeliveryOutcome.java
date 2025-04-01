@@ -3,7 +3,8 @@
 
 package com.azure.core.amqp.models;
 
-import com.azure.core.annotation.Fluent;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.util.Map;
 
@@ -28,7 +29,7 @@ import java.util.Map;
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-modified">Modified
  * outcome</a>
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class ModifiedDeliveryOutcome extends DeliveryOutcome {
     private Map<String, Object> messageAnnotations;
     private Boolean isUndeliverableHere;

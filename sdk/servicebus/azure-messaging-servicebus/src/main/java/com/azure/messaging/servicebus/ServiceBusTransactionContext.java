@@ -3,7 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.annotation.Immutable;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.nio.ByteBuffer;
 
@@ -52,7 +53,7 @@ import java.nio.ByteBuffer;
  * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions">Transaction
  *      Overview</a>
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class ServiceBusTransactionContext {
     private final ByteBuffer transactionId;
 

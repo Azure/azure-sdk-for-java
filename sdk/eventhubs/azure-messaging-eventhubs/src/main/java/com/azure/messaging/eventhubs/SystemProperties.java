@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageProperties;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -206,9 +206,9 @@ final class SystemProperties implements Map<String, Object> {
         }
 
         if (key == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'key' cannot be null"));
+            throw LOGGER.atError().log(new NullPointerException("'key' cannot be null"));
         } else if (!(key instanceof String)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.atError().log(new IllegalArgumentException(
                 String.format("'key' is not a string. key: %s. class: %s", key, key.getClass())));
         }
 
@@ -236,9 +236,9 @@ final class SystemProperties implements Map<String, Object> {
         }
 
         if (key == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'key' cannot be null"));
+            throw LOGGER.atError().log(new NullPointerException("'key' cannot be null"));
         } else if (!(key instanceof String)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.atError().log(new IllegalArgumentException(
                 String.format("'key' is not a string. key: %s. class: %s", key, key.getClass())));
         }
 
@@ -326,31 +326,31 @@ final class SystemProperties implements Map<String, Object> {
 
     @Override
     public Object put(String key, Object value) {
-        throw LOGGER.logExceptionAsError(
+        throw LOGGER.atError().log(
             new UnsupportedOperationException("System properties are read-only. Cannot perform 'put' operation."));
     }
 
     @Override
     public boolean remove(Object key, Object value) {
-        throw LOGGER.logExceptionAsError(
+        throw LOGGER.atError().log(
             new UnsupportedOperationException("System properties are read-only. Cannot perform 'remove' operation."));
     }
 
     @Override
     public Object remove(Object key) {
-        throw LOGGER.logExceptionAsError(
+        throw LOGGER.atError().log(
             new UnsupportedOperationException("System properties are read-only. Cannot perform 'remove' operation."));
     }
 
     @Override
     public void putAll(Map<? extends String, ?> m) {
-        throw LOGGER.logExceptionAsError(
+        throw LOGGER.atError().log(
             new UnsupportedOperationException("System properties are read-only. Cannot perform 'putAll' operation."));
     }
 
     @Override
     public void clear() {
-        throw LOGGER.logExceptionAsError(
+        throw LOGGER.atError().log(
             new UnsupportedOperationException("System properties are read-only. Cannot perform 'clear' operation."));
     }
 
@@ -380,7 +380,7 @@ final class SystemProperties implements Map<String, Object> {
 
         @Override
         public Object setValue(Object value) {
-            throw logger.logExceptionAsError(
+            throw logger.atError().log(
                 new UnsupportedOperationException("Cannot update entry. System properties is read-only."));
         }
     }

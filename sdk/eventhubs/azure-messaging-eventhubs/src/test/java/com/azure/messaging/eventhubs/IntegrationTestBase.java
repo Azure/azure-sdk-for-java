@@ -14,7 +14,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -77,8 +77,8 @@ public abstract class IntegrationTestBase extends TestBase {
     @BeforeEach
     @Override
     public void setupTest(TestContextManager testContextManager) {
-        logger.info("----- {}: Performing integration test set-up. -----",
-            testContextManager.getTestPlaybackRecordingName());
+        final String recordName = testContextManager.getTestPlaybackRecordingName();
+        logger.atInfo().log("----- " + recordName + ": Performing integration test set-up. -----");
 
         testName = testContextManager.getTrackerTestName();
         skipIfNotRecordOrLiveMode();

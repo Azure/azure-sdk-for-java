@@ -6,9 +6,9 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.AsyncCloseable;
+import com.azure.core.amqp.util.AsyncCloseable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.engine.HandlerException;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.publisher.Mono;
@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
@@ -58,16 +59,16 @@ public class ReactorExecutor implements AsyncCloseable {
      */
     public void start() {
         if (isDisposed.get()) {
-            logger.warning("Cannot start reactor when executor has been disposed.");
+            logger.atWarning().log("Cannot start reactor when executor has been disposed.");
             return;
         }
 
         if (hasStarted.getAndSet(true)) {
-            logger.warning("ReactorExecutor has already started.");
+            logger.atWarning().log("ReactorExecutor has already started.");
             return;
         }
 
-        logger.info("Starting reactor.");
+        logger.atInfo().log("Starting reactor.");
         reactor.start();
         scheduler.schedule(this::run);
     }
@@ -79,7 +80,7 @@ public class ReactorExecutor implements AsyncCloseable {
     private void run() {
         // If this hasn't been disposed of, and we're trying to run work items on it, log a warning and return.
         if (!isDisposed.get() && !hasStarted.get()) {
-            logger.warning("Cannot run work items on ReactorExecutor if ReactorExecutor.start() has not been invoked.");
+            logger.atWarning().log("Cannot run work items on ReactorExecutor if ReactorExecutor.start() has not been invoked.");
             return;
         }
 
@@ -96,7 +97,7 @@ public class ReactorExecutor implements AsyncCloseable {
                     scheduler.schedule(this::run);
                     rescheduledReactor = true;
                 } catch (RejectedExecutionException exception) {
-                    logger.warning("Scheduling reactor failed because the scheduler has been shut down.", exception);
+                    logger.atWarning().log("Scheduling reactor failed because the scheduler has been shut down.", exception);
 
                     this.reactor.attachments()
                         .set(RejectedExecutionException.class, RejectedExecutionException.class, exception);
@@ -105,7 +106,7 @@ public class ReactorExecutor implements AsyncCloseable {
         } catch (HandlerException handlerException) {
             Throwable cause = handlerException.getCause() == null ? handlerException : handlerException.getCause();
 
-            logger.warning("Unhandled exception while processing events in reactor, report this error.",
+            logger.atWarning().log("Unhandled exception while processing events in reactor, report this error.",
                 handlerException);
 
             final String message = !CoreUtils.isNullOrEmpty(cause.getMessage())
@@ -134,14 +135,14 @@ public class ReactorExecutor implements AsyncCloseable {
         } finally {
             if (!rescheduledReactor) {
                 if (hasStarted.getAndSet(false)) {
-                    logger.verbose("Scheduling reactor to complete pending tasks.");
+                    logger.atVerbose().log("Scheduling reactor to complete pending tasks.");
                     scheduleCompletePendingTasks();
                 } else {
                     final String reason
                         = "Stopping the reactor because thread was interrupted or the reactor has no more events to "
                             + "process.";
 
-                    logger.info(reason);
+                    logger.atInfo().log(reason);
                     close(reason, true);
                 }
             }
@@ -153,17 +154,17 @@ public class ReactorExecutor implements AsyncCloseable {
      */
     private void scheduleCompletePendingTasks() {
         final Runnable work = () -> {
-            logger.info("Processing all pending tasks and closing old reactor.");
+            logger.atInfo().log("Processing all pending tasks and closing old reactor.");
             try {
                 if (reactor.process()) {
-                    logger.verbose("Had more tasks to process on reactor but it is shutting down.");
+                    logger.atVerbose().log("Had more tasks to process on reactor but it is shutting down.");
                 }
 
                 reactor.stop();
             } catch (HandlerException e) {
                 logger.atWarning()
-                    .log(() -> StringUtil.toStackTraceString(e,
-                        "scheduleCompletePendingTasks - exception occurred while  processing events."));
+                        .log((Supplier<String>) () -> StringUtil.toStackTraceString(e,
+                                "scheduleCompletePendingTasks - exception occurred while  processing events."));
             } finally {
                 try {
                     reactor.free();
@@ -179,13 +180,15 @@ public class ReactorExecutor implements AsyncCloseable {
         try {
             this.scheduler.schedule(work, timeout.toMillis(), TimeUnit.MILLISECONDS);
         } catch (RejectedExecutionException e) {
-            logger.warning("Scheduler was already closed. Manually releasing reactor.");
+            logger.atWarning().log("Scheduler was already closed. Manually releasing reactor.");
             work.run();
         }
     }
 
     private void close(String reason, boolean initiatedByClient) {
-        logger.verbose("Completing close and disposing scheduler. {}", reason);
+        logger.atVerbose()
+                .addKeyValue("reason", reason)
+                .log("Completing close and disposing scheduler.");
         scheduler.dispose();
         isClosedMono.emitEmpty((signalType, emitResult) -> {
             addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)

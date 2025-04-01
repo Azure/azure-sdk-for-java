@@ -9,12 +9,14 @@ import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.AmqpMessageBodyType;
 import com.azure.core.amqp.models.AmqpMessageId;
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ContextAccessor;
+import com.azure.messaging.servicebus.implementation.instrumentation.InstrumentationContextAccessor;
 import com.azure.messaging.servicebus.models.ServiceBusMessageState;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -54,6 +56,7 @@ public final class ServiceBusReceivedMessage {
     private UUID lockToken;
     private boolean isSettled = false;
     private Context context;
+    private InstrumentationContext instrumentationContext;
 
     static {
         ContextAccessor.setReceiveMessageContextAccessor(new ContextAccessor.ReceiveMessageContextAccessor() {
@@ -65,6 +68,20 @@ public final class ServiceBusReceivedMessage {
             @Override
             public Context getContext(ServiceBusReceivedMessage message) {
                 return message.getContext();
+            }
+        });
+    }
+
+    static {
+        InstrumentationContextAccessor.setReceiveMessageContextAccessor(new InstrumentationContextAccessor.ReceiveMessageInstrumentationContextAccessor() {
+            @Override
+            public ServiceBusReceivedMessage set(ServiceBusReceivedMessage message, InstrumentationContext context) {
+                return message.setInstrumentationContext(context);
+            }
+
+            @Override
+            public InstrumentationContext get(ServiceBusReceivedMessage message) {
+                return message.getInstrumentationContext();
             }
         });
     }
@@ -544,6 +561,12 @@ public final class ServiceBusReceivedMessage {
         return this;
     }
 
+    ServiceBusReceivedMessage setInstrumentationContext(InstrumentationContext context) {
+        Objects.requireNonNull(context, "The 'context' parameter cannot be null.");
+        this.instrumentationContext = context;
+        return this;
+    }
+
     /**
      * Gets context associated with the message.
      *
@@ -552,6 +575,10 @@ public final class ServiceBusReceivedMessage {
      */
     Context getContext() {
         return this.context;
+    }
+
+    InstrumentationContext getInstrumentationContext() {
+        return this.instrumentationContext;
     }
 
     /**

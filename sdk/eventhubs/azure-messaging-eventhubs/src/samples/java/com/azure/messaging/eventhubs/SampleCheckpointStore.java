@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import reactor.core.publisher.Flux;
@@ -40,7 +40,7 @@ public class SampleCheckpointStore implements CheckpointStore {
     @Override
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroup) {
-        LOGGER.info("Listing partition ownership");
+        LOGGER.atInfo().log("Listing partition ownership");
 
         String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup, OWNERSHIP);
         return Flux.fromIterable(partitionOwnershipMap.keySet())
@@ -131,7 +131,7 @@ public class SampleCheckpointStore implements CheckpointStore {
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         if (checkpoint == null) {
-            return Mono.error(LOGGER.logExceptionAsError(new NullPointerException("checkpoint cannot be null")));
+            return Mono.error(LOGGER.atError().log(new NullPointerException("checkpoint cannot be null")));
         }
 
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),

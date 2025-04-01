@@ -5,7 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.implementation.handler.DispatchHandler;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
@@ -133,7 +133,7 @@ public final class ReactorDispatcher {
         final RejectedExecutionException rejectedException
             = this.reactor.attachments().get(RejectedExecutionException.class, RejectedExecutionException.class);
         if (rejectedException != null) {
-            throw logger.logExceptionAsWarning(new RejectedExecutionException(
+            throw logger.atWarning().log(new RejectedExecutionException(
                 "Underlying Reactor was already disposed. Should not continue dispatching work to this. "
                     + rejectedException.getMessage(),
                 rejectedException));
@@ -142,7 +142,7 @@ public final class ReactorDispatcher {
         // throw when the pipe is in closed state - in which case,
         // signalling the new event-dispatch will fail
         if (!this.ioSignal.sink().isOpen()) {
-            throw logger.logExceptionAsWarning(new RejectedExecutionException(
+            throw logger.atWarning().log(new RejectedExecutionException(
                 "ReactorDispatcher instance is closed. Should not continue dispatching work to this reactor."));
         }
     }
@@ -155,17 +155,17 @@ public final class ReactorDispatcher {
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
             if (!isClosed.get()) {
-                logger.warning("signalWorkQueue failed before reactor closed.", ignorePipeClosedDuringReactorShutdown);
+                logger.atWarning().log("signalWorkQueue failed before reactor closed.", ignorePipeClosedDuringReactorShutdown);
                 if (!isIOPipeInterrupted.getAndSet(true)) {
                     shutdownSignal.emitError(new RuntimeException(
                         String.format("connectionId[%s] IO Sink was interrupted before reactor closed.", connectionId),
                         ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
                 } else {
-                    logger.verbose("shutdown signal is already emitted. Can be ignored.",
+                    logger.atVerbose().log("shutdown signal is already emitted. Can be ignored.",
                         ignorePipeClosedDuringReactorShutdown);
                 }
             } else {
-                logger.verbose("signalWorkQueue failed with an error after closed. Can be ignored.",
+                logger.atVerbose().log("signalWorkQueue failed with an error after closed. Can be ignored.",
                     ignorePipeClosedDuringReactorShutdown);
             }
         }
@@ -192,20 +192,20 @@ public final class ReactorDispatcher {
                     }
                 } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
                     if (!isClosed.get()) {
-                        logger.warning("WorkScheduler.run() failed before reactor was closed.",
+                        logger.atWarning().log("WorkScheduler.run() failed before reactor was closed.",
                             ignorePipeClosedDuringReactorShutdown);
                         shutdownSignal.emitError(new RuntimeException(String
                             .format("connectionId[%s] IO Source was interrupted before reactor closed.", connectionId),
                             ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
                     } else {
-                        logger.verbose("WorkScheduler.run() failed with an error. Can be ignored.",
+                        logger.atVerbose().log("WorkScheduler.run() failed with an error. Can be ignored.",
                             ignorePipeClosedDuringReactorShutdown);
                     }
 
                     break;
                 } catch (IOException ioException) {
                     shutdownSignal.emitError(
-                        logger.logExceptionAsError(
+                        logger.atError().log(
                             new RuntimeException("WorkScheduler.run() failed with an error.", ioException)),
                         Sinks.EmitFailureHandler.FAIL_FAST);
                     break;
@@ -235,7 +235,7 @@ public final class ReactorDispatcher {
                 return;
             }
 
-            logger.info("Reactor selectable is being disposed.");
+            logger.atInfo().log("Reactor selectable is being disposed.");
 
             shutdownSignal.emitValue(
                 new AmqpShutdownSignal(false, false,
@@ -247,7 +247,7 @@ public final class ReactorDispatcher {
                     ioSignal.sink().close();
                 }
             } catch (IOException ioException) {
-                logger.error("CloseHandler.sink().close() failed with an error.", ioException);
+                logger.atError().log("CloseHandler.sink().close() failed with an error.", ioException);
             }
 
             workScheduler.run(null);
@@ -257,7 +257,7 @@ public final class ReactorDispatcher {
                     ioSignal.source().close();
                 }
             } catch (IOException ioException) {
-                logger.error("CloseHandler.source().close() failed with an error.", ioException);
+                logger.atError().log("CloseHandler.source().close() failed with an error.", ioException);
             }
         }
     }

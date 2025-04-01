@@ -10,8 +10,8 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.StringUtil;
-import com.azure.core.util.AsyncCloseable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.amqp.util.AsyncCloseable;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationScope;
 import org.apache.qpid.proton.message.Message;
@@ -114,7 +114,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         this.logger = new ClientLogger(AmqpReceiveLinkProcessor.class, loggingContext);
 
         if (prefetch < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'prefetch' cannot be less than 0."));
+            throw logger.atError().log(new IllegalArgumentException("'prefetch' cannot be less than 0."));
         }
 
         this.prefetch = prefetch;
@@ -156,7 +156,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     @Override
     public void onSubscribe(Subscription subscription) {
         Objects.requireNonNull(subscription, "'subscription' cannot be null");
-        logger.info("Setting new subscription for receive link processor");
+        logger.atInfo().log("Setting new subscription for receive link processor");
 
         if (!Operators.setOnce(UPSTREAM, this, subscription)) {
             throw logger.logThrowableAsError(new IllegalStateException("Cannot set upstream twice."));
@@ -365,7 +365,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("AmqpReceiveLink is already terminated.");
         } else if (currentLink == null && upstream == Operators.cancelledSubscription()) {
-            logger.info("There is no current link and upstream is terminated.");
+            logger.atInfo().log("There is no current link and upstream is terminated.");
         }
 
         if (terminateSubscriber) {
@@ -453,7 +453,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     @Override
     public void request(long request) {
         if (!Operators.validate(request)) {
-            logger.warning("Invalid request: {}", request);
+            logger.atWarning().log("Invalid request: " + request);
             return;
         }
 
@@ -481,24 +481,24 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      */
     private void requestUpstream() {
         if (isTerminated()) {
-            logger.info("Processor is terminated. Not requesting another link.");
+            logger.atInfo().log("Processor is terminated. Not requesting another link.");
             return;
         } else if (UPSTREAM.get(this) == null) {
-            logger.info("There is no upstream. Not requesting another link.");
+            logger.atInfo().log("There is no upstream. Not requesting another link.");
             return;
         } else if (UPSTREAM.get(this) == Operators.cancelledSubscription()) {
-            logger.info("Upstream is cancelled or complete. Not requesting another link.");
+            logger.atInfo().log("Upstream is cancelled or complete. Not requesting another link.");
             return;
         }
 
         synchronized (lock) {
             if (currentLink != null) {
-                logger.info("Current link exists. Not requesting another link.");
+                logger.atInfo().log("Current link exists. Not requesting another link.");
                 return;
             }
         }
 
-        logger.info("Requesting a new AmqpReceiveLink from upstream.");
+        logger.atInfo().log("Requesting a new AmqpReceiveLink from upstream.");
         UPSTREAM.get(this).request(1L);
     }
 
@@ -573,7 +573,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
                         .log("Exception occurred while handling downstream onNext operation.", e);
 
-                    throw logger.logExceptionAsError(Exceptions
+                    throw logger.atError().log(Exceptions
                         .propagate(Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
                 } finally {
                     scope.close();

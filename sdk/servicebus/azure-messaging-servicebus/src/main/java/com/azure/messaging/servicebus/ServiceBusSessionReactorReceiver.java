@@ -19,7 +19,7 @@ import java.time.Duration;
 import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {

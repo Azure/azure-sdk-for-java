@@ -14,7 +14,7 @@ import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import org.apache.qpid.proton.Proton;
@@ -94,14 +94,14 @@ public class ManagementChannel implements EventHubManagementNode {
         this.subscription = channelCache.get()
             .flatMapMany(channel -> channel.getEndpointStates().distinctUntilChanged())
             .subscribe(s -> {
-                LOGGER.info("Management endpoint state: {}", s);
+                LOGGER.atInfo().log("Management endpoint state:" + s);
                 endpointStates.emitNext(s, Sinks.EmitFailureHandler.FAIL_FAST);
             }, error -> {
-                    LOGGER.error("Exception occurred:", error);
+                    LOGGER.atError().log("Exception occurred:", error);
                     endpointStates.emitError(error, Sinks.EmitFailureHandler.FAIL_FAST);
                     close();
                 }, () -> {
-                    LOGGER.info("Complete.");
+                    LOGGER.atInfo().log("Complete.");
                     endpointStates.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
                     close();
                 });
@@ -164,7 +164,7 @@ public class ManagementChannel implements EventHubManagementNode {
                     final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
                         statusDescription, channel.getErrorContext());
 
-                    sink.error(LOGGER.logExceptionAsWarning(Exceptions.propagate(error)));
+                    sink.error(LOGGER.atWarning().log(Exceptions.propagate(error)));
                 }
             }));
         });

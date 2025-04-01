@@ -3,9 +3,10 @@
 
 package com.azure.core.amqp.models;
 
-import com.azure.core.util.ExpandableStringEnum;
+import io.clientcore.core.utils.ExpandableEnum;
 
-import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * States for a message delivery.
@@ -17,61 +18,59 @@ import java.util.Collection;
  * "http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-txn-work">Transactional
  * work</a>
  */
-public final class DeliveryState extends ExpandableStringEnum<DeliveryState> {
+public final class DeliveryState implements ExpandableEnum<String> {
+    private static final Map<String, DeliveryState> VALUES = new ConcurrentHashMap<>();
+    private final String state;
+
     /**
      * Indicates successful processing at the receiver.
      */
-    public static final DeliveryState ACCEPTED = fromString("ACCEPTED", DeliveryState.class);
+    public static final DeliveryState ACCEPTED = fromString("ACCEPTED");
     /**
      * Indicates an invalid and unprocessable message.
      */
-    public static final DeliveryState REJECTED = fromString("REJECTED", DeliveryState.class);
+    public static final DeliveryState REJECTED = fromString("REJECTED");
     /**
      * Indicates that the message was not (and will not be) processed.
      */
-    public static final DeliveryState RELEASED = fromString("RELEASED", DeliveryState.class);
+    public static final DeliveryState RELEASED = fromString("RELEASED");
     /**
      * indicates that the message was modified, but not processed.
      */
-    public static final DeliveryState MODIFIED = fromString("MODIFIED", DeliveryState.class);
+    public static final DeliveryState MODIFIED = fromString("MODIFIED");
     /**
      * indicates partial message data seen by the receiver as well as the starting point for a resumed transfer.
      */
-    public static final DeliveryState RECEIVED = fromString("RECEIVED", DeliveryState.class);
+    public static final DeliveryState RECEIVED = fromString("RECEIVED");
     /**
      * Indicates that this delivery is part of a transaction.
      */
-    public static final DeliveryState TRANSACTIONAL = fromString("TRANSACTIONAL", DeliveryState.class);
+    public static final DeliveryState TRANSACTIONAL = fromString("TRANSACTIONAL");
 
-    /**
-     * Creates a new instance of {@link DeliveryState} without a {@link #toString()} value.
-     * <p>
-     * This constructor shouldn't be called as it will produce a {@link DeliveryState} which doesn't have a String
-     * enum value.
-     *
-     * @deprecated Use one of the constants or the {@link #fromString(String, Class)} factory method.
-     */
-    @Deprecated
-    public DeliveryState() {
+    private DeliveryState(String state) {
+        this.state = state;
     }
 
     /**
-     * Gets the corresponding delivery state from its string representation.
+     * Creates or finds an DeliveryState from its string representation.
      *
-     * @param name The delivery state to convert.
-     *
-     * @return The corresponding delivery state.
+     * @param state the state to look for
+     * @return the corresponding DeliveryState
      */
-    public static DeliveryState fromString(String name) {
-        return fromString(name, DeliveryState.class);
+    public static DeliveryState fromString(String state) {
+        if (state == null) {
+            return null;
+        }
+        return VALUES.computeIfAbsent(state, DeliveryState::new);
     }
 
-    /**
-     * Gets all the current delivery states.
-     *
-     * @return Gets the current delivery states.
-     */
-    public static Collection<DeliveryState> values() {
-        return values(DeliveryState.class);
+    @Override
+    public String getValue() {
+        return this.state;
+    }
+
+    @Override
+    public String toString() {
+        return this.state;
     }
 }

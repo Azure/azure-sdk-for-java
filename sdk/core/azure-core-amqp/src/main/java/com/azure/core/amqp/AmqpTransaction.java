@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp;
 
-import com.azure.core.util.FluxUtil;
+import com.azure.core.amqp.util.FluxUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;

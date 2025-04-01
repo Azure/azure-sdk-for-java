@@ -7,7 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
 import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
@@ -241,21 +241,21 @@ public class EventHubConsumerClient implements Closeable {
     public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
         EventPosition startingPosition, Duration maximumWaitTime) {
         if (Objects.isNull(maximumWaitTime)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
+            throw LOGGER.atError().log(new NullPointerException("'maximumWaitTime' cannot be null."));
         } else if (Objects.isNull(startingPosition)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
+            throw LOGGER.atError().log(new NullPointerException("'startingPosition' cannot be null."));
         } else if (Objects.isNull(partitionId)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
+            throw LOGGER.atError().log(new NullPointerException("'partitionId' cannot be null."));
         }
 
         if (partitionId.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'partitionId' cannot be empty."));
         }
         if (maximumMessageCount < 1) {
             throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
+                    .atError().log(new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
         } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
         if (consumer.isV2()) {
@@ -292,23 +292,23 @@ public class EventHubConsumerClient implements Closeable {
     public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
         EventPosition startingPosition, Duration maximumWaitTime, ReceiveOptions receiveOptions) {
         if (Objects.isNull(maximumWaitTime)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
+            throw LOGGER.atError().log(new NullPointerException("'maximumWaitTime' cannot be null."));
         } else if (Objects.isNull(startingPosition)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
+            throw LOGGER.atError().log(new NullPointerException("'startingPosition' cannot be null."));
         } else if (Objects.isNull(partitionId)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
+            throw LOGGER.atError().log(new NullPointerException("'partitionId' cannot be null."));
         } else if (Objects.isNull(receiveOptions)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'receiveOptions' cannot be null."));
+            throw LOGGER.atError().log(new NullPointerException("'receiveOptions' cannot be null."));
         }
 
         if (partitionId.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'partitionId' cannot be empty."));
         }
         if (maximumMessageCount < 1) {
             throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
+                    .atError().log(new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
         } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
         if (consumer.isV2()) {

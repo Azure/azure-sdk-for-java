@@ -6,7 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.handler.ReactorHandler;
 import com.azure.core.amqp.implementation.handler.GlobalIOHandler;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.ReactorOptions;
@@ -67,7 +67,7 @@ public class ReactorProvider {
 
             if (maxFrameSize <= 0) {
                 throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
+                    .atError().log(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
             }
 
             final ReactorOptions reactorOptions = new ReactorOptions();

@@ -4,7 +4,7 @@
 package com.azure.core.amqp.models;
 
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Collections;
 import java.util.List;
@@ -199,7 +199,7 @@ public final class AmqpMessageBody {
      */
     public IterableStream<byte[]> getData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("This method can only be called if AMQP Message body type is 'DATA'."));
         }
         if (dataList == null) {
@@ -246,7 +246,7 @@ public final class AmqpMessageBody {
      */
     public byte[] getFirstData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            throw LOGGER.atError().log(new IllegalArgumentException(String.format(Locale.US,
                 "This method can be called if AMQP Message body type is 'DATA'. " + "The actual type is [%s].",
                 bodyType)));
         }
@@ -295,7 +295,7 @@ public final class AmqpMessageBody {
      */
     public List<Object> getSequence() {
         if (bodyType != AmqpMessageBodyType.SEQUENCE) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            throw LOGGER.atError().log(new IllegalArgumentException(String.format(Locale.US,
                 "This method can be called if AMQP Message body type is 'SEQUENCE'. " + "The actual type is [%s].",
                 bodyType)));
         }
@@ -343,7 +343,7 @@ public final class AmqpMessageBody {
      */
     public Object getValue() {
         if (bodyType != AmqpMessageBodyType.VALUE) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            throw LOGGER.atError().log(new IllegalArgumentException(String.format(Locale.US,
                 "This method can be called if AMQP Message body type is 'VALUE'. " + "The actual type is [%s].",
                 bodyType)));
         }

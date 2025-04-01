@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 
 /**
  * A package-private consumer responsible for reading {@link ServiceBusMessage} from a specific Service Bus link.

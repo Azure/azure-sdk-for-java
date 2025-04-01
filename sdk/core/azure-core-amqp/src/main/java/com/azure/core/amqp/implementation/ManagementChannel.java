@@ -11,8 +11,8 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.DeliveryOutcome;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
@@ -109,10 +109,10 @@ public class ManagementChannel implements AmqpManagementNode {
             final AmqpErrorCondition amqpErrorCondition = AmqpErrorCondition.fromString(errorCondition);
 
             if (amqpErrorCondition == AmqpErrorCondition.MESSAGE_NOT_FOUND) {
-                logger.info("There was no matching message found.");
+                logger.atInfo().log("There was no matching message found.");
                 sink.next(MessageUtils.toAmqpAnnotatedMessage(response));
             } else if (amqpErrorCondition == AmqpErrorCondition.SESSION_NOT_FOUND) {
-                logger.info("There was no matching session found.");
+                logger.atInfo().log("There was no matching session found.");
                 sink.next(MessageUtils.toAmqpAnnotatedMessage(response));
             }
 
@@ -121,7 +121,7 @@ public class ManagementChannel implements AmqpManagementNode {
 
         final String statusDescription = RequestResponseUtils.getStatusDescription(response);
 
-        LoggingEventBuilder log = logger.atWarning().addKeyValue("status", statusCode);
+        LoggingEvent log = logger.atWarning().addKeyValue("status", statusCode);
 
         addKeyValueIfNotNull(log, ERROR_DESCRIPTION_KEY, statusDescription);
         addKeyValueIfNotNull(log, ERROR_CONDITION_KEY, errorCondition);

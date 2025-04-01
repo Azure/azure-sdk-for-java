@@ -20,8 +20,8 @@ import com.azure.core.amqp.implementation.ProtonSession.ProtonChannel;
 import com.azure.core.amqp.implementation.ProtonSession.ProtonSessionClosedException;
 import com.azure.core.amqp.implementation.ProtonSessionWrapper.ProtonChannelWrapper;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
@@ -65,7 +65,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 
 /**
  * Represents an AMQP session using proton-j session {@link ProtonSession}.
@@ -160,7 +160,7 @@ public class ReactorSession implements AmqpSession {
 
         shutdownSignals = amqpConnection.getShutdownSignals();
         subscriptions
-            .add(this.endpointStates.subscribe(null, e -> logger.warning("Session endpoint state signaled error.", e)));
+            .add(this.endpointStates.subscribe(null, e -> logger.atWarning().log("Session endpoint state signaled error.", e)));
         subscriptions.add(shutdownSignals
             .flatMap(signal -> closeAsync("Shutdown signal received (" + signal.toString() + ")", null, false))
             .subscribe());
@@ -324,8 +324,9 @@ public class ReactorSession implements AmqpSession {
             return isClosedMono.asMono();
         }
 
-        addErrorCondition(logger.atVerbose(), errorCondition).log("Setting error condition and disposing session. {}",
-            message);
+        addErrorCondition(logger.atVerbose(), errorCondition)
+                .addKeyValue("message", message)
+                .log("Setting error condition and disposing session.");
 
         return Mono.fromRunnable(() -> {
             try {
@@ -403,7 +404,7 @@ public class ReactorSession implements AmqpSession {
         ConsumerFactory consumerFactory) {
 
         if (isDisposed()) {
-            LoggingEventBuilder logBuilder
+            LoggingEvent logBuilder
                 = logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, linkName);
 
             return monoError(logBuilder,
@@ -499,7 +500,7 @@ public class ReactorSession implements AmqpSession {
         Map<Symbol, Object> linkProperties, boolean requiresAuthorization) {
 
         if (isDisposed()) {
-            LoggingEventBuilder logBuilder
+            LoggingEvent logBuilder
                 = logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, linkName);
 
             return monoError(logBuilder,

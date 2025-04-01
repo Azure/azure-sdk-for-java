@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
@@ -105,7 +105,7 @@ class StrictTlsContextSpi extends SSLContextSpi {
         return Stream.of(protocols).filter(protocol -> {
             final boolean isSSLv2Hello = protocol.equalsIgnoreCase(SSL_V2_HELLO);
             if (isSSLv2Hello) {
-                LOGGER.info("{} was an enabled protocol. Filtering out.", SSL_V2_HELLO);
+                LOGGER.atInfo().log(SSL_V2_HELLO + " was an enabled protocol. Filtering out.");
             }
 
             return !isSSLv2Hello;

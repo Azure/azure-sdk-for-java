@@ -4,7 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpShutdownSignal;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Sinks;
@@ -44,29 +44,29 @@ public final class AmqpLoggingUtils {
 
     /**
      * Adds {@link SignalType} under {@code signalType} key and {@link reactor.core.publisher.Sinks.EmitResult}
-     * under {@code emitResult} key to the {@link LoggingEventBuilder}
+     * under {@code emitResult} key to the {@link LoggingEvent}
      *
-     * @param logBuilder {@link LoggingEventBuilder} to add the properties to.
+     * @param logBuilder {@link LoggingEvent} to add the properties to.
      * @param signalType {@link SignalType} to be added.
      * @param result {@link Sinks.EmitResult} to be added.
-     * @return updated {@link LoggingEventBuilder} for chaining.
+     * @return updated {@link LoggingEvent} for chaining.
      */
-    public static LoggingEventBuilder addSignalTypeAndResult(LoggingEventBuilder logBuilder, SignalType signalType,
+    public static LoggingEvent addSignalTypeAndResult(LoggingEvent logBuilder, SignalType signalType,
         Sinks.EmitResult result) {
         return logBuilder.addKeyValue(SIGNAL_TYPE_KEY, signalType).addKeyValue(EMIT_RESULT_KEY, result);
     }
 
     /**
-     * Adds {@link ErrorCondition} to the {@link LoggingEventBuilder}. Writes the {@code getCondition()} under
+     * Adds {@link ErrorCondition} to the {@link LoggingEvent}. Writes the {@code getCondition()} under
      * {@code errorCondition} key and {@code getDescription()} under {@code errorDescription} keys.
      * <p>
      * If errorCondition is {@code null} does not add properties.
      *
-     * @param logBuilder {@link LoggingEventBuilder} to add the properties to.
+     * @param logBuilder {@link LoggingEvent} to add the properties to.
      * @param errorCondition {@link ErrorCondition} to be added.
-     * @return updated {@link LoggingEventBuilder} for chaining.
+     * @return updated {@link LoggingEvent} for chaining.
      */
-    public static LoggingEventBuilder addErrorCondition(LoggingEventBuilder logBuilder, ErrorCondition errorCondition) {
+    public static LoggingEvent addErrorCondition(LoggingEvent logBuilder, ErrorCondition errorCondition) {
         if (errorCondition != null) {
             if (errorCondition.getCondition() != null) {
                 logBuilder.addKeyValue(ERROR_CONDITION_KEY, errorCondition.getCondition());
@@ -81,14 +81,14 @@ public final class AmqpLoggingUtils {
     }
 
     /**
-     * Adds {@code key} and {@code value} to the {@link LoggingEventBuilder} if value is not null.
+     * Adds {@code key} and {@code value} to the {@link LoggingEvent} if value is not null.
      *
-     * @param logBuilder {@link LoggingEventBuilder} to add the properties to.
+     * @param logBuilder {@link LoggingEvent} to add the properties to.
      * @param key key to be added.
      * @param value value to be added.
-     * @return updated {@link LoggingEventBuilder} for chaining.
+     * @return updated {@link LoggingEvent} for chaining.
      */
-    public static LoggingEventBuilder addKeyValueIfNotNull(LoggingEventBuilder logBuilder, String key, String value) {
+    public static LoggingEvent addKeyValueIfNotNull(LoggingEvent logBuilder, String key, String value) {
         if (value != null) {
             logBuilder.addKeyValue(key, value);
         }
@@ -97,18 +97,18 @@ public final class AmqpLoggingUtils {
     }
 
     /**
-     * Adds {@link AmqpShutdownSignal} to the {@link LoggingEventBuilder}. Writes
+     * Adds {@link AmqpShutdownSignal} to the {@link LoggingEvent}. Writes
      * <ul>
      *     <li>{@code isTransient()} under {@code isTransient}</li>
      *     <li>{@code isInitiatedByClient()} under {@code isInitiatedByClient}</li>
      *     <li>{@code toString()} under {@code shutdownMessage}</Li>
      * </ul>
      *
-     * @param logBuilder {@link LoggingEventBuilder} to add the properties to.
+     * @param logBuilder {@link LoggingEvent} to add the properties to.
      * @param shutdownSignal {@link AmqpShutdownSignal} to be added.
-     * @return updated {@link LoggingEventBuilder} for chaining.
+     * @return updated {@link LoggingEvent} for chaining.
      */
-    public static LoggingEventBuilder addShutdownSignal(LoggingEventBuilder logBuilder,
+    public static LoggingEvent addShutdownSignal(LoggingEvent logBuilder,
         AmqpShutdownSignal shutdownSignal) {
         return logBuilder.addKeyValue("isTransient", shutdownSignal.isTransient())
             .addKeyValue("isInitiatedByClient", shutdownSignal.isInitiatedByClient())

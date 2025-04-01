@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.util.AsyncCloseable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.amqp.util.AsyncCloseable;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;

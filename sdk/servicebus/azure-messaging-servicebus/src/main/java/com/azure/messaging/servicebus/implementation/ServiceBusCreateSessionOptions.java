@@ -3,12 +3,13 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.annotation.Immutable;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 /**
  * An option bag to provide configuration required to create a {@link ServiceBusReactorSession}.
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class ServiceBusCreateSessionOptions {
     private final boolean distributedTransactionsSupport;
 

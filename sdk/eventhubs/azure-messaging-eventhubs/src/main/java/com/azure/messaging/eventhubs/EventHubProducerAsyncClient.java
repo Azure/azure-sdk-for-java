@@ -13,7 +13,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -38,7 +38,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_KEY_KEY;
@@ -560,7 +560,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (batch == null) {
             return monoError(LOGGER, new NullPointerException("'batch' cannot be null."));
         } else if (batch.getEvents().isEmpty()) {
-            LOGGER.warning(Messages.CANNOT_SEND_EVENT_BATCH_EMPTY);
+            LOGGER.atWarning().log(Messages.CANNOT_SEND_EVENT_BATCH_EMPTY);
             return Mono.empty();
         }
 
@@ -616,7 +616,7 @@ public class EventHubProducerAsyncClient implements Closeable {
 
     private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {
         return eventBatches.flatMap(this::send).then().doOnError(error -> {
-            LOGGER.error(Messages.ERROR_SENDING_BATCH, error);
+            LOGGER.atError().log(Messages.ERROR_SENDING_BATCH, error);
         });
     }
 

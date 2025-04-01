@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.Messages;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.reactivestreams.Subscription;
@@ -69,14 +69,14 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
         work.next(value);
 
         if (work.isTerminal()) {
-            logger.info("Work completed. Closing Flux and cancelling subscription.");
+            logger.atInfo().log("Work completed. Closing Flux and cancelling subscription.");
             dispose();
         }
     }
 
     @Override
     protected void hookOnComplete() {
-        logger.info("Completed. No events to listen to.");
+        logger.atInfo().log("Completed. No events to listen to.");
         dispose();
     }
 
@@ -85,7 +85,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
      */
     @Override
     protected void hookOnError(Throwable throwable) {
-        logger.error(Messages.ERROR_OCCURRED_IN_SUBSCRIBER_ERROR, throwable);
+        logger.atError().log(Messages.ERROR_OCCURRED_IN_SUBSCRIBER_ERROR, throwable);
         work.error(throwable);
         dispose();
     }
@@ -112,7 +112,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
 
         @Override
         public void run() {
-            logger.info("Timeout encountered, disposing of subscriber.");
+            logger.atInfo().log("Timeout encountered, disposing of subscriber.");
             onDispose.run();
         }
     }

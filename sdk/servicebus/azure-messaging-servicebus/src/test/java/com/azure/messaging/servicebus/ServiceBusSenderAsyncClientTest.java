@@ -20,7 +20,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestCounter;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.SpanKind;

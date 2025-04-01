@@ -3,9 +3,10 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.time.Instant;
 import java.util.Locale;
@@ -17,7 +18,7 @@ import java.util.Objects;
  *
  * @see <a href="https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-features#event-consumers">Event consumers</a>
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class EventPosition {
     /**
      * This is a constant defined to represent the start of a partition stream in EventHub.
