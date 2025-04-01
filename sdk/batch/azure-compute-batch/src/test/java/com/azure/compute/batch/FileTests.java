@@ -10,7 +10,7 @@ import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.FileProperties;
 import com.azure.compute.batch.models.FileResponseHeaderProperties;
-import com.azure.compute.batch.models.ListBatchNodeFilesOptions;
+import com.azure.compute.batch.models.BatchNodeFilesListOptions;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -120,7 +120,7 @@ public class FileTests extends BatchClientTestBase {
                 BatchTask task = batchClient.getTask(jobId, taskId);
                 String nodeId = task.getNodeInfo().getNodeId();
 
-                ListBatchNodeFilesOptions options = new ListBatchNodeFilesOptions();
+                BatchNodeFilesListOptions options = new BatchNodeFilesListOptions();
                 options.setRecursive(true);
                 PagedIterable<BatchNodeFile> files = batchClient.listNodeFiles(poolId, nodeId, options);
 

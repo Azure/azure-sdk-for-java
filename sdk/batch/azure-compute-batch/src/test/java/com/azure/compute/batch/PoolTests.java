@@ -52,7 +52,7 @@ public class PoolTests extends BatchClientTestBase {
         // Will be enabled back soon.
         //        Assertions.assertNotNull(pool.stats());
 
-        ListBatchPoolsOptions selectOptions = new ListBatchPoolsOptions();
+        BatchPoolsListOptions selectOptions = new BatchPoolsListOptions();
         selectOptions.setSelect(Arrays.asList("id", "state"));
         PagedIterable<BatchPool> pools = batchClient.listPools(selectOptions);
         Assertions.assertNotNull(pools);
@@ -71,7 +71,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // When tests are being ran in parallel, there may be a previous pool delete still in progress
 
-        ListBatchPoolsOptions filterOptions = new ListBatchPoolsOptions();
+        BatchPoolsListOptions filterOptions = new BatchPoolsListOptions();
         filterOptions.setFilter("state eq 'deleting'");
         pools = batchClient.listPools(filterOptions);
         Assertions.assertNotNull(pools);
@@ -423,7 +423,7 @@ public class PoolTests extends BatchClientTestBase {
             // Deallocate the node using the compute node operations
             BatchNodeDeallocateContent deallocateContent
                 = new BatchNodeDeallocateContent().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
-            DeallocateBatchNodeOptions options = new DeallocateBatchNodeOptions();
+            BatchNodeDeallocateOptions options = new BatchNodeDeallocateOptions();
             options.setTimeOutInSeconds(30);
             options.setParameters(deallocateContent);
             batchClient.deallocateNode(poolId, nodeId, options);
