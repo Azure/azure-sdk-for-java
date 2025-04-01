@@ -32,8 +32,8 @@ public class BatchClientParallelOptions {
      */
     public BatchClientParallelOptions setMaxConcurrency(Integer maxConcurrency) {
         if (maxConcurrency != null && maxConcurrency <= 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("maxConcurrency must be greater than 0 or null"));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("maxConcurrency must be greater than 0 or null"));
         }
         this.maxConcurrency = maxConcurrency;
         return this;
