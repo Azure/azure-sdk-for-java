@@ -70,7 +70,7 @@ abstract class SyncBenchmark<T> {
     private boolean collectionCreated;
 
     final Logger logger;
-    final CosmosClient cosmosClient;
+    final CosmosClient benchmarkWorkloadClient;
     CosmosContainer cosmosContainer;
     CosmosDatabase cosmosDatabase;
 
@@ -171,14 +171,14 @@ abstract class SyncBenchmark<T> {
             telemetryConfig.diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER);
         }
 
-        cosmosClient = benchmarkSpecificClientBuilder.buildClient();
+        benchmarkWorkloadClient = benchmarkSpecificClientBuilder.buildClient();
         try (CosmosClient syncClient = resultUploadClientBuilder
                 .endpoint(StringUtils.isNotEmpty(configuration.getServiceEndpointForRunResultsUploadAccount()) ? configuration.getServiceEndpointForRunResultsUploadAccount() : configuration.getServiceEndpoint())
                 .key(StringUtils.isNotEmpty(configuration.getMasterKeyForRunResultsUploadAccount()) ? configuration.getMasterKeyForRunResultsUploadAccount() : configuration.getMasterKey())
                 .buildClient()) {
 
             try {
-                cosmosDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
+                cosmosDatabase = benchmarkWorkloadClient.getDatabase(this.configuration.getDatabaseId());
                 cosmosDatabase.read();
                 logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
             } catch (CosmosException e) {
@@ -189,8 +189,8 @@ abstract class SyncBenchmark<T> {
                                 "either pre-create a database and a container or use the management SDK.");
                     }
 
-                    cosmosClient.createDatabase(cfg.getDatabaseId());
-                    cosmosDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
+                    benchmarkWorkloadClient.createDatabase(cfg.getDatabaseId());
+                    cosmosDatabase = benchmarkWorkloadClient.getDatabase(cfg.getDatabaseId());
                     databaseCreated = true;
                 } else {
                     throw e;
@@ -322,7 +322,7 @@ abstract class SyncBenchmark<T> {
             logger.info("Deleted temporary collection {} created for this test", this.configuration.getCollectionId());
         }
 
-        cosmosClient.close();
+        benchmarkWorkloadClient.close();
         executorService.shutdown();
     }
 

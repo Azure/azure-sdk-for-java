@@ -75,7 +75,7 @@ abstract class AsyncBenchmark<T> {
     private boolean collectionCreated;
 
     final Logger logger;
-    final CosmosAsyncClient cosmosClient;
+    final CosmosAsyncClient benchmarkWorkloadClient;
     CosmosAsyncContainer cosmosAsyncContainer;
     CosmosAsyncDatabase cosmosAsyncDatabase;
     final String partitionKey;
@@ -169,19 +169,25 @@ abstract class AsyncBenchmark<T> {
             resultUploadClientBuilder = resultUploadClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
 
-        cosmosClient = benchmarkSpecificClientBuilder.buildAsyncClient();
+        benchmarkWorkloadClient = benchmarkSpecificClientBuilder.buildAsyncClient();
         try (CosmosClient syncClient = resultUploadClientBuilder
                 .endpoint(StringUtils.isNotEmpty(configuration.getServiceEndpointForRunResultsUploadAccount()) ? configuration.getServiceEndpointForRunResultsUploadAccount() : configuration.getServiceEndpoint())
                 .key(StringUtils.isNotEmpty(configuration.getMasterKeyForRunResultsUploadAccount()) ? configuration.getMasterKeyForRunResultsUploadAccount() : configuration.getMasterKey())
                 .buildClient()) {
 
             try {
-                cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
+                cosmosAsyncDatabase = benchmarkWorkloadClient.getDatabase(this.configuration.getDatabaseId());
                 cosmosAsyncDatabase.read().block();
             } catch (CosmosException e) {
                 if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    cosmosClient.createDatabase(cfg.getDatabaseId()).block();
-                    cosmosAsyncDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
+
+                    if (isManagedIdentityRequired) {
+                        throw new IllegalStateException("If managed identity is required, " +
+                                "either pre-create a database and a container or use the management SDK.");
+                    }
+
+                    benchmarkWorkloadClient.createDatabase(cfg.getDatabaseId()).block();
+                    cosmosAsyncDatabase = benchmarkWorkloadClient.getDatabase(cfg.getDatabaseId());
                     logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
                     databaseCreated = true;
                 } else {
@@ -440,7 +446,7 @@ abstract class AsyncBenchmark<T> {
             logger.info("Deleted temporary collection {} created for this test", this.configuration.getCollectionId());
         }
 
-        cosmosClient.close();
+        benchmarkWorkloadClient.close();
     }
 
     protected void onSuccess() {
