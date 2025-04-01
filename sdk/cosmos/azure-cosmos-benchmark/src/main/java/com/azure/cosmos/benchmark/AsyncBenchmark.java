@@ -107,7 +107,9 @@ abstract class AsyncBenchmark<T> {
                     + "}");
         }
 
-        CosmosClientBuilder benchmarkSpecificClientBuilder = (evaluateManagedIdentityUsability(cfg.isManagedIdentityRequired())) ?
+        boolean isManagedIdentityRequired = evaluateManagedIdentityUsability(cfg.isManagedIdentityRequired());
+
+        CosmosClientBuilder benchmarkSpecificClientBuilder = isManagedIdentityRequired ?
                 new CosmosClientBuilder()
                         .credential(CREDENTIAL) :
                 new CosmosClientBuilder()
@@ -193,6 +195,12 @@ abstract class AsyncBenchmark<T> {
 
             } catch (CosmosException e) {
                 if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+
+                    if (isManagedIdentityRequired) {
+                        throw new IllegalStateException("If managed identity is required, " +
+                                "either pre-create a database and a container or use the management SDK.");
+                    }
+
                     cosmosAsyncDatabase.createContainer(
                             this.configuration.getCollectionId(),
                             Configuration.DEFAULT_PARTITION_KEY_PATH,
@@ -328,7 +336,7 @@ abstract class AsyncBenchmark<T> {
                 && configuration.isProactiveConnectionManagementEnabled()
                 && !configuration.isUseUnWarmedUpContainer();
 
-        CosmosClientBuilder cosmosClientBuilderForOpeningConnections = evaluateManagedIdentityUsability(cfg.isManagedIdentityRequired()) ?
+        CosmosClientBuilder cosmosClientBuilderForOpeningConnections = isManagedIdentityRequired ?
                 new CosmosClientBuilder()
                         .credential(CREDENTIAL) :
                 new CosmosClientBuilder()
@@ -375,10 +383,20 @@ abstract class AsyncBenchmark<T> {
                 logger.info("Min connection pool size per endpoint : {}", System.getProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT"));
             }
 
-            CosmosAsyncClient openConnectionsAsyncClient = benchmarkSpecificClientBuilder.buildAsyncClient();
-            openConnectionsAsyncClient.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
-            CosmosAsyncDatabase databaseForProactiveConnectionManagement = openConnectionsAsyncClient.getDatabase(cosmosAsyncDatabase.getId());
-            databaseForProactiveConnectionManagement.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+            CosmosAsyncDatabase databaseForProactiveConnectionManagement;
+            try (CosmosAsyncClient openConnectionsAsyncClient = benchmarkSpecificClientBuilder.buildAsyncClient()) {
+
+                if (!isManagedIdentityRequired) {
+                    openConnectionsAsyncClient.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
+                }
+
+                databaseForProactiveConnectionManagement = openConnectionsAsyncClient.getDatabase(cosmosAsyncDatabase.getId());
+            }
+
+            if (!isManagedIdentityRequired) {
+                databaseForProactiveConnectionManagement.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+            }
+
             cosmosAsyncContainer = databaseForProactiveConnectionManagement.getContainer(configuration.getCollectionId());
         }
 
@@ -386,15 +404,23 @@ abstract class AsyncBenchmark<T> {
 
             logger.info("Creating unwarmed container");
 
+            CosmosClientBuilder clientBuilderForUnwarmedContainer = isManagedIdentityRequired ?
+                    new CosmosClientBuilder()
+                            .credential(CREDENTIAL) :
+                    new CosmosClientBuilder()
+                            .key(configuration.getMasterKey());
+
             CosmosAsyncDatabase databaseForUnwarmedContainer;
-            try (CosmosAsyncClient clientForUnwarmedContainer = new CosmosClientBuilder()
+            try (CosmosAsyncClient clientForUnwarmedContainer = clientBuilderForUnwarmedContainer
                     .endpoint(configuration.getServiceEndpoint())
-                    .key(configuration.getMasterKey())
                     .preferredRegions(configuration.getPreferredRegionsList())
                     .directMode()
                     .buildAsyncClient()) {
 
-                clientForUnwarmedContainer.createDatabaseIfNotExists(configuration.getDatabaseId()).block();
+                if (!isManagedIdentityRequired) {
+                    clientForUnwarmedContainer.createDatabaseIfNotExists(configuration.getDatabaseId()).block();
+                }
+
                 databaseForUnwarmedContainer = clientForUnwarmedContainer.getDatabase(configuration.getDatabaseId());
             }
             databaseForUnwarmedContainer.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();

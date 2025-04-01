@@ -133,7 +133,9 @@ abstract class SyncBenchmark<T> {
                     + "}");
         }
 
-        CosmosClientBuilder benchmarkSpecificClientBuilder = evaluateManagedIdentityUsability(cfg.isManagedIdentityRequired()) ?
+        boolean isManagedIdentityRequired = evaluateManagedIdentityUsability(configuration.isManagedIdentityRequired());
+
+        CosmosClientBuilder benchmarkSpecificClientBuilder = isManagedIdentityRequired ?
                 new CosmosClientBuilder()
                         .credential(CREDENTIAL) :
                 new CosmosClientBuilder()
@@ -181,6 +183,12 @@ abstract class SyncBenchmark<T> {
                 logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
             } catch (CosmosException e) {
                 if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+
+                    if (isManagedIdentityRequired) {
+                        throw new IllegalStateException("If managed identity is required, " +
+                                "either pre-create a database and a container or use the management SDK.");
+                    }
+
                     cosmosClient.createDatabase(cfg.getDatabaseId());
                     cosmosDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
                     databaseCreated = true;
@@ -194,6 +202,12 @@ abstract class SyncBenchmark<T> {
                 cosmosContainer.read();
             } catch (CosmosException e) {
                 if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+
+                    if (isManagedIdentityRequired) {
+                        throw new IllegalStateException("If managed identity is required, " +
+                                "either pre-create a database and a container or use the management SDK.");
+                    }
+
                     cosmosDatabase.createContainer(this.configuration.getCollectionId(),
                             Configuration.DEFAULT_PARTITION_KEY_PATH,
                             ThroughputProperties.createManualThroughput(this.configuration.getThroughput()));
