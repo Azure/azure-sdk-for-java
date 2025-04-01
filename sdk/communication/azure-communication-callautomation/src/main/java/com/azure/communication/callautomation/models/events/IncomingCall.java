@@ -6,7 +6,7 @@ package com.azure.communication.callautomation.models.events;
 import java.io.IOException;
 
 import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.communication.callautomation.implementation.models.CustomCallingContext;
+import com.azure.communication.callautomation.models.CustomCallingContext;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.core.annotation.Immutable;
@@ -23,8 +23,6 @@ public final class IncomingCall extends CallAutomationEventBase {
     private CustomCallingContext customContext;
     private String incomingCallContext;
     private CommunicationIdentifier onBehalfOfCallee;
-    //private String correlationId;
-    //private String serverCallId;
 
     private IncomingCall() {
     }
@@ -38,9 +36,6 @@ public final class IncomingCall extends CallAutomationEventBase {
         this.customContext = customContext;
         this.incomingCallContext = incomingCallContext;
         this.onBehalfOfCallee = onBehalfOfCallee;
-        //this.correlationId = correlationId;
-        //this.serverCallId = serverCallId;
-
     }
 
     /**
@@ -141,8 +136,7 @@ public final class IncomingCall extends CallAutomationEventBase {
                 } else if ("onBehalfOfCallee".equals(fieldName)) {
                     event.onBehalfOfCallee
                         = CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(reader));
-                }
-                else {
+                } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
