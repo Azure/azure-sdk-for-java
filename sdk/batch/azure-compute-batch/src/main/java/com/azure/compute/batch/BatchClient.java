@@ -19,6 +19,7 @@ import com.azure.compute.batch.models.BatchCertificateGetOptions;
 import com.azure.compute.batch.models.BatchCertificatesListOptions;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
+import com.azure.compute.batch.models.BatchFileProperties;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateContent;
 import com.azure.compute.batch.models.BatchJobCreateOptions;
@@ -121,7 +122,6 @@ import com.azure.compute.batch.models.BatchTaskReactivateOptions;
 import com.azure.compute.batch.models.BatchTaskReplaceOptions;
 import com.azure.compute.batch.models.BatchTaskTerminateOptions;
 import com.azure.compute.batch.models.BatchTasksListOptions;
-import com.azure.compute.batch.models.FileResponseHeaderProperties;
 import com.azure.compute.batch.models.GetBatchNodeFilePropertiesOptions;
 import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
 import com.azure.compute.batch.models.SupportedBatchImagesListOptions;
@@ -12559,11 +12559,11 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * @return The {@link BatchFileProperties} object containing the properties retrieved from the response
      * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileResponseHeaderProperties getTaskFileProperties(String jobId, String taskId, String filePath,
+    public BatchFileProperties getTaskFileProperties(String jobId, String taskId, String filePath,
         GetBatchTaskFilePropertiesOptions options) {
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -12580,10 +12580,10 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        // Retrieve response from getTaskFilePropertiesWithResponse and construct FileResponseHeaderProperties from its
+        // Retrieve response from getTaskFilePropertiesWithResponse and construct BatchFileProperties from its
         // headers
         Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions);
-        return new FileResponseHeaderProperties(response.getHeaders());
+        return new BatchFileProperties(response.getHeaders());
     }
 
     /**
@@ -12598,13 +12598,13 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * @return The {@link BatchFileProperties} object containing the properties retrieved from the response
      * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileResponseHeaderProperties getTaskFileProperties(String jobId, String taskId, String filePath) {
+    public BatchFileProperties getTaskFileProperties(String jobId, String taskId, String filePath) {
         Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, new RequestOptions());
-        return new FileResponseHeaderProperties(response.getHeaders());
+        return new BatchFileProperties(response.getHeaders());
     }
 
     /**
@@ -13045,11 +13045,11 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * @return The {@link BatchFileProperties} object containing the properties retrieved from the response
      * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileResponseHeaderProperties getNodeFileProperties(String poolId, String nodeId, String filePath,
+    public BatchFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath,
         GetBatchNodeFilePropertiesOptions options) {
         RequestOptions requestOptions = new RequestOptions();
         Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -13066,9 +13066,9 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        // Retrieve response from getNodeFilePropertiesWithResponse and construct NodeFileProperties from its headers
+        // Retrieve response from getNodeFilePropertiesWithResponse and construct BatchFileProperties from its headers
         Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions);
-        return new FileResponseHeaderProperties(response.getHeaders());
+        return new BatchFileProperties(response.getHeaders());
     }
 
     /**
@@ -13083,13 +13083,13 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * @return The {@link BatchFileProperties} object containing the properties retrieved from the response
      * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileResponseHeaderProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
+    public BatchFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
         Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions());
-        return new FileResponseHeaderProperties(response.getHeaders());
+        return new BatchFileProperties(response.getHeaders());
     }
 
     /**
