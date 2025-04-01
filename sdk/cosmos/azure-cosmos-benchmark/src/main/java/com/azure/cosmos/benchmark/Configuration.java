@@ -237,15 +237,6 @@ public class Configuration {
     @Parameter(names = "-accountNameInGraphiteReporter", description = "if set, account name with be appended in graphite reporter")
     private boolean accountNameInGraphiteReporter = false;
 
-    @Parameter(names = "-clientTelemetryEnabled", description = "Switch to enable client telemetry")
-    private String clientTelemetryEnabled = String.valueOf(false);
-
-    @Parameter(names = "-clientTelemetrySchedulingInSeconds", description = "Client telemetry scheduling intervals in seconds")
-    private int clientTelemetrySchedulingInSeconds = 10 * 60;
-
-    @Parameter(names = "-clientTelemetryEndpoint", description = "Client Telemetry Juno endpoint")
-    private String clientTelemetryEndpoint;
-
     @Parameter(names = "-pointLatencyThresholdMs", description = "Latency threshold for point operations")
     private int pointLatencyThresholdMs = -1;
 
@@ -596,20 +587,8 @@ public class Configuration {
         return encryptionEnabled;
     }
 
-    public boolean isClientTelemetryEnabled() {
-        return Boolean.parseBoolean(clientTelemetryEnabled);
-    }
-
     public boolean isDefaultLog4jLoggerEnabled() {
         return Boolean.parseBoolean(defaultLog4jLoggerEnabled);
-    }
-
-    public String getClientTelemetryEndpoint() {
-        return clientTelemetryEndpoint;
-    }
-
-    public int getClientTelemetrySchedulingInSeconds() {
-        return clientTelemetrySchedulingInSeconds;
     }
 
     public Integer getTupleSize() {

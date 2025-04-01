@@ -142,16 +142,16 @@ abstract class AsyncBenchmark<T> {
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
         if (registry != null) {
-            logger.info("USING AZURE METRIC REGISTRY - isClientTelemetryEnabled {}", cfg.isClientTelemetryEnabled());
+            logger.info("USING AZURE METRIC REGISTRY");
             telemetryConfig.metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
         } else {
             registry = configuration.getGraphiteMeterRegistry();
 
             if (registry != null) {
-                logger.info("USING GRAPHITE METRIC REGISTRY - isClientTelemetryEnabled {}", cfg.isClientTelemetryEnabled());
+                logger.info("USING GRAPHITE METRIC REGISTRY");
                 telemetryConfig.metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
             } else {
-                logger.info("USING DEFAULT/GLOBAL METRIC REGISTRY - isClientTelemetryEnabled {}", cfg.isClientTelemetryEnabled());
+                logger.info("USING DEFAULT/GLOBAL METRIC REGISTRY");
                 telemetryConfig.metricsOptions(
                     new CosmosMicrometerMetricsOptions().meterRegistry(null));
             }
