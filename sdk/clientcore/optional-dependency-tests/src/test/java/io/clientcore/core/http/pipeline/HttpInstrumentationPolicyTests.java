@@ -430,7 +430,7 @@ public class HttpInstrumentationPolicyTests {
             @Override
             public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
                 io.clientcore.core.instrumentation.tracing.Span span
-                    = request.getRequestContext().getInstrumentationContext().getSpan();
+                    = request.getContext().getInstrumentationContext().getSpan();
                 if (span.isRecording()) {
                     span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
                 }
@@ -504,7 +504,7 @@ public class HttpInstrumentationPolicyTests {
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri("https://localhost:8080/path/to/resource?query=param")
-            .setRequestContext(context)).close();
+            .setContext(context)).close();
         testSpan.end();
 
         assertNotNull(exporter.getFinishedSpanItems());
@@ -551,7 +551,7 @@ public class HttpInstrumentationPolicyTests {
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri("https://localhost:8080/path/to/resource?query=param")
-            .setRequestContext(context)).close();
+            .setContext(context)).close();
 
         parent.end();
 

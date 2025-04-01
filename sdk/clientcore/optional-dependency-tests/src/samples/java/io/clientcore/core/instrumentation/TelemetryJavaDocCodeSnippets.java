@@ -206,11 +206,11 @@ public class TelemetryJavaDocCodeSnippets {
         }
 
         private Response<?> clientCallWithResponseImpl(RequestContext context) {
-            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(context));
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setContext(context));
         }
 
         private void clientCallImpl(RequestContext context) {
-            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(context));
+            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setContext(context));
         }
     }
 }

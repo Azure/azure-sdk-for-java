@@ -74,7 +74,7 @@ public class HttpInstrumentationLoggingTests {
 
         HttpPipeline pipeline = createPipeline(new HttpInstrumentationOptions().setHttpLogLevel(detailLevel));
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI);
-        request.setRequestContext(context);
+        request.setContext(context);
 
         pipeline.send(request).close();
 
@@ -531,10 +531,10 @@ public class HttpInstrumentationLoggingTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy())
             .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
-                assertEquals(traceparent(request.getRequestContext().getInstrumentationContext()),
+                assertEquals(traceparent(request.getContext().getInstrumentationContext()),
                     request.getHeaders().get(TRACEPARENT).getValue());
                 if (count.getAndIncrement() == 0) {
-                    firstTryContext.set(request.getRequestContext().getInstrumentationContext());
+                    firstTryContext.set(request.getContext().getInstrumentationContext());
                     throw expectedException;
                 } else {
                     return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
@@ -573,7 +573,7 @@ public class HttpInstrumentationLoggingTests {
             .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
                 if (count.getAndIncrement() == 0) {
-                    firstTryContext.set(request.getRequestContext().getInstrumentationContext());
+                    firstTryContext.set(request.getContext().getInstrumentationContext());
                     return new Response<>(request, 500, new HttpHeaders(), BinaryData.empty());
                 } else {
                     return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
@@ -646,7 +646,7 @@ public class HttpInstrumentationLoggingTests {
             .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
                 if (count.getAndIncrement() == 0) {
-                    firstRedirectContext.set(request.getRequestContext().getInstrumentationContext());
+                    firstRedirectContext.set(request.getContext().getInstrumentationContext());
                     HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION,
                         "http://redirecthost/" + count.get() + "?param=value&api-version=42");
                     return new Response<>(request, 302, httpHeaders, BinaryData.empty());
@@ -833,7 +833,7 @@ public class HttpInstrumentationLoggingTests {
         assertNull(log.get("message"));
 
         if (context == null) {
-            context = request.getRequestContext().getInstrumentationContext();
+            context = request.getContext().getInstrumentationContext();
         }
 
         assertTraceContext(log, context);
@@ -903,7 +903,7 @@ public class HttpInstrumentationLoggingTests {
 
     private void assertResponseLog(Map<String, Object> log, String expectedUri, Response<?> response, int tryCount) {
         assertResponseLog(log, expectedUri, tryCount, response.getStatusCode(),
-            response.getRequest().getRequestContext().getInstrumentationContext());
+            response.getRequest().getContext().getInstrumentationContext());
 
         Long expectedRequestLength = getLength(response.getRequest().getBody(), response.getRequest().getHeaders());
 
@@ -946,7 +946,7 @@ public class HttpInstrumentationLoggingTests {
         assertEquals(error.getMessage(), log.get("exception.message"));
         assertEquals(error.getClass().getCanonicalName(), log.get("exception.type"));
         assertNull(log.get("message"));
-        assertTraceContext(log, response.getRequest().getRequestContext().getInstrumentationContext());
+        assertTraceContext(log, response.getRequest().getContext().getInstrumentationContext());
     }
 
     private void assertExceptionLog(Map<String, Object> log, HttpRequest request, Throwable error) {
@@ -972,7 +972,7 @@ public class HttpInstrumentationLoggingTests {
         assertNull(log.get("message"));
 
         if (context == null) {
-            context = request.getRequestContext().getInstrumentationContext();
+            context = request.getContext().getInstrumentationContext();
         }
         assertTraceContext(log, context);
     }
@@ -1008,8 +1008,7 @@ public class HttpInstrumentationLoggingTests {
         HttpRequest request = new HttpRequest().setMethod(method).setUri(url);
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer {token}");
-        request
-            .setRequestContext(RequestContext.builder().setLogger(logger).setInstrumentationContext(context).build());
+        request.setContext(RequestContext.builder().setLogger(logger).setInstrumentationContext(context).build());
 
         return request;
     }

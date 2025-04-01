@@ -362,9 +362,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy() {
             @Override
             public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
-                Span span = request.getRequestContext() == null
-                    ? Span.noop()
-                    : request.getRequestContext().getInstrumentationContext().getSpan();
+                Span span = request.getContext().getInstrumentationContext().getSpan();
                 if (span.isRecording()) {
                     span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
                 }

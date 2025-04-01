@@ -268,8 +268,7 @@ public class JdkHttpClientIT {
 
     private static Response<BinaryData> getResponse(HttpClient client, String path, RequestContext context)
         throws IOException {
-        HttpRequest request
-            = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path)).setRequestContext(context);
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path)).setContext(context);
 
         return client.send(request);
     }

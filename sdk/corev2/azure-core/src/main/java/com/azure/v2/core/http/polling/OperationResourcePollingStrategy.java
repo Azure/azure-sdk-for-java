@@ -169,7 +169,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     public PollResponse<T> poll(PollingContext<T> pollingContext, Type pollResponseType) {
         String url = pollingContext.getData(operationLocationHeaderName.getCaseSensitiveName());
         url = setServiceVersionQueryParam(url);
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(url).setRequestContext(requestContext);
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(url).setContext(requestContext);
 
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
@@ -219,7 +219,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
 
         HttpRequest request
-            = new HttpRequest().setMethod(HttpMethod.GET).setUri(finalGetUrl).setRequestContext(requestContext);
+            = new HttpRequest().setMethod(HttpMethod.GET).setUri(finalGetUrl).setContext(requestContext);
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
             return PollingUtils.deserializeResponse(responseBody, serializer, resultType);

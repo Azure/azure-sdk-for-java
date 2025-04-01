@@ -372,7 +372,7 @@ public class SuppressionTests {
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
-                    .setRequestContext(
+                    .setContext(
                         context.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build()));
                 try {
                     response.close();
@@ -412,10 +412,8 @@ public class SuppressionTests {
         }
 
         public Response<?> protocolMethod(RequestContext context) {
-            return instrumentation.instrumentWithResponse("protocol", context,
-                updatedContext -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
-                    .setUri("https://localhost")
-                    .setRequestContext(updatedContext)));
+            return instrumentation.instrumentWithResponse("protocol", context, updatedContext -> pipeline.send(
+                new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost").setContext(updatedContext)));
         }
 
         public Response<?> convenienceMethod(RequestContext context) {

@@ -8,7 +8,6 @@ import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
@@ -118,9 +117,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy&#40;&#41; &#123;
  *     &#64;Override
  *     public Response&lt;BinaryData&gt; process&#40;HttpRequest request, HttpPipelineNextPolicy next&#41; &#123;
- *         Span span = request.getRequestContext&#40;&#41; == null
- *             ? Span.noop&#40;&#41;
- *             : request.getRequestContext&#40;&#41;.getInstrumentationContext&#40;&#41;.getSpan&#40;&#41;;
+ *         Span span = request.getContext&#40;&#41;.getInstrumentationContext&#40;&#41;.getSpan&#40;&#41;;
  *         if &#40;span.isRecording&#40;&#41;&#41; &#123;
  *             span.setAttribute&#40;&quot;custom.request.id&quot;, request.getHeaders&#40;&#41;.getValue&#40;CUSTOM_REQUEST_ID&#41;&#41;;
  *         &#125;
@@ -247,9 +244,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         Map<String, Object> metricAttributes = isMetricsEnabled ? new HashMap<>(8) : null;
 
-        RequestContext requestContext
-            = request.getRequestContext() == null ? RequestContext.none() : request.getRequestContext();
-        InstrumentationContext parentContext = requestContext.getInstrumentationContext();
+        InstrumentationContext parentContext = request.getContext().getInstrumentationContext();
 
         SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, parentContext);
         setStartAttributes(request, redactedUrl, spanBuilder, metricAttributes);
@@ -259,7 +254,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parentContext;
 
         if (currentContext != null && currentContext.isValid()) {
-            request.setRequestContext(requestContext.toBuilder().setInstrumentationContext(currentContext).build());
+            request.setContext(request.getContext().toBuilder().setInstrumentationContext(currentContext).build());
             // even if tracing is disabled, we could have a valid context to propagate
             // if it was provided by the application explicitly.
             traceContextPropagator.inject(currentContext, request.getHeaders(), SETTER);
@@ -379,8 +374,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private ClientLogger getLogger(HttpRequest httpRequest) {
         ClientLogger logger = null;
 
-        if (httpRequest.getRequestContext() != null && httpRequest.getRequestContext().getLogger() != null) {
-            logger = httpRequest.getRequestContext().getLogger();
+        if (httpRequest.getContext() != null && httpRequest.getContext().getLogger() != null) {
+            logger = httpRequest.getContext().getLogger();
         }
 
         return logger == null ? LOGGER : logger;

@@ -149,7 +149,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     public PollResponse<T> poll(PollingContext<T> pollingContext, Type pollResponseType) {
         String uri = pollingContext.getData(PollingConstants.LOCATION);
         uri = setServiceVersionQueryParam(uri);
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri).setRequestContext(requestContext);
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri).setContext(requestContext);
 
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
@@ -204,7 +204,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
         finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
         HttpRequest request
-            = new HttpRequest().setMethod(HttpMethod.GET).setUri(finalGetUrl).setRequestContext(requestContext);
+            = new HttpRequest().setMethod(HttpMethod.GET).setUri(finalGetUrl).setContext(requestContext);
 
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();

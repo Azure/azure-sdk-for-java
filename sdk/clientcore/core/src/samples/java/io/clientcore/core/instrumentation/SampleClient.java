@@ -42,14 +42,14 @@ class SampleClient {
     }
 
     private Response<?> downloadImpl(RequestContext context) {
-        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestContext(context));
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setContext(context));
     }
 
     private Response<?> createWithResponseImpl(RequestContext context) {
-        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(context));
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setContext(context));
     }
 
     private void createImpl(RequestContext context) {
-        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(context));
+        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setContext(context));
     }
 }

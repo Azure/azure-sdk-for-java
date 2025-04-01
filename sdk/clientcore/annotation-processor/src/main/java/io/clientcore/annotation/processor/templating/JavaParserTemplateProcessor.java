@@ -323,10 +323,10 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         if (hasRequestContext) {
             // Create a statement for setting request options
-            Statement statement1 = StaticJavaParser.parseStatement("httpRequest.setRequestContext(requestContext);");
+            Statement statement1 = StaticJavaParser.parseStatement("httpRequest.setContext(requestContext);");
 
-            Statement statement2 = StaticJavaParser
-                .parseStatement("httpRequest.getRequestContext().getRequestCallback().accept(httpRequest);");
+            Statement statement2
+                = StaticJavaParser.parseStatement("httpRequest.getContext().getRequestCallback().accept(httpRequest);");
 
             body.addStatement(statement1);
             body.addStatement(statement2);

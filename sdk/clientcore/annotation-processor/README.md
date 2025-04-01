@@ -107,7 +107,7 @@ The client-core annotation processor for introducing compile-time code generatio
           httpRequest.setHeaders(headers);
 
           // add RequestContext to the request
-          httpRequest.setRequestContext(requestContext);
+          httpRequest.setContext(requestContext);
 
           // set the body content if present
 

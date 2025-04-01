@@ -50,7 +50,7 @@ public class HttpRequest {
      */
     public HttpRequest() {
         this.headers = new HttpHeaders();
-        this.requestContext = null;
+        this.requestContext = RequestContext.none();
     }
 
     /**
@@ -165,22 +165,22 @@ public class HttpRequest {
     }
 
     /**
-     * Get the request options.
+     * Get the request context. If no context was provided, {@link RequestContext#none()} is returned.
      *
      * @return The {@link RequestContext}.
      */
-    public RequestContext getRequestContext() {
+    public RequestContext getContext() {
         return requestContext;
     }
 
     /**
-     * Set the request options.
+     * Set the request context.
      *
      * @param requestContext The {@link RequestContext}.
      * @return The updated {@link HttpRequest}.
      */
-    public HttpRequest setRequestContext(RequestContext requestContext) {
-        this.requestContext = requestContext;
+    public HttpRequest setContext(RequestContext requestContext) {
+        this.requestContext = requestContext == null ? RequestContext.none() : requestContext;
         return this;
     }
 
