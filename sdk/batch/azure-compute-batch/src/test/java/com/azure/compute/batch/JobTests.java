@@ -247,9 +247,9 @@ public class JobTests extends BatchClientTestBase {
             Assertions.assertEquals(500, stats.getWriteIops());
             Assertions.assertEquals(0.5, stats.getReadIoGiB());
             Assertions.assertEquals(0.25, stats.getWriteIoGiB());
-            Assertions.assertEquals(10, stats.getNumSucceededTasks());
-            Assertions.assertEquals(2, stats.getNumFailedTasks());
-            Assertions.assertEquals(3, stats.getNumTaskRetries());
+            Assertions.assertEquals(10, stats.getSucceededTasksCount());
+            Assertions.assertEquals(2, stats.getFailedTasksCount());
+            Assertions.assertEquals(3, stats.getTaskRetriesCount());
             Assertions.assertEquals(Duration.parse("PT10M"), stats.getWaitTime());
         } catch (IOException e) {
             throw new RuntimeException(e);
