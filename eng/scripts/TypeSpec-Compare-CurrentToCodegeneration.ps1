@@ -18,6 +18,8 @@ param(
   [string]$ServiceDirectories
 )
 
+$SeparatorBars = "==========================================================================="
+
 function Reset-Repository {
   # Clean up generated code, so that next step will not be affected.
   git reset --hard
@@ -25,13 +27,10 @@ function Reset-Repository {
 }
 
 function Install-typespec-client-generator-cli {
-  Write-Host "
+  Write-Host "$SeparatorBars"
+  Write-Host "Installing typespec-client-generator-cli"
+  Write-Host "$SeparatorBars"
 
-  ===========================================
-  Installing typespec-client-generator-cli
-  ===========================================
-
-  "
   npm install -g @azure-tools/typespec-client-generator-cli
 }
 
@@ -44,23 +43,16 @@ function TypeSpec-Compare-CurrentToCodegeneration {
 
   $tspYamls = Get-ChildItem -Path $ServiceDirectory -Filter "tsp-location.yaml" -Recurse
   if ($tspYamls.Count -eq 0) {
-    Write-Host "
-
-    =========================================================
-    No TypeSpec files to regenerate for $ServiceDirectory
-    =========================================================
-
-    "
+    Write-Host "$SeparatorBars"
+    Write-Host "No TypeSpec files to regenerate for $ServiceDirectory"
+    Write-Host "$SeparatorBars"
+    Write-Host "JRS-Returning pass-1"
     return $false
   }
 
-  Write-Host "
-
-  ===========================================================================
-  Invoking tsp-client update for tsp-location.yaml files in $ServiceDirectory
-  ===========================================================================
-
-  "
+  Write-Host "$SeparatorBars"
+  Write-Host "Invoking tsp-client update for tsp-location.yaml files in $ServiceDirectory"
+  Write-Host "$SeparatorBars"
 
   $failedSdk = $null
   foreach ($tspLocationPath in $tspYamls) {
@@ -79,16 +71,13 @@ function TypeSpec-Compare-CurrentToCodegeneration {
   }
   if ($failedSdk.Length -gt 0) {
     Write-Host "Code generation failed for following modules: $failedSdk"
+    Write-Host "JRS-Returning failure-1"
     return $true
   }
 
-  Write-Host "
-
-  ================================================================
-  Verify no diff for TypeSpec generated files in $ServiceDirectory
-  ================================================================
-
-  "
+  Write-Host "$SeparatorBars"
+  Write-Host "Verify no diff for TypeSpec generated files in $ServiceDirectory"
+  Write-Host "$SeparatorBars"
 
   # prevent warning related to EOL differences which triggers an exception for some reason
   git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":
@@ -96,10 +85,9 @@ function TypeSpec-Compare-CurrentToCodegeneration {
 
   if ($LastExitCode -ne 0) {
     $status = git status -s | Out-String
-    Write-Host "
-  The following files are out of date:
-  $status
-  "
+    Write-Host "The following files are out of date:"
+    Write-Host "$status"
+    Write-Host "JRS-Returning failure-2"
     return $true
   }
 
@@ -107,6 +95,7 @@ function TypeSpec-Compare-CurrentToCodegeneration {
   Get-ChildItem -Path $ServiceDirectory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
     Remove-Item -Path $_.FullName -Recurse -Force
   }
+  Write-Host "JRS-Returning pass-2"
   return $false
 }
 
