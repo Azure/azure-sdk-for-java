@@ -29,7 +29,7 @@ public class BodyContentTypeProcessorTest {
      */
     @Test
     public void bodyParamAnnotationPriorityOverContentTypeHeaderTest() {
-        // Create a new RequestContext
+        // Create a new HttpRequestContext
         HttpRequestContext context = new HttpRequestContext();
         byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
 
@@ -75,7 +75,7 @@ public class BodyContentTypeProcessorTest {
     @ParameterizedTest
     @MethodSource("knownContentTypesProvider")
     public void testConfigureBodyContentType(String parameterType, String expectedContentType) {
-        // Create a new RequestContext
+        // Create a new HttpRequestContext
         HttpRequestContext context = new HttpRequestContext();
 
         // Set the body without specifying ContentType
@@ -97,7 +97,7 @@ public class BodyContentTypeProcessorTest {
 
     @Test
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
-        // Create a new RequestContext
+        // Create a new HttpRequestContext
         HttpRequestContext context = new HttpRequestContext();
         byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
 

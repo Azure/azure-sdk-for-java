@@ -119,7 +119,7 @@ public interface Instrumentation {
      * The method updates the {@link RequestContext} object with the instrumentation context that should be used for the call.
      * <!-- src_embed io.clientcore.core.instrumentation.instrumentwithresponse -->
      * <pre>
-     * return instrumentation.instrumentWithResponse&#40;&quot;Sample.download&quot;, options, this::downloadImpl&#41;;
+     * return instrumentation.instrumentWithResponse&#40;&quot;Sample.download&quot;, context, this::downloadImpl&#41;;
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.instrumentwithresponse -->
      *
@@ -141,7 +141,7 @@ public interface Instrumentation {
      * The method updates the {@link RequestContext} object with the instrumentation context that should be used for the call.
      * <!-- src_embed io.clientcore.core.instrumentation.instrument -->
      * <pre>
-     * instrumentation.instrument&#40;&quot;Sample.create&quot;, options, this::createImpl&#41;;
+     * instrumentation.instrument&#40;&quot;Sample.create&quot;, context, this::createImpl&#41;;
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.instrument -->
      *
@@ -151,10 +151,9 @@ public interface Instrumentation {
      * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
      * @throws RuntimeException if the call throws a runtime exception.
      */
-    default void instrument(String operationName, RequestContext requestContext,
-        Consumer<RequestContext> operation) {
-        instrumentWithResponse(operationName, requestContext, updatedOptions -> {
-            operation.accept(updatedOptions);
+    default void instrument(String operationName, RequestContext requestContext, Consumer<RequestContext> operation) {
+        instrumentWithResponse(operationName, requestContext, updatedContext -> {
+            operation.accept(updatedContext);
             return null;
         });
     }
@@ -196,12 +195,12 @@ public interface Instrumentation {
      *
      * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
      *
-     * RequestContext options = RequestContext.builder&#40;&#41;
+     * RequestContext context = RequestContext.builder&#40;&#41;
      *     .setInstrumentationContext&#40;new MyInstrumentationContext&#40;&quot;e4eaaaf2d48f4bf3b299a8a2a2a77ad7&quot;, &quot;5e0c63257de34c56&quot;&#41;&#41;
      *     .build&#40;&#41;;
      *
      * &#47;&#47; run on another thread
-     * client.downloadContent&#40;options&#41;;
+     * client.downloadContent&#40;context&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->
@@ -221,12 +220,12 @@ public interface Instrumentation {
      * &#47;&#47; However, in asynchronous code, context may need to be propagated explicitly using RequestContext
      * &#47;&#47; and explicit io.clientcore.core.util.Context.
      *
-     * RequestContext options = RequestContext.builder&#40;&#41;
+     * RequestContext context = RequestContext.builder&#40;&#41;
      *     .setInstrumentationContext&#40;Instrumentation.createInstrumentationContext&#40;span&#41;&#41;
      *     .build&#40;&#41;;
      *
      * &#47;&#47; run on another thread - all telemetry will be correlated with the span created above
-     * client.clientCall&#40;options&#41;;
+     * client.clientCall&#40;context&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->

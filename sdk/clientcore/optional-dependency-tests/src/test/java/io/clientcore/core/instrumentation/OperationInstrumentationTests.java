@@ -82,8 +82,7 @@ public class OperationInstrumentationTests {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, libraryInstrumentationOptions);
         assertThrows(NullPointerException.class,
             () -> instrumentation.instrumentWithResponse(null, RequestContext.none(), o -> "done"));
-        assertThrows(NullPointerException.class,
-            () -> instrumentation.instrument("call", RequestContext.none(), null));
+        assertThrows(NullPointerException.class, () -> instrumentation.instrument("call", RequestContext.none(), null));
     }
 
     @Test
@@ -92,11 +91,11 @@ public class OperationInstrumentationTests {
             = Instrumentation.create(otelOptions, libraryInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
 
         AtomicReference<Span> current = new AtomicReference<>();
-        instrumentation.instrument("call", RequestContext.none(), options -> {
+        instrumentation.instrument("call", RequestContext.none(), context -> {
             current.set(Span.current());
             assertTrue(current.get().getSpanContext().isValid());
-            assertEquals(current.get().getSpanContext().getTraceId(), options.getInstrumentationContext().getTraceId());
-            assertEquals(current.get().getSpanContext().getSpanId(), options.getInstrumentationContext().getSpanId());
+            assertEquals(current.get().getSpanContext().getTraceId(), context.getInstrumentationContext().getTraceId());
+            assertEquals(current.get().getSpanContext().getSpanId(), context.getInstrumentationContext().getSpanId());
         });
 
         assertFalse(Span.current().getSpanContext().isValid());
@@ -214,15 +213,15 @@ public class OperationInstrumentationTests {
             .setAttribute("operation.name", "call1")
             .startSpan();
 
-        RequestContext options
+        RequestContext context
             = RequestContext.builder().setInstrumentationContext(span.getInstrumentationContext()).build();
-        instrumentation2.instrument("call2", options, o2 -> {
+        instrumentation2.instrument("call2", context, o2 -> {
             assertTrue(o2.getInstrumentationContext().isValid());
-            assertNotSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
+            assertNotSame(o2.getInstrumentationContext(), context.getInstrumentationContext());
             instrumentation2.instrument("call3", o2, o3 -> {
                 // this call is suppressed
                 assertSame(o2.getInstrumentationContext(), o3.getInstrumentationContext());
-                assertNotSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
+                assertNotSame(o3.getInstrumentationContext(), context.getInstrumentationContext());
             });
         });
         span.end();
@@ -255,16 +254,16 @@ public class OperationInstrumentationTests {
 
         parent.set(span.getInstrumentationContext());
 
-        RequestContext options
+        RequestContext context
             = RequestContext.builder().setInstrumentationContext(span.getInstrumentationContext()).build();
-        instrumentation.instrument("call2", options, o2 -> {
+        instrumentation.instrument("call2", context, o2 -> {
             assertTrue(o2.getInstrumentationContext().isValid());
-            assertNotSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
+            assertNotSame(o2.getInstrumentationContext(), context.getInstrumentationContext());
         });
 
-        instrumentation.instrument("call3", options, o3 -> {
+        instrumentation.instrument("call3", context, o3 -> {
             assertTrue(o3.getInstrumentationContext().isValid());
-            assertNotSame(o3.getInstrumentationContext(), options.getInstrumentationContext());
+            assertNotSame(o3.getInstrumentationContext(), context.getInstrumentationContext());
             assertNotSame(o3.getInstrumentationContext(), parent.get());
         });
 

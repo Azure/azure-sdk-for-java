@@ -42,7 +42,7 @@ public final class HttpRequestContext {
     private int[] expectedStatusCodes;
 
     /**
-     * Constructs a new RequestContext with default values.
+     * Constructs a new HttpRequestContext with default values.
      */
     public HttpRequestContext() {
         this.parameters = new ArrayList<>();

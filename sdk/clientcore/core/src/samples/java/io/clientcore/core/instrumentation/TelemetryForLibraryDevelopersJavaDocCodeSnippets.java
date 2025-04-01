@@ -196,28 +196,28 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setEndpoint("https://example.com");
 
         Tracer tracer = Instrumentation.create(null, libraryOptions).getTracer();
-        RequestContext options = RequestContext.none();
+        RequestContext context = RequestContext.none();
 
         // BEGIN: io.clientcore.core.instrumentation.tracecall
 
         if (!tracer.isEnabled()) {
             // tracing is disabled, so we don't need to create a span
-            clientCall(options).close();
+            clientCall(context).close();
             return;
         }
 
-        InstrumentationContext instrumentationContext = options.getInstrumentationContext();
+        InstrumentationContext instrumentationContext = context.getInstrumentationContext();
         Span span = tracer.spanBuilder("{operationName}", SpanKind.CLIENT, instrumentationContext)
             .startSpan();
 
-        RequestContext childOptions = options.toBuilder()
+        RequestContext childContext = context.toBuilder()
             .setInstrumentationContext(span.getInstrumentationContext())
             .build();
 
         // we'll propagate context implicitly using span.makeCurrent() as shown later.
         // Libraries that write async code should propagate context explicitly in addition to implicit propagation.
         try (TracingScope scope = span.makeCurrent()) {
-            clientCall(childOptions).close();
+            clientCall(childContext).close();
         } catch (Throwable t) {
             // make sure to report any exceptions including unchecked ones.
             span.end(getCause(t));
@@ -262,13 +262,13 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         RequestContext requestContext = RequestContext.none();
 
         // BEGIN: io.clientcore.core.instrumentation.enrich
-        instrumentation.instrumentWithResponse("downloadContent", requestContext, updatedOptions -> {
-            Span span = updatedOptions.getInstrumentationContext().getSpan();
+        instrumentation.instrumentWithResponse("downloadContent", requestContext, updatedContext -> {
+            Span span = updatedContext.getInstrumentationContext().getSpan();
             if (span.isRecording()) {
                 span.setAttribute("sample.content.id", "{content-id}");
             }
 
-            return clientCall(updatedOptions);
+            return clientCall(updatedContext);
         });
 
         // END: io.clientcore.core.instrumentation.enrich
@@ -292,11 +292,11 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setEndpoint("https://example.com");
 
         Tracer tracer = Instrumentation.create(null, libraryOptions).getTracer();
-        RequestContext options = RequestContext.none();
+        RequestContext context = RequestContext.none();
 
         // BEGIN: io.clientcore.core.instrumentation.tracewithattributes
 
-        Span sendSpan = tracer.spanBuilder("send {queue-name}", SpanKind.PRODUCER, options.getInstrumentationContext())
+        Span sendSpan = tracer.spanBuilder("send {queue-name}", SpanKind.PRODUCER, context.getInstrumentationContext())
             // Some of the attributes should be provided at the start time (as documented in semantic conventions) -
             // they can be used by client apps to sample spans.
             .setAttribute("messaging.system", "servicebus")
@@ -304,7 +304,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setAttribute("messaging.operations.name", "send")
             .startSpan();
 
-        RequestContext childOptions = options.toBuilder()
+        RequestContext childContext = context.toBuilder()
             .setInstrumentationContext(sendSpan.getInstrumentationContext())
             .build();
 
@@ -313,7 +313,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
                 sendSpan.setAttribute("messaging.message.id", "{message-id}");
             }
 
-            Response<?> response = clientCall(childOptions);
+            Response<?> response = clientCall(childContext);
             response.close();
         } catch (Throwable t) {
             sendSpan.end(t);

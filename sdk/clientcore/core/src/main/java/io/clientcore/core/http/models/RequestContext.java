@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  * <p><strong>Creating an instance of RequestContext</strong></p>
  * <!-- src_embed io.clientcore.core.http.rest.requestcontext.instantiation -->
  * <pre>
- * RequestContext options = new RequestContext.Builder&#40;&#41;
+ * RequestContext context = new RequestContext.Builder&#40;&#41;
  *     .addHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;
  *     .build&#40;&#41;;
  * </pre>
@@ -99,7 +99,7 @@ import java.util.function.Consumer;
  *
  * <!-- src_embed io.clientcore.core.http.rest.requestcontext.postrequest -->
  * <pre>
- * RequestContext options = RequestContext.builder&#40;&#41;
+ * RequestContext context = RequestContext.builder&#40;&#41;
  *     .addRequestCallback&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
@@ -135,7 +135,7 @@ public final class RequestContext {
      * @param context The generic context.
      */
     private RequestContext(Consumer<HttpRequest> requestCallback, ClientLogger logger,
-                           InstrumentationContext instrumentationContext, InternalContext context) {
+        InstrumentationContext instrumentationContext, InternalContext context) {
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
         this.requestCallback = requestCallback;

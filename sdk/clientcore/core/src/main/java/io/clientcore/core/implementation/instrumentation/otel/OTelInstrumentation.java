@@ -240,11 +240,11 @@ public class OTelInstrumentation implements Instrumentation {
         TracingScope scope = span.makeCurrent();
         RuntimeException error = null;
 
-        RequestContext childOptions
+        RequestContext childContext
             = requestContext.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
 
         try {
-            return operation.apply(childOptions);
+            return operation.apply(childContext);
         } catch (RuntimeException t) {
             error = t;
             throw t;
@@ -254,7 +254,7 @@ public class OTelInstrumentation implements Instrumentation {
                     ? commonAttributes
                     : commonAttributes.put(ERROR_TYPE_KEY, error.getClass().getCanonicalName());
                 callDurationMetric.record((System.nanoTime() - startTimeNs) / 1e9, attributes,
-                    childOptions.getInstrumentationContext());
+                    childContext.getInstrumentationContext());
             }
             span.end(error);
             scope.close();

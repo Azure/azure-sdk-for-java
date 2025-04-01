@@ -101,12 +101,12 @@
  * &#47;&#47; However, in asynchronous code, context may need to be propagated explicitly using RequestContext
  * &#47;&#47; and explicit io.clientcore.core.util.Context.
  *
- * RequestContext options = RequestContext.builder&#40;&#41;
+ * RequestContext context = RequestContext.builder&#40;&#41;
  *     .setInstrumentationContext&#40;Instrumentation.createInstrumentationContext&#40;span&#41;&#41;
  *     .build&#40;&#41;;
  *
  * &#47;&#47; run on another thread - all telemetry will be correlated with the span created above
- * client.clientCall&#40;options&#41;;
+ * client.clientCall&#40;context&#41;;
  *
  * </pre>
  * <!-- end io.clientcore.core.telemetry.correlationwithexplicitcontext -->

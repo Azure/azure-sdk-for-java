@@ -365,15 +365,15 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void protocolMethod(RequestContext options) {
-            options = options == null ? RequestContext.none() : options;
-            Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
+        public void protocolMethod(RequestContext context) {
+            context = context == null ? RequestContext.none() : context;
+            Span span = tracer.spanBuilder("protocolMethod", INTERNAL, context.getInstrumentationContext()).startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
                     .setRequestContext(
-                        options.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build()));
+                        context.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build()));
                 try {
                     response.close();
                 } catch (IOException e) {
@@ -385,16 +385,16 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void convenienceMethod(RequestContext options) {
-            options = options == null ? RequestContext.none() : options;
+        public void convenienceMethod(RequestContext context) {
+            context = context == null ? RequestContext.none() : context;
             Span span
                 = tracer
                     .spanBuilder("convenienceMethod", INTERNAL,
-                        options == null ? null : options.getInstrumentationContext())
+                        context == null ? null : context.getInstrumentationContext())
                     .startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
-                protocolMethod(options.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build());
+                protocolMethod(context.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build());
             } finally {
                 span.end();
             }
@@ -411,15 +411,15 @@ public class SuppressionTests {
             this.instrumentation = Instrumentation.create(options, libraryInstrumentationOptions);
         }
 
-        public Response<?> protocolMethod(RequestContext options) {
-            return instrumentation.instrumentWithResponse("protocol", options,
-                updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+        public Response<?> protocolMethod(RequestContext context) {
+            return instrumentation.instrumentWithResponse("protocol", context,
+                updatedContext -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
-                    .setRequestContext(updatedOptions)));
+                    .setRequestContext(updatedContext)));
         }
 
-        public Response<?> convenienceMethod(RequestContext options) {
-            return instrumentation.instrumentWithResponse("convenience", options, this::protocolMethod);
+        public Response<?> convenienceMethod(RequestContext context) {
+            return instrumentation.instrumentWithResponse("convenience", context, this::protocolMethod);
         }
     }
 }

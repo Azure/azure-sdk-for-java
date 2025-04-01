@@ -70,8 +70,6 @@ The client-core annotation processor for introducing compile-time code generatio
 3. `mvn clean install annotation-processor/pom.xml` followed by `mvn clean compile` your project and the plugin
    will generate an implementation of the annotated interface in the `target/generated-sources` directory.
    ```java
-   import io.clientcore.core.http.models.SdkRequestContext;
-   
    public class ExampleServiceImpl implements ExampleService {
       private static final ClientLogger LOGGER = new ClientLogger(TestInterfaceClientService.class);
 
@@ -97,7 +95,7 @@ The client-core annotation processor for introducing compile-time code generatio
       }
 
       @Override
-      private Response<BinaryData> getUser(String endpoint, String apiVersion, String userId, RequestOptions requestContext) {
+      private Response<BinaryData> getUser(String endpoint, String apiVersion, String userId, RequestContext requestContext) {
           HttpPipeline pipeline = this.getPipeline();
           String host = endpoint + "/example/users/" + userId + "?api-version=" + apiVersion;
 
@@ -109,7 +107,7 @@ The client-core annotation processor for introducing compile-time code generatio
           httpRequest.setHeaders(headers);
 
           // add RequestContext to the request
-          httpRequest.setRequestOptions(requestContext);
+          httpRequest.setRequestContext(requestContext);
 
           // set the body content if present
 

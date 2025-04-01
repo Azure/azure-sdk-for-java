@@ -4,7 +4,7 @@
 package com.azure.v2.core.http.polling;
 
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.SdkRequestContext;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -35,7 +35,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public DefaultPollingStrategy(HttpPipeline httpPipeline) {
-        this(httpPipeline, new JsonSerializer(), SdkRequestContext.none());
+        this(httpPipeline, new JsonSerializer(), RequestContext.none());
     }
 
     /**
@@ -48,7 +48,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public DefaultPollingStrategy(HttpPipeline httpPipeline, JsonSerializer serializer) {
-        this(httpPipeline, serializer, SdkRequestContext.none());
+        this(httpPipeline, serializer, RequestContext.none());
     }
 
     /**
@@ -58,11 +58,10 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
-     * @param requestContext an instance of {@link SdkRequestContext}
+     * @param requestContext an instance of {@link RequestContext}
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public DefaultPollingStrategy(HttpPipeline httpPipeline, JsonSerializer serializer,
-        SdkRequestContext requestContext) {
+    public DefaultPollingStrategy(HttpPipeline httpPipeline, JsonSerializer serializer, RequestContext requestContext) {
         this(httpPipeline, null, serializer, requestContext);
     }
 
@@ -74,11 +73,11 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with.
      * @param endpoint an endpoint for creating an absolute path when the path itself is relative.
      * @param serializer a custom serializer for serializing and deserializing polling responses.
-     * @param requestContext an instance of {@link SdkRequestContext}.
+     * @param requestContext an instance of {@link RequestContext}.
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer,
-        SdkRequestContext requestContext) {
+        RequestContext requestContext) {
         this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
             new OperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, requestContext),
             new LocationPollingStrategy<>(httpPipeline, endpoint, serializer, requestContext),

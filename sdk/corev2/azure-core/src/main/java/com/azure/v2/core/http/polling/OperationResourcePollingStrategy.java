@@ -12,7 +12,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.SdkRequestContext;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -47,7 +47,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     private final ObjectSerializer serializer;
     private final String endpoint;
     private final HttpHeaderName operationLocationHeaderName;
-    private final SdkRequestContext requestContext;
+    private final RequestContext requestContext;
     private final String serviceVersion;
 
     /**
@@ -69,7 +69,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
         String operationLocationHeaderName) {
-        this(httpPipeline, serializer, operationLocationHeaderName, SdkRequestContext.none());
+        this(httpPipeline, serializer, operationLocationHeaderName, RequestContext.none());
     }
 
     /**
@@ -78,10 +78,10 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
      * @param operationLocationHeaderName a custom header for polling the long-running operation
-     * @param requestContext an instance of {@link SdkRequestContext}
+     * @param requestContext an instance of {@link RequestContext}
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
-        String operationLocationHeaderName, SdkRequestContext requestContext) {
+        String operationLocationHeaderName, RequestContext requestContext) {
         this(httpPipeline, null, serializer, operationLocationHeaderName, requestContext);
     }
 
@@ -92,10 +92,10 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      * @param endpoint an endpoint for creating an absolute path when the path itself is relative.
      * @param serializer a custom serializer for serializing and deserializing polling responses.
      * @param operationLocationHeaderName a custom header for polling the long-running operation.
-     * @param requestContext an instance of {@link SdkRequestContext}.
+     * @param requestContext an instance of {@link RequestContext}.
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
-        String operationLocationHeaderName, SdkRequestContext requestContext) {
+        String operationLocationHeaderName, RequestContext requestContext) {
         this(operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
             new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
                 .setSerializer(serializer)
@@ -122,7 +122,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
         this.serviceVersion = pollingStrategyOptions.getServiceVersion();
         this.requestContext = pollingStrategyOptions.getRequestContext() == null
-            ? SdkRequestContext.none()
+            ? RequestContext.none()
             : pollingStrategyOptions.getRequestContext();
     }
 

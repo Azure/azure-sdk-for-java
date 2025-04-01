@@ -116,11 +116,11 @@ public class FallbackInstrumentation implements Instrumentation {
 
         Span span = builder.startSpan();
 
-        RequestContext childOptions
+        RequestContext childContext
             = requestContext.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
         TracingScope scope = span.makeCurrent();
         try {
-            TResponse response = operation.apply(childOptions);
+            TResponse response = operation.apply(childContext);
             span.end();
             return response;
         } catch (RuntimeException t) {

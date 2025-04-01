@@ -26,10 +26,10 @@ public class RequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestContext options
+        RequestContext context
             = RequestContext.builder().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1").build();
 
-        options.getRequestCallback().accept(request);
+        context.getRequestCallback().accept(request);
 
         assertTrue(request.getUri().toString().contains("?foo=bar&%24skipToken=1"));
     }
@@ -39,12 +39,12 @@ public class RequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestContext options = RequestContext.builder()
+        RequestContext context = RequestContext.builder()
             .addRequestCallback(r -> r.getHeaders()
                 .add(new HttpHeader(X_MS_FOO, "bar"))
                 .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")))
             .build();
-        options.getRequestCallback().accept(request);
+        context.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
         assertEquals("bar", headers.getValue(X_MS_FOO));
@@ -56,7 +56,7 @@ public class RequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestContext options = RequestContext.builder()
+        RequestContext context = RequestContext.builder()
             .addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
             .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
             .addRequestCallback(r -> r.setUri("https://request.uri"))
@@ -64,7 +64,7 @@ public class RequestContextTests {
             .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"))
             .build();
 
-        options.getRequestCallback().accept(request);
+        context.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
         assertEquals("baz", headers.getValue(X_MS_FOO));
@@ -76,7 +76,7 @@ public class RequestContextTests {
     public void simpleContext() {
         Object complexObject = ProgressReporter.withProgressListener(value -> {
         });
-        RequestContext options = RequestContext.builder()
+        RequestContext context = RequestContext.builder()
             .putMetadata("stringKey", "value")
             .putMetadata("longKey", 10L)
             .putMetadata("booleanKey", true)
@@ -84,13 +84,13 @@ public class RequestContextTests {
             .putMetadata("complexObject", complexObject)
             .build();
 
-        assertEquals("value", options.getMetadata("stringKey"));
-        assertEquals("value", options.getMetadata("stringKey"));
-        assertEquals(10L, options.getMetadata("longKey"));
-        assertEquals(true, options.getMetadata("booleanKey"));
-        assertEquals(42.0, options.getMetadata("doubleKey"));
-        assertSame(complexObject, options.getMetadata("complexObject"));
-        assertNull(options.getMetadata("fakeKey"));
+        assertEquals("value", context.getMetadata("stringKey"));
+        assertEquals("value", context.getMetadata("stringKey"));
+        assertEquals(10L, context.getMetadata("longKey"));
+        assertEquals(true, context.getMetadata("booleanKey"));
+        assertEquals(42.0, context.getMetadata("doubleKey"));
+        assertSame(complexObject, context.getMetadata("complexObject"));
+        assertNull(context.getMetadata("fakeKey"));
     }
 
     @Test
@@ -102,11 +102,10 @@ public class RequestContextTests {
     @ParameterizedTest
     @MethodSource("addDataSupplier")
     public void addContext(String key, String value, String expectedOriginalValue) {
-        RequestContext options
-            = RequestContext.builder().putMetadata("key", "value").putMetadata(key, value).build();
+        RequestContext context = RequestContext.builder().putMetadata("key", "value").putMetadata(key, value).build();
 
-        assertEquals(value, options.getMetadata(key));
-        assertEquals(expectedOriginalValue, options.getMetadata("key"));
+        assertEquals(value, context.getMetadata(key));
+        assertEquals(expectedOriginalValue, context.getMetadata("key"));
     }
 
     private static Stream<Arguments> addDataSupplier() {
@@ -120,9 +119,9 @@ public class RequestContextTests {
 
     @Test
     public void putValueCanBeNull() {
-        RequestContext options = RequestContext.builder().putMetadata("key", null).build();
+        RequestContext context = RequestContext.builder().putMetadata("key", null).build();
 
-        assertNull(options.getMetadata("key"));
+        assertNull(context.getMetadata("key"));
     }
 
     @Test
