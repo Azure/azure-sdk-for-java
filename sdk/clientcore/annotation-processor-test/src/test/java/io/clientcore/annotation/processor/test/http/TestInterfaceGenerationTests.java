@@ -11,7 +11,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
@@ -19,6 +19,12 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
+import org.junit.jupiter.api.Named;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -29,11 +35,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Named;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -240,9 +241,9 @@ public class TestInterfaceGenerationTests {
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
             pagingOptions -> toPagedResponse(
-                testInterface.listFooListResult(uri, RequestOptions.none()), null),
+                testInterface.listFooListResult(uri, RequestContext.none()), null),
             (pagingOptions, nextLink) -> toPagedResponse(
-                testInterface.listNextFooListResult(nextLink, RequestOptions.none()), nextLink));
+                testInterface.listNextFooListResult(nextLink, RequestContext.none()), nextLink));
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());
@@ -283,7 +284,7 @@ public class TestInterfaceGenerationTests {
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, null, RequestOptions.none());
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, null, RequestContext.none());
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -295,7 +296,7 @@ public class TestInterfaceGenerationTests {
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
                 Response<List<Foo>> nextResponse
-                    = testInterface.listNextFoo(nextLink, RequestOptions.none());
+                    = testInterface.listNextFoo(nextLink, RequestContext.none());
                 return toPagedResponse(nextResponse, nextLink);
             });
 

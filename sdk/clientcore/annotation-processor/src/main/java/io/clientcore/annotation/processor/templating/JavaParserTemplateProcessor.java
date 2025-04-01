@@ -253,7 +253,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         initializeHttpRequest(body, method);
         setContentType(body, method);
         boolean serializationFormatSet = RequestBodyHandler.configureRequestBody(body, method.getBody(), processingEnv);
-        addRequestOptionsToRequestIfPresent(body, method);
+        addRequestContextToRequestIfPresent(body, method);
+
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
 
         internalMethod.setBody(body);
@@ -287,19 +288,18 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
     }
 
-    private void addRequestOptionsToRequestIfPresent(BlockStmt body, HttpRequestContext method) {
-        boolean hasRequestOptions = method.getParameters()
+    private void addRequestContextToRequestIfPresent(BlockStmt body, HttpRequestContext method) {
+        boolean hasRequestContext = method.getParameters()
             .stream()
-            .anyMatch(parameter -> "requestOptions".equals(parameter.getName())
-                && "RequestOptions".equals(parameter.getShortTypeName()));
+            .anyMatch(parameter -> "requestContext".equals(parameter.getName())
+                && "RequestContext".equals(parameter.getShortTypeName()));
 
-        if (hasRequestOptions) {
+        if (hasRequestContext) {
             // Create a statement for setting request options
-            Statement statement1 = StaticJavaParser
-                .parseStatement("if (requestOptions != null) httpRequest.setRequestOptions(requestOptions);");
-            statement1.setComment(new LineComment("\n Set the Request Options"));
-            Statement statement2 = StaticJavaParser.parseStatement(
-                "if (httpRequest.getRequestOptions() != null) httpRequest.getRequestOptions().getRequestCallback().accept(httpRequest);");
+            Statement statement1 = StaticJavaParser.parseStatement("httpRequest.setContext(requestContext);");
+
+            Statement statement2
+                = StaticJavaParser.parseStatement("httpRequest.getContext().getRequestCallback().accept(httpRequest);");
 
             body.addStatement(statement1);
             body.addStatement(statement2);
