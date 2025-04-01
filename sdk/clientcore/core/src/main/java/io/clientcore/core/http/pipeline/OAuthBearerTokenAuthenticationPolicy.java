@@ -57,6 +57,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * Executed before sending the initial request and authenticates the request.
      *
      * @param httpRequest The request context.
+     * @param context the OAuth metadata to use for the token request.
      */
     public void authorizeRequest(HttpRequest httpRequest, OAuthTokenRequestContext context) {
         // Credential implementations are responsible for knowing what to do with the OAuth metadata.
