@@ -52,7 +52,6 @@ function TypeSpec-Compare-CurrentToCodegeneration {
     Write-Host "$SeparatorBars"
     Write-Host "No TypeSpec files to regenerate for $ServiceDirectory"
     Write-Host "$SeparatorBars"
-    Write-Host "JRS-Returning pass-1"
     return $false
   }
 
@@ -77,7 +76,6 @@ function TypeSpec-Compare-CurrentToCodegeneration {
   }
   if ($failedSdk.Length -gt 0) {
     Write-Host "Code generation failed for following modules: $failedSdk"
-    Write-Host "JRS-Returning failure-1"
     return $true
   }
 
@@ -93,7 +91,6 @@ function TypeSpec-Compare-CurrentToCodegeneration {
     $status = git status -s | Out-String
     Write-Host "The following files are out of date:"
     Write-Host "$status"
-    Write-Host "JRS-Returning failure-2"
     return $true
   }
 
@@ -101,7 +98,6 @@ function TypeSpec-Compare-CurrentToCodegeneration {
   Get-ChildItem -Path $ServiceDirectory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
     Remove-Item -Path $_.FullName -Recurse -Force
   }
-  Write-Host "JRS-Returning pass-2"
   return $false
 }
 
@@ -112,7 +108,6 @@ if ($ServiceDirectories) {
     $path = "sdk/$ServiceDirectory"
     $result = TypeSpec-Compare-CurrentToCodegeneration $path
     if ($result) {
-      Write-Host "JRS - setting hasError to true, result=$result"
       $hasError = $true
     }
   }
