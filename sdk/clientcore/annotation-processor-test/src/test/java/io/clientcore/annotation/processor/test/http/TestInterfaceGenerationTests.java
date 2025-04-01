@@ -241,9 +241,9 @@ public class TestInterfaceGenerationTests {
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
             pagingOptions -> toPagedResponse(
-                testInterface.listFooListResult(uri, RequestContext.none()), null),
+                testInterface.listFooListResult(uri, HttpRequestContext.none()), null),
             (pagingOptions, nextLink) -> toPagedResponse(
-                testInterface.listNextFooListResult(nextLink, RequestContext.none()), nextLink));
+                testInterface.listNextFooListResult(nextLink, HttpRequestContext.none()), nextLink));
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());
@@ -284,7 +284,7 @@ public class TestInterfaceGenerationTests {
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, null, RequestContext.none());
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, null, HttpRequestContext.none());
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -296,7 +296,7 @@ public class TestInterfaceGenerationTests {
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
                 Response<List<Foo>> nextResponse
-                    = testInterface.listNextFoo(nextLink, RequestContext.none());
+                    = testInterface.listNextFoo(nextLink, HttpRequestContext.none());
                 return toPagedResponse(nextResponse, nextLink);
             });
 

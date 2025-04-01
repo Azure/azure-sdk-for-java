@@ -245,7 +245,7 @@
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
       <Class name="io.clientcore.core.serialization.json.JsonWriterTests" />
       <Class name="io.clientcore.core.serialization.json.models.JsonPatchDocumentTests" />
-      <Class name="io.clientcore.core.implementation.http.rest.HttpRequestContextTests" />
+      <Class name="io.clientcore.core.http.models.HttpRequestContextTests" />
     </Or>
   </Match>
   <Match>

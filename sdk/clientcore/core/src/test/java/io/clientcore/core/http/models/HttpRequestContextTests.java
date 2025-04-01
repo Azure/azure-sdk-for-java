@@ -1,14 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.utils;
+package io.clientcore.core.http.models;
 
-import io.clientcore.core.http.models.HttpHeader;
-import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRequestContext;
 import io.clientcore.core.utils.ProgressReporter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
