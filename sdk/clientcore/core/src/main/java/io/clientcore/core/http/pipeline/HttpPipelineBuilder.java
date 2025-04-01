@@ -154,7 +154,7 @@ public class HttpPipelineBuilder {
         if (order == null) {
             throw LOGGER.atError()
                 .addKeyValue("policyType", policy.getClass())
-                .log("Policy order cannot be null.", new IllegalArgumentException("Policy order cannot be null."));
+                .logThrowable(new IllegalArgumentException("Policy order cannot be null."));
         }
 
         if (order == HttpPipelinePosition.BEFORE_REDIRECT) {
@@ -171,7 +171,7 @@ public class HttpPipelineBuilder {
             throw LOGGER.atError()
                 .addKeyValue("policyType", policy.getClass())
                 .addKeyValue("order", order)
-                .log("Unknown policy order.", new IllegalArgumentException("Unknown policy order."));
+                .logThrowable(new IllegalArgumentException("Unknown policy order."));
         }
 
         return this;

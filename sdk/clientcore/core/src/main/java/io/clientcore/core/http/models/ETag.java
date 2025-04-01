@@ -68,8 +68,8 @@ public final class ETag {
         if (!endsWithQuote || (!startsWithQuote && !startsWithWeakETagPrefix)) {
             throw LOGGER.atError()
                 .addKeyValue("ETag", eTag)
-                .log(new IllegalArgumentException(
-                    "The ETag should be null, '*', be wrapped in quotes, or be wrapped " + "in quotes prefixed by W/"));
+                .logThrowable(new IllegalArgumentException(
+                    "The ETag should be null, '*', be wrapped in quotes, or be wrapped in quotes prefixed by W/"));
         }
 
         return new ETag(eTag);

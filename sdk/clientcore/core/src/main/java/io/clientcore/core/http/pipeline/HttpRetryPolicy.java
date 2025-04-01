@@ -303,17 +303,14 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
                 .addKeyValue(RETRY_MAX_ATTEMPT_COUNT_KEY, maxRetries)
                 .addKeyValue(RETRY_WAS_LAST_ATTEMPT_KEY, lastTry)
                 .setEventName(HTTP_RETRY_EVENT_NAME)
-                .setInstrumentationContext(context);
+                .setInstrumentationContext(context)
+                .setThrowable(throwable);
 
             if (delayDuration != null) {
                 log.addKeyValue(RETRY_DELAY_KEY, delayDuration.toMillis());
             }
 
-            if (throwable != null) {
-                log.log(null, throwable);
-            } else {
-                log.log();
-            }
+            log.log();
         }
     }
 

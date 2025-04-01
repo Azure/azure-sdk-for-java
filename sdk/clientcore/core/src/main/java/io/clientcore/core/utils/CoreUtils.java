@@ -163,7 +163,7 @@ public final class CoreUtils {
                     .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
-            LOGGER.atWarning().log("Failed to get properties from " + propertiesFileName, ex);
+            LOGGER.atWarning().setThrowable(ex).log("Failed to get properties from " + propertiesFileName);
         }
 
         return Collections.emptyMap();

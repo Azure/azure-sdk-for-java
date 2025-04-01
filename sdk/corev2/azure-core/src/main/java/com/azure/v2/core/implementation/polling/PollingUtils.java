@@ -186,7 +186,7 @@ public final class PollingUtils {
                 ImplUtils.createUrl(getAbsolutePath(locationHeader.getValue(), endpoint, logger));
                 return true;
             } catch (MalformedURLException e) {
-                logger.atInfo().log("Failed to parse Location header into a URL.", e);
+                logger.atInfo().setThrowable(e).log("Failed to parse Location header into a URL.");
                 return false;
             }
         }
