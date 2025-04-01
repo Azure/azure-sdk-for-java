@@ -1,5 +1,4 @@
 package com.azure.cosmos.dotnet.benchmark;
-
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -12,7 +11,9 @@ import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ThinClientReproMain {
     public static void main(String[] args) {
@@ -21,20 +22,21 @@ public class ThinClientReproMain {
             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             CosmosAsyncClient client = new CosmosClientBuilder()
-                //.key(TestConfigurations.MASTER_KEY)
-                //.endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
-                .userAgentSuffix("fabianmThinClientProxyTest")
+                .userAgentSuffix("fabianmThinClientProxyTest02")
                 .buildAsyncClient();
 
-            CosmosAsyncContainer container = client.getDatabase("HashV2Small1").getContainer("HashV2Small1");
+            CosmosAsyncContainer container = client.getDatabase("updatedd-thin-client-test-db").getContainer("thin-client-test-container-1");
             CosmosContainerResponse containerResponse = container.read().block();
             System.out.println("Container RID: " + containerResponse.getProperties().getResourceId());
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode doc = mapper.createObjectNode();
             String idValue = UUID.randomUUID().toString();
             doc.put("id", idValue);
+            doc.put("pk", idValue);
             System.out.println("Document to be ingested - " + doc.toPrettyString());
 
             try {
@@ -47,12 +49,21 @@ public class ThinClientReproMain {
             } catch (CosmosException cosmosError) {
                 System.out.println("COSMOS ERROR: " + cosmosError.getStatusCode() + "/" + cosmosError.getShortMessage());
             }
-
             CosmosItemResponse<ObjectNode> response = container.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
             System.out.println("READ DIAGNOSTICS: " + response.getDiagnostics());
             ObjectNode readDoc = response.getItem();
-
             System.out.println("Document read - " + readDoc.toPrettyString());
+
+            List<ObjectNode> queryResults = container
+                .queryItems("SELECT * FROM c WHERE c.id = '" + idValue + "'", ObjectNode.class)
+                .byPage().blockFirst().getResults();
+
+            for (ObjectNode node : queryResults) {
+                System.out.println("Query result - " + node.toPrettyString());
+            }
+
+            CosmosItemResponse<Object> deleteResponse = container.deleteItem(idValue, new PartitionKey(idValue)).block();
+            System.out.println("DELETE DIAGNOSTICS: " + deleteResponse.getDiagnostics());
         } catch (CosmosException cosmosException) {
             System.out.println("COSMOS ERROR: " + cosmosException);
         }

@@ -5,19 +5,22 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.Test;
+
+import java.util.UUID;
+
+import static java.lang.Thread.sleep;
 
 public class ThinClientTest {
 
     @Test
     public void testThinclientHttp2() {
         try {
-            //String thinclientEndpoint = "https://cdb-ms-stage-eastus2-fe2.eastus2.cloudapp.azure.com:10650";
-            //String thinclientEndpoint = "https://chukangzhongstagesignoff.documents-staging.windows-ppe.net:443/";
             System.setProperty(Configs.THINCLIENT_ENABLED, "true");
-            //System.setProperty(Configs.THINCLIENT_ENDPOINT, thinclientEndpoint);
             System.setProperty(Configs.HTTP2_ENABLED, "true");
 
             CosmosAsyncClient client  = new CosmosClientBuilder()
@@ -27,11 +30,16 @@ public class ThinClientTest {
                     .consistencyLevel(ConsistencyLevel.SESSION)
                     .buildAsyncClient();
 
-            CosmosAsyncContainer container = client.getDatabase("NehaTestDb").getContainer("NehaTestContainer");
+            //CosmosAsyncContainer container = client.getDatabase("NehaTestDb").getContainer("NehaTestContainer");
+            CosmosAsyncContainer container = client.getDatabase("updatedd-thin-client-test-db").getContainer("thin-client-test-container-1");
             TestItem testItem = TestItem.createNewItem();
             System.out.println(testItem.getId());
             container.createItem(testItem).block();
-            container.readItem(testItem.getId(), new PartitionKey(testItem.getId()), JsonNode.class).block();
+            CosmosItemResponse<TestItem> response = container.readItem(testItem.getId(), new PartitionKey(testItem.getPk()), TestItem.class).block();
+            //System.out.println("READ DIAGNOSTICS: " + response.getDiagnostics());
+            TestItem readDoc = response.getItem();
+            System.out.println("Document read - " + readDoc.toString());
+            //container.deleteItem(testItem.getId(), new PartitionKey(testItem.getMypk())).block();
 
 /*            CosmosAsyncContainer container = client.getDatabase("TestDatabase").getContainer("ChangeFeedTestContainer");
             TestItem testItem = TestItem.createNewItem();
