@@ -65,26 +65,6 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
     private final Duration wallClockTime;
 
     /*
-     * The total number of Tasks successfully completed during the given time range in Jobs created under the schedule.
-     * A Task completes successfully if it returns exit code 0.
-     */
-    @Generated
-    private final long numSucceededTasks;
-
-    /*
-     * The total number of Tasks that failed during the given time range in Jobs created under the schedule. A Task
-     * fails if it exhausts its maximum retry count without returning exit code 0.
-     */
-    @Generated
-    private final long numFailedTasks;
-
-    /*
-     * The total number of retries during the given time range on all Tasks in all Jobs created under the schedule.
-     */
-    @Generated
-    private final long numTaskRetries;
-
-    /*
      * The total wait time of all Tasks in all Jobs created under the schedule. The wait time for a Task is defined as
      * the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to
      * failures, the wait time is the time to the most recent Task execution.). This value is only reported in the
@@ -106,15 +86,15 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
      * @param writeIops the writeIops value to set.
      * @param readIoGiB the readIoGiB value to set.
      * @param writeIoGiB the writeIoGiB value to set.
-     * @param numSucceededTasks the numSucceededTasks value to set.
-     * @param numFailedTasks the numFailedTasks value to set.
-     * @param numTaskRetries the numTaskRetries value to set.
+     * @param succeededTasksCount the succeededTasksCount value to set.
+     * @param failedTasksCount the failedTasksCount value to set.
+     * @param taskRetriesCount the taskRetriesCount value to set.
      * @param waitTime the waitTime value to set.
      */
     @Generated
     private BatchJobScheduleStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
         Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIops, long writeIops,
-        double readIoGiB, double writeIoGiB, long numSucceededTasks, long numFailedTasks, long numTaskRetries,
+        double readIoGiB, double writeIoGiB, long succeededTasksCount, long failedTasksCount, long taskRetriesCount,
         Duration waitTime) {
         this.url = url;
         this.startTime = startTime;
@@ -126,9 +106,9 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
         this.writeIops = writeIops;
         this.readIoGiB = readIoGiB;
         this.writeIoGiB = writeIoGiB;
-        this.numSucceededTasks = numSucceededTasks;
-        this.numFailedTasks = numFailedTasks;
-        this.numTaskRetries = numTaskRetries;
+        this.succeededTasksCount = succeededTasksCount;
+        this.failedTasksCount = failedTasksCount;
+        this.taskRetriesCount = taskRetriesCount;
         this.waitTime = waitTime;
     }
 
@@ -199,39 +179,6 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
     }
 
     /**
-     * Get the numSucceededTasks property: The total number of Tasks successfully completed during the given time range
-     * in Jobs created under the schedule. A Task completes successfully if it returns exit code 0.
-     *
-     * @return the numSucceededTasks value.
-     */
-    @Generated
-    public long getNumSucceededTasks() {
-        return this.numSucceededTasks;
-    }
-
-    /**
-     * Get the numFailedTasks property: The total number of Tasks that failed during the given time range in Jobs
-     * created under the schedule. A Task fails if it exhausts its maximum retry count without returning exit code 0.
-     *
-     * @return the numFailedTasks value.
-     */
-    @Generated
-    public long getNumFailedTasks() {
-        return this.numFailedTasks;
-    }
-
-    /**
-     * Get the numTaskRetries property: The total number of retries during the given time range on all Tasks in all Jobs
-     * created under the schedule.
-     *
-     * @return the numTaskRetries value.
-     */
-    @Generated
-    public long getNumTaskRetries() {
-        return this.numTaskRetries;
-    }
-
-    /**
      * Get the waitTime property: The total wait time of all Tasks in all Jobs created under the schedule. The wait time
      * for a Task is defined as the elapsed time between the creation of the Task and the start of Task execution. (If
      * the Task is retried due to failures, the wait time is the time to the most recent Task execution.). This value is
@@ -263,9 +210,9 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
         jsonWriter.writeStringField("writeIOps", Objects.toString(this.writeIops, null));
         jsonWriter.writeDoubleField("readIOGiB", this.readIoGiB);
         jsonWriter.writeDoubleField("writeIOGiB", this.writeIoGiB);
-        jsonWriter.writeStringField("numSucceededTasks", Objects.toString(this.numSucceededTasks, null));
-        jsonWriter.writeStringField("numFailedTasks", Objects.toString(this.numFailedTasks, null));
-        jsonWriter.writeStringField("numTaskRetries", Objects.toString(this.numTaskRetries, null));
+        jsonWriter.writeStringField("numSucceededTasks", Objects.toString(this.succeededTasksCount, null));
+        jsonWriter.writeStringField("numFailedTasks", Objects.toString(this.failedTasksCount, null));
+        jsonWriter.writeStringField("numTaskRetries", Objects.toString(this.taskRetriesCount, null));
         jsonWriter.writeStringField("waitTime", CoreUtils.durationToStringWithDays(this.waitTime));
         return jsonWriter.writeEndObject();
     }
@@ -292,9 +239,9 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
             long writeIops = Long.parseLong("0");
             double readIoGiB = 0.0;
             double writeIoGiB = 0.0;
-            long numSucceededTasks = Long.parseLong("0");
-            long numFailedTasks = Long.parseLong("0");
-            long numTaskRetries = Long.parseLong("0");
+            long succeededTasksCount = Long.parseLong("0");
+            long failedTasksCount = Long.parseLong("0");
+            long taskRetriesCount = Long.parseLong("0");
             Duration waitTime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -322,11 +269,12 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
                 } else if ("writeIOGiB".equals(fieldName)) {
                     writeIoGiB = reader.getDouble();
                 } else if ("numSucceededTasks".equals(fieldName)) {
-                    numSucceededTasks = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    succeededTasksCount
+                        = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("numFailedTasks".equals(fieldName)) {
-                    numFailedTasks = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    failedTasksCount = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("numTaskRetries".equals(fieldName)) {
-                    numTaskRetries = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    taskRetriesCount = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("waitTime".equals(fieldName)) {
                     waitTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else {
@@ -334,8 +282,8 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
                 }
             }
             return new BatchJobScheduleStatistics(url, startTime, lastUpdateTime, userCpuTime, kernelCpuTime,
-                wallClockTime, readIops, writeIops, readIoGiB, writeIoGiB, numSucceededTasks, numFailedTasks,
-                numTaskRetries, waitTime);
+                wallClockTime, readIops, writeIops, readIoGiB, writeIoGiB, succeededTasksCount, failedTasksCount,
+                taskRetriesCount, waitTime);
         });
     }
 
@@ -405,5 +353,58 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
     @Generated
     public double getWriteIoGiB() {
         return this.writeIoGiB;
+    }
+
+    /*
+     * The total number of Tasks successfully completed during the given time range in Jobs created under the schedule.
+     * A Task completes successfully if it returns exit code 0.
+     */
+    @Generated
+    private final long succeededTasksCount;
+
+    /*
+     * The total number of Tasks that failed during the given time range in Jobs created under the schedule. A Task
+     * fails if it exhausts its maximum retry count without returning exit code 0.
+     */
+    @Generated
+    private final long failedTasksCount;
+
+    /*
+     * The total number of retries during the given time range on all Tasks in all Jobs created under the schedule.
+     */
+    @Generated
+    private final long taskRetriesCount;
+
+    /**
+     * Get the succeededTasksCount property: The total number of Tasks successfully completed during the given time
+     * range in Jobs created under the schedule. A Task completes successfully if it returns exit code 0.
+     *
+     * @return the succeededTasksCount value.
+     */
+    @Generated
+    public long getSucceededTasksCount() {
+        return this.succeededTasksCount;
+    }
+
+    /**
+     * Get the failedTasksCount property: The total number of Tasks that failed during the given time range in Jobs
+     * created under the schedule. A Task fails if it exhausts its maximum retry count without returning exit code 0.
+     *
+     * @return the failedTasksCount value.
+     */
+    @Generated
+    public long getFailedTasksCount() {
+        return this.failedTasksCount;
+    }
+
+    /**
+     * Get the taskRetriesCount property: The total number of retries during the given time range on all Tasks in all
+     * Jobs created under the schedule.
+     *
+     * @return the taskRetriesCount value.
+     */
+    @Generated
+    public long getTaskRetriesCount() {
+        return this.taskRetriesCount;
     }
 }
