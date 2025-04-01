@@ -9,19 +9,40 @@ import io.clientcore.core.implementation.http.client.GlobalJdkHttpClient;
 import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * A generic interface for sending HTTP requests and getting responses.
  */
 public interface HttpClient {
     /**
-     * Sends the provided request with contextual information.
+     * Sends the provided request.
      *
      * @param request The HTTP request to send.
      * @return The response.
      * @throws IOException If an I/O error occurs during sending the request or receiving the response.
      */
     Response<BinaryData> send(HttpRequest request) throws IOException;
+
+    /**
+     * Sends the provided request asynchronously.
+     * <p>
+     * If an error occurs while sending the request or receiving the response, the returned {@link CompletableFuture}
+     * will complete exceptionally.
+     *
+     * @param request The HTTP request to send.
+     * @return A CompletableFuture that will complete with the response or error.
+     */
+    default CompletableFuture<Response<BinaryData>> sendAsync(HttpRequest request) {
+        CompletableFuture<Response<BinaryData>> completableFuture = new CompletableFuture<>();
+        try {
+            completableFuture.complete(send(request));
+        } catch (Exception ex) {
+            completableFuture.completeExceptionally(ex);
+        }
+
+        return completableFuture;
+    }
 
     /**
      * Get a new instance of the {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is
