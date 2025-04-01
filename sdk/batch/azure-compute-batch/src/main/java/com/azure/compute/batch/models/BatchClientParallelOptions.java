@@ -12,30 +12,30 @@ public class BatchClientParallelOptions {
 
     private static final ClientLogger LOGGER = new ClientLogger(BatchClientParallelOptions.class);
 
-    private Integer maxDegreeOfParallelism;
+    private Integer maxConcurrency;
 
     /**
      * Gets the maximum number of concurrent tasks enabled by this {@link BatchClientParallelOptions} instance.
      * If not set, it returns null, indicating no specific limit is set.
      * @return The maximum number of concurrent tasks or null if not set.
      */
-    public Integer getMaxDegreeOfParallelism() {
-        return this.maxDegreeOfParallelism;
+    public Integer getMaxConcurrency() {
+        return this.maxConcurrency;
     }
 
     /**
      * Sets the maximum number of concurrent tasks enabled by this {@link BatchClientParallelOptions} instance.
      * Pass null to make the maximum degree of parallelism optional.
-     * @param maxDegreeOfParallelism the maximum number of concurrent tasks or null.
+     * @param maxConcurrency the maximum number of concurrent tasks or null.
      * @return The instance of {@link BatchClientParallelOptions}.
-     * @throws IllegalArgumentException Exception thrown if maxDegreeOfParallelism is less than 1 and not null.
+     * @throws IllegalArgumentException Exception thrown if maxConcurrency is less than 1 and not null.
      */
-    public BatchClientParallelOptions setMaxDegreeOfParallelism(Integer maxDegreeOfParallelism) {
-        if (maxDegreeOfParallelism != null && maxDegreeOfParallelism <= 0) {
+    public BatchClientParallelOptions setMaxConcurrency(Integer maxConcurrency) {
+        if (maxConcurrency != null && maxConcurrency <= 0) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("maxDegreeOfParallelism must be greater than 0 or null"));
+                new IllegalArgumentException("maxConcurrency must be greater than 0 or null"));
         }
-        this.maxDegreeOfParallelism = maxDegreeOfParallelism;
+        this.maxConcurrency = maxConcurrency;
         return this;
     }
 
