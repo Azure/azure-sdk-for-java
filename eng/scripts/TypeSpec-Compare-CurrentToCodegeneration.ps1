@@ -29,9 +29,15 @@ function Reset-Repository {
 function Install-typespec-client-generator-cli {
   Write-Host "$SeparatorBars"
   Write-Host "Installing typespec-client-generator-cli"
+  Write-Host "npm install -g @azure-tools/typespec-client-generator-cli"
   Write-Host "$SeparatorBars"
 
-  npm install -g @azure-tools/typespec-client-generator-cli
+  $output = npm install -g @azure-tools/typespec-client-generator-cli | Out-String
+  if ($LastExitCode -ne 0) {
+    Write-Host "Error installing @azure-tools/typespec-client-generator-cli"
+    Write-Host "$output"
+    exit 1
+  }
 }
 
 # Returns true if there's an error, false otherwise
@@ -66,7 +72,7 @@ function TypeSpec-Compare-CurrentToCodegeneration {
     }
     # Update code snippets before comparing the diff
     Write-Host "Update code snippets"
-    mvn --no-transfer-progress codesnippet:update-codesnippet
+    mvn --no-transfer-progress codesnippet:update-codesnippet | Out-Null
     Pop-Location
   }
   if ($failedSdk.Length -gt 0) {
