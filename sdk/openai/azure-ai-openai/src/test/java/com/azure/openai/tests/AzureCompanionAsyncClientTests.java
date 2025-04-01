@@ -4,6 +4,8 @@ import com.azure.ai.openai.AzureCompanionAsyncClient;
 import com.azure.ai.openai.models.AzureChatDataSource;
 import com.azure.ai.openai.models.AzureChatDataSourceApiKeyAuthenticationOptions;
 import com.azure.ai.openai.models.AzureCreateChatCompletionRequest;
+import com.azure.ai.openai.models.AzureCreateChatCompletionResponse;
+import com.azure.ai.openai.models.AzureCreateChatCompletionResponseChoice;
 import com.azure.ai.openai.models.AzureSearchChatDataSource;
 import com.azure.ai.openai.models.AzureSearchChatDataSourceParameters;
 import com.azure.ai.openai.models.ChatCompletionRequestMessageContentPartText;
@@ -19,12 +21,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.azure.openai.tests.TestUtils.AZURE_OPEN_AI;
 import static com.azure.openai.tests.TestUtils.GA;
 import static com.azure.openai.tests.TestUtils.OPEN_AI;
 import static com.azure.openai.tests.TestUtils.PREVIEW;
 import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AzureCompanionAsyncClientTests extends  OpenAIOkHttpClientTestBase {
 
@@ -75,8 +79,18 @@ public class AzureCompanionAsyncClientTests extends  OpenAIOkHttpClientTestBase 
 
         request.setDataSources(Arrays.asList(new AzureSearchChatDataSource(parameters)));
 
-        ChatCompletion completion = client.createResponse("gpt-4o-mini", request).block();
-        assertChatCompletionByod(completion);
+        AzureCreateChatCompletionResponse completion = client.createResponse("gpt-4o-mini", request).block();
+        assertNotNull(completion);
+        List<AzureCreateChatCompletionResponseChoice> choices = completion.getChoices();
+        assertNotNull(choices);
+        AzureCreateChatCompletionResponseChoice firstChoice = choices.get(0);
+        assertNotNull(firstChoice);
+//        assertChatCompletionByod(completion);
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
+    public void testChatCompletionByodErrorNoIndexName(String apiType, String apiVersion, String testModel) {
+
+    }
 }

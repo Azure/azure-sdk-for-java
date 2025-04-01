@@ -1,4 +1,4 @@
-package com.azure.ai.openai.implementation.mappers;
+package com.azure.ai.openai.implementation.mappers.visitors;
 
 import com.azure.ai.openai.models.ChatCompletionRequestMessageContentPartImage;
 import com.azure.ai.openai.models.ChatCompletionRequestMessageContentPartImageImageUrl;
@@ -6,7 +6,6 @@ import com.azure.ai.openai.models.ChatCompletionRequestMessageContentPartImageIm
 import com.azure.ai.openai.models.ChatCompletionRequestMessageContentPartText;
 import com.azure.core.util.BinaryData;
 import com.openai.core.JsonNull;
-import com.openai.core.JsonValue;
 import com.openai.models.chat.completions.ChatCompletionContentPart;
 import com.openai.models.chat.completions.ChatCompletionContentPartImage;
 import com.openai.models.chat.completions.ChatCompletionContentPartInputAudio;

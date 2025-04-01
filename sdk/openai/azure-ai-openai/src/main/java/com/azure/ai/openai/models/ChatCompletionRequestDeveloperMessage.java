@@ -43,9 +43,12 @@ public final class ChatCompletionRequestDeveloperMessage extends ChatCompletionR
      *
      * @param content the content value to set.
      */
-    @Generated
-    public ChatCompletionRequestDeveloperMessage(BinaryData content) {
+    private ChatCompletionRequestDeveloperMessage(BinaryData content) {
         this.content = content;
+    }
+
+    public ChatCompletionRequestDeveloperMessage(String content) {
+        this.content = null;
     }
 
     /**

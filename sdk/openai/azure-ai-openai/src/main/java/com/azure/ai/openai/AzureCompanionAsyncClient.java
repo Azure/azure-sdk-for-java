@@ -22,8 +22,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.openai.client.OpenAIClientAsync;
+import com.openai.core.http.HttpResponseFor;
 import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
 
 /**
  * Initializes a new instance of the asynchronous AzureCompanionClient type.
@@ -210,9 +215,8 @@ public final class AzureCompanionAsyncClient {
      * @return a structured representation of an error on an Azure OpenAI request along with {@link Response} on
      * successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createResponseWithResponse(String deploymentId, String accept, BinaryData request,
+    private Mono<Response<BinaryData>> createResponseWithResponse(String deploymentId, String accept, BinaryData request,
         RequestOptions requestOptions) {
         return this.serviceClient.createResponseWithResponseAsync(deploymentId, accept, request, requestOptions);
     }
@@ -244,7 +248,17 @@ public final class AzureCompanionAsyncClient {
 
     // TODO: Map ChatCompletion to AzureCreateChatCompletionResponse
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatCompletion> createResponse(String deploymentId, AzureCreateChatCompletionRequest request) {
-        return Mono.fromFuture(openAIClientAsync.chat().completions().create(AzureChatMapper.from(request, deploymentId)));
+    public Mono<AzureCreateChatCompletionResponse> createResponse(String deploymentId, AzureCreateChatCompletionRequest request) {
+        ChatCompletionCreateParams azureRequest = AzureChatMapper.from(request, deploymentId);
+        return Mono.fromFuture(openAIClientAsync.chat().completions().withRawResponse().create(azureRequest))
+                .map(httpResponse -> {
+                    try {
+                        return httpResponse.body().readAllBytes();
+                    } catch (IOException e) {
+                        throw Exceptions.propagate(e);
+                    }
+                }).map(jsonBytes ->
+                        BinaryData.fromBytes(jsonBytes)
+                                .toObject(AzureCreateChatCompletionResponse.class));
     }
 }

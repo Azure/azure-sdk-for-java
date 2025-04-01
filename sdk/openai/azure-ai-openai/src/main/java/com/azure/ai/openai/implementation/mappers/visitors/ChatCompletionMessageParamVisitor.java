@@ -1,4 +1,4 @@
-package com.azure.ai.openai.implementation.mappers;
+package com.azure.ai.openai.implementation.mappers.visitors;
 
 import com.azure.ai.openai.models.ChatCompletionRequestAssistantMessage;
 import com.azure.ai.openai.models.ChatCompletionRequestAssistantMessageAudio;
@@ -15,7 +15,7 @@ import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ChatMessageVisitor implements ChatCompletionMessageParam.Visitor<ChatCompletionRequestMessage> {
+public class ChatCompletionMessageParamVisitor implements ChatCompletionMessageParam.Visitor<ChatCompletionRequestMessage> {
 
     @Override
     public ChatCompletionRequestMessage unknown(@Nullable JsonValue json) {

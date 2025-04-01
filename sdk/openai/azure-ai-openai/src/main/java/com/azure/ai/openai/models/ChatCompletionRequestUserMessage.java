@@ -47,6 +47,10 @@ public final class ChatCompletionRequestUserMessage extends ChatCompletionReques
         this.content = content;
     }
 
+    public ChatCompletionRequestUserMessage(String stringContent) {
+        this.content = BinaryData.fromString(stringContent);
+    }
+
     /**
      * Get the role property: The role of the author of this message.
      *
