@@ -31,6 +31,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 public class Configuration {
     public static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
@@ -146,6 +147,12 @@ public class Configuration {
     @Parameter(names = "isPartitionLevelCircuitBreakerEnabled", description = "A flag to denote whether partition level circuit breaker is enabled.")
     private String isPartitionLevelCircuitBreakerEnabled = String.valueOf(true);
 
+    @Parameter(names = "-isManagedIdentityRequired", description = "A flag to denote whether benchmark-specific CosmosClient instance should use Managed Identity to authenticate.")
+    private String isManagedIdentityRequired = String.valueOf(false);
+
+    @Parameter(names = "-managedIdentityId", description = "A setting to specify the managed identity id.")
+    private String managedIdentityId = StringUtils.EMPTY;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -178,6 +185,10 @@ public class Configuration {
 
     @Parameter(names = "-numberOfOperations", description = "Total NUMBER Of Documents To Insert")
     private int numberOfOperations = 100000;
+
+    public Boolean isManagedIdentityRequired() {
+        return Boolean.parseBoolean(this.isManagedIdentityRequired);
+    }
 
     static class DurationConverter implements IStringConverter<Duration> {
         @Override
@@ -850,5 +861,56 @@ public class Configuration {
         }
 
         return this.graphiteMeterRegistry;
+    }
+
+    public static String getAadLoginUri() {
+        return getOptionalConfigProperty(
+                "AAD_LOGIN_ENDPOINT",
+                "https://login.microsoftonline.com/",
+                v -> v);
+    }
+
+    public static String getAadManagedIdentityId() {
+        return getOptionalConfigProperty("AAD_MANAGED_IDENTITY_ID", null, v -> v);
+    }
+
+    public static String getAadTenantId() {
+        return getOptionalConfigProperty("AAD_TENANT_ID", null, v -> v);
+    }
+
+    private static <T> T getOptionalConfigProperty(String name, T defaultValue, Function<String, T> conversion) {
+        String textValue = getConfigPropertyOrNull(name);
+
+        if (textValue == null) {
+            return defaultValue;
+        }
+
+        T returnValue = conversion.apply(textValue);
+        return returnValue != null ? returnValue : defaultValue;
+    }
+
+    private static String getConfigPropertyOrNull(String name) {
+        String systemPropertyName = "COSMOS." + name;
+        String environmentVariableName = "COSMOS_" + name;
+        String fromSystemProperty = emptyToNull(System.getProperty(systemPropertyName));
+        if (fromSystemProperty != null) {
+            return fromSystemProperty;
+        }
+
+        return emptyToNull(System.getenv().get(environmentVariableName));
+    }
+
+    /**
+     * Returns the given string if it is nonempty; {@code null} otherwise.
+     *
+     * @param string the string to test and possibly return
+     * @return {@code string} itself if it is nonempty; {@code null} if it is empty or null
+     */
+    private static String emptyToNull(String string) {
+        if (string == null || string.isEmpty()) {
+            return null;
+        }
+
+        return string;
     }
 }
