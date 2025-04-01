@@ -150,7 +150,7 @@ public class JobTests extends BatchClientTestBase {
             Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
 
             BatchJobTerminateContent terminateContent = new BatchJobTerminateContent().setTerminationReason("myreason");
-            TerminateBatchJobOptions options = new TerminateBatchJobOptions();
+            BatchJobTerminateOptions options = new BatchJobTerminateOptions();
             options.setParameters(terminateContent);
 
             batchClient.terminateJob(jobId, options, null);

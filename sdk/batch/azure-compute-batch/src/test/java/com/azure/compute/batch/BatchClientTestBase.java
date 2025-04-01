@@ -12,7 +12,7 @@ import com.azure.compute.batch.models.BatchTaskState;
 import com.azure.compute.batch.models.ElevationLevel;
 import com.azure.compute.batch.models.ImageReference;
 import com.azure.compute.batch.models.LinuxUserConfiguration;
-import com.azure.compute.batch.models.ListBatchTasksOptions;
+import com.azure.compute.batch.models.BatchTasksListOptions;
 import com.azure.compute.batch.models.NetworkConfiguration;
 import com.azure.compute.batch.models.UserAccount;
 import com.azure.compute.batch.models.VirtualMachineConfiguration;
@@ -315,7 +315,7 @@ class BatchClientTestBase extends TestProxyTestBase {
 
         while (elapsedTime < expiryTimeInSeconds * 1000L) {
 
-            ListBatchTasksOptions options = new ListBatchTasksOptions();
+            BatchTasksListOptions options = new BatchTasksListOptions();
             options.setSelect(Arrays.asList("id", "state"));
             PagedIterable<BatchTask> taskIterator = batchClient.listTasks(jobId, options);
 
