@@ -129,10 +129,11 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
 
+        String globalDatabaseAccountName = this.globalEndpointManager.getLatestDatabaseAccount().getId();
         request.setThinclientHeaders(
             request.getOperationType().name(),
             request.getResourceType().name(),
-            requestUri.getHost(),
+            globalDatabaseAccountName,
             request.getResourceId());
 
         byte[] epk = request.getPartitionKeyInternal().getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
