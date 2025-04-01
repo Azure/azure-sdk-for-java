@@ -77,7 +77,6 @@ function TypeSpec-Compare-CurrentToCodegeneration {
     mvn --no-transfer-progress codesnippet:update-codesnippet
     Pop-Location
   }
-
   if ($failedSdk.Length -gt 0) {
     Write-Host "Code generation failed for following modules: $failedSdk"
     return $true
