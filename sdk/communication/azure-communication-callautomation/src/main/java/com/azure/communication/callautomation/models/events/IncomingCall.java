@@ -23,8 +23,8 @@ public final class IncomingCall extends CallAutomationEventBase {
     private CustomCallingContext customContext;
     private String incomingCallContext;
     private CommunicationIdentifier onBehalfOfCallee;
-    private String correlationId;
-    private String serverCallId;
+    //private String correlationId;
+    //private String serverCallId;
 
     private IncomingCall() {
     }
@@ -38,42 +38,63 @@ public final class IncomingCall extends CallAutomationEventBase {
         this.customContext = customContext;
         this.incomingCallContext = incomingCallContext;
         this.onBehalfOfCallee = onBehalfOfCallee;
-        this.correlationId = correlationId;
-        this.serverCallId = serverCallId;
+        //this.correlationId = correlationId;
+        //this.serverCallId = serverCallId;
 
     }
 
-    //Getters
+    /**
+     * Get the to property: The communication identifier of the target user.
+     *
+     * @return the to value.
+     */
     public CommunicationIdentifier getTo() {
         return this.to;
     }
 
+    /**
+     * Get the from property: The communication identifier of the user who initiated the call.
+     *
+     * @return the from value.
+     */
     public CommunicationIdentifier getFrom() {
         return this.from;
     }
 
+    /**
+     * Get the callerDisplayName property: Display name of caller.
+     *
+     * @return the callerDisplayName value.
+     */
     public String getCallerDisplayName() {
         return this.callerDisplayName;
     }
 
+    /**
+     * Get the customContext property: Custom Context of Incoming Call.
+     *
+     * @return the customContext value
+     */
     public CustomCallingContext getCustomContext() {
         return this.customContext;
     }
 
+    /**
+     * Get the incomingCallContext property: Incoming call context.
+     *
+     * @return the incomingCallContext value.
+     */
     public String getIncomingCallContext() {
         return this.incomingCallContext;
     }
 
+    /**
+     * Get the onBehalfOfCallee property: The communication identifier of the user who is being called on behalf of.
+     *
+     * @return the onBehalfOfCallee value.
+     */
     public CommunicationIdentifier getOnBehalfOfCallee() {
         return this.onBehalfOfCallee;
-    }
-
-    public String getCorrelationId() {
-        return this.correlationId;
-    }
-
-    public String getServerCallId() {
-        return this.serverCallId;
     }
 
     /**
@@ -88,8 +109,6 @@ public final class IncomingCall extends CallAutomationEventBase {
         jsonWriter.writeJsonField("customContext", customContext);
         jsonWriter.writeStringField("incomingCallContext", incomingCallContext);
         jsonWriter.writeJsonField("onBehalfOfCallee", CommunicationIdentifierConverter.convert(onBehalfOfCallee));
-        jsonWriter.writeStringField("correlationId", correlationId);
-        jsonWriter.writeStringField("serverCallId", serverCallId);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
@@ -122,12 +141,8 @@ public final class IncomingCall extends CallAutomationEventBase {
                 } else if ("onBehalfOfCallee".equals(fieldName)) {
                     event.onBehalfOfCallee
                         = CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(reader));
-                } else if ("correlationId".equals(fieldName)) {
-                    event.correlationId = reader.getString();
-                } else if ("serverCallId".equals(fieldName)) {
-                    event.serverCallId = reader.getString();
-
-                } else {
+                }
+                else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
