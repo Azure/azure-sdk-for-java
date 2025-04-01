@@ -135,5 +135,63 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
         HttpBinJSON getAnythingWithEncoded(@HostParam("uri") String uri,
             @QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithNoContentTypeAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithNoContentTypeAndByteArrayBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_JSON) String body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/json" })
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
+
+        @HttpRequestInformation(
+            method = HttpMethod.PUT,
+            path = "put",
+            headers = { "Content-Type: application/json; charset=utf-8" })
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+
+        @HttpRequestInformation(
+            method = HttpMethod.PUT,
+            path = "put",
+            headers = { "Content-Type: application/octet-stream" }, expectedStatusCodes = { 200 })
+        Response<HttpBinJSON> putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+
+        @HttpRequestInformation(
+            method = HttpMethod.PUT,
+            path = "put",
+            headers = { "Content-Type: application/octet-stream" })
+        HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
+        Response<HttpBinJSON> putWithBodyParamApplicationJsonContentTypeAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_JSON) String body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_JSON + "; charset=utf-8") String body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+
     }
 }

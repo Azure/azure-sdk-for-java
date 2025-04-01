@@ -5,9 +5,9 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.v2</groupId>
 
-  <artifactId>azure-identity-service</artifactId>
+  <artifactId>azure-identity-v2-service</artifactId>
 
   <packaging>pom</packaging>
 
@@ -16,10 +16,6 @@
 
   <modules>
     <module>azure-identity</module>
-    <module>azure-identity-perf</module>
-    <module>azure-identity-extensions</module>
-    <module>azure-identity-broker</module>
-    <module>azure-identity-broker-samples</module>
   </modules>
 
 </project>
