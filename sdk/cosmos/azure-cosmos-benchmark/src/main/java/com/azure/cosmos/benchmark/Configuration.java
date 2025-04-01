@@ -150,9 +150,6 @@ public class Configuration {
     @Parameter(names = "-isManagedIdentityRequired", description = "A flag to denote whether benchmark-specific CosmosClient instance should use Managed Identity to authenticate.")
     private String isManagedIdentityRequired = String.valueOf(false);
 
-    @Parameter(names = "-managedIdentityId", description = "A setting to specify the managed identity id.")
-    private String managedIdentityId = StringUtils.EMPTY;
-
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
