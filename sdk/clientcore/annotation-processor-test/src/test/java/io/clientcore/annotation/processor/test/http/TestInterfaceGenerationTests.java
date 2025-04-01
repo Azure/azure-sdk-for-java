@@ -11,7 +11,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRequestContext;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
@@ -241,9 +241,9 @@ public class TestInterfaceGenerationTests {
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
             pagingOptions -> toPagedResponse(
-                testInterface.listFooListResult(uri, HttpRequestContext.none()), null),
+                testInterface.listFooListResult(uri, RequestContext.none()), null),
             (pagingOptions, nextLink) -> toPagedResponse(
-                testInterface.listNextFooListResult(nextLink, HttpRequestContext.none()), nextLink));
+                testInterface.listNextFooListResult(nextLink, RequestContext.none()), nextLink));
 
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());
@@ -284,7 +284,7 @@ public class TestInterfaceGenerationTests {
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, null, HttpRequestContext.none());
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, null, null, RequestContext.none());
 
         List<Foo> fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -296,7 +296,7 @@ public class TestInterfaceGenerationTests {
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
                 Response<List<Foo>> nextResponse
-                    = testInterface.listNextFoo(nextLink, HttpRequestContext.none());
+                    = testInterface.listNextFoo(nextLink, RequestContext.none());
                 return toPagedResponse(nextResponse, nextLink);
             });
 

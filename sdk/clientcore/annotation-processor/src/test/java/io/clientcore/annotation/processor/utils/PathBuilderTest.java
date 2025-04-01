@@ -379,7 +379,7 @@ public class PathBuilderTest {
     // Is this a valid case?
     //    @Test
     //    public void buildsPathWithHostAndPathUsingSameSubstitutionName() {
-    //        HttpRequestContext context = new HttpRequestContext();
+    //        RequestContext context = new RequestContext();
     //        context.addSubstitution(new Substitution("sub1", "hostSub1"));
     //        context.addSubstitution(new Substitution("sub1", "pathSub1"));
     //

@@ -19,7 +19,7 @@ import java.util.function.Consumer;
  * This class contains the request metadata that flows along with the {@link HttpRequest} as it goes through HTTP pipeline,
  * and it can be used to customize the pipeline behavior or modify the request itself.
  *
- * <p>A {@link HttpRequestContext} instance can be passed to a service method that preconfigures known
+ * <p>A {@link RequestContext} instance can be passed to a service method that preconfigures known
  * components of the request like URI, path params etc, further modifying both un-configured, or preconfigured
  * components.</p>
  *
@@ -28,14 +28,14 @@ import java.util.function.Consumer;
  * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger
  * definition.</a></p>
  *
- * <p><strong>Creating an instance of HttpRequestContext</strong></p>
- * <!-- src_embed io.clientcore.core.http.rest.httprequestcontext.instantiation -->
+ * <p><strong>Creating an instance of RequestContext</strong></p>
+ * <!-- src_embed io.clientcore.core.http.rest.requestcontext.instantiation -->
  * <pre>
- * HttpRequestContext options = new HttpRequestContext.Builder&#40;&#41;
+ * RequestContext options = new RequestContext.Builder&#40;&#41;
  *     .addHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end io.clientcore.core.http.rest.httprequestcontext.instantiation -->
+ * <!-- end io.clientcore.core.http.rest.requestcontext.instantiation -->
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
  *
@@ -69,7 +69,7 @@ import java.util.function.Consumer;
  * To create a concrete request, Json builder provided in javax package is used here for demonstration. However, any
  * other JSON building library can be used to achieve similar results.
  *
- * <!-- src_embed io.clientcore.core.http.rest.httprequestcontext.createjsonrequest -->
+ * <!-- src_embed io.clientcore.core.http.rest.requestcontext.createjsonrequest -->
  * <pre>
  * JsonArray photoUris = new JsonArray&#40;&#41;
  *     .addElement&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
@@ -93,13 +93,13 @@ import java.util.function.Consumer;
  *
  * BinaryData requestBodyData = BinaryData.fromObject&#40;requestBody&#41;;
  * </pre>
- * <!-- end io.clientcore.core.http.rest.httprequestcontext.createjsonrequest -->
+ * <!-- end io.clientcore.core.http.rest.requestcontext.createjsonrequest -->
  *
- * Now, this string representation of the JSON request can be set as body of {@link HttpRequestContext}.
+ * Now, this string representation of the JSON request can be set as body of {@link RequestContext}.
  *
- * <!-- src_embed io.clientcore.core.http.rest.httprequestcontext.postrequest -->
+ * <!-- src_embed io.clientcore.core.http.rest.requestcontext.postrequest -->
  * <pre>
- * HttpRequestContext options = HttpRequestContext.builder&#40;&#41;
+ * RequestContext options = RequestContext.builder&#40;&#41;
  *     .addRequestCallback&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
@@ -108,34 +108,34 @@ import java.util.function.Consumer;
  *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end io.clientcore.core.http.rest.httprequestcontext.postrequest -->
+ * <!-- end io.clientcore.core.http.rest.requestcontext.postrequest -->
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
-public final class HttpRequestContext {
-    private static final HttpRequestContext NONE = new HttpRequestContext();
+public final class RequestContext {
+    private static final RequestContext NONE = new RequestContext();
     private final Consumer<HttpRequest> requestCallback;
     private final InternalContext context;
     private final ClientLogger logger;
     private final InstrumentationContext instrumentationContext;
 
     /**
-     * Creates a new instance of {@link HttpRequestContext}.
+     * Creates a new instance of {@link RequestContext}.
      */
-    private HttpRequestContext() {
+    private RequestContext() {
         this(r -> {
         }, null, null, InternalContext.empty());
     }
 
     /**
-     * Creates a new instance of {@link HttpRequestContext} as a copy of the given {@link HttpRequestContext}.
+     * Creates a new instance of {@link RequestContext} as a copy of the given {@link RequestContext}.
      *
      * @param requestCallback The request callback.
      * @param logger The {@link ClientLogger} used to log the request and response.
      * @param instrumentationContext The {@link InstrumentationContext} used to instrument the request.
      * @param context The generic context.
      */
-    private HttpRequestContext(Consumer<HttpRequest> requestCallback, ClientLogger logger,
-        InstrumentationContext instrumentationContext, InternalContext context) {
+    private RequestContext(Consumer<HttpRequest> requestCallback, ClientLogger logger,
+                           InstrumentationContext instrumentationContext, InternalContext context) {
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
         this.requestCallback = requestCallback;
@@ -145,7 +145,7 @@ public final class HttpRequestContext {
     }
 
     /**
-     * Creates a new instance of {@link Builder} to build a {@link HttpRequestContext} object.
+     * Creates a new instance of {@link Builder} to build a {@link RequestContext} object.
      *
      * @return A new instance of {@link Builder}.
      */
@@ -154,8 +154,8 @@ public final class HttpRequestContext {
     }
 
     /**
-     * Creates a new instance of {@link Builder} to build a {@link HttpRequestContext} object from the current
-     * {@link HttpRequestContext} object.
+     * Creates a new instance of {@link Builder} to build a {@link RequestContext} object from the current
+     * {@link RequestContext} object.
      *
      * @return A new instance of {@link Builder}.
      */
@@ -164,7 +164,7 @@ public final class HttpRequestContext {
     }
 
     /**
-     * Gets the request callback, applying all the configurations set on this instance of {@link HttpRequestContext}.
+     * Gets the request callback, applying all the configurations set on this instance of {@link RequestContext}.
      *
      * @return The request callback.
      */
@@ -182,13 +182,13 @@ public final class HttpRequestContext {
     }
 
     /**
-     * An empty {@link HttpRequestContext} used in situations where there is no request-specific
+     * An empty {@link RequestContext} used in situations where there is no request-specific
      * configuration to pass into the request.
      *
-     * @return The immutable instance of an empty {@link HttpRequestContext}. Attempts to modify this instance will
+     * @return The immutable instance of an empty {@link RequestContext}. Attempts to modify this instance will
      * throw an {@link IllegalStateException}.
      */
-    public static HttpRequestContext none() {
+    public static RequestContext none() {
         return NONE;
     }
 
@@ -203,7 +203,7 @@ public final class HttpRequestContext {
 
     /**
      * Gets the value associated with the given key in the request metadata associated with
-     * {@link HttpRequestContext} object.
+     * {@link RequestContext} object.
      *
      * @param key The key to be retrieved.
      * @return The value associated with the given key or {@code null}.
@@ -215,7 +215,7 @@ public final class HttpRequestContext {
     }
 
     /**
-     * A builder class for {@link HttpRequestContext}.
+     * A builder class for {@link RequestContext}.
      */
     public static class Builder {
         private Consumer<HttpRequest> requestCallback = r -> {
@@ -240,7 +240,7 @@ public final class HttpRequestContext {
 
         /**
          * Adds a custom request callback to modify the {@link HttpRequest} before it's sent by the {@link HttpClient}. The
-         * modifications made on a {@link HttpRequestContext} object are applied in order on the request.
+         * modifications made on a {@link RequestContext} object are applied in order on the request.
          *
          * @param requestCallback The request callback.
          * @return The updated {@link Builder} object.
@@ -274,7 +274,7 @@ public final class HttpRequestContext {
         }
 
         /**
-         * Adds a key-value pair to the {@link HttpRequestContext} that can be used to pass additional data to the
+         * Adds a key-value pair to the {@link RequestContext} that can be used to pass additional data to the
          * components of HTTP pipeline.
          *
          * @param key The key to be added.
@@ -345,11 +345,11 @@ public final class HttpRequestContext {
         }
 
         /**
-         * Creates a new instance of {@link HttpRequestContext}.
-         * @return The new instance of {@link HttpRequestContext}.
+         * Creates a new instance of {@link RequestContext}.
+         * @return The new instance of {@link RequestContext}.
          */
-        public HttpRequestContext build() {
-            return new HttpRequestContext(requestCallback, logger, instrumentationContext, context);
+        public RequestContext build() {
+            return new RequestContext(requestCallback, logger, instrumentationContext, context);
         }
     }
 }

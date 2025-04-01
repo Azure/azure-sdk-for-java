@@ -5,7 +5,7 @@ package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRequestContext;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
@@ -196,7 +196,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setEndpoint("https://example.com");
 
         Tracer tracer = Instrumentation.create(null, libraryOptions).getTracer();
-        HttpRequestContext options = HttpRequestContext.none();
+        RequestContext options = RequestContext.none();
 
         // BEGIN: io.clientcore.core.instrumentation.tracecall
 
@@ -210,7 +210,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         Span span = tracer.spanBuilder("{operationName}", SpanKind.CLIENT, instrumentationContext)
             .startSpan();
 
-        HttpRequestContext childOptions = options.toBuilder()
+        RequestContext childOptions = options.toBuilder()
             .setInstrumentationContext(span.getInstrumentationContext())
             .build();
 
@@ -240,11 +240,11 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setEndpoint("https://example.com");
         Instrumentation instrumentation = Instrumentation.create(null, libraryOptions);
 
-        HttpRequestContext httpRequestContext = HttpRequestContext.none();
+        RequestContext requestContext = RequestContext.none();
 
         // BEGIN: io.clientcore.core.instrumentation.operation
 
-        instrumentation.instrument("downloadContent", httpRequestContext, this::clientCall);
+        instrumentation.instrument("downloadContent", requestContext, this::clientCall);
 
         // END: io.clientcore.core.instrumentation.operation
     }
@@ -259,10 +259,10 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
             .setEndpoint("https://example.com");
         Instrumentation instrumentation = Instrumentation.create(null, libraryOptions);
-        HttpRequestContext httpRequestContext = HttpRequestContext.none();
+        RequestContext requestContext = RequestContext.none();
 
         // BEGIN: io.clientcore.core.instrumentation.enrich
-        instrumentation.instrumentWithResponse("downloadContent", httpRequestContext, updatedOptions -> {
+        instrumentation.instrumentWithResponse("downloadContent", requestContext, updatedOptions -> {
             Span span = updatedOptions.getInstrumentationContext().getSpan();
             if (span.isRecording()) {
                 span.setAttribute("sample.content.id", "{content-id}");
@@ -292,7 +292,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setEndpoint("https://example.com");
 
         Tracer tracer = Instrumentation.create(null, libraryOptions).getTracer();
-        HttpRequestContext options = HttpRequestContext.none();
+        RequestContext options = RequestContext.none();
 
         // BEGIN: io.clientcore.core.instrumentation.tracewithattributes
 
@@ -304,7 +304,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .setAttribute("messaging.operations.name", "send")
             .startSpan();
 
-        HttpRequestContext childOptions = options.toBuilder()
+        RequestContext childOptions = options.toBuilder()
             .setInstrumentationContext(sendSpan.getInstrumentationContext())
             .build();
 
@@ -391,7 +391,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     private void performOperation() {
     }
 
-    private Response<?> clientCall(HttpRequestContext httpRequestContext) {
+    private Response<?> clientCall(RequestContext requestContext) {
         return null;
     }
 

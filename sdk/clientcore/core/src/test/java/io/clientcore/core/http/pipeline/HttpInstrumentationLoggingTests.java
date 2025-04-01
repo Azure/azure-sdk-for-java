@@ -7,7 +7,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRequestContext;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
@@ -70,7 +70,7 @@ public class HttpInstrumentationLoggingTests {
         throws IOException {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
 
-        HttpRequestContext options = HttpRequestContext.builder().setLogger(logger).build();
+        RequestContext options = RequestContext.builder().setLogger(logger).build();
 
         HttpPipeline pipeline = createPipeline(new HttpInstrumentationOptions().setHttpLogLevel(detailLevel));
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI);
@@ -1009,7 +1009,7 @@ public class HttpInstrumentationLoggingTests {
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer {token}");
         request.setRequestContext(
-            HttpRequestContext.builder().setLogger(logger).setInstrumentationContext(context).build());
+            RequestContext.builder().setLogger(logger).setInstrumentationContext(context).build());
 
         return request;
     }

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HttpRequestContextTests {
+public class RequestContextTests {
     private static final HttpHeaderName X_MS_FOO = HttpHeaderName.fromString("x-ms-foo");
 
     @Test
@@ -26,8 +26,8 @@ public class HttpRequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        HttpRequestContext options
-            = HttpRequestContext.builder().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1").build();
+        RequestContext options
+            = RequestContext.builder().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1").build();
 
         options.getRequestCallback().accept(request);
 
@@ -39,7 +39,7 @@ public class HttpRequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        HttpRequestContext options = HttpRequestContext.builder()
+        RequestContext options = RequestContext.builder()
             .addRequestCallback(r -> r.getHeaders()
                 .add(new HttpHeader(X_MS_FOO, "bar"))
                 .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")))
@@ -56,7 +56,7 @@ public class HttpRequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        HttpRequestContext options = HttpRequestContext.builder()
+        RequestContext options = RequestContext.builder()
             .addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
             .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
             .addRequestCallback(r -> r.setUri("https://request.uri"))
@@ -76,7 +76,7 @@ public class HttpRequestContextTests {
     public void simpleContext() {
         Object complexObject = ProgressReporter.withProgressListener(value -> {
         });
-        HttpRequestContext options = HttpRequestContext.builder()
+        RequestContext options = RequestContext.builder()
             .putMetadata("stringKey", "value")
             .putMetadata("longKey", 10L)
             .putMetadata("booleanKey", true)
@@ -95,15 +95,15 @@ public class HttpRequestContextTests {
 
     @Test
     public void keysCannotBeNull() {
-        assertThrows(NullPointerException.class, () -> HttpRequestContext.builder().putMetadata(null, null));
-        assertThrows(NullPointerException.class, () -> HttpRequestContext.builder().putMetadata(null, "value"));
+        assertThrows(NullPointerException.class, () -> RequestContext.builder().putMetadata(null, null));
+        assertThrows(NullPointerException.class, () -> RequestContext.builder().putMetadata(null, "value"));
     }
 
     @ParameterizedTest
     @MethodSource("addDataSupplier")
     public void addContext(String key, String value, String expectedOriginalValue) {
-        HttpRequestContext options
-            = HttpRequestContext.builder().putMetadata("key", "value").putMetadata(key, value).build();
+        RequestContext options
+            = RequestContext.builder().putMetadata("key", "value").putMetadata(key, value).build();
 
         assertEquals(value, options.getMetadata(key));
         assertEquals(expectedOriginalValue, options.getMetadata("key"));
@@ -120,13 +120,13 @@ public class HttpRequestContextTests {
 
     @Test
     public void putValueCanBeNull() {
-        HttpRequestContext options = HttpRequestContext.builder().putMetadata("key", null).build();
+        RequestContext options = RequestContext.builder().putMetadata("key", null).build();
 
         assertNull(options.getMetadata("key"));
     }
 
     @Test
     public void getValueKeyCannotBeNull() {
-        assertThrows(NullPointerException.class, () -> HttpRequestContext.none().getMetadata(null));
+        assertThrows(NullPointerException.class, () -> RequestContext.none().getMetadata(null));
     }
 }

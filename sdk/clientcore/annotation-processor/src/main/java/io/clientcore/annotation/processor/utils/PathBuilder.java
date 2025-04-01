@@ -34,7 +34,7 @@ public final class PathBuilder {
      * Builds the path of the request URL by replacing the placeholders with the actual values.
      *
      * @param rawPath The raw host string that contains {} delimited parameters.
-     * @param method The HttpRequestContext object that contains the method's configuration, parameters, headers, and
+     * @param method The RequestContext object that contains the method's configuration, parameters, headers, and
      * other details.
      *
      * @return The path of the request URL with the placeholders replaced with the actual values.

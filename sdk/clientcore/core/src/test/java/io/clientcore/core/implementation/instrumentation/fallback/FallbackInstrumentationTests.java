@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
-import io.clientcore.core.http.models.HttpRequestContext;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
@@ -707,7 +707,7 @@ public class FallbackInstrumentationTests {
     }
 
     public static Stream<Object> notSupportedContexts() {
-        return Stream.of(null, new Object(), "this is not a valid context", HttpRequestContext.none());
+        return Stream.of(null, new Object(), "this is not a valid context", RequestContext.none());
     }
 
     private static void assertValidSpan(Span span, boolean isRecording) {

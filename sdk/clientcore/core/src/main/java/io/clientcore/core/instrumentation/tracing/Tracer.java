@@ -30,7 +30,7 @@ public interface Tracer {
      * Span span = tracer.spanBuilder&#40;&quot;&#123;operationName&#125;&quot;, SpanKind.CLIENT, instrumentationContext&#41;
      *     .startSpan&#40;&#41;;
      *
-     * HttpRequestContext childOptions = options.toBuilder&#40;&#41;
+     * RequestContext childOptions = options.toBuilder&#40;&#41;
      *     .setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;
      *     .build&#40;&#41;;
      *
@@ -62,7 +62,7 @@ public interface Tracer {
      *     .setAttribute&#40;&quot;messaging.operations.name&quot;, &quot;send&quot;&#41;
      *     .startSpan&#40;&#41;;
      *
-     * HttpRequestContext childOptions = options.toBuilder&#40;&#41;
+     * RequestContext childOptions = options.toBuilder&#40;&#41;
      *     .setInstrumentationContext&#40;sendSpan.getInstrumentationContext&#40;&#41;&#41;
      *     .build&#40;&#41;;
      *

@@ -9,29 +9,29 @@ import io.clientcore.core.serialization.json.models.JsonObject;
 import io.clientcore.core.utils.ProgressReporter;
 
 /**
- * JavaDoc code snippets for {@link HttpRequestContext}.
+ * JavaDoc code snippets for {@link RequestContext}.
  */
 public class RequestContextJavaDocCodeSnippets {
 
     /**
-     * Sample to demonstrate how to create an instance of {@link HttpRequestContext}.
-     * @return An instance of {@link HttpRequestContext}.
+     * Sample to demonstrate how to create an instance of {@link RequestContext}.
+     * @return An instance of {@link RequestContext}.
      */
-    public HttpRequestContext createInstance() {
-        // BEGIN: io.clientcore.core.http.rest.httprequestcontext.instantiation
-        HttpRequestContext options = new HttpRequestContext.Builder()
+    public RequestContext createInstance() {
+        // BEGIN: io.clientcore.core.http.rest.requestcontext.instantiation
+        RequestContext options = new RequestContext.Builder()
             .addHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01")
             .build();
-        // END: io.clientcore.core.http.rest.httprequestcontext.instantiation
+        // END: io.clientcore.core.http.rest.requestcontext.instantiation
         return options;
     }
 
     /**
-     * Sample to demonstrate setting the JSON request body in a {@link HttpRequestContext}.
-     * @return An instance of {@link HttpRequestContext}.
+     * Sample to demonstrate setting the JSON request body in a {@link RequestContext}.
+     * @return An instance of {@link RequestContext}.
      */
-    public HttpRequestContext setJsonRequestBodyInRequestContext() {
-        // BEGIN: io.clientcore.core.http.rest.httprequestcontext.createjsonrequest
+    public RequestContext setJsonRequestBodyInRequestContext() {
+        // BEGIN: io.clientcore.core.http.rest.requestcontext.createjsonrequest
         JsonArray photoUris = new JsonArray()
             .addElement("https://imgur.com/pet1")
             .addElement("https://imgur.com/pet2");
@@ -53,10 +53,10 @@ public class RequestContextJavaDocCodeSnippets {
             .setProperty("tags", tags);
 
         BinaryData requestBodyData = BinaryData.fromObject(requestBody);
-        // END: io.clientcore.core.http.rest.httprequestcontext.createjsonrequest
+        // END: io.clientcore.core.http.rest.requestcontext.createjsonrequest
 
-        // BEGIN: io.clientcore.core.http.rest.httprequestcontext.postrequest
-        HttpRequestContext options = HttpRequestContext.builder()
+        // BEGIN: io.clientcore.core.http.rest.requestcontext.postrequest
+        RequestContext options = RequestContext.builder()
             .addRequestCallback(request -> request
                 // may already be set if request is created from a client
                 .setUri("https://petstore.example.com/pet")
@@ -64,25 +64,25 @@ public class RequestContextJavaDocCodeSnippets {
                 .setBody(requestBodyData)
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"))
             .build();
-        // END: io.clientcore.core.http.rest.httprequestcontext.postrequest
+        // END: io.clientcore.core.http.rest.requestcontext.postrequest
         return options;
     }
 
 
     /**
-     * Code snippet for {@link HttpRequestContext.Builder#putMetadata(String, Object)}
+     * Code snippet for {@link RequestContext.Builder#putMetadata(String, Object)}
      */
     public void putDataContext() {
-        // BEGIN: io.clientcore.core.http.rest.httprequestcontext.putData
+        // BEGIN: io.clientcore.core.http.rest.requestcontext.putData
 
-        HttpRequestContext options = HttpRequestContext.builder()
+        RequestContext options = RequestContext.builder()
             .putMetadata("stringKey", "value")
             .putMetadata("complexObject", ProgressReporter.withProgressListener(value -> System.out.printf("Got %s bytes", value)))
             .build();
 
-        // END: io.clientcore.core.http.rest.httprequestcontext.putData
+        // END: io.clientcore.core.http.rest.requestcontext.putData
 
-        // BEGIN: io.clientcore.core.http.rest.httprequestcontext.getData
+        // BEGIN: io.clientcore.core.http.rest.requestcontext.getData
 
         // Get the string value
         Object stringKeyValue = options.getMetadata("stringKey");
@@ -99,6 +99,6 @@ public class RequestContextJavaDocCodeSnippets {
             progressReporter.reportProgress(42);
         }
 
-        // END: io.clientcore.core.http.rest.httprequestcontext.getData
+        // END: io.clientcore.core.http.rest.requestcontext.getData
     }
 }

@@ -8,7 +8,7 @@ import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRequestContext;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
@@ -247,9 +247,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         Map<String, Object> metricAttributes = isMetricsEnabled ? new HashMap<>(8) : null;
 
-        HttpRequestContext httpRequestContext
-            = request.getRequestContext() == null ? HttpRequestContext.none() : request.getRequestContext();
-        InstrumentationContext parentContext = httpRequestContext.getInstrumentationContext();
+        RequestContext requestContext
+            = request.getRequestContext() == null ? RequestContext.none() : request.getRequestContext();
+        InstrumentationContext parentContext = requestContext.getInstrumentationContext();
 
         SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, parentContext);
         setStartAttributes(request, redactedUrl, spanBuilder, metricAttributes);
@@ -259,7 +259,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parentContext;
 
         if (currentContext != null && currentContext.isValid()) {
-            request.setRequestContext(httpRequestContext.toBuilder().setInstrumentationContext(currentContext).build());
+            request.setRequestContext(requestContext.toBuilder().setInstrumentationContext(currentContext).build());
             // even if tracing is disabled, we could have a valid context to propagate
             // if it was provided by the application explicitly.
             traceContextPropagator.inject(currentContext, request.getHeaders(), SETTER);

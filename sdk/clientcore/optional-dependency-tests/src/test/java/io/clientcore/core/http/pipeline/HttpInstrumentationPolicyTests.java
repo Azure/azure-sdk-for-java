@@ -7,7 +7,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRequestContext;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
@@ -498,7 +498,7 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
             .build();
 
-        HttpRequestContext options = HttpRequestContext.builder()
+        RequestContext options = RequestContext.builder()
             .setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan))
             .build();
 
@@ -542,8 +542,8 @@ public class HttpInstrumentationPolicyTests {
         io.clientcore.core.instrumentation.tracing.Span parent
             = tracer.spanBuilder("parent", INTERNAL, null).startSpan();
 
-        HttpRequestContext options
-            = HttpRequestContext.builder().setInstrumentationContext(parent.getInstrumentationContext()).build();
+        RequestContext options
+            = RequestContext.builder().setInstrumentationContext(parent.getInstrumentationContext()).build();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(otelOptions))
             .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))

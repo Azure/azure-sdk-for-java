@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.otel;
 
-import io.clientcore.core.http.models.HttpRequestContext;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopAttributes;
@@ -219,16 +219,16 @@ public class OTelInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrumentWithResponse(String operationName, HttpRequestContext httpRequestContext,
-        Function<HttpRequestContext, TResponse> operation) {
+    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestContext requestContext,
+        Function<RequestContext, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
-        httpRequestContext = httpRequestContext == null ? HttpRequestContext.none() : httpRequestContext;
+        requestContext = requestContext == null ? RequestContext.none() : requestContext;
 
-        InstrumentationContext context = httpRequestContext.getInstrumentationContext();
+        InstrumentationContext context = requestContext.getInstrumentationContext();
         if (!shouldInstrument(SpanKind.CLIENT, context)) {
-            return operation.apply(httpRequestContext);
+            return operation.apply(requestContext);
         }
 
         long startTimeNs = callDurationMetric.isEnabled() ? System.nanoTime() : 0;
@@ -240,8 +240,8 @@ public class OTelInstrumentation implements Instrumentation {
         TracingScope scope = span.makeCurrent();
         RuntimeException error = null;
 
-        HttpRequestContext childOptions
-            = httpRequestContext.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
+        RequestContext childOptions
+            = requestContext.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
 
         try {
             return operation.apply(childOptions);
