@@ -154,24 +154,9 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             logger.error("Updated EPK to value {}", HexConvert.bytesToHex(epk));
         }
 
-        // Add SessionToken header
-        String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
-        if (StringUtils.isNotEmpty(sessionToken)) {
-            boolean setSessionToken = rntbdRequest.setHeaderValue(
-                RntbdConstants.RntbdRequestHeader.SessionToken,
-                sessionToken);
-            if (!setSessionToken) {
-                logger.error("Failed to update SessionToken to value {}", sessionToken);
-            } else {
-                logger.debug("Updated SessionToken to value {}", sessionToken);
-            }
-        }
-
         // todo: neharao1 - validate whether Java heap buffer is okay v/s Direct buffer
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
-
-        logger.error("HEADERS: {}", rntbdRequest.getHeaders().dumpTokens());
 
         // todo: lifting the logic from there to encode the RntbdRequest instance into a ByteBuf (ByteBuf is a network compatible format)
         // todo: double-check with fabianm to see if RntbdRequest across RNTBD over TCP (Direct connectivity mode) is same as that when using ThinClient proxy
@@ -184,7 +169,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         return new HttpRequest(
             HttpMethod.POST,
             requestUri,
-            10650,
+            requestUri.getPort(),
             headers,
             Flux.just(contentAsByteArray));
     }

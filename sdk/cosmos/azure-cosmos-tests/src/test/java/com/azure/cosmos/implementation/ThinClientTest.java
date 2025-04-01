@@ -30,22 +30,12 @@ public class ThinClientTest {
                     .consistencyLevel(ConsistencyLevel.SESSION)
                     .buildAsyncClient();
 
-            //CosmosAsyncContainer container = client.getDatabase("NehaTestDb").getContainer("NehaTestContainer");
             CosmosAsyncContainer container = client.getDatabase("updatedd-thin-client-test-db").getContainer("thin-client-test-container-1");
             TestItem testItem = TestItem.createNewItem();
             System.out.println(testItem.getId());
             container.createItem(testItem).block();
-            CosmosItemResponse<TestItem> response = container.readItem(testItem.getId(), new PartitionKey(testItem.getPk()), TestItem.class).block();
-            //System.out.println("READ DIAGNOSTICS: " + response.getDiagnostics());
-            TestItem readDoc = response.getItem();
-            System.out.println("Document read - " + readDoc.toString());
-            //container.deleteItem(testItem.getId(), new PartitionKey(testItem.getMypk())).block();
-
-/*            CosmosAsyncContainer container = client.getDatabase("TestDatabase").getContainer("ChangeFeedTestContainer");
-            TestItem testItem = TestItem.createNewItem();
-            System.out.println(testItem.getId());
-            container.createItem(testItem).block();
-            container.readItem(testItem.getId(), new PartitionKey(testItem.getId()), JsonNode.class).block();*/
+            container.readItem(testItem.getId(), new PartitionKey(testItem.getPk()), TestItem.class).block();
+            container.deleteItem(testItem.getId(), new PartitionKey(testItem.getPk())).block();
         } finally {
             System.clearProperty(Configs.THINCLIENT_ENABLED);
             System.clearProperty(Configs.HTTP2_ENABLED);

@@ -1190,8 +1190,8 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_OPERATION_TYPE, operationType);
         this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_RESOURCE_TYPE, resourceType);
 
-        String host = regionalHost.substring(0, regionalHost.indexOf(".") + 1);
-        int lastIndexOfHyphen = regionalHost.lastIndexOf("-");
+        String host = regionalHost.substring(0, regionalHost.indexOf("."));
+        int lastIndexOfHyphen = host.lastIndexOf("-");
         String globalDatabaseAccountName = host.substring(0, lastIndexOfHyphen);
         this.headers.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, globalDatabaseAccountName);
         this.headers.put(WFConstants.BackendHeaders.COLLECTION_RID, resourceId);
