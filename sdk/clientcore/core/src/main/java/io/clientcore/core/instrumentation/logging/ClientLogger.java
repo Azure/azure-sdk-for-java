@@ -12,7 +12,6 @@ import io.clientcore.core.utils.configuration.Configuration;
 import java.nio.file.InvalidPathException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * This is a fluent logger helper class that wraps an SLF4J Logger (if available) or a default implementation of the
@@ -110,12 +109,7 @@ public class ClientLogger {
      * @throws NullPointerException If {@code throwable} is {@code null}.
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
-        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEvent.create(logger, LogLevel.WARNING, globalContext)
-            .setThrowable(throwable)
-            .log(throwable.getMessage());
-
-        return throwable;
+        return LoggingEvent.create(logger, LogLevel.WARNING, globalContext).logThrowable(throwable);
     }
 
     /**
@@ -129,9 +123,7 @@ public class ClientLogger {
      * @throws NullPointerException If {@code throwable} is {@code null}.
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
-        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).setThrowable(throwable).log(throwable.getMessage());
-        return throwable;
+        return LoggingEvent.create(logger, LogLevel.ERROR, globalContext).logThrowable(throwable);
     }
 
     /**
