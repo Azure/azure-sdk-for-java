@@ -23,7 +23,6 @@ import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.annotation.processor.utils.RequestBodyHandler;
 import io.clientcore.annotation.processor.utils.TypeConverter;
-import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
@@ -266,14 +265,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             return;
         }
 
-        boolean isContentTypeSetInHeaders = method.getParameters().stream().anyMatch(parameter -> {
-            HeaderParam headerParam = parameter.getTypeMirror().getAnnotation(HeaderParam.class);
-            if (headerParam != null) {
-                return "Content-Type".equals(headerParam.value());
-            }
-
-            return false;
-        });
+        boolean isContentTypeSetInHeaders
+            = method.getParameters().stream().anyMatch(p -> "contentType".equals(p.getName()));
 
         // Header param to have precedence
         if (!isContentTypeSetInHeaders) {
