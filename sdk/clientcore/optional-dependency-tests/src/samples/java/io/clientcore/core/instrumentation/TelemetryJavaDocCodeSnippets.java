@@ -3,8 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.http.models.SdkRequestContext;
+import io.clientcore.core.http.models.HttpRequestContext;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
@@ -153,11 +152,12 @@ public class TelemetryJavaDocCodeSnippets {
         SampleClient client = new SampleClientBuilder().build();
 
         // Propagating context implicitly is preferred way in synchronous code.
-        // However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
+        // However, in asynchronous code, context may need to be propagated explicitly using HttpRequestContext
         // and explicit io.clientcore.core.util.Context.
 
-        RequestOptions options = new RequestOptions()
-            .setInstrumentationContext(Instrumentation.createInstrumentationContext(span));
+        HttpRequestContext options = HttpRequestContext.builder()
+            .setInstrumentationContext(Instrumentation.createInstrumentationContext(span))
+            .build();
 
         // run on another thread - all telemetry will be correlated with the span created above
         client.clientCall(options);
@@ -197,20 +197,20 @@ public class TelemetryJavaDocCodeSnippets {
             return this.clientCallWithResponse(null);
         }
 
-        public Response<?> clientCallWithResponse(RequestOptions options) {
+        public Response<?> clientCallWithResponse(HttpRequestContext options) {
             return instrumentation.instrumentWithResponse("Sample.call", options, this::clientCallWithResponseImpl);
         }
 
-        public void clientCall(RequestOptions options) {
+        public void clientCall(HttpRequestContext options) {
             instrumentation.instrument("Sample.call", options, this::clientCallImpl);
         }
 
-        private Response<?> clientCallWithResponseImpl(RequestOptions options) {
-            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(SdkRequestContext.from(options)));
+        private Response<?> clientCallWithResponseImpl(HttpRequestContext options) {
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(options));
         }
 
-        private void clientCallImpl(RequestOptions options) {
-            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(SdkRequestContext.from(options)));
+        private void clientCallImpl(HttpRequestContext options) {
+            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestContext(options));
         }
     }
 }

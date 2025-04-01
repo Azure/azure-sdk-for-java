@@ -15,7 +15,7 @@ import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.HttpRequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
@@ -65,7 +65,7 @@ public class SwaggerMethodParserTests {
         void getMethod();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        void getMethodWithRequestContext(RequestOptions requestOptions);
+        void getMethodWithRequestContext(HttpRequestContext httpRequestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "test")
         void putMethod();
@@ -509,27 +509,30 @@ public class SwaggerMethodParserTests {
     }
 
     @ParameterizedTest
-    @MethodSource("setRequestOptionsSupplier")
-    public void setRequestOptions(SwaggerMethodParser swaggerMethodParser, Object[] arguments,
-        RequestOptions expectedRequestOptions) {
-        assertEquals(expectedRequestOptions, swaggerMethodParser.setRequestOptions(arguments));
+    @MethodSource("setRequestContextSupplier")
+    public void setRequestContext(SwaggerMethodParser swaggerMethodParser, Object[] arguments,
+        HttpRequestContext expectedHttpRequestContext) {
+        assertEquals(expectedHttpRequestContext, swaggerMethodParser.setRequestContext(arguments));
     }
 
-    private static Stream<Arguments> setRequestOptionsSupplier() throws NoSuchMethodException {
-        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestContext", RequestOptions.class);
+    private static Stream<Arguments> setRequestContextSupplier() throws NoSuchMethodException {
+        Method method
+            = OperationMethods.class.getDeclaredMethod("getMethodWithRequestContext", HttpRequestContext.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        RequestOptions emptyOptions = RequestOptions.none();
+        HttpRequestContext emptyOptions = HttpRequestContext.none();
 
-        RequestOptions headerQueryOptions = new RequestOptions()
-            .addRequestCallback(r -> r.getHeaders().add(HttpHeaderName.fromString("x-ms-foo"), "bar"))
-            .addQueryParam("foo", "bar");
+        HttpRequestContext headerQueryOptions = HttpRequestContext.builder()
+            .addHeader(HttpHeaderName.fromString("x-ms-foo"), "bar")
+            .addQueryParam("foo", "bar")
+            .build();
 
-        RequestOptions uriOptions
-            = new RequestOptions().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com"));
+        HttpRequestContext uriOptions = HttpRequestContext.builder()
+            .addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com"))
+            .build();
 
         // Add this test back if error options is ever made public.
-        // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
+        // HttpRequestContext statusOptionOptions = new HttpRequestContext().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
 
         return Stream.of(Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
             Arguments.of(swaggerMethodParser, toObjectArray(emptyOptions), emptyOptions),

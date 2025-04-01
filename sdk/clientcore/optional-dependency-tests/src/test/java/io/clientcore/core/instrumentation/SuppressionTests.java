@@ -6,9 +6,8 @@ package io.clientcore.core.instrumentation;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.HttpRequestContext;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.instrumentation.tracing.Span;
@@ -91,7 +90,7 @@ public class SuppressionTests {
             .build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
-        client.protocolMethod(RequestOptions.none());
+        client.protocolMethod(HttpRequestContext.none());
 
         // test that one span is created for simple method
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -106,7 +105,7 @@ public class SuppressionTests {
             .build();
         SampleClientTracing client = new SampleClientTracing(pipeline, otelOptions);
 
-        client.convenienceMethod(RequestOptions.none());
+        client.convenienceMethod(HttpRequestContext.none());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData span = exporter.getFinishedSpanItems().get(0);
         assertEquals("convenienceMethod", span.getName());
@@ -124,7 +123,7 @@ public class SuppressionTests {
         SampleClientCallInstrumentation client
             = new SampleClientCallInstrumentation(pipeline, otelOptions, libraryInstrumentationOptions);
 
-        client.convenienceMethod(RequestOptions.none());
+        client.convenienceMethod(HttpRequestContext.none());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData span = exporter.getFinishedSpanItems().get(0);
         assertEquals("convenience", span.getName());
@@ -145,7 +144,7 @@ public class SuppressionTests {
             = new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true);
         SampleClientCallInstrumentation client = new SampleClientCallInstrumentation(pipeline, otelOptions, libOptions);
 
-        client.convenienceMethod(RequestOptions.none());
+        client.convenienceMethod(HttpRequestContext.none());
         assertEquals(2, exporter.getFinishedSpanItems().size());
         assertEquals("protocol", exporter.getFinishedSpanItems().get(0).getName());
         assertEquals("convenience", exporter.getFinishedSpanItems().get(1).getName());
@@ -366,16 +365,15 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void protocolMethod(RequestOptions options) {
-            Span span = tracer
-                .spanBuilder("protocolMethod", INTERNAL, options == null ? null : options.getInstrumentationContext())
-                .startSpan();
+        public void protocolMethod(HttpRequestContext options) {
+            options = options == null ? HttpRequestContext.none() : options;
+            Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
                     .setRequestContext(
-                        SdkRequestContext.from(options).setInstrumentationContext(span.getInstrumentationContext())));
+                        options.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build()));
                 try {
                     response.close();
                 } catch (IOException e) {
@@ -387,7 +385,8 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void convenienceMethod(RequestOptions options) {
+        public void convenienceMethod(HttpRequestContext options) {
+            options = options == null ? HttpRequestContext.none() : options;
             Span span
                 = tracer
                     .spanBuilder("convenienceMethod", INTERNAL,
@@ -395,9 +394,7 @@ public class SuppressionTests {
                     .startSpan();
 
             try (TracingScope scope = span.makeCurrent()) {
-                SdkRequestContext context
-                    = SdkRequestContext.from(options).setInstrumentationContext(span.getInstrumentationContext());
-                protocolMethod(context.toRequestOptions());
+                protocolMethod(options.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build());
             } finally {
                 span.end();
             }
@@ -414,14 +411,14 @@ public class SuppressionTests {
             this.instrumentation = Instrumentation.create(options, libraryInstrumentationOptions);
         }
 
-        public Response<?> protocolMethod(RequestOptions options) {
+        public Response<?> protocolMethod(HttpRequestContext options) {
             return instrumentation.instrumentWithResponse("protocol", options,
                 updatedOptions -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
                     .setUri("https://localhost")
-                    .setRequestContext(SdkRequestContext.from(updatedOptions))));
+                    .setRequestContext(updatedOptions)));
         }
 
-        public Response<?> convenienceMethod(RequestOptions options) {
+        public Response<?> convenienceMethod(HttpRequestContext options) {
             return instrumentation.instrumentWithResponse("convenience", options, this::protocolMethod);
         }
     }

@@ -5,9 +5,8 @@ package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.HttpRequestContext;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 
 class SampleClient {
@@ -26,31 +25,31 @@ class SampleClient {
         return this.downloadContent(null);
     }
 
-    public Response<?> downloadContent(RequestOptions options) {
+    public Response<?> downloadContent(HttpRequestContext options) {
         // BEGIN: io.clientcore.core.instrumentation.instrumentwithresponse
         return instrumentation.instrumentWithResponse("Sample.download", options, this::downloadImpl);
         // END: io.clientcore.core.instrumentation.instrumentwithresponse
     }
 
-    public void create(RequestOptions options) {
+    public void create(HttpRequestContext options) {
         // BEGIN: io.clientcore.core.instrumentation.instrument
         instrumentation.instrument("Sample.create", options, this::createImpl);
         // END: io.clientcore.core.instrumentation.instrument
     }
 
-    public Response<?> createWithResponse(RequestOptions options) {
+    public Response<?> createWithResponse(HttpRequestContext options) {
         return instrumentation.instrumentWithResponse("create", options, this::createWithResponseImpl);
     }
 
-    private Response<?> downloadImpl(RequestOptions options) {
-        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestContext(SdkRequestContext.from(options)));
+    private Response<?> downloadImpl(HttpRequestContext options) {
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestContext(options));
     }
 
-    private Response<?> createWithResponseImpl(RequestOptions options) {
-        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(SdkRequestContext.from(options)));
+    private Response<?> createWithResponseImpl(HttpRequestContext options) {
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(options));
     }
 
-    private void createImpl(RequestOptions options) {
-        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(SdkRequestContext.from(options)));
+    private void createImpl(HttpRequestContext options) {
+        httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestContext(options));
     }
 }

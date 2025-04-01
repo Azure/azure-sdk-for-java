@@ -8,8 +8,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.http.models.HttpRequestContext;
 import io.clientcore.core.utils.ProgressReporter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RequestOptionsTests {
+public class HttpRequestContextTests {
     private static final HttpHeaderName X_MS_FOO = HttpHeaderName.fromString("x-ms-foo");
 
     @Test
@@ -33,7 +32,8 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
+        HttpRequestContext options
+            = HttpRequestContext.builder().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1").build();
 
         options.getRequestCallback().accept(request);
 
@@ -45,9 +45,11 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions().addRequestCallback(r -> r.getHeaders()
-            .add(new HttpHeader(X_MS_FOO, "bar"))
-            .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")));
+        HttpRequestContext options = HttpRequestContext.builder()
+            .addRequestCallback(r -> r.getHeaders()
+                .add(new HttpHeader(X_MS_FOO, "bar"))
+                .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")))
+            .build();
         options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
@@ -60,12 +62,13 @@ public class RequestOptionsTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
-        RequestOptions options
-            = new RequestOptions().addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
-                .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
-                .addRequestCallback(r -> r.setUri("https://request.uri"))
-                .addQueryParam("$skipToken", "1")
-                .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"));
+        HttpRequestContext options = HttpRequestContext.builder()
+            .addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
+            .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
+            .addRequestCallback(r -> r.setUri("https://request.uri"))
+            .addQueryParam("$skipToken", "1")
+            .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"))
+            .build();
 
         options.getRequestCallback().accept(request);
 
@@ -79,11 +82,13 @@ public class RequestOptionsTests {
     public void simpleContext() {
         Object complexObject = ProgressReporter.withProgressListener(value -> {
         });
-        RequestOptions options = new RequestOptions().putMetadata("stringKey", "value")
+        HttpRequestContext options = HttpRequestContext.builder()
+            .putMetadata("stringKey", "value")
             .putMetadata("longKey", 10L)
             .putMetadata("booleanKey", true)
             .putMetadata("doubleKey", 42.0)
-            .putMetadata("complexObject", complexObject);
+            .putMetadata("complexObject", complexObject)
+            .build();
 
         assertEquals("value", options.getMetadata("stringKey"));
         assertEquals("value", options.getMetadata("stringKey"));
@@ -96,29 +101,18 @@ public class RequestOptionsTests {
 
     @Test
     public void keysCannotBeNull() {
-        RequestOptions options = new RequestOptions();
-        assertThrows(NullPointerException.class, () -> options.putMetadata(null, null));
-        assertThrows(NullPointerException.class, () -> options.putMetadata(null, "value"));
+        assertThrows(NullPointerException.class, () -> HttpRequestContext.builder().putMetadata(null, null));
+        assertThrows(NullPointerException.class, () -> HttpRequestContext.builder().putMetadata(null, "value"));
     }
 
     @ParameterizedTest
     @MethodSource("addDataSupplier")
     public void addContext(String key, String value, String expectedOriginalValue) {
-        RequestOptions options = new RequestOptions().putMetadata("key", "value").putMetadata(key, value);
+        HttpRequestContext options
+            = HttpRequestContext.builder().putMetadata("key", "value").putMetadata(key, value).build();
 
         assertEquals(value, options.getMetadata(key));
         assertEquals(expectedOriginalValue, options.getMetadata("key"));
-    }
-
-    @Test
-    public void noneIsLocked() {
-        assertThrows(IllegalStateException.class, () -> RequestOptions.none().putMetadata("key", "value"));
-        assertThrows(IllegalStateException.class, () -> RequestOptions.none().addRequestCallback(request -> {
-        }));
-        assertThrows(IllegalStateException.class, () -> RequestOptions.none().addQueryParam("key", "value"));
-        assertThrows(IllegalStateException.class, () -> RequestOptions.none().addQueryParam("key", "value", true));
-        assertThrows(IllegalStateException.class, () -> RequestOptions.none().setLogger(new ClientLogger("test")));
-        assertThrows(IllegalStateException.class, () -> RequestOptions.none().setInstrumentationContext(null));
     }
 
     private static Stream<Arguments> addDataSupplier() {
@@ -132,13 +126,13 @@ public class RequestOptionsTests {
 
     @Test
     public void putValueCanBeNull() {
-        RequestOptions options = new RequestOptions().putMetadata("key", null);
+        HttpRequestContext options = HttpRequestContext.builder().putMetadata("key", null).build();
 
         assertNull(options.getMetadata("key"));
     }
 
     @Test
     public void getValueKeyCannotBeNull() {
-        assertThrows(NullPointerException.class, () -> RequestOptions.none().getMetadata(null));
+        assertThrows(NullPointerException.class, () -> HttpRequestContext.none().getMetadata(null));
     }
 }

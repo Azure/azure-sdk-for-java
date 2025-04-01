@@ -3,8 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
-import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.http.models.SdkRequestContext;
+import io.clientcore.core.http.models.HttpRequestContext;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.instrumentation.Instrumentation;
@@ -96,15 +95,16 @@ public class FallbackInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<RequestOptions, TResponse> operation) {
+    public <TResponse> TResponse instrumentWithResponse(String operationName, HttpRequestContext httpRequestContext,
+        Function<HttpRequestContext, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
-        InstrumentationContext context = requestOptions == null ? null : requestOptions.getInstrumentationContext();
+        httpRequestContext = httpRequestContext == null ? HttpRequestContext.none() : httpRequestContext;
+        InstrumentationContext context = httpRequestContext.getInstrumentationContext();
 
         if (!shouldInstrument(SpanKind.CLIENT, context)) {
-            return operation.apply(requestOptions);
+            return operation.apply(httpRequestContext);
         }
 
         SpanBuilder builder
@@ -116,11 +116,11 @@ public class FallbackInstrumentation implements Instrumentation {
 
         Span span = builder.startSpan();
 
-        SdkRequestContext requestContext
-            = SdkRequestContext.from(requestOptions).setInstrumentationContext(span.getInstrumentationContext());
+        HttpRequestContext childOptions
+            = httpRequestContext.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
         TracingScope scope = span.makeCurrent();
         try {
-            TResponse response = operation.apply(requestContext.toRequestOptions());
+            TResponse response = operation.apply(childOptions);
             span.end();
             return response;
         } catch (RuntimeException t) {

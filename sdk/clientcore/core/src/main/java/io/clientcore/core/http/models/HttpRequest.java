@@ -42,7 +42,7 @@ public class HttpRequest {
     private HttpHeaders headers;
     private BinaryData body;
     private ServerSentEventListener serverSentEventListener;
-    private SdkRequestContext requestContext;
+    private HttpRequestContext httpRequestContext;
     private int tryCount;
 
     /**
@@ -50,7 +50,7 @@ public class HttpRequest {
      */
     public HttpRequest() {
         this.headers = new HttpHeaders();
-        this.requestContext = null;
+        this.httpRequestContext = null;
     }
 
     /**
@@ -165,22 +165,22 @@ public class HttpRequest {
     }
 
     /**
-     * Get the request {@link SdkRequestContext context}.
+     * Get the request options.
      *
-     * @return The request {@link SdkRequestContext context}.
+     * @return The {@link HttpRequestContext}.
      */
-    public SdkRequestContext getRequestContext() {
-        return requestContext;
+    public HttpRequestContext getRequestContext() {
+        return httpRequestContext;
     }
 
     /**
-     * Set the request {@link SdkRequestContext context}.
+     * Set the request options.
      *
-     * @param requestContext The request {@link SdkRequestContext context}.
+     * @param httpRequestContext The {@link HttpRequestContext}.
      * @return The updated {@link HttpRequest}.
      */
-    public HttpRequest setRequestContext(SdkRequestContext requestContext) {
-        this.requestContext = requestContext;
+    public HttpRequest setRequestContext(HttpRequestContext httpRequestContext) {
+        this.httpRequestContext = httpRequestContext;
         return this;
     }
 

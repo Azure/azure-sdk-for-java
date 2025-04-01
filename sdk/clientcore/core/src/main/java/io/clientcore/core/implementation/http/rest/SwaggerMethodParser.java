@@ -12,11 +12,11 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.http.models.HttpRequestContext;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
@@ -88,7 +88,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final Type returnType;
     private final Type returnValueWireType;
     private final UnexpectedResponseExceptionDetail[] unexpectedResponseExceptionDetails;
-    private final int requestOptionsPosition;
+    private final int requestContextPosition;
     private final boolean returnTypeDecodable;
     private final boolean headersEagerlyConverted;
     private final int serverSentEventListenerPosition;
@@ -271,22 +271,22 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.bodyContentType = bodyContentType;
         this.bodyJavaType = bodyJavaType;
         Class<?>[] parameterTypes = swaggerMethod.getParameterTypes();
-        int requestOptionsPosition = -1;
+        int requestContextPosition = -1;
         int serverSentEventListenerPosition = -1;
 
         for (int i = 0; i < parameterTypes.length; i++) {
             Class<?> parameterType = parameterTypes[i];
 
-            // Check for the RequestOptions position.
+            // Check for the HttpRequestContext position.
             // To retain previous behavior, only track the first instance found.
-            if (parameterType == RequestOptions.class && requestOptionsPosition == -1) {
-                requestOptionsPosition = i;
+            if (parameterType == HttpRequestContext.class && requestContextPosition == -1) {
+                requestContextPosition = i;
             } else if (parameterType == ServerSentEventListener.class) {
                 serverSentEventListenerPosition = i;
             }
         }
 
-        this.requestOptionsPosition = requestOptionsPosition;
+        this.requestContextPosition = requestContextPosition;
         this.serverSentEventListenerPosition = serverSentEventListenerPosition;
         this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(Response.class, returnType);
         Type unwrappedReturnType = unwrapReturnType(returnType);
@@ -460,14 +460,14 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link RequestOptions} passed into the proxy method.
+     * Get the {@link HttpRequestContext} passed into the proxy method.
      *
      * @param swaggerMethodArguments The arguments passed to the proxy method.
      *
      * @return The request options.
      */
-    public RequestOptions setRequestOptions(Object[] swaggerMethodArguments) {
-        return requestOptionsPosition < 0 ? null : (RequestOptions) swaggerMethodArguments[requestOptionsPosition];
+    public HttpRequestContext setRequestContext(Object[] swaggerMethodArguments) {
+        return requestContextPosition < 0 ? null : (HttpRequestContext) swaggerMethodArguments[requestContextPosition];
     }
 
     /**

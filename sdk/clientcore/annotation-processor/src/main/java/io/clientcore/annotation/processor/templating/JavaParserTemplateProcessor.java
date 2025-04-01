@@ -26,7 +26,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -147,8 +146,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         classBuilder.addField(JsonSerializer.class, "jsonSerializer", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
         compilationUnit.addImport(XmlSerializer.class);
         classBuilder.addField(XmlSerializer.class, "xmlSerializer", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
-
-        compilationUnit.addImport(SdkRequestContext.class);
 
         classBuilder.addConstructor(Modifier.Keyword.PRIVATE)
             .addParameter(HttpPipeline.class, "httpPipeline")
@@ -311,23 +308,22 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         initializeHttpRequest(body, method);
         boolean serializationFormatSet = addRequestBody(body, method);
-        addRequestOptionsToRequestIfPresent(body, method);
+        addRequestContextToRequestIfPresent(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
 
         internalMethod.setBody(body);
     }
 
     // Helper methods
-    private void addRequestOptionsToRequestIfPresent(BlockStmt body, HttpRequestContext method) {
-        boolean hasRequestOptions = method.getParameters()
+    private void addRequestContextToRequestIfPresent(BlockStmt body, HttpRequestContext method) {
+        boolean hasRequestContext = method.getParameters()
             .stream()
-            .anyMatch(parameter -> "requestOptions".equals(parameter.getName())
-                && "RequestOptions".equals(parameter.getShortTypeName()));
+            .anyMatch(parameter -> "requestContext".equals(parameter.getName())
+                && "HttpRequestContext".equals(parameter.getShortTypeName()));
 
-        if (hasRequestOptions) {
+        if (hasRequestContext) {
             // Create a statement for setting request options
-            Statement statement1 = StaticJavaParser
-                .parseStatement("httpRequest.setRequestContext(SdkRequestContext.from(requestOptions));");
+            Statement statement1 = StaticJavaParser.parseStatement("httpRequest.setRequestContext(requestContext);");
 
             Statement statement2 = StaticJavaParser
                 .parseStatement("httpRequest.getRequestContext().getRequestCallback().accept(httpRequest);");

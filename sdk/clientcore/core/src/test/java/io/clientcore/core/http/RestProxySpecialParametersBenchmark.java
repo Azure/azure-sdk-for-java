@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http;
 
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.HttpRequestContext;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 import static io.clientcore.core.utils.TestUtils.findFirstOfType;
 
 /**
- * Benchmarks retrieving the special parameters {@link RequestOptions}.
+ * Benchmarks retrieving the special parameters {@link HttpRequestContext}.
  */
 @Fork(3)
 @Warmup(iterations = 5, time = 2)
@@ -32,10 +32,10 @@ public class RestProxySpecialParametersBenchmark {
     // Context is last as it's usually the last parameter in the generated interface.
     // There isn't an exact known size of parameters but 7 is a good rough estimate for the average.
     private static final Object[] REST_PROXY_PARAMETERS
-        = new Object[] { "a string", 1, 1.5D, "another string", new Object(), -7, RequestOptions.none() };
+        = new Object[] { "a string", 1, 1.5D, "another string", new Object(), -7, HttpRequestContext.none() };
 
     /**
-     * Benchmarks retrieving @link RequestOptions} from the parameters array passed into
+     * Benchmarks retrieving @link HttpRequestContext} from the parameters array passed into
      * {@link RestProxy} by using the predetermined index where the type would be located.
      * <p>
      * Benchmarking shows this as ~5x faster than the iterative approach and is the current implementation.
@@ -47,13 +47,13 @@ public class RestProxySpecialParametersBenchmark {
     }
 
     /**
-     * Benchmarks retrieving {@link RequestOptions} from the parameters array passed into
+     * Benchmarks retrieving {@link HttpRequestContext} from the parameters array passed into
      * {@link RestProxy} by using an iterate-and-type check approach to determine where the parameter is located on a
      * per-request basis.
      */
     @Benchmark
     public void iterativeCheckForSpecialParameters(Blackhole blackhole) {
         // Iterate through the parameters until the first instance of Context is found.
-        blackhole.consume(findFirstOfType(REST_PROXY_PARAMETERS, RequestOptions.class));
+        blackhole.consume(findFirstOfType(REST_PROXY_PARAMETERS, HttpRequestContext.class));
     }
 }

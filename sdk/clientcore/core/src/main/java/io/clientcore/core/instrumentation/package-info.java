@@ -98,11 +98,12 @@
  * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
  *
  * &#47;&#47; Propagating context implicitly is preferred way in synchronous code.
- * &#47;&#47; However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
+ * &#47;&#47; However, in asynchronous code, context may need to be propagated explicitly using HttpRequestContext
  * &#47;&#47; and explicit io.clientcore.core.util.Context.
  *
- * RequestOptions options = new RequestOptions&#40;&#41;
- *     .setInstrumentationContext&#40;Instrumentation.createInstrumentationContext&#40;span&#41;&#41;;
+ * HttpRequestContext options = HttpRequestContext.builder&#40;&#41;
+ *     .setInstrumentationContext&#40;Instrumentation.createInstrumentationContext&#40;span&#41;&#41;
+ *     .build&#40;&#41;;
  *
  * &#47;&#47; run on another thread - all telemetry will be correlated with the span created above
  * client.clientCall&#40;options&#41;;

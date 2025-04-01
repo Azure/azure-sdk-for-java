@@ -7,9 +7,8 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.HttpRequestContext;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.SdkRequestContext;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
@@ -499,12 +498,13 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
             .build();
 
-        RequestOptions options
-            = new RequestOptions().setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan));
+        HttpRequestContext options = HttpRequestContext.builder()
+            .setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan))
+            .build();
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri("https://localhost:8080/path/to/resource?query=param")
-            .setRequestContext(SdkRequestContext.from(options))).close();
+            .setRequestContext(options)).close();
         testSpan.end();
 
         assertNotNull(exporter.getFinishedSpanItems());
@@ -542,7 +542,8 @@ public class HttpInstrumentationPolicyTests {
         io.clientcore.core.instrumentation.tracing.Span parent
             = tracer.spanBuilder("parent", INTERNAL, null).startSpan();
 
-        RequestOptions options = new RequestOptions().setInstrumentationContext(parent.getInstrumentationContext());
+        HttpRequestContext options
+            = HttpRequestContext.builder().setInstrumentationContext(parent.getInstrumentationContext()).build();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(otelOptions))
             .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
@@ -550,7 +551,7 @@ public class HttpInstrumentationPolicyTests {
 
         pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri("https://localhost:8080/path/to/resource?query=param")
-            .setRequestContext(SdkRequestContext.from(options))).close();
+            .setRequestContext(options)).close();
 
         parent.end();
 
