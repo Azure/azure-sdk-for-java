@@ -16,6 +16,7 @@ import io.opentelemetry.sdk.logs.data.LogRecordData;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -26,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 class AzureMonitorLogRecordExporter implements LogRecordExporter {
 
-    private static final String AUTO_CONFIGURE_LOG_PREFIX = "com.azure.monitor.opentelemetry.autoconfigure";
+    private static final String AUTO_CONFIGURE_LOG_PREFIX = AzureMonitorAutoConfigure.class.getPackageName();
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorLogRecordExporter.class);
     private static final OperationLogger OPERATION_LOGGER
         = new OperationLogger(AzureMonitorLogRecordExporter.class, "Exporting log");
