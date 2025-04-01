@@ -9,10 +9,11 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.scheduler.Scheduler;
 
@@ -21,7 +22,7 @@ import java.util.Objects;
 /**
  * A wrapper class that contains all parameters that are needed to establish a connection to an AMQP message broker.
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class ConnectionOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionOptions.class);
 

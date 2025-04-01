@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.implementation.instrumentation;
 
 import com.azure.core.util.TelemetryAttributes;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.Meter;

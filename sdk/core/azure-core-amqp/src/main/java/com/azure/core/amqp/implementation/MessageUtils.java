@@ -17,7 +17,7 @@ import com.azure.core.amqp.models.ModifiedDeliveryOutcome;
 import com.azure.core.amqp.models.ReceivedDeliveryOutcome;
 import com.azure.core.amqp.models.RejectedDeliveryOutcome;
 import com.azure.core.amqp.models.TransactionalDeliveryOutcome;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -80,7 +80,7 @@ final class MessageUtils {
             case VALUE:
             case SEQUENCE:
             default:
-                throw LOGGER.logExceptionAsError(
+                throw LOGGER.atError().log(
                     new UnsupportedOperationException("bodyType [" + body.getBodyType() + "] is not supported yet."));
         }
 
@@ -177,11 +177,11 @@ final class MessageUtils {
                 final Binary messageData = ((Data) body).getValue();
                 bytes = messageData.getArray();
             } else {
-                LOGGER.warning("Message not of type Data. Actual: {}", body.getType());
+                LOGGER.atWarning().log("Message not of type Data. Actual:" + body.getType());
                 bytes = EMPTY_BYTE_ARRAY;
             }
         } else {
-            LOGGER.warning("Message does not have a body.");
+            LOGGER.atWarning().log("Message does not have a body.");
             bytes = EMPTY_BYTE_ARRAY;
         }
 
@@ -300,13 +300,13 @@ final class MessageUtils {
 
             case Received:
                 if (!(deliveryState instanceof Received)) {
-                    throw LOGGER.logExceptionAsError(
+                    throw LOGGER.atError().log(
                         new IllegalArgumentException("Received delivery state should have a Received state."));
                 }
 
                 final Received received = (Received) deliveryState;
                 if (received.getSectionNumber() == null || received.getSectionOffset() == null) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    throw LOGGER.atError().log(new IllegalArgumentException(
                         "Received delivery state does not have any offset or section number. " + received));
                 }
 
@@ -325,20 +325,20 @@ final class MessageUtils {
 
             case Declared:
                 if (!(deliveryState instanceof Declared)) {
-                    throw LOGGER.logExceptionAsError(
+                    throw LOGGER.atError().log(
                         new IllegalArgumentException("Declared delivery type should have a declared outcome"));
                 }
                 return toDeliveryOutcome((Declared) deliveryState);
 
             case Transactional:
                 if (!(deliveryState instanceof TransactionalState)) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    throw LOGGER.atError().log(new IllegalArgumentException(
                         "Transactional delivery type should have a TransactionalState outcome."));
                 }
 
                 final TransactionalState transactionalState = (TransactionalState) deliveryState;
                 if (transactionalState.getTxnId() == null) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    throw LOGGER.atError().log(new IllegalArgumentException(
                         "Transactional delivery states should have an associated transaction id."));
                 }
 
@@ -347,7 +347,7 @@ final class MessageUtils {
                 return new TransactionalDeliveryOutcome(transaction).setOutcome(outcome);
 
             default:
-                throw LOGGER.logExceptionAsError(
+                throw LOGGER.atError().log(
                     new UnsupportedOperationException("Delivery state not supported: " + deliveryState.getType()));
         }
     }
@@ -377,7 +377,7 @@ final class MessageUtils {
         } else if (outcome instanceof Declared) {
             return toDeliveryOutcome((Declared) outcome);
         } else {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Outcome is not known: " + outcome));
+            throw LOGGER.atError().log(new UnsupportedOperationException("Outcome is not known: " + outcome));
         }
     }
 
@@ -408,7 +408,7 @@ final class MessageUtils {
             return toProtonJModified(deliveryOutcome);
         } else if (DeliveryState.RECEIVED.equals(deliveryOutcome.getDeliveryState())) {
             if (!(deliveryOutcome instanceof ReceivedDeliveryOutcome)) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Received delivery type should be "
+                throw LOGGER.atError().log(new IllegalArgumentException("Received delivery type should be "
                     + "ReceivedDeliveryOutcome. Actual: " + deliveryOutcome.getClass()));
             }
 
@@ -423,7 +423,7 @@ final class MessageUtils {
             final TransactionalState state = new TransactionalState();
             if (transaction.getTransactionId() == null) {
                 throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException("Transactional deliveries require an id."));
+                    .atError().log(new IllegalArgumentException("Transactional deliveries require an id."));
             }
 
             final Binary binary = Objects.requireNonNull(Binary.create(transaction.getTransactionId()),
@@ -433,7 +433,7 @@ final class MessageUtils {
             state.setTxnId(binary);
             return state;
         } else {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new UnsupportedOperationException("Outcome could not be translated to a proton-j delivery outcome:"
                     + deliveryOutcome.getDeliveryState()));
         }
@@ -463,7 +463,7 @@ final class MessageUtils {
         } else if (DeliveryState.MODIFIED.equals(deliveryOutcome.getDeliveryState())) {
             return toProtonJModified(deliveryOutcome);
         } else {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+            throw LOGGER.atError().log(new UnsupportedOperationException(
                 "DeliveryOutcome cannot be converted to proton-j outcome: " + deliveryOutcome.getDeliveryState()));
         }
     }
@@ -529,7 +529,8 @@ final class MessageUtils {
 
         AmqpErrorCondition errorCondition = AmqpErrorCondition.fromString(rejectedError.getCondition().toString());
         if (errorCondition == null) {
-            LOGGER.warning("Error condition is unknown: {}", rejected.getError());
+            LOGGER.atWarning()
+                    .log("Error condition is unknown: " + rejected.getError());
             errorCondition = AmqpErrorCondition.INTERNAL_ERROR;
         }
 
@@ -538,7 +539,7 @@ final class MessageUtils {
 
     private static DeliveryOutcome toDeliveryOutcome(Declared declared) {
         if (declared.getTxnId() == null) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("Declared delivery states should have an associated transaction id."));
         }
 

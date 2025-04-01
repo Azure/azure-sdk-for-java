@@ -3,14 +3,15 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.annotation.Immutable;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.time.Instant;
 
 /**
  * A set of information for a single partition of an Event Hub.
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class PartitionProperties {
     private final String eventHubName;
     private final String id;

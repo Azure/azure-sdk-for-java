@@ -7,7 +7,7 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.exception.AzureException;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

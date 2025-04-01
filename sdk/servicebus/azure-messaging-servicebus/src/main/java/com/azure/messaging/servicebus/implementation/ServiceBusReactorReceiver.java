@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.MessageUtils.LOCK_TOKEN_SIZE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusReactorSession.LOCKED_UNTIL_UTC;
 import static com.azure.messaging.servicebus.implementation.ServiceBusReactorSession.SESSION_FILTER;

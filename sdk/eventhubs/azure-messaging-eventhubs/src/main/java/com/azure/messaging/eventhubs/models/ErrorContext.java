@@ -3,13 +3,15 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Immutable;
 import java.util.Objects;
 
 /**
  * This class contains information about an error that occurred while processing events.
  */
-@Immutable
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class ErrorContext {
     private final PartitionContext partitionContext;
     private final Throwable throwable;

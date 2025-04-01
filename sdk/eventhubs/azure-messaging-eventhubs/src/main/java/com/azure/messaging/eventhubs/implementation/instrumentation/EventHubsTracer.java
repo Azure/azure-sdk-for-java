@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.implementation.instrumentation;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
@@ -118,7 +118,7 @@ public final class EventHubsTracer {
                 // it might happen that unmodifiable map is something that we
                 // didn't account for in canModifyApplicationProperties method
                 // if it happens, let's not break everything, but log a warning
-                LOGGER.warning("Failed to inject context into EventData", ex);
+                LOGGER.atWarning().log("Failed to inject context into EventData", ex);
                 exception = ex;
             }
         } else {
@@ -155,7 +155,8 @@ public final class EventHubsTracer {
             if (linkContext.get() instanceof Context) {
                 link = (Context) linkContext.get();
             } else {
-                LOGGER.verbose("Unexpected type under 'span-context' key - {}", linkContext.get().getClass());
+                LOGGER.atVerbose()
+                        .log("Unexpected type '" + linkContext.get().getClass() + "' under 'span-context' key ");
             }
         } else {
             link = extractContext(applicationProperties);
@@ -171,7 +172,7 @@ public final class EventHubsTracer {
                     scope.close();
                 }
             } catch (Exception e) {
-                LOGGER.verbose("Can't close scope", e);
+                LOGGER.atVerbose().log("Can't close scope", e);
             } finally {
                 tracer.end(errorType == null ? getErrorType(throwable) : errorType, unwrap(throwable), context);
             }

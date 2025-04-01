@@ -9,7 +9,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.TracingOptions;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventContext;

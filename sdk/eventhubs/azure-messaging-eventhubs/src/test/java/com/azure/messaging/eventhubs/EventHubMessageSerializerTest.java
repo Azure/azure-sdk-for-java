@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.exception.AzureException;
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;

@@ -10,7 +10,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import org.apache.qpid.proton.message.Message;

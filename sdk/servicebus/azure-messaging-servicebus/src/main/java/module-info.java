@@ -5,8 +5,8 @@ module com.azure.messaging.servicebus {
     requires transitive com.azure.core;
     requires transitive com.azure.core.amqp;
 
-    requires java.xml;
     requires com.azure.xml;
+    requires io.clientcore.core;
 
     exports com.azure.messaging.servicebus;
     exports com.azure.messaging.servicebus.administration;

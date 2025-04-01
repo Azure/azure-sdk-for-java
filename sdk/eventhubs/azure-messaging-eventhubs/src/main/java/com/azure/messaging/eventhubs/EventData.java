@@ -9,11 +9,10 @@ import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
-import com.azure.core.models.MessageContent;
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.amqp.util.FluxUtil;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -34,7 +33,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
  */
-public class EventData extends MessageContent {
+public class EventData /* extends MessageContent */ {
+    // TODO: anu: check with team, is there a plan to have current 'MessageContent' in core-v2/client-core
     private static final ClientLogger LOGGER = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
     private final SystemProperties systemProperties;
@@ -126,13 +126,12 @@ public class EventData extends MessageContent {
 
             case SEQUENCE:
             case VALUE:
-                LOGGER.warning(
-                    "Message body type '{}' is not supported in EH. " + " Getting contents of body may throw.",
-                    annotatedMessage.getBody().getBodyType());
+                LOGGER.atWarning().log(
+                    "Message body type '" + annotatedMessage.getBody().getBodyType() + "' is not supported in EH. " + " Getting contents of body may throw.");
                 break;
 
             default:
-                throw LOGGER.logExceptionAsError(
+                throw LOGGER.atError().log(
                     new IllegalArgumentException("Body type not valid " + annotatedMessage.getBody().getBodyType()));
         }
     }
@@ -217,7 +216,7 @@ public class EventData extends MessageContent {
      *
      * @return the {@link BinaryData} payload associated with this event.
      */
-    @Override
+    // @Override
     public BinaryData getBodyAsBinaryData() {
         return BinaryData.fromBytes(annotatedMessage.getBody().getFirstData());
     }
@@ -226,7 +225,7 @@ public class EventData extends MessageContent {
      * Sets a new binary body and corresponding {@link AmqpAnnotatedMessage} on the event. Contents from
      * {@link #getRawAmqpMessage()} are shallow copied to the new underlying message.
      */
-    @Override
+    // @Override
     public EventData setBodyAsBinaryData(BinaryData binaryData) {
         final AmqpAnnotatedMessage current = this.annotatedMessage;
         this.annotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(binaryData.toBytes()));

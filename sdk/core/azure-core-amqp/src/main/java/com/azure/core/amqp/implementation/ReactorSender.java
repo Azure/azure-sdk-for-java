@@ -12,9 +12,9 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
-import com.azure.core.util.AsyncCloseable;
+import com.azure.core.amqp.util.AsyncCloseable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -69,7 +69,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.amqp.implementation.ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -165,7 +165,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         }).cache(1);
 
         this.subscriptions = Disposables.composite(
-            this.endpointStates.subscribe(null, e -> logger.warning("Sender link endpoint state signaled error.", e)),
+            this.endpointStates.subscribe(null, e -> logger.atWarning().log("Sender link endpoint state signaled error.", e)),
 
             this.handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 
@@ -175,7 +175,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             }),
 
             amqpConnection.getShutdownSignals().flatMap(signal -> {
-                logger.verbose("Shutdown signal received.");
+                logger.atVerbose().log("Shutdown signal received.");
 
                 hasConnected.set(false);
                 return closeAsync("Connection shutdown.", null);
@@ -194,7 +194,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 logger.atVerbose().addKeyValue("response", response).log("Token refreshed.");
             }, error -> {
             }, () -> {
-                logger.verbose(" Authorization completed. Disposing.");
+                logger.atVerbose().log(" Authorization completed. Disposing.");
 
                 closeAsync("Authorization completed. Disposing.", null).subscribe();
             }));
@@ -277,8 +277,8 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     }
                     buffer.append(sectionBytes);
                 } else {
-                    logger.info("Ignoring the empty message org.apache.qpid.proton.message.message@{} in the batch.",
-                        Integer.toHexString(System.identityHashCode(message)));
+                    logger.atInfo()
+                            .log("Ignoring the empty message org.apache.qpid.proton.message.message@" + Integer.toHexString(System.identityHashCode(message)) + " in the batch.");
                 }
             }
 
@@ -399,8 +399,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     if (remoteMaxMessageSize != null) {
                         linkSize = remoteMaxMessageSize.intValue();
                     } else {
-                        logger.warning("Could not get the getRemoteMaxMessageSize. Returning current link size: {}",
-                            linkSize);
+                        logger.atWarning()
+                                .addKeyValue("currentLinkSize", linkSize)
+                                .log("Could not get the getRemoteMaxMessageSize. Returning current link size");
                     }
 
                     return linkSize;
@@ -451,7 +452,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             return isClosedMono.asMono();
         }
 
-        addErrorCondition(logger.atVerbose(), errorCondition).log("Setting error condition and disposing. {}", message);
+        addErrorCondition(logger.atVerbose(), errorCondition)
+                .addKeyValue("message", message)
+                .log("Setting error condition and disposing.");
 
         final Runnable closeWork = () -> {
             if (errorCondition != null && sender.getCondition() == null) {
@@ -468,12 +471,12 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             try {
                 reactorProvider.getReactorDispatcher().invoke(closeWork);
             } catch (IOException e) {
-                logger.warning("Could not schedule close work. Running manually. And completing close.", e);
+                logger.atWarning().log("Could not schedule close work. Running manually. And completing close.", e);
 
                 closeWork.run();
                 handleClose();
             } catch (RejectedExecutionException e) {
-                logger.info("RejectedExecutionException scheduling close work. And completing close.");
+                logger.atInfo().log("RejectedExecutionException scheduling close work. And completing close.");
 
                 closeWork.run();
                 handleClose();
@@ -533,12 +536,12 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
      */
     private void processSendWork() {
         if (!hasConnected.get()) {
-            logger.warning("Not connected. Not processing send work.");
+            logger.atWarning().log("Not connected. Not processing send work.");
             return;
         }
 
         if (isDisposed.get()) {
-            logger.info("Sender is closed. Not executing work.");
+            logger.atInfo().log("Sender is closed. Not executing work.");
             return;
         }
 
@@ -702,10 +705,10 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         try {
             reactorProvider.getReactorDispatcher().invoke(this::processSendWork);
         } catch (IOException e) {
-            logger.warning("Error scheduling work on reactor.", e);
+            logger.atWarning().log("Error scheduling work on reactor.", e);
 
         } catch (RejectedExecutionException e) {
-            logger.info("Error scheduling work on reactor because of RejectedExecutionException.");
+            logger.atInfo().log("Error scheduling work on reactor because of RejectedExecutionException.");
         }
     }
 
@@ -736,7 +739,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     private void handleError(Throwable error) {
         synchronized (pendingSendLock) {
             if (isDisposed.getAndSet(true)) {
-                logger.verbose("This was already disposed. Dropping error.");
+                logger.atVerbose().log("This was already disposed. Dropping error.");
             } else {
                 logger.atVerbose()
                     .addKeyValue(PENDING_SENDS_SIZE_KEY, () -> String.valueOf(pendingSendsMap.size()))
@@ -759,7 +762,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
 
         synchronized (pendingSendLock) {
             if (isDisposed.getAndSet(true)) {
-                logger.verbose("This was already disposed.");
+                logger.atVerbose().log("This was already disposed.");
             } else {
                 logger.atVerbose()
                     .addKeyValue(PENDING_SENDS_SIZE_KEY, () -> String.valueOf(pendingSendsMap.size()))

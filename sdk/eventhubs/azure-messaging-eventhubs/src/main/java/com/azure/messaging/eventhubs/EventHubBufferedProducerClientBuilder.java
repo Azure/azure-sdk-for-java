@@ -20,7 +20,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 
@@ -567,29 +567,29 @@ public final class EventHubBufferedProducerClientBuilder
     public EventHubBufferedProducerAsyncClient buildAsyncClient() {
 
         if (Objects.isNull(clientOptions.getSendSucceededContext())) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'onSendBatchSucceeded' cannot be null."));
+            throw LOGGER.atError().log(new NullPointerException("'onSendBatchSucceeded' cannot be null."));
         }
 
         if (Objects.isNull(clientOptions.getSendFailedContext())) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'onSendBatchFailed' cannot be null."));
+            throw LOGGER.atError().log(new NullPointerException("'onSendBatchFailed' cannot be null."));
         }
 
         if (Objects.isNull(clientOptions.getMaxWaitTime())) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'maxWaitTime' cannot be null."));
+            throw LOGGER.atError().log(new NullPointerException("'maxWaitTime' cannot be null."));
         }
 
         if (clientOptions.getMaxEventBufferLengthPerPartition() < 1) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("'maxEventBufferLengthPerPartition' cannot be less than 1."));
         }
 
         if (clientOptions.getMaxConcurrentSends() < 1) {
             throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("'maxConcurrentSends' cannot be less than 1."));
+                .atError().log(new IllegalArgumentException("'maxConcurrentSends' cannot be less than 1."));
         }
 
         if (clientOptions.getMaxConcurrentSendsPerPartition() < 1) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("'maxConcurrentSendsPerPartition' cannot be less than 1."));
         }
 

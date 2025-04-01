@@ -4,7 +4,7 @@
 package com.azure.core.amqp;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.AsyncCloseable;
+import com.azure.core.amqp.util.AsyncCloseable;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;

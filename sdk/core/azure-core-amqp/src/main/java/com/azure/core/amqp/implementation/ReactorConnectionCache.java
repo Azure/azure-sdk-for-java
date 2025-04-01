@@ -7,8 +7,8 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -78,7 +78,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         Objects.requireNonNull(connectionSupplier, "'connectionSupplier' cannot be null.");
         final Mono<T> newConnection = Mono.fromSupplier(() -> {
             if (terminated) {
-                logger.info("Connection recovery support is terminated, dropping the request for new connection.");
+                logger.atInfo().log("Connection recovery support is terminated, dropping the request for new connection.");
                 throw TERMINATED_ERROR;
             } else {
                 return connectionSupplier.get();
@@ -186,7 +186,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         if (connection != null && !connection.isDisposed()) {
             closeConnection(connection, logger, "Terminating the connection recovery support.");
         } else {
-            logger.info("Terminating the connection recovery support.");
+            logger.atInfo().log("Terminating the connection recovery support.");
         }
     }
 
@@ -277,7 +277,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
      * @param message the message to log.
      */
     private static void closeConnection(ReactorConnection c, ClientLogger logger, String message) {
-        final LoggingEventBuilder builder = withConnectionId(logger, c.getId());
+        final LoggingEvent builder = withConnectionId(logger, c.getId());
         builder.log("closing connection (" + message + ").");
         // Listen and log any terminal signals here, though when connection close finishes, closeAsync()::Mono only
         // emits "completion terminal signal" no matter if there was an error while closing or not.
@@ -286,7 +286,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             () -> builder.log("connection close finished."));
     }
 
-    private static LoggingEventBuilder withConnectionId(ClientLogger logger, String id) {
+    private static LoggingEvent withConnectionId(ClientLogger logger, String id) {
         return logger.atInfo().addKeyValue(CONNECTION_ID_KEY, id);
     }
 }

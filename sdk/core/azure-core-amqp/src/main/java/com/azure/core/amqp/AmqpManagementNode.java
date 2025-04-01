@@ -5,7 +5,7 @@ package com.azure.core.amqp;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.DeliveryOutcome;
-import com.azure.core.util.AsyncCloseable;
+import com.azure.core.amqp.util.AsyncCloseable;
 import reactor.core.publisher.Mono;
 
 /**

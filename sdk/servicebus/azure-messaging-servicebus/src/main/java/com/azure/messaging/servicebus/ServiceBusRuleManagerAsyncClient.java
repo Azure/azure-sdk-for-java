@@ -17,8 +17,8 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.azure.core.util.FluxUtil.fluxError;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.fluxError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RULE_MANAGER;
 
 import java.util.Objects;

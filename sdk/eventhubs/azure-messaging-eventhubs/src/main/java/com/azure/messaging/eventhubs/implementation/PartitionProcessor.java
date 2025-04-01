@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.CloseContext;
@@ -64,7 +64,7 @@ public abstract class PartitionProcessor {
      * @param eventBatchContext The event batch context containing the batch of events along with partition information.
      */
     public void processEventBatch(EventBatchContext eventBatchContext) {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Processing event batch not implemented"));
+        throw LOGGER.atError().log(new UnsupportedOperationException("Processing event batch not implemented"));
     }
 
     /**
@@ -86,6 +86,6 @@ public abstract class PartitionProcessor {
     public void close(CloseContext closeContext) {
         LOGGER.atInfo()
             .addKeyValue(PARTITION_ID_KEY, closeContext.getPartitionContext().getPartitionId())
-            .log("Closing partition processor with close reason {}", closeContext.getCloseReason());
+            .log("Closing partition processor with close reason " + closeContext.getCloseReason());
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;

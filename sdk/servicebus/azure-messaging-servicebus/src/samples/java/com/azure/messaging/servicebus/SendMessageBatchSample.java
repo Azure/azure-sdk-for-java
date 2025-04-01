@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.junit.jupiter.api.Test;
 

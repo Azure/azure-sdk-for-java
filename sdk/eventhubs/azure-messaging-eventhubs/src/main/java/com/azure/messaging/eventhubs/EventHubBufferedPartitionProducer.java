@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
 import com.azure.messaging.eventhubs.implementation.UncheckedExecutionException;
@@ -138,7 +138,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
             } else {
                 LOGGER.atWarning()
                     .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                    .log("Event could not be published downstream. Not retrying.", emitResult);
+                    .log("Event could not be published downstream. Not retrying.");
 
                 sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(),
                     errorContext));
@@ -191,7 +191,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         try {
             publishResultSubscriber.startFlush().block(retryOptions.getTryTimeout());
         } catch (IllegalStateException e) {
-            LOGGER.info("Timed out waiting for flush to complete.", e);
+            LOGGER.atInfo().log("Timed out waiting for flush to complete.", e);
         } finally {
             publishSubscription.dispose();
             client.close();
@@ -226,9 +226,9 @@ class EventHubBufferedPartitionProducer implements Closeable {
         try {
             return batch.toFuture().get();
         } catch (InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedExecutionException(e));
+            throw LOGGER.atError().log(new UncheckedExecutionException(e));
         } catch (ExecutionException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedExecutionException(e));
+            throw LOGGER.atError().log(new UncheckedExecutionException(e));
         }
     }
 

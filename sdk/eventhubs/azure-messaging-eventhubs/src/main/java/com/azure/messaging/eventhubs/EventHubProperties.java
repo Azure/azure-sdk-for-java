@@ -3,9 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import java.util.Objects;
  * @see EventHubConsumerAsyncClient
  * @see EventHubConsumerClient
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class EventHubProperties {
     private final String name;
     private final Instant createdAt;

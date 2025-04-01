@@ -7,7 +7,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
@@ -474,10 +474,10 @@ final class ProtonSession {
          */
         void validate(ClientLogger logger, String endpointType) {
             if (this == Resource.EMPTY) {
-                throw logger.logExceptionAsError(new IllegalStateException(SESSION_NOT_OPENED));
+                throw logger.atError().log(new IllegalStateException(SESSION_NOT_OPENED));
             }
             if (this == Resource.DISPOSED) {
-                throw logger.logExceptionAsWarning(
+                throw logger.atWarning().log(
                     new ProtonSessionClosedException(String.format(DISPOSED_MESSAGE_FORMAT, endpointType)));
             }
         }

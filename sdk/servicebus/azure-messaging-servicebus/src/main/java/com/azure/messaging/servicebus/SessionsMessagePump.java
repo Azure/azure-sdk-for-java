@@ -7,7 +7,7 @@ import com.azure.core.amqp.implementation.CreditFlowMode;
 import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.handler.DeliveryNotOnLinkException;
-import com.azure.core.util.AsyncCloseable;
+import com.azure.core.amqp.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
@@ -46,7 +46,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED
 import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.CONCURRENCY_PER_CORE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.CORES_VS_CONCURRENCY_MESSAGE;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MESSAGE_ID_LOGGING_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE;

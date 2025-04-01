@@ -14,7 +14,7 @@ import com.azure.core.amqp.models.AmqpMessageBodyType;
 import com.azure.core.amqp.models.DeliveryOutcome;
 import com.azure.core.amqp.models.DeliveryState;
 import com.azure.core.amqp.models.ModifiedDeliveryOutcome;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -89,7 +89,7 @@ public class ManagementChannelTest {
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
-        logger.info("[{}] Setting up.", testInfo.getDisplayName());
+        logger.atInfo().log("[" + testInfo.getDisplayName() + "] Setting up.");
 
         autoCloseable = MockitoAnnotations.openMocks(this);
 
@@ -110,7 +110,7 @@ public class ManagementChannelTest {
 
     @AfterEach
     public void teardown(TestInfo testInfo) throws Exception {
-        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+        logger.atInfo().log("[" + testInfo.getDisplayName() + "] Tearing down.");
         if (autoCloseable != null) {
             autoCloseable.close();
         }

@@ -5,7 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.Assertions;

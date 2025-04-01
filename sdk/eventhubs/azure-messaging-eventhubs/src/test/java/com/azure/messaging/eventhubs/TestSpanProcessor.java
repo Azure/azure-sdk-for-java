@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.context.Context;

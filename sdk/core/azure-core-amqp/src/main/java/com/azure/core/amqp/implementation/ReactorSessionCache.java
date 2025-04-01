@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.engine.Connection;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;

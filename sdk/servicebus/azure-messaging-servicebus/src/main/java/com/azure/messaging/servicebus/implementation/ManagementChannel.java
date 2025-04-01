@@ -54,8 +54,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
-import static com.azure.core.util.FluxUtil.fluxError;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.fluxError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_ADD_RULE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_RULES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;

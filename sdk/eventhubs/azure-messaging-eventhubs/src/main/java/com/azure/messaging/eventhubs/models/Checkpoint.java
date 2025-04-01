@@ -3,7 +3,9 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Fluent;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import com.azure.messaging.eventhubs.EventProcessorClient;
 
 /**
@@ -14,7 +16,7 @@ import com.azure.messaging.eventhubs.EventProcessorClient;
  * @see EventContext
  * @see EventProcessorClient
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public class Checkpoint {
 
     private String fullyQualifiedNamespace;

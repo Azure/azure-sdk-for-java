@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessorException;
 import com.azure.messaging.eventhubs.implementation.ReactorShim;
@@ -268,7 +268,7 @@ class PartitionPumpManager {
         } catch (Throwable throwable) {
             /* user code for event processing threw an exception - log and bubble up */
             throw LOGGER
-                .logExceptionAsError(new PartitionProcessorException("Error in event processing callback", throwable));
+                .atError().log(new PartitionProcessorException("Error in event processing callback", throwable));
         }
     }
 
@@ -330,7 +330,7 @@ class PartitionPumpManager {
             }
             /* user code for event processing threw an exception - log and bubble up */
             throw LOGGER
-                .logExceptionAsError(new PartitionProcessorException("Error in event processing callback", throwable));
+                .atError().log(new PartitionProcessorException("Error in event processing callback", throwable));
         } finally {
             if (scope != null) {
                 scope.close();
@@ -401,7 +401,7 @@ class PartitionPumpManager {
 
         if (shouldRethrow) {
             PartitionProcessorException exception = (PartitionProcessorException) throwable;
-            throw LOGGER.logExceptionAsError(exception);
+            throw LOGGER.atError().log(exception);
         }
     }
 

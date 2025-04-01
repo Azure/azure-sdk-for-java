@@ -7,8 +7,8 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.AsyncCloseable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.amqp.util.AsyncCloseable;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -112,13 +112,13 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             isRequested.set(true);
             subscription.request(1);
         } else {
-            logger.warning("Processors can only be subscribed to once.");
+            logger.atWarning().log("Processors can only be subscribed to once.");
         }
     }
 
     @Override
     public void onNext(T amqpChannel) {
-        logger.info("Setting next AMQP channel.");
+        logger.atInfo().log("Setting next AMQP channel.");
 
         Objects.requireNonNull(amqpChannel, "'amqpChannel' cannot be null.");
 
@@ -137,16 +137,16 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 // Connection was successfully opened, we can reset the retry interval.
                 if (state == AmqpEndpointState.ACTIVE) {
                     retryAttempts.set(0);
-                    logger.info("Channel is now active.");
+                    logger.atInfo().log("Channel is now active.");
                 }
             }, error -> {
                 setAndClearChannel();
                 onError(error);
             }, () -> {
                 if (isDisposed()) {
-                    logger.info("Channel is disposed.");
+                    logger.atInfo().log("Channel is disposed.");
                 } else {
-                    logger.info("Channel is closed. Requesting upstream.");
+                    logger.atInfo().log("Channel is closed. Requesting upstream.");
                     setAndClearChannel();
                     requestUpstream();
                 }
@@ -172,7 +172,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
         if (isRetryPending.get() && retryPolicy.calculateRetryDelay(throwable, retryAttempts.get()) != null) {
-            logger.warning("Retry is already pending. Ignoring transient error.", throwable);
+            logger.atWarning().log("Retry is already pending. Ignoring transient error.", throwable);
             return;
         }
 
@@ -250,7 +250,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
 
     @Override
     public void onComplete() {
-        logger.info("Upstream connection publisher was completed. Terminating processor.");
+        logger.atInfo().log("Upstream connection publisher was completed. Terminating processor.");
 
         isDisposed.set(true);
         synchronized (lock) {
@@ -269,7 +269,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             } else {
                 IllegalStateException error
                     = new IllegalStateException("Cannot subscribe. Processor is already terminated.");
-                Operators.error(actual, logger.logExceptionAsWarning(error));
+                Operators.error(actual, logger.atWarning().log(error));
             }
 
             return;
@@ -317,22 +317,22 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
 
     private void requestUpstream() {
         if (currentChannel != null) {
-            logger.verbose("Connection exists, not requesting another.");
+            logger.atVerbose().log("Connection exists, not requesting another.");
             return;
         } else if (isDisposed()) {
-            logger.verbose("Is already disposed.");
+            logger.atVerbose().log("Is already disposed.");
             return;
         }
 
         final Subscription subscription = UPSTREAM.get(this);
         if (subscription == null) {
-            logger.warning("There is no upstream subscription.");
+            logger.atWarning().log("There is no upstream subscription.");
             return;
         }
 
         // subscribe(CoreSubscriber) may have requested a subscriber already.
         if (!isRequested.getAndSet(true)) {
-            logger.info("Connection not requested, yet. Requesting one.");
+            logger.atInfo().log("Connection not requested, yet. Requesting one.");
             subscription.request(1);
         }
     }
@@ -366,13 +366,13 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             try {
                 ((AutoCloseable) channel).close();
             } catch (Exception error) {
-                logger.warning("Error occurred closing AutoCloseable channel.", error);
+                logger.atWarning().log("Error occurred closing AutoCloseable channel.", error);
             }
         } else if (channel instanceof Disposable) {
             try {
                 ((Disposable) channel).dispose();
             } catch (Exception error) {
-                logger.warning("Error occurred closing Disposable channel.", error);
+                logger.atWarning().log("Error occurred closing Disposable channel.", error);
             }
         }
     }

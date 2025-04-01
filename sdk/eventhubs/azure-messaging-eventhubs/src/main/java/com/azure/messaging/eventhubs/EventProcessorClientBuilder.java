@@ -20,7 +20,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
@@ -519,7 +519,7 @@ public class EventProcessorClientBuilder implements TokenCredentialTrait<EventPr
     public EventProcessorClientBuilder loadBalancingUpdateInterval(Duration loadBalancingUpdateInterval) {
         Objects.requireNonNull(loadBalancingUpdateInterval, "'loadBalancingUpdateInterval' cannot be null");
         if (loadBalancingUpdateInterval.isZero() || loadBalancingUpdateInterval.isNegative()) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("'loadBalancingUpdateInterval' " + "should be a positive duration"));
         }
         this.loadBalancingUpdateInterval = loadBalancingUpdateInterval;
@@ -545,7 +545,7 @@ public class EventProcessorClientBuilder implements TokenCredentialTrait<EventPr
         Objects.requireNonNull(partitionOwnershipExpirationInterval,
             "'partitionOwnershipExpirationInterval' cannot " + "be null");
         if (partitionOwnershipExpirationInterval.isZero() || partitionOwnershipExpirationInterval.isNegative()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.atError().log(new IllegalArgumentException(
                 "'partitionOwnershipExpirationInterval' " + "should be a positive duration"));
         }
         this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
@@ -614,7 +614,7 @@ public class EventProcessorClientBuilder implements TokenCredentialTrait<EventPr
     public EventProcessorClientBuilder processEvent(Consumer<EventContext> processEvent, Duration maxWaitTime) {
         this.processEvent = Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
         if (maxWaitTime != null && maxWaitTime.isZero()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxWaitTime' cannot be 0"));
+            throw LOGGER.atError().log(new IllegalArgumentException("'maxWaitTime' cannot be 0"));
         }
         this.maxWaitTime = maxWaitTime;
         return this;
@@ -683,10 +683,10 @@ public class EventProcessorClientBuilder implements TokenCredentialTrait<EventPr
     public EventProcessorClientBuilder processEventBatch(Consumer<EventBatchContext> processEventBatch,
         int maxBatchSize, Duration maxWaitTime) {
         if (maxBatchSize <= 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxBatchSize' should be greater than 0"));
+            throw LOGGER.atError().log(new IllegalArgumentException("'maxBatchSize' should be greater than 0"));
         }
         if (maxWaitTime != null && maxWaitTime.isZero()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxWaitTime' cannot be 0"));
+            throw LOGGER.atError().log(new IllegalArgumentException("'maxWaitTime' cannot be 0"));
         }
         this.processEventBatch = Objects.requireNonNull(processEventBatch, "'processEventBatch' cannot be null");
         this.maxBatchSize = maxBatchSize;
@@ -823,12 +823,12 @@ public class EventProcessorClientBuilder implements TokenCredentialTrait<EventPr
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");
 
         if (processEvent == null && processEventBatch == null) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("Either processEvent or processEventBatch " + "has to be set"));
         }
 
         if (processEvent != null && processEventBatch != null) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("Both processEvent and processEventBatch " + "cannot be set"));
         }
 
@@ -865,7 +865,7 @@ public class EventProcessorClientBuilder implements TokenCredentialTrait<EventPr
         }
 
         if (numberOfTimesSet > 1) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.atError().log(new IllegalArgumentException(
                 "Only 1 overload for initialEventPositionProvider can be set.  The overload is set " + numberOfTimesSet
                     + " times."));
         }

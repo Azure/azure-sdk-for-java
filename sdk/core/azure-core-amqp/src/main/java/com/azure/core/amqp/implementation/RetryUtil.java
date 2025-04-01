@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -73,7 +73,7 @@ public final class RetryUtil {
         if (!allowsLongOperation) {
             source = source.timeout(retryOptions.getTryTimeout());
         }
-        return source.retryWhen(createRetry(retryOptions)).doOnError(error -> LOGGER.error(errorMessage, error));
+        return source.retryWhen(createRetry(retryOptions)).doOnError(error -> LOGGER.atError().log(errorMessage, error));
     }
 
     /**
@@ -89,7 +89,7 @@ public final class RetryUtil {
     public static <T> Flux<T> withRetry(Flux<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
         return source.timeout(retryOptions.getTryTimeout())
             .retryWhen(createRetry(retryOptions))
-            .doOnError(error -> LOGGER.error(timeoutMessage, error));
+            .doOnError(error -> LOGGER.atError().log(timeoutMessage, error));
     }
 
     /**
@@ -119,8 +119,10 @@ public final class RetryUtil {
                 break;
 
             default:
-                LOGGER.warning("Unknown: '{}'. Using exponential delay. Delay: {}. Max Delay: {}. Max Retries: {}.",
-                    options.getMode(), options.getDelay(), options.getMaxDelay(), options.getMaxRetries());
+                final String message = "Unknown: " + options.getMode() + ". Using exponential delay. Delay: "
+                    + options.getDelay() + ". Max Delay: " + options.getMaxDelay() + ". Max Retries: "
+                    + options.getMaxRetries();
+                LOGGER.atWarning().log(message);
                 retrySpec = Retry.backoff(options.getMaxRetries(), delay);
                 break;
         }

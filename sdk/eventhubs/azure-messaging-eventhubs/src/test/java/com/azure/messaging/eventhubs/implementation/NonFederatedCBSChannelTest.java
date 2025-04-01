@@ -25,7 +25,7 @@ import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
 import com.azure.messaging.eventhubs.TestUtils;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;

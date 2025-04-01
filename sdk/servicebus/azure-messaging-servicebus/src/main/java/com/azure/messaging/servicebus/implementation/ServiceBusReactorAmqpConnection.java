@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 
 /**
  * A proton-j AMQP connection to an Azure Service Bus instance.

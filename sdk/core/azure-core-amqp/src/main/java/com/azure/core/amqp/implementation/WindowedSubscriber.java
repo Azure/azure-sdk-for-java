@@ -4,8 +4,8 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -143,14 +143,14 @@ public final class WindowedSubscriber<T> extends BaseSubscriber<T> {
      */
     EnqueueResult<T> enqueueRequestImpl(int windowSize, Duration windowTimeout) {
         if (windowSize < 1) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'windowSize' must be strictly positive."));
+            throw logger.atError().log(new IllegalArgumentException("'windowSize' must be strictly positive."));
         }
         if (Objects.isNull(windowTimeout)) {
-            throw logger.logExceptionAsError(new NullPointerException("'windowTimeout' cannot be null."));
+            throw logger.atError().log(new NullPointerException("'windowTimeout' cannot be null."));
         }
         if (windowTimeout.isNegative() || windowTimeout.isZero()) {
             throw logger
-                .logExceptionAsError(new IllegalArgumentException("'windowTimeout' period must be strictly positive."));
+                .atError().log(new IllegalArgumentException("'windowTimeout' period must be strictly positive."));
         }
 
         final long workId = idGenerator.getAndIncrement();
@@ -413,7 +413,7 @@ public final class WindowedSubscriber<T> extends BaseSubscriber<T> {
         final long workDemand = w.getDemand();
         final long difference = workDemand - requested;
 
-        final LoggingEventBuilder logger
+        final LoggingEvent logger
             = w.getLogger().addKeyValue(UPSTREAM_REQUESTED_KEY, requested).addKeyValue(DIFFERENCE_KEY, difference);
 
         if (difference > 0) {
@@ -968,7 +968,7 @@ public final class WindowedSubscriber<T> extends BaseSubscriber<T> {
          * @param logger the logger to annotate.
          * @return the annotated logger.
          */
-        private LoggingEventBuilder withPendingKey(LoggingEventBuilder logger) {
+        private LoggingEvent withPendingKey(LoggingEvent logger) {
             return logger.addKeyValue(PENDING_KEY, pending.get());
         }
 
@@ -977,7 +977,7 @@ public final class WindowedSubscriber<T> extends BaseSubscriber<T> {
          *
          * @return the logger.
          */
-        private LoggingEventBuilder getLogger() {
+        private LoggingEvent getLogger() {
             return withPendingKey(logger.atVerbose());
         }
 

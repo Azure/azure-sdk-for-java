@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
 import com.azure.messaging.eventhubs.implementation.UncheckedExecutionException;
 import org.reactivestreams.Publisher;
@@ -189,7 +189,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         @Override
         public void onSubscribe(Subscription s) {
             if (subscription != null) {
-                logger.warning("Subscription was already set. Cancelling existing subscription.");
+                logger.atWarning().log("Subscription was already set. Cancelling existing subscription.");
                 subscription.cancel();
             } else {
                 subscription = s;
@@ -279,7 +279,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     previous = this.currentBatch;
 
                     if (previous == null) {
-                        logger.warning("Batch should not be null, setting a new batch.");
+                        logger.atWarning().log("Batch should not be null, setting a new batch.");
 
                         this.currentBatch = batchSupplier.get();
                         return;
@@ -297,20 +297,20 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                         }
                     });
 
-                    logger.verbose(previous + ": Batch published. Requested batches left: {}", batchesLeft);
+                    logger.atVerbose().log(previous + ": Batch published. Requested batches left:" + batchesLeft);
 
                     if (!isCompleted.get()) {
                         this.currentBatch = batchSupplier.get();
                     } else {
-                        logger.verbose("Aggregator is completed. Not setting another batch.");
+                        logger.atVerbose().log("Aggregator is completed. Not setting another batch.");
                         this.currentBatch = null;
                     }
                 }
             } catch (UncheckedExecutionException exception) {
-                logger.info("An exception occurred while trying to create a new batch.", exception);
+                logger.atInfo().log("An exception occurred while trying to create a new batch.", exception);
 
                 if (this.lastError != null) {
-                    logger.info("Exception has been set already, terminating EventDataAggregator.");
+                    logger.atInfo().log("Exception has been set already, terminating EventDataAggregator.");
 
                     final Throwable error
                         = Operators.onNextError(previous, exception, downstream.currentContext(), subscription);
@@ -325,7 +325,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             } catch (Throwable e) {
                 final Throwable error = Operators.onNextError(previous, e, downstream.currentContext(), subscription);
 
-                logger.warning("Unable to push batch downstream to publish.", error);
+                logger.atWarning().log("Unable to push batch downstream to publish.", error);
 
                 if (error != null) {
                     onError(error);

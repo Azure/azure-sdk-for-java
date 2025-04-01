@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.ErrorContextProvider;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;

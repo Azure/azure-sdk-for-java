@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs.jproxy;
 
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.Closeable;
 import java.io.IOException;

@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -63,9 +63,9 @@ public final class ReactorShim {
             if (err instanceof Error) {
                 throw (Error) err;
             } else if (err instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) err);
+                throw LOGGER.atError().log((RuntimeException) err);
             } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(err));
+                throw LOGGER.atError().log(new RuntimeException(err));
             }
         }
     }
@@ -82,7 +82,7 @@ public final class ReactorShim {
                 .findVirtual(Flux.class, WINDOW_TIMEOUT_OPERATOR,
                     MethodType.methodType(Flux.class, int.class, Duration.class, boolean.class));
         } catch (IllegalAccessException | NoSuchMethodException err) {
-            LOGGER.verbose("Failed to retrieve MethodHandle for backpressure aware windowTimeout Reactor operator.",
+            LOGGER.atVerbose().log("Failed to retrieve MethodHandle for backpressure aware windowTimeout Reactor operator.",
                 err);
         }
         return null;

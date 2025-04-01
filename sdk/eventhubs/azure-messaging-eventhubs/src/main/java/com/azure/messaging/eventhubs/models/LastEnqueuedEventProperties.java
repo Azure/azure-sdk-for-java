@@ -3,14 +3,15 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Immutable;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.time.Instant;
 
 /**
  * A set of information about the enqueued state of a partition, as observed by the consumer.
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class LastEnqueuedEventProperties {
     private final Long lastSequenceNumber;
     private final Long lastOffset;

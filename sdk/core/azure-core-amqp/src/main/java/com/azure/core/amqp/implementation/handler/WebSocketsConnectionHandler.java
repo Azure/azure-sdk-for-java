@@ -57,7 +57,7 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      */
     @Override
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
-        logger.info("Adding web socket layer");
+        logger.atInfo().log("Adding web socket layer");
         final WebSocketImpl webSocket = new WebSocketImpl();
         webSocket.configure(hostname, SOCKET_PATH, "", 0, PROTOCOL, null, null);
 

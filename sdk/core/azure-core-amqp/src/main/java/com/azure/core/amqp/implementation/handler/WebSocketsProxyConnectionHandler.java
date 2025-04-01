@@ -83,7 +83,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             final URI serviceUri = createURI(connectionOptions.getHostname(), connectionOptions.getPort());
             final ProxySelector proxySelector = ProxySelector.getDefault();
             if (proxySelector == null) {
-                throw logger.logExceptionAsError(new IllegalStateException("ProxySelector should not be null."));
+                throw logger.atError().log(new IllegalStateException("ProxySelector should not be null."));
             }
 
             final List<Proxy> proxies = proxySelector.select(serviceUri);
@@ -91,7 +91,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
                 final String formatted = String.format("No proxy address found for: '%s'. Available: %s.", serviceUri,
                     proxies.stream().map(Proxy::toString).collect(Collectors.joining(", ")));
 
-                throw logger.logExceptionAsError(new IllegalStateException(formatted));
+                throw logger.atError().log(new IllegalStateException(formatted));
             }
 
             final Proxy proxy = proxies.get(0);
@@ -147,7 +147,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         final Transport transport = event.getTransport();
         final Connection connection = event.getConnection();
         if (connection == null || transport == null) {
-            logger.verbose("There is no connection or transport associated with error. Event: {}", event);
+            logger.atVerbose()
+                    .log("There is no connection or transport associated with error. Event:" + event);
             return;
         }
 
@@ -171,7 +172,9 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         final String[] hostNameParts = hostname.split(":");
         if (hostNameParts.length != 2) {
-            logger.warning("Invalid hostname: {}", hostname);
+            logger.atWarning()
+                    .addKeyValue("hostname", hostname)
+                    .log("Invalid hostname.");
             return;
         }
 
@@ -179,7 +182,9 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         try {
             port = Integer.parseInt(hostNameParts[1]);
         } catch (NumberFormatException ignore) {
-            logger.warning("Invalid port number: {}", hostNameParts[1]);
+            logger.atWarning()
+                    .addKeyValue("port", hostNameParts[1])
+                    .log("Invalid port number.");
             return;
         }
 
@@ -243,7 +248,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
                 return com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType.NONE;
 
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(
+                throw logger.atError().log(new IllegalArgumentException(
                     String.format("This authentication type is unknown: %s", type.name())));
         }
     }

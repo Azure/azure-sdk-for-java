@@ -8,7 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.LongGauge;
@@ -309,7 +309,9 @@ public class AmqpMetricsProvider {
                     break;
 
                 default:
-                    LOGGER.verbose("Unexpected error source: {}", source);
+                    LOGGER.atVerbose()
+                            .addKeyValue("source", source)
+                            .log("Unexpected error source.");
             }
         }
     }

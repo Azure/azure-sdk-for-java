@@ -3,15 +3,16 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.util.Objects;
 
 /**
  * A container for {@link EventData} along with the partition information for this event data.
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class PartitionEvent {
 
     private final PartitionContext partitionContext;

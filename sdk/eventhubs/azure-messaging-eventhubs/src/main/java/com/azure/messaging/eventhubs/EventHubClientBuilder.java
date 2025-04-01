@@ -35,7 +35,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.Tracer;
@@ -360,7 +360,7 @@ public class EventHubClientBuilder
         this.credentials = getTokenCredential(connectionStringProperties);
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'host' cannot be an empty string."));
         }
 
         if (!CoreUtils.isNullOrEmpty(connectionStringProperties.getEntityPath())) {
@@ -392,9 +392,9 @@ public class EventHubClientBuilder
 
         if (connectionString.isEmpty()) {
             throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("'connectionString' cannot be an empty string."));
+                .atError().log(new IllegalArgumentException("'connectionString' cannot be an empty string."));
         } else if (eventHubName.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
         this.connectionStringProperties = new ConnectionStringProperties(connectionString);
@@ -402,7 +402,7 @@ public class EventHubClientBuilder
 
         if (!CoreUtils.isNullOrEmpty(connectionStringProperties.getEntityPath())
             && !eventHubName.equals(connectionStringProperties.getEntityPath())) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            throw LOGGER.atError().log(new IllegalArgumentException(String.format(Locale.US,
                 "'connectionString' contains an Event Hub name [%s] and it does not match the given "
                     + "'eventHubName' parameter [%s]. Please use the credentials(String connectionString) overload. "
                     + "Or supply a 'connectionString' without 'EntityPath' in it.",
@@ -457,7 +457,7 @@ public class EventHubClientBuilder
             this.customEndpointAddress = new URI(customEndpointAddress);
         } catch (URISyntaxException e) {
             throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException(customEndpointAddress + " : is not a valid URL.", e));
+                .atError().log(new IllegalArgumentException(customEndpointAddress + " : is not a valid URL.", e));
         }
 
         return this;
@@ -484,7 +484,7 @@ public class EventHubClientBuilder
         this.fullyQualifiedNamespace
             = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
         return this;
@@ -510,7 +510,7 @@ public class EventHubClientBuilder
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(eventHubName)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
         return this;
     }
@@ -556,9 +556,9 @@ public class EventHubClientBuilder
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'host' cannot be an empty string."));
         } else if (CoreUtils.isNullOrEmpty(eventHubName)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
         return this;
@@ -605,9 +605,9 @@ public class EventHubClientBuilder
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'host' cannot be an empty string."));
         } else if (CoreUtils.isNullOrEmpty(eventHubName)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -659,9 +659,9 @@ public class EventHubClientBuilder
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'host' cannot be an empty string."));
         } else if (CoreUtils.isNullOrEmpty(eventHubName)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+            throw LOGGER.atError().log(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -807,12 +807,12 @@ public class EventHubClientBuilder
      */
     public EventHubClientBuilder prefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            throw LOGGER.atError().log(new IllegalArgumentException(String.format(Locale.US,
                 "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT)));
         }
 
         if (prefetchCount > MAXIMUM_PREFETCH_COUNT) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            throw LOGGER.atError().log(new IllegalArgumentException(String.format(Locale.US,
                 "PrefetchCount, '%s', has to be below %s", prefetchCount, MAXIMUM_PREFETCH_COUNT)));
         }
 
@@ -902,7 +902,7 @@ public class EventHubClientBuilder
      */
     public EventHubConsumerAsyncClient buildAsyncConsumerClient() {
         if (CoreUtils.isNullOrEmpty(consumerGroup)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be null or an empty "
+            throw LOGGER.atError().log(new IllegalArgumentException("'consumerGroup' cannot be null or an empty "
                 + "string. using EventHubClientBuilder.consumerGroup(String)"));
         }
 
@@ -1010,7 +1010,7 @@ public class EventHubClientBuilder
             processor = eventHubConnectionProcessor;
 
             final int numberOfOpenClients = openClients.incrementAndGet();
-            LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
+            LOGGER.atInfo().log("# of open clients with shared connection: " + numberOfOpenClients);
         } else {
             if (v2StackSupport.isV2StackEnabled(configuration)) {
                 final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
@@ -1072,22 +1072,22 @@ public class EventHubClientBuilder
     void onClientClose() {
         synchronized (connectionLock) {
             final int numberOfOpenClients = openClients.decrementAndGet();
-            LOGGER.info("Closing a dependent client. # of open clients: {}", numberOfOpenClients);
+            LOGGER.atInfo().log("Closing a dependent client. # of open clients:" + numberOfOpenClients);
 
             if (numberOfOpenClients > 0) {
                 return;
             }
 
             if (numberOfOpenClients < 0) {
-                LOGGER.warning("There should not be less than 0 clients. actual: {}", numberOfOpenClients);
+                LOGGER.atWarning().log("There should not be less than 0 clients. actual:" + numberOfOpenClients);
             }
 
-            LOGGER.info("No more open clients, closing shared connection.");
+            LOGGER.atInfo().log("No more open clients, closing shared connection.");
             if (eventHubConnectionProcessor != null) {
                 eventHubConnectionProcessor.dispose();
                 eventHubConnectionProcessor = null;
             } else {
-                LOGGER.warning("Shared EventHubConnectionProcessor was already disposed.");
+                LOGGER.atWarning().log("Shared EventHubConnectionProcessor was already disposed.");
             }
         }
     }
@@ -1109,7 +1109,7 @@ public class EventHubClientBuilder
         final Supplier<String> getEventHubName = () -> {
             if (CoreUtils.isNullOrEmpty(eventHubName)) {
                 throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+                    .atError().log(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
             }
             return eventHubName;
         };
@@ -1120,7 +1120,7 @@ public class EventHubClientBuilder
                 if (request == 0) {
                     return;
                 } else if (request > 1) {
-                    sink.error(LOGGER.logExceptionAsWarning(new IllegalArgumentException(
+                    sink.error(LOGGER.atWarning().log(new IllegalArgumentException(
                         "Requested more than one connection. Only emitting one. Request: " + request)));
                     return;
                 }
@@ -1153,7 +1153,7 @@ public class EventHubClientBuilder
         final Supplier<String> getEventHubName = () -> {
             if (CoreUtils.isNullOrEmpty(eventHubName)) {
                 throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+                    .atError().log(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
             }
             return eventHubName;
         };
@@ -1169,7 +1169,7 @@ public class EventHubClientBuilder
             final String connectionString = buildConfiguration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
 
             if (CoreUtils.isNullOrEmpty(connectionString)) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
+                throw LOGGER.atError().log(new IllegalArgumentException("Credentials have not been set. "
                     + "They can be set using: connectionString(String), connectionString(String, String), "
                     + "credentials(String, String, TokenCredential), or setting the environment variable '"
                     + AZURE_EVENT_HUBS_CONNECTION_STRING + "' with a connection string"));
@@ -1187,13 +1187,13 @@ public class EventHubClientBuilder
         if (proxyOptions != null
             && proxyOptions.isProxyAddressConfigured()
             && transport != AmqpTransportType.AMQP_WEB_SOCKETS) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("Cannot use a proxy when TransportType is not AMQP Web Sockets. "
                     + "Use the setter 'transportType(AmqpTransportType.AMQP_WEB_SOCKETS)' to enable Web Sockets mode."));
         }
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 

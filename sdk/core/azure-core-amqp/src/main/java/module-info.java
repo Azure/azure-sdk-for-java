@@ -7,6 +7,7 @@ module com.azure.core.amqp {
     requires transitive com.microsoft.azure.qpid.protonj.extensions;
     requires transitive org.reactivestreams;
     requires transitive org.apache.qpid.proton.j;
+    requires com.azure.v2.core;
 
     exports com.azure.core.amqp;
     exports com.azure.core.amqp.client.traits;
@@ -18,4 +19,5 @@ module com.azure.core.amqp {
         to com.azure.messaging.eventhubs, com.azure.messaging.servicebus.implementation, com.azure.messaging.servicebus;
 
     exports com.azure.core.amqp.implementation.handler to com.azure.messaging.eventhubs, com.azure.messaging.servicebus;
+    exports com.azure.core.amqp.util;
 }

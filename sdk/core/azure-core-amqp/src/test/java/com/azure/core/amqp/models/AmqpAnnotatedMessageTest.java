@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.models;
 
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -74,10 +74,10 @@ public class AmqpAnnotatedMessageTest {
             case VALUE:
             case SEQUENCE:
                 throw logger
-                    .logExceptionAsError(new UnsupportedOperationException("type not supported yet :" + actualType));
+                    .atError().log(new UnsupportedOperationException("type not supported yet :" + actualType));
 
             default:
-                throw logger.logExceptionAsError(new IllegalStateException("Invalid type :" + actualType));
+                throw logger.atError().log(new IllegalStateException("Invalid type :" + actualType));
         }
     }
 }

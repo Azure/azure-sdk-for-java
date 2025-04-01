@@ -7,8 +7,8 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
-import com.azure.core.util.AsyncCloseable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.amqp.util.AsyncCloseable;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -41,7 +41,7 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeA
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
@@ -156,7 +156,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
         this.retryOptions = retryOptions;
         this.endpointStates = this.handler.getEndpointStates().map(state -> {
-            logger.atVerbose().log("State {}", state);
+            logger.atVerbose().log("State " + state);
             return AmqpEndpointStateUtil.getConnectionState(state);
         }).doOnError(error -> {
             final String message = isDisposed.getAndSet(true)
@@ -176,7 +176,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
         //@formatter:off
         this.subscriptions = Disposables.composite(
-            this.endpointStates.subscribe(null, e -> logger.warning("Receive link endpoint state signaled error.", e)),
+            this.endpointStates.subscribe(null, e -> logger.atWarning().log("Receive link endpoint state signaled error.", e)),
             this.tokenManager.getAuthorizationResults()
                 .onErrorResume(error -> {
                     // When we encounter an error refreshing authorization results, close the receive link.
@@ -199,7 +199,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                     }),
 
             amqpConnection.getShutdownSignals().flatMap(signal -> {
-                logger.verbose("Shutdown signal received.");
+                logger.atVerbose().log("Shutdown signal received.");
                 return closeAsync("Connection shutdown.", null);
             }).subscribe());
         //@formatter:on
@@ -355,7 +355,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
             return getIsClosedMono();
         }
 
-        addErrorCondition(logger.atVerbose(), errorCondition).log("Setting error condition and disposing. {}", message);
+        addErrorCondition(logger.atVerbose(), errorCondition)
+                .log("Setting error condition and disposing" + message);
 
         return beginClose(errorCondition).flatMap(localCloseScheduled -> {
             if (localCloseScheduled) {
@@ -414,14 +415,14 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 dispatcher.invoke(localClose);
                 localCloseScheduled = true;
             } catch (IOException e) {
-                logger.warning("IO sink was closed when scheduling work. Manually invoking and completing close.", e);
+                logger.atWarning().log("IO sink was closed when scheduling work. Manually invoking and completing close.", e);
 
                 localClose.run();
                 terminateEndpointState();
                 completeClose();
             } catch (RejectedExecutionException e) {
                 // Not logging error here again because we have to log the exception when we throw it.
-                logger.info(
+                logger.atInfo().log(
                     "RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
 
                 localClose.run();
@@ -444,7 +445,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         return isClosedMono.asMono().timeout(retryOptions.getTryTimeout()).onErrorResume(error -> {
             if (error instanceof TimeoutException) {
                 logger
-                    .info("Timeout waiting for RemoteClose. Manually terminating EndpointStates and completing close.");
+                    .atInfo().log("Timeout waiting for RemoteClose. Manually terminating EndpointStates and completing close.");
                 terminateEndpointState();
                 completeClose();
             }
@@ -502,7 +503,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         try {
             trackPrefetchSeqNoSubscription.close();
         } catch (Exception e) {
-            logger.verbose("Error closing metrics subscription.", e);
+            logger.atVerbose().log("Error closing metrics subscription.", e);
         }
     }
 
@@ -518,8 +519,9 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         } else if (seqNo instanceof Long) {
             return (Long) seqNo;
         } else if (seqNo != null) {
-            logger.verbose(
-                "Received message has unexpected `x-opt-sequence-number` annotation value - `{}`. Ignoring it.", seqNo);
+            logger.atVerbose()
+                    .addKeyValue("x-opt-sequence-number", seqNo)
+                    .log("Received message has unexpected `x-opt-sequence-number` annotation value. Ignoring it.");
         }
 
         return null;

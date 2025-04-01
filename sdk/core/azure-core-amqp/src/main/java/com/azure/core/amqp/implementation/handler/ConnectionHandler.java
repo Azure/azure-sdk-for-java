@@ -11,7 +11,7 @@ import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -186,7 +186,7 @@ public class ConnectionHandler extends Handler {
             try {
                 defaultSslContext = SSLContext.getDefault();
             } catch (NoSuchAlgorithmException e) {
-                throw logger.logExceptionAsError(
+                throw logger.atError().log(
                     new RuntimeException("Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
             }
         }
@@ -205,11 +205,12 @@ public class ConnectionHandler extends Handler {
             sslDomain.setSslContext(defaultSslContext);
             sslDomain.setPeerAuthentication(SslDomain.VerifyMode.VERIFY_PEER);
         } else if (verifyMode == SslDomain.VerifyMode.ANONYMOUS_PEER) {
-            logger.warning("'{}' is not secure.", verifyMode);
+            logger.atWarning()
+                    .addKeyValue("sslVerifyMode", verifyMode)
+                    .log("The verify mode is not secure.");
             sslDomain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         } else {
-            throw logger
-                .logExceptionAsError(new UnsupportedOperationException("verifyMode is not supported: " + verifyMode));
+            throw logger.atError().log(new UnsupportedOperationException("verifyMode is not supported: " + verifyMode));
         }
 
         transport.ssl(sslDomain);
@@ -224,7 +225,7 @@ public class ConnectionHandler extends Handler {
 
         final Connection connection = event.getConnection();
         if (connection == null) {
-            logger.warning("Underlying connection is null. Should not be possible.");
+            logger.atWarning().log("Underlying connection is null. Should not be possible.");
             close();
             return;
         }
@@ -245,7 +246,7 @@ public class ConnectionHandler extends Handler {
     public void onConnectionBound(Event event) {
         final Transport transport = event.getTransport();
 
-        final LoggingEventBuilder builder = logger.atInfo().addKeyValue(HOSTNAME_KEY, getHostname());
+        final LoggingEvent builder = logger.atInfo().addKeyValue(HOSTNAME_KEY, getHostname());
         if (peerDetails != null) {
             builder.addKeyValue("peerDetails", () -> peerDetails.getHostname() + ":" + peerDetails.getPort());
         }
@@ -389,7 +390,7 @@ public class ConnectionHandler extends Handler {
 
         if (condition == null) {
             throw logger
-                .logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
+                .atError().log(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
         }
 
         // if the remote-peer abruptly closes the connection without issuing close frame issue one

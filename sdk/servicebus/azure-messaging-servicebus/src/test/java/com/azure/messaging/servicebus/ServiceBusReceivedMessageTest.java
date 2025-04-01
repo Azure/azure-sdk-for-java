@@ -4,7 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpMessageConstant;
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import com.azure.messaging.servicebus.models.ServiceBusMessageState;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Data;

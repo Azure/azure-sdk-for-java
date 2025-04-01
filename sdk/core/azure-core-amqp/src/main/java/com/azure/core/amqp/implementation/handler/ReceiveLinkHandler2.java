@@ -6,7 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Delivery;
@@ -128,7 +128,7 @@ public class ReceiveLinkHandler2 extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder
+        LoggingEvent logBuilder
             = logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, link.getName());
 
         if (link.getRemoteSource() != null) {

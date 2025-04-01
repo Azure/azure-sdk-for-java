@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -18,7 +18,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 
@@ -103,11 +103,11 @@ final class V2StackSupport {
             }
         }
         if (choiceFlag.compareAndSet(null, isOptedOut)) {
-            logger.verbose("Selected configuration {}={}", propName, isOptedOut);
+            logger.atVerbose().log("Selected configuration " + propName + "=" + isOptedOut);
             if (isOptedOut) {
                 final String logMessage
-                    = "If your application fails to work without explicitly setting {} configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
-                logger.info(logMessage, propName);
+                    = "If your application fails to work without explicitly setting " + propName + " configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
+                logger.atInfo().log(logMessage);
             }
         }
         return choiceFlag.get();

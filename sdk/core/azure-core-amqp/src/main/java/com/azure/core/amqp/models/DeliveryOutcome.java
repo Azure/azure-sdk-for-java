@@ -3,7 +3,8 @@
 
 package com.azure.core.amqp.models;
 
-import com.azure.core.annotation.Fluent;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 /**
  * Outcomes accepted by the AMQP protocol layer. Some outcomes have metadata associated with them, such as {@link
@@ -18,7 +19,7 @@ import com.azure.core.annotation.Fluent;
  * @see RejectedDeliveryOutcome
  * @see TransactionalDeliveryOutcome
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public class DeliveryOutcome {
     private final DeliveryState deliveryState;
 

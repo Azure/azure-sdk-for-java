@@ -14,7 +14,7 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -49,7 +49,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SIGNAL_TYPE_KEY;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 
 /**
  * An AMQP connection backed by proton-j.
@@ -169,7 +169,7 @@ public class ReactorConnection implements AmqpConnection {
                 closeAsync(new AmqpShutdownSignal(false, false,
                     "Error occurred while connection was starting. Error: " + error)).subscribe();
             } else {
-                logger.verbose("Connection was already disposed: Error occurred while connection was starting.", error);
+                logger.atVerbose().log("Connection was already disposed: Error occurred while connection was starting.", error);
             }
         });
 
@@ -179,20 +179,20 @@ public class ReactorConnection implements AmqpConnection {
                 return AmqpEndpointStateUtil.getConnectionState(state);
             }).onErrorResume(error -> {
                 if (setDisposed()) {
-                    logger.verbose("Disposing of active sessions due to error.");
+                    logger.atVerbose().log("Disposing of active sessions due to error.");
                     return closeAsync(new AmqpShutdownSignal(false, false, error.getMessage())).then(Mono.error(error));
                 } else {
                     return Mono.error(error);
                 }
             }).doOnComplete(() -> {
                 if (setDisposed()) {
-                    logger.verbose("Disposing of active sessions due to connection close.");
+                    logger.atVerbose().log("Disposing of active sessions due to connection close.");
                     closeAsync(new AmqpShutdownSignal(false, false, "Connection handler closed.")).subscribe();
                 }
             }).cache(1);
 
         this.subscriptions = Disposables.composite(
-            this.endpointStates.subscribe(null, e -> logger.warning("Connection endpoint state signaled error .", e)));
+            this.endpointStates.subscribe(null, e -> logger.atWarning().log("Connection endpoint state signaled error .", e)));
     }
 
     /**
@@ -253,7 +253,7 @@ public class ReactorConnection implements AmqpConnection {
 
             return tokenManager.authorize().thenReturn(managementNodes.compute(entityPath, (key, current) -> {
                 if (current != null) {
-                    logger.info("A management node exists already, returning it.");
+                    logger.atInfo().log("A management node exists already, returning it.");
 
                     // Close the token manager we had created during this because it is unneeded now.
                     tokenManager.close();
@@ -529,7 +529,7 @@ public class ReactorConnection implements AmqpConnection {
         if (setDisposed()) {
             return closeAsync(new AmqpShutdownSignal(false, true, "Disposed by client."));
         } else {
-            logger.verbose("Connection was already closed. Not disposing again.");
+            logger.atVerbose().log("Connection was already closed. Not disposing again.");
             return isClosedMono.asMono();
         }
     }
@@ -571,19 +571,19 @@ public class ReactorConnection implements AmqpConnection {
             = Mono.when(Flux.fromStream(managementNodes.values().stream()).flatMap(node -> node.closeAsync()));
 
         final Mono<Void> closeReactor = Mono.fromRunnable(() -> {
-            logger.verbose("Scheduling closeConnection work.");
+            logger.atVerbose().log("Scheduling closeConnection work.");
             final ReactorDispatcher dispatcher = reactorProvider.getReactorDispatcher();
 
             if (dispatcher != null) {
                 try {
                     dispatcher.invoke(() -> closeConnectionWork());
                 } catch (IOException e) {
-                    logger.warning("IOException while scheduling closeConnection work. Manually disposing.", e);
+                    logger.atWarning().log("IOException while scheduling closeConnection work. Manually disposing.", e);
 
                     closeConnectionWork();
                 } catch (RejectedExecutionException e) {
                     // Not logging error here again because we have to log the exception when we throw it.
-                    logger.info("Could not schedule closeConnection work. Manually disposing.");
+                    logger.atInfo().log("Could not schedule closeConnection work. Manually disposing.");
 
                     closeConnectionWork();
                 }
@@ -634,7 +634,7 @@ public class ReactorConnection implements AmqpConnection {
         // remaining work after OperationTimeout has elapsed and closes afterwards.
         final Mono<Void> closedExecutor = reactorExecutor != null ? Mono.defer(() -> {
             synchronized (this) {
-                logger.info("Closing executor.");
+                logger.atInfo().log("Closing executor.");
                 return reactorExecutor.closeAsync();
             }
         }) : Mono.empty();
@@ -642,7 +642,7 @@ public class ReactorConnection implements AmqpConnection {
         // Close all the children and the ReactorExecutor.
         final Mono<Void> closeSessionAndExecutorMono
             = awaitSessionsClose.timeout(operationTimeout).onErrorResume(error -> {
-                logger.info("Timed out waiting for all sessions to close.");
+                logger.atInfo().log("Timed out waiting for all sessions to close.");
                 return Mono.empty();
             }).then(closedExecutor).then(Mono.fromRunnable(() -> {
                 isClosedMono.emitEmpty((signalType, result) -> {
@@ -659,7 +659,7 @@ public class ReactorConnection implements AmqpConnection {
 
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {
         if (cbsChannel == null) {
-            logger.info("Setting CBS channel.");
+            logger.atInfo().log("Setting CBS channel.");
             if (useSessionChannelCache) {
                 // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
                 cbsChannelCache

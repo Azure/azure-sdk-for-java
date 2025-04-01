@@ -3,12 +3,13 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -43,7 +44,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see <a href="https://learn.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature">Authorize
  *     access with shared access signature.</a>
  */
-@Immutable
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class EventHubSharedKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";
@@ -140,20 +141,20 @@ public class EventHubSharedKeyCredential implements TokenCredential {
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
         if (request.getScopes().size() != 1) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.atError().log(new IllegalArgumentException(
                 "'scopes' should only contain a single argument that is the token audience or resource name."));
         }
 
         try {
             return generateSharedAccessSignature(request.getScopes().get(0));
         } catch (UnsupportedEncodingException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.atError().log(new RuntimeException(ex));
         }
     }
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
         if (CoreUtils.isNullOrEmpty(resource)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("resource cannot be empty"));
+            throw LOGGER.atError().log(new IllegalArgumentException("resource cannot be empty"));
         }
 
         if (sharedAccessSignature != null) {
@@ -165,10 +166,10 @@ public class EventHubSharedKeyCredential implements TokenCredential {
             hmac = Mac.getInstance(HASH_ALGORITHM);
             hmac.init(secretKeySpec);
         } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+            throw LOGGER.atError().log(new UnsupportedOperationException(
                 String.format("Unable to create hashing algorithm '%s'", HASH_ALGORITHM), e));
         } catch (InvalidKeyException e) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("'sharedAccessKey' is an invalid value for the hashing algorithm.", e));
         }
 
@@ -200,8 +201,8 @@ public class EventHubSharedKeyCredential implements TokenCredential {
                     long epochSeconds = Long.parseLong(expirationTimeStr);
                     return Instant.ofEpochSecond(epochSeconds).atOffset(ZoneOffset.UTC);
                 } catch (NumberFormatException exception) {
-                    LOGGER.verbose("Invalid expiration time format in the SAS token: {}. Falling back to max "
-                        + "expiration time.", expirationTimeStr);
+                    LOGGER.atVerbose().log("Invalid expiration time format in the SAS token: " + expirationTimeStr + " . Falling back to max "
+                        + "expiration time.");
                     return OffsetDateTime.MAX;
                 }
             })

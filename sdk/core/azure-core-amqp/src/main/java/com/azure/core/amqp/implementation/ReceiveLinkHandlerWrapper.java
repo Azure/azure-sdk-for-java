@@ -5,7 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -13,8 +13,8 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.azure.core.util.FluxUtil.fluxError;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.amqp.util.FluxUtil.fluxError;
+import static com.azure.core.amqp.util.FluxUtil.monoError;
 
 /**
  * Temporary type to support receive link handler in v1 ({@link ReceiveLinkHandler}) and v2

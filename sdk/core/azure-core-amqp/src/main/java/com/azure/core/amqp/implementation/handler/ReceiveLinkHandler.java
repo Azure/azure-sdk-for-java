@@ -4,7 +4,7 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -119,7 +119,7 @@ public class ReceiveLinkHandler extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder
+        LoggingEvent logBuilder
             = logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, link.getName());
 
         if (link.getRemoteSource() != null) {
@@ -184,7 +184,8 @@ public class ReceiveLinkHandler extends LinkHandler {
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .addKeyValue(LINK_NAME_KEY, linkName)
                             .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                            .log("Could not emit delivery. {}", delivery);
+                            .addKeyValue("delivery", delivery)
+                            .log("Could not emit delivery.");
 
                         if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW
                             && link.getLocalState() != EndpointState.CLOSED) {

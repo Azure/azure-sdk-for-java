@@ -6,7 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.implementation.ProtonSession.ProtonSessionClosedException;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Session;

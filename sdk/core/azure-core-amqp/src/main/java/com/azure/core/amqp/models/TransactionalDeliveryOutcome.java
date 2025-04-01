@@ -4,8 +4,9 @@
 package com.azure.core.amqp.models;
 
 import com.azure.core.amqp.AmqpTransaction;
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
@@ -17,7 +18,7 @@ import java.util.Objects;
  * "http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#type-transactional-state">Transactional
  * state</a>
  */
-@Fluent
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class TransactionalDeliveryOutcome extends DeliveryOutcome {
     private static final ClientLogger LOGGER = new ClientLogger(TransactionalDeliveryOutcome.class);
 
@@ -65,7 +66,7 @@ public final class TransactionalDeliveryOutcome extends DeliveryOutcome {
      */
     public TransactionalDeliveryOutcome setOutcome(DeliveryOutcome outcome) {
         if (outcome instanceof TransactionalDeliveryOutcome) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("Cannot set the outcome as another nested transaction outcome."));
         }
 

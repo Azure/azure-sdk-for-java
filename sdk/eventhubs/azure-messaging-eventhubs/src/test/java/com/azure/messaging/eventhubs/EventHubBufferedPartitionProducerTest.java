@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -35,6 +35,7 @@ import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.eventhubs.EventDataAggregatorTest.setupBatchMock;
@@ -316,7 +317,7 @@ public class EventHubBufferedPartitionProducerTest {
         final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
         options.setMaxWaitTime(Duration.ofSeconds(5));
         options.setSendSucceededContext(context -> {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Batch received.");
+            LOGGER.atVerbose().log((Supplier<String>) () -> "Batch received.");
             holder.onSucceed(context);
             success.countDown();
         });

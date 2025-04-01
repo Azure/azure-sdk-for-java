@@ -7,7 +7,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import com.azure.messaging.eventhubs.implementation.MessageUtils;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -120,7 +120,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         Objects.requireNonNull(object, "'object' to serialize cannot be null.");
 
         if (!(object instanceof EventData)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.atError().log(new IllegalArgumentException(
                 "Cannot serialize object that is not EventData. Class: " + object.getClass()));
         }
 
@@ -141,7 +141,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         } else if (clazz == LastEnqueuedEventProperties.class) {
             return (T) deserializeEnqueuedEventProperties(message);
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.atError().log(new IllegalArgumentException(
                 "Deserialization only supports EventData, PartitionProperties, or EventHubProperties."));
         }
     }
@@ -154,13 +154,13 @@ class EventHubMessageSerializer implements MessageSerializer {
     @SuppressWarnings("unchecked")
     private <T> T deserializeManagementResponse(Message message, Class<T> deserializedType) {
         if (!(message.getBody() instanceof AmqpValue)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.atError().log(new IllegalArgumentException(
                 "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
         }
 
         final AmqpValue body = (AmqpValue) message.getBody();
         if (!(body.getValue() instanceof Map)) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException("Expected message.getBody().getValue() to be of type Map"));
         }
 
@@ -171,7 +171,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         } else if (deserializedType == EventHubProperties.class) {
             return (T) toEventHubProperties(amqpBody);
         } else {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new IllegalArgumentException(String.format(Messages.CLASS_NOT_A_SUPPORTED_TYPE, deserializedType)));
         }
     }
@@ -207,13 +207,13 @@ class EventHubMessageSerializer implements MessageSerializer {
         final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
 
         if (!messageAnnotations.containsKey(OFFSET_ANNOTATION_NAME.getValue())) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.atError().log(new IllegalStateException(
                 String.format(Locale.US, "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue())));
         } else if (!messageAnnotations.containsKey(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(String.format(Locale.US,
+            throw LOGGER.atError().log(new IllegalStateException(String.format(Locale.US,
                 "enqueuedTime: %s should always be in map.", ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())));
         } else if (!messageAnnotations.containsKey(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(String.format(Locale.US,
+            throw LOGGER.atError().log(new IllegalStateException(String.format(Locale.US,
                 "enqueuedTime: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
         }
 
@@ -270,14 +270,14 @@ class EventHubMessageSerializer implements MessageSerializer {
             try {
                 value = Long.parseLong((String) object);
             } catch (NumberFormatException e) {
-                throw LOGGER.logExceptionAsError(
+                throw LOGGER.atError().log(
                     new IllegalStateException("'" + key + "' could not be parsed into a Long. Value: " + object, e));
             }
         } else if (object instanceof Long) {
             value = (Long) object;
         } else {
             throw LOGGER
-                .logExceptionAsError(new IllegalStateException(new IllegalStateException(String.format(Locale.US,
+                .atError().log(new IllegalStateException(new IllegalStateException(String.format(Locale.US,
                     "'" + key + "' value is not a known type. Value: %s. Type: %s", object, object.getClass()))));
         }
 
@@ -286,7 +286,7 @@ class EventHubMessageSerializer implements MessageSerializer {
 
     private <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz) {
         if (!amqpBody.containsKey(key)) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new AzureException(String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
@@ -295,7 +295,7 @@ class EventHubMessageSerializer implements MessageSerializer {
 
     private <T> T getValue(Map<Symbol, Object> amqpBody, Symbol key, Class<T> clazz) {
         if (!amqpBody.containsKey(key)) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new AzureException(String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
@@ -305,10 +305,10 @@ class EventHubMessageSerializer implements MessageSerializer {
     @SuppressWarnings("unchecked")
     private <T> T getValue(Object value, Object key, Class<T> clazz) {
         if (value == null) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.atError().log(
                 new AzureException(String.format("AMQP body did not contain a value for key '%s'.", key)));
         } else if (value.getClass() != clazz) {
-            throw LOGGER.logExceptionAsError(new AzureException(String.format(
+            throw LOGGER.atError().log(new AzureException(String.format(
                 "AMQP body did not contain correct value for key '%s'. Expected class: '%s'. Actual: '%s'", key, clazz,
                 value.getClass())));
         }

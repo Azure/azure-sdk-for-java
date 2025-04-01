@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;

@@ -5,7 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.AmqpTransactionCoordinator;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -66,7 +66,9 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
 
                 default:
                     sink.error(new IllegalArgumentException("Expected a Accepted, received: " + outcome));
-                    LOGGER.warning("Unknown DeliveryState type: {}", stateType);
+                    LOGGER.atWarning()
+                            .addKeyValue("stateType", stateType)
+                            .log("Unknown DeliveryState type.");
             }
         });
     }
@@ -100,7 +102,9 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
 
                 default:
                     sink.error(new IllegalArgumentException("Expected a Declared, received: " + outcome));
-                    LOGGER.warning("Unknown DeliveryState type: {}", stateType);
+                    LOGGER.atWarning()
+                            .addKeyValue("stateType", stateType)
+                            .log("Unknown DeliveryState type.");
             }
         });
     }

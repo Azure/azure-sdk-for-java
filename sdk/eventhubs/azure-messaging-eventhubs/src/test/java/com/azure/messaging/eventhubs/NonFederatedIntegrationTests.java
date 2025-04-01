@@ -10,7 +10,7 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;

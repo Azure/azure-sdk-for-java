@@ -4,7 +4,7 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.StringUtil;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import reactor.core.publisher.Flux;

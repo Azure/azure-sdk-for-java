@@ -4,9 +4,9 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
@@ -167,7 +167,7 @@ final class PartitionBasedLoadBalancer {
 
             if (CoreUtils.isNullOrEmpty(partitionIds)) {
                 // This may be due to an error when getting Event Hub metadata.
-                throw LOGGER.logExceptionAsError(Exceptions
+                throw LOGGER.atError().log(Exceptions
                     .propagate(new IllegalStateException("There are no partitions in Event Hub " + eventHubName)));
             }
             partitionsCache.set(partitionIds);
@@ -180,7 +180,7 @@ final class PartitionBasedLoadBalancer {
 
             if (!isValid(partitionOwnershipMap)) {
                 // User data is corrupt.
-                throw LOGGER.logExceptionAsError(Exceptions
+                throw LOGGER.atError().log(Exceptions
                     .propagate(new IllegalStateException("Invalid partitionOwnership data from CheckpointStore")));
             }
 
@@ -483,7 +483,7 @@ final class PartitionBasedLoadBalancer {
 
     private void logPartitionDistribution(Map<String, List<PartitionOwnership>> ownerPartitionMap) {
         if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
-            LoggingEventBuilder log = LOGGER.atVerbose().addKeyValue(OWNER_ID_KEY, ownerId);
+            LoggingEvent log = LOGGER.atVerbose().addKeyValue(OWNER_ID_KEY, ownerId);
 
             for (Entry<String, List<PartitionOwnership>> entry : ownerPartitionMap.entrySet()) {
                 log.addKeyValue(entry.getKey(),

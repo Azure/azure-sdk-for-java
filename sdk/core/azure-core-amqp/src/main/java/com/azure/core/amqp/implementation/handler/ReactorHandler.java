@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -36,7 +36,7 @@ public class ReactorHandler extends BaseHandler {
 
     @Override
     public void onReactorInit(Event e) {
-        logger.info("reactor.onReactorInit");
+        logger.atInfo().log("reactor.onReactorInit");
 
         final Reactor reactor = e.getReactor();
         reactor.setTimeout(REACTOR_IO_POLL_TIMEOUT);

@@ -8,7 +8,7 @@ import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -73,7 +73,7 @@ public class SessionHandler extends Handler {
     @Override
     public void onSessionRemoteOpen(Event e) {
         final Session session = e.getSession();
-        LoggingEventBuilder logBuilder;
+        LoggingEvent logBuilder;
         if (session.getLocalState() == EndpointState.UNINITIALIZED) {
             logBuilder = logger.atWarning();
             session.open();

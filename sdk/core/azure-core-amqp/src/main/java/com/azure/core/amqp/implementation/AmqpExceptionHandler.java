@@ -4,7 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpShutdownSignal;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addShutdownSignal;
 
@@ -26,7 +26,7 @@ abstract class AmqpExceptionHandler {
      * @param exception The exception that caused the connection error.
      */
     void onConnectionError(Throwable exception) {
-        LOGGER.warning("Connection exception encountered.", exception);
+        LOGGER.atWarning().log("Connection exception encountered.", exception);
     }
 
     /**
