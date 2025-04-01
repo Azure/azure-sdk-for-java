@@ -25,7 +25,7 @@ public class AzureResponsesContentImageUrlSample {
         ResponsesClient client = new ResponsesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
             .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")))
-            .serviceVersion(AzureResponsesServiceVersion.V2024_12_01_PREVIEW)
+            .serviceVersion(AzureResponsesServiceVersion.V2025_03_01_PREVIEW)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
 
