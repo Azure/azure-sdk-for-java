@@ -106,6 +106,7 @@ if ($ServiceDirectories) {
     $path = "sdk/$ServiceDirectory"
     $result = TypeSpec-Compare-CurrentToCodegeneration $path
     if ($result) {
+      Write-Host "JRS - setting hasError to true, result=$result"
       $hasError = $true
     }
   }
