@@ -34,7 +34,7 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
     private static final String LOGGING_BUILDER_LOG_THROWABLE_AS_WARNING = "logger.atWarning().logThrowable";
 
     static final String THROW_LOGGER_EXCEPTION_MESSAGE = String.format("Directly throwing an exception is disallowed. "
-        + "Must throw through \"ClientLogger\" API, either of \"%s\", \"%s\", \"%s\", \"%s\", \\\"%s\\\", \\\"%s\\\", \"%s\", or \"%s\" where \"logger\" is "
+        + "Must throw through \"ClientLogger\" API, either of \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", or \"%s\" where \"logger\" is "
         + "type of ClientLogger from Azure Core package.", LOGGER_LOG_EXCEPTION_AS_ERROR,
         LOGGING_BUILDER_LOG_ERROR, LOGGER_LOG_THROWABLE_AS_ERROR, LOGGING_BUILDER_LOG_THROWABLE_AS_ERROR, LOGGER_LOG_EXCEPTION_AS_WARNING, LOGGER_LOG_THROWABLE_AS_WARNING,
         LOGGING_BUILDER_LOG_WARNING, LOGGING_BUILDER_LOG_THROWABLE_AS_WARNING);
