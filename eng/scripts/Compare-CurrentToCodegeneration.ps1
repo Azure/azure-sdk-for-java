@@ -20,6 +20,8 @@ param(
   [string]$ServiceDirectories
 )
 
+$SeparatorBars = "==========================================================================="
+
 # Returns true if there's an error, false otherwise
 function Compare-CurrentToCodegeneration {
   param(
@@ -29,47 +31,33 @@ function Compare-CurrentToCodegeneration {
 
   $swaggers = Get-ChildItem -Path $ServiceDirectory -Filter "Update-Codegeneration.ps1" -Recurse
   if ($swaggers.Count -eq 0) {
-    Write-Host "
-
-    =========================================================
-    No Swagger files to regenerate for $ServiceDirectory
-    =========================================================
-
-    "
+    Write-Host "$SeparatorBars"
+    Write-Host "No Swagger files to regenerate for $ServiceDirectory"
+    Write-Host "$SeparatorBars"
     return $false
   }
 
 
-  Write-Host "
-
-  =========================================================
-  Invoking Autorest code regeneration for $ServiceDirectory
-  =========================================================
-
-  "
+  Write-Host "$SeparatorBars"
+  Write-Host "Invoking Autorest code regeneration for $ServiceDirectory"
+  Write-Host "$SeparatorBars"
 
   foreach ($script in $swaggers) {
     Write-Host "Calling Invoke-Expression $($script.FullName)"
     (& $script.FullName) | Write-Host
   }
 
-  Write-Host "
-
-  =========================================================
-  Verify no diff for $ServiceDirectory
-  =========================================================
-
-  "
+  Write-Host "$SeparatorBars"
+  Write-Host "Verify no diff for $ServiceDirectory"
+  Write-Host "$SeparatorBars"
 
   # prevent warning related to EOL differences which triggers an exception for some reason
   & git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java"
 
   if ($LastExitCode -ne 0) {
     $status = git status -s | Out-String
-    Write-Host "
-  The following files in $ServiceDirectory are out of date:
-  $status
-  "
+    Write-Host "The following files in $ServiceDirectory are out of date:"
+    Write-Host "$status"
     return $true
   }
   return $false
