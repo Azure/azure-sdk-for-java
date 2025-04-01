@@ -320,7 +320,7 @@ public final class ProxyOptions {
 
             return proxyOptions;
         } catch (URISyntaxException ex) {
-            LOGGER.atWarning().addKeyValue(URL_FULL_KEY, proxyProperty).log(INVALID_PROXY_URI, ex);
+            LOGGER.atWarning().addKeyValue(URL_FULL_KEY, proxyProperty).setThrowable(ex).log(INVALID_PROXY_URI);
             return null;
         }
     }

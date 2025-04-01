@@ -123,7 +123,7 @@ public class OTelInstrumentation implements Instrumentation {
             throw LOGGER.atError()
                 .addKeyValue("expectedProvider", OTEL_CLASS.getName())
                 .addKeyValue("actualProvider", explicitOTel.getClass().getName())
-                .log("Unexpected telemetry provider type.",
+                .logThrowable(
                     new IllegalArgumentException("Telemetry provider is not an instance of " + OTEL_CLASS.getName()));
         }
 

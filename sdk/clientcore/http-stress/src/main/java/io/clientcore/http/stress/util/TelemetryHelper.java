@@ -262,7 +262,7 @@ public class TelemetryHelper {
         span.setStatus(StatusCode.ERROR, unwrapped.getMessage());
 
         String errorType = unwrapped.getClass().getName();
-        logger.atError().addKeyValue("error.type", errorType).log("run ended", unwrapped);
+        logger.atError().addKeyValue("error.type", errorType).setThrowable(unwrapped).log("run ended");
 
         Attributes errorAttributes
             = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);

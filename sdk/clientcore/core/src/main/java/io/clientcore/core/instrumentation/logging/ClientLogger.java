@@ -111,7 +111,9 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEvent.create(logger, LogLevel.WARNING, globalContext).log(throwable.getMessage(), throwable);
+        LoggingEvent.create(logger, LogLevel.WARNING, globalContext)
+            .setThrowable(throwable)
+            .log(throwable.getMessage());
 
         return throwable;
     }
@@ -128,7 +130,7 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).log(throwable.getMessage(), throwable);
+        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).setThrowable(throwable).log(throwable.getMessage());
         return throwable;
     }
 
@@ -174,7 +176,8 @@ public class ClientLogger {
      * <pre>
      * logger.atWarning&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&quot;A structured log message with exception.&quot;, exception&#41;;
+     *     .setThrowable&#40;exception&#41;
+     *     .log&#40;&quot;A structured log message with exception.&quot;&#41;;
      * </pre>
      * <!-- end io.clientcore.core.util.logging.clientlogger.atWarning -->
      *

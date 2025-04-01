@@ -175,11 +175,11 @@ public final class AuthenticateChallengeParser {
                 if (scheme == null) {
                     throw LOGGER.atError()
                         .addKeyValue("challenge", challenge)
-                        .log(new IllegalArgumentException("Challenge had token68 before scheme."));
+                        .logThrowable(new IllegalArgumentException("Challenge had token68 before scheme."));
                 } else if (token68 != null) {
                     throw LOGGER.atError()
                         .addKeyValue("challenge", challenge)
-                        .log(new IllegalArgumentException("Challenge had multiple token68s."));
+                        .logThrowable(new IllegalArgumentException("Challenge had multiple token68s."));
                 }
 
                 token68 = token.token68;
@@ -187,7 +187,7 @@ public final class AuthenticateChallengeParser {
                 if (scheme == null) {
                     throw LOGGER.atError()
                         .addKeyValue("challenge", challenge)
-                        .log(new IllegalArgumentException("Challenge had auth-param before scheme."));
+                        .logThrowable(new IllegalArgumentException("Challenge had auth-param before scheme."));
                 }
 
                 if (parameters == null) {
@@ -197,7 +197,7 @@ public final class AuthenticateChallengeParser {
                 if (parameters.put(token.authParam.getKey(), token.authParam.getValue()) != null) {
                     throw LOGGER.atError()
                         .addKeyValue("challenge", challenge)
-                        .log(new IllegalArgumentException("Challenge had duplicate auth-param."));
+                        .logThrowable(new IllegalArgumentException("Challenge had duplicate auth-param."));
                 }
             }
         }
@@ -220,7 +220,7 @@ public final class AuthenticateChallengeParser {
 
         throw LOGGER.atError()
             .addKeyValue("challenge", challenge)
-            .log(new IllegalArgumentException("Challenge had both token68 and auth-params."));
+            .logThrowable(new IllegalArgumentException("Challenge had both token68 and auth-params."));
     }
 
     boolean next() {
@@ -278,7 +278,7 @@ public final class AuthenticateChallengeParser {
             throw LOGGER.atError()
                 .addKeyValue("challenge", challenge)
                 .addKeyValue("scheme", scheme)
-                .log(new IllegalArgumentException("Scheme contained an invalid character."));
+                .logThrowable(new IllegalArgumentException("Scheme contained an invalid character."));
         }
 
         // Iterate until the next non-space character, unless the scheme terminated with a comma.
@@ -319,7 +319,7 @@ public final class AuthenticateChallengeParser {
                 // The next character is neither a comma nor an equal sign, throw an exception.
                 throw LOGGER.atError()
                     .addKeyValue("challenge", challenge)
-                    .log(new IllegalArgumentException(
+                    .logThrowable(new IllegalArgumentException(
                         "Challenge had more than one token68 or auth-param in the same comma separator."));
             }
 
@@ -357,7 +357,7 @@ public final class AuthenticateChallengeParser {
             if (currentIndex < challengeLength && c != ',') {
                 throw LOGGER.atError()
                     .addKeyValue("challenge", challenge)
-                    .log(new IllegalArgumentException(
+                    .logThrowable(new IllegalArgumentException(
                         "Challenge had more than one token68 or auth-param in the same comma separator."));
             }
         }
@@ -373,7 +373,7 @@ public final class AuthenticateChallengeParser {
             throw LOGGER.atError()
                 .addKeyValue("challenge", challenge)
                 .addKeyValue("authParamKey", authParamKey)
-                .log(new IllegalArgumentException("Auth-param key contained an invalid character."));
+                .logThrowable(new IllegalArgumentException("Auth-param key contained an invalid character."));
         }
 
         int start = currentIndex;
@@ -390,7 +390,8 @@ public final class AuthenticateChallengeParser {
                 // Only time this should happen is reaching the end of the challenge.
                 throw LOGGER.atError()
                     .addKeyValue("challenge", challenge)
-                    .log(new IllegalArgumentException("Quoted-string was not terminated with a double quote."));
+                    .logThrowable(
+                        new IllegalArgumentException("Quoted-string was not terminated with a double quote."));
             }
 
             authParamValue = challenge.substring(start, currentIndex).replace("\\\\", "");
@@ -402,7 +403,7 @@ public final class AuthenticateChallengeParser {
                 throw LOGGER.atError()
                     .addKeyValue("challenge", challenge)
                     .addKeyValue("authParamValue", authParamValue)
-                    .log(new IllegalArgumentException("Auth-param value contained an invalid character."));
+                    .logThrowable(new IllegalArgumentException("Auth-param value contained an invalid character."));
             }
         }
 
@@ -414,7 +415,7 @@ public final class AuthenticateChallengeParser {
         if (currentIndex < challengeLength && currentChar != ',') {
             throw LOGGER.atError()
                 .addKeyValue("challenge", challenge)
-                .log(new IllegalArgumentException(
+                .logThrowable(new IllegalArgumentException(
                     "Challenge had more than one token68 or auth-param in the same comma separator."));
         }
 
@@ -494,7 +495,7 @@ public final class AuthenticateChallengeParser {
                             .addKeyValue("challenge", challenge)
                             .addKeyValue("token68", challenge.substring(start, end))
                             .addKeyValue("character", c)
-                            .log(new IllegalArgumentException("Token68 contained invalid character."));
+                            .logThrowable(new IllegalArgumentException("Token68 contained invalid character."));
                     }
 
                     i++;
@@ -504,7 +505,7 @@ public final class AuthenticateChallengeParser {
                     .addKeyValue("challenge", challenge)
                     .addKeyValue("token68", challenge.substring(start, end))
                     .addKeyValue("character", c)
-                    .log(new IllegalArgumentException("Token68 contained invalid character."));
+                    .logThrowable(new IllegalArgumentException("Token68 contained invalid character."));
             }
         }
 

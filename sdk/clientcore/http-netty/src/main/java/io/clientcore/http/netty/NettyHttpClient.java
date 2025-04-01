@@ -7,7 +7,6 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.http.netty.implementation.NettyHttpResponse;
 import io.netty.bootstrap.Bootstrap;
@@ -87,7 +86,7 @@ class NettyHttpClient implements HttpClient {
             FullHttpRequest nettyRequest = toNettyRequest(request);
             channel.writeAndFlush(nettyRequest).addListener(future -> {
                 if (!future.isSuccess()) {
-                    LOGGER.atLevel(LogLevel.ERROR).log("Failed to send request", future.cause());
+                    LOGGER.atError().setThrowable(future.cause()).log("Failed to send request");
                     latch.countDown();
                 }
             });
@@ -101,7 +100,7 @@ class NettyHttpClient implements HttpClient {
 
                 @Override
                 public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-                    LOGGER.atLevel(LogLevel.ERROR).log("Error processing response", cause);
+                    LOGGER.atError().setThrowable(cause).log("Error processing response");
                     latch.countDown();
                 }
             });

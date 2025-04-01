@@ -394,7 +394,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         } catch (IOException ex) {
             LOGGER.atWarning()
                 .addKeyValue("propertiesFileName", propertiesFileName)
-                .log("Failed to read properties.", ex);
+                .setThrowable(ex)
+                .log("Failed to read properties.");
         }
 
         return Collections.emptyMap();
@@ -483,7 +484,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             return throwable;
         }
 
-        log.setEventName(HTTP_RESPONSE_EVENT_NAME)
+        log.setThrowable(unwrap(throwable))
+            .setEventName(HTTP_RESPONSE_EVENT_NAME)
             .setInstrumentationContext(context)
             .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
             .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
@@ -502,7 +504,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             }
         }
 
-        log.log(null, unwrap(throwable));
+        log.log();
         return throwable;
     }
 
@@ -577,7 +579,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 .addKeyValue(
                     isRequest ? HTTP_REQUEST_HEADER_CONTENT_LENGTH_KEY : HTTP_RESPONSE_HEADER_CONTENT_LENGTH_KEY,
                     contentLengthString)
-                .log("Could not parse the HTTP header content-length", e);
+                .setThrowable(e)
+                .log("Could not parse the HTTP header content-length");
         }
 
         return contentLength;
