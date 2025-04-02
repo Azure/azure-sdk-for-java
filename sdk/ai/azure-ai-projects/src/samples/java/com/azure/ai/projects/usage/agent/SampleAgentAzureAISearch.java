@@ -21,7 +21,7 @@ public class SampleAgentAzureAISearch {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAgentsClient();
 
-        String aiSearchConnectionId = "subscriptions/696debc0-8b66-4d84-87b1-39f43917d76c/resourceGroups/rg-jayant/providers/Microsoft.MachineLearningServices/workspaces/jayant-project-2aqa/connections/jayant-hub-2aqa-connection-AISearch";
+        String aiSearchConnectionId = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_ID", "");
 
         ToolResources toolResources = new ToolResources()
             .setAzureAISearch(new AzureAISearchResource()

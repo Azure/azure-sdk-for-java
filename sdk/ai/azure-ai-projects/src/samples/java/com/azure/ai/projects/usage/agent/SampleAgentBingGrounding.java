@@ -21,8 +21,9 @@ public class SampleAgentBingGrounding {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAgentsClient();
 
+        String bingConnectionId = Configuration.getGlobalConfiguration().get("BING_CONNECTION_ID", "");
         ToolConnectionList toolConnectionList = new ToolConnectionList()
-            .setConnectionList(List.of(new ToolConnection("/subscriptions/696debc0-8b66-4d84-87b1-39f43917d76c/resourceGroups/rg-jayant/providers/Microsoft.MachineLearningServices/workspaces/jayant-project-2aqa/connections/jayantagentbing")));
+            .setConnectionList(List.of(new ToolConnection(bingConnectionId)));
         BingGroundingToolDefinition bingGroundingTool = new BingGroundingToolDefinition(toolConnectionList);
 
         var agentName = "bing_grounding_example";

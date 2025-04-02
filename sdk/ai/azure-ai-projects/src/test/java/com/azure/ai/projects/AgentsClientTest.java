@@ -37,7 +37,6 @@ class AgentsClientTest extends AIProjectClientTestBase {
 
     @Test
     void listAndDeleteAllAgents() {
-        agentsClient.listAgents().getData().stream()
-            .forEach(agent -> agentsClient.deleteAgent(agent.getId()));
+        agentsClient.listAgents().getData().stream().forEach(agent -> agentsClient.deleteAgent(agent.getId()));
     }
 }
