@@ -24,4 +24,5 @@
   <suppress files="io.clientcore.core.serialization.json.JsonWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.implementation.StringBuilderWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.implementation.JsonUtils.java" checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" />
+  <suppress files="io.clientcore.core.http.models.RequestContext.java" checks="MethodName" />
 </suppressions>

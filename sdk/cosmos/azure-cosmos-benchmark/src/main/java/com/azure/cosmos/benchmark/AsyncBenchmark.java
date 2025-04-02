@@ -429,11 +429,7 @@ abstract class AsyncBenchmark<T> {
 
                 databaseForUnwarmedContainer = clientForUnwarmedContainer.getDatabase(configuration.getDatabaseId());
             }
-
-            if (!isManagedIdentityRequired) {
-                databaseForUnwarmedContainer.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
-            }
-
+            databaseForUnwarmedContainer.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
             cosmosAsyncContainer = databaseForUnwarmedContainer.getContainer(configuration.getCollectionId());
         }
     }
