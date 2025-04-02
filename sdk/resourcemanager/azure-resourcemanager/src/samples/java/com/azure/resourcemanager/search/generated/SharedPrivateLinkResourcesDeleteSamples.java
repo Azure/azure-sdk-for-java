@@ -9,9 +9,8 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class SharedPrivateLinkResourcesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/DeleteSharedPrivateLinkResource
-     * .json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/
+     * DeleteSharedPrivateLinkResource.json
      */
     /**
      * Sample code: SharedPrivateLinkResourceDelete.

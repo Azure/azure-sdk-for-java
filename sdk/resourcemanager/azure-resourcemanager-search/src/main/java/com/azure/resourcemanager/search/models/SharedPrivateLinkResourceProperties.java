@@ -12,29 +12,29 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes the properties of an existing Shared Private Link Resource managed by the search service.
+ * Describes the properties of an existing shared private link resource managed by the Azure AI Search service.
  */
 @Fluent
 public final class SharedPrivateLinkResourceProperties
     implements JsonSerializable<SharedPrivateLinkResourceProperties> {
     /*
-     * The resource id of the resource the shared private link resource is for.
+     * The resource ID of the resource the shared private link resource is for.
      */
     private String privateLinkResourceId;
 
     /*
-     * The group id from the provider of resource the shared private link resource is for.
+     * The group ID from the provider of resource the shared private link resource is for.
      */
     private String groupId;
 
     /*
-     * The request message for requesting approval of the shared private link resource.
+     * The message for requesting approval of the shared private link resource.
      */
     private String requestMessage;
 
     /*
-     * Optional. Can be used to specify the Azure Resource Manager location of the resource to which a shared private
-     * link is to be created. This is only required for those resources whose DNS configuration are regional (such as
+     * Optional. Can be used to specify the Azure Resource Manager location of the resource for which a shared private
+     * link is being created. This is only required for those resources whose DNS configuration are regional (such as
      * Azure Kubernetes Service).
      */
     private String resourceRegion;
@@ -57,7 +57,7 @@ public final class SharedPrivateLinkResourceProperties
     }
 
     /**
-     * Get the privateLinkResourceId property: The resource id of the resource the shared private link resource is for.
+     * Get the privateLinkResourceId property: The resource ID of the resource the shared private link resource is for.
      * 
      * @return the privateLinkResourceId value.
      */
@@ -66,7 +66,7 @@ public final class SharedPrivateLinkResourceProperties
     }
 
     /**
-     * Set the privateLinkResourceId property: The resource id of the resource the shared private link resource is for.
+     * Set the privateLinkResourceId property: The resource ID of the resource the shared private link resource is for.
      * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
@@ -77,7 +77,7 @@ public final class SharedPrivateLinkResourceProperties
     }
 
     /**
-     * Get the groupId property: The group id from the provider of resource the shared private link resource is for.
+     * Get the groupId property: The group ID from the provider of resource the shared private link resource is for.
      * 
      * @return the groupId value.
      */
@@ -86,7 +86,7 @@ public final class SharedPrivateLinkResourceProperties
     }
 
     /**
-     * Set the groupId property: The group id from the provider of resource the shared private link resource is for.
+     * Set the groupId property: The group ID from the provider of resource the shared private link resource is for.
      * 
      * @param groupId the groupId value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
@@ -97,7 +97,7 @@ public final class SharedPrivateLinkResourceProperties
     }
 
     /**
-     * Get the requestMessage property: The request message for requesting approval of the shared private link resource.
+     * Get the requestMessage property: The message for requesting approval of the shared private link resource.
      * 
      * @return the requestMessage value.
      */
@@ -106,7 +106,7 @@ public final class SharedPrivateLinkResourceProperties
     }
 
     /**
-     * Set the requestMessage property: The request message for requesting approval of the shared private link resource.
+     * Set the requestMessage property: The message for requesting approval of the shared private link resource.
      * 
      * @param requestMessage the requestMessage value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
@@ -118,7 +118,7 @@ public final class SharedPrivateLinkResourceProperties
 
     /**
      * Get the resourceRegion property: Optional. Can be used to specify the Azure Resource Manager location of the
-     * resource to which a shared private link is to be created. This is only required for those resources whose DNS
+     * resource for which a shared private link is being created. This is only required for those resources whose DNS
      * configuration are regional (such as Azure Kubernetes Service).
      * 
      * @return the resourceRegion value.
@@ -129,7 +129,7 @@ public final class SharedPrivateLinkResourceProperties
 
     /**
      * Set the resourceRegion property: Optional. Can be used to specify the Azure Resource Manager location of the
-     * resource to which a shared private link is to be created. This is only required for those resources whose DNS
+     * resource for which a shared private link is being created. This is only required for those resources whose DNS
      * configuration are regional (such as Azure Kubernetes Service).
      * 
      * @param resourceRegion the resourceRegion value to set.
