@@ -173,8 +173,11 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
         }
     }
 
-
-
+    /**
+     * Add a {@link ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder}
+     * customizer to customize all the session clients created from this factory.
+     * @param customizer the provided builder customizer.
+     */
     public void addSessionReceiverCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class.getName());
@@ -184,7 +187,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
     }
 
     /**
-     * Add a session receiver client builder customizer to customize the clients created from this factory with service bus
+     * Add a session receiver client builder customizer to customize the clients created from this factory with Service Bus
      * entity name of value {@code entityName}.
      *
      * @param entityName the entity name of the client.
