@@ -9,6 +9,7 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
 
 /**
  * The strategy to produce {@link ServiceBusSessionReceiverClient} instance.
+ * @since 5.22.0
  */
 public interface ServiceBusConsumerFactory {
 

@@ -37,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * if a configuration entry is provided at both producer and namespace level, the producer level configuration will
  * take advantage.
  * </p>
+ * @since 5.22.0
  */
 public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceBusConsumerFactory, DisposableBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceConsumerFactory.class);
