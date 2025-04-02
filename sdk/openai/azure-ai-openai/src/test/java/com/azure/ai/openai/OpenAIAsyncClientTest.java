@@ -2063,6 +2063,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         StepVerifier.create(client.uploadFile(fileDetails, purpose)).assertNext(openAIFile -> {
             assertNotNull(openAIFile);
             assertEquals("test-file.txt", openAIFile.getFilename());
+            client.deleteFile(openAIFile.getId());
         }).verifyComplete();
     }
 
@@ -2077,7 +2078,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             assertInstanceOf(HttpResponseException.class, error);
             HttpResponseException httpResponseException = (HttpResponseException) error;
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            assertNotNull(httpResponseException.getMessage());
+            assertFalse(CoreUtils.isNullOrEmpty(httpResponseException.getMessage()));
         });
     }
 
@@ -2116,7 +2117,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertInstanceOf(HttpResponseException.class, error);
                     HttpResponseException httpResponseException = (HttpResponseException) error;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                    assertNotNull(httpResponseException.getMessage());
+                    assertFalse(CoreUtils.isNullOrEmpty(httpResponseException.getMessage()));
                 });
         });
     }
@@ -2156,7 +2157,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertInstanceOf(HttpResponseException.class, error);
                     HttpResponseException httpResponseException = (HttpResponseException) error;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                    assertNotNull(httpResponseException.getMessage());
+                    assertFalse(CoreUtils.isNullOrEmpty(httpResponseException.getMessage()));
                 });
         });
     }
@@ -2200,7 +2201,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertInstanceOf(HttpResponseException.class, error);
                     HttpResponseException httpResponseException = (HttpResponseException) error;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                    assertNotNull(httpResponseException.getMessage());
+                    assertFalse(CoreUtils.isNullOrEmpty(httpResponseException.getMessage()));
                 });
         });
     }
@@ -2246,7 +2247,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertInstanceOf(HttpResponseException.class, error);
                     HttpResponseException httpResponseException = (HttpResponseException) error;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                    assertNotNull(httpResponseException.getMessage());
+                    assertFalse(CoreUtils.isNullOrEmpty(httpResponseException.getMessage()));
                 });
         });
     }
