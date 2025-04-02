@@ -162,6 +162,8 @@ public final class ChatCompletionsClient {
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
+     * This method will only work when using Serverless API or Managed Compute endpoint.
+     * It will not work for GitHub Models endpoint or Azure OpenAI endpoint.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>

@@ -242,7 +242,7 @@ public final class EmbeddingsClientImpl {
      * }
      * </pre>
      * 
-     * @param body request options to pass to the endpoint using embeddings path.
+     * @param body The body of the request containing the options for generating embeddings.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -314,7 +314,7 @@ public final class EmbeddingsClientImpl {
      * }
      * </pre>
      * 
-     * @param body request options to pass to the endpoint using embeddings path.
+     * @param body The body of the request containing the options for generating embeddings.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -335,6 +335,8 @@ public final class EmbeddingsClientImpl {
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
+     * This method will only work when using Serverless API or Managed Compute endpoint.
+     * It will not work for GitHub Models endpoint or Azure OpenAI endpoint.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -365,6 +367,8 @@ public final class EmbeddingsClientImpl {
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
+     * This method will only work when using Serverless API or Managed Compute endpoint.
+     * It will not work for GitHub Models endpoint or Azure OpenAI endpoint.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
