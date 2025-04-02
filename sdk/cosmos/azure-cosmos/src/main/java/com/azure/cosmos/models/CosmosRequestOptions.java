@@ -95,7 +95,8 @@ public final class CosmosRequestOptions {
 
     /**
      * Sets the exclude regions. If all the regions are excluded, the request will be sent to the primary region
-     * for the account.
+     * for the account. The primary region is the write region in a single master account and the hub region
+     * in a multi-master account.
      *
      * @param excludeRegions the ExcludeRegions.
      * @return current CosmosRequestOptions.
