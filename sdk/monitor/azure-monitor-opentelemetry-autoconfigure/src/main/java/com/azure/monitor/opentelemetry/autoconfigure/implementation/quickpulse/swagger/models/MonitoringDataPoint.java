@@ -477,21 +477,12 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     @Override
     public String toString() {
-        return "MonitoringDataPoint{" +
-            "version='" + version + '\'' +
-            ", invariantVersion=" + invariantVersion +
-            ", instance='" + instance + '\'' +
-            ", roleName='" + roleName + '\'' +
-            ", machineName='" + machineName + '\'' +
-            ", streamId='" + streamId + '\'' +
-            ", timestamp=" + timestamp +
-            ", transmissionTime=" + transmissionTime +
-            ", isWebApp=" + isWebApp +
-            ", performanceCollectionSupported=" + performanceCollectionSupported +
-            ", metrics=" + metrics +
-            ", documents=" + documents +
-            ", topCpuProcesses=" + topCpuProcesses +
-            ", collectionConfigurationErrors=" + collectionConfigurationErrors +
-            '}';
+        return "MonitoringDataPoint{" + "version='" + version + '\'' + ", invariantVersion=" + invariantVersion
+            + ", instance='" + instance + '\'' + ", roleName='" + roleName + '\'' + ", machineName='" + machineName
+            + '\'' + ", streamId='" + streamId + '\'' + ", timestamp=" + timestamp + ", transmissionTime="
+            + transmissionTime + ", isWebApp=" + isWebApp + ", performanceCollectionSupported="
+            + performanceCollectionSupported + ", metrics=" + metrics + ", documents=" + documents
+            + ", topCpuProcesses=" + topCpuProcesses + ", collectionConfigurationErrors="
+            + collectionConfigurationErrors + '}';
     }
 }
