@@ -14,7 +14,6 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 import static io.clientcore.core.annotations.MetadataProperties.FLUENT;
@@ -264,21 +263,6 @@ public final class LoggingEvent {
         if (this.isEnabled) {
             performLogging(message.get());
         }
-    }
-
-    /**
-     * Logs exception.
-     *
-     * @param throwable {@link Throwable} for the message.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     * @throws NullPointerException if {@code throwable} is null.
-     */
-    public <T extends Throwable> T logThrowable(T throwable) {
-        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        this.throwable = throwable;
-        performLogging(null);
-        return throwable;
     }
 
     private void performLogging(String message) {
