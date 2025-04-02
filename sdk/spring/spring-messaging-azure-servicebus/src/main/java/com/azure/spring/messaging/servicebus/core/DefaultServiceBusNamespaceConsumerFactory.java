@@ -184,7 +184,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
     }
 
     /**
-     * Add a service client builder customizer to customize the clients created from this factory with service bus
+     * Add a session receiver client builder customizer to customize the clients created from this factory with service bus
      * entity name of value {@code entityName}.
      *
      * @param entityName the entity name of the client.

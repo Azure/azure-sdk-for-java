@@ -21,6 +21,7 @@ public class ConsumerPropertiesParentMerger implements PropertiesMerger<Consumer
         if (child == null && parent == null) {
             return properties;
         }
+
         if (child == null) {
             child = new ConsumerProperties();
         }

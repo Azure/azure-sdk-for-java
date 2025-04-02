@@ -78,7 +78,7 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
     @Test
     public void testSendAndReceiveReturnNull() {
         when(mockReceiverClient.receiveMessages(1)).thenReturn(new IterableStream<>(List.of()));
-        assertNull( this.sendOperation.sendAndReceive(destination, null, message));
+        assertNull(this.sendOperation.sendAndReceive(destination, null, message));
     }
 
     @Override
